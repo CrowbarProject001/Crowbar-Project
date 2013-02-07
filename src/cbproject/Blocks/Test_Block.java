@@ -18,7 +18,6 @@ public class Test_Block extends Block {
 		setTextureFile(ClientProxy.BLOCKS_TEXTURE_PATH );
 		setHardness(10.0F);
 		
-
 	}
 
 }

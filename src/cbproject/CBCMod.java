@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
 @Mod(modid="cbc",name="CrowbarCraft",version="0.0.0.2")
-@NetworkMod(clientSideRequired=true,serverSideRequired=true)
+@NetworkMod(clientSideRequired=true,serverSideRequired=false)
 
 public class CBCMod
 {
