@@ -25,7 +25,6 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.BaseMod;
@@ -51,18 +50,14 @@ public class CBCMod
 	@Init
 	public void init(FMLInitializationEvent Init){
 		Proxy.init();
-		
 		Block test_block = new Test_Block(531,Material.anvil);
 		Item test_item = new Test_Item(10000);
-		
 		//·½¿éµÄ×¢²á
 		ModLoader.addName(test_block , "Test_Block");
 		LanguageRegistry.addName(test_block,"Test Block");
 		ModLoader.registerBlock(test_block);
-		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "en_US", "Crowbarcraft");
 
 	}
-
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 		
