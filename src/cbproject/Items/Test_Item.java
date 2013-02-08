@@ -55,7 +55,6 @@ public class Test_Item extends Item {
 		if (block_id == 0) return;
 		
 		if (block_id == Block.sand.blockID || block_id == Block.dirt.blockID ||  block_id == Block.grass.blockID){
-			int y1 = y++;
 			world.setBlock(x, y, z, Block.snow.blockID);
 		}
 		
