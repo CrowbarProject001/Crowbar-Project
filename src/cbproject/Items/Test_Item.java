@@ -1,5 +1,6 @@
 package cbproject.Items;
 
+import cbproject.CCT;
 import cbproject.Proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -11,13 +12,14 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.world.World;
 
 public class Test_Item extends Item {
+	public static CreativeTabs cct = new CCT("CBCMod");
 
 	public Test_Item(int par1) {
 		
 		super(par1);
 
 		setItemName("Test_Item");
-		setCreativeTab(CreativeTabs.tabTools);
+		setCreativeTab(cct);
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH );
 	//	setIconIndex(0);
 	}
@@ -27,8 +29,21 @@ public class Test_Item extends Item {
     		World world, int x, int y, int z, int sd, float xo, float yo, float zo)
     {
 		if (world.isRemote) return true;
-		int dx,dz;
-		set_snow_or_ice(world,x,y,z);
+		
+//		for(int dx =-4 ; dx<= -4; dx++)
+//		{
+//			for(int dz =-4 ; dz<= -4; dz++)
+//			{
+		//if (Math.abs(dx) + Math.abs(dz) > 6 ) continue;
+				
+				int new_x = x;// + dx;
+				int new_y = y;
+				int new_z = z; //+ dz;
+				
+				set_snow_or_ice(world, new_x ,new_y ,new_z );
+//			}
+//		}
+		
 		return true;
 
     }
@@ -38,8 +53,12 @@ public class Test_Item extends Item {
 		int block_id = world.getBlockId(x,y,z);
 		
 		if (block_id == 0) return;
-		if (block_id == Block.sand.blockID || block_id == Block.dirt.blockID ||  block_id == Block.grass.blockID)
-			world.setBlock(x, y+1, z, Block.snow.blockID);	
+		
+		if (block_id == Block.sand.blockID || block_id == Block.dirt.blockID ||  block_id == Block.grass.blockID){
+			int y1 = y++;
+			world.setBlock(x, y, z, Block.snow.blockID);
+		}
+		
 		if(block_id == Block.waterMoving.blockID || block_id == Block.waterStill.blockID )
 			world.setBlock(x, y, z, Block.ice.blockID);
 		
