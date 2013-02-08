@@ -33,6 +33,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.src.BaseMod;
@@ -76,6 +77,17 @@ public class CBCMod
         //物品的名称
         LanguageRegistry.addName(test_item, "Test Item");
         LanguageRegistry.addName(crowbar, "Crowbar");
+        
+        //合成表
+        	//Start Crowbar
+        			//Start ItemStacks
+        				ItemStack rosereddyeStack = new ItemStack(351,1,0);
+        				ItemStack ingotIronStack = new ItemStack(Item.ingotIron);
+        				ItemStack crowbarStack = new ItemStack(crowbar);
+        				//End ItemStacks
+        			ModLoader.addShapelessRecipe(crowbarStack, rosereddyeStack);
+        			GameRegistry.addShapelessRecipe(crowbarStack, rosereddyeStack,ingotIronStack);
+        	//End Crowbar
 	}
 
 	@PostInit
