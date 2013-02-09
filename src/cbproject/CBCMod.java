@@ -13,8 +13,8 @@ import java.util.Random;
 import org.omg.CORBA.PUBLIC_MEMBER;
 
 import cbproject.Blocks.Test_Block;
+import cbproject.Items.Crowbar;
 import cbproject.Items.Test_Item;
-import cbproject.Items.Weapon.Crowbar;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
