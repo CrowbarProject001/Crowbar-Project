@@ -1,6 +1,6 @@
 /* Custom CreativeTab */
 
-package cbproject;
+package cbproject.Misc;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -17,6 +17,6 @@ public class CCT extends CreativeTabs {
 	    return new ItemStack(Item.snowball);
 	    //return new ItemStack(Crowbar);
 	}
-	//public static CreativeTabs cct = new CCT("CBCMod");
+	//
 	
 }

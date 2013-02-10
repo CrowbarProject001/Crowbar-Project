@@ -1,4 +1,4 @@
-package cbproject.Initial;
+package cbproject.Configure;
 
 import java.io.File;
 import java.io.IOException;

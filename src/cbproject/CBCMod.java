@@ -9,12 +9,11 @@
 package cbproject;
 
 import java.util.Random;
-
 import org.omg.CORBA.PUBLIC_MEMBER;
-
-import cbproject.Blocks.Test_Block;
-import cbproject.Items.Test_Item;
-import cbproject.Items.Weapon.Crowbar;
+import cbproject.Elements.Blocks.Test_Block;
+import cbproject.Elements.Items.Test_Item;
+import cbproject.Elements.Items.Weapon.weapon_crowbar;
+import cbproject.Misc.CCT;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -38,15 +37,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.src.BaseMod;
 import net.minecraft.src.ModLoader;
+import net.minecraft.stats.Achievement;
+import net.minecraft.stats.AchievementList;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
-@Mod(modid="cbc",name="CrowbarCraft",version="0.0.0.2")
+@Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.2")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false)
 
 public class CBCMod
 {
-	public Block Fix_Table;
+	public static CreativeTabs cct = new CCT("CBCMod");
 	@Instance("cbc")
 	public static CBCMod CBCMod;
 	@SidedProxy(clientSide="cbproject.Proxy.ClientProxy",serverSide="chproject.Proxy.Proxy")
@@ -56,6 +57,7 @@ public class CBCMod
 	{
 		
 	}
+
 	
 	@Init
 	public void init(FMLInitializationEvent Init){
@@ -65,7 +67,7 @@ public class CBCMod
 		
 		Block test_block = new Test_Block(531,Material.anvil);
 		Item test_item = new Test_Item(10000);
-        Crowbar crowbar = new  Crowbar(10001);
+       weapon_crowbar crowbar = new  weapon_crowbar(10001);
         
 		//·½¿éµÄ×¢²á
         //		ModLoader.addName(test_block , "Test_Block");
@@ -94,7 +96,6 @@ public class CBCMod
 	public void postInit(FMLPostInitializationEvent Init){
 		
 	}
-
 }
 
 

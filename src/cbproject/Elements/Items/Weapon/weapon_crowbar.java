@@ -1,4 +1,4 @@
-package cbproject.Items.Weapon;
+package cbproject.Elements.Items.Weapon;
 
 import cbproject.Proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;

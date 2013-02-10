@@ -1,4 +1,4 @@
-package cbproject.Blocks.Ammo;
+package cbproject.Elements.Blocks.Ammo;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

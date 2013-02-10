@@ -1,7 +1,8 @@
-package cbproject.Items;
+package cbproject.Elements.Items;
 
-import cbproject.CCT;
+import cbproject.Misc.CCT;
 import cbproject.Proxy.ClientProxy;
+import cbproject.CBCMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,14 +13,13 @@ import net.minecraft.src.ModLoader;
 import net.minecraft.world.World;
 
 public class Test_Item extends Item {
-	public static CreativeTabs cct = new CCT("CBCMod");
 
 	public Test_Item(int par1) {
 		
 		super(par1);
 
 		setItemName("Test_Item");
-		setCreativeTab(cct);
+		setCreativeTab(CBCMod.cct);
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH );
 	//	setIconIndex(0);
 	}
