@@ -1,8 +1,10 @@
 package cbproject.elements.Items.weapons;
 
+import cbproject.elements.Entities.weapons.EntityHGrenade;
 import cbproject.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -27,6 +29,8 @@ public class Weapon_hgrenade extends Item {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
+		//生成手雷的Entity
+		par2World.spawnEntityInWorld(new EntityHGrenade(par2World, par3EntityPlayer));
 		return;
     }
 	
@@ -40,7 +44,14 @@ public class Weapon_hgrenade extends Item {
         // ArrowNockEvent event = new ArrowNockEvent(par3EntityPlayer, par1ItemStack);
         //MinecraftForge.EVENT_BUS.post(event);
 
-		
+        if (!par3EntityPlayer.capabilities.isCreativeMode)
+        {
+            --par1ItemStack.stackSize;
+        }
+
+        par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+
+
         par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
         return par1ItemStack;
     }

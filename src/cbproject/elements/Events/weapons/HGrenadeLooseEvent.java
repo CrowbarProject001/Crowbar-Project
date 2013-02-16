@@ -1,4 +1,4 @@
-package cbproject.elements.Items.weapons;
+package cbproject.elements.Events.weapons;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
