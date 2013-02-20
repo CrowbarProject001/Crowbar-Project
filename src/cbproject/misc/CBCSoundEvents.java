@@ -26,7 +26,7 @@ public class CBCSoundEvents {
 		} 
 		System.out.println(file.getPath());
 		try{
-			SoundPoolEntry snd = event.manager.soundPoolSounds.addSound("abc", file);
+			SoundPoolEntry snd = event.manager.soundPoolSounds.addSound("cbc/hgrenadepinpull.wav", file); //indicates "cbc.hgrenadepinpull"
 			System.out.println(snd.soundName);
 		}catch(Exception e){
 			
