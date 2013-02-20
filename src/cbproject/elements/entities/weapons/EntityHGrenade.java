@@ -12,7 +12,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class EntityHGrenade extends EntitySnowball {
-
+	//渲染器何在？
 	public EntityHGrenade(World par1World) {
 		super(par1World);
 	}
@@ -20,15 +20,19 @@ public class EntityHGrenade extends EntitySnowball {
     public EntityHGrenade(World par1World, EntityLiving par2EntityLiving)
     {
         super(par1World,par2EntityLiving);
-        float var3 = 0.2F; //�ٶ�Ϊѩ���һ��
-        this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3);
-        this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3);
-        this.motionY = (double)(-MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * var3);
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
         System.out.println("Entity has been inited.");
     }
 
-
+    protected float getGravityVelocity()
+    {
+        return 0.025F;
+    }
+    
+    protected float func_70182_d()
+    {
+    	return 0.7F;
+    }
+    
 	public EntityHGrenade(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6);
 		// TODO Auto-generated constructor stub
@@ -53,7 +57,7 @@ public class EntityHGrenade extends EntitySnowball {
 	    {
 	            this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 	    }
-	    float var1=4.0F;
+	    float var1=2.0F;
 	    this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, var1, true);
 	    System.out.println("Generated explosion");
 	    this.setDead();

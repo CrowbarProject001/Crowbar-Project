@@ -50,7 +50,7 @@ public class Weapon_hgrenade extends Item {
             --par1ItemStack.stackSize;
         }
 
-        par2World.playSoundAtEntity(par3EntityPlayer, "abc", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+        par2World.playSoundAtEntity(par3EntityPlayer, "cbproject.sounds.hgrenadepin", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
         par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
         return par1ItemStack;

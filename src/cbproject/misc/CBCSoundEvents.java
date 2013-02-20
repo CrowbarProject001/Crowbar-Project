@@ -1,6 +1,7 @@
 package cbproject.misc;
 
 import java.io.File;
+import java.net.URL;
 
 import cbproject.CBCMod;
 import net.minecraft.client.audio.SoundPool;
@@ -19,15 +20,17 @@ public class CBCSoundEvents {
 		
 		
 			
-		File file=new File("/cbproject/sounds/hgrenadepin.wav");
-		if(file==null){
-				System.err.println("Fail to load the damn file.");
-				return;
-		} 
-		System.out.println(file.getPath());
+		//File file=new File("/cbproject/textures/blocks.png");
+		//if(file==null || !file.canRead()){
+		//		System.err.println("Fail to load the damn file.");
+		//		return;
+		//} 
+		//System.out.println(file.getPath());
 		try{
-			SoundPoolEntry snd = event.manager.soundPoolSounds.addSound("cbc/hgrenadepinpull.wav", file); //indicates "cbc.hgrenadepinpull"
+			URL url=CBCMod.class.getResource("/cbproject/sounds/hgrenadepin.wav");
+			SoundPoolEntry snd = event.manager.soundPoolSounds.addSound("cbproject/sounds/hgrenadepin.wav", url); //indicates "cbc.hgrenadepinpull"
 			System.out.println(snd.soundName);
+			System.out.println(url.getPath());
 		}catch(Exception e){
 			
 			System.out.println("Sound registering failed.");
