@@ -23,7 +23,7 @@ public class Weapon_hgrenade extends Item {
 	}
 	
 	/*
-	 * �ſ�ʹ�ü�ʱ����Ϊ
+	 * 
 	 * @see net.minecraft.item.Item#onPlayerStoppedUsing(net.minecraft.item.ItemStack, net.minecraft.world.World, net.minecraft.entity.player.EntityPlayer, int)
 	 */
 	@Override
@@ -31,11 +31,12 @@ public class Weapon_hgrenade extends Item {
     {
 		//������׵�Entity
 		par2World.spawnEntityInWorld(new EntityHGrenade(par2World, par3EntityPlayer));
+		System.out.println("Stopped using grenade");
 		return;
     }
 	
 	/*
-	 * �Ҽ�������Ϊ
+	 * 
 	 * @see net.minecraft.item.Item#onItemRightClick(net.minecraft.item.ItemStack, net.minecraft.world.World, net.minecraft.entity.player.EntityPlayer)
 	 */
 	@Override
@@ -49,8 +50,7 @@ public class Weapon_hgrenade extends Item {
             --par1ItemStack.stackSize;
         }
 
-        par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-
+        par2World.playSoundAtEntity(par3EntityPlayer, "abc", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
         par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
         return par1ItemStack;

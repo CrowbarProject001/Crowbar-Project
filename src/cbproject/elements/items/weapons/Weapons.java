@@ -16,15 +16,14 @@ public class Weapons {
 	}
 	
 	public void registerItems(Config conf){
-		//��Ҫ���������:���Configȷ��ID
+		//TODO:添加调用config的部分
 		weapon_crowbar = new Weapon_crowbar(10001);
 		weapon_hgrenade = new Weapon_hgrenade(10002);
 		
 		
         LanguageRegistry.addName(weapon_crowbar, "Crowbar");
-        
-        //�ϳɱ�
-        //�������˹�
+        LanguageRegistry.addName(weapon_hgrenade, "Hand Grenade");
+        //合成表：撬棍
         ItemStack rosereddyeStack = new ItemStack(351,1,0);
         ItemStack ingotIronStack = new ItemStack(Item.ingotIron);
         ItemStack crowbarStack = new ItemStack(weapon_crowbar);

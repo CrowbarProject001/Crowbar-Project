@@ -2,8 +2,8 @@
  * 
  */
 /**
- * @author Administrator
- *
+ * @author WeAthFolD
+ * @author mkpoli
  */
 //This packet is the main frame of the mod.
 package cbproject;
@@ -14,6 +14,7 @@ import cbproject.elements.items.*;
 import cbproject.elements.items.weapons.Weapons;
 import cbproject.elements.blocks.Test_Block;
 import cbproject.configure.Config;
+import cbproject.misc.CBCSoundEvents;
 import cbproject.misc.CCT;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -30,6 +31,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.audio.SoundManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -42,6 +44,7 @@ import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.2")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false)
@@ -58,6 +61,8 @@ public class CBCMod
 	@PreInit
 	public void preInit(FMLPreInitializationEvent Init)
 	{
+		//声音的加载
+		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
 		config=new Config(Init.getSuggestedConfigurationFile());
 		config.SaveConfig();
 	}
