@@ -1,4 +1,4 @@
-package cbproject.renderers.weapons;
+package cbproject.elements.renderers.weapons;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -16,7 +16,7 @@ import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.potion.PotionHelper;
 
 @SideOnly(Side.CLIENT)
-public class RenderHGrenade extends Render
+public class RendererHGrenade extends Render
 {
     /**
      * Have the icon index (in items.png) that will be used to render the image. Currently, eggs and snowballs uses this
@@ -24,7 +24,7 @@ public class RenderHGrenade extends Render
      */
     private int itemIconIndex;
 
-    public RenderHGrenade(int par1)
+    public RendererHGrenade(int par1)
     {
         this.itemIconIndex = par1;
     }
@@ -41,7 +41,7 @@ public class RenderHGrenade extends Render
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
-        this.loadTexture("/cbproject/textures/items.png");
+        this.loadTexture( ClientProxy.ITEMS_TEXTURE_PATH );
         Tessellator var10 = Tessellator.instance;
 
         if (this.itemIconIndex == 154)

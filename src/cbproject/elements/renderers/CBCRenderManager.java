@@ -1,4 +1,4 @@
-package cbproject.renderers;
+package cbproject.elements.renderers;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import net.minecraft.src.ModLoader;
 import cbproject.configure.Config;
 import cbproject.elements.entities.weapons.EntityHGrenade;
 import cbproject.elements.items.weapons.Weapon_hgrenade;
-import cbproject.renderers.weapons.RenderHGrenade;
+import cbproject.elements.renderers.weapons.RendererHGrenade;
 
 public class CBCRenderManager {
 
@@ -22,7 +22,7 @@ public class CBCRenderManager {
 	
 	private void Load(){
 		//TODO:在这里注册渲染器
-		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RenderHGrenade(2));
+		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RendererHGrenade(2));
 		System.out.println("Renderer registered");
 	}
 }

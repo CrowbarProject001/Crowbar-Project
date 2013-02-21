@@ -8,19 +8,20 @@
 //This packet is the main frame of the mod.
 package cbproject;
 
-import static cpw.mods.fml.relauncher.Side.CLIENT;
-
-import java.util.Map;
-import java.util.Random;
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import cbproject.elements.items.*;
-import cbproject.elements.items.weapons.Weapons;
-import cbproject.elements.blocks.Test_Block;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.src.ModLoader;
+import net.minecraftforge.common.MinecraftForge;
 import cbproject.configure.Config;
+import cbproject.elements.blocks.BlocksRegister;
+import cbproject.elements.blocks.Test_Block;
+import cbproject.elements.items.ItemsRegister;
+import cbproject.elements.items.Test_Item;
+import cbproject.elements.renderers.CBCRenderManager;
 import cbproject.misc.CBCSoundEvents;
 import cbproject.misc.CCT;
-import cbproject.renderers.CBCRenderManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -30,29 +31,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.audio.SoundManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.src.BaseMod;
-import net.minecraft.src.ModLoader;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.AchievementList;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.1")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false)
@@ -60,10 +40,13 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class CBCMod
 {
-	Weapons cbcWeapons;
+	public static ItemsRegister cbcItems;
+	public static BlocksRegister cbcBlocks;
+	
 	public static CreativeTabs cct = new CCT("CBCMod");
 	public static CBCRenderManager renderManager;
 	Config config;
+	
 	@Instance("cbc")
 	public static CBCMod CBCMod;
 	@SidedProxy(clientSide="cbproject.proxy.ClientProxy",serverSide="chproject.proxy.Proxy")
@@ -82,8 +65,9 @@ public class CBCMod
 	public void init(FMLInitializationEvent Init){
 		Proxy.init();
 		//以下是物品的注册（武器统一封装到cbcWeapons)
-		cbcWeapons=new Weapons();
-		cbcWeapons.registerItems(config);
+		cbcItems=new ItemsRegister(config);
+		
+		cbcBlocks = new BlocksRegister(config);
 		
 		Block test_block = new Test_Block(531,Material.anvil);
 		Item test_item = new Test_Item(10000);

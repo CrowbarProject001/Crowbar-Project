@@ -21,6 +21,7 @@ public class Weapon_hgrenade extends Item {
 		setIconCoord(2,0);
 		setCreativeTab(CreativeTabs.tabTools);
 		setMaxStackSize(4);
+		this.maxStackSize = 4;
 		// TODO Auto-generated constructor stub
 	}
 	

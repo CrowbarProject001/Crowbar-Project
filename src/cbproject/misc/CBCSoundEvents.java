@@ -13,11 +13,11 @@ public class CBCSoundEvents {
 	
 	public final static String Path[]={
 		
-		"/cbproject/sounds/weapons/hgrenadepin.wav",
-		"/cbproject/sounds/weapons/hgrenadebounce.wav",
-		"/cbproject/sounds/weapons/explode_a.wav",
-		"/cbproject/sounds/weapon/explode5.wav",
-		"/cbproject/sounds/weapons/g_bounce2.wav"
+		"/cbproject/gfx/sounds/weapons/hgrenadepin.wav",
+		"/cbproject/gfx/sounds/weapons/hgrenadebounce.wav",
+		"/cbproject/gfx/sounds/weapons/explode_a.wav",
+		"/cbproject/gfx/sounds/weapon/explode5.wav",
+		"/cbproject/gfx/sounds/weapons/g_bounce2.wav"
 		
 	};
 	

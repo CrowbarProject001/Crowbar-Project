@@ -15,24 +15,15 @@ virtual class wpn_general_explosive extends item
 }
 
 //有子弹射击的武器
+//子弹武器
+//允许多种射击模式
+//设计方法由各自自由定义
+//提供的公用方法:射击子弹(弹夹ItemStacl)、子弹Entity(要不要考虑用纯计算替代呢？)
+//提供的管理类：子弹弹药管理（搜索Player Inventory,提供详细子弹数)
+//大坑:GUI显示
 
-virtual class wpn_general_bullet extends item
+abstract class Weapon_general_bullet extends item
 {
-	public:
-		int returnCapacity(){ //返回最大耐久度(子弹？热量？233)
-			return this.maxDamage;
-		}
-		int shoot(general_bullet itemBullet,int x,y,z,vector dir); //射♂击一次/一颗子弹
-		int setweaponMode(int par1); //设定射击模式
-		int getWeaponMode();
-	
-		@Override
-		public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10); //使用时
-		public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer); //单击时
-		public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4); //结束射击时
-//注:自动武器(9mmAR,gauss左键,EGON 使用onItemUse/onPlayerStoppedUsing方法)，非自动武器(手枪，霰弹枪，RPG...)使用onItemRightClick方法
-	private:
-		int weaponMode; //武器模式
-		int modeNum=1; //射击模式
 }
 
+abstract class 
