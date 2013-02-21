@@ -11,26 +11,31 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 public class CBCSoundEvents {
 	
-	@SuppressWarnings("unused")
+	public final static String Path[]={
+		
+		"/cbproject/sounds/weapons/hgrenadepin.wav",
+		"/cbproject/sounds/weapons/hgrenadebounce.wav",
+		"/cbproject/sounds/weapons/explode_a.wav",
+		"/cbproject/sounds/weapon/explode5.wav",
+		"/cbproject/sounds/weapons/g_bounce2.wav"
+		
+	};
+	
 	@ForgeSubscribe
 	public void onSound(SoundLoadEvent event)
 	{
 		
-		System.out.println("but a simple try");
+		System.out.println("Attempting to load CBC sound files...");
 		
-		
-			
-		//File file=new File("/cbproject/textures/blocks.png");
-		//if(file==null || !file.canRead()){
-		//		System.err.println("Fail to load the damn file.");
-		//		return;
-		//} 
-		//System.out.println(file.getPath());
 		try{
-			URL url=CBCMod.class.getResource("/cbproject/sounds/hgrenadepin.wav");
-			SoundPoolEntry snd = event.manager.soundPoolSounds.addSound("cbproject/sounds/hgrenadepin.wav", url); //indicates "cbc.hgrenadepinpull"
+			
+			event.manager.soundPoolSounds.addSound("cbc/weapons/hgrenadepin.wav", CBCMod.class.getResource (Path[0]) ); 
+			event.manager.soundPoolSounds.addSound("cbc/weapons/hgrenadebounce.wav", CBCMod.class.getResource (Path[1]) );
+			SoundPoolEntry snd = event.manager.soundPoolSounds.addSound("cbc/weapons/explode_a.wav", CBCMod.class.getResource (Path[2]) );
+			event.manager.soundPoolSounds.addSound("cbc/weapons/explode5.wav", CBCMod.class.getResource (Path[3]) );
+			event.manager.soundPoolSounds.addSound("cbc/weapons/g_bounce2.wav", CBCMod.class.getResource (Path[4]) );
 			System.out.println(snd.soundName);
-			System.out.println(url.getPath());
+			System.out.println(snd.soundUrl);
 		}catch(Exception e){
 			
 			System.out.println("Sound registering failed.");

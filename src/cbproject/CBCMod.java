@@ -8,16 +8,19 @@
 //This packet is the main frame of the mod.
 package cbproject;
 
+import static cpw.mods.fml.relauncher.Side.CLIENT;
+
+import java.util.Map;
 import java.util.Random;
 import org.omg.CORBA.PUBLIC_MEMBER;
 
-import renderers.CBCRenderManager;
 import cbproject.elements.items.*;
 import cbproject.elements.items.weapons.Weapons;
 import cbproject.elements.blocks.Test_Block;
 import cbproject.configure.Config;
 import cbproject.misc.CBCSoundEvents;
 import cbproject.misc.CCT;
+import cbproject.renderers.CBCRenderManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -31,10 +34,13 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.SoundManager;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
@@ -48,8 +54,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.2")
+@Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.1")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false)
+
 
 public class CBCMod
 {
@@ -74,11 +81,6 @@ public class CBCMod
 	@Init
 	public void init(FMLInitializationEvent Init){
 		Proxy.init();
-		
-		//渲染器的注册
-		renderManager = new CBCRenderManager(config);
-		renderManager.Load();
-		
 		//以下是物品的注册（武器统一封装到cbcWeapons)
 		cbcWeapons=new Weapons();
 		cbcWeapons.registerItems(config);
@@ -96,13 +98,15 @@ public class CBCMod
 		
         //物品的名称
         LanguageRegistry.addName(test_item, "Test Item");
-
+        
 	}
 
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 		
 	}
+
+	
 }
 
 
