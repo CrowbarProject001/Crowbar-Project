@@ -11,7 +11,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class EntityHGrenade extends EntitySnowball {
+public class EntityHGrenade extends EntityThrowable {
 	//渲染器何在？
 	public EntityHGrenade(World par1World) {
 		super(par1World);

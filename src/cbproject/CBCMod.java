@@ -10,6 +10,8 @@ package cbproject;
 
 import java.util.Random;
 import org.omg.CORBA.PUBLIC_MEMBER;
+
+import renderers.CBCRenderManager;
 import cbproject.elements.items.*;
 import cbproject.elements.items.weapons.Weapons;
 import cbproject.elements.blocks.Test_Block;
@@ -53,6 +55,7 @@ public class CBCMod
 {
 	Weapons cbcWeapons;
 	public static CreativeTabs cct = new CCT("CBCMod");
+	public static CBCRenderManager renderManager;
 	Config config;
 	@Instance("cbc")
 	public static CBCMod CBCMod;
@@ -71,6 +74,10 @@ public class CBCMod
 	@Init
 	public void init(FMLInitializationEvent Init){
 		Proxy.init();
+		
+		//渲染器的注册
+		renderManager = new CBCRenderManager(config);
+		renderManager.Load();
 		
 		//以下是物品的注册（武器统一封装到cbcWeapons)
 		cbcWeapons=new Weapons();
