@@ -36,7 +36,7 @@ public class Weapon_hgrenade extends Item {
 		int duration = (par4 > 340) ? 400 - par4 : 60 ; //used time: if large than 3s use 3s
 		HGrenadePinEvent event = new HGrenadePinEvent(par3EntityPlayer,par1ItemStack,duration);
 		MinecraftForge.EVENT_BUS.register(event);
-		if(event.isCanceled())
+		if(event.isCanceled() || duration <= 10)
 			return;
 		
 		par2World.spawnEntityInWorld(new EntityHGrenade(par2World, par3EntityPlayer, duration));

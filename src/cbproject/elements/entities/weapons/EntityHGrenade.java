@@ -6,6 +6,7 @@ import java.util.Random;
 
 import cpw.mods.fml.common.Mod.Item;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -66,15 +67,22 @@ public class EntityHGrenade extends EntityThrowable {
 	    	time = ticksExisted;
 	    }
 	    
+
+	    int id =  this.worldObj.getBlockId(par1.blockX,par1.blockY,par1.blockZ);
+	    Boolean canCollide = !( id == Block.tallGrass.blockID || id == Block.reed.blockID 
+	    		|| id == Block.plantRed.blockID
+	    		|| id == Block.plantYellow.blockID);
+	    
 	    //碰撞代码
-	    if(par1.typeOfHit == EnumMovingObjectType.TILE)
+	    if(par1.typeOfHit == EnumMovingObjectType.TILE && canCollide)
+	    //if(par1.typeOfHit == EnumMovingObjectType.TILE)
 	    {
 	    	
 	    	switch(par1.sideHit){
 	    	
 	    	case 0:
 	    	case 1:
-	    		this.motionY = 0.7*-motionY;
+	    		this.motionY = 0.3*-motionY;
 	    		break;
 	    		
 	    	case 2:
@@ -90,10 +98,10 @@ public class EntityHGrenade extends EntityThrowable {
 	    	default:
 	    		break;
 	    	}
-	    	this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, (float) (0.3*this.func_70182_d()), 1.0F);
+	    	this.setThrowableHeading(this.motionX , this.motionY, this.motionZ, (float) (0.3*this.func_70182_d()), 1.0F);
 	    }
 	    if(par1.typeOfHit == EnumMovingObjectType.ENTITY)
-	    	this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, (float) (0.15*this.func_70182_d()), 1.0F);
+	    	this.setThrowableHeading(this.motionX, this.motionY *= 0.5, this.motionZ, (float) (0.15*this.func_70182_d()), 1.0F);
 	}
 	
 	private void Explode(){
