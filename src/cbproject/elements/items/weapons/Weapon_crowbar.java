@@ -1,5 +1,6 @@
 package cbproject.elements.items.weapons;
 
+import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumToolMaterial;
@@ -12,8 +13,8 @@ public class Weapon_crowbar extends ItemSword {
 		
 		setItemName("weapon_rowbar");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(1, 0);
-		setCreativeTab(CreativeTabs.tabTools);
+		setIconCoord(0, 2);
+		setCreativeTab( CBCMod.cct );
 	}
 
 }

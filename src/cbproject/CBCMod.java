@@ -22,6 +22,7 @@ import cbproject.elements.items.Test_Item;
 import cbproject.elements.renderers.CBCRenderManager;
 import cbproject.misc.CBCSoundEvents;
 import cbproject.misc.CCT;
+import cbproject.utils.weapons.BulletManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -42,6 +43,7 @@ public class CBCMod
 {
 	public static ItemsRegister cbcItems;
 	public static BlocksRegister cbcBlocks;
+	public static BulletManager bulletManager;
 	
 	public static CreativeTabs cct = new CCT("CBCMod");
 	public static CBCRenderManager renderManager;

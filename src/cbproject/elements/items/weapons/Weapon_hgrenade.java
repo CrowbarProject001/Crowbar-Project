@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
+import cbproject.CBCMod;
 
 public class Weapon_hgrenade extends Item {
 
@@ -18,8 +19,8 @@ public class Weapon_hgrenade extends Item {
 		super(par1ID);
 		setItemName("weapon_hgrenade");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(2,0);
-		setCreativeTab(CreativeTabs.tabTools);
+		setIconCoord(1,2);
+		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(4);
 		this.maxStackSize = 4;
 		// TODO Auto-generated constructor stub
@@ -46,6 +47,7 @@ public class Weapon_hgrenade extends Item {
             --par1ItemStack.stackSize;
         }
 		System.out.println("Stopped using grenade");
+		
 		return;
     }
 	
