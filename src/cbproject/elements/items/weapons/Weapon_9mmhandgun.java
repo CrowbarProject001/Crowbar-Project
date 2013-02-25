@@ -35,10 +35,11 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
 		this.maxStackSize = 1;
-		setMaxDamage(19); // 最低伤害值为2，防止Minecraft删除物品
+		setMaxDamage(18); // 最高伤害为180a0
 		setNoRepair(); //不可修补
 		
-		mode = 0;
+		
+		mode = 0; //低速
 		canUse = false;
 		isShooting = false;
 		isReloading = false;
@@ -54,19 +55,20 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 		tick++;
 		System.out.println("isShooting = " + isShooting);
 		System.out.println("isReloading = "+ isReloading);
-		//if(canUse && !isReloading && isShooting && ( tick - lastTick >= ShootTime[mode] || lastTick == 0)){
-		/*
-		if(isShooting){
+		
+		if(canUse && !isReloading && isShooting && ( tick - lastTick >= ShootTime[mode] || lastTick == 0)){
+			
 			CBCMod.bulletManager.Shoot((EntityPlayer) par3Entity,par2World);
-			par1ItemStack.damageItem(1, (EntityLiving)par3Entity);
+			//par1ItemStack.damageItem(1, null );
 			//par2World.playSoundAtEntity
-			if( par1ItemStack.getItemDamage() <= 2)
+			if( par1ItemStack.getItemDamage() >= 17)
 				this.canUse = false;
 			lastTick = tick;
 			System.out.println("Bang!");
+			
 			return;
 		}
-		*/
+		
 		if(isShooting && !isReloading && !canUse && (tick - lastTick >= ShootTime[mode])){
 		//if(isShooting && !canUse){
 			//par2World.playSoundAtEntity(par3Entity,"cbc.weapons.9mmhandgunjam", 0.5F, 0.5F);
@@ -74,38 +76,32 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 			lastTick = tick;
 			return;
 		}
-		/*
+		
 		if(isReloading){
 			if(tick - lastTick >= ReloadTime){
 				if(ammoManager.consumeAmmo(17))
-					par1ItemStack.setItemDamage(19);
+					par1ItemStack.setItemDamage(0);
 				else{
 					par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() + ammoManager.ammoCapacity);
 					ammoManager.clearAmmo((EntityPlayer)par3Entity);
 				}
 			}
 		}
-		*/
+		
 	}
 
-	@Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-    {
-		//this.ammoManager = new AmmoManager(player , stack);
-		if( stack.getItemDamage() > 2)
-			this.canUse = true;
-			
-        return true;
-    }
 	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
+		System.out.println("Item Damage : " + par1ItemStack.getItemDamage());
 		if(!this.canUse){
-			if(par1ItemStack.getItemDamage() > 2)
+			if(par1ItemStack.getItemDamage() < 17){
 				canUse = true;
-			else if(Reload()){
 				isShooting = true;
+			} else if(Reload()){
+				isShooting = true;
+				canUse = true;
 			}else
 				return par1ItemStack;
 		}
@@ -119,6 +115,7 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 		this.isShooting = false;
 	}
 
+	//未完成
 	private Boolean Reload(){
 		if(isReloading)return false;
 		//isReloading = true;
