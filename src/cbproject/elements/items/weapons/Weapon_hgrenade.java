@@ -1,7 +1,7 @@
 package cbproject.elements.items.weapons;
 
 import cbproject.elements.entities.weapons.EntityHGrenade;
-import cbproject.elements.events.weapons.HGrenadePinEvent;
+import cbproject.elements.events.weapons.EventHGrenadePin;
 import cbproject.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import cbproject.CBCMod;
 
@@ -34,13 +35,16 @@ public class Weapon_hgrenade extends Item {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
+		Event event = new EventHGrenadePin(par3EntityPlayer, par1ItemStack);
+		MinecraftForge.EVENT_BUS.post( event );
+		
+		if( event.isCanceled() ){
+			return;
+		}
+		
 		System.out.println("Item use duration : " + par4);
 		int duration = (par4 > 340) ? 400 - par4 : 60 ; //used time: if large than 3s use 3s
-		HGrenadePinEvent event = new HGrenadePinEvent(par3EntityPlayer,par1ItemStack,duration);
-		MinecraftForge.EVENT_BUS.register(event);
-		if(event.isCanceled() || duration <= 10)
-			return;
-		
+
 		par2World.spawnEntityInWorld(new EntityHGrenade(par2World, par3EntityPlayer, duration));
         if (!par3EntityPlayer.capabilities.isCreativeMode)
         {
@@ -58,8 +62,14 @@ public class Weapon_hgrenade extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-
-
+		
+		Event event = new EventHGrenadePin(par3EntityPlayer, par1ItemStack);
+		MinecraftForge.EVENT_BUS.post( event );
+		
+		if( event.isCanceled() ){
+			return par1ItemStack;
+		}
+		
         par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.hgrenadepin", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
         par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));

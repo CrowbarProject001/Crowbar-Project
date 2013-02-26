@@ -62,7 +62,7 @@ public class AmmoManager {
 		}
 	}
 	
-	//消耗玩家背包中的子弹
+	//消耗一颗子弹
 	public Boolean consumeAmmo(){
 		ItemStack itemStack;
 		for(int i=0; i<ammoList.size(); i++){
@@ -92,6 +92,7 @@ public class AmmoManager {
 				if(itemStack.stackSize >= left){
 					
 					itemStack.stackSize -= left;
+					ammoCapacity -= left;
 					if(itemStack.stackSize == 0)
 						ammoList.remove(i);
 					return true;

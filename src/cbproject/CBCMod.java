@@ -17,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cbproject.configure.Config;
 import cbproject.elements.blocks.BlocksRegister;
 import cbproject.elements.blocks.Test_Block;
+import cbproject.elements.events.process.weapons.HGrenadePinEvent;
 import cbproject.elements.items.ItemsRegister;
 import cbproject.elements.items.Test_Item;
 import cbproject.elements.renderers.CBCRenderManager;
@@ -58,8 +59,11 @@ public class CBCMod
 	{
 		//声音的加载
 		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		MinecraftForge.EVENT_BUS.register(new HGrenadePinEvent());
+		
 		config=new Config(Init.getSuggestedConfigurationFile());
 		config.SaveConfig();
+		
 	}
 
 	
