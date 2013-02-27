@@ -28,10 +28,9 @@ public class EntityAutomateWeapon extends Entity {
 			ItemStack par5ItemStack , EntityPlayer par6EntityPlayer ) {
 		
 		super( par6EntityPlayer.worldObj );
-		nbt = par5ItemStack.stackTagCompound;
 		shootTime = par1ShootTime;
 		reloadTime = par2ReloadTime;
-		instance = par5ItemStack;
+		instance  = par5ItemStack;
 		entityPlayer = par6EntityPlayer;
 
 		pathJam = par35Jam;
@@ -41,80 +40,14 @@ public class EntityAutomateWeapon extends Entity {
 		
 		//ammoManager = new AmmoManager( par6EntityPlayer, par5ItemStack );
 		System.out.println("Entity Inited.");
-		readEntityFromNBT(nbt);
+		par5ItemStack.damageItem( 5 , null);
+		instance.damageItem( 5 , null );
+		System.out.println ("Item Damage: " + instance.getItemDamage());
+		this.addEntityID(instance.stackTagCompound);
+		readEntityFromNBT(instance.stackTagCompound);
 		
 	}
 
-	@Override
-    public void onUpdate() {
-		super.onUpdate();
-		System.out.println("Entity Updated.");
-		//装弹函数
-		if( isReloading && this.ticksExisted - lastTick >= reloadTime ){
-			//CheckAmmoCapacity
-			int dmg = instance.getItemDamage();
-			if( dmg <= 0){
-				isReloading = false;
-				canUse = true;
-				
-				lastTick = ticksExisted;
-				return;
-			}
-			//int cap = this.ammoManager.ammoCapacity;
-			int cap = 33333;
-			if( dmg >= cap ){
-				//ammoManager.clearAmmo( entityPlayer );
-				instance.setItemDamage( instance.getItemDamage() - cap);
-			} else {
-				//ammoManager.consumeAmmo( dmg );
-				instance.setItemDamage( 0 );
-			}
-			
-			if( instance.getItemDamage() >=17 )
-				canUse = false;
-			isReloading = false;
-			
-			nbt.setBoolean( "canUse", canUse);
-			nbt.setBoolean( "isReloading", isReloading);
-			
-			lastTick = ticksExisted;
-			return;
-		}
-		
-		//射击
-		if(isShooting && canUse && ticksExisted - lastTick >= shootTime ){
-			if( instance.getItemDamage() >= 17 ){
-				
-				canUse = false;
-				
-				nbt.setBoolean( "canUse", canUse);
-				lastTick = ticksExisted;
-				return;
-			}
-			
-			//playSoundAtEntity
-			instance.damageItem( 1 , null);
-			CBCMod.bulletManager.Shoot(entityPlayer, worldObj);
-			System.out.println("Bang!");
-			
-			lastTick = ticksExisted;
-			return;
-			
-		}
-        
-		//卡住：播放音效
-		if( isShooting && !canUse && ticksExisted - lastTick >= shootTime){
-			if( instance.getItemDamage() < 17){
-				canUse = true;
-				
-				nbt.setBoolean("canUse", canUse);
-				return;
-			}
-			System.out.println("Jammed");
-			//playSoundAtEntity
-			lastTick = ticksExisted;
-		}
-    }
 
 	
 	@Override
@@ -140,5 +73,22 @@ public class EntityAutomateWeapon extends Entity {
 		System.out.println("init");
 		// TODO Auto-generated method stub
 	}
+	
+	@Override
+    public boolean addEntityID(NBTTagCompound par1NBTTagCompound)
+    {
+        String var2 = this.getEntityString();
+        System.out.print(var2);
+        if (!this.isDead && var2 != null)
+        {
+            par1NBTTagCompound.setString("id", var2);
+            this.writeToNBT(par1NBTTagCompound);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
 }
