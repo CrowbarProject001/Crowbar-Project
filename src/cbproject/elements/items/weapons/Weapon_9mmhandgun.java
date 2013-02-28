@@ -14,6 +14,7 @@ import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityAutomateWeapon;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.AmmoManager;
+import cbproject.utils.weapons.InformationBulletWeapon;
 
 
 public class Weapon_9mmhandgun extends WeaponGeneral {
@@ -22,7 +23,7 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 	 * 模式II (mode = 1):高速射击模式，准确度较低
 	 * 都是自动模式
 	 */
-	public static final int shootTime[]={ 30 , 15 };
+	public static final int shootTime[]={ 10 , 5 };
 	public static final int reloadTime = 60; //3s
 	public static final String pathSoundShoot = "cbc.weapons.9mmhandgunshoot" , 
 			pathSoundReload = "cbc.weapons.9mmhandgunreload" , 
@@ -57,22 +58,22 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 		}
 		
 		id--;
-		
-		NBTTagCompound nbt = (NBTTagCompound)listItemStack.get( id );
-		
-		if( nbt == null){
-			System.err.println("null NBT");
+		InformationBulletWeapon information = (InformationBulletWeapon)listItemStack.get(id);
+		if( information.signID != par1ItemStack.getTagCompound().getDouble("uniqueID")){
+			System.err.println("Unique sign not match,quitting...");
+		}
+		if( information == null){
+			System.err.println("null information");
 		}
 		
+		information.updateTick();
+		int ticksExisted = information.ticksExisted;
 		
-		int ticksExisted = nbt.getInteger("ticksExisted") + 1 ;
-		nbt.setInteger("ticksExisted", ticksExisted);
-		
-		int lastTick = nbt.getInteger("lastTick");
+		int lastTick = information.lastTick;
 			
-		Boolean isShooting = nbt.getBoolean("isShooting");
-		Boolean isReloading = nbt.getBoolean("isReloading");
-		Boolean canUse = nbt.getBoolean("canUse");
+		Boolean isShooting = information.isShooting;
+		Boolean isReloading = information.isReloading;
+		Boolean canUse = information.canUse;
 		
 		if( isReloading && ticksExisted - lastTick >= reloadTime ){
 			//CheckAmmoCapacity
@@ -82,9 +83,9 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 				canUse = true;
 				
 				lastTick = ticksExisted;
-				nbt.setInteger("lastTick", ticksExisted);
-				nbt.setBoolean("isReloading", isReloading);
-				nbt.setBoolean("canUse", canUse);
+				information.setLastTick();
+				information.isReloading = isReloading;
+				information.canUse = canUse;
 				return;
 			}
 			
@@ -105,11 +106,9 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 			
 			isReloading = false;
 			
-			nbt.setBoolean( "canUse", canUse);
-			nbt.setBoolean( "isReloading", isReloading);
-			
-			lastTick = ticksExisted;
-			nbt.setInteger("lastTick", ticksExisted);
+			information.canUse = canUse;
+			information.isReloading = isReloading;
+			information.setLastTick();
 			return;
 		}
 		
@@ -119,8 +118,8 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 				canUse = false;
 				
 				lastTick = ticksExisted;
-				nbt.setBoolean("canUse", canUse);
-				nbt.setInteger("lastTick", lastTick);
+				information.canUse = canUse;
+				information.setLastTick();
 				return;
 			}
 			
@@ -130,7 +129,7 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 			System.out.println("Bang!");
 			
 			lastTick = ticksExisted;
-			nbt.setInteger("lastTick", ticksExisted);
+			information.setLastTick();
 			return;
 			
 		}
@@ -140,13 +139,14 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 			if( par1ItemStack.getItemDamage() < 17){
 				canUse = true;
 				
-				nbt.setBoolean("canUse", canUse);
+				information.canUse = canUse;
 				return;
 			}
 			System.out.println("Jammed");
+			System.out.println("Item Damage: " + par1ItemStack.getItemDamageForDisplay());
 			//playSoundAtEntity
 			lastTick = ticksExisted;
-			nbt.setInteger("lastTick" , lastTick);
+			information.setLastTick();
 		}
 		
     }
@@ -177,40 +177,56 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 		//EVENT post
 		//fail:delete entity,setDead
 		int id;
+		
 		if(par1ItemStack.getTagCompound() == null){
 			id = 0;
 			par1ItemStack.stackTagCompound = new NBTTagCompound();
 		} else {
 			id = par1ItemStack.getTagCompound().getInteger("weaponID");
 		}
-		NBTTagCompound nbt;
+		
+		InformationBulletWeapon information;
+		double uniqueID = Math.random();
+		
 		if( id == 0){
-			nbt = new NBTTagCompound();
-
-			listItemStack.add(nbt);
+			information = new InformationBulletWeapon( uniqueID , false , false , false , 0 );
+			listItemStack.add(information);
 			par1ItemStack.getTagCompound().setInteger("weaponID", listItemStack.size()); //这里的值是物品索引+1 为了令出初始索引为0帮助判断
-			id = listItemStack.size();
-			id--;
-		} else {
+			par1ItemStack.getTagCompound().setDouble( "uniqueID", uniqueID );
+			id = listItemStack.size() - 1;
 			
-			if(id >= listItemStack.size()){
-				nbt = new NBTTagCompound();
+		} else {
+			if( id >= listItemStack.size() ){
+				information = new InformationBulletWeapon( uniqueID, false, false, false, 0);
+				
 				par1ItemStack.stackTagCompound = new NBTTagCompound();
 				
-				listItemStack.add(nbt);
+				listItemStack.add(information);
 				par1ItemStack.getTagCompound().setInteger("weaponID", listItemStack.size()); //这里的值是物品索引+1 为了令出初始索引为0帮助判断
-				id = listItemStack.size();
+				par1ItemStack.getTagCompound().setDouble("uniqueID", uniqueID);
+				id = listItemStack.size()-1;
 			}
-			id--;
-			nbt = (NBTTagCompound)listItemStack.get( id );
+			else{ 
+				uniqueID = par1ItemStack.getTagCompound().getDouble("uniqueID");
+				information = (InformationBulletWeapon)listItemStack.get( --id );
+				if( uniqueID != information.signID ){ //发生了重启 列表不匹配
+					uniqueID = Math.random();
+					information = new InformationBulletWeapon( uniqueID, false, false, false, 0);
+					listItemStack.add( information );
+					par1ItemStack.getTagCompound().setInteger("weaponID", listItemStack.size()); 
+					par1ItemStack.getTagCompound().setDouble("uniqueID", uniqueID);
+				}
+				
+			}
+			
 		}
 		
 		System.out.println("To here =w=");
 		
 		
-		Boolean canUse = nbt.getBoolean("canUse");
-		Boolean isShooting = nbt.getBoolean("isShooting");
-		Boolean isReloading = nbt.getBoolean("isReloading");
+		Boolean canUse = information.canUse;
+		Boolean isShooting = information.isShooting;
+		Boolean isReloading = information.isReloading;
 		
 		if(!canUse && !isReloading){
 			if(par1ItemStack.getItemDamage() < 17)
@@ -220,13 +236,13 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 		
 		if(canUse){
 			isShooting = true;
-			par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack) );
+			
 		}
 		
-		nbt.setBoolean("canUse", canUse);
-		nbt.setBoolean("isShooting", isShooting);
-		nbt.setBoolean("isReloading", isReloading);
-		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+		information.canUse = canUse;
+		information.isShooting = isShooting;
+		information.isReloading = isReloading;
+		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack) );
 		return par1ItemStack;
     }
 	
@@ -240,15 +256,14 @@ public class Weapon_9mmhandgun extends WeaponGeneral {
 		}
 		id--;
 		
-		NBTTagCompound nbt = (NBTTagCompound)listItemStack.get( id );
-		if( nbt == null){
+		InformationBulletWeapon information = (InformationBulletWeapon)listItemStack.get(id);
+		if( information == null){
 			throw new NullPointerException();
 		}
 		
-		Boolean isReloading  = nbt.getBoolean("isReloading");
+		Boolean isReloading  = information.isReloading;
 		System.out.println("isReloading : " + isReloading);
-		
-		nbt.setBoolean( "isShooting" , false );
+		information.isShooting = false;
 		System.out.println("Setted dead");
 
 	}
