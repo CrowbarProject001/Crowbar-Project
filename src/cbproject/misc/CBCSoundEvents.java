@@ -11,13 +11,15 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 public class CBCSoundEvents {
 	
-	public final static String Path[]={
+	public final static String PathWeapons[]={
 		
-		"/cbproject/gfx/sounds/weapons/hgrenadepin.wav",
-		"/cbproject/gfx/sounds/weapons/hgrenadebounce.wav",
-		"/cbproject/gfx/sounds/weapons/explode_a.wav",
-		"/cbproject/gfx/sounds/weapon/explode5.wav",
-		"/cbproject/gfx/sounds/weapons/g_bounce2.wav"
+		"hgrenadepin",
+		"hgrenadebounce",
+		"pl_gun3",
+		"9mmclip2",
+		"explode_a",
+		"explode5",
+		"g_bounce2"
 		
 	};
 	
@@ -29,13 +31,10 @@ public class CBCSoundEvents {
 		
 		try{
 			
-			event.manager.soundPoolSounds.addSound("cbc/weapons/hgrenadepin.wav", CBCMod.class.getResource (Path[0]) ); 
-			event.manager.soundPoolSounds.addSound("cbc/weapons/hgrenadebounce.wav", CBCMod.class.getResource (Path[1]) );
-			SoundPoolEntry snd = event.manager.soundPoolSounds.addSound("cbc/weapons/explode_a.wav", CBCMod.class.getResource (Path[2]) );
-			event.manager.soundPoolSounds.addSound("cbc/weapons/explode5.wav", CBCMod.class.getResource (Path[3]) );
-			event.manager.soundPoolSounds.addSound("cbc/weapons/g_bounce2.wav", CBCMod.class.getResource (Path[4]) );
-			System.out.println(snd.soundName);
-			System.out.println(snd.soundUrl);
+			for(String path:PathWeapons){
+				event.manager.soundPoolSounds.addSound("cbc/weapons/" + path + ".wav", CBCMod.class.getResource("/cbproject/gfx/sounds/weapons/" + path + ".wav"));
+			}
+
 		}catch(Exception e){
 			
 			System.out.println("Sound registering failed.");

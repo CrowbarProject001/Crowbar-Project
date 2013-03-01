@@ -30,15 +30,16 @@ public class ItemsRegister {
 	public void registerItems(Config conf){
 		//TODO:添加调用config的部分
 		
-		itemAmmo_uranium = new ItemAmmo_uranium(10004);
-		itemAmmo_9mm = new ItemAmmo_9mm(10005);
+		itemAmmo_uranium = new ItemAmmo_uranium(10114);
+		itemAmmo_9mm = new ItemAmmo_9mm(10115);
 		
 		weapon_crowbar = new Weapon_crowbar(10001);
 		weapon_hgrenade = new Weapon_hgrenade(10002);
 		weapon_9mmhandgun = new Weapon_9mmhandgun(10003);
-		
+		weapon_9mmAR = new Weapon_9mmAR(10004);
 
 		LanguageRegistry.addName(itemAmmo_9mm, "9mm Ammo");
+		LanguageRegistry.addName(weapon_9mmAR, "9mmAR");
 		LanguageRegistry.addName(itemAmmo_uranium , "Uranium Ammo");
 		
         LanguageRegistry.addName(weapon_crowbar, "Crowbar");
