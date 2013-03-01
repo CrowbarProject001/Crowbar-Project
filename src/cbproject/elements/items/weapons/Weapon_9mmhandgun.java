@@ -19,36 +19,38 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 	 * 模式II (mode = 1):高速射击模式，准确度较低
 	 * 都是自动模式
 	 */
-	
-	 //3s
-			
-	public static final int pShootTime[] = { 10,5} , pReloadTime = 60;
-
-	
-	@Override
-    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
-		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-    }
 
 	public Weapon_9mmhandgun(int par1) {
 		
-		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID, pReloadTime, pShootTime, "cbc.weapons.pl_gun3", "cbc.weapons.9mmclip2");
+		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID);
 		
 		setItemName("weapon_9mmhandgun");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
 		setIconCoord(2,2);
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
-		this.maxStackSize = 1;
 		setMaxDamage(18); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
-		listItemStack = new ArrayList();
+		
+		shootTime = new int [2];
+		shootTime[0] = 10;
+		shootTime [1]=5;
+		jamTime = 10;
+		reloadTime = 60;
+		
+		pathSoundShoot = "cbc.weapons.plgun_c";
+		pathSoundJam = "cbc.weapons.gunjam_a";
+		pathSoundReload = "cbc.weapons.nmmclipa";
 		
 		mode = 0; //低速
 		
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+    }
 
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
@@ -56,7 +58,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		//EVENT post
 		//fail:delete entity,setDead
 		int id;
-		par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.9mmclip2", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		
 		if(par1ItemStack.getTagCompound() == null){
 			id = 0;
 			par1ItemStack.stackTagCompound = new NBTTagCompound();
@@ -65,8 +67,6 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		}
 		
 		InformationBulletWeapon information = getBulletWpnInformation(par1ItemStack);
-		double uniqueID = Math.random();
-		
 		if( null == information ){
 			id = addBulletWpnInformation(information, par1ItemStack);
 			information = getBulletWpnInformation(id);
@@ -79,22 +79,18 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		if(!canUse && !isReloading){
 			if(par1ItemStack.getItemDamage() < 17)
 				canUse = true;
-			else {
+			else 
 				isReloading = true;
-				 par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.9mmclip2", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-			}
-			
 		}
 		
-		if(canUse){
+		if(canUse)
 			isShooting = true;
-			
-		}
 		
 		information.canUse = canUse;
 		information.isShooting = isShooting;
 		information.isReloading = isReloading;
 		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
+		
 		return par1ItemStack;
     }
 	
@@ -119,10 +115,5 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
     {
         return 200; //10s
     }
-	
-	
-	
-	
-
 
 }

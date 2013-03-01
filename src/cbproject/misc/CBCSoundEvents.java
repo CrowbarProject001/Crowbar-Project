@@ -15,11 +15,16 @@ public class CBCSoundEvents {
 		
 		"hgrenadepin",
 		"hgrenadebounce",
-		"pl_gun3",
-		"9mmclip2",
+		"plgun_c",
+		"nmmclipa",
 		"explode_a",
-		"explode5",
-		"g_bounce2"
+		"explode_b",
+		"g_bounceb",
+		"gunjam_a",
+		"hksa",
+		"hksb",
+		"hksc",
+		"nmmarr"
 		
 	};
 	
@@ -30,9 +35,10 @@ public class CBCSoundEvents {
 		System.out.println("Attempting to load CBC sound files...");
 		
 		try{
-			
+			SoundPoolEntry snd;
 			for(String path:PathWeapons){
-				event.manager.soundPoolSounds.addSound("cbc/weapons/" + path + ".wav", CBCMod.class.getResource("/cbproject/gfx/sounds/weapons/" + path + ".wav"));
+				snd = event.manager.soundPoolSounds.addSound("cbc/weapons/" + path + ".wav", CBCMod.class.getResource("/cbproject/gfx/sounds/weapons/" + path + ".wav"));
+				System.out.println("AddSound : " + snd.soundName + " URL: " + snd.soundUrl);
 			}
 
 		}catch(Exception e){
