@@ -68,7 +68,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		
 		InformationBulletWeapon information = getBulletWpnInformation(par1ItemStack);
 		if( null == information ){
-			id = addBulletWpnInformation(information, par1ItemStack);
+			id = addBulletWpnInformation(information, par1ItemStack, par3EntityPlayer);
 			information = getBulletWpnInformation(id);
 		}
 		

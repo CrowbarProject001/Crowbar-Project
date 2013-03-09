@@ -95,36 +95,40 @@ public abstract class WeaponGeneralBullet extends Item {
     }
 
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
+    	if(par3Entity instanceof EntityPlayer){
+    		System.out.println("Player called reloading.");
+    		int dmg = par1ItemStack.getItemDamage();
+    		int maxDmg = par1ItemStack.getMaxDamage() -1;
+    		if( dmg <= 0){
+    			information.setLastTick();
+    			information.isReloading = false;
+    			information.canUse = true;
+    			information.rsp = false;
+    			return;
+    		}
+		
+    		int cap = information.ammoManager.ammoCapacity;
 
-		int dmg = par1ItemStack.getItemDamage();
-		int maxDmg = par1ItemStack.getMaxDamage() -1;
-		if( dmg <= 0){
-			information.setLastTick();
-			information.isReloading = false;
-			information.canUse = true;
-			information.rsp = false;
-			return;
-		}
-		
-		//int cap = information.ammoManager.ammoCapacity;
-		int cap = 33333;
-		if( dmg >= cap ){
-			//ammoManager.clearAmmo( entityPlayer );
-			cap = 0;
-			par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - cap);
-		} else {
-			//ammoManager.consumeAmmo( dmg );
-			cap -= dmg;
+    		if( dmg >= cap ){
+    			information.ammoManager.clearAmmo( (EntityPlayer)par3Entity );
+    			cap = 0;
+				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - cap);
+    		} else {
+    			information.ammoManager.consumeAmmo( dmg );
+    			cap -= dmg;
 			par1ItemStack.setItemDamage( 0 );
-		}
+    		}
 		
-		if( par1ItemStack.getItemDamage() >=maxDmg )
-			information.canUse = false;
+    		if( par1ItemStack.getItemDamage() >=maxDmg )
+    			information.canUse = false;
 		
-		information.isReloading = false;
-		information.setLastTick();
-		information.rsp = false;
-		
+    		information.isReloading = false;
+    		information.setLastTick();
+    		information.rsp = false;
+    	} else { 
+    		par1ItemStack.setItemDamage( 0 );
+    		System.out.println("Mob called reloading.");
+    	}
 		return;
     }
     
@@ -184,7 +188,7 @@ public abstract class WeaponGeneralBullet extends Item {
 		return information;
     }
     
-    public final int addBulletWpnInformation( InformationBulletWeapon par1Inf , ItemStack par2Item){
+    public final int addBulletWpnInformation( InformationBulletWeapon par1Inf , ItemStack par2Item, EntityPlayer par3Player){
     	
 		int id;
 		
@@ -192,7 +196,7 @@ public abstract class WeaponGeneralBullet extends Item {
 			par2Item.stackTagCompound = new NBTTagCompound();
 		double uniqueID = Math.random();
 		
-		par1Inf = new InformationBulletWeapon( uniqueID, false, false, false, 0);
+		par1Inf = new InformationBulletWeapon( uniqueID, false, false, false, 0, par3Player, par2Item);
 		listItemStack.add(par1Inf);
 		par2Item.getTagCompound().setInteger("weaponID", listItemStack.size()); //这里的值是物品索引+1 为了令出初始索引为0帮助判断
 		par2Item.getTagCompound().setDouble("uniqueID", uniqueID);

@@ -83,6 +83,8 @@ public class EntityHGrenade extends EntityThrowable {
 	    	case 0:
 	    	case 1:
 	    		this.motionY = 0.3*-motionY;
+	    		this.motionX = 0.6 * motionX;
+	    		this.motionZ = 0.6 * motionZ;
 	    		break;
 	    		
 	    	case 2:
