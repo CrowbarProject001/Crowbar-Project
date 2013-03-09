@@ -16,12 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public abstract class WeaponGeneralBullet extends Item {
-	
-	
-	public List listItemStack;
-	public int mode;
-	public int ammoID;
+public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
 	public  int reloadTime ;
 	public  int jamTime;
@@ -40,12 +35,7 @@ public abstract class WeaponGeneralBullet extends Item {
 	 */
 	
 	public WeaponGeneralBullet(int par1 , int par2ammoID) {
-		
-		super(par1);
-		
-		listItemStack = new ArrayList();
-		ammoID = par2ammoID;
-		
+		super(par1, par2ammoID);	
 	}
 	
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5);
@@ -95,6 +85,7 @@ public abstract class WeaponGeneralBullet extends Item {
     }
 
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
+    	
     	if(par3Entity instanceof EntityPlayer){
     		System.out.println("Player called reloading.");
     		int dmg = par1ItemStack.getItemDamage();
@@ -106,17 +97,17 @@ public abstract class WeaponGeneralBullet extends Item {
     			information.rsp = false;
     			return;
     		}
-		
+    		
+    		information.ammoManager.setAmmoInformation((EntityPlayer)par3Entity);
     		int cap = information.ammoManager.ammoCapacity;
 
     		if( dmg >= cap ){
     			information.ammoManager.clearAmmo( (EntityPlayer)par3Entity );
-    			cap = 0;
 				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - cap);
     		} else {
     			information.ammoManager.consumeAmmo( dmg );
     			cap -= dmg;
-			par1ItemStack.setItemDamage( 0 );
+    			par1ItemStack.setItemDamage( 0 );
     		}
 		
     		if( par1ItemStack.getItemDamage() >=maxDmg )
@@ -129,6 +120,7 @@ public abstract class WeaponGeneralBullet extends Item {
     		par1ItemStack.setItemDamage( 0 );
     		System.out.println("Mob called reloading.");
     	}
+    	
 		return;
     }
     

@@ -12,7 +12,7 @@ public class ItemAmmo_9mm extends ItemAmmo {
 		setItemName("ammo_9mm");
 		setIconCoord(1,1);
 		setMaxDamage(17);
-		setMaxStackSize (15);
+		setMaxStackSize (1);
 	}
 
 }

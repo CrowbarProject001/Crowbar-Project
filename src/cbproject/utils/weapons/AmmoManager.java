@@ -3,13 +3,12 @@ package cbproject.utils.weapons;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.common.Mod.Item;
-
 import cbproject.CBCMod;
+import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.elements.items.weapons.Weapon_egon;
 import cbproject.elements.items.weapons.Weapon_gauss;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 
 public class AmmoManager {
 	
@@ -36,10 +35,10 @@ public class AmmoManager {
 		
 	}
 	
-	private void setAmmoInformation(EntityPlayer par1Player){
+	public void setAmmoInformation(EntityPlayer par1Player){
 		
 		ItemStack itemStack;
-		
+		ammoList.clear();
 		//遍历寻找对应的Ammo
 		for( int i=0; i<36; i++){
 			itemStack = par1Player.inventory.getStackInSlot(i);
@@ -59,7 +58,9 @@ public class AmmoManager {
 		for(int i=0; i<ammoList.size(); i++){
 			
 			itemStack = (ItemStack)ammoList.get(i);
-			if(--itemStack.stackSize < 0){
+			itemStack.damageItem(1, null);
+			if(itemStack.getMaxDamage() <= itemStack.getItemDamage()){
+				itemStack.stackSize = 0;
 				ammoList.remove(i);
 				continue;
 			}
@@ -73,7 +74,7 @@ public class AmmoManager {
 		
 		ItemStack itemStack;
 		int left = amount;
-		
+		updateAmmoCapacity();
 		if(ammoCapacity < amount)return false;
 		
 		for(int i=0; i<ammoList.size(); i++){
@@ -81,11 +82,13 @@ public class AmmoManager {
 			itemStack = (ItemStack)ammoList.get(i);
 			
 			if(itemStack.getItemDamage() > 0){
-				if(itemStack.stackSize >= left){
+				int cap = itemStack.getMaxDamage() - itemStack.getItemDamage();
+				if(cap >= left){
 					
-					itemStack.stackSize -= left;
+					itemStack.damageItem(left, null);
 					ammoCapacity -= left;
 					if(itemStack.stackSize <= 0){
+						itemStack.stackSize = 0;
 						ammoList.remove(i);
 					}
 					
@@ -94,12 +97,11 @@ public class AmmoManager {
 					
 				} else {
 					
-					left -= itemStack.stackSize;
-					itemStack.stackSize =0;
+					left -= cap;
+					itemStack.stackSize = 0;
 					ammoList.remove(i);
 					
 				}
-				continue;
 			}
 		}
 		
@@ -108,22 +110,25 @@ public class AmmoManager {
 	}
 	
 	public void clearAmmo(EntityPlayer par1Player){
+		
 		for(int i=0;i<ammoList.size();i++){
 			ItemStack item = (ItemStack)ammoList.get(i);
 			item.stackSize = 0;
 		}
+		
 		ammoList.clear();
 		setAmmoInformation(par1Player);
+		
 	}
 	
 	private int getAmmoItemIDByWeapon(ItemStack par1Weapon){
 		
-		/*return (par1Weapon.itemID == CBCMod.cbcItems.weapon_gauss.itemID || 
-				par1Weapon.itemID == CBCMod.cbcItems.weapon_egon.itemID)? CBCMod.cbcItems.itemAmmo_uranium.itemID :
-				((par1Weapon.itemID == CBCMod.cbcItems.weapon_9mmhandgun.itemID ||
-				par1Weapon.itemID == CBCMod.cbcItems.weapon_9mmAR.itemID) ? CBCMod.cbcItems.itemAmmo_9mm.itemID: -1);
-				*/
-		return CBCMod.cbcItems.weapon_9mmhandgun.ammoID;
+		Item item =  (Item) par1Weapon.getItem();
+		if( item instanceof WeaponGeneral ){
+			return ((WeaponGeneral)item).ammoID;
+		}
+		return -1;
+		
 	}
 	
 	
@@ -133,12 +138,13 @@ public class AmmoManager {
 	}
 
 	public void updateAmmoCapacity(){
+		
 		int size = ammoList.size();
 		ItemStack item = null;
-		if(ammoList.size() == 0) {
-			ammoCapacity =0;
+		ammoCapacity = 0;
+		if( size == 0) 
 			return;
-		}
+		
 		for(int i=0;i < size; i++)
 		{
 			item = (ItemStack)ammoList.get(i);
