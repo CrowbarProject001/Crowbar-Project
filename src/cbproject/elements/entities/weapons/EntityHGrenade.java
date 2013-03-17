@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,7 @@ public class EntityHGrenade extends EntityThrowable {
         delay = 60 - par3Fuse;
         time = 0;
         System.out.println("Entity has been inited.");
+        
     }
 
     protected float getGravityVelocity()
@@ -107,6 +109,7 @@ public class EntityHGrenade extends EntityThrowable {
 	}
 	
 	private void Explode(){
+		
 		float var1=2.0F; //TNT的一半
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
@@ -114,34 +117,37 @@ public class EntityHGrenade extends EntityThrowable {
 	    }    
 	    System.out.println("Generated explosion");
 		worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, var1, true);
-		/*
-		AxisAlignedBB par2 = null;
-		par2.minX = posX-3;
-		par2.minY = posY-3;
-		par2.minZ = posZ-3;
-		par2.maxX = posX+3;
-		par2.maxY = posY+3;
-		par2.maxZ = posZ+3;
+		
+		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		System.out.println("Inited AABB.");
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
 		System.out.println("inited list.");
 		if(entitylist.size() > 0){
-			Entity ents[]=(Entity[])entitylist.toArray();
 			for(int i=0;i<entitylist.size();i++){
-				if(!ents[i].isEntityInvulnerable()){
+				Entity ent = (Entity)entitylist.get(i);
+				if(!ent.isEntityInvulnerable() && ent instanceof EntityLiving){
 					int damage = 
 							(int) (Math.pow(
-						( Math.pow(ents[i].posX-posX,2) + 
-					      Math.pow(ents[i].posY-posY,2) + 
-					      Math.pow(ents[i].posZ-posZ,2) ) , 0.33) 
-					     *0.33 * 20) ;
+						( Math.pow(ent.posX-posX,2) + 
+					      Math.pow(ent.posY-posY,2) + 
+					      Math.pow(ent.posZ-posZ,2) ) , 0.33) 
+					     *0.33 * 25) ;
 					System.out.println("Damage is : " + damage);
-					ents[i].attackEntityFrom(DamageSource.explosion , damage);
+					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode){
+						System.out.println("In Creative Mode.");
+						return;
+					}
+					
+					World wr = ent.worldObj;
+					ent.worldObj = this.worldObj;
+					ent.attackEntityFrom(DamageSource.explosion2, damage);
+					ent.worldObj = wr;
+					ent.setFire(40);
 							
 				}
 			}
 		}
-		*/
+		
 		worldObj.playSound(posX,posY,posZ, "cbc.weapons.explode_a", 0.5F, (float) (Math.random() * 0.4F + 0.8F),true);
 		this.setDead();
 	}
@@ -150,7 +156,7 @@ public class EntityHGrenade extends EntityThrowable {
     public void onUpdate()
     {
         super.onUpdate();
-        if(this.ticksExisted >= delay) //该爆炸了=w=
+        if(this.ticksExisted >= delay && this.worldObj.isRemote) //该爆炸了=w=
         {
         		Explode();
         }

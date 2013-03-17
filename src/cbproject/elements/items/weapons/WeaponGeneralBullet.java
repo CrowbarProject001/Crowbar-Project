@@ -10,6 +10,7 @@ import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBulletWeapon;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -133,7 +134,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return;
 		}
 		
-		CBCMod.bulletManager.Shoot( (EntityPlayer) par3Entity , par2World);
+		CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, 5 ,0);
 		par2World.playSoundAtEntity(par3Entity, pathSoundShoot, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 		par1ItemStack.damageItem( 1 , null);
 		
