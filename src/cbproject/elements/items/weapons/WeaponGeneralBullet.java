@@ -43,7 +43,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
     public void onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 
-		if(par2World.isRemote || par1ItemStack.getTagCompound() == null)
+		if( par1ItemStack.getTagCompound() == null )
 			return;
 		int id = par1ItemStack.getTagCompound().getInteger("weaponID");
 		if(id == 0 || id > listItemStack.size())
@@ -52,8 +52,10 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		InformationBulletWeapon information = this.getBulletWpnInformation(id);
 		if( information.signID != par1ItemStack.getTagCompound().getDouble("uniqueID") || information == null)
 			return;
-
-		information.updateTick();
+		
+		if(par2World.isRemote)
+			information.updateTick();
+		
 		int ticksExisted = information.ticksExisted;
 		int lastTick = information.lastTick;
 		
@@ -83,9 +85,13 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return;
 		}
 		
+		
     }
 
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
+    	
+    	if(par2World.isRemote)
+    		return;
     	
     	if(par3Entity instanceof EntityPlayer){
     		System.out.println("Player called reloading.");
@@ -126,6 +132,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     }
     
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
+    	
     	int maxDmg = par1ItemStack.getMaxDamage() -1;
 		if( par1ItemStack.getItemDamage() >= maxDmg ){
 			
@@ -136,10 +143,17 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		
 		CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, 5 ,0);
 		par2World.playSoundAtEntity(par3Entity, pathSoundShoot, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-		par1ItemStack.damageItem( 1 , null);
+		
+		if(par3Entity instanceof EntityPlayer){
+			if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode && par2World.isRemote){
+				par1ItemStack.damageItem( 1 , null);
+			}
+			
+		}
 		
 		information.setLastTick();
 		return;
+		
     }
     
     public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){

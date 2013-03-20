@@ -51,14 +51,13 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
     }
-
+	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
 		//EVENT post
 		//fail:delete entity,setDead
 		int id;
-		
 		if(par1ItemStack.getTagCompound() == null){
 			id = 0;
 			par1ItemStack.stackTagCompound = new NBTTagCompound();

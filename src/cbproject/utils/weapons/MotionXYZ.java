@@ -78,7 +78,7 @@ public class MotionXYZ {
 	}
 		
 	public void updateMotion(double scale){
-		System.out.println("Updated motion once.");
+		//System.out.println("Updated motion once.");
 		posX += motionX * scale;
 		posY += motionY * scale;
 		posZ += motionZ * scale;

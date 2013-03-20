@@ -13,7 +13,7 @@ public class WeaponGeneral extends Item {
 	
 	public WeaponGeneral(int par1, int par2AmmoID) {
 		super(par1);
-		
+		bFull3D = true;
 		listItemStack = new ArrayList();
 		ammoID = par2AmmoID;
 		// TODO Auto-generated constructor stub

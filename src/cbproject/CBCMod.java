@@ -50,6 +50,8 @@ public class CBCMod
 	public static CBCRenderManager renderManager;
 	Config config;
 	
+	public static final int RENDER_TYPE_ITEM_9MMHANDGUN = 502;
+	
 	@Instance("cbc")
 	public static CBCMod CBCMod;
 	@SidedProxy(clientSide="cbproject.proxy.ClientProxy",serverSide="chproject.proxy.Proxy")
