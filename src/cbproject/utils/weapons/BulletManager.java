@@ -33,7 +33,7 @@ public class BulletManager {
 	public void Shoot(EntityLiving par1EntityPlayer, World par2World, int par3damage, int par4offset){
 		
 		if(!par2World.isRemote){
-			System.out.println("World isnt remote,return.");
+			//System.out.println("World isnt remote,return.");
 			return;
 		}
 		motion = new MotionXYZ(par1EntityPlayer, offset);
@@ -43,7 +43,7 @@ public class BulletManager {
 		entityPlayer = par1EntityPlayer;
 		isHit = false;
 		
-		System.out.println("Motion init.");
+		//System.out.println("Motion init.");
 		par2World.spawnParticle("smoke", motion.posX, motion.posY, motion.posZ, motion.motionX, motion.motionY, motion.motionZ);
 
 		//double var1 = motion.motionX +0.1,var2 = motion.motionY + 0.1,var3 = motion.motionZ + 0.1;
@@ -63,7 +63,7 @@ public class BulletManager {
 					motion.posZ -BB_SIZE, motion.posX + BB_SIZE, motion.posY +BB_SIZE, motion.posZ + BB_SIZE);
 			
 		}
-		System.out.println("quitting from here.");
+		//System.out.println("quitting from here.");
 			
 	}
 	
@@ -84,10 +84,8 @@ public class BulletManager {
 				block = (BlockPos)list.get(i);
 				if(isInBlock(motion.posX, motion.posY, motion.posZ, block)){
 					isHit = true;
-					System.out.println("Hitted a block at : " + block.x + " " + block.y + " " + block.z + ", ID : " + block.blockID);
+					//System.out.println("Hitted a block at : " + block.x + " " + block.y + " " + block.z + ", ID : " + block.blockID);
 				}
-				else
-					System.out.println("Passed a block at : " + block.x + " " + block.y + " " + block.z + ", ID : " + block.blockID);
 			}
 			//Particle,sound effect
 		}
@@ -117,7 +115,7 @@ public class BulletManager {
 					continue;
 				isHit = true;
 				
-				System.out.println("Bullet hitted a entity.At : " + ent.posX + " " + ent.posY + " " + ent.posZ);
+				//System.out.println("Bullet hitted a entity.At : " + ent.posX + " " + ent.posY + " " + ent.posZ);
 					World world = ent.worldObj;
 					ent.worldObj = worldObj;
 					ent.attackEntityFrom(DamageSource.explosion2, damage);

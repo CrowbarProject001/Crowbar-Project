@@ -23,6 +23,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	public  int jamTime;
 	public  int shootTime[];
 	
+	World serverReference;
 	public String pathSoundShoot,pathSoundJam,pathSoundReload;
 	
 	/*Local Variables in ItemStack InformationBulletWeapon
@@ -42,7 +43,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5);
 	
     public void onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
-
+    	
 		if( par1ItemStack.getTagCompound() == null )
 			return;
 		int id = par1ItemStack.getTagCompound().getInteger("weaponID");
@@ -54,32 +55,39 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return;
 		
 		if(par2World.isRemote)
-			information.updateTick();
-		
+			information.ticksExisted++;
+		else {
+			serverReference = par2World;
+			return;
+		}
+
 		int ticksExisted = information.ticksExisted;
 		int lastTick = information.lastTick;
 		
 		Boolean isShooting = information.isShooting;
 		Boolean isReloading = information.isReloading;
 		Boolean canUse = information.canUse;
+
+		if(isShooting && canUse && ticksExisted - lastTick >= shootTime[mode] ){
+			
+			this.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
+			return;
+		}
+		if(serverReference == null)
+			return;
 		
 		if(isReloading && !information.rsp){
-			par2World.playSoundAtEntity(par3Entity, pathSoundReload , 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			serverReference.playSoundAtEntity(par3Entity, pathSoundReload , 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			information.rsp = true;
 			return;
 		}
 		
+
 		if( isReloading && ticksExisted - lastTick >= reloadTime ){
-			
 			this.onBulletWpnReload(par1ItemStack, par2World, par3Entity, information);
 			return;
 		}
 		
-		if(isShooting && canUse && ticksExisted - lastTick >= shootTime[mode] ){
-			this.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
-			return;
-		}
-        
 		if( isShooting && !canUse && ticksExisted - lastTick >= jamTime ){
 			this.onBulletWpnJam(par1ItemStack, par2World, par3Entity, information);
 			return;
@@ -90,11 +98,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
     	
-    	if(par2World.isRemote)
-    		return;
-    	
     	if(par3Entity instanceof EntityPlayer){
-    		System.out.println("Player called reloading.");
+    		
     		int dmg = par1ItemStack.getItemDamage();
     		int maxDmg = par1ItemStack.getMaxDamage() -1;
     		if( dmg <= 0){
@@ -121,37 +126,36 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     			information.canUse = false;
 		
     		information.isReloading = false;
-    		information.setLastTick();
+    		information.lastTick = information.ticksExisted;
     		information.rsp = false;
     	} else { 
     		par1ItemStack.setItemDamage( 0 );
-    		System.out.println("Mob called reloading.");
     	}
     	
 		return;
     }
     
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
-    	
+
     	int maxDmg = par1ItemStack.getMaxDamage() -1;
 		if( par1ItemStack.getItemDamage() >= maxDmg ){
 			
 			information.canUse = false;
-			information.setLastTick();
+			information.lastTick = information.ticksExisted;
 			return;
 		}
 		
-		CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, 5 ,0);
-		par2World.playSoundAtEntity(par3Entity, pathSoundShoot, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+    	CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, 5 ,0);
+    	information.setLastTick();
+    		
+    	serverReference.playSoundAtEntity(par3Entity, pathSoundShoot, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));		
+    	if(par3Entity instanceof EntityPlayer){
+    		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode){
+    				par1ItemStack.damageItem( 1 , null);
+    		}
+    	}
+
 		
-		if(par3Entity instanceof EntityPlayer){
-			if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode && par2World.isRemote){
-				par1ItemStack.damageItem( 1 , null);
-			}
-			
-		}
-		
-		information.setLastTick();
 		return;
 		
     }
@@ -163,9 +167,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			information.canUse = true;
 			return;
 		}
-		par2World.playSoundAtEntity(par3Entity, pathSoundJam, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		serverReference.playSoundAtEntity(par3Entity, pathSoundJam, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-		information.setLastTick();
+		information.lastTick = information.ticksExisted;
 		
     }
     

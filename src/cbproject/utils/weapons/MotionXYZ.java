@@ -63,11 +63,11 @@ public class MotionXYZ {
 		for(int i = (int) bound.minX ; i< Math.round(bound.maxX) ; i++){
 			for(int a = (int)bound.minY; a < Math.round(bound.maxY); a++){
 				for(int b= (int)bound.minZ; b< Math.round(bound.maxZ); b++){
-					System.out.println("Attempting at " + i + " " + a + " " + b);
+					//System.out.println("Attempting at " + i + " " + a + " " + b);
 					int id = world.getBlockId(i, a, b);
 					if(id != 0){
 						list.add(new BlockPos(i, a, b, id));
-						System.out.println("Block Get!> <");
+						//System.out.println("Block Get!> <");
 					}
 					
 				}
