@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 public class MotionXYZ {
 	public double motionX,motionY,motionZ;
 	public double posX, posY, posZ;
-	
+	public static final double SCALE = 0.01D;
 	
 	public MotionXYZ(double par1,double par2,double par3, double par4, double par5, double par6) {
 		// TODO Auto-generated constructor stub
@@ -30,7 +30,7 @@ public class MotionXYZ {
 	public MotionXYZ(EntityLiving par1Player, int par2){
 		
 		getPosByPlayer(par1Player);
-		setOffset(par2);
+	
 	}
 	
 	public String toString(){
@@ -47,9 +47,9 @@ public class MotionXYZ {
 	
 	public void setOffset(double par1){
 		
-		this.motionX += (Math.random() - 1) * 2 * par1 ;
-		this.motionY += (Math.random() - 1) * 2 * par1 ;
-		this.motionZ += (Math.random() - 1) * 2 * par1 ;
+		this.motionX += (Math.random() - 1) * 2 * par1 * SCALE ;
+		this.motionY += (Math.random() - 1) * 2 * par1 * SCALE;
+		this.motionZ += (Math.random() - 1) * 2 * par1 * SCALE;
 		
 	}
 	

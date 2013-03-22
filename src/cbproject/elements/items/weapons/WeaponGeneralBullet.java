@@ -19,12 +19,15 @@ import net.minecraft.world.World;
 
 public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
-	public  int reloadTime ;
-	public  int jamTime;
-	public  int shootTime[];
+	public  int reloadTime ; //Time take to reload in tick
+	public  int jamTime; //sound playing gap between jams
+	public  int shootTime[]; //Shoot time gap correspond to mode in WeaponGeneral
+	public  double pushForce[]; //push velocity applied to hit entity
+	public  int damage, offset; //damage and offset(offset: 0-100, larger the wider bullet spray)
+	public  double upLiftRadius, recoverRadius; //player screen uplift radius in degree
 	
 	World serverReference;
-	public String pathSoundShoot,pathSoundJam,pathSoundReload;
+	public String pathSoundShoot[],pathSoundJam[],pathSoundReload[];
 	
 	/*Local Variables in ItemStack InformationBulletWeapon
 	 * 
@@ -38,11 +41,23 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
 	public WeaponGeneralBullet(int par1 , int par2ammoID) {
 		super(par1, par2ammoID);	
+		offset = 0;
+		upLiftRadius = 10;
+		recoverRadius = 2;
+		this.damage = 0;
 	}
 	
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5);
 	
     public void onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+    	
+    	if(par3Entity instanceof EntityPlayer){
+    		
+    		ItemStack held = ((EntityPlayer)par3Entity).getHeldItem();
+    		if(held == null || !held.equals(par1ItemStack))
+    			return;
+    		
+    	}
     	
 		if( par1ItemStack.getTagCompound() == null )
 			return;
@@ -67,8 +82,15 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		Boolean isShooting = information.isShooting;
 		Boolean isReloading = information.isReloading;
 		Boolean canUse = information.canUse;
-
-		if(isShooting && canUse && ticksExisted - lastTick >= shootTime[mode] ){
+		Boolean isRecovering = information.isRecovering;
+		if(isRecovering){
+			par3Entity.rotationPitch += recoverRadius;
+			information.recoverTick++;
+			if(information.recoverTick >= (upLiftRadius / recoverRadius))
+				information.isRecovering = false;
+		}
+			
+		if(isShooting && canUse && ticksExisted - lastTick >= shootTime[mode]){
 			
 			this.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
 			return;
@@ -77,7 +99,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return;
 		
 		if(isReloading && !information.rsp){
-			serverReference.playSoundAtEntity(par3Entity, pathSoundReload , 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			int index = (int) (pathSoundReload.length * Math.random());
+			serverReference.playSoundAtEntity(par3Entity, pathSoundReload[index] , 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 			information.rsp = true;
 			return;
 		}
@@ -145,11 +168,20 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return;
 		}
 		
-    	CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, 5 ,0);
+    	CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage ,offset);
+    	//AddVelocity
     	information.setLastTick();
-    		
-    	serverReference.playSoundAtEntity(par3Entity, pathSoundShoot, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));		
+    	
+    	int index = (int) (pathSoundShoot.length * Math.random());
+    	System.out.println("index: " + index);
+    	serverReference.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
+    	
     	if(par3Entity instanceof EntityPlayer){
+    		if(!information.isRecovering)
+    			information.originPitch = par3Entity.rotationPitch;
+    		par3Entity.rotationPitch -= upLiftRadius;
+    		information.isRecovering = true;
+    		information.recoverTick = 0;
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode){
     				par1ItemStack.damageItem( 1 , null);
     		}
@@ -167,7 +199,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			information.canUse = true;
 			return;
 		}
-		serverReference.playSoundAtEntity(par3Entity, pathSoundJam, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		int index = (int) (pathSoundJam.length * Math.random());
+		serverReference.playSoundAtEntity(par3Entity, pathSoundJam[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
 		information.lastTick = information.ticksExisted;
 		

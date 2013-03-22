@@ -84,7 +84,7 @@ public class BulletManager {
 				block = (BlockPos)list.get(i);
 				if(isInBlock(motion.posX, motion.posY, motion.posZ, block)){
 					isHit = true;
-					//System.out.println("Hitted a block at : " + block.x + " " + block.y + " " + block.z + ", ID : " + block.blockID);
+					System.out.println("Hitted a block at : " + block.x + " " + block.y + " " + block.z + ", ID : " + block.blockID);
 				}
 			}
 			//Particle,sound effect
@@ -115,15 +115,16 @@ public class BulletManager {
 					continue;
 				isHit = true;
 				
-				//System.out.println("Bullet hitted a entity.At : " + ent.posX + " " + ent.posY + " " + ent.posZ);
-					World world = ent.worldObj;
-					ent.worldObj = worldObj;
+					System.out.println("Bullet hitted a entity.At : " + ent.posX + " " + ent.posY + " " + ent.posZ);
+					//World world = ent.worldObj;
+					//ent.worldObj = worldObj;
 					ent.attackEntityFrom(DamageSource.explosion2, damage);
-					ent.worldObj = world;
+					//ent.worldObj = world;
 			}
 			return;
 			
 		}
+		
 		
 	}
 	

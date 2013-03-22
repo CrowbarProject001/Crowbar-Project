@@ -24,7 +24,11 @@ public class CBCSoundEvents {
 		"hksa",
 		"hksb",
 		"hksc",
-		"nmmarr"
+		"nmmarr",
+		"pyt_shota",
+		"pyt_shotb",
+		"pyt_cocka",
+		"pyt_reloada"
 		
 	};
 	

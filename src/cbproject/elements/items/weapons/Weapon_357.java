@@ -1,61 +1,63 @@
 package cbproject.elements.items.weapons;
 
+import cbproject.CBCMod;
+import cbproject.proxy.ClientProxy;
+import cbproject.utils.weapons.InformationBulletWeapon;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cbproject.CBCMod;
-import cbproject.proxy.ClientProxy;
-import cbproject.utils.weapons.InformationBulletWeapon;
 
-public class Weapon_9mmAR extends WeaponGeneralBullet {
-	
-	public Weapon_9mmAR(int par1) {
+public class Weapon_357 extends WeaponGeneralBullet {
+
+	public Weapon_357(int par1) {
 		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID);
-		setIconCoord(3,2);
+		
+		setItemName("weapon_357");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setCreativeTab(CBCMod.cct);
-		setItemName("weapon_9mmar");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(3,2);
+		setIconCoord(4,2);
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
-		setMaxDamage(51); // 最高伤害为18 0a0
+		setMaxDamage(7); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
 		
 		shootTime = new int [1];
-		shootTime[0] = 3;
-		reloadTime = 60;
-		jamTime = 10;
-		
-		this.damage = 3;
-		this.offset = 8;
-		
-		pathSoundShoot = new String[1];
+		pathSoundShoot = new String[2];
 		pathSoundJam = new String[1];
 		pathSoundReload = new String[1];
+		pushForce = new double[1];
 		
-		pathSoundShoot[0] = "cbc.weapons.hksa";
-		pathSoundJam[0] = "cbc.weapons.gunjam_a";
-		pathSoundReload[0] = "cbc.weapons.nmmarr";
+		shootTime[0] = 20; //1.5s
+		jamTime = 20;
+		reloadTime = 100; //3s
 		
-		mode = 0; //子弹+自动
+		this.damage = 7;
+		this.offset = 3;
+		
+		this.upLiftRadius = 50;
+		this.recoverRadius = 7;
+		pushForce[0] = 1;
+		
+		pathSoundShoot[0] = "cbc.weapons.pyt_shota"; pathSoundShoot[1] = "cbc.weapons.pyt_shotb";
+		pathSoundJam[0] = "cbc.weapons.pyt_cocka";
+		pathSoundReload[0] =  "cbc.weapons.pyt_reloada";
+		
+		mode = 0; //低速
 	}
 
 	@Override
-    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+	public void onUpdate(ItemStack par1ItemStack, World par2World,
+			Entity par3Entity, int par4, boolean par5) {
 		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-    }
-
+	}
+	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
 		//EVENT post
 		//fail:delete entity,setDead
 		int id;
-		int maxDmg = par1ItemStack.getMaxDamage() -1;
-		
 		if(par1ItemStack.getTagCompound() == null){
 			id = 0;
 			par1ItemStack.stackTagCompound = new NBTTagCompound();
@@ -74,15 +76,19 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		Boolean isReloading = information.isReloading;
 		
 		if(!canUse && !isReloading){
-			if(par1ItemStack.getItemDamage() < maxDmg)
+			if(par1ItemStack.getItemDamage() < 17)
 				canUse = true;
 			else 
 				isReloading = true;
 		}
 		
-		if(canUse)
+		if(canUse){
 			isShooting = true;
-		
+			if(!par2World.isRemote && information.ticksExisted - information.lastTick >= shootTime[mode]){
+				serverReference = par2World;
+				this.onBulletWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
+			}
+		}
 		information.canUse = canUse;
 		information.isShooting = isShooting;
 		information.isReloading = isReloading;

@@ -8,7 +8,10 @@ public class InformationBulletWeapon {
 	public int ticksExisted, lastTick;
 	public AmmoManager ammoManager;
 	public Boolean canUse, isShooting,isReloading, rsp;
+	public Boolean isRecovering; //枪口上抬视角恢复相关
+	public double originPitch;
 	public double signID;
+	public int recoverTick;
 
 	public InformationBulletWeapon(double par1ID, Boolean par2CanUse, Boolean par3Shooting, Boolean par4Reloading, int par6Tick, EntityPlayer par7Player, ItemStack par8Weapon) {
 		ticksExisted = 0;
@@ -18,6 +21,8 @@ public class InformationBulletWeapon {
 		canUse = par2CanUse;
 		isShooting = par3Shooting;
 		isReloading = par4Reloading;
+		isRecovering = false;
+		recoverTick = 0;
 		ammoManager = new AmmoManager(par7Player, par8Weapon);
 		rsp = false;
 

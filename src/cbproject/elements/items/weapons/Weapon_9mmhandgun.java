@@ -37,10 +37,16 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		shootTime [1]=5;
 		jamTime = 10;
 		reloadTime = 60;
+		this.damage = 3;
+		this.offset = 5;
+		pathSoundShoot = new String[1];
+		pathSoundJam = new String[1];
+		pathSoundReload = new String[1];
 		
-		pathSoundShoot = "cbc.weapons.plgun_c";
-		pathSoundJam = "cbc.weapons.gunjam_a";
-		pathSoundReload = "cbc.weapons.nmmclipa";
+		pathSoundShoot[0] = "cbc.weapons.plgun_c";
+		pathSoundJam[0] = "cbc.weapons.gunjam_a";
+		pathSoundReload[0] =  "cbc.weapons.nmmclipa";
+		
 		
 		mode = 0; //低速
 		
@@ -82,9 +88,13 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 				isReloading = true;
 		}
 		
-		if(canUse)
+		if(canUse){
 			isShooting = true;
-		
+			if(!par2World.isRemote && information.ticksExisted - information.lastTick >= shootTime[mode]){
+				serverReference = par2World;
+				this.onBulletWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
+			}
+		}
 		information.canUse = canUse;
 		information.isShooting = isShooting;
 		information.isReloading = isReloading;
