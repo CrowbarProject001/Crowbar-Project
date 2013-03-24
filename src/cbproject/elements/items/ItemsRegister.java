@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cbproject.elements.items.misc.ItemRefinedIronIngot;
 import cbproject.elements.items.weapons.*;
 
 public class ItemsRegister {
@@ -26,6 +27,11 @@ public class ItemsRegister {
 	public static ItemAmmo_uranium itemAmmo_uranium;
 	public static ItemAmmo_9mm itemAmmo_9mm;
 	public static ItemAmmo_357 itemAmmo_357;
+	public static ItemAmmo_9mm2 itemAmmo_9mm2;
+	public static ItemAmmo_bow itemAmmo_bow;
+	public static ItemAmmo_shotgun itemAmmo_shotgun;
+	
+	public static ItemRefinedIronIngot itemRefinedIronIngot;
 	
 	public ItemsRegister(Config conf){
 		registerItems(conf);
@@ -35,10 +41,16 @@ public class ItemsRegister {
 	public void registerItems(Config conf){
 		//TODO:添加调用config的部分
 		try{
+			
+			itemRefinedIronIngot = new ItemRefinedIronIngot(conf.GetItemID("itemRefinedIronIngot",7100));
+			
 			itemAmmo_uranium = new ItemAmmo_uranium(conf.GetItemID("itemAmmo_uranium", 7200));
 			itemAmmo_9mm = new ItemAmmo_9mm(conf.GetItemID("itemAmmo_9mm", 7201));
-			itemAmmo_357 = new ItemAmmo_357(conf.GetItemID("itemAmmo_357", 7202));
-		
+			itemAmmo_9mm2 = new ItemAmmo_9mm2(conf.GetItemID("itemAmmo_9mm2", 7202));
+			itemAmmo_357 = new ItemAmmo_357(conf.GetItemID("itemAmmo_357", 7203));
+			itemAmmo_bow = new ItemAmmo_bow(conf.GetItemID("itemAmmo_bow", 7204));
+			itemAmmo_shotgun = new ItemAmmo_shotgun(conf.GetItemID("itemAmmo_shotgun", 7205));
+			
 			weapon_crowbar = new Weapon_crowbar(conf.GetItemID("weapon_crowbar", 7000));
 			weapon_hgrenade = new Weapon_hgrenade(conf.GetItemID("weapon_hgrenade", 7001));
 			weapon_9mmhandgun = new Weapon_9mmhandgun(conf.GetItemID("weapon_9mmhandgun", 7202));
@@ -46,15 +58,19 @@ public class ItemsRegister {
 			weapon_357 = new Weapon_357(conf.GetItemID("weapon_357", 7004));
 			weapon_shotgun = new Weapon_shotgun(conf.GetItemID("weapon_shotgun", 7005));
 			weapon_RPG = new Weapon_RPG(conf.GetItemID("weapon_RPG", 7006));
-			weapon_crossbow = new Weapon_crossbow(conf.GetItemID("weapon_crowbar", 7007));
+			weapon_crossbow = new Weapon_crossbow(conf.GetItemID("weapon_crowbar", 7007));	
+			
 		} catch(Exception e){
-			System.err.println("Error when loading itemIDs from config . " +e );
+			System.err.println("Error when loading itemIDs from config . " + e );
 		}
 		
 		LanguageRegistry.addName(itemAmmo_9mm, "9mm Ammo");
-		LanguageRegistry.addName(weapon_9mmAR, "9mmAR");
 		LanguageRegistry.addName(itemAmmo_uranium , "Uranium Ammo");
+		LanguageRegistry.addName(itemAmmo_9mm2, "9mmAR Ammo");
+		LanguageRegistry.addName(itemAmmo_bow,"Crossbow Ammo");
+		LanguageRegistry.addName(itemAmmo_shotgun, "Shotgun Ammo");
 		
+		LanguageRegistry.addName(weapon_9mmAR, "9mmAR");
         LanguageRegistry.addName(weapon_crowbar, "Crowbar");
         LanguageRegistry.addName(weapon_hgrenade, "Hand Grenade");
         LanguageRegistry.addName(weapon_9mmhandgun , "9mm Handgun");
@@ -63,6 +79,8 @@ public class ItemsRegister {
         LanguageRegistry.addName(weapon_RPG, "RPG Rocket Launcher");
         LanguageRegistry.addName(weapon_crossbow, "High Heat Crossbow");
         
+        LanguageRegistry.addName(itemRefinedIronIngot, "Refined Iron Ingot");
+        
         //合成表：撬棍
         ItemStack rosereddyeStack = new ItemStack(351,1,0);
         ItemStack ingotIronStack = new ItemStack(Item.ingotIron);
@@ -70,6 +88,8 @@ public class ItemsRegister {
         ModLoader.addShapelessRecipe(crowbarStack, rosereddyeStack);
         GameRegistry.addShapelessRecipe(crowbarStack, rosereddyeStack,ingotIronStack);
         //End Crowbar
+
+        ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(itemRefinedIronIngot.itemID,1,0) );
         
         
 		return;

@@ -171,7 +171,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     	CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage ,offset);
     	//AddVelocity
     	information.setLastTick();
-    	
     	int index = (int) (pathSoundShoot.length * Math.random());
     	System.out.println("index: " + index);
     	serverReference.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	

@@ -71,12 +71,12 @@ public class CBCMod
 	
 	@Init
 	public void init(FMLInitializationEvent Init){
-		Proxy.init();
+		
 		//以下是物品的注册（武器统一封装到cbcWeapons)
 		cbcItems=new ItemsRegister(config);
 		cbcBlocks = new BlocksRegister(config);
 		bulletManager = new BulletManager();
-		
+		Proxy.init();
 		Block test_block = new Test_Block(531,Material.anvil);
 		Item test_item = new Test_Item(10000);
 		
