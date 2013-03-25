@@ -11,7 +11,7 @@ public class ItemAmmo_9mm extends ItemAmmo {
 		setCreativeTab( CBCMod.cct );
 		setItemName("ammo_9mm");
 		setIconCoord(1,1);
-		setMaxDamage(17);
+		setMaxDamage(18);
 		setMaxStackSize (1);
 	}
 

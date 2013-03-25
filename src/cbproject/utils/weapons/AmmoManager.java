@@ -13,6 +13,7 @@ import net.minecraft.item.*;
 public class AmmoManager {
 	
 	//type:0 Bullet Weapon ; 1 Energy Weapon
+	//Stacksize=1:Damage型；StackSize>1:stack型
 	public int type;
 	
 	public ItemStack Weapon;
@@ -52,82 +53,79 @@ public class AmmoManager {
 		
 	}
 	
-	//消耗一颗子弹
-	public Boolean consumeAmmo(){
-		ItemStack itemStack;
-		for(int i=0; i<ammoList.size(); i++){
-			
-			itemStack = (ItemStack)ammoList.get(i);
-			itemStack.damageItem(1, null);
-			if(itemStack.getMaxDamage() <= itemStack.getItemDamage()){
-				itemStack.stackSize = 0;
-				ammoList.remove(i);
-				continue;
-			}
-			return true;
-		}
-		updateAmmoCapacity();
-		return false;
-	}
-	
 	public Boolean consumeAmmo(int amount){
 		
 		ItemStack itemStack;
 		int left = amount;
 		updateAmmoCapacity();
 		if(ammoCapacity < amount)return false;
-		
-		for(int i=0; i<ammoList.size(); i++){
+		if(((ItemStack)ammoList.get(0)).getMaxStackSize() == 1){
+			System.out.println("Normal Processing");
+			for(int i=0; i<ammoList.size(); i++){
+				System.out.println("left1: " + left);
+				itemStack = (ItemStack)ammoList.get(i);
+				int cap = itemStack.getMaxDamage() - itemStack.getItemDamage() -1;
+				if(cap >0){
+					if(cap >= left){
+					
+						itemStack.damageItem(left, null);
+						ammoCapacity -= left;
+						return true;
+					
+					}			
+					left -= cap;
+					
+					itemStack.damageItem(cap, null);
+				} 
+			}
 			
-			itemStack = (ItemStack)ammoList.get(i);
+		} else {
 			
-			if(itemStack.getItemDamage() > 0){
-				int cap = itemStack.getMaxDamage() - itemStack.getItemDamage();
-				if(cap >= left){
+			for(int i=0; i<ammoList.size(); i++){
+				itemStack = (ItemStack)ammoList.get(i);
+				if(itemStack.stackSize > 0){
+					int cap = itemStack.stackSize;
+					if(cap >= left){
 					
-					itemStack.damageItem(left, null);
-					ammoCapacity -= left;
-					if(itemStack.stackSize <= 0){
-						itemStack.stackSize = 0;
-						ammoList.remove(i);
-					}
+						itemStack.stackSize -= left;
+						ammoCapacity -= left;
+						return true;
 					
-					updateAmmoCapacity();
-					return true;
-					
-				} else {
-					
+					}			
 					left -= cap;
 					itemStack.stackSize = 0;
+				} else
 					ammoList.remove(i);
-					
-				}
 			}
+			
 		}
-		
+		System.out.println("It wasnt suppose to happen!");
 		updateAmmoCapacity();
 		return false; //should never happen
 	}
 	
 	public void clearAmmo(EntityPlayer par1Player){
 		
-		for(int i=0;i<ammoList.size();i++){
-			ItemStack item = (ItemStack)ammoList.get(i);
-			item.stackSize = 0;
+		if(ammoList.size() == 0 || ((ItemStack)ammoList.get(0)).getMaxStackSize() == 1){
+			for(int i=0;i<ammoList.size();i++){
+				ItemStack item = (ItemStack)ammoList.get(i);
+				item.setItemDamage(item.getMaxDamage() -1);
+			}
+		} else {
+			for(int i=0; i<ammoList.size(); i++){
+				ItemStack item = (ItemStack)ammoList.get(i);
+				item.stackSize = 0;
+			}
 		}
-		
 		ammoList.clear();
 		setAmmoInformation(par1Player);
 		
 	}
 	
 	private int getAmmoItemIDByWeapon(ItemStack par1Weapon){
-		
-		Item item =  (Item) par1Weapon.getItem();
-		if( item instanceof WeaponGeneral ){
-			return ((WeaponGeneral)item).ammoID;
-		}
-		return -1;
+	
+		WeaponGeneral item =  (WeaponGeneral) par1Weapon.getItem();
+		return item.ammoID;
 		
 	}
 	
@@ -148,9 +146,14 @@ public class AmmoManager {
 		for(int i=0;i < size; i++)
 		{
 			item = (ItemStack)ammoList.get(i);
-			int a = item.getMaxDamage() - item.getItemDamage();
-			System.out.println("Cur ammo cap : " + a);
-			ammoCapacity += a;
+			if(item.getMaxStackSize() == 1){
+				int a = item.getMaxDamage() - item.getItemDamage() -1; 
+				ammoCapacity += a;
+			} else {
+				int a = item.stackSize;
+				ammoCapacity += a;
+			}
 		}
+		System.out.println("Updated Ammo Cap: " + ammoCapacity);
 	}
 }

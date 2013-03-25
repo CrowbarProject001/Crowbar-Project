@@ -28,7 +28,17 @@ public class CBCSoundEvents {
 		"pyt_shota",
 		"pyt_shotb",
 		"pyt_cocka",
-		"pyt_reloada"
+		"pyt_reloada",
+		"sbarrela",
+		"scocka",
+		"cbar_hita",
+		"cbar_hitb",
+		"cbar_hitboda",
+		"cbar_hitbodb",
+		"cbar_hitbodc",
+		"reloada",
+		"reloadb",
+		"reloadc"
 		
 	};
 	

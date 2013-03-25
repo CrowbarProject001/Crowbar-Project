@@ -49,6 +49,67 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5);
 	
+	@Override
+    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
+	{
+		
+		int id = par1ItemStack.getTagCompound().getInteger("weaponID");
+		if(id == 0 || id > listItemStack.size())
+			return;
+		id--;
+		InformationBulletWeapon information = getBulletWpnInformation(id);
+		if( information == null)
+			return;
+		information.isShooting = false;
+
+	}
+	
+	public InformationBulletWeapon loadInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer){
+		
+		int id;
+		if(par1ItemStack.getTagCompound() == null){
+			id = 0;
+			par1ItemStack.stackTagCompound = new NBTTagCompound();
+		} else {
+			id = par1ItemStack.getTagCompound().getInteger("weaponID");
+		}
+		
+		InformationBulletWeapon information = getBulletWpnInformation(par1ItemStack);
+		if( null == information ){
+			id = addBulletWpnInformation(information, par1ItemStack, par2EntityPlayer);
+			information = getBulletWpnInformation(id);
+		}
+		return information;
+		
+	}
+	
+	public void processRightClick(InformationBulletWeapon information, ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
+		
+		Boolean canUse = information.canUse;
+		Boolean isShooting = information.isShooting;
+		Boolean isReloading = information.isReloading;
+		
+		if(!canUse && !isReloading){
+			if(par1ItemStack.getItemDamage() < getMaxDamage() -1)
+				canUse = true;
+			else 
+				isReloading = true;
+		}
+		
+		if(canUse){
+			isShooting = true;
+			if(!par2World.isRemote && information.ticksExisted - information.lastTick >= shootTime[mode]){
+				serverReference = par2World;
+				this.onBulletWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
+			}
+		}
+		information.canUse = canUse;
+		information.isShooting = isShooting;
+		information.isReloading = isReloading;
+		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
+		
+	}
+	
     public void onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
     	
     	if(par3Entity instanceof EntityPlayer){
@@ -140,9 +201,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     			information.ammoManager.clearAmmo( (EntityPlayer)par3Entity );
 				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - cap);
     		} else {
-    			information.ammoManager.consumeAmmo( dmg );
-    			cap -= dmg;
-    			par1ItemStack.setItemDamage( 0 );
+    			if( information.ammoManager.consumeAmmo(dmg) )
+    				par1ItemStack.setItemDamage( 0 );
     		}
 		
     		if( par1ItemStack.getItemDamage() >=maxDmg )

@@ -2,6 +2,7 @@ package cbproject.elements.items;
 
 import cbproject.configure.Config;
 import cbproject.elements.items.ammos.*;
+import cbproject.elements.items.bullets.ItemBullet_Shotgun;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
@@ -29,8 +30,9 @@ public class ItemsRegister {
 	public static ItemAmmo_357 itemAmmo_357;
 	public static ItemAmmo_9mm2 itemAmmo_9mm2;
 	public static ItemAmmo_bow itemAmmo_bow;
-	public static ItemAmmo_shotgun itemAmmo_shotgun;
 	
+	public static ItemBullet_Shotgun itemBullet_Shotgun;
+
 	public static ItemRefinedIronIngot itemRefinedIronIngot;
 	
 	public ItemsRegister(Config conf){
@@ -49,8 +51,9 @@ public class ItemsRegister {
 			itemAmmo_9mm2 = new ItemAmmo_9mm2(conf.GetItemID("itemAmmo_9mm2", 7202));
 			itemAmmo_357 = new ItemAmmo_357(conf.GetItemID("itemAmmo_357", 7203));
 			itemAmmo_bow = new ItemAmmo_bow(conf.GetItemID("itemAmmo_bow", 7204));
-			itemAmmo_shotgun = new ItemAmmo_shotgun(conf.GetItemID("itemAmmo_shotgun", 7205));
 			
+			itemBullet_Shotgun = new ItemBullet_Shotgun(conf.GetItemID("itemBullet_Shotgun", 7250));
+	
 			weapon_crowbar = new Weapon_crowbar(conf.GetItemID("weapon_crowbar", 7000));
 			weapon_hgrenade = new Weapon_hgrenade(conf.GetItemID("weapon_hgrenade", 7001));
 			weapon_9mmhandgun = new Weapon_9mmhandgun(conf.GetItemID("weapon_9mmhandgun", 7202));
@@ -60,15 +63,18 @@ public class ItemsRegister {
 			weapon_RPG = new Weapon_RPG(conf.GetItemID("weapon_RPG", 7006));
 			weapon_crossbow = new Weapon_crossbow(conf.GetItemID("weapon_crowbar", 7007));	
 			
+			
+			
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
 		
-		LanguageRegistry.addName(itemAmmo_9mm, "9mm Ammo");
+		LanguageRegistry.addName(itemAmmo_9mm, "9mm Handgun Clip");
 		LanguageRegistry.addName(itemAmmo_uranium , "Uranium Ammo");
-		LanguageRegistry.addName(itemAmmo_9mm2, "9mmAR Ammo");
-		LanguageRegistry.addName(itemAmmo_bow,"Crossbow Ammo");
-		LanguageRegistry.addName(itemAmmo_shotgun, "Shotgun Ammo");
+		LanguageRegistry.addName(itemAmmo_9mm2, "9mmAR Clip");
+		LanguageRegistry.addName(itemAmmo_bow,"Crossbow Clip");
+
+		LanguageRegistry.addName(itemBullet_Shotgun,"Shotgun Ammo");
 		
 		LanguageRegistry.addName(weapon_9mmAR, "9mmAR");
         LanguageRegistry.addName(weapon_crowbar, "Crowbar");
