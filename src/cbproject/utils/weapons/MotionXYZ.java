@@ -30,6 +30,7 @@ public class MotionXYZ {
 	public MotionXYZ(EntityLiving par1Player, int par2){
 		
 		getPosByPlayer(par1Player);
+		setOffset(par2);
 	
 	}
 	

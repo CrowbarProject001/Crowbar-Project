@@ -10,6 +10,7 @@ package cbproject;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.src.ModLoader;
@@ -21,9 +22,12 @@ import cbproject.elements.events.process.weapons.HGrenadePinEvent;
 import cbproject.elements.items.ItemsRegister;
 import cbproject.elements.items.Test_Item;
 import cbproject.elements.renderers.CBCRenderManager;
+import cbproject.misc.CBCBindingRegistry;
 import cbproject.misc.CBCSoundEvents;
 import cbproject.misc.CCT;
 import cbproject.utils.weapons.BulletManager;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
+import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -45,6 +49,7 @@ public class CBCMod
 	public static ItemsRegister cbcItems;
 	public static BlocksRegister cbcBlocks;
 	public static BulletManager bulletManager;
+	public static CBCBindingRegistry bindingRegistry;
 	
 	public static CreativeTabs cct = new CCT("CBCMod");
 	public static CBCRenderManager renderManager;
@@ -80,7 +85,9 @@ public class CBCMod
 		Block test_block = new Test_Block(531,Material.anvil);
 		Item test_item = new Test_Item(10000);
 		
-        
+		KeyBinding keyBindings[] = {new KeyBinding("Test Key", 48)};
+		bindingRegistry = new CBCBindingRegistry(keyBindings);
+		KeyBindingRegistry.registerKeyBinding(bindingRegistry);
 		//方块的注册
         //		ModLoader.addName(test_block , "Test_Block");
 		LanguageRegistry.addName(test_block,"Test Block");

@@ -9,6 +9,7 @@ import cbproject.elements.items.weapons.Weapon_egon;
 import cbproject.elements.items.weapons.Weapon_gauss;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class AmmoManager {
 	
@@ -87,13 +88,19 @@ public class AmmoManager {
 					int cap = itemStack.stackSize;
 					if(cap >= left){
 					
-						itemStack.stackSize -= left;
+						itemStack.splitStack(left);
+						if(!itemStack.hasTagCompound())
+							itemStack.stackTagCompound = new NBTTagCompound();
+						itemStack.getTagCompound().setInteger("Count", itemStack.stackSize);
 						ammoCapacity -= left;
 						return true;
 					
 					}			
 					left -= cap;
-					itemStack.stackSize = 0;
+					itemStack.splitStack(itemStack.stackSize);
+					if(!itemStack.hasTagCompound())
+						itemStack.stackTagCompound = new NBTTagCompound();
+					itemStack.getTagCompound().setInteger("Count", itemStack.stackSize);
 				} else
 					ammoList.remove(i);
 			}
@@ -114,7 +121,10 @@ public class AmmoManager {
 		} else {
 			for(int i=0; i<ammoList.size(); i++){
 				ItemStack item = (ItemStack)ammoList.get(i);
-				item.stackSize = 0;
+				item.splitStack(item.stackSize);
+				if(!item.hasTagCompound())
+					item.stackTagCompound = new NBTTagCompound();
+				item.getTagCompound().setInteger("Count", item.stackSize);
 			}
 		}
 		ammoList.clear();

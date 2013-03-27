@@ -25,6 +25,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	public  double pushForce[]; //push velocity applied to hit entity
 	public  int damage, offset; //damage and offset(offset: 0-100, larger the wider bullet spray)
 	public  double upLiftRadius, recoverRadius; //player screen uplift radius in degree
+	public  double addVelRadius; //Velocity radius add to the mob hitted;
 	
 	World serverReference;
 	public String pathSoundShoot[],pathSoundJam[],pathSoundReload[];
@@ -44,6 +45,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		offset = 0;
 		upLiftRadius = 10;
 		recoverRadius = 2;
+		addVelRadius = 0;
 		this.damage = 0;
 	}
 	
@@ -205,9 +207,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     				par1ItemStack.setItemDamage( 0 );
     		}
 		
-    		if( par1ItemStack.getItemDamage() >=maxDmg )
-    			information.canUse = false;
-		
     		information.isReloading = false;
     		information.lastTick = information.ticksExisted;
     		information.rsp = false;
@@ -228,11 +227,10 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return;
 		}
 		
-    	CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage ,offset);
+    	CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage ,offset, addVelRadius);
     	//AddVelocity
     	information.setLastTick();
     	int index = (int) (pathSoundShoot.length * Math.random());
-    	System.out.println("index: " + index);
     	serverReference.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
     	
     	if(par3Entity instanceof EntityPlayer){
