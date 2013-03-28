@@ -85,9 +85,9 @@ public class CBCMod
 		Block test_block = new Test_Block(531,Material.anvil);
 		Item test_item = new Test_Item(10000);
 		
-		KeyBinding keyBindings[] = {new KeyBinding("Test Key", 48)};
-		bindingRegistry = new CBCBindingRegistry(keyBindings);
+		bindingRegistry = new CBCBindingRegistry();
 		KeyBindingRegistry.registerKeyBinding(bindingRegistry);
+		
 		//方块的注册
         //		ModLoader.addName(test_block , "Test_Block");
 		LanguageRegistry.addName(test_block,"Test Block");

@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.InformationBulletWeapon;
+import cbproject.utils.weapons.InformationSet;
 
 
 public class Weapon_9mmhandgun extends WeaponGeneralBullet {
@@ -62,8 +63,10 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
 
-		InformationBulletWeapon information = loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(information, par1ItemStack, par2World, par3EntityPlayer);
+		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
+		processRightClick(( par2World.isRemote? inf.getClientAsBullet() : inf.getServerAsBullet() ), 
+				par1ItemStack, par2World, par3EntityPlayer);
+
 		return par1ItemStack;
     }
 	

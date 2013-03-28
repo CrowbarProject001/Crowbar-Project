@@ -3,6 +3,7 @@ package cbproject.elements.items.weapons;
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.InformationBulletWeapon;
+import cbproject.utils.weapons.InformationSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,10 +59,11 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
+		
+		InformationSet inf = loadInformation(par1ItemStack, par3EntityPlayer);
+		processRightClick( inf.getProperBullet(par2World), par1ItemStack, par2World, par3EntityPlayer);
 
-		InformationBulletWeapon information = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(information, par1ItemStack, par2World, par3EntityPlayer);
-		information.rsp = true;
+		inf.getProperBullet(par2World).rsp = true;
 		return par1ItemStack;
 		
     }
@@ -81,6 +83,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	@Override
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
     	int var1 = 10; //上弹时间
+
     	if(par3Entity instanceof EntityPlayer){
     		
     		int dmg = par1ItemStack.getItemDamage();
@@ -97,10 +100,10 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     		int ticksPassed = information.ticksExisted - information.lastTick;
     		if( ticksPassed >= var1){
     			if( cap > 0 ){
-        			information.ammoManager.consumeAmmo(1);
+        			information.ammoManager.consumeAmmo(1, (EntityPlayer)par3Entity);
     				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - 1);
     		    	int index = (int) (pathSoundReload.length * Math.random());
-    		    	serverReference.playSoundAtEntity(par3Entity, pathSoundReload[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
+    		    	par2World.playSoundAtEntity(par3Entity, pathSoundReload[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
         		} else 
         			information.isReloading = false;
     			
@@ -115,6 +118,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     
 	@Override
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
+
 		int var1 = (mode == 0)? 15 : 25;
     	int maxDmg = par1ItemStack.getMaxDamage() -1;
 		if( par1ItemStack.getItemDamage() >= maxDmg ){
@@ -128,7 +132,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
     	information.setLastTick();
     	int index = (int) (pathSoundShoot.length * Math.random());
-    	serverReference.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
+    	par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
     	
     	if(par3Entity instanceof EntityPlayer){
     		if(!information.isRecovering)

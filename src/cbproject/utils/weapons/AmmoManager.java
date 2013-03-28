@@ -16,7 +16,7 @@ public class AmmoManager {
 	//type:0 Bullet Weapon ; 1 Energy Weapon
 	//Stacksize=1:Damage型；StackSize>1:stack型
 	public int type;
-	
+	public EntityPlayer player;
 	public ItemStack Weapon;
 	public List ammoList;
 	public int ammoItemID;
@@ -27,9 +27,10 @@ public class AmmoManager {
 		// TODO Auto-generated constructor stub
 		//type = ( par2Weapon.itemID == CBCMod.cbcItems.weapon_gauss.itemID || 
 		//		par2Weapon.itemID == CBCMod.cbcItems.weapon_egon.itemID) ? 1 : 0 ;
-		type = 1;
+		WeaponGeneral wpn = (WeaponGeneral)par2Weapon.getItem();
+		type = wpn.type;
 		ammoList = new ArrayList();
-		
+		player = par1Player;
 		Weapon = par2Weapon;
 		ammoItemID = getAmmoItemIDByWeapon(par2Weapon);
 		setAmmoInformation(par1Player);
@@ -37,33 +38,17 @@ public class AmmoManager {
 		
 	}
 	
-	public void setAmmoInformation(EntityPlayer par1Player){
-		
-		ItemStack itemStack;
-		ammoList.clear();
-		//遍历寻找对应的Ammo
-		for( int i=0; i<36; i++){
-			itemStack = par1Player.inventory.getStackInSlot(i);
-			
-			if( itemStack != null && itemStack.itemID == ammoItemID) {
-				ammoList.add(itemStack);
-			}
-			
-		}
-		updateAmmoCapacity();
-		
-	}
+
 	
-	public Boolean consumeAmmo(int amount){
+	public Boolean consumeAmmo(int amount, EntityPlayer par1Player){
 		
 		ItemStack itemStack;
 		int left = amount;
 		updateAmmoCapacity();
+		player =  par1Player;
 		if(ammoCapacity < amount)return false;
 		if(((ItemStack)ammoList.get(0)).getMaxStackSize() == 1){
-			System.out.println("Normal Processing");
 			for(int i=0; i<ammoList.size(); i++){
-				System.out.println("left1: " + left);
 				itemStack = (ItemStack)ammoList.get(i);
 				int cap = itemStack.getMaxDamage() - itemStack.getItemDamage() -1;
 				if(cap >0){
@@ -81,57 +66,63 @@ public class AmmoManager {
 			}
 			
 		} else {
-			
-			for(int i=0; i<ammoList.size(); i++){
-				itemStack = (ItemStack)ammoList.get(i);
-				if(itemStack.stackSize > 0){
-					int cap = itemStack.stackSize;
-					if(cap >= left){
-					
-						itemStack.splitStack(left);
-						if(!itemStack.hasTagCompound())
-							itemStack.stackTagCompound = new NBTTagCompound();
-						itemStack.getTagCompound().setInteger("Count", itemStack.stackSize);
-						ammoCapacity -= left;
-						return true;
-					
-					}			
-					left -= cap;
-					itemStack.splitStack(itemStack.stackSize);
-					if(!itemStack.hasTagCompound())
-						itemStack.stackTagCompound = new NBTTagCompound();
-					itemStack.getTagCompound().setInteger("Count", itemStack.stackSize);
-				} else
-					ammoList.remove(i);
-			}
-			
+				for( ; left>0; left--){
+						if(!player.inventory.consumeInventoryItem(ammoItemID)){
+							updateAmmoCapacity();
+							return true;
+						}
+						else ammoCapacity--;
+				}
+				return true;	
 		}
+		
 		System.out.println("It wasnt suppose to happen!");
-		updateAmmoCapacity();
 		return false; //should never happen
+	}
+	
+	public int getAmmoCapacity(){
+		updateAmmoCapacity();
+		return ammoCapacity;
 	}
 	
 	public void clearAmmo(EntityPlayer par1Player){
 		
 		if(ammoList.size() == 0 || ((ItemStack)ammoList.get(0)).getMaxStackSize() == 1){
+			
 			for(int i=0;i<ammoList.size();i++){
 				ItemStack item = (ItemStack)ammoList.get(i);
 				item.setItemDamage(item.getMaxDamage() -1);
 			}
+			
 		} else {
-			for(int i=0; i<ammoList.size(); i++){
-				ItemStack item = (ItemStack)ammoList.get(i);
-				item.splitStack(item.stackSize);
-				if(!item.hasTagCompound())
-					item.stackTagCompound = new NBTTagCompound();
-				item.getTagCompound().setInteger("Count", item.stackSize);
-			}
+			
+			updateAmmoCapacity();
+			for(int i=0; i < ammoCapacity; i++)
+				player.inventory.consumeInventoryItem(ammoItemID);
+			
 		}
 		ammoList.clear();
 		setAmmoInformation(par1Player);
 		
 	}
 	
+	public void setAmmoInformation(EntityPlayer par1Player){
+		
+		ItemStack itemStack;
+		ammoList.clear();
+		//遍历寻找对应的Ammo
+		for( int i=0; i<36; i++){
+			itemStack = par1Player.inventory.getStackInSlot(i);
+			if( itemStack != null && itemStack.itemID == ammoItemID) {
+				ammoList.add(itemStack);
+			}
+			
+		}
+		updateAmmoCapacity();
+		
+	}
+	
+
 	private int getAmmoItemIDByWeapon(ItemStack par1Weapon){
 	
 		WeaponGeneral item =  (WeaponGeneral) par1Weapon.getItem();
@@ -139,13 +130,8 @@ public class AmmoManager {
 		
 	}
 	
-	
-	public int getAmmoCapacity(){
-		updateAmmoCapacity();
-		return ammoCapacity;
-	}
 
-	public void updateAmmoCapacity(){
+	private void updateAmmoCapacity(){
 		
 		int size = ammoList.size();
 		ItemStack item = null;
@@ -164,6 +150,6 @@ public class AmmoManager {
 				ammoCapacity += a;
 			}
 		}
-		System.out.println("Updated Ammo Cap: " + ammoCapacity);
+
 	}
 }
