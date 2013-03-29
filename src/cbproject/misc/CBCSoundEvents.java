@@ -38,7 +38,10 @@ public class CBCSoundEvents {
 		"cbar_hitbodc",
 		"reloada",
 		"reloadb",
-		"reloadc"
+		"reloadc",
+		"gaussb",
+		"gauss_chargea",
+		"gauss_chargeb"
 		
 	};
 	

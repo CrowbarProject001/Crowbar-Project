@@ -9,7 +9,7 @@ import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 
 public class CBCBindingRegistry extends KeyHandler{
-	public static final KeyBinding KEY_BINDS[] ={ new KeyBinding("Test",Keyboard.KEY_B)
+	public static final KeyBinding KEY_BINDS[] ={ new KeyBinding("Test",Keyboard.KEY_RCONTROL)
 		};
 	public static final boolean IS_REPEATS[] = { false 
 		};
@@ -41,6 +41,12 @@ public class CBCBindingRegistry extends KeyHandler{
 			boolean tickEnd, boolean isRepeat) {
 		// TODO Auto-generated method stub
 		System.out.println("Key Down.");
+		switch(kb.keyCode){
+		case Keyboard.KEY_RCONTROL:
+			
+		default:
+			return;
+		}
 		
 	}
 

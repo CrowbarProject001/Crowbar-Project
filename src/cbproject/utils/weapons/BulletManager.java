@@ -31,11 +31,6 @@ public class BulletManager {
 		EntityLiving entityPlayer;
 		int damage, offset;
 		
-		if(!par2World.isRemote){
-			//System.out.println("World isnt remote,return.");
-			return;
-		}
-		
 		motion = new MotionXYZ(par1EntityPlayer, par4offset);
 		worldObj = par2World;
 		damage = par3damage;

@@ -2,7 +2,7 @@ package cbproject.elements.items.weapons;
 
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
-import cbproject.utils.weapons.InformationBulletWeapon;
+import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -15,7 +15,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	public Weapon_shotgun(int par1) {
 		
-		super(par1 , CBCMod.cbcItems.itemBullet_Shotgun.itemID);
+		super(par1 , CBCMod.cbcItems.itemBullet_Shotgun.itemID, 2);
 		
 		setItemName("weapon_shotgun");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
@@ -25,29 +25,25 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		setMaxDamage(9); 
 		setNoRepair(); //不可修补
 		
-		shootTime = new int [2];
-		shootTime[0] = 10;
-		shootTime [1]= 20;
-		jamTime = 10;
-		reloadTime = 7;
-		this.damage = 7;
-		this.offset = 0;
+		String[] shoot  = { "cbc.weapons.sbarrela", "cbc.weapons.sbarrela"};
+		String[] reload = { "cbc.weapons.reloada", "cbc.weapons.reloadb", "cbc.weapons.reloadc" };
+		String[] jam = { "cbc.weapons.scocka" , "cbc.weapons.scocka"};
+		int shootTime[] = {20, 35}, dmg[] = { 7, 7}, off[] = { 10, 20};
+		double push[] = {2, 4};
 		
-		upLiftRadius = 30;
-		recoverRadius = 5;
+		setPathShoot(shoot);
+		setPathJam(jam);
+		setPathReload(reload);
 		
-		pathSoundShoot = new String[1];
-		pathSoundJam = new String[1];
-		pathSoundReload = new String[3];
+		setShootTime(shootTime);
+		setReloadTime(7);
+		setJamTime(10);
 		
-		pathSoundShoot[0] = "cbc.weapons.sbarrela";
-		pathSoundJam[0] = "cbc.weapons.scocka";
-		pathSoundReload[0] =  "cbc.weapons.reloada";
-		pathSoundReload[1] = "cbc.weapons.reloadb";
-		pathSoundReload[2] = "cbc.weapons.reloadc";
+		setPushForce(push);
+		setDamage(dmg);
+		setOffset(off);
 		
-		
-		mode = 0; //低速
+		this.setLiftProps(30, 5);
 	}
 
 	@Override
@@ -63,7 +59,6 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		InformationSet inf = loadInformation(par1ItemStack, par3EntityPlayer);
 		processRightClick( inf.getProperBullet(par2World), par1ItemStack, par2World, par3EntityPlayer);
 
-		inf.getProperBullet(par2World).rsp = true;
 		return par1ItemStack;
 		
     }
@@ -81,7 +76,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     }
 
 	@Override
-    public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
+    public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
     	int var1 = 10; //上弹时间
 
     	if(par3Entity instanceof EntityPlayer){
@@ -91,7 +86,6 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     		if( dmg <= 0){
     			information.setLastTick();
     			information.isReloading = false;
-    			information.canUse = true;
     			return;
     		}
     		
@@ -117,18 +111,17 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     }
     
 	@Override
-    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBulletWeapon information ){
+    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
 
-		int var1 = (mode == 0)? 15 : 25;
     	int maxDmg = par1ItemStack.getMaxDamage() -1;
 		if( par1ItemStack.getItemDamage() >= maxDmg ){
-			
-			information.canUse = false;
 			information.lastTick = information.ticksExisted;
 			return;
 		}
+		
+		int mode = information.mode;
 		for(int i=0; i<8; i++)
-			CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage ,var1, addVelRadius);
+			CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] , offset[mode], pushForce[mode]);
 
     	information.setLastTick();
     	int index = (int) (pathSoundShoot.length * Math.random());

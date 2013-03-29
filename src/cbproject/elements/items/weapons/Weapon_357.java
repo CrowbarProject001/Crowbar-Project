@@ -2,7 +2,7 @@ package cbproject.elements.items.weapons;
 
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
-import cbproject.utils.weapons.InformationBulletWeapon;
+import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +13,9 @@ import net.minecraft.world.World;
 public class Weapon_357 extends WeaponGeneralBullet {
 
 	public Weapon_357(int par1) {
-		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID);
 		
+		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID, 1);
+
 		setItemName("weapon_357");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
 		setIconCoord(4,2);
@@ -23,28 +24,25 @@ public class Weapon_357 extends WeaponGeneralBullet {
 		setMaxDamage(7); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
 		
-		shootTime = new int [1];
-		pathSoundShoot = new String[2];
-		pathSoundJam = new String[1];
-		pathSoundReload = new String[1];
-		pushForce = new double[1];
+		String[] shoot  = { "cbc.weapons.pyt_shota", "cbc.weapons.pyt_shotb"};
+		String[] reload = { "cbc.weapons.pyt_reloada" };
+		String[] jam = { "cbc.weapons.pyt_cock"};
+		int shootTime[] = {20}, dmg[] = {7}, off[] = {2};
+		double push[] = { 3 };
 		
-		shootTime[0] = 20; //1.5s
-		jamTime = 20;
-		reloadTime = 100; //3s
+		setPathShoot(shoot);
+		setPathJam(jam);
+		setPathReload(reload);
 		
-		this.damage = 7;
-		this.offset = 3;
+		setShootTime(shootTime);
+		setReloadTime(100);
+		setJamTime(20);
 		
-		this.upLiftRadius = 50;
-		this.recoverRadius = 7;
-		pushForce[0] = 1;
+		setPushForce(push);
+		setDamage(dmg);
+		setOffset(off);
 		
-		pathSoundShoot[0] = "cbc.weapons.pyt_shota"; pathSoundShoot[1] = "cbc.weapons.pyt_shotb";
-		pathSoundJam[0] = "cbc.weapons.pyt_cocka";
-		pathSoundReload[0] =  "cbc.weapons.pyt_reloada";
-		
-		mode = 0; //低速
+		maxModes = 2; //低速
 	}
 
 	@Override

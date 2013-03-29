@@ -13,6 +13,7 @@ public class Config {
 	        try
 	        {
 	            configFile.createNewFile();
+	            System.out.println(configFile.getAbsolutePath());
 	        }
 	        catch(IOException e)
 	        {
@@ -23,6 +24,7 @@ public class Config {
 	    config = new Configuration(configFile);
 	    config.load();
 	}
+	
 	public  void InitliazeConfig(File ConfigFile)
 	{
 	    if(this != null)
@@ -31,19 +33,21 @@ public class Config {
 	    }
 	    config = new Configuration(ConfigFile);
 	}
+	
 	public String GetGeneralProperties(String PropertyName, String DefaultValue) throws Exception
 	{
 	    if(this == null)
 	    {
-	        throw new Exception("û�г�ʼ�������ļ���");
+	        throw new Exception("Null Pointer");
 	    }
 	    return config.get("general", PropertyName, DefaultValue).value;
 	}
+	
 	public int GetItemID(String ItemName, int DefaultValue) throws Exception
 	{
 	    if(this == null)
 	    {
-	        throw new Exception("û�г�ʼ�������ļ���");
+	        throw new Exception("Null Pointer");
 	    }
 	    return config.getItem("item", "ID." + ItemName, DefaultValue).getInt();
 	}
@@ -51,7 +55,7 @@ public class Config {
 	{
 	    if( this  == null)
 	    {
-	        throw new Exception("û�г�ʼ�������ļ���");
+	        throw new Exception("Null Pointer");
 	    }
 	    return config.getBlock("ID." + BlockName, DefaultID).getInt();
 	}

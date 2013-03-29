@@ -10,32 +10,37 @@ import net.minecraft.world.World;
 public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	public Weapon_crossbow(int par1) {
-		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID);
+		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID, 2);
 		
 		setItemName("weapon_crossbow");
 		
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
 		setIconCoord(6,2);
-		this.bFull3D = false;
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
 		setMaxDamage(9); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
 		
-		shootTime = new int [1];
-		shootTime[0] = 3;
-		reloadTime = 60;
-		jamTime = 10;
+		String[] shoot  = { "xbow_fire"};
+		String[] reload = { "xbow_reload" };
+		String[] jam = { ""};
+		int shootTime[] = {20, 20}, dmg[] = { 7, 7}, off[] = { 2, 2};
+		double push[] = {2, 2};
 		
-		pathSoundShoot = new String[1];
-		pathSoundJam = new String[1];
-		pathSoundReload = new String[1];
+		setPathShoot(shoot);
+		setPathJam(jam);
+		setPathReload(reload);
 		
-		pathSoundShoot[0] = "cbc.weapons.hksa";
-		pathSoundJam[0] = "cbc.weapons.gunjam_a";
-		pathSoundReload[0] = "cbc.weapons.nmmarr";
+		setShootTime(shootTime);
+		setReloadTime(7);
+		setJamTime(0);
 		
-		mode = 0; //子弹+自动
+		setPushForce(push);
+		setDamage(dmg);
+		setOffset(off);
+		
+		this.setLiftProps(30, 5);
+		
 		// TODO Auto-generated constructor stub
 	}
 

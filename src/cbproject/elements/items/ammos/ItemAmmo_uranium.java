@@ -13,8 +13,8 @@ public class ItemAmmo_uranium extends ItemAmmo {
 		setCreativeTab( CBCMod.cct );
 		setItemName("ammo_uranium");
 		setIconCoord(0,1);
-		setMaxDamage( 20 );
-		setMaxStackSize ( 5 );
+		setMaxDamage( 100 );
+		setMaxStackSize ( 1 );
 		// TODO Auto-generated constructor stub
 	}
 

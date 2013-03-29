@@ -13,16 +13,24 @@ public class InformationSet {
 		
 	}
 	
-	public InformationBulletWeapon getClientAsBullet(){
-		return (InformationBulletWeapon)clientReference;
+	public InformationBullet getClientAsBullet(){
+		return (InformationBullet)clientReference;
 	}
 	
-	public InformationBulletWeapon getServerAsBullet(){
-		return (InformationBulletWeapon)serverReference;
+	public InformationBullet getServerAsBullet(){
+		return (InformationBullet)serverReference;
 	}
 
-	public InformationBulletWeapon getProperBullet(World world){
-		return (InformationBulletWeapon) ((world.isRemote)? clientReference: serverReference);
+	public InformationBullet getProperBullet(World world){
+		return (InformationBullet) ((world.isRemote)? clientReference: serverReference);
+	}
+	
+	public InformationEnergy getProperEnergy(World world){
+		return (InformationEnergy) ((world.isRemote)? clientReference: serverReference);
+	}
+	
+	public InformationWeapon getProperInf(World world){
+		return (world.isRemote)? clientReference: serverReference;
 	}
 
 }

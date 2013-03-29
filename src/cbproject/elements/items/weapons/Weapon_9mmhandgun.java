@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
-import cbproject.utils.weapons.InformationBulletWeapon;
+import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 
 
@@ -23,7 +23,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 
 	public Weapon_9mmhandgun(int par1) {
 		
-		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID);
+		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID, 2);
 		
 		setItemName("weapon_9mmhandgun");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
@@ -33,25 +33,25 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		setMaxDamage(18); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
 		
-		shootTime = new int [2];
-		shootTime[0] = 10;
-		shootTime [1]=5;
-		jamTime = 10;
-		reloadTime = 60;
-		this.damage = 3;
-		this.offset = 5;
-		pathSoundShoot = new String[1];
-		pathSoundJam = new String[1];
-		pathSoundReload = new String[1];
+		String[] shoot  = { "cbc.weapons.plgun_c", "cbc.weapons.plgun_c"};
+		String[] reload = { "cbc.weapons.nmmclipa", "cbc.weapons.nmmclipa" };
+		String[] jam = { "cbc.weapons.gunjam_a" , "cbc.weapons.gunjam_a"};
+		int shootTime[] = {10, 5}, dmg[] = { 3, 3}, off[] = { 5, 10};
+		double push[] = {0.5, 0.5};
 		
-		pathSoundShoot[0] = "cbc.weapons.plgun_c";
-		pathSoundJam[0] = "cbc.weapons.gunjam_a";
-		pathSoundReload[0] =  "cbc.weapons.nmmclipa";
+		setPathShoot(shoot);
+		setPathJam(jam);
+		setPathReload(reload);
 		
+		setShootTime(shootTime);
+		setReloadTime(60);
+		setJamTime(10);
 		
-		mode = 0; //低速
+		setPushForce(push);
+		setDamage(dmg);
+		setOffset(off);
 		
-		// TODO Auto-generated constructor stub
+		maxModes = 2; //低速
 	}
 
 	@Override
