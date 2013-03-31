@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cbproject.CBCMod;
+import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.InformationSet;
@@ -67,7 +68,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		Boolean isShooting = information.isShooting;
 		int mode = information.mode;
 		
-		if(canUse){
+		if(canUse && mode == 0){
 			isShooting = true;
 			if( shootTime[mode] != 0 && information.ticksExisted - information.lastTick >= shootTime[mode]){
 				onEnergyWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
@@ -124,7 +125,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		int mode = information.mode;
 		
 		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[mode], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
-    	CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] ,offset[mode], pushForce[mode]);
+    	BulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] ,offset[mode], pushForce[mode]);
     	information.setLastTick();
 
     	if(par3Entity instanceof EntityPlayer){

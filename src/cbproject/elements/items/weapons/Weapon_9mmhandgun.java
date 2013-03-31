@@ -64,7 +64,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
     {
 
 		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(( par2World.isRemote? inf.getClientAsBullet() : inf.getServerAsBullet() ), 
+		processRightClick(inf.getProperBullet(par2World), 
 				par1ItemStack, par2World, par3EntityPlayer);
 
 		return par1ItemStack;

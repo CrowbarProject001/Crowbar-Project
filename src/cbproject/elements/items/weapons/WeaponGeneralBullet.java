@@ -90,7 +90,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
 
 	public void processRightClick(InformationBullet information, ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		
+	
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
 		Boolean isShooting = information.isShooting;
 		Boolean isReloading = information.isReloading;
@@ -207,7 +207,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		
 		int mode = information.mode;
 		
-    	CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] ,offset[mode], pushForce[mode]);
+    	BulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] ,offset[mode], pushForce[mode]);
     	information.setLastTick();
 
     	if(par3Entity instanceof EntityPlayer){

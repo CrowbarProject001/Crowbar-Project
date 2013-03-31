@@ -2,6 +2,7 @@ package cbproject.elements.items.weapons;
 
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
+import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 import net.minecraft.entity.Entity;
@@ -121,7 +122,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		
 		int mode = information.mode;
 		for(int i=0; i<8; i++)
-			CBCMod.bulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] , offset[mode], pushForce[mode]);
+			BulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] , offset[mode], pushForce[mode]);
 
     	information.setLastTick();
     	int index = (int) (pathSoundShoot.length * Math.random());

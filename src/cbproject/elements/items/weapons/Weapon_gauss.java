@@ -55,11 +55,8 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		if(inf == null)
 			return;
 		InformationEnergy information = inf.getProperEnergy(par2World);
-		if(information.mode == 0){
-			this.onEnergyWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-			return;
-		}
-		
+
+		this.onEnergyWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);	
 		onChargeModeUpdate(information, par1ItemStack, par2World, par3Entity, par4, par5);
 		
 	}
@@ -70,10 +67,9 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
     {
 		
 		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer).getProperEnergy(par2World);
-		inf.mode = 1;
-		if( inf.mode == 0)
-			processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
-		else {
+
+		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
+		if(inf.mode == 1) {
 			inf.isShooting = true;
 			inf.charge = inf.chargeTime = 0;
 			par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.gauss_chargea",  
@@ -154,8 +150,8 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		double var1 = mot.motionX * var0;
 		double var2 = mot.motionY * var0;
 		double var3 = mot.motionZ * var0;
-		if(!par2World.isRemote)
-			par3EntityPlayer.addVelocity(-var1, -var2, -var3);
+
+		par3EntityPlayer.addVelocity(-var1, -var2, -var3);
 		
 		par2World.spawnEntityInWorld(new EntityGauss(par3EntityPlayer, par2World));
 		

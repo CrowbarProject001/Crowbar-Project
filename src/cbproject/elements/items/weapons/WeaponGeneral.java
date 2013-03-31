@@ -3,6 +3,9 @@ package cbproject.elements.items.weapons;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
+import cbproject.CBCMod;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
@@ -34,11 +37,20 @@ public abstract class WeaponGeneral extends Item {
 	}
 	
 	public void onWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
+		
+		if(!(par3Entity instanceof EntityPlayer))
+			return;
+		if(!((EntityPlayer)par3Entity).inventory.getCurrentItem().equals(par1ItemStack))
+			return;
+		
 		InformationSet inf = getInformation(par1ItemStack);
 		if(inf == null)
 			return;
 		InformationWeapon information = inf.getProperInf(par2World);
+		//(CBCMod.keyProcess.Key_ModeChange);
 		
+		if(Keyboard.isRepeatEvent())
+			CBCMod.keyProcess.onModeChange(information, (EntityPlayer) par3Entity, maxModes);
 		//枪口上抬处理
 		if(information.isRecovering){
 			par3Entity.rotationPitch += recoverRadius;

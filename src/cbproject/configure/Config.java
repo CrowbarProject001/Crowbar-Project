@@ -51,6 +51,7 @@ public class Config {
 	    }
 	    return config.getItem("item", "ID." + ItemName, DefaultValue).getInt();
 	}
+	
 	public int GetBlockID(String BlockName, int DefaultID) throws Exception
 	{
 	    if( this  == null)
@@ -59,6 +60,13 @@ public class Config {
 	    }
 	    return config.getBlock("ID." + BlockName, DefaultID).getInt();
 	}
+	
+	public int GetKeyCode(String keyName, int defaultKey) throws Exception{
+		if(this == null)
+			 throw new Exception("Null Pointer");
+		return config.get("key", "KB." + keyName, defaultKey).getInt();
+	}
+	
 	public void SaveConfig()
 	{
 	    config.save();
