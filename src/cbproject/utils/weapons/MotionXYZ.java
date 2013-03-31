@@ -99,6 +99,12 @@ public class MotionXYZ {
         this.motionY = (double)( -MathHelper.sin((par1Player.rotationPitch + var4)/180.0F *(float)Math.PI) * var3 );
 	}
 	
+	public static final MotionXYZ getPosByPlayer2(EntityLiving par1Player){
+		return new MotionXYZ(par1Player,0);
+	}
+	
+
+	
 	
 	
 }

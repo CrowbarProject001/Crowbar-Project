@@ -28,8 +28,8 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		String[] shoot  = { "cbc.weapons.sbarrela", "cbc.weapons.sbarrela"};
 		String[] reload = { "cbc.weapons.reloada", "cbc.weapons.reloadb", "cbc.weapons.reloadc" };
 		String[] jam = { "cbc.weapons.scocka" , "cbc.weapons.scocka"};
-		int shootTime[] = {20, 35}, dmg[] = { 7, 7}, off[] = { 10, 20};
-		double push[] = {2, 4};
+		int shootTime[] = {20, 35}, dmg[] = { 7, 7}, off[] = { 5, 10};
+		double push[] ={ 1.2, 2};
 		
 		setPathShoot(shoot);
 		setPathJam(jam);

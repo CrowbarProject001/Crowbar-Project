@@ -28,7 +28,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 		String[] reload = { "cbc.weapons.pyt_reloada" };
 		String[] jam = { "cbc.weapons.pyt_cock"};
 		int shootTime[] = {20}, dmg[] = {7}, off[] = {2};
-		double push[] = { 3 };
+		double push[] = { 1.5 };
 		
 		setPathShoot(shoot);
 		setPathJam(jam);
@@ -41,6 +41,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 		setPushForce(push);
 		setDamage(dmg);
 		setOffset(off);
+		setLiftProps(25, 3);
 		
 		maxModes = 2; //低速
 	}

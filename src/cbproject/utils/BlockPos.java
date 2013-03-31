@@ -12,5 +12,13 @@ public class BlockPos {
 		blockID = bID;
 		
 	}
+	
+	public Boolean equals(BlockPos b){
+		return (x == b.x && y == b.y && z == b.z) && blockID == b.blockID;
+	}
+	
+	public BlockPos copy(){
+		return new BlockPos(x,y,z,blockID);
+	}
 
 }

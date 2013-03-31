@@ -36,7 +36,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		String[] shoot  = { "cbc.weapons.plgun_c", "cbc.weapons.plgun_c"};
 		String[] reload = { "cbc.weapons.nmmclipa", "cbc.weapons.nmmclipa" };
 		String[] jam = { "cbc.weapons.gunjam_a" , "cbc.weapons.gunjam_a"};
-		int shootTime[] = {10, 5}, dmg[] = { 3, 3}, off[] = { 5, 10};
+		int shootTime[] = {10, 5}, dmg[] = { 3, 3}, off[] = { 2, 8};
 		double push[] = {0.5, 0.5};
 		
 		setPathShoot(shoot);

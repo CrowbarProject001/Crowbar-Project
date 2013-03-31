@@ -17,7 +17,7 @@ public class ItemsRegister {
 	public static Weapon_crowbar weapon_crowbar;
 	public static Weapon_hgrenade weapon_hgrenade;
 	
-	public static Item weapon_gauss;
+	public static Weapon_gauss weapon_gauss;
 	public static Item weapon_egon;
 	public static Item weapon_9mmhandgun;
 	public static Item weapon_9mmAR;

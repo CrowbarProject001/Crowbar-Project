@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public class InformationEnergy extends InformationWeapon {
 	
-	public int charge;
+	public int charge,chargeTime;
 	public Boolean isShooting;
 	
 	public InformationEnergy(ItemStack par1ItemStack, EntityPlayer par2Player) {

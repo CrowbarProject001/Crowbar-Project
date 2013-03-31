@@ -37,7 +37,6 @@ public class EntityHGrenade extends EntityThrowable {
         super(par1World,par2EntityLiving);
         delay = 60 - par3Fuse;
         time = 0;
-        System.out.println("Entity has been inited.");
         
     }
 
@@ -59,11 +58,7 @@ public class EntityHGrenade extends EntityThrowable {
 	@Override
 	protected void onImpact(MovingObjectPosition par1)
 	{    
-	    if (!this.worldObj.isRemote)
-	    {
-	            this.setDead();
-	    }
-	    
+
 	    if(ticksExisted - time > 5){ //最小时间间隔0.3s
 	    	worldObj.playSound(posX,posY,posZ, "cbc.weapons.hgrenadebounce", 0.5F, (float) (Math.random() * 0.4F + 0.8F),true);
 	    	time = ticksExisted;
@@ -115,11 +110,10 @@ public class EntityHGrenade extends EntityThrowable {
 	    {
 	            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 	    }    
-	    System.out.println("Generated explosion");
+	    
 		worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, var1, true);
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
-		System.out.println("Inited AABB.");
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
 		System.out.println("inited list.");
 		if(entitylist.size() > 0){
@@ -132,11 +126,10 @@ public class EntityHGrenade extends EntityThrowable {
 					      Math.pow(ent.posY-posY,2) + 
 					      Math.pow(ent.posZ-posZ,2) ) , 0.33) 
 					     *0.33 * 25) ;
-					System.out.println("Damage is : " + damage);
-					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode){
-						System.out.println("In Creative Mode.");
+					
+					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode)
 						return;
-					}
+					
 					
 					World wr = ent.worldObj;
 					ent.worldObj = this.worldObj;
@@ -156,10 +149,9 @@ public class EntityHGrenade extends EntityThrowable {
     public void onUpdate()
     {
         super.onUpdate();
-        if(this.ticksExisted >= delay && this.worldObj.isRemote) //该爆炸了=w=
-        {
+        if(this.ticksExisted >= delay) //该爆炸了=w=
         		Explode();
-        }
+        
     }
 	
 	@Override

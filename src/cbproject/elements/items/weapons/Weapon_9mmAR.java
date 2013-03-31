@@ -44,7 +44,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		setPushForce(push);
 		setDamage(dmg);
 		setOffset(off);
-		setLiftProps(5 , 3);
+		setLiftProps(8 , 2);
 
 	}
 

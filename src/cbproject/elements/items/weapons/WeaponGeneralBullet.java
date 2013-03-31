@@ -102,7 +102,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			else {
 				isReloading = true;
 				int index = (int) (pathSoundReload.length * Math.random());
-				par2World.playSoundAtEntity(par3EntityPlayer, pathSoundReload[index] , 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+				par2World.playSoundAtEntity(par3EntityPlayer, pathSoundReload[index] , 0.5F, 1.0F);
 			}
 		}
 		
@@ -203,7 +203,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
 		
 		int index = (int) (pathSoundShoot.length * Math.random());
-		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
+		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 1.0F);	
 		
 		int mode = information.mode;
 		
@@ -236,9 +236,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return;
 		}
 		int index = (int) (pathSoundJam.length * Math.random());
-		par2World.playSoundAtEntity(par3Entity, pathSoundJam[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		par2World.playSoundAtEntity(par3Entity, pathSoundJam[index], 0.5F, 1.0F);
 
-		information.lastTick = information.ticksExisted;
+		information.setLastTick();
 		
     }
     
