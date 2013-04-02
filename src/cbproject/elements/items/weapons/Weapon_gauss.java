@@ -11,6 +11,7 @@ import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityGauss;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.AmmoManager;
+import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.GaussBulletManager;
 import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.InformationSet;
@@ -27,7 +28,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		pathSoundSpecial = new String[1];
 		
 		setCreativeTab(CBCMod.cct);
-		setItemName("Gauss");
+		setItemName("weapon_gauss");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
 		setIconCoord(6,2);
 		
@@ -49,15 +50,14 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
-		InformationSet inf = getInformation(par1ItemStack);
-
 		
+		InformationSet inf = getInformation(par1ItemStack);
 		if(inf == null)
 			return;
 		InformationEnergy information = inf.getProperEnergy(par2World);
-
-		this.onEnergyWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);	
-		onChargeModeUpdate(information, par1ItemStack, par2World, par3Entity, par4, par5);
+		onEnergyWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);	
+		if(information.mode == 1)
+			onChargeModeUpdate(information, par1ItemStack, par2World, par3Entity, par4, par5);
 		
 	}
 	
@@ -91,7 +91,6 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		int var4 = 100;
 		Boolean isShooting = inf.isShooting;
 		Boolean ignoreAmmo = false;
-		inf.updateTick();
 		
 		if(par3Entity instanceof EntityPlayer){
 			if(((EntityPlayer)par3Entity).capabilities.isCreativeMode)
@@ -143,7 +142,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		inf.isShooting = false;
 		par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.gaussb",  
 				0.5F, 1.0F);
-		GaussBulletManager.Shoot(par3EntityPlayer, par2World, damage, offset[0], vel);
+		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3EntityPlayer, par2World, "");
 		MotionXYZ mot = MotionXYZ.getPosByPlayer2(par3EntityPlayer);
 		
 		double var0 = charge/10;
@@ -153,7 +152,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 
 		par3EntityPlayer.addVelocity(-var1, -var2, -var3);
 		
-		par2World.spawnEntityInWorld(new EntityGauss(par3EntityPlayer, par2World));
+		//par2World.spawnEntityInWorld(new EntityGauss(par3EntityPlayer, par2World));
 		
 	}
 	

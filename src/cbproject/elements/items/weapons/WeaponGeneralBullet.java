@@ -1,32 +1,20 @@
 package cbproject.elements.items.weapons;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cbproject.CBCMod;
-import cbproject.proxy.ClientProxy;
-import cbproject.utils.weapons.AmmoManager;
-import cbproject.utils.weapons.BulletManager;
-import cbproject.utils.weapons.InformationBullet;
-import cbproject.utils.weapons.InformationSet;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import cbproject.utils.weapons.BulletManager;
+import cbproject.utils.weapons.InformationBullet;
+import cbproject.utils.weapons.InformationSet;
 
 public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
 	public  int reloadTime ; //Time take to reload in tick
 	public  int jamTime; //sound playing gap between jams
 	public  int shootTime[]; //Shoot time gap correspond to mode in WeaponGeneral
-	public  double pushForce[]; //push velocity applied to hit entity
-	public  int damage[], offset[]; //damage and offset(offset: 0-100, larger the wider bullet spray)
-
-	
 	public String pathSoundShoot[],pathSoundJam[],pathSoundReload[];
 	
 	/*Local Variables in ItemStack InformationBulletWeapon
@@ -53,18 +41,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	public final void setShootTime(int[] par1){
 		shootTime = par1;
 	}
-	
-	public final void setPushForce(double[] par1){
-		pushForce = par1;
-	}
-	
-	public final void setDamage(int[] par1){
-		damage = par1;
-	}
-	
-	public final void setOffset(int[] par1){
-		offset = par1;
-	}
+
 	
 	public final void setPathShoot(String[] par1){
 		pathSoundShoot = par1;
@@ -147,7 +124,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
 			
 		if(isShooting && canUse && ticksExisted - lastTick >= shootTime[mode]){
-			System.out.println(par2World.isRemote);
 			this.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
 			return;
 		}
@@ -206,8 +182,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 1.0F);	
 		
 		int mode = information.mode;
-		
-    	BulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] ,offset[mode], pushForce[mode]);
+		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
+
     	information.setLastTick();
 
     	if(par3Entity instanceof EntityPlayer){

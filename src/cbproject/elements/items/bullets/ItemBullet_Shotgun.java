@@ -11,7 +11,7 @@ public class ItemBullet_Shotgun extends Item{
 		setTextureFile( ClientProxy.ITEMS_TEXTURE_PATH );
 		setCreativeTab( CBCMod.cct );
 		setItemName("bullet_shotgun");
-		setIconCoord(2,5);
+		setIconCoord(5,1);
 		setMaxStackSize (64);
 	}
 	

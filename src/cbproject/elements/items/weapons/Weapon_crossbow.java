@@ -1,8 +1,14 @@
 package cbproject.elements.items.weapons;
 
 import cbproject.CBCMod;
+import cbproject.elements.entities.weapons.EntityCrossbow;
+import cbproject.elements.entities.weapons.EntityRPG;
 import cbproject.proxy.ClientProxy;
+import cbproject.utils.weapons.BulletManager;
+import cbproject.utils.weapons.InformationBullet;
+import cbproject.utils.weapons.InformationSet;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -10,19 +16,21 @@ import net.minecraft.world.World;
 public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	public Weapon_crossbow(int par1) {
-		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID, 2);
+		super(par1 , CBCMod.cbcItems.itemAmmo_bow.itemID, 2);
 		
 		setItemName("weapon_crossbow");
 		
+		//setTextureFile(ClientProxy.ITEMS_MOTION1_PATH);
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(6,2);
+		//setIconCoord(0, 0);
+		setIconCoord(6, 2);
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
-		setMaxDamage(9); // 最高伤害为18 0a0
+		setMaxDamage(6);
 		setNoRepair(); //不可修补
 		
-		String[] shoot  = { "xbow_fire"};
-		String[] reload = { "xbow_reload" };
+		String[] shoot  = { "cbc.weapons.xbow_fire"};
+		String[] reload = { "cbc.weapons.xbow_reload" };
 		String[] jam = { ""};
 		int shootTime[] = {20, 20}, dmg[] = { 7, 7}, off[] = { 2, 2};
 		double push[] = {2, 2};
@@ -39,7 +47,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		setDamage(dmg);
 		setOffset(off);
 		
-		this.setLiftProps(30, 5);
+		setLiftProps(10, 5);
 		
 		// TODO Auto-generated constructor stub
 	}
@@ -47,7 +55,70 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
-		// TODO Auto-generated method stub
+		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 	}
+	
+	@Override
+    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+		
+		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
+		processRightClick(( par2World.isRemote? inf.getClientAsBullet() : inf.getServerAsBullet() ), 
+				par1ItemStack, par2World, par3EntityPlayer);
+		return par1ItemStack;
+    }
+	
+	@Override
+	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
+		
+		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
+		
+		if(!canUse){
+			information.isReloading = true;
+			return;
+		}
 
+		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[0], 0.5F, 1.0F);	
+		switch(information.mode){
+		case 0:
+			BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
+			break;
+		case 1:
+			par2World.spawnEntityInWorld(new EntityCrossbow(par2World, (EntityLiving) par3Entity));
+			break;
+		default:
+			break;
+		}
+		information.setLastTick();
+    	if(par3Entity instanceof EntityPlayer){
+    		if(!information.isRecovering)
+    			information.originPitch = par3Entity.rotationPitch;
+    		par3Entity.rotationPitch -= upLiftRadius;
+    		information.isRecovering = true;
+    		information.recoverTick = 0;
+    		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
+    				par1ItemStack.damageItem( 1 , null);
+    		}
+    	}
+		
+	}
+	
+	@Override
+	  public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
+		
+	}
+	
+	@Override
+    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
+	{
+		
+		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
+		
+	}
+	
+	@Override
+    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    {
+        return 200; //10s
+    }
 }

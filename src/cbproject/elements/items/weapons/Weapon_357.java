@@ -14,7 +14,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 
 	public Weapon_357(int par1) {
 		
-		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID, 1);
+		super(par1 , CBCMod.cbcItems.itemAmmo_357.itemID, 1);
 
 		setItemName("weapon_357");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);

@@ -130,12 +130,9 @@ public class EntityHGrenade extends EntityThrowable {
 					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode)
 						return;
 					
-					
-					World wr = ent.worldObj;
-					ent.worldObj = this.worldObj;
+
 					ent.attackEntityFrom(DamageSource.explosion2, damage);
-					ent.worldObj = wr;
-					ent.setFire(40);
+					ent.setFire(20);
 							
 				}
 			}

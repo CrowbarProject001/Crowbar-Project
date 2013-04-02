@@ -31,6 +31,7 @@ public class ItemsRegister {
 	public static ItemAmmo_357 itemAmmo_357;
 	public static ItemAmmo_9mm2 itemAmmo_9mm2;
 	public static ItemAmmo_bow itemAmmo_bow;
+	public static ItemAmmo_RPG itemAmmo_rpg;
 	
 	public static ItemBullet_Shotgun itemBullet_Shotgun;
 
@@ -52,6 +53,7 @@ public class ItemsRegister {
 			itemAmmo_9mm2 = new ItemAmmo_9mm2(conf.GetItemID("itemAmmo_9mm2", 7302));
 			itemAmmo_357 = new ItemAmmo_357(conf.GetItemID("itemAmmo_357", 7303));
 			itemAmmo_bow = new ItemAmmo_bow(conf.GetItemID("itemAmmo_bow", 7304));
+			itemAmmo_rpg = new ItemAmmo_RPG(conf.GetItemID("itemAmmo_RPG", 7305));
 			
 			itemBullet_Shotgun = new ItemBullet_Shotgun(conf.GetItemID("itemBullet_Shotgun", 7350));
 	

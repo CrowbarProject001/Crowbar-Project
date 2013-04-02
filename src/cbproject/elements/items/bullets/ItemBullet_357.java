@@ -11,7 +11,7 @@ public class ItemBullet_357 extends Item {
 		setTextureFile( ClientProxy.ITEMS_TEXTURE_PATH );
 		setCreativeTab( CBCMod.cct );
 		setItemName("bullet_357");
-		setIconCoord(1,5);
+		setIconCoord(3,1);
 		setMaxStackSize (64);
 	}
 	

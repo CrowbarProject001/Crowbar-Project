@@ -17,7 +17,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 	public String pathSoundShoot[], pathSoundSpecial[], pathSoundJam[];
 	public int jamTime, shootTime[], damage[], 
 		offset[];
-	public double  pushForce[];
+	
 	
 	public WeaponGeneralEnergy(int par1, int par2AmmoID, int par3MaxModes) {
 		super(par1, par2AmmoID, par3MaxModes);
@@ -27,19 +27,6 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 
 	public final void setShootTime(int[] par1){
 		shootTime = par1;
-	}
-	
-
-	public final void setDamage(int[] par1){
-		damage = par1;
-	}
-	
-	public final void setOffset(int[] par1){
-		offset = par1;
-	}
-	
-	public final void setPushForce(double[] par1){
-		pushForce = par1;
 	}
 	
 	public final void setPathShoot(String[] par1){
@@ -82,6 +69,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 	
 	public void onEnergyWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		
+		super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
     	if(par3Entity instanceof EntityPlayer){
     		
     		ItemStack held = ((EntityPlayer)par3Entity).getHeldItem();
@@ -125,7 +113,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		int mode = information.mode;
 		
 		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[mode], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
-    	BulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] ,offset[mode], pushForce[mode]);
+		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
     	information.setLastTick();
 
     	if(par3Entity instanceof EntityPlayer){

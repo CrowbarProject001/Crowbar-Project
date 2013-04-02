@@ -6,10 +6,12 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import cbproject.CBCMod;
+import cbproject.misc.CBCKeyProcess;
+import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
-
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,6 +23,19 @@ public abstract class WeaponGeneral extends Item {
 	public int maxModes, type;
 	public int ammoID;
 	public  double upLiftRadius, recoverRadius; //player screen uplift radius in degree
+	public double  pushForce[];
+	public  int damage[], offset[]; //damage and offset(offset: 0-100, larger the wider bullet spray)
+	public final void setPushForce(double[] par1){
+		pushForce = par1;
+	}
+	
+	public final void setDamage(int[] par1){
+		damage = par1;
+	}
+	
+	public final void setOffset(int[] par1){
+		offset = par1;
+	}
 	
 	public void setLiftProps(double uplift, double recover){
 		upLiftRadius = uplift;
@@ -40,18 +55,16 @@ public abstract class WeaponGeneral extends Item {
 		
 		if(!(par3Entity instanceof EntityPlayer))
 			return;
-		if(!((EntityPlayer)par3Entity).inventory.getCurrentItem().equals(par1ItemStack))
+		
+		ItemStack currentItem = ((EntityPlayer)par3Entity).inventory.getCurrentItem();
+		if(currentItem == null || !currentItem.equals(par1ItemStack))
 			return;
 		
 		InformationSet inf = getInformation(par1ItemStack);
 		if(inf == null)
 			return;
 		InformationWeapon information = inf.getProperInf(par2World);
-		//(CBCMod.keyProcess.Key_ModeChange);
 		
-		if(Keyboard.isRepeatEvent())
-			CBCMod.keyProcess.onModeChange(information, (EntityPlayer) par3Entity, maxModes);
-		//枪口上抬处理
 		if(information.isRecovering){
 			par3Entity.rotationPitch += recoverRadius;
 			information.recoverTick++;
@@ -59,6 +72,9 @@ public abstract class WeaponGeneral extends Item {
 				information.isRecovering = false;
 		}
 		
+		if(CBCKeyProcess.modeChange)
+			CBCKeyProcess.onModeChange(information, (EntityPlayer) par3Entity, maxModes);		
+
 	}
 	
 	
@@ -68,7 +84,7 @@ public abstract class WeaponGeneral extends Item {
 	public InformationWeapon getSpecInformation(ItemStack itemStack,World world){
 		InformationSet inf =  getInformation(itemStack);
 		if(inf != null)
-			return (world.isRemote? inf.getClientAsBullet(): inf.getServerAsBullet());
+			return inf.getProperInf(world);
 		return null;
 	}
 

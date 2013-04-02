@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class MotionXYZ {
@@ -26,12 +27,27 @@ public class MotionXYZ {
 		motionY = par5;
 		motionZ = par6;
 	}
+	
+	public MotionXYZ(Vec3 par0, double par4, double par5, double par6) {
+		// TODO Auto-generated constructor stub
+		posX = par0.xCoord;
+		posY = par0.yCoord;
+		posZ = par0.zCoord;
+		
+		motionX = par4;
+		motionY = par5;
+		motionZ = par6;
+	}
 
 	public MotionXYZ(EntityLiving par1Player, int par2){
 		
 		getPosByPlayer(par1Player);
 		setOffset(par2);
 	
+	}
+	
+	public Vec3 asVec3(World world){
+		return world.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
 	}
 	
 	public String toString(){
@@ -78,11 +94,13 @@ public class MotionXYZ {
 		
 	}
 		
-	public void updateMotion(double scale){
-		//System.out.println("Updated motion once.");
+	public MotionXYZ updateMotion(double scale){
+		
 		posX += motionX * scale;
 		posY += motionY * scale;
 		posZ += motionZ * scale;
+		return this;
+		
 	}
 	
 	

@@ -10,7 +10,7 @@ public class ItemAmmo_bow extends ItemAmmo {
 		setTextureFile( ClientProxy.ITEMS_TEXTURE_PATH );
 		setCreativeTab( CBCMod.cct );
 		setItemName("ammo_bow");
-		setIconCoord(1,1);
+		setIconCoord(6,1);
 		setMaxDamage(6);
 		setMaxStackSize (1);
 		// TODO Auto-generated constructor stub

@@ -41,7 +41,10 @@ public class CBCSoundEvents {
 		"reloadc",
 		"gaussb",
 		"gauss_chargea",
-		"gauss_chargeb"
+		"gauss_chargeb",
+		"rocketfirea",
+		"xbow_fire",
+		"xbow_reload"
 		
 	};
 	

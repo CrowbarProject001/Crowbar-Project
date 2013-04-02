@@ -8,10 +8,6 @@
 //This packet is the main frame of the mod.
 package cbproject;
 
-import spleefmanager.commands.CommandDelArea;
-import spleefmanager.commands.CommandHelp;
-import spleefmanager.commands.CommandRestoreArea;
-import spleefmanager.commands.CommandSetArea;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.settings.KeyBinding;
@@ -88,9 +84,9 @@ public class CBCMod
 		cbcItems=new ItemsRegister(config);
 		cbcBlocks = new BlocksRegister(config);
 		keyProcess = new CBCKeyProcess(config);
+		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess(config));
 		Proxy.init();
 
-		
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "en_US", "Crowbarcraft");
 		
 

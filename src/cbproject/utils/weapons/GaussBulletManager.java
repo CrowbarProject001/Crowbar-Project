@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -12,45 +13,37 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cbproject.CBCMod;
+import cbproject.elements.entities.weapons.EntityBullet;
+import cbproject.elements.entities.weapons.EntityBulletGauss;
 import cbproject.elements.entities.weapons.EntityGauss;
+import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.utils.BlockPos;
 
 public class GaussBulletManager extends BulletManager {
 
-	public static final double BB_SIZE = 1.0D;
 
 	public GaussBulletManager() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static void Shoot(EntityLiving entityPlayer, World worldObj, int damage, int offset, double par5Vel){
-		System.out.println("called shoot2," + "IsRemote in Shoot: " +worldObj.isRemote);
-		MotionXYZ motion;
-		Boolean isHit;
-		AxisAlignedBB bBox;
-		
-		motion = new MotionXYZ(entityPlayer, offset);
-		isHit = false;
+	public static void Shoot(ItemStack itemStack, EntityLiving entityPlayer, World worldObj, String particle){
+		worldObj.spawnEntityInWorld(new EntityBulletGauss(worldObj, entityPlayer, itemStack, particle));
+	}
 	
-		bBox = AxisAlignedBB.getBoundingBox( motion.posX -BB_SIZE , motion.posY - BB_SIZE,
-				motion.posZ -BB_SIZE, motion.posX + BB_SIZE, motion.posY +BB_SIZE, motion.posZ + BB_SIZE);
+	public static Boolean doBlockCollision(EntityLiving player, MotionXYZ par1Motion, AxisAlignedBB par3BBox, World par4World, int par5Damage){
 		
-		//worldObj.spawnParticle("smoke", motion.posX, motion.posY, motion.posZ, motion.motionX, motion.motionY, motion.motionZ);
-		int  times = 0;
-		while(!isHit && times < 200){
-			
-			times++;
-			if(doEntityCollision(motion, bBox, worldObj , entityPlayer, damage, par5Vel) ||
-					doBlockCollision(entityPlayer, motion, bBox, worldObj, damage))
-				break;
-			motion.updateMotion(1.0);
-			bBox = AxisAlignedBB.getBoundingBox( motion.posX -BB_SIZE , motion.posY - BB_SIZE,
-					motion.posZ -BB_SIZE, motion.posX + BB_SIZE, motion.posY +BB_SIZE, motion.posZ + BB_SIZE);
-			
+		BlockPos block;
+		int x = MathHelper.floor_double(par1Motion.posX);
+		int y = MathHelper.floor_double(par1Motion.posY);
+		int z = MathHelper.floor_double(par1Motion.posZ);
+		int id = par4World.getBlockId(x, y, z );
+		if( id > 1){
+			System.out.println("Collided. 1");
+			doWallPenetrate( player,new BlockPos(x, y, z, id), par3BBox, par4World, par5Damage, par1Motion);
+			return true;
 		}
 
-		return;
-			
+		return false;
 	}
 	
 	public static void doWallPenetrate(EntityLiving player ,BlockPos blockHit ,
@@ -88,8 +81,8 @@ public class GaussBulletManager extends BulletManager {
 	    
 	    MotionXYZ var4 = new MotionXYZ(motion.posX, motion.posY, motion.posZ, motion.motionX, motion.motionY, motion.motionZ);
 	    
-	    BulletManager.Shoot(var4, player, worldObj, damage, 0 , CBCMod.cbcItems.weapon_gauss.pushForce[1]);
-	    worldObj.spawnEntityInWorld(new EntityGauss(var4, worldObj));
+	   // BulletManager.Shoot(var4, player, worldObj, damage, 0 , CBCMod.cbcItems.weapon_gauss.pushForce[1]);
+	    //worldObj.spawnEntityInWorld(new EntityGauss(var4, worldObj));
 	    System.out.println("Size found: " + var1.size());
 	    for(int i = 0; i < var1.size(); i++){
 	    	var2 = (Entity) var1.get(i);
@@ -153,22 +146,5 @@ public class GaussBulletManager extends BulletManager {
 	private static double getConvensionRadius(BlockPos hit, MotionXYZ motion){
 		return 1.0D;
 	}
-
-	public static Boolean doBlockCollision(EntityLiving player, MotionXYZ par1Motion, AxisAlignedBB par3BBox, World par4World, int par5Damage){
-		
-		BlockPos block;
-		int x = MathHelper.floor_double(par1Motion.posX);
-		int y = MathHelper.floor_double(par1Motion.posY);
-		int z = MathHelper.floor_double(par1Motion.posZ);
-		int id = par4World.getBlockId(x, y, z );
-		if( id > 1){
-			System.out.println("Collided. 1");
-			doWallPenetrate( player,new BlockPos(x, y, z, id), par3BBox, par4World, par5Damage, par1Motion);
-			return true;
-		}
-
-		return false;
-	}
-	
 
 }

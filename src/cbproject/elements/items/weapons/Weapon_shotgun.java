@@ -122,7 +122,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		
 		int mode = information.mode;
 		for(int i=0; i<8; i++)
-			BulletManager.Shoot( (EntityLiving) par3Entity , par2World, damage[mode] , offset[mode], pushForce[mode]);
+			BulletManager.Shoot( par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
 
     	information.setLastTick();
     	int index = (int) (pathSoundShoot.length * Math.random());
