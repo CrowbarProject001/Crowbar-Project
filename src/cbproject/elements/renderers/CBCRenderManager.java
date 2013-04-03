@@ -30,6 +30,8 @@ public class CBCRenderManager {
 		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RendererHGrenade(33));
 		RenderingRegistry.registerEntityRenderingHandler(EntityAmmoUranium.class,new RenderUranium());
 		MinecraftForgeClient.registerItemRenderer(CBCMod.cbcItems.weapon_crossbow.itemID, new RenderCrossbow());
+		RenderingRegistry.registerBlockHandler(new RenderTripmine());
+		
 		System.out.println("Renderer registered");
 	}
 }

@@ -58,7 +58,8 @@ public class CBCMod
 	public static CBCKeyProcess keyProcess;
 	Config config;
 	
-	public static final int RENDER_TYPE_ITEM_9MMHANDGUN = 502;
+	public static final int RENDER_TYPE_TRIPMINE = 400;
+	public static final int RENDER_TYPE_TRIPMINE_RAY = 401;
 	
 	@Instance("cbc")
 	public static CBCMod CBCMod;
