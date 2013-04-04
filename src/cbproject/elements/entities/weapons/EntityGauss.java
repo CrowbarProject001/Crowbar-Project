@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 public class EntityGauss extends Entity {
 	
 	
-	private Vec3 start, end;
+	public Vec3 start, end;
 	
 	public EntityGauss(World par1World, Vec3 par2, Vec3 par3){
 		

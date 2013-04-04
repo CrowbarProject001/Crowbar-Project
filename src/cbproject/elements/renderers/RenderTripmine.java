@@ -21,26 +21,8 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
  * @author Administrator
  *
  */
-public class RenderTripmine implements ISimpleBlockRenderingHandler {
+public class RenderTripmine extends RendererUtils implements ISimpleBlockRenderingHandler {
 	
-    /** The minimum X value for rendering (default 0.0). */
-    public double minX;
-
-    /** The maximum X value for rendering (default 1.0). */
-    public double maxX;
-
-    /** The minimum Y value for rendering (default 0.0). */
-    public double minY;
-
-    /** The maximum Y value for rendering (default 1.0). */
-    public double maxY;
-
-    /** The minimum Z value for rendering (default 0.0). */
-    public double minZ;
-
-    /** The maximum Z value for rendering (default 1.0). */
-    public double maxZ;
-
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID,
 			RenderBlocks renderer) {
@@ -54,66 +36,15 @@ public class RenderTripmine implements ISimpleBlockRenderingHandler {
 		return false;
 	}
 
-    public void setBlockBounds(double par1, double par3, double par5, double par7, double par9, double par11)
-    {
-            this.minX = par1;
-            this.maxX = par7;
-            this.minY = par3;
-            this.maxY = par9;
-            this.minZ = par5;
-            this.maxZ = par11;
-    }
-    
-    public void addCoord(double offX, double offY, double offZ){
-    	
-    	minX += offX;
-    	maxX += offX;
-    	minY += offY;
-    	maxY += offY;
-    	minZ += offZ;
-    	maxZ += offZ;
-    	
-    }
-    
-    public void swap(double a, double b){
-    	if( a > b ){
-    		double c = a;
-    		a = b;
-    		b = c;
-    	}
-    }
 	
     public boolean renderBlockTripmine(RenderBlocks renderer, Block par1Block,int metadata, int x, int y, int z, IBlockAccess blockAccess)
     {
     	
         Tessellator tessellator = Tessellator.instance;
         int var5 = metadata & 3;
-        float var6 = 0.25F;
-        float var7 =  0.3F;
-        /*
-        if (var5 == 3) //X+
-        {
-            this.setBlockBounds(0.0F, 0.3F, 0.5F - var7, var6 * 2.0F, 0.7F, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2, 0.8)
-        }
-        else if (var5 == 1) //X-
-        {
-            this.setBlockBounds(1.0F - var6 * 2.0F, 0.3F, 0.5F - var7, 1.0F, 0.7F, 0.5F + var7);
-        }
-        else if (var5 == 0) //Z+
-        {
-            this.setBlockBounds(0.5F - var7, 0.3F, 0.0F, 0.5F + var7, 0.7F, var6 * 2.0F);
-        }
-        else if (var5 == 2) //Z-
-        {
-            this.setBlockBounds(0.5F - var7, 0.3F, 1.0F - var6 * 2.0F, 0.5F + var7, 0.7F, 1.0F);
-        }
-        */
+
         setBound(par1Block);
         this.addCoord(x, y, z);
-        swap(minX, maxX);
-        swap(minY, maxY);
-        swap(minZ, maxZ);
-        
         Vec3 v1, v2, v3, v4, v5, v6, v7, v8;
         switch(var5){
         case 1:
@@ -144,15 +75,6 @@ public class RenderTripmine implements ISimpleBlockRenderingHandler {
         	break;
         }
         
-        
-        /* 渲染6面
-         * 1 ： v1 v2 v3 v4
-         * 2 : v5 v6 v7 v8
-         * 3 : v1 v5 v8 v4
-         * 4 : v2 v6 v7 v3
-         * 5 : v1 v5 v6 v2
-         * 6 : v4 v8 v7 v3
-         */
         int side = getTexture(ClientProxy.TRIPMINE_SIDE_PATH), front = getTexture(ClientProxy.TRIPMINE_FRONT_PATH),
         		top = getTexture(ClientProxy.TRIPMINE_TOP_PATH);
 
@@ -249,25 +171,7 @@ public class RenderTripmine implements ISimpleBlockRenderingHandler {
         return true;
     }
 	
-    private void addVertex(Vec3 vec3, double texU, double texV){
-    	Tessellator tessellator = Tessellator.instance;
-    	tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord, texU, texV);
-    }
-    
-    private void setBound(Block block){
-    	
-    	minX = block.getBlockBoundsMinX();
-    	minY = block.getBlockBoundsMinY();
-    	minZ = block.getBlockBoundsMinZ();
-    	maxX = block.getBlockBoundsMaxX();
-    	maxY = block.getBlockBoundsMaxY();
-    	maxZ = block.getBlockBoundsMaxZ();
-    	
-    }
-    
-    private int getTexture(String path){
-    	return FMLClientHandler.instance().getClient().renderEngine.getTexture(path);
-    }
+
     
 	@Override
 	public boolean shouldRender3DInInventory() {

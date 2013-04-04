@@ -34,7 +34,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		
 		String pshoot[] = {"cbc.weapons.gaussb", "cbc.weapons.gauss_chargea"};
 		String special[] = {"cbc.weapons.gauss_chargeb"};
-		int shoot[] = { 5 , 0}, dmg[] = {8}, off[] = { 0 };
+		int shoot[] = { 5 , 0}, dmg[] = {8, 0}, off[] = { 0, 0 };
 		double push[] = { 1, 1};
 		
 		setJamTime(0);

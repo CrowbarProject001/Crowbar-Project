@@ -44,7 +44,6 @@ public class EntityBullet extends EntityThrowable {
 			return;
 		
 		int mode = information.mode;
-		int damage = item.damage[mode];
 		int offset = item.offset[mode];
 		
 		float var3 = 0.4F;

@@ -25,6 +25,9 @@ public class ClientProxy extends Proxy{
 		MinecraftForgeClient.preloadTexture(ITEMS_TEXTURE_PATH); 
 		MinecraftForgeClient.preloadTexture(ITEMS_MOTION1_PATH); 
 		MinecraftForgeClient.preloadTexture(GAUSS_BEAM_PATH); 
+		MinecraftForgeClient.preloadTexture(TRIPMINE_FRONT_PATH);
+		MinecraftForgeClient.preloadTexture(TRIPMINE_SIDE_PATH);
+		MinecraftForgeClient.preloadTexture(TRIPMINE_TOP_PATH);
 		
 	}
 }

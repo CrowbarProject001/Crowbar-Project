@@ -12,10 +12,12 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import cbproject.CBCMod;
 import cbproject.configure.Config;
 import cbproject.elements.entities.ammos.EntityAmmoUranium;
+import cbproject.elements.entities.weapons.EntityGauss;
 import cbproject.elements.entities.weapons.EntityHGrenade;
 import cbproject.elements.items.weapons.Weapon_hgrenade;
 import cbproject.elements.renderers.ammos.RenderUranium;
 import cbproject.elements.renderers.weapons.RenderCrossbow;
+import cbproject.elements.renderers.weapons.RenderGaussRay;
 import cbproject.elements.renderers.weapons.RendererHGrenade;
 
 public class CBCRenderManager {
@@ -29,8 +31,11 @@ public class CBCRenderManager {
 		//TODO:在这里注册渲染器
 		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RendererHGrenade(33));
 		RenderingRegistry.registerEntityRenderingHandler(EntityAmmoUranium.class,new RenderUranium());
+		RenderingRegistry.registerEntityRenderingHandler(EntityGauss.class, new RenderGaussRay());
+		
 		MinecraftForgeClient.registerItemRenderer(CBCMod.cbcItems.weapon_crossbow.itemID, new RenderCrossbow());
 		RenderingRegistry.registerBlockHandler(new RenderTripmine());
+		RenderingRegistry.registerBlockHandler(new RenderTripmineRay());
 		
 		System.out.println("Renderer registered");
 	}

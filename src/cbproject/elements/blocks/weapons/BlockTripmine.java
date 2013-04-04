@@ -15,16 +15,19 @@ import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.MotionXYZ;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockTripWireSource;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * @author WeAthFolD
@@ -34,6 +37,7 @@ import net.minecraft.world.World;
 public class BlockTripmine extends Block {
 	
 	public static final int RAY_RANGE = 30;
+	public static final int NOTIFY_ID = 4098;
 	
 	public BlockTripmine(int par1) {
 		
@@ -47,13 +51,81 @@ public class BlockTripmine extends Block {
 
     @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
-    	if(par5 == CBCMod.cbcBlocks.blockTripmineRay.blockID)
-    		Explode(par1World, par2, par3, par4);
+    	
+    	 int var6 = par1World.getBlockMetadata(par2, par3, par4);
+    	 int var7 = var6 & 3;
+    	 Boolean var8 = false;
+         if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH) && var7 == 3)
+         {
+             var8 = true;
+         }
+
+         if (!par1World.isBlockSolidOnSide(par2 + 1, par3, par4, NORTH) && var7 == 1)
+         {
+             var8 = true;
+         }
+
+         if (!par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST) && var7 == 0)
+         {
+             var8 = true;
+         }
+
+         if (!par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST) && var7 == 2)
+         {
+             var8 = true;
+         }
+         if (var8)
+         {
+             this.dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
+             par1World.setBlockWithNotify(par2, par3, par4, 0);
+             return;
+         }
+         
+    	System.out.println("Notify ID : " + par5);
+    	if(par5 != NOTIFY_ID || par5 == 0)
+    		return;
+    	System.out.println("Wire changed.");
+    	this.breakBlock(par1World, par2, par3, par4, 0, 0);
+    	
     }
     
+    @Override
+    public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+    {
+    	Explode(par1World, par2, par3, par4);
+    	int var10 = par1World.getBlockMetadata(par2, par3, par4) & 3;
+    	int i = (var10 == 3 || var10 == 1) ? par2: par4;
+    	for(int j = 0; j <BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){ //收回ray
+    		int id = 0;
+			if(var10 == 1 || var10 == 3){
+				id = par1World.getBlockId(i, par3, par4);
+				if(id == CBCMod.cbcBlocks.blockTripmineRay.blockID)
+					par1World.setBlock(i, par3, par4, 0);
+			} else {
+				id = par1World.getBlockId(par2, par3, i);
+				if(id == CBCMod.cbcBlocks.blockTripmineRay.blockID)
+					par1World.setBlock(par2, par3, i, 0);
+			}
+		}
+    	par1World.setBlockWithNotify(par2, par3, par4, 0);
+    	super.breakBlock(par1World, par2, par3, par4, par5, par6);
+    	
+    }
+    
+    public int quantityDropped(Random par1Random)
+    {
+        return 1;
+    }
+
+    public int idDropped(int par1, Random par2Random, int par3)
+    {
+        return this.blockID;
+    }
+
     private void Explode(World worldObj, int posX, int posY, int posZ){
-		
-		float var1=2.5F; //手雷的0.25倍
+    	
+		System.out.println("Bang!");
+		float var1=0.0F; //手雷的0.25倍
 		double dmg = 20.0F;
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
@@ -86,15 +158,25 @@ public class BlockTripmine extends Block {
 	}
     
     @Override
+    public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
+    {
+        ForgeDirection dir = ForgeDirection.getOrientation(par5);
+        return (dir == NORTH && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH)) ||
+               (dir == SOUTH && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) ||
+               (dir == WEST  && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST )) ||
+               (dir == EAST  && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST ));
+    }
+    
+    @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
-
-        int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 3;
+    	
+        int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
         float var6 = 0.15F;
         float var7 =  0.3F;
         if (var5 == 3) //X+
         {
-            this.setBlockBounds(0.0F, 0.3F, 0.5F - var7, var6 * 2.0F, 0.7F, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2, 0.8)
+            this.setBlockBounds(0.0F, 0.35F, 0.5F - var7, var6 * 2.0F, 0.65F, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2, 0.8)
         }
         else if (var5 == 1) //X-
         {
@@ -125,7 +207,7 @@ public class BlockTripmine extends Block {
             var10 = 0;
         }
 
-        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, NORTH, true)) // X-方向
+        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true)) // X-方向
         {
             var10 = 1;
         }
@@ -136,16 +218,20 @@ public class BlockTripmine extends Block {
         }
         
         int i = (var10 == 1 || var10 == 3)? par2 : par4;
+        if(var10 == 0 || var10 == 3)i++;
+        else i--;
+        
 		Boolean var0 = true;
 		
-		for(; var0 ; i = (var10 == 0 || var10 == 3)? i+1 : i-1){
+		System.out.println("Playced meta: " + var10);
+		for(int j = 0; var0 && j <RAY_RANGE ; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){
 			if(var10 == 1 || var10 == 3){
 				if(par1World.getBlockId(i, par3, par4) == 0){
-				par1World.setBlockAndMetadata(i, par3, par4, CBCMod.cbcBlocks.blockTripmineRay.blockID, par9);
+				par1World.setBlockAndMetadataWithUpdate(i, par3, par4, CBCMod.cbcBlocks.blockTripmineRay.blockID, var10, true);
 				} else var0 = false;
 			} else {
 				if(par1World.getBlockId(par2, par3, i) == 0){
-					par1World.setBlockAndMetadata(par2, par3, i, CBCMod.cbcBlocks.blockTripmineRay.blockID, par9);
+					par1World.setBlockAndMetadataWithUpdate(par2, par3, i, CBCMod.cbcBlocks.blockTripmineRay.blockID, var10, true);
 				} else var0 = false;
 			}
 		}
@@ -176,5 +262,7 @@ public class BlockTripmine extends Block {
 	 {
 	     return false;
 	 }
+
+
 	 
 }
