@@ -23,23 +23,21 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		
 		super(par1, CBCMod.cbcItems.itemAmmo_uranium.itemID, 2);
 		
-		pathSoundShoot = new String[2];
-		pathSoundJam = new String[2];
-		pathSoundSpecial = new String[1];
-		
 		setCreativeTab(CBCMod.cct);
 		setItemName("weapon_gauss");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(6,2);
+		setIconCoord(0,3);
 		
 		String pshoot[] = {"cbc.weapons.gaussb", "cbc.weapons.gauss_chargea"};
 		String special[] = {"cbc.weapons.gauss_chargeb"};
+		String jam[] = {"cbc.weapons.gunjam_a"};
 		int shoot[] = { 5 , 0}, dmg[] = {8, 0}, off[] = { 0, 2 };
 		double push[] = { 1, 1};
 		
-		setJamTime(0);
+		setJamTime(20);
 		setPathShoot(pshoot);
 		setPathSpecial(special);
+		setPathJam(jam);
 		setShootTime(shoot);
 		setDamage(dmg);
 		setOffset(off);
@@ -70,14 +68,15 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
 		if(inf.mode == 1) {
+			
 			inf.isShooting = true;
 			inf.charge = inf.chargeTime = 0;
 			par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.gauss_chargea",  
 					0.5F, 1.0F);
-			par3EntityPlayer.setItemInUse(par1ItemStack,this.getMaxItemUseDuration(par1ItemStack));
 			inf.ammoManager = new AmmoManager(par3EntityPlayer, par1ItemStack);
 			
 		}
+		par3EntityPlayer.setItemInUse(par1ItemStack,this.getMaxItemUseDuration(par1ItemStack));
 		return par1ItemStack;
 		
     }
@@ -86,7 +85,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			Entity par3Entity, int par4, boolean par5){
 		
 		int var1 = 29;
-		int var2 = 200;
+		int var2 = 200; //最大蓄力10s
 		int var3 = 60;
 		int var4 = 100;
 		Boolean isShooting = inf.isShooting;
@@ -114,7 +113,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		}
 			
 		
-		if(inf.charge > var2){
+		if(inf.charge > var2){ //过载，你懂的
 			isShooting = false;
 			inf.charge = 0;
 			par3Entity.attackEntityFrom(DamageSource.causeMobDamage((EntityLiving) (par3Entity)), 19);
@@ -131,26 +130,37 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		InformationEnergy inf = i.getProperEnergy(par2World);
 		if(inf.mode == 0){
 			super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
-			if(inf == null || inf.charge == 0){
-				return;
-			}
+			return;
 		}
+		
 		int charge = (inf.charge > 60? 60 : inf.charge); //最大蓄力3秒(10点)
 		int damage = charge * 2/3; //最大为40
 		double vel = charge / 15; //最大为4
 
+		MotionXYZ var0 = MotionXYZ.getPosByPlayer2(par3EntityPlayer);
+		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ * vel;
+		
 		inf.isShooting = false;
 		par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.gaussb",  
 				0.5F, 1.0F);
-	
+		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
 		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World, "smoke");
 	
 	}
 	
 	@Override
+	public void onEnergyWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
+		if(information.mode == 0 || (information.mode != 0 && information.isShooting == false)){
+			super.onEnergyWpnJam(par1ItemStack, par2World, par3Entity, information);
+			return;
+		}
+			
+	}
+	
+	@Override
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
-        return 200; //10s
+        return 201; //10s
     }
 
 

@@ -26,10 +26,8 @@ public class RenderGaussRay extends RenderEntity {
 		
 		EntityGauss gauss = (EntityGauss)par1Entity;
 		MotionXYZ motion = new MotionXYZ(gauss);
-		System.out.println("pre: " + motion);
 		MovingObjectPosition trace = gauss.worldObj.rayTraceBlocks(motion.asVec3(gauss.worldObj), motion.updateMotion(100.0F).asVec3(gauss.worldObj));
 		Vec3 end = (trace == null)? motion.asVec3(gauss.worldObj) : trace.hitVec;
-		System.out.println("after: " + motion);
 		tessellator = tessellator.instance;
 		
         GL11.glPushMatrix();
@@ -37,8 +35,8 @@ public class RenderGaussRay extends RenderEntity {
         this.loadTexture(ClientProxy.GAUSS_BEAM_PATH);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-        //GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        //GL11.glScalef(0.5F, 0.5F, 0.5F);
+        GL11.glDepthMask(true);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         
         double dx = end.xCoord - gauss.posX;
         double dy = end.yCoord - gauss.posY;
@@ -62,20 +60,20 @@ public class RenderGaussRay extends RenderEntity {
          */
         tessellator.startDrawingQuads();
         
-        addVertex(v1, 0, 0);
+        addVertex(v5, 1, max);
         addVertex(v4, 0, max);
-        addVertex(v5, max, max);
-        addVertex(v2, max, 0);
+        addVertex(v1, 0, 0);
+        addVertex(v2, 1, 0);
         
+        addVertex(v5, 1, max);
+        addVertex(v2, 1, 0);
         addVertex(v3, 0, 0);
-        addVertex(v2, 0, max);
-        addVertex(v5, max, max);
-        addVertex(v6, max, 0);
+        addVertex(v6, 0, max);
         
         addVertex(v1, 0, 0);
-        addVertex(v4, 0, max);
-        addVertex(v6, max, max);
-        addVertex(v3, max, 0);	
+        addVertex(v4, 0, max); 
+        addVertex(v6, 1, max);  
+        addVertex(v3, 1, 0);	
         
         tessellator.draw();
         

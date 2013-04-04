@@ -20,7 +20,7 @@ public class EntityGauss extends EntityThrowable {
 
 	@Override
 	public void onUpdate(){
-		if(this.ticksExisted > 100) //存在0.5秒
+		if(this.ticksExisted > 10) //存在0.5秒
 			this.setDead();
 	}
 	

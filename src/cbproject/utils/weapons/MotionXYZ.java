@@ -148,8 +148,4 @@ public class MotionXYZ {
 		return new MotionXYZ(par1Player,0);
 	}
 	
-
-	
-	
-	
 }

@@ -41,7 +41,7 @@ public class BlockTripmine extends Block {
 	
 	public BlockTripmine(int par1) {
 		
-		super(par1, 38, Material.circuits);
+		super(par1, 65, Material.circuits);
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
 		setCreativeTab(CBCMod.cct);
 		setBlockName("tripmine");

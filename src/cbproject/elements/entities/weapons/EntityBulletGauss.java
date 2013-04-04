@@ -20,8 +20,8 @@ public class EntityBulletGauss extends EntityBullet {
 		
 		super(par1World, par2EntityLiving, par3itemStack, particle);
 		start = Vec3.createVectorHelper(par2EntityLiving.posX, par2EntityLiving.posY, par2EntityLiving.posZ);
-		worldObj.spawnEntityInWorld(new EntityGauss(par1World, par2EntityLiving, par2EntityLiving.motionX, par2EntityLiving.motionY, par2EntityLiving.motionZ));
 		motion = new MotionXYZ(par2EntityLiving);
+		worldObj.spawnEntityInWorld(new EntityGauss(par1World, par2EntityLiving, motion.motionX, motion.motionY, motion.motionZ));
 	}
 	
 	protected void doBlockCollision(MovingObjectPosition result){	
@@ -69,7 +69,6 @@ public class EntityBulletGauss extends EntityBullet {
 		dx *= damage/20;
 		dy *= damage/20;
 		dz *= damage/20;
-		this.getThrower().addVelocity(-dx, -dy, -dz);
 		
 	}
 
