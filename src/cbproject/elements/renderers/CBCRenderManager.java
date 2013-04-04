@@ -18,6 +18,8 @@ import cbproject.elements.items.weapons.Weapon_hgrenade;
 import cbproject.elements.renderers.ammos.RenderUranium;
 import cbproject.elements.renderers.weapons.RenderCrossbow;
 import cbproject.elements.renderers.weapons.RenderGaussRay;
+import cbproject.elements.renderers.weapons.RenderTripmine;
+import cbproject.elements.renderers.weapons.RenderTripmineRay;
 import cbproject.elements.renderers.weapons.RendererHGrenade;
 
 public class CBCRenderManager {

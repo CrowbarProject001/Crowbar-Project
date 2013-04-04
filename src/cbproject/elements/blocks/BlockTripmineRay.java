@@ -66,10 +66,9 @@ public class BlockTripmineRay extends BlockTripWire {
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
     	BlockPos pos = getSource(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
-    	if(pos == null){
-    		System.out.println("Exception: didnt find source.");
+    	
+    	if(pos == null)
     		return;
-    	}
     	par1World.notifyBlockChange(pos.x, pos.y, pos.z, BlockTripmine.NOTIFY_ID);
         return;
     }

@@ -34,7 +34,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		
 		String pshoot[] = {"cbc.weapons.gaussb", "cbc.weapons.gauss_chargea"};
 		String special[] = {"cbc.weapons.gauss_chargeb"};
-		int shoot[] = { 5 , 0}, dmg[] = {8, 0}, off[] = { 0, 0 };
+		int shoot[] = { 5 , 0}, dmg[] = {8, 0}, off[] = { 0, 2 };
 		double push[] = { 1, 1};
 		
 		setJamTime(0);
@@ -142,18 +142,9 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		inf.isShooting = false;
 		par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.gaussb",  
 				0.5F, 1.0F);
-		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3EntityPlayer, par2World, "");
-		MotionXYZ mot = MotionXYZ.getPosByPlayer2(par3EntityPlayer);
-		
-		double var0 = charge/10;
-		double var1 = mot.motionX * var0;
-		double var2 = mot.motionY * var0;
-		double var3 = mot.motionZ * var0;
-
-		par3EntityPlayer.addVelocity(-var1, -var2, -var3);
-		
-		//par2World.spawnEntityInWorld(new EntityGauss(par3EntityPlayer, par2World));
-		
+	
+		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World, "smoke");
+	
 	}
 	
 	@Override

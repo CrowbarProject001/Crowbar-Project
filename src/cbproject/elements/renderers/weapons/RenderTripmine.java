@@ -1,11 +1,12 @@
 /**
  * 
  */
-package cbproject.elements.renderers;
+package cbproject.elements.renderers.weapons;
 
 import org.lwjgl.opengl.GL11;
 
 import cbproject.CBCMod;
+import cbproject.elements.renderers.RendererUtils;
 import cbproject.proxy.ClientProxy;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;

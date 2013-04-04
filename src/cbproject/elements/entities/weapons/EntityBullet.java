@@ -26,6 +26,7 @@ public class EntityBullet extends EntityThrowable {
 	protected World world;
 	protected ItemStack itemStack;
 	protected EntityLiving player;
+	protected MotionXYZ motion;
 	
 	public EntityBullet(World par1World, EntityLiving par2EntityLiving, ItemStack par3itemStack, String particle) {
 		
@@ -45,7 +46,7 @@ public class EntityBullet extends EntityThrowable {
 		
 		int mode = information.mode;
 		int offset = item.offset[mode];
-		
+		motion = new MotionXYZ(par2EntityLiving, 0);
 		float var3 = 0.4F;
 		double dx = (Math.random() -1) * 2 * offset * SCALE,
 			   dy = (Math.random() -1) * 2 * offset * SCALE,
@@ -105,7 +106,7 @@ public class EntityBullet extends EntityThrowable {
 		InformationWeapon inf = item.getInformation(itemStack).getProperInf(worldObj);
 		int mode = inf.mode;
 		double pf = item.pushForce[mode];
-		double dx = motionX * pf, dy = motionY * pf, dz = motionZ * pf;
+		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ * pf;
 		EntityLiving mob = (EntityLiving) result.entityHit;
 	
 		mob.attackEntityFrom(DamageSource.causeMobDamage(player), item.damage[mode]);

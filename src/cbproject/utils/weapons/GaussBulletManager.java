@@ -38,7 +38,7 @@ public class GaussBulletManager extends BulletManager {
 		int z = MathHelper.floor_double(par1Motion.posZ);
 		int id = par4World.getBlockId(x, y, z );
 		if( id > 1){
-			System.out.println("Collided. 1");
+			System.out.println("Collided.");
 			doWallPenetrate( player,new BlockPos(x, y, z, id), par3BBox, par4World, par5Damage, par1Motion);
 			return true;
 		}
@@ -48,6 +48,7 @@ public class GaussBulletManager extends BulletManager {
 	
 	public static void doWallPenetrate(EntityLiving player ,BlockPos blockHit ,
 			AxisAlignedBB bBox, World worldObj, int par5dmg, MotionXYZ motion) {
+		/*
 		double range = 0.2*par5dmg; //最大穿透距离: 8
 		int blockFront = 1 + getFrontBlockCount(blockHit, worldObj, player, true);
 
@@ -95,7 +96,7 @@ public class GaussBulletManager extends BulletManager {
 	    	((EntityLiving)var2).attackEntityFrom(DamageSource.causeMobDamage(player), 
 	    			(int) Math.round(damage * (1.0 - distance/(range * 1.414))));
 	    }
-		
+		*/
 	}
 
 	/*

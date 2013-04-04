@@ -3,43 +3,24 @@ package cbproject.elements.entities.weapons;
 import cbproject.utils.weapons.MotionXYZ;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class EntityGauss extends Entity {
+public class EntityGauss extends EntityThrowable {
 	
-	
-	public Vec3 start, end;
-	
-	public EntityGauss(World par1World, Vec3 par2, Vec3 par3){
-		
-		super(par1World);
-		start = par2;
-		end = par3;
-		
-	}
-	
-	public EntityGauss(World par2World, MotionXYZ player, MovingObjectPosition result ){
-		
-		super(par2World);
-		this.posX = player.posX;
-		this.posY = player.posY;
-		this.posZ = player.posZ;
-		motionX = player.motionX;
-		motionY = player.motionY;
-		motionZ = player.motionZ;
-		
-		start = player.asVec3(par2World);
-		end = result.hitVec;
-		
+	public EntityGauss(World par1World,EntityLiving ent, double moX, double moY, double moZ){
+		super(par1World, ent);
+		motionX = moX;
+		motionY = moY;
+		motionZ = moZ;
 	}
 
 	@Override
 	public void onUpdate(){
-		super.onUpdate();
-		if(this.ticksExisted > 10) //存在0.5秒
+		if(this.ticksExisted > 100) //存在0.5秒
 			this.setDead();
 	}
 	
@@ -50,14 +31,17 @@ public class EntityGauss extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-
+	protected float func_70182_d(){
+		return 0.0F;
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
+	protected float getGravityVelocity(){
+		return 0.0F;
+	}
+
+	@Override
+	protected void onImpact(MovingObjectPosition var1) {
 
 	}
 

@@ -1,43 +1,59 @@
 package cbproject.elements.renderers.weapons;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cbproject.elements.entities.weapons.EntityGauss;
 import cbproject.proxy.ClientProxy;
+import cbproject.utils.weapons.MotionXYZ;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
 public class RenderGaussRay extends RenderEntity {
 
 	public static double RADIUS = 0.05F;
+	private static Tessellator tessellator = Tessellator.instance;
+	
 	@Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
+		
 		EntityGauss gauss = (EntityGauss)par1Entity;
-		Vec3 begin = gauss.start;
-		Vec3 end = gauss.end;
-		System.out.println("Doing render");
+		MotionXYZ motion = new MotionXYZ(gauss);
+		System.out.println("pre: " + motion);
+		MovingObjectPosition trace = gauss.worldObj.rayTraceBlocks(motion.asVec3(gauss.worldObj), motion.updateMotion(100.0F).asVec3(gauss.worldObj));
+		Vec3 end = (trace == null)? motion.asVec3(gauss.worldObj) : trace.hitVec;
+		System.out.println("after: " + motion);
+		tessellator = tessellator.instance;
+		
         GL11.glPushMatrix();
-        
-        int tex = getTexture(ClientProxy.GAUSS_BEAM_PATH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
-        Tessellator tessellator = Tessellator.instance;
+       
+        this.loadTexture(ClientProxy.GAUSS_BEAM_PATH);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glTranslatef((float)par2, (float)par4, (float)par6);
+        //GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        //GL11.glScalef(0.5F, 0.5F, 0.5F);
+        
+        double dx = end.xCoord - gauss.posX;
+        double dy = end.yCoord - gauss.posY;
+        double dz = end.zCoord - gauss.posZ;
         
         Vec3 v1, v2, v3, v4, v5, v6;
-        v1 = Vec3.createVectorHelper(begin.xCoord - RADIUS, begin.yCoord - RADIUS, begin.zCoord - RADIUS);
-        v2 = Vec3.createVectorHelper(begin.xCoord, begin.yCoord + RADIUS, begin.zCoord);
-        v3 = Vec3.createVectorHelper(begin.xCoord + RADIUS, begin.yCoord - RADIUS, begin.zCoord + RADIUS);
+        v1 = Vec3.createVectorHelper(- RADIUS,- RADIUS,- RADIUS);
+        v2 = Vec3.createVectorHelper(0, RADIUS, 0);
+        v3 = Vec3.createVectorHelper(RADIUS,-RADIUS,RADIUS);
         
-        v4 = Vec3.createVectorHelper(end.xCoord - RADIUS, end.yCoord - RADIUS, end.zCoord - RADIUS);
-        v5 = Vec3.createVectorHelper(end.xCoord, end.yCoord + RADIUS, end.zCoord);
-        v6 = Vec3.createVectorHelper(end.xCoord + RADIUS, end.yCoord - RADIUS, end.zCoord + RADIUS);
+        v4 = Vec3.createVectorHelper(dx - RADIUS, dy - RADIUS, dz - RADIUS);
+        v5 = Vec3.createVectorHelper(dx, dy + RADIUS, dz);
+        v6 = Vec3.createVectorHelper(dx + RADIUS, dy - RADIUS, dz + RADIUS);
+        
+        double max = Math.abs(dx);
         
         /*
          * 1,4,5,2
@@ -47,19 +63,19 @@ public class RenderGaussRay extends RenderEntity {
         tessellator.startDrawingQuads();
         
         addVertex(v1, 0, 0);
-        addVertex(v4, 0, 1);
-        addVertex(v5, 1, 1);
-        addVertex(v2, 1, 0);
+        addVertex(v4, 0, max);
+        addVertex(v5, max, max);
+        addVertex(v2, max, 0);
         
         addVertex(v3, 0, 0);
-        addVertex(v2, 0, 1);
-        addVertex(v5, 1, 1);
-        addVertex(v6, 1, 0);
+        addVertex(v2, 0, max);
+        addVertex(v5, max, max);
+        addVertex(v6, max, 0);
         
         addVertex(v1, 0, 0);
-        addVertex(v4, 0, 1);
-        addVertex(v6, 1, 1);
-        addVertex(v3, 1, 0);	
+        addVertex(v4, 0, max);
+        addVertex(v6, max, max);
+        addVertex(v3, max, 0);	
         
         tessellator.draw();
         
@@ -71,7 +87,7 @@ public class RenderGaussRay extends RenderEntity {
     }
     
     protected void addVertex(Vec3 vec3, double texU, double texV){
-    	Tessellator tessellator = Tessellator.instance;
+    	
     	tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord, texU, texV);
     }
     

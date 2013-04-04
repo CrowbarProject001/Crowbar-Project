@@ -5,6 +5,7 @@ import java.util.List;
 
 import cbproject.utils.BlockPos;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -38,10 +39,36 @@ public class MotionXYZ {
 		motionY = par5;
 		motionZ = par6;
 	}
-
-	public MotionXYZ(EntityLiving par1Player, int par2){
+	
+	public MotionXYZ(MotionXYZ a){
 		
-		getPosByPlayer(par1Player);
+		posX = a.posX;
+		posY = a.posY;
+		posZ = a.posZ;
+		motionX = a.motionX;
+		motionY = a.motionY;
+		motionZ = a.motionZ;
+		
+	}
+	
+	public MotionXYZ(Entity ent){
+		this(ent, 0);
+	}
+
+	public MotionXYZ(Entity par1Player, int par2){
+		if(par1Player instanceof EntityLiving)
+			getPosByPlayer((EntityLiving) par1Player);
+		else { 
+			
+			posX = par1Player.posX;
+			posY = par1Player.posY;
+			posZ = par1Player.posZ;
+			motionX = par1Player.motionX;
+			motionY = par1Player.motionY;
+			motionZ = par1Player.motionZ;
+			
+		}
+		
 		setOffset(par2);
 	
 	}
