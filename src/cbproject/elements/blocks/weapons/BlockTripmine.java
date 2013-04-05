@@ -55,6 +55,7 @@ public class BlockTripmine extends Block {
     	 int var6 = par1World.getBlockMetadata(par2, par3, par4);
     	 int var7 = var6 & 3;
     	 Boolean var8 = false;
+    	 //判断能否继续存在
          if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH) && var7 == 3)
          {
              var8 = true;
@@ -81,32 +82,32 @@ public class BlockTripmine extends Block {
              return;
          }
          
-    	System.out.println("Notify ID : " + par5);
-    	if(par5 != NOTIFY_ID || par5 == 0)
-    		return;
-    	System.out.println("Wire changed.");
-    	this.breakBlock(par1World, par2, par3, par4, 0, 0);
+    	if(par5 == NOTIFY_ID)
+    		this.breakBlock(par1World, par2, par3, par4, 0, 0);   	
     	
     }
     
     @Override
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
-    {
-    	Explode(par1World, par2, par3, par4);
+    {    	
     	int var10 = par1World.getBlockMetadata(par2, par3, par4) & 3;
     	int i = (var10 == 3 || var10 == 1) ? par2: par4;
-    	for(int j = 0; j <BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){ //收回ray
+    	
+    	//收回光束方块
+    	for(int j = 0; j <BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){ 
     		int id = 0;
-			if(var10 == 1 || var10 == 3){
+			if(var10 == 1 || var10 == 3){ //x+, x-方向
 				id = par1World.getBlockId(i, par3, par4);
 				if(id == CBCMod.cbcBlocks.blockTripmineRay.blockID)
 					par1World.setBlock(i, par3, par4, 0);
-			} else {
+			} else { //z+, z-方向
 				id = par1World.getBlockId(par2, par3, i);
 				if(id == CBCMod.cbcBlocks.blockTripmineRay.blockID)
 					par1World.setBlock(par2, par3, i, 0);
 			}
 		}
+    	
+    	Explode(par1World, par2, par3, par4);
     	par1World.setBlockWithNotify(par2, par3, par4, 0);
     	super.breakBlock(par1World, par2, par3, par4, par5, par6);
     	
@@ -114,18 +115,17 @@ public class BlockTripmine extends Block {
     
     public int quantityDropped(Random par1Random)
     {
-        return 1;
+        return 0;
     }
 
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return this.blockID;
+        return 0;
     }
 
     private void Explode(World worldObj, int posX, int posY, int posZ){
     	
-		System.out.println("Bang!");
-		float var1=0.0F; //手雷的0.25倍
+		float var1=1.5F; //手雷的0.25倍
 		double dmg = 20.0F;
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {

@@ -30,6 +30,16 @@ public class GaussBulletManager extends BulletManager {
 		worldObj.spawnEntityInWorld(new EntityBulletGauss(worldObj, entityPlayer, itemStack, particle));
 	}
 	
+	/*
+	 * Provide beginning point for shoot rather than use Player's coords.
+	 * used in GaussWallPenetration
+	 */
+	public static void Shoot(MotionXYZ begin, float pitch, float yaw, 
+			ItemStack itemStack, EntityLiving entityPlayer, World worldObj){
+		
+		worldObj.spawnEntityInWorld(new EntityBulletGauss(begin, pitch, yaw, itemStack, entityPlayer, worldObj));
+	}
+	
 	public static Boolean doBlockCollision(EntityLiving player, MotionXYZ par1Motion, AxisAlignedBB par3BBox, World par4World, int par5Damage){
 		
 		BlockPos block;
@@ -39,7 +49,7 @@ public class GaussBulletManager extends BulletManager {
 		int id = par4World.getBlockId(x, y, z );
 		if( id > 1){
 			System.out.println("Collided.");
-			doWallPenetrate( player,new BlockPos(x, y, z, id), par3BBox, par4World, par5Damage, par1Motion);
+			
 			return true;
 		}
 
@@ -107,42 +117,7 @@ public class GaussBulletManager extends BulletManager {
 		return 1.0;
 	}
 	
-	private static int getFrontBlockCount(BlockPos pos, World worldObj, EntityLiving player, Boolean recall) {
-		
-		int[] side = getSideByPlayer(player);
-		int x = pos.x + side[0], y = pos.y + side[1], z = pos.z + side[2];
-		int id = worldObj.getBlockId(x, y, z);
-		if(id <= 1){
-			return 0;
-		}
-		if(!recall)
-			return 1;
-		return 1 + getFrontBlockCount(new BlockPos(x,y,z,0), worldObj, player, false);
-		
-	}
-	
-	private static int[] getSideByPlayer(EntityLiving player){
-		
-		int dx = 0, dy, dz = 0;
-		if(player.rotationPitch > -45 && player.rotationPitch < 45){
-			dy = 0;
-		} else if(player.rotationPitch > -65 && player.rotationPitch <65){
-			dy = player.rotationPitch > 0 ? -1 : 1;
-		} else {
-			dy = player.rotationPitch > 0 ? -2 : 2;
-		}
-		if(2 != Math.abs(dy)){
-			if(player.rotationYawHead > 315 || player.rotationYawHead <45)
-				dz = 1;
-			else if (player.rotationYawHead < 225 || player.rotationYawHead > 135)
-				dz = -1;
-			else dx = player.rotationYawHead < 180 ? -1 : 1;
-		} else dy = (dy >0? 1 : -1);
-		
-		int[] side = {dx, dy, dz};
-		return side;
-			
-	}
+
 	
 	private static double getConvensionRadius(BlockPos hit, MotionXYZ motion){
 		return 1.0D;

@@ -10,17 +10,20 @@ import cbproject.proxy.ClientProxy;
 import cbproject.utils.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTripWire;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Direction;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockTripmineRay extends BlockTripWire {
+public class BlockTripmineRay extends Block {
 
 	public BlockTripmineRay(int par1) {
-		super(par1);
+		
+		super(par1, 0, Material.circuits);
 		setTextureFile(ClientProxy.TRIPMINE_RAY_PATH);
 		setBlockUnbreakable();
 	}
@@ -56,10 +59,8 @@ public class BlockTripmineRay extends BlockTripWire {
         return 0;
     }
     
-    @Override
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
-    {
-        System.out.println("Metadata added: " + par1World.getBlockMetadata(par2, par3, par4));
+    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
+    	onEntityCollidedWithBlock(par1World, par4, par4, par4, par5EntityPlayer);
     }
     
     @Override
@@ -79,7 +80,6 @@ public class BlockTripmineRay extends BlockTripWire {
     	
     	BlockPos pos = getSource(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
     	if(pos == null){
-    		System.out.println("Exception: didnt find source.");
     		par1World.setBlockWithNotify(par2, par3, par4, 0);
     		return;
     	}
@@ -114,19 +114,7 @@ public class BlockTripmineRay extends BlockTripWire {
     public BlockPos getSource(World worldObj, int x, int y, int z, int var10){
     	
     	BlockPos blockPos = null;
-    	switch(var10){
-    	case 3:
-    		System.out.println("Searching in x-");
-    		break;
-    	case 1:
-    		System.out.println("Searching in x+");
-    		break;
-    	case 0:
-    		System.out.println("Searching in z-");
-    		break;
-    		default:
-    			System.out.println("Searching in z+");
-    	}
+
     	int j = 0;
 		for(int i = (var10 == 1 || var10 == 3)? x : z; j < BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i-1 : i + 1, j++){
 			if(var10 == 1 || var10 == 3){
@@ -147,8 +135,5 @@ public class BlockTripmineRay extends BlockTripWire {
 		
     }
     
-
-    
-
 
 }
