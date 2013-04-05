@@ -21,9 +21,9 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		setItemName("weapon_crossbow");
 		
 		//setTextureFile(ClientProxy.ITEMS_MOTION1_PATH);
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
+		setTextureFile(ClientProxy.ITEMS_MOTION1_PATH);
 		//setIconCoord(0, 0);
-		setIconCoord(6, 2);
+		setIconIndex(0);
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
 		setMaxDamage(6);

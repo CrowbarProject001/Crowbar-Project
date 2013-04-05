@@ -21,9 +21,9 @@ import net.minecraftforge.common.ForgeDirection;
 public class EntityBulletGauss extends EntityBullet {
 
 	public Vec3 start;
-	public Boolean doPenetrate;
-	private MotionXYZ motion;
 	private static final float CHARGE_DAMAGE_SCALE = 10.0F;
+	private WeaponGeneral item;
+	private InformationEnergy inf;
 	
 	public EntityBulletGauss(World par1World, EntityLiving par2EntityLiving,
 			ItemStack par3itemStack, String particle) {
@@ -32,38 +32,27 @@ public class EntityBulletGauss extends EntityBullet {
 		start = Vec3.createVectorHelper(par2EntityLiving.posX, par2EntityLiving.posY, par2EntityLiving.posZ);
 		motion = new MotionXYZ(par2EntityLiving);
 		worldObj.spawnEntityInWorld(new EntityGauss(par1World, par2EntityLiving, motion.motionX, motion.motionY, motion.motionZ));
-		doPenetrate = true;
+		item = (WeaponGeneral) itemStack.getItem();
+		inf = item.getInformation(itemStack).getProperEnergy(worldObj);
 	}
 	
-	public EntityBulletGauss(MotionXYZ begin,float pitch, float yaw, ItemStack itemStack, EntityLiving entityPlayer, World worldObj){
-		
-		super(worldObj, entityPlayer, itemStack, "");
-		
-		doPenetrate = false;
-		motionX = begin.motionX;
-		motionY = begin.motionY;
-		motionZ = begin.motionZ;
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
-		this.setLocationAndAngles(begin.posX, begin.posY, begin.posZ, pitch, yaw);
-		
-	}
-	
+
 	/*
 	 * Gauss wall penetrate func.
 	 */
 	protected void doBlockCollision(MovingObjectPosition result){	
-		if(doPenetrate)
-			doWallPenetrate(result);
+		doWallPenetrate(result);
 	}
 	
 	private void doWallPenetrate(MovingObjectPosition result) {
 		
-		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		InformationEnergy inf = item.getInformation(itemStack).getProperEnergy(worldObj);
-		int damage = getChargeDamage(inf);
-		doReflection(result, motion, worldObj); //反射函数 同时进行damage的衰减
+		//反射函数 同时进行damage的衰减
+		if(result.sideHit == -1)
+			return;
 		
+		int damage = doReflection(result, worldObj);
 		double range = 0.2*damage; //最大穿透距离: 8
+		
 		int blockFront = 1 + getFrontBlockCount(new BlockPos(result.blockX, result.blockY, result.blockZ, 0)
 			, worldObj, true);
 		if(blockFront >= 3) //太厚了穿透不能QAQ
@@ -83,11 +72,13 @@ public class EntityBulletGauss extends EntityBullet {
 	    		cx + radius, cy + radius, cz + radius);   //穿墙伤害到的范围
 	    List var1 = worldObj.getEntitiesWithinAABBExcludingEntity(player, box);
 	    Entity var2;
-	    MotionXYZ var4 = new MotionXYZ(result.blockX, result.blockY, result.blockZ,
-	    		motion.motionX, motion.motionY, motion.motionZ).updateMotion(2.0);
-	    GaussBulletManager.Shoot(var4,this.rotationPitch,this.rotationYaw, itemStack, getThrower(), worldObj); //穿墙后直射的光线
-
-	    System.out.println(box);
+	    
+	    MotionXYZ end = new MotionXYZ(motion);
+	    end.posX = result.blockX;
+	    end.posY = result.blockY;
+	    end.posZ = result.blockZ;
+	    GaussBulletManager.Shoot2(motion, end, itemStack, getThrower(), worldObj, damage, result, 0);
+	    
 	    for(int i = 0; i < var1.size(); i++){
 	    	var2 = (Entity) var1.get(i);
 	    	if(!(var2 instanceof EntityLiving))
@@ -106,15 +97,13 @@ public class EntityBulletGauss extends EntityBullet {
 	/*
 	 * 穿墙射击的反射计算函数.
 	 */
-	private void doReflection(MovingObjectPosition result, MotionXYZ motion2,
+	private int doReflection(MovingObjectPosition result,
 			World worldObj) {
 		
-		MotionXYZ start = new MotionXYZ(motion2);
-		start.posX = result.blockX;
-		start.posY = result.blockY;
-		start.posZ = result.blockZ;
-		double a = Math.pow(Math.pow(start.motionX, 2) + 
-				Math.pow(start.motionY, 2) +  Math.pow(start.motionZ, 2), 0.5);
+		MotionXYZ end = new MotionXYZ(result.hitVec, motion.motionX, motion.motionY, motion.motionZ);
+		
+		double a = Math.pow(Math.pow(motion.motionX, 2) + 
+				Math.pow(motion.motionY, 2) +  Math.pow(motion.motionZ, 2), 0.5);
 		double sin = 0.0; //入射角正弦值
 		float pitch = rotationPitch, yaw = rotationYaw;
 		/*
@@ -129,38 +118,42 @@ public class EntityBulletGauss extends EntityBullet {
 		case 0:
 		case 1:
 			sin = - motionY / a;
-			start.motionY = -start.motionY;
+			end.motionY = -end.motionY;
+			pitch = -pitch;
 			break;
 		case 2: 
 		case 3:
 			sin = - motionX /a;
-			start.motionX = -start.motionX;
+			end.motionX = -end.motionX;
 			break;
 		case 4:
 		case 5:
 			sin = - motionZ /a;
-			start.motionZ = -start.motionZ;
+			end.motionZ = -end.motionZ;
 			break;
 		default:
-			return;
+			return getChargeDamage();
 		}
+
 		System.out.println("Shoot angle sin: " + sin);
+		int damage =(int) Math.round( Math.abs(sin)/90 * getChargeDamage() );
 		if(sin < -45 || sin > 45){
-			motion.updateMotion(0.5F);
-			GaussBulletManager.Shoot(start, pitch, yaw, itemStack, getThrower(), worldObj);
+			GaussBulletManager.Shoot2(motion, end, itemStack, getThrower(), worldObj, damage, result, 1);
 		}
-		
+		return getChargeDamage() - damage;
 	}
 
 	@Override
 	protected void onImpact(MovingObjectPosition par1)
 	{    
 
+			
 	    switch(par1.typeOfHit){
 	    case TILE:
 	    	doBlockCollision(par1);
-	    	 this.setDead();
+	    	this.setDead();
 	    	break;
+	    	
 	    case ENTITY:
 	    	doEntityCollision(par1);
 	    	break;
@@ -196,7 +189,7 @@ public class EntityBulletGauss extends EntityBullet {
 	private void doEntityCharge(MovingObjectPosition result, InformationEnergy information, WeaponGeneral item) {
 
 		int mode = information.mode;
-		int damage = getChargeDamage(information);
+		int damage = getChargeDamage();
 		double var0 = damage/20;
 		double dx = motion.motionX * var0, dy = motion.motionY * var0, dz = motion.motionZ * var0;
 		
@@ -254,7 +247,7 @@ public class EntityBulletGauss extends EntityBullet {
 			
 	}
 	
-	private int getChargeDamage(InformationEnergy inf){
+	private int getChargeDamage(){
 		return (int) Math.round(inf.charge * 0.66) ;
 	}
 	
@@ -262,5 +255,5 @@ public class EntityBulletGauss extends EntityBullet {
 	protected float func_70182_d(){
 		return 50.0F;
 	}
-
+	
 }

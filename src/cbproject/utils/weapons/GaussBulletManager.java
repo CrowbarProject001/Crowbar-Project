@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityBullet;
 import cbproject.elements.entities.weapons.EntityBulletGauss;
+import cbproject.elements.entities.weapons.EntityBulletGaussSec;
 import cbproject.elements.entities.weapons.EntityGauss;
 import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.utils.BlockPos;
@@ -33,11 +34,15 @@ public class GaussBulletManager extends BulletManager {
 	/*
 	 * Provide beginning point for shoot rather than use Player's coords.
 	 * used in GaussWallPenetration
+	 * begin : origin Shooter coords
+	 * end : blockHit coords & new motion
+	 * damage : damage to apply
 	 */
-	public static void Shoot(MotionXYZ begin, float pitch, float yaw, 
-			ItemStack itemStack, EntityLiving entityPlayer, World worldObj){
+	public static void Shoot2(MotionXYZ begin, MotionXYZ end, 
+			ItemStack itemStack, EntityLiving entityPlayer, World worldObj, int damage, MovingObjectPosition result, int typeOfRay){
 		
-		worldObj.spawnEntityInWorld(new EntityBulletGauss(begin, pitch, yaw, itemStack, entityPlayer, worldObj));
+		worldObj.spawnEntityInWorld(new EntityBulletGaussSec(begin, end, itemStack, 
+				entityPlayer, worldObj, damage, result, typeOfRay));
 	}
 	
 	public static Boolean doBlockCollision(EntityLiving player, MotionXYZ par1Motion, AxisAlignedBB par3BBox, World par4World, int par5Damage){

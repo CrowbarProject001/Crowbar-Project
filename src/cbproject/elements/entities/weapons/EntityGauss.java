@@ -16,11 +16,23 @@ public class EntityGauss extends EntityThrowable {
 		motionX = moX;
 		motionY = moY;
 		motionZ = moZ;
+		System.out.println("Primary ray. Pos : " + posX + " " + posY + " " + posZ + " \n" +
+				"Motion: " + motionX + " " + motionY + " " + motionZ );
+	}
+	
+	public EntityGauss(MotionXYZ begin, World par1World, EntityLiving ent){
+		super(par1World, ent);
+		this.posX = begin.posX;
+		this.posY = begin.posY;
+		this.posZ = begin.posZ;
+		this.motionX = begin.motionX;
+		this.motionY = begin.motionY;
+		this.motionZ = begin.motionZ;
 	}
 
 	@Override
 	public void onUpdate(){
-		if(this.ticksExisted > 10) //存在0.5秒
+		if(this.ticksExisted > 1000) //存在0.5秒
 			this.setDead();
 	}
 	

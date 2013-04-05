@@ -1,6 +1,9 @@
 package cbproject.elements.renderers.weapons;
 
+import static net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED;
+
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.TextureFXManager;
 import net.minecraft.client.Minecraft;
@@ -44,7 +47,7 @@ public class RenderCrossbow implements IItemRenderer {
 			return true;
 			
 		default:
-				return false;
+			return false;
 			
 		}
 	}
@@ -53,22 +56,14 @@ public class RenderCrossbow implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		Tessellator tesselator = Tessellator.instance;
 		switch(type){
-		case FIRST_PERSON_MAP:
-			EntityPlayer entityPlayer = (EntityPlayer)data[0];
-			RenderEngine renderEngine = (RenderEngine)data[1];
-			MapData mapData = (MapData)data[2];
-			break;
 		case EQUIPPED:
 			RenderBlocks render = (RenderBlocks)data[0];
 			EntityLiving ent = (EntityLiving)data[1];
-			int index = item.getItem().getIconIndex(item);
-			//38 = 16*2 + 6
+			int index = 0;
 			float a = MathHelper.floor_float(index / 16);
 			float b = (index % 16)/16.0F;
 			a /= 16.0F;
-			renderItemIn2D(tesselator, b, a, b + 1/16F, a + 1/16F, 0.5F);
-		case INVENTORY:
-			
+			renderItemIn2D(tesselator, b, a, b + 1/16F, a + 1/16F, 0.3F);
 		default:
 			break;
 		}
@@ -81,7 +76,7 @@ public class RenderCrossbow implements IItemRenderer {
 	 * Y:左右 正方形向左
 	 * 
 	 */
-    public static void renderItemIn2D(Tessellator par0Tessellator, float par1, float par2, float par3, float par4, float par5)
+    public static void renderItemIn2D(Tessellator t, float u1, float v1, float u2, float v2, float par5)
     {
         float var6 = 1.0F;
         /*
@@ -93,19 +88,22 @@ public class RenderCrossbow implements IItemRenderer {
         par0Tessellator.addVertexWithUV(0.0D, 1.0D, 0.0D, (double)par1, (double)par2);
         par0Tessellator.draw();
         */
-       
-        for(int i=0; i<20; i++){
-        	float var1 = i/100;
-        	par0Tessellator.startDrawingQuads(); 
-        	par0Tessellator.setNormal(0.0F, 0.0F, -1.0F);
-        	par0Tessellator.addVertexWithUV(1,1,-1+ var1, (double)par1, (double)par2);
-        	par0Tessellator.addVertexWithUV(1,0,-1+ var1, (double)par1, (double)par4);
-        	par0Tessellator.addVertexWithUV(0,0,0+ var1, (double)par3, (double)par4);
-        	par0Tessellator.addVertexWithUV(0,1,0+ var1, (double)par3, (double)par2);
-        	par0Tessellator.draw();
-        }
+    
+        t.startDrawingQuads();
+        t.setNormal(0.0F, 0.0F, 1.0F);
+        t.addVertexWithUV(0.0D, 0.0D, 0.0D, (double)u1, (double)v2);
+        t.addVertexWithUV((double)var6, 0.0D, 0.0D, (double)u2, (double)v2);
+        t.addVertexWithUV((double)var6, 1.0D, 0.0D, (double)u2, (double)v1);
+        t.addVertexWithUV(0.0D, 1.0D, 0.0D, (double)u1, (double)v1);
+        t.draw();
+        t.startDrawingQuads();
+        t.setNormal(0.0F, 0.0F, -1.0F);
+        t.addVertexWithUV(0.0D, 1.0D, (double)(0.0F - par5), (double)u1, (double)v1);
+        t.addVertexWithUV((double)var6, 1.0D, (double)(0.0F - par5), (double)u2, (double)v1);
+        t.addVertexWithUV((double)var6, 0.0D, (double)(0.0F - par5), (double)u2, (double)v2);
+        t.addVertexWithUV(0.0D, 0.0D, (double)(0.0F - par5), (double)u1, (double)v2);
+        t.draw();
         
-
         /*
         par0Tessellator.startDrawingQuads();
         par0Tessellator.setNormal(-1.0F, 0.0F, 0.0F);
