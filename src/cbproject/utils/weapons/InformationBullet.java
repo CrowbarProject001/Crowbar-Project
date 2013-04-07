@@ -7,7 +7,6 @@ public class InformationBullet extends InformationWeapon{
 	//357,9mmAR,9mmhandgun等的辅助类
 	
 	public int ticksExisted, lastTick;
-	public AmmoManager ammoManager;
 	public Boolean isShooting,isReloading;
 	
 	public InformationBullet(EntityPlayer par7Player, ItemStack par8Weapon) {

@@ -54,7 +54,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		Boolean canUse = (information.ammoManager.getAmmoCapacity() > 0 );
 		Boolean isShooting = information.isShooting;
 		int mode = information.mode;
-		
+		information.ammoManager.setAmmoInformation(par3EntityPlayer);
 		if(canUse && mode == 0){
 			isShooting = true;
 			if( shootTime[mode] != 0 && information.ticksExisted - information.lastTick >= shootTime[mode]){
@@ -123,7 +123,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
     		information.isRecovering = true;
     		information.recoverTick = 0;
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
-    				information.ammoManager.consumeAmmo(1, (EntityPlayer)par3Entity);
+    				information.ammoManager.consumeAmmo(1);
     		}
     	}
     	

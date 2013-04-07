@@ -17,6 +17,11 @@ public class ClientProxy extends Proxy{
 	public final static String TRIPMINE_TOP_PATH = "/cbproject/gfx/textures/tripmine_top.png";
 	public final static String TRIPMINE_RAY_PATH = "/cbproject/gfx/textures/gaussbeam.png";
 	
+	public final static String SATCHEL_TOP_PATH = "/cbproject/gfx/textures/satchel_top.png",
+			SATCHEL_BOTTOM_PATH = "/cbproject/gfx/textures/satchel_bottom.png", 
+			SATCHEL_SIDE_PATH = "/cbproject/gfx/textures/satchel_side.png",
+			SATCHEL_SIDE2_PATH = "/cbproject/gfx/textures/satchel_side2.png";
+	
 	@Override 
 	public void init() { 
 		
@@ -28,6 +33,10 @@ public class ClientProxy extends Proxy{
 		MinecraftForgeClient.preloadTexture(TRIPMINE_FRONT_PATH);
 		MinecraftForgeClient.preloadTexture(TRIPMINE_SIDE_PATH);
 		MinecraftForgeClient.preloadTexture(TRIPMINE_TOP_PATH);
+		MinecraftForgeClient.preloadTexture(SATCHEL_TOP_PATH);
+		MinecraftForgeClient.preloadTexture(SATCHEL_BOTTOM_PATH);
+		MinecraftForgeClient.preloadTexture(SATCHEL_SIDE_PATH);
+		MinecraftForgeClient.preloadTexture(SATCHEL_SIDE2_PATH);
 		
 	}
 }

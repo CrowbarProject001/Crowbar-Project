@@ -95,7 +95,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     		int ticksPassed = information.ticksExisted - information.lastTick;
     		if( ticksPassed >= var1){
     			if( cap > 0 ){
-        			information.ammoManager.consumeAmmo(1, (EntityPlayer)par3Entity);
+        			information.ammoManager.consumeAmmo(1);
     				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - 1);
     		    	int index = (int) (pathSoundReload.length * Math.random());
     		    	par2World.playSoundAtEntity(par3Entity, pathSoundReload[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	

@@ -25,15 +25,15 @@ public abstract class WeaponGeneral extends Item {
 	public  double upLiftRadius, recoverRadius; //player screen uplift radius in degree
 	public double  pushForce[];
 	public  int damage[], offset[]; //damage and offset(offset: 0-100, larger the wider bullet spray)
-	public final void setPushForce(double[] par1){
+	public final void setPushForce(double... par1){
 		pushForce = par1;
 	}
 	
-	public final void setDamage(int[] par1){
+	public final void setDamage(int... par1){
 		damage = par1;
 	}
 	
-	public final void setOffset(int[] par1){
+	public final void setOffset(int... par1){
 		offset = par1;
 	}
 	
@@ -60,11 +60,11 @@ public abstract class WeaponGeneral extends Item {
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
 			return;
 		
-		InformationSet inf = getInformation(par1ItemStack);
+		InformationSet inf = loadInformation(par1ItemStack, (EntityPlayer) par3Entity);
 		if(inf == null)
 			return;
-		InformationWeapon information = inf.getProperInf(par2World);
 		
+		InformationWeapon information = inf.getProperInf(par2World);
 		if(information.isRecovering){
 			par3Entity.rotationPitch += recoverRadius;
 			information.recoverTick++;
@@ -72,9 +72,16 @@ public abstract class WeaponGeneral extends Item {
 				information.isRecovering = false;
 		}
 		
-		if(CBCKeyProcess.modeChange)
-			CBCKeyProcess.onModeChange(information, (EntityPlayer) par3Entity, maxModes);		
+		if(CBCKeyProcess.modeChange){
+			CBCKeyProcess.modeChange = false;
+			onModeChange(information, (EntityPlayer) par3Entity);	
+		}
 
+	}
+	
+	public void onModeChange(InformationWeapon inf, EntityPlayer player){
+		inf.mode = (maxModes -1 == inf.mode) ? 0 : inf.mode +1;
+		System.out.println("New Mode : " + inf.mode);
 	}
 	
 	

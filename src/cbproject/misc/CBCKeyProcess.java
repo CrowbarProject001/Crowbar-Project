@@ -15,6 +15,7 @@ import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 
 import cbproject.configure.Config;
+import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
 /**
@@ -43,10 +44,18 @@ public class CBCKeyProcess extends KeyHandler{
 		KeyCodes[0].keyCode = Key_ModeChange;
 	}
 	
-	public static void onModeChange(InformationWeapon inf, EntityPlayer player, int maxModes){
+	public static void onModeChange(InformationSet inf, EntityPlayer player, int maxModes){
+		
 			modeChange = false;
-			inf.mode = (maxModes -1 == inf.mode) ? 0 : inf.mode +1;
-			player.sendChatToPlayer("New Mode: " + inf.mode);
+			InformationWeapon cl = inf.clientReference, sv = inf.serverReference;
+			if(player.worldObj.isRemote){
+				cl.mode = (maxModes -1 == cl.mode) ? 0 : cl.mode +1;
+				sv.mode = cl.mode;
+			}
+			else sv.mode = cl.mode;
+			sv.modeChange = cl.modeChange = true;
+			player.sendChatToPlayer("New Mode: " + inf.getProperInf(player.worldObj).mode);
+			
 	}
 
 	@Override

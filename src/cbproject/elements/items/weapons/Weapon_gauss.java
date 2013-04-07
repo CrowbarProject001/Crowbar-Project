@@ -103,7 +103,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 				inf.charge++;
 			
 			if(!ignoreAmmo && ticksChange <= var3 && ticksChange%6 == 0)
-				inf.ammoManager.consumeAmmo(1, (EntityPlayer)par3Entity);
+				inf.ammoManager.consumeAmmo(1);
 			
 			if(inf.charge >= var1 && ticksChange > var1){
 				inf.setLastTick();

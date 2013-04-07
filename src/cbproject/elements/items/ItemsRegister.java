@@ -18,6 +18,7 @@ public class ItemsRegister {
 	public static Weapon_hgrenade weapon_hgrenade;
 	
 	public static Weapon_gauss weapon_gauss;
+	public static Weapon_satchel weapon_satchel;
 	public static Item weapon_egon;
 	public static Item weapon_9mmhandgun;
 	public static Item weapon_9mmAR;
@@ -66,6 +67,7 @@ public class ItemsRegister {
 			weapon_shotgun = new Weapon_shotgun(conf.GetItemID("weapon_shotgun", 7005));
 			weapon_RPG = new Weapon_RPG(conf.GetItemID("weapon_RPG", 7006));
 			weapon_crossbow = new Weapon_crossbow(conf.GetItemID("weapon_crossbow", 7007));	
+			weapon_satchel = new Weapon_satchel(conf.GetItemID("weapon_satchel", 7008));
 			
 			weapon_gauss = new Weapon_gauss(conf.GetItemID("weapon_gauss", 7050));
 			
@@ -74,7 +76,7 @@ public class ItemsRegister {
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
 		
-
+		weapon_satchel.ammoID = weapon_satchel.itemID;
 		
 		LanguageRegistry.addName(itemAmmo_9mm, "9mm Handgun Clip");
 		LanguageRegistry.addName(itemAmmo_uranium , "Uranium Ammo");
@@ -93,7 +95,7 @@ public class ItemsRegister {
         LanguageRegistry.addName(weapon_hgrenade, "Hand Grenade");
         
         LanguageRegistry.addName(weapon_357, ".357 Magnum");
-       
+        LanguageRegistry.addName(weapon_satchel, "Satchel");
         LanguageRegistry.addName(weapon_RPG, "RPG Rocket Launcher");
         LanguageRegistry.addName(weapon_crossbow, "High Heat Crossbow");
         LanguageRegistry.addName(weapon_gauss, "Gauss Gun");

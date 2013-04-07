@@ -162,7 +162,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     			information.ammoManager.clearAmmo( (EntityPlayer)par3Entity );
 				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - cap);
     		} else {
-    			if( information.ammoManager.consumeAmmo(dmg, (EntityPlayer)par3Entity) )
+    			if( information.ammoManager.consumeAmmo(dmg));
     				par1ItemStack.setItemDamage( 0 );
     		}
 		
@@ -232,8 +232,10 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
 	@Override
 	public InformationSet getInformation(ItemStack itemStack){
+		
 		  	if(itemStack.getTagCompound() == null)
-		  		itemStack.stackTagCompound = new NBTTagCompound();
+		  		return null;
+		  	
 	    	int id = itemStack.getTagCompound().getInteger("weaponID");
 	    	double uniqueID = itemStack.getTagCompound().getDouble("uniqueID");
 	    	
@@ -264,6 +266,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		
 		int id = listItemStack.size();
 		listItemStack.add(inf);
+		if(par1ItemStack.stackTagCompound == null)
+			par1ItemStack.stackTagCompound = new NBTTagCompound();
+		
 		par1ItemStack.getTagCompound().setInteger("weaponID", id);
 		par1ItemStack.getTagCompound().setDouble("uniqueID", uniqueID);
 		

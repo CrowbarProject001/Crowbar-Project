@@ -38,15 +38,29 @@ public class AmmoManager {
 		
 	}
 	
-
+	public boolean consumeOtherStack(int amount, ItemStack itemStack){
+		Weapon = itemStack;
+		int left = amount;
+		for(int i = 0; i < ammoList.size(); i++){
+			ItemStack is = (ItemStack) ammoList.get(i);
+			if(!is.equals(Weapon)){
+				if(itemStack.getMaxStackSize() == 1){
+					
+				} else {
+					
+				}
+			}
+		}
+		return false;
+	}
 	
-	public Boolean consumeAmmo(int amount, EntityPlayer par1Player){
+	public Boolean consumeAmmo(int amount){
 		
 		ItemStack itemStack;
 		int left = amount;
 		updateAmmoCapacity();
-		player =  par1Player;
 		if(ammoCapacity < amount)return false;
+		
 		if(((ItemStack)ammoList.get(0)).getMaxStackSize() == 1){
 			for(int i=0; i<ammoList.size(); i++){
 				itemStack = (ItemStack)ammoList.get(i);
