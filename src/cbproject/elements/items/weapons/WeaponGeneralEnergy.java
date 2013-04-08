@@ -25,19 +25,19 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		// TODO Auto-generated constructor stub
 	}
 
-	public final void setShootTime(int[] par1){
+	public final void setShootTime(int... par1){
 		shootTime = par1;
 	}
 	
-	public final void setPathShoot(String[] par1){
+	public final void setPathShoot(String... par1){
 		pathSoundShoot = par1;
 	}
 	
-	public final void setPathJam(String[] par1){
+	public final void setPathJam(String... par1){
 		pathSoundJam = par1;
 	}
 	
-	public final void setPathSpecial(String[] par1){
+	public final void setPathSpecial(String... par1){
 		pathSoundSpecial = par1;
 	}
 	
@@ -107,7 +107,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		
 	}
 	
-	//正常的、子弹式的射击，仅用于高斯枪第一模式
+	//正常的、子弹式的射击，仅用于高斯枪第一模式和Egon
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
 		
 		int mode = information.mode;

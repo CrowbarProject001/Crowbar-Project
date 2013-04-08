@@ -86,9 +86,9 @@ public class Weapon_satchel extends WeaponGeneral {
 		
 		InformationSatchel inf = loadInformation(par1ItemStack, par3EntityPlayer, par2World);
 		inf.ammoManager.setAmmoInformation((EntityPlayer)par3EntityPlayer);
-		
+		int mode = par1ItemStack.stackTagCompound.getInteger("mode");
 		//最多放置6个Satchel
-		if(inf.mode == 0){
+		if(mode == 0){
 			
 			if(inf.list.size() > 5)
 				return par1ItemStack;

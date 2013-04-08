@@ -45,7 +45,6 @@ public class RenderItemSatchel implements IItemRenderer {
 		switch(helper){
 		case ENTITY_ROTATION:
 		case ENTITY_BOBBING:
-		case EQUIPPED_BLOCK:
 			return true;
 			
 		default:
@@ -72,7 +71,18 @@ public class RenderItemSatchel implements IItemRenderer {
 	
 	public void renderEquipped(ItemStack item, RenderBlocks render, EntityLiving entity){
 		
-		ItemRenderer.renderItemIn2D(t, 0.0F, 0.0F, 1.0F, 1.0F, 0.0625F); 
+		if(item.stackTagCompound == null)
+			item.stackTagCompound = new NBTTagCompound();
+		int mode = item.getTagCompound().getInteger("mode");
+        int index = (mode == 0) ? 64 : 66;
+        
+        float v1 = MathHelper.floor_float(index / 16)/16.0F;
+		float u1 = (index % 16)/16.0F;
+		float u2 = u1 + 1/16F;
+		float v2 = v1 + 1/16F;
+		float width = (mode == 0) ? 0.2F : 0.0625F;
+		
+		ItemRenderer.renderItemIn2D(t, u1, v1, u2, v2, width); 
 
 	}
 	
