@@ -1,8 +1,10 @@
 package cbproject.elements.items.weapons;
 
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -67,20 +69,20 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		
 	}
 	
-	public void onEnergyWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
+	public InformationEnergy onEnergyWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		
 		super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
     	if(par3Entity instanceof EntityPlayer){
     		
     		ItemStack held = ((EntityPlayer)par3Entity).getHeldItem();
     		if(held == null || !held.equals(par1ItemStack))
-    			return;
+    			return null;
     		
     	}
     	
 		InformationSet inf = getInformation(par1ItemStack);
 		if(inf == null){
-			return;
+			return null;
 		}
 		
 		InformationEnergy information = inf.getProperEnergy(par2World);
@@ -96,14 +98,15 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 			
 		if(shootTime[mode] > 0 && isShooting && canUse && ticksExisted - lastTick >= shootTime[mode]){
 			this.onEnergyWpnShoot(par1ItemStack, par2World, par3Entity, information);
-			return;
+			return information;
 		}
 
 		
 		if( isShooting && !canUse && ticksExisted - lastTick >= jamTime ){
 			this.onEnergyWpnJam(par1ItemStack, par2World, par3Entity, information);
-			return;
+			return information;
 		}
+		return information;
 		
 	}
 	
@@ -117,11 +120,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
     	information.setLastTick();
 
     	if(par3Entity instanceof EntityPlayer){
-    		if(!information.isRecovering)
-    			information.originPitch = par3Entity.rotationPitch;
-    		par3Entity.rotationPitch -= upLiftRadius;
-    		information.isRecovering = true;
-    		information.recoverTick = 0;
+    		doRecover(information, (EntityPlayer) par3Entity);
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
     				information.ammoManager.consumeAmmo(1);
     		}

@@ -27,13 +27,15 @@ public class EntityBullet extends EntityThrowable {
 	protected ItemStack itemStack;
 	protected EntityLiving player;
 	protected MotionXYZ motion;
-	
-	public EntityBullet(World par1World, EntityLiving par2EntityLiving, ItemStack par3itemStack, String particle) {
+	private String effect;
+	public EntityBullet(World par1World, EntityLiving par2EntityLiving, ItemStack par3itemStack, String eff) {
 		
 		this(par1World, par2EntityLiving);
 		
 		itemStack = par3itemStack;
 		player = par2EntityLiving;
+		eff = effect;
+		
 		if(itemStack == null)
 			return;
 		if(!(itemStack.getItem() instanceof WeaponGeneral))
@@ -57,7 +59,6 @@ public class EntityBullet extends EntityThrowable {
         this.motionY += dz;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
         
-        par1World.spawnParticle(particle, posX, posY, posZ, motionX, motionY, motionZ);
         
 	}
 	
@@ -111,6 +112,8 @@ public class EntityBullet extends EntityThrowable {
 	
 		mob.attackEntityFrom(DamageSource.causeMobDamage(player), item.damage[mode]);
 		mob.addVelocity(dx, dy, dz);
+		if(effect == "fire")
+			mob.setFire(40);
 		
 	}
 	

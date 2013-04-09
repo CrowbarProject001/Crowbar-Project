@@ -13,6 +13,8 @@ import org.lwjgl.input.Keyboard;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.configure.Config;
 import cbproject.utils.weapons.InformationSet;
@@ -22,26 +24,35 @@ import cbproject.utils.weapons.InformationWeapon;
  * @author WeAthFolD
  *
  */
+
+@SideOnly(Side.CLIENT)
 public class CBCKeyProcess extends KeyHandler{
 	
-	public int Key_ModeChange;
+	public int Key_ModeChange, Key_Reload;
 	public static Boolean modeChange = false;
+	public static Boolean reload = false;
 	
 	public static KeyBinding KeyCodes[] = {
-			new KeyBinding("Mode Change Key", Keyboard.KEY_LCONTROL)
+			new KeyBinding("Mode Change Key", Keyboard.KEY_LCONTROL),
+			new KeyBinding("Reload Key", Keyboard.KEY_R)
 	};
+	
 	public static boolean isRepeating[] = {
-			false
+			false, false
 	};
 	
 	public CBCKeyProcess(Config conf){
+		
 		super(KeyCodes, isRepeating);
 		try{
 			Key_ModeChange = conf.GetKeyCode("ModeChange", Keyboard.KEY_LCONTROL);
+			Key_Reload = conf.GetKeyCode("Reload", Keyboard.KEY_R);
 		} catch(Exception e){
 			System.err.println("Something went wrong during loading key informations." + e);
 		}
 		KeyCodes[0].keyCode = Key_ModeChange;
+		KeyCodes[0].keyCode = Key_Reload;
+		
 	}
 	
 	public static void onModeChange(InformationSet inf, EntityPlayer player, int maxModes){

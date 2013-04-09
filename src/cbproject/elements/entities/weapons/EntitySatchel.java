@@ -14,7 +14,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class EntitySatchel extends EntityThrowable {
-
+	
+	public static double HEIGHT = 0.083, WIDTH1 = 0.2, WIDTH2 = 0.15;
+	public int tickHit = 0;
 	public EntitySatchel(World par1World) {
 		super(par1World);
 		// TODO Auto-generated constructor stub
@@ -45,9 +47,10 @@ public class EntitySatchel extends EntityThrowable {
 	    {
 	    	
 	    	switch(par1.sideHit){
-	    	
-	    	case 0:
 	    	case 1:
+	    		if(tickHit == 0)
+	    			tickHit = ticksExisted;
+	    	case 0:
 	    		this.motionY = -motionY;
 	    		break;
 	    		
@@ -72,14 +75,14 @@ public class EntitySatchel extends EntityThrowable {
 	}
 	
 	public void Explode(){
-		System.out.println("Bang!");
+		
 		float var1=2.0F; //TNT的一半
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
 	            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 	    }    
 	    
-		worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, var1, true);
+		worldObj.createExplosion( this, this.posX, this.posY, this.posZ, var1, true);
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
@@ -116,6 +119,12 @@ public class EntitySatchel extends EntityThrowable {
     protected float func_70182_d()
     {
     	return 0.7F;
+    }
+    
+    @Override
+    public AxisAlignedBB getBoundingBox()
+    {
+        return AxisAlignedBB.getBoundingBox(-WIDTH1, -HEIGHT, -WIDTH2, WIDTH1, HEIGHT, WIDTH2);
     }
     
 }

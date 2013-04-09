@@ -1,12 +1,15 @@
 package cbproject.elements.items.weapons;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cbproject.CBCMod;
+import cbproject.elements.entities.weapons.EntityARGrenade;
 import cbproject.proxy.ClientProxy;
+import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 
@@ -30,7 +33,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		String[] shoot  = { "cbc.weapons.hksa" };
 		String[] reload = { "cbc.weapons.nmmarr" };
 		String[] jam = { "cbc.weapons.gunjam_a"};
-		int shootTime[] = {3, 0}, dmg[] = { 3, 0}, off[] = { 8, 0};
+		int shootTime[] = {4, 20}, dmg[] = { 3, 0}, off[] = { 8, 0};
 		double push[] = {0.5, 0};
 		
 		setPathShoot(shoot);
@@ -58,11 +61,37 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
     {
 		
 		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(( par2World.isRemote? inf.getClientAsBullet() : inf.getServerAsBullet() ), 
-				par1ItemStack, par2World, par3EntityPlayer);
+		InformationBullet information = inf.getProperBullet(par2World);
+		processRightClick(information, par1ItemStack, par2World, par3EntityPlayer);
 
 		return par1ItemStack;
 		
+    }
+	
+    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
+    	
+    	if(information.mode == 0){
+    		
+    		int index = (int) (pathSoundShoot.length * Math.random());
+    		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 1.0F);	
+    		int mode = information.mode;
+    		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
+    		if(par3Entity instanceof EntityPlayer){
+    			doRecover(information, par3Entity);
+    			if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
+    				par1ItemStack.damageItem( 1 , null);
+    			}
+    		}
+    		
+    	} else {
+    		
+    		if(par3Entity.capabilities.isCreativeMode  || information.ammoManager.tryConsume(par3Entity, CBCMod.cbcItems.itemAmmo_ARGrenade.itemID));
+    			par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
+    		
+    	}
+    	
+    	information.setLastTick();
+		return;
     }
 	
 	@Override

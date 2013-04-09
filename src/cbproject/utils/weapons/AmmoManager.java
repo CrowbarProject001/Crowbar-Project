@@ -38,22 +38,6 @@ public class AmmoManager {
 		
 	}
 	
-	public boolean consumeOtherStack(int amount, ItemStack itemStack){
-		Weapon = itemStack;
-		int left = amount;
-		for(int i = 0; i < ammoList.size(); i++){
-			ItemStack is = (ItemStack) ammoList.get(i);
-			if(!is.equals(Weapon)){
-				if(itemStack.getMaxStackSize() == 1){
-					
-				} else {
-					
-				}
-			}
-		}
-		return false;
-	}
-	
 	public Boolean consumeAmmo(int amount){
 		
 		ItemStack itemStack;
@@ -90,7 +74,6 @@ public class AmmoManager {
 				return true;	
 		}
 		
-		System.out.println("It wasnt suppose to happen!");
 		return false; //should never happen
 	}
 	
@@ -133,6 +116,24 @@ public class AmmoManager {
 			
 		}
 		updateAmmoCapacity();
+		
+	}
+	
+	/**
+	 * Tries to consume one specific item in player's inventory.
+	 * @return whether the consume process is successful or not
+	 */
+	public boolean tryConsume(EntityPlayer player, int itemID){
+		
+		ItemStack itemStack;
+		for( int i=0; i<36; i++){
+			itemStack = player.inventory.getStackInSlot(i);
+			if(itemStack.itemID == itemID){
+				itemStack.splitStack(1);
+				return true;
+			}
+		}
+		return false;
 		
 	}
 	

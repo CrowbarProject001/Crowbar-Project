@@ -88,8 +88,9 @@ public class RenderTripmineRay extends RendererUtils implements ISimpleBlockRend
         tessellator.setColorOpaque_F(var6 * var8, var6 * var9, var6 * var10);
         
         int tex = getTexture(ClientProxy.TRIPMINE_RAY_PATH);
-
+     
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
+        
         addVertex(v1 , 0, 1);
         addVertex(v2 , 1, 1);
         addVertex(v3 , 1, 0);
@@ -109,7 +110,6 @@ public class RenderTripmineRay extends RendererUtils implements ISimpleBlockRend
         addVertex(v7 , 1, 0);
         addVertex(v6 , 1, 1);
         addVertex(v5 , 0, 1);
-        
         return true;
     }
 	

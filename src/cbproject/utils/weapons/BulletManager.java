@@ -29,8 +29,8 @@ public class BulletManager {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static void Shoot(ItemStack itemStack, EntityLiving entityPlayer, World worldObj, String particle){
-		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, entityPlayer, itemStack, particle));
+	public static void Shoot(ItemStack itemStack, EntityLiving entityPlayer, World worldObj, String effect){
+		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, entityPlayer, itemStack, effect));
 	}
 	
 }

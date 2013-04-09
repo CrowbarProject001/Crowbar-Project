@@ -2,6 +2,7 @@ package cbproject.elements.renderers.weapons;
 
 import org.lwjgl.opengl.GL11;
 
+import cbproject.elements.entities.weapons.EntitySatchel;
 import cbproject.proxy.ClientProxy;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
@@ -17,12 +18,14 @@ public class RenderSatchel extends RenderEntity {
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
-        GL11.glRotatef(par1Entity.ticksExisted * 3, (float)par2, (float)par4, (float)par6);
         GL11.glTranslated(par2, par4, par6);
-        renderOffsetAABB(par1Entity.boundingBox, par2 - par1Entity.lastTickPosX, par4 - par1Entity.lastTickPosY, par6 - par1Entity.lastTickPosZ);
+        if(((EntitySatchel)par1Entity).tickHit == 0)
+        	GL11.glRotatef(par1Entity.ticksExisted * 3, 0, 1, 0);
+        else GL11.glRotatef(((EntitySatchel)par1Entity).tickHit * 3, 0, 1, 0);
+        
         int top = getTexture(ClientProxy.SATCHEL_TOP_PATH), bottom = getTexture(ClientProxy.SATCHEL_BOTTOM_PATH),
         		side = getTexture(ClientProxy.SATCHEL_SIDE_PATH), side2 = getTexture(ClientProxy.SATCHEL_SIDE2_PATH);
-        double h = 0.083, w1 = 0.2, w2 = 0.15;
+        double h = EntitySatchel.HEIGHT, w1 = EntitySatchel.WIDTH1, w2 = EntitySatchel.WIDTH2;
         Vec3 v1 = Vec3.createVectorHelper(-w1, h, -w2), v2 = Vec3.createVectorHelper(-w1, h, w2),
         		v3 = Vec3.createVectorHelper(w1, h, w2), v4 = Vec3.createVectorHelper(w1, h, -w2);
         Vec3 v5 = Vec3.createVectorHelper(-w1, -h, -w2), v6 = Vec3.createVectorHelper(-w1, -h, w2),

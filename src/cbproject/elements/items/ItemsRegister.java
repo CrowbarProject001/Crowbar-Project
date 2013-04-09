@@ -33,6 +33,7 @@ public class ItemsRegister {
 	public static ItemAmmo_9mm2 itemAmmo_9mm2;
 	public static ItemAmmo_bow itemAmmo_bow;
 	public static ItemAmmo_RPG itemAmmo_rpg;
+	public static ItemAmmo_ARGrenade itemAmmo_ARGrenade;
 	
 	public static ItemBullet_Shotgun itemBullet_Shotgun;
 
@@ -55,6 +56,7 @@ public class ItemsRegister {
 			itemAmmo_357 = new ItemAmmo_357(conf.GetItemID("itemAmmo_357", 7303));
 			itemAmmo_bow = new ItemAmmo_bow(conf.GetItemID("itemAmmo_bow", 7304));
 			itemAmmo_rpg = new ItemAmmo_RPG(conf.GetItemID("itemAmmo_RPG", 7305));
+			itemAmmo_ARGrenade = new ItemAmmo_ARGrenade(conf.GetItemID("itemAmmo_ARGrenade", 7306));
 			
 			itemBullet_Shotgun = new ItemBullet_Shotgun(conf.GetItemID("itemBullet_Shotgun", 7350));
 	
@@ -70,7 +72,7 @@ public class ItemsRegister {
 			weapon_satchel = new Weapon_satchel(conf.GetItemID("weapon_satchel", 7008));
 			
 			weapon_gauss = new Weapon_gauss(conf.GetItemID("weapon_gauss", 7050));
-			
+			weapon_egon = new Weapon_egon(conf.GetItemID("weapon_egon", 7051));
 			
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
@@ -82,7 +84,8 @@ public class ItemsRegister {
 		LanguageRegistry.addName(itemAmmo_uranium , "Uranium Ammo");
 		LanguageRegistry.addName(itemAmmo_9mm2, "9mmAR Clip");
 		LanguageRegistry.addName(itemAmmo_bow,"Crossbow Clip");
-
+		LanguageRegistry.addName(itemAmmo_ARGrenade, "9mmAR Grenade");
+		
 		LanguageRegistry.addName(itemBullet_Shotgun,"Shotgun Ammo");
 		
 		

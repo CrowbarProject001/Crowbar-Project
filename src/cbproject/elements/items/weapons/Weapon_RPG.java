@@ -75,7 +75,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
     }
 	
 	@Override
-	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
+	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		par2World.spawnEntityInWorld(new EntityRPG(par2World, (EntityLiving) par3Entity));
 	}
 	

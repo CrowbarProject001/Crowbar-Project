@@ -26,6 +26,7 @@ public class BlockTripmineRay extends Block {
 		super(par1, 0, Material.circuits);
 		setTextureFile(ClientProxy.TRIPMINE_RAY_PATH);
 		setBlockUnbreakable();
+		setLightValue(0.05F);
 	}
 	
     public int getRenderType()
@@ -100,7 +101,7 @@ public class BlockTripmineRay extends Block {
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)  {
     	
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-        float h = 0.1F, w = 0.1F;
+        float h = 0.05F, w = 0.05F;
         if (var5 == 3 || var5 == 1) //X+, X-
         {
             this.setBlockBounds(0.0F, 0.5F - h, 0.5F - w, 1.0F, 0.5F + h, 0.5F + w); // (0, 1) (0.4, 0.6), (0.3, 0.7)

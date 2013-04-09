@@ -124,7 +124,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
 			
 		if(isShooting && canUse && ticksExisted - lastTick >= shootTime[mode]){
-			this.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
+			this.onBulletWpnShoot(par1ItemStack, par2World, (EntityPlayer) par3Entity, information);
 			return;
 		}
 
@@ -176,7 +176,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		return;
     }
     
-    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
+    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		
 		int index = (int) (pathSoundShoot.length * Math.random());
 		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 1.0F);	

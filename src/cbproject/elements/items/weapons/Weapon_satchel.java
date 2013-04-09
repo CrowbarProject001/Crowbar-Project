@@ -71,7 +71,7 @@ public class Weapon_satchel extends WeaponGeneral {
 	
 	public void onModeChange(InformationWeapon inf, EntityPlayer player, ItemStack itemStack){
 		
-		super.onModeChange(inf, player);
+		super.onModeChange(itemStack, inf, player);
 		if(itemStack.stackTagCompound == null)
 			itemStack.stackTagCompound = new NBTTagCompound();
 		itemStack.stackTagCompound.setInteger("mode", inf.mode);

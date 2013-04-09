@@ -74,14 +74,27 @@ public abstract class WeaponGeneral extends Item {
 		
 		if(CBCKeyProcess.modeChange){
 			CBCKeyProcess.modeChange = false;
-			onModeChange(information, (EntityPlayer) par3Entity);	
+			onModeChange(par1ItemStack ,information, (EntityPlayer) par3Entity);	
 		}
 
 	}
 	
-	public void onModeChange(InformationWeapon inf, EntityPlayer player){
+	public void onModeChange(ItemStack item, InformationWeapon inf, EntityPlayer player){
+		
 		inf.mode = (maxModes -1 == inf.mode) ? 0 : inf.mode +1;
-		System.out.println("New Mode : " + inf.mode);
+		player.sendChatToPlayer("New Mode : " + inf.mode);
+		item.getTagCompound().setInteger("mode", inf.mode);
+		
+	}
+	
+	public void doRecover(InformationWeapon information, EntityPlayer entityPlayer){
+		
+		if(!information.isRecovering)
+			information.originPitch = entityPlayer.rotationPitch;
+		entityPlayer.rotationPitch -= upLiftRadius;
+		information.isRecovering = true;
+		information.recoverTick = 0;
+		
 	}
 	
 	

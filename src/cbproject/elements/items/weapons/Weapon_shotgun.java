@@ -112,7 +112,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     }
     
 	@Override
-    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
+    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 
     	int maxDmg = par1ItemStack.getMaxDamage() -1;
 		if( par1ItemStack.getItemDamage() >= maxDmg ){
