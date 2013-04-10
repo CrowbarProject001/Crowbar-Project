@@ -11,7 +11,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
-/*
+/**
  * Weapon Egon Renderer Class.
  */
 public class RenderEgon implements IItemRenderer {
@@ -63,14 +63,13 @@ public class RenderEgon implements IItemRenderer {
 		
 		if(item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();
-		int mode = item.getTagCompound().getInteger("mode");
+		
         int index = 50;
-        
         float v1 = MathHelper.floor_float(index / 16)/16.0F;
 		float u1 = (index % 16)/16.0F;
 		float u2 = u1 + 1/16F;
 		float v2 = v1 + 1/16F;
-		float width = (mode == 0) ? 0.15F : 0.0625F;
+		float width = 0.0625F;
 		
 		RendererUtils.renderItemIn2d(t, u1, v1, u2, v2, width); 
 

@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import cbproject.CBCMod;
+import cbproject.elements.entities.weapons.EntityEgonRay;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.BulletManager;
@@ -76,11 +77,15 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		
 		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer).getProperEnergy(par2World);
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
+		
 		if(inf.ammoManager.getAmmoCapacity() > 0)
 			par2World.playSoundAtEntity(par3EntityPlayer, pathSoundSpecial[0], 0.5F, 1.0F);
+		if(inf.isShooting)
+			par2World.spawnEntityInWorld(new EntityEgonRay(par2World, par3EntityPlayer, par1ItemStack));
 		inf.ticksExisted = inf.lastTick = 0;
-		return par1ItemStack;
 		
+		return par1ItemStack;
+
     }
 	
 	@Override

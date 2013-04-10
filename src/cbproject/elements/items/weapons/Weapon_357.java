@@ -43,7 +43,6 @@ public class Weapon_357 extends WeaponGeneralBullet {
 		setOffset(off);
 		setLiftProps(25, 3);
 		
-		maxModes = 2; //低速
 	}
 
 	@Override

@@ -15,15 +15,18 @@ public class EntityRPG extends EntityThrowable {
 
 	public EntityRPG(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
+		rotationPitch = par2EntityLiving.rotationPitch;
+		rotationYaw = par2EntityLiving.rotationYaw;
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
-		if(ticksExisted % 5 == 0)
+		if(ticksExisted % 2 == 0)
 			worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0, 0.0, 0.0);
-		
+		rotationPitch = getThrower().rotationPitch;
+		rotationYaw = getThrower().rotationYaw;
 	}
 	
 	@Override
@@ -34,7 +37,7 @@ public class EntityRPG extends EntityThrowable {
 	
 	private void Explode(){
 		
-		float var1=6.0F; //手雷的3倍
+		float var1=4.0F; //手雷的3倍
 		double dmg = 40.0F;
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
@@ -80,7 +83,7 @@ public class EntityRPG extends EntityThrowable {
 	@Override
     protected float func_70182_d()
     {
-    	return 5.0F;
+    	return 1.5F;
     }
 	
 	@Override

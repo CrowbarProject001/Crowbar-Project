@@ -12,21 +12,10 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import cbproject.CBCMod;
 import cbproject.configure.Config;
 import cbproject.elements.entities.ammos.EntityAmmoUranium;
-import cbproject.elements.entities.weapons.EntityARGrenade;
-import cbproject.elements.entities.weapons.EntityGauss;
-import cbproject.elements.entities.weapons.EntityHGrenade;
-import cbproject.elements.entities.weapons.EntitySatchel;
+import cbproject.elements.entities.weapons.*;
 import cbproject.elements.items.weapons.Weapon_hgrenade;
 import cbproject.elements.renderers.ammos.RenderUranium;
-import cbproject.elements.renderers.weapons.RenderARGrenade;
-import cbproject.elements.renderers.weapons.RenderCrossbow;
-import cbproject.elements.renderers.weapons.RenderEgon;
-import cbproject.elements.renderers.weapons.RenderGaussRay;
-import cbproject.elements.renderers.weapons.RenderItemSatchel;
-import cbproject.elements.renderers.weapons.RenderSatchel;
-import cbproject.elements.renderers.weapons.RenderTripmine;
-import cbproject.elements.renderers.weapons.RenderTripmineRay;
-import cbproject.elements.renderers.weapons.RendererHGrenade;
+import cbproject.elements.renderers.weapons.*;
 
 public class CBCRenderManager {
 
@@ -42,6 +31,8 @@ public class CBCRenderManager {
 		RenderingRegistry.registerEntityRenderingHandler(EntityGauss.class, new RenderGaussRay());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySatchel.class, new RenderSatchel());
 		RenderingRegistry.registerEntityRenderingHandler(EntityARGrenade.class, new RenderARGrenade());
+		RenderingRegistry.registerEntityRenderingHandler(EntityEgonRay.class, new RenderEgonRay());
+		RenderingRegistry.registerEntityRenderingHandler(EntityRPG.class, new RenderRPGRocket());
 		
 		MinecraftForgeClient.registerItemRenderer(CBCMod.cbcItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(CBCMod.cbcItems.weapon_satchel.itemID, new RenderItemSatchel());

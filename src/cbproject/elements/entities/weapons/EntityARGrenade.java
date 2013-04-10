@@ -30,12 +30,12 @@ public class EntityARGrenade extends EntityThrowable {
 	
 	   protected float getGravityVelocity()
 	    {
-	        return 0.025F;
+	        return 0.03F;
 	    }
 	    
 	    protected float func_70182_d()
 	    {
-	    	return 0.7F;
+	    	return 1.3F;
 	    }
 	 
 		

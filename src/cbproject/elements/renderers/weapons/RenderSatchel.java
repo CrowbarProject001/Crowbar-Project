@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
 public class RenderSatchel extends RenderEntity {
@@ -17,11 +18,18 @@ public class RenderSatchel extends RenderEntity {
 	@Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
+		
+		if(par1Entity.isDead)
+			return;
+		
         GL11.glPushMatrix();
-        GL11.glTranslated(par2, par4, par6);
-        if(((EntitySatchel)par1Entity).tickHit == 0)
+        
+        GL11.glTranslated(par2, par4 , par6);
+        if(!par1Entity.onGround){
         	GL11.glRotatef(par1Entity.ticksExisted * 3, 0, 1, 0);
-        else GL11.glRotatef(((EntitySatchel)par1Entity).tickHit * 3, 0, 1, 0);
+        } else {
+        	GL11.glRotatef(((EntitySatchel)par1Entity).tickHit * 3, 0, 1, 0);
+        }
         
         int top = getTexture(ClientProxy.SATCHEL_TOP_PATH), bottom = getTexture(ClientProxy.SATCHEL_BOTTOM_PATH),
         		side = getTexture(ClientProxy.SATCHEL_SIDE_PATH), side2 = getTexture(ClientProxy.SATCHEL_SIDE2_PATH);

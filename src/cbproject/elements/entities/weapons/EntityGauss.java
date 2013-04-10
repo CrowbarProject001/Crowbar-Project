@@ -12,12 +12,15 @@ import net.minecraft.world.World;
 public class EntityGauss extends EntityThrowable {
 	
 	public EntityGauss(World par1World,EntityLiving ent, double moX, double moY, double moZ){
+		
 		super(par1World, ent);
 		motionX = moX;
 		motionY = moY;
 		motionZ = moZ;
+		ignoreFrustumCheck = true;
 		System.out.println("Primary ray. Pos : " + posX + " " + posY + " " + posZ + " \n" +
 				"Motion: " + motionX + " " + motionY + " " + motionZ );
+		
 	}
 	
 	public EntityGauss(MotionXYZ begin, World par1World, EntityLiving ent){

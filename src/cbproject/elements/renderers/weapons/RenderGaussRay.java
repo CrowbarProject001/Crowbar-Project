@@ -31,13 +31,12 @@ public class RenderGaussRay extends RenderEntity {
 		tessellator = tessellator.instance;
 		
         GL11.glPushMatrix();
-       
-        this.loadTexture(ClientProxy.GAUSS_BEAM_PATH);
+        
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-        GL11.glDepthMask(true);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        
+        GL11.glDepthMask(false);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        loadTexture(ClientProxy.GAUSS_BEAM_PATH);
         double dx = end.xCoord - gauss.posX;
         double dy = end.yCoord - gauss.posY;
         double dz = end.zCoord - gauss.posZ;

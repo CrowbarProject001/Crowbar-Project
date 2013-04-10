@@ -23,8 +23,10 @@ public class CommandChangeMode extends CommandBase {
 		// TODO Auto-generated method stub
 		
 		EntityPlayer player = getCommandSenderAsPlayer(var1);
-		ItemStack itemStack = player.inventory.getCurrentItem();
+		if(var1 == null)
+			System.out.println("The command must be execute as a player");
 		
+		ItemStack itemStack = player.inventory.getCurrentItem();
 		if(itemStack.getItem() instanceof WeaponGeneral){
 			
 			WeaponGeneral item = (WeaponGeneral)itemStack.getItem();
@@ -33,7 +35,10 @@ public class CommandChangeMode extends CommandBase {
 			if(inf.mode == item.maxModes -1)
 				inf.mode = 0;
 			else inf.mode++;
-			var1.sendChatToPlayer("New mode : " + inf.mode);
+			
+			if(player.worldObj.isRemote)
+				var1.sendChatToPlayer("Client New mode : " + inf.mode);
+			else var1.sendChatToPlayer("Server New mode : " + inf.mode);
 			
 		} else var1.sendChatToPlayer("Not holding a CBC Weapon 0a0");
 			

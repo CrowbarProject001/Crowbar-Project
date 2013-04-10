@@ -3,32 +3,24 @@ package cbproject.elements.renderers.weapons;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.elements.entities.weapons.EntityARGrenade;
-import cbproject.elements.entities.weapons.EntityEgonRay;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.MotionXYZ;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
-/**
- * @author Administrator
- * @description AR Grenade entity class renderer.
- */
-public class RenderARGrenade extends RenderEntity {
-
+public class RenderRPGRocket extends RenderEntity {
 	
-	public static double LENGTH = 0.4F, HEIGHT = 0.1235F;
+	public static double LENGTH = 0.8F, HEIGHT = 0.27F;
 	private static Tessellator tessellator = Tessellator.instance;
 	
 	@Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
 		
-		EntityARGrenade gren = (EntityARGrenade) par1Entity;
+		Entity gren = par1Entity;
 		MotionXYZ motion = new MotionXYZ(gren);
 		tessellator = tessellator.instance;
 		
@@ -49,7 +41,7 @@ public class RenderARGrenade extends RenderEntity {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);   
         GL11.glDepthMask(false);
-        loadTexture(ClientProxy.AR_GRENADE_PATH);
+        loadTexture(ClientProxy.RPG_ROCKET_PATH);
         GL11.glRotatef(gren.rotationYaw - 270.0F, 0.0F, -1.0F, 0.0F); //左右旋转
         GL11.glRotatef(gren.rotationPitch, 0.0F, 0.0F, -1.0F); //上下旋转
         tessellator.startDrawingQuads();

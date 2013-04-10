@@ -1,0 +1,58 @@
+package cbproject.elements.entities.weapons;
+
+import cbproject.elements.items.weapons.Weapon_egon;
+import cbproject.utils.weapons.InformationEnergy;
+import cbproject.utils.weapons.InformationSet;
+import cpw.mods.fml.common.Mod.Item;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.item.ItemMap;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+
+public class EntityEgonRay extends EntityThrowable {
+
+	public ItemStack item;
+	public EntityEgonRay(World par1World,EntityLiving ent, ItemStack itemStack){
+		super(par1World, ent);
+		ignoreFrustumCheck = true;
+		item = itemStack;
+	}
+	
+
+	@Override
+	public void onUpdate(){
+
+		InformationSet inf = ((Weapon_egon)item.getItem()).getInformation(item);
+		if(inf == null || !getThrower().getHeldItem().equals(item) || !inf.getProperEnergy(worldObj).isShooting)
+			this.setDead();
+		
+		EntityLiving ent = getThrower();
+		this.setLocationAndAngles(ent.posX, ent.posY, ent.posZ, ent.rotationYawHead, ent.rotationPitch);
+		
+		float var3 = 0.4F;
+		this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3);
+        this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3);
+        this.motionY = (double)(-MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * var3);
+	}
+	
+	@Override
+	protected float func_70182_d(){
+		return 0.0F;
+	}
+
+	@Override
+	protected float getGravityVelocity(){
+		return 0.0F;
+	}
+
+	@Override
+	protected void onImpact(MovingObjectPosition var1) {
+
+	}
+
+}

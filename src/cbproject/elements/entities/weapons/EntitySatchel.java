@@ -10,6 +10,7 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumMovingObjectType;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -17,6 +18,7 @@ public class EntitySatchel extends EntityThrowable {
 	
 	public static double HEIGHT = 0.083, WIDTH1 = 0.2, WIDTH2 = 0.15;
 	public int tickHit = 0;
+	
 	public EntitySatchel(World par1World) {
 		super(par1World);
 		// TODO Auto-generated constructor stub
@@ -33,46 +35,10 @@ public class EntitySatchel extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1) {
-		// TODO Auto-generated method stub
-
-	    int id =  this.worldObj.getBlockId(par1.blockX,par1.blockY,par1.blockZ);
-	    Boolean canCollide = !( id == Block.tallGrass.blockID || id == Block.reed.blockID 
-	    		|| id == Block.plantRed.blockID
-	    		|| id == Block.plantYellow.blockID);
-	    
-	    //碰撞代码
-	    if(par1.typeOfHit == EnumMovingObjectType.TILE && canCollide)
-	    //if(par1.typeOfHit == EnumMovingObjectType.TILE)
-	    {
-	    	
-	    	switch(par1.sideHit){
-	    	case 1:
-	    		if(tickHit == 0)
-	    			tickHit = ticksExisted;
-	    	case 0:
-	    		this.motionY = -motionY;
-	    		break;
-	    		
-	    	case 2:
-	    	case 3:
-	    		this.motionZ = -motionZ;
-	    		break;
-	    		
-	    	case 4:
-	    	case 5:
-	    		this.motionX = -motionX;
-	    		break;
-	    		
-	    	default:
-	    		break;
-	    	}
-	    	this.setThrowableHeading(this.motionX , this.motionY, this.motionZ, (float) (0.1*this.func_70182_d()), 1.0F);
-	    }
-	    if(par1.typeOfHit == EnumMovingObjectType.ENTITY)
-	    	this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, (float) (0.3*this.func_70182_d()), 1.0F);
-	    
-	}
+    public boolean canBeCollidedWith()
+    {
+        return true;
+    }
 	
 	public void Explode(){
 		
@@ -86,7 +52,6 @@ public class EntitySatchel extends EntityThrowable {
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
-		System.out.println("inited list.");
 		if(entitylist.size() > 0){
 			for(int i=0;i<entitylist.size();i++){
 				Entity ent = (Entity)entitylist.get(i);
@@ -101,7 +66,7 @@ public class EntitySatchel extends EntityThrowable {
 					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode)
 						return;
 					
-
+					System.out.println("damage applied : " + damage);
 					ent.attackEntityFrom(DamageSource.explosion2, damage);
 					ent.setFire(20);
 							
@@ -109,6 +74,7 @@ public class EntitySatchel extends EntityThrowable {
 			}
 		}
 		this.setDead();
+		
 	}
 	
     protected float getGravityVelocity()
@@ -121,10 +87,65 @@ public class EntitySatchel extends EntityThrowable {
     	return 0.7F;
     }
     
+    
     @Override
     public AxisAlignedBB getBoundingBox()
     {
         return AxisAlignedBB.getBoundingBox(-WIDTH1, -HEIGHT, -WIDTH2, WIDTH1, HEIGHT, WIDTH2);
     }
+    
+    
+    @Override
+    public AxisAlignedBB getCollisionBox(Entity par1Entity)
+    {
+        return AxisAlignedBB.getBoundingBox(-WIDTH1, -HEIGHT, -WIDTH2, WIDTH1, HEIGHT, WIDTH2);
+    }
+    
+	@Override
+	protected void onImpact(MovingObjectPosition var1) {
+		if(var1.typeOfHit == EnumMovingObjectType.ENTITY)
+			return;
+		/*
+		switch(var1.sideHit){
+		case 1:
+			if(!onGround){
+				tickHit = ticksExisted;
+				motionY = 0;
+			}
+			onGround = true;
+			break;
+		case 0:
+			motionY = -0.1 * motionY;
+			break;
+		case 2:
+		case 3:
+			motionZ = - 0.2 * motionZ;
+			break;
+		case 4:
+		case 5:
+			motionX = - 0.2 * motionX;
+			break;
+		default:
+			break;
+		}
+		*/
+		float var10 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(motionY, (double)var10) * 180.0D / Math.PI);
+		
+	}
+	
+	@Override
+	public void onUpdate(){
+		super.onUpdate();
+		
+		if (this.onGround)
+        {
+			System.out.println("on ground.");
+            this.motionX *= 0.6D;
+            this.motionZ *= 0.6D;
+            this.motionY = 0;
+        }
+	}
     
 }
