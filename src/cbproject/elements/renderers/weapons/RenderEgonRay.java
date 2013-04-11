@@ -3,7 +3,7 @@ package cbproject.elements.renderers.weapons;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.elements.entities.weapons.EntityEgonRay;
-import cbproject.elements.entities.weapons.EntityGauss;
+import cbproject.elements.entities.weapons.EntityGaussRay;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.MotionXYZ;
 import cpw.mods.fml.client.FMLClientHandler;

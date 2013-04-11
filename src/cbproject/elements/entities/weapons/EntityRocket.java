@@ -11,9 +11,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class EntityRPG extends EntityThrowable {
+public class EntityRocket extends EntityThrowable {
 
-	public EntityRPG(World par1World, EntityLiving par2EntityLiving) {
+	public EntityRocket(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
 		rotationPitch = par2EntityLiving.rotationPitch;
 		rotationYaw = par2EntityLiving.rotationYaw;

@@ -79,13 +79,7 @@ public class MotionXYZ {
 	
 	public String toString(){
 		
-		return "Motion Information : \n" +
-				"posX : " + posX + "\n" +
-				"posY : " + posY + "\n" +
-				"posZ : " + posZ + "\n" +
-				"motionX : " +motionX + "\n" +
-				"motionY : " +motionY + "\n" +
-				"motionZ : " + motionZ + "\n" ;
+		return "[ Pos : " + posX + " " + posY + " "  + posZ + " ; Motion: " + motionX + " " + motionY + " " + motionZ + " ] "; 
 		
 	}
 	

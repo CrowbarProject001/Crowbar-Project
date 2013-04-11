@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 
-public class RenderRPGRocket extends RenderEntity {
+public class RenderRocket extends RenderEntity {
 	
 	public static double LENGTH = 0.8F, HEIGHT = 0.27F;
 	private static Tessellator tessellator = Tessellator.instance;

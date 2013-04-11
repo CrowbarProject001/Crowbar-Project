@@ -14,8 +14,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
 	public  int reloadTime ; //Time take to reload in tick
 	public  int jamTime; //sound playing gap between jams
-	public  int shootTime[]; //Shoot time gap correspond to mode in WeaponGeneral
-	public String pathSoundShoot[],pathSoundJam[],pathSoundReload[];
 	
 	/*Local Variables in ItemStack InformationBulletWeapon
 	 * 
@@ -38,22 +36,11 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		
 	}
 	
-	public final void setShootTime(int[] par1){
-		shootTime = par1;
-	}
-
 	
-	public final void setPathShoot(String[] par1){
-		pathSoundShoot = par1;
-	}
-	
-	public final void setPathJam(String[] par1){
-		pathSoundJam = par1;
-	}
-	
-	public final void setPathReload(String[] par1){
-		pathSoundReload = par1;
-	}
+	public abstract String getSoundShoot(int mode);
+	public abstract String getSoundJam(int mode);
+	public abstract String getSoundReload(int mode);
+	public abstract int getShootTime(int mode);
 	
 	public final void setReloadTime(int par1){
 		reloadTime = par1;
@@ -78,14 +65,13 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 				canUse = true;
 			else {
 				isReloading = true;
-				int index = (int) (pathSoundReload.length * Math.random());
-				par2World.playSoundAtEntity(par3EntityPlayer, pathSoundReload[index] , 0.5F, 1.0F);
+				par2World.playSoundAtEntity(par3EntityPlayer, getSoundReload(mode) , 0.5F, 1.0F);
 			}
 		}
 		
 		if(canUse){
 			isShooting = true;
-			if(information.ticksExisted - information.lastTick >= shootTime[mode]){
+			if(information.ticksExisted - information.lastTick >= getShootTime(mode)){
 				this.onBulletWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
 			}
 		}
@@ -123,7 +109,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		Boolean isReloading = information.isReloading;
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
 			
-		if(isShooting && canUse && ticksExisted - lastTick >= shootTime[mode]){
+		if(isShooting && canUse && ticksExisted - lastTick >= getShootTime(mode)){
 			this.onBulletWpnShoot(par1ItemStack, par2World, (EntityPlayer) par3Entity, information);
 			return;
 		}
@@ -178,14 +164,11 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		
-		int index = (int) (pathSoundShoot.length * Math.random());
-		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 1.0F);	
-		
 		int mode = information.mode;
+		information.setLastTick();
+		
+		par2World.playSoundAtEntity(par3Entity, getSoundReload(mode), 0.5F, 1.0F);	
 		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
-
-    	information.setLastTick();
-
     	if(par3Entity instanceof EntityPlayer){
     		if(!information.isRecovering)
     			information.originPitch = par3Entity.rotationPitch;
@@ -197,9 +180,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     		}
     	}
 
-		
-		return;
-		
+		return;	
     }
     
     public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
@@ -211,8 +192,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		if( par1ItemStack.getItemDamage() < maxDmg){
 			return;
 		}
-		int index = (int) (pathSoundJam.length * Math.random());
-		par2World.playSoundAtEntity(par3Entity, pathSoundJam[index], 0.5F, 1.0F);
+		par2World.playSoundAtEntity(par3Entity, getSoundJam(information.mode), 0.5F, 1.0F);
 
 		information.setLastTick();
 		

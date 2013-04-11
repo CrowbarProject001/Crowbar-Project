@@ -29,9 +29,6 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		setPathSpecial("cbc.weapons.egon_windup", "cbc.weapons.egon_run", "cbc.weapons.egon_off");
 		setPathJam("cbc.weapons.gunjam_a");
 		setShootTime(4);
-		setDamage(10);
-		setOffset(2);
-		setPushForce(0.002);
 		setJamTime(20);
 		
 	}
@@ -105,5 +102,23 @@ public class Weapon_egon extends WeaponGeneralEnergy {
     {
         return 300;
     }
+
+	@Override
+	public double getPushForce(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDamage(int mode) {
+		// TODO Auto-generated method stub
+		return 10;
+	}
+
+	@Override
+	public int getOffset(int mode) {
+		// TODO Auto-generated method stub
+		return 2;
+	}
 	
 }

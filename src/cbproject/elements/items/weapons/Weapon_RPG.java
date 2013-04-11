@@ -1,7 +1,7 @@
 package cbproject.elements.items.weapons;
 
 import cbproject.CBCMod;
-import cbproject.elements.entities.weapons.EntityRPG;
+import cbproject.elements.entities.weapons.EntityRocket;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
@@ -23,22 +23,11 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 		setCreativeTab(CBCMod.cct);
 		setMaxDamage(2);
 		
-		String pshoot[] = {""};
-		String reload[] = {""};
-		String jam[] = {""};
 		int shoot[] = { 0, 0 }, dmg[] = {30, 30}, off[] = { 0 , 0};
 		double push[] = { 2, 2};
 		
-		setPathShoot(pshoot);
-		setPathReload(reload);
-		setPathJam(jam);
-		setJamTime(0);
-		
-		setShootTime(shoot);
-		setDamage(dmg);
-		setOffset(off);
-		setPushForce(push);
-		
+		setJamTime(20);
+		setLiftProps(20, 2);
 	}
 
 	@Override
@@ -76,7 +65,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
-		par2World.spawnEntityInWorld(new EntityRPG(par2World, (EntityLiving) par3Entity));
+		par2World.spawnEntityInWorld(new EntityRocket(par2World, (EntityLiving) par3Entity));
 	}
 	
 	@Override
@@ -97,6 +86,48 @@ public class Weapon_RPG extends WeaponGeneralBullet {
     {
         return 400; //20s
     }
+
+	@Override
+	public String getSoundShoot(int mode) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
+	@Override
+	public String getSoundJam(int mode) {
+		// TODO Auto-generated method stub
+		return "cbc.weapons.gunjam_a";
+	}
+
+	@Override
+	public String getSoundReload(int mode) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
+	@Override
+	public int getShootTime(int mode) {
+		// TODO Auto-generated method stub
+		return 40;
+	}
+
+	@Override
+	public double getPushForce(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDamage(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getOffset(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 		 
 
 }

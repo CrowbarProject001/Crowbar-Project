@@ -26,25 +26,13 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		setMaxDamage(9); 
 		setNoRepair(); //不可修补
 		
-		String[] shoot  = { "cbc.weapons.sbarrela", "cbc.weapons.sbarrela"};
-		String[] reload = { "cbc.weapons.reloada", "cbc.weapons.reloadb", "cbc.weapons.reloadc" };
-		String[] jam = { "cbc.weapons.scocka" , "cbc.weapons.scocka"};
 		int shootTime[] = {20, 35}, dmg[] = { 7, 7}, off[] = { 5, 10};
 		double push[] ={ 1.2, 2};
-		
-		setPathShoot(shoot);
-		setPathJam(jam);
-		setPathReload(reload);
-		
-		setShootTime(shootTime);
+
 		setReloadTime(7);
 		setJamTime(10);
+		setLiftProps(30, 5);
 		
-		setPushForce(push);
-		setDamage(dmg);
-		setOffset(off);
-		
-		this.setLiftProps(30, 5);
 	}
 
 	@Override
@@ -79,7 +67,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	@Override
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
     	int var1 = 10; //上弹时间
-
+    	int mode = information.mode;
     	if(par3Entity instanceof EntityPlayer){
     		
     		int dmg = par1ItemStack.getItemDamage();
@@ -97,8 +85,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     			if( cap > 0 ){
         			information.ammoManager.consumeAmmo(1);
     				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - 1);
-    		    	int index = (int) (pathSoundReload.length * Math.random());
-    		    	par2World.playSoundAtEntity(par3Entity, pathSoundReload[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
+    		    	par2World.playSoundAtEntity(par3Entity, getSoundReload(mode), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
         		} else 
         			information.isReloading = false;
     			
@@ -125,23 +112,63 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 			BulletManager.Shoot( par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
 
     	information.setLastTick();
-    	int index = (int) (pathSoundShoot.length * Math.random());
-    	par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
+    	par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
     	
     	if(par3Entity instanceof EntityPlayer){
-    		if(!information.isRecovering)
-    			information.originPitch = par3Entity.rotationPitch;
-    		par3Entity.rotationPitch -= upLiftRadius;
-    		information.isRecovering = true;
-    		information.recoverTick = 0;
+    		
+    		doRecover(information, par3Entity);
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode){
     				par1ItemStack.damageItem( 1 , null);
     		}
+    		
     	}
 
-		
 		return;
 		
     }
+
+	@Override
+	public String getSoundShoot(int mode) {
+		return "cbc.weapons.sbarrela" ;
+	}
+
+	@Override
+	public String getSoundJam(int mode) {
+		// TODO Auto-generated method stub
+		return "cbc.weapons.scocka";
+	}
+
+	@Override
+	public String getSoundReload(int mode) {
+		
+		int index = (int) (3 * Math.random());
+		if(index == 0)
+			return  "cbc.weapons.reloada";
+		if(index == 1)
+			return  "cbc.weapons.reloadb";
+		return  "cbc.weapons.reloadc";
+					
+	}
+
+	@Override
+	public int getShootTime(int mode) {
+		return mode == 0? 18: 35;
+	}
+
+	@Override
+	public double getPushForce(int mode) {
+		return mode == 0 ? 1.2 : 2;
+	}
+
+	@Override
+	public int getDamage(int mode) {
+		return 7;
+	}
+
+	@Override
+	public int getOffset(int mode) {
+		// TODO Auto-generated method stub
+		return (mode == 0) ? 5 : 10;
+	}
 
 }

@@ -23,19 +23,6 @@ public abstract class WeaponGeneral extends Item {
 	public int maxModes, type;
 	public int ammoID;
 	public  double upLiftRadius, recoverRadius; //player screen uplift radius in degree
-	public double  pushForce[];
-	public  int damage[], offset[]; //damage and offset(offset: 0-100, larger the wider bullet spray)
-	public final void setPushForce(double... par1){
-		pushForce = par1;
-	}
-	
-	public final void setDamage(int... par1){
-		damage = par1;
-	}
-	
-	public final void setOffset(int... par1){
-		offset = par1;
-	}
 	
 	public void setLiftProps(double uplift, double recover){
 		upLiftRadius = uplift;
@@ -55,27 +42,23 @@ public abstract class WeaponGeneral extends Item {
 		
 		if(!(par3Entity instanceof EntityPlayer))
 			return;
-		
+
 		ItemStack currentItem = ((EntityPlayer)par3Entity).inventory.getCurrentItem();
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
-			return;
+			return;	
 		
 		InformationSet inf = loadInformation(par1ItemStack, (EntityPlayer) par3Entity);
-		if(inf == null)
-			return;
-		
 		InformationWeapon information = inf.getProperInf(par2World);
+		
+		if(CBCKeyProcess.modeChange)
+			CBCKeyProcess.onModeChange(par1ItemStack ,inf, (EntityPlayer) par3Entity, maxModes);	
+		
 		if(information.isRecovering){
 			par3Entity.rotationPitch += recoverRadius;
 			information.recoverTick++;
 			if(information.recoverTick >= (upLiftRadius / recoverRadius))
 				information.isRecovering = false;
-		}
-		
-		if(CBCKeyProcess.modeChange){
-			CBCKeyProcess.modeChange = false;
-			onModeChange(par1ItemStack ,information, (EntityPlayer) par3Entity);	
-		}
+		}		
 
 	}
 	
@@ -100,6 +83,15 @@ public abstract class WeaponGeneral extends Item {
 	
 	public abstract InformationSet loadInformation(ItemStack par1Itack, EntityPlayer entityPlayer);
 	public abstract InformationSet getInformation(ItemStack itemStack);
+	
+	public abstract double getPushForce(int mode);
+	public abstract int getDamage(int mode);
+	public abstract int getOffset(int mode);
+	
+	public InformationSet getInformation(int weaponID){
+		InformationSet inf = (InformationSet) listItemStack.get(weaponID);
+		return inf;
+	}
 	
 	public InformationWeapon getSpecInformation(ItemStack itemStack,World world){
 		InformationSet inf =  getInformation(itemStack);

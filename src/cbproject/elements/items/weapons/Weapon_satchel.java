@@ -41,10 +41,6 @@ public class Weapon_satchel extends WeaponGeneral {
 		double push[] = {0, 0};
 		int dam[] = {0, 0}, offset[] = {0, 0};
 		
-		setPushForce(push);
-		setDamage(dam);
-		setOffset(offset);
-		
 	}
 	
 	@Override
@@ -184,6 +180,24 @@ public class Weapon_satchel extends WeaponGeneral {
 	public InformationSatchel getInformation(EntityPlayer entityPlayer, World world){
 		InformationSet set = getInformation(entityPlayer);
 		return (set == null) ? null : set.getProperSatchel(world);
+	}
+
+	@Override
+	public double getPushForce(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDamage(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getOffset(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

@@ -1,8 +1,8 @@
 package cbproject.elements.items.weapons;
 
 import cbproject.CBCMod;
-import cbproject.elements.entities.weapons.EntityCrossbow;
-import cbproject.elements.entities.weapons.EntityRPG;
+import cbproject.elements.entities.weapons.EntityCrossbowArrow;
+import cbproject.elements.entities.weapons.EntityRocket;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
@@ -84,7 +84,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 			BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
 			break;
 		case 1:
-			par2World.spawnEntityInWorld(new EntityCrossbow(par2World, (EntityLiving) par3Entity));
+			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World, (EntityLiving) par3Entity));
 			break;
 		default:
 			break;
@@ -121,4 +121,46 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
     {
         return 200; //10s
     }
+
+	@Override
+	public String getSoundShoot(int mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSoundJam(int mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSoundReload(int mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getShootTime(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getPushForce(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDamage(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getOffset(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

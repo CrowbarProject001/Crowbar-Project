@@ -108,4 +108,46 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
         return 400; //20s
     }
 
+	@Override
+	public String getSoundShoot(int mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSoundJam(int mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSoundReload(int mode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getShootTime(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getPushForce(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getDamage(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getOffset(int mode) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

@@ -1,7 +1,6 @@
 package cbproject.elements.items.weapons;
 
 import cbproject.elements.entities.weapons.EntityHGrenade;
-import cbproject.elements.events.weapons.EventHGrenadePin;
 import cbproject.proxy.ClientProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,21 +27,14 @@ public class Weapon_hgrenade extends Item {
 	}
 	
 	
-	/*
-	 * 
-	 * @see net.minecraft.item.Item#onPlayerStoppedUsing(net.minecraft.item.ItemStack, net.minecraft.world.World, net.minecraft.entity.player.EntityPlayer, int)
-	 */
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
-		Event event = new EventHGrenadePin(par3EntityPlayer, par1ItemStack);
-		MinecraftForge.EVENT_BUS.post( event );
-		
-		if( event.isCanceled() || par4 >= 395){
+
+		if( par4 >= 395 ){
 			return;
 		}
 		
-		System.out.println("Item use duration : " + par4);
 		int duration = (par4 > 340) ? 400 - par4 : 60 ; //used time: if large than 3s use 3s
 
 		if ( par1ItemStack.stackSize > 0)
@@ -52,26 +44,15 @@ public class Weapon_hgrenade extends Item {
         {
             --par1ItemStack.stackSize;
         }
-		System.out.println("Stopped using grenade");
 		
 		return;
     }
 	
-	/*
-	 * 
-	 * @see net.minecraft.item.Item#onItemRightClick(net.minecraft.item.ItemStack, net.minecraft.world.World, net.minecraft.entity.player.EntityPlayer)
-	 */
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-		
-		Event event = new EventHGrenadePin(par3EntityPlayer, par1ItemStack);
-		MinecraftForge.EVENT_BUS.post( event );
-		
-		if( event.isCanceled() ){
-			return par1ItemStack;
-		}
-		
+	
         par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.hgrenadepin", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
         par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));

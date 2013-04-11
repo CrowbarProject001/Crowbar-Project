@@ -25,6 +25,7 @@ import cbproject.elements.items.ItemsRegister;
 import cbproject.elements.items.Test_Item;
 import cbproject.elements.renderers.CBCRenderManager;
 import cbproject.misc.CBCKeyProcess;
+import cbproject.misc.CBCPacketHandler;
 import cbproject.misc.CBCSoundEvents;
 import cbproject.misc.CCT;
 import cbproject.utils.weapons.BulletManager;
@@ -45,8 +46,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.1")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false)
-
+@NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {"CBCWeaponMode"}, packetHandler = CBCPacketHandler.class)
 
 public class CBCMod
 {
@@ -56,15 +56,18 @@ public class CBCMod
 	public static CreativeTabs cct = new CCT("CBCMod");
 	public static CBCRenderManager renderManager;
 	public static CBCKeyProcess keyProcess;
-	Config config;
 	
 	public static final int RENDER_TYPE_TRIPMINE = 400;
 	public static final int RENDER_TYPE_TRIPMINE_RAY = 401;
 	
+	private static Config config;
+	
 	@Instance("cbc")
 	public static CBCMod CBCMod;
-	@SidedProxy(clientSide="cbproject.proxy.ClientProxy",serverSide="chproject.proxy.Proxy")
+	
+	@SidedProxy(clientSide="cbproject.proxy.ClientProxy",serverSide="cbproject.proxy.Proxy")
 	public static cbproject.proxy.Proxy Proxy;
+	
 	@PreInit
 	public void preInit(FMLPreInitializationEvent Init)
 	{
@@ -86,11 +89,10 @@ public class CBCMod
 		cbcBlocks = new BlocksRegister(config);
 		keyProcess = new CBCKeyProcess(config);
 		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess(config));
-		Proxy.init();
-
-		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "en_US", "Crowbarcraft");
 		
-
+		Proxy.init();
+		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "en_US", "LambdaCraft");
+		
 	}
 
 	@PostInit

@@ -8,12 +8,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class EntityCrossbow extends EntityThrowable {
+public class EntityCrossbowArrow extends EntityThrowable {
 
-	public EntityCrossbow(World par1World, EntityLiving par2EntityLiving) {
+	public EntityCrossbowArrow(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
 		// TODO Auto-generated constructor stub
 	}
@@ -28,8 +29,11 @@ public class EntityCrossbow extends EntityThrowable {
 	
 	@Override
 	protected void onImpact(MovingObjectPosition var1) {
-		// TODO Auto-generated method stub
+		
+		if(var1.typeOfHit == EnumMovingObjectType.ENTITY && var1.entityHit.equals(getThrower()))
+			return;
 		Explode();
+		
 	}
 	
 	private void Explode(){

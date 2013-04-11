@@ -3,7 +3,7 @@ package cbproject.elements.renderers.weapons;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cbproject.elements.entities.weapons.EntityGauss;
+import cbproject.elements.entities.weapons.EntityGaussRay;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.MotionXYZ;
 
@@ -24,7 +24,7 @@ public class RenderGaussRay extends RenderEntity {
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
 		
-		EntityGauss gauss = (EntityGauss)par1Entity;
+		EntityGaussRay gauss = (EntityGaussRay)par1Entity;
 		MotionXYZ motion = new MotionXYZ(gauss);
 		MovingObjectPosition trace = gauss.worldObj.rayTraceBlocks(motion.asVec3(gauss.worldObj), motion.updateMotion(100.0F).asVec3(gauss.worldObj));
 		Vec3 end = (trace == null)? motion.asVec3(gauss.worldObj) : trace.hitVec;

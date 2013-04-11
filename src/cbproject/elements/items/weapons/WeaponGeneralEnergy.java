@@ -16,33 +16,19 @@ import cbproject.utils.weapons.InformationSet;
 
 public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 
-	public String pathSoundShoot[], pathSoundSpecial[], pathSoundJam[];
-	public int jamTime, shootTime[], damage[], 
-		offset[];
-	
-	
+	public int jamTime;
+
 	public WeaponGeneralEnergy(int par1, int par2AmmoID, int par3MaxModes) {
 		super(par1, par2AmmoID, par3MaxModes);
 		type = 1;
 		// TODO Auto-generated constructor stub
 	}
 
-	public final void setShootTime(int... par1){
-		shootTime = par1;
-	}
-	
-	public final void setPathShoot(String... par1){
-		pathSoundShoot = par1;
-	}
-	
-	public final void setPathJam(String... par1){
-		pathSoundJam = par1;
-	}
-	
-	public final void setPathSpecial(String... par1){
-		pathSoundSpecial = par1;
-	}
-	
+	public abstract int getShootTime(int mode);
+	public abstract String getSoundShoot(int mode);
+	public abstract String getSoundJam(int mode);
+	public abstract int getDamage(int mode);
+
 	public final void setJamTime(int par1){
 		jamTime = par1;
 	}
@@ -59,7 +45,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		information.ammoManager.setAmmoInformation(par3EntityPlayer);
 		if(canUse && mode == 0){
 			isShooting = true;
-			if( shootTime[mode] != 0 && information.ticksExisted - information.lastTick >= shootTime[mode]){
+			if( getShootTime(mode) != 0 && information.ticksExisted - information.lastTick >= getShootTime(mode)){
 				onEnergyWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
 			}
 		}
@@ -96,7 +82,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 
 		Boolean canUse = information.ammoManager.getAmmoCapacity() > 0;
 			
-		if(shootTime[mode] > 0 && isShooting && canUse && ticksExisted - lastTick >= shootTime[mode]){
+		if(getShootTime(mode) > 0 && isShooting && canUse && ticksExisted - lastTick >= getShootTime(mode)){
 			this.onEnergyWpnShoot(par1ItemStack, par2World, par3Entity, information);
 			return information;
 		}
@@ -115,7 +101,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		
 		int mode = information.mode;
 		
-		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[mode], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
 		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
     	information.setLastTick();
 
@@ -132,13 +118,13 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 	public void onEnergyWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
 		
     	int maxDmg = par1ItemStack.getMaxDamage();
+    	int mode = information.mode;
 		if( par1ItemStack.getItemDamage() < maxDmg){
 			return;
 		}
-		int index = (int) (pathSoundJam.length * Math.random());
-		par2World.playSoundAtEntity(par3Entity, pathSoundJam[index], 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-
-		information.lastTick = information.ticksExisted;
+		
+		par2World.playSoundAtEntity(par3Entity, getSoundJam(mode), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+		information.setLastTick();
 		
 	}
 	
@@ -147,8 +133,6 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 	{
 		
 		InformationSet inf = getInformation(par1ItemStack);
-		if( inf == null)
-			return;
 		inf.getProperEnergy(par2World).isShooting = false;
 
 	}

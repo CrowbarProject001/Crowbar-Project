@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import cbproject.CBCMod;
-import cbproject.elements.entities.weapons.EntityGauss;
+import cbproject.elements.entities.weapons.EntityGaussRay;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.BulletManager;
@@ -144,7 +144,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.gaussb",  
 				0.5F, 1.0F);
 		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
-		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World, "smoke");
+		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
 	
 	}
 	

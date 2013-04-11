@@ -1,84 +1,128 @@
 package cbproject.elements.entities.weapons;
 
+import cbproject.elements.items.weapons.WeaponGeneral;
+import cbproject.utils.weapons.InformationWeapon;
 import cbproject.utils.weapons.MotionXYZ;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+/**
+ * @author WeAthFolD
+ * @description Gauss sencondary ray used to do penetration and reflection.
+ */
 public class EntityBulletGaussSec extends EntityBullet {
 
-	public EntityBulletGaussSec(World par1World, EntityLiving par2EntityLiving,
-			ItemStack par3itemStack, String particle) {
-		super(par1World, par2EntityLiving, par3itemStack, "");
-		// TODO Auto-generated constructor stub
+	public int damage;
+	public enum EnumGaussRayType {
+		PENETRATION, REFLECTION;
 	}
-
-	/*
-	 * 正式使用的Constructor
-	 * typeOfRay:0 穿射光线 1反射光线
-	 */
-	public EntityBulletGaussSec(MotionXYZ begin, MotionXYZ end,
-			ItemStack itemStack, EntityLiving entityPlayer, World worldObj,
-			int damage, MovingObjectPosition result, int typeOfRay) {
+	
+	public EntityBulletGaussSec(EnumGaussRayType typeOfRay, World worldObj, EntityLiving entityPlayer,
+			ItemStack itemStack, MovingObjectPosition result, MotionXYZ motion, int dmg) {
+		
 		super(worldObj, entityPlayer, itemStack, "");
-		double du;
-		MotionXYZ real = new MotionXYZ(begin);
+		
+		MotionXYZ real = new MotionXYZ(result.hitVec, motion.motionX, motion.motionY, motion.motionZ);
+		posX = real.posX;
+		posY = real.posY;
+		posZ = real.posZ;
+		motionX = real.motionX;
+		motionY = real.motionY;
+		motionZ = real.motionZ;
+		damage = dmg;
 		/*
 		 * sideHit: Which side was hit. 
 		 * If its -1 then it went the full length of the ray trace. 
 		 * Bottom = 0, Top = 1, East = 2, West = 3, North = 4, South = 5.
 		 * 
-		 * EAST: +X, WEST: -X, NORTH: -Z SOUTH: +Z
+		 * EAST: +Z, WEST: -Z, NORTH: -X SOUTH: +X
 		 */
-		
-		if(typeOfRay == 0){
+		if(typeOfRay == EnumGaussRayType.PENETRATION){
+			double du = 0.0;
+			//Only effective on 1block penetration.
+			System.out.println("Hit Side : " + result.sideHit);
+			du = getMiniumUpdate(result);
+			real.updateMotion(du); //Should now be another side of block
+			this.setPosition(real.posX, real.posY, real.posZ);
+			System.out.println("du " + du);
+			System.out.println("Penetration ray. Start : " + real);
+		} else {
+			
 			switch(result.sideHit){
 			case 0:
 			case 1:
-				du = (end.posY - begin.posY) / begin.motionY + (1/begin.motionY);
+				motionY = -motionY;
 				break;
-			case 2: //MotionX < 0
+			case 2:
 			case 3:
-				du = (end.posX - begin.posX) / begin.motionX + (1/begin.motionX);
+			    motionZ = -motionZ;
 				break;
-			case 4: //MoZ > 0
+			case 4:
 			case 5:
-				du = (end.posZ - begin.posZ) / begin.motionZ + (1/begin.motionZ);
+				motionX = -motionX;
 				break;
 			default:
 				return;
 			}
-		} else {
-			if(result.sideHit == 1 || result.sideHit == 2 || result.sideHit == 5){
-				du = (end.posX - begin.posX) / begin.motionX;
-			} else {
-				du = (end.posX - begin.posX ) / begin.motionX + Math.abs(1/begin.motionX);
-			}
+			
+			System.out.println("Reflection ray. Start : " + real);
+			
 		}
-		real.updateMotion(du);
 		
-		motionX = end.motionX;
-		motionY = end.motionY;
-		motionZ = end.motionZ;
-		posX = real.posX;
-		posY = real.posY;
-		posZ = real.posZ;
 		this.setThrowableHeading(motionX, motionY, motionZ, func_70182_d(), 1.0F);
-		if(typeOfRay == 0)
-			System.out.println("Penetration." + posX + " " + posY + " " + posZ + " \n" +
-					"Motion: " + motionX + " " + motionY + " " + motionZ );
-		else
-			System.out.println("Refelection." + posX + " " + posY + " " + posZ + " \n" +
-					"Motion: " + motionX + " " + motionY + " " + motionZ );
-		
 		motion = new MotionXYZ(this);
-		worldObj.spawnEntityInWorld(new EntityGauss(motion, worldObj, entityPlayer));
+		worldObj.spawnEntityInWorld( new EntityGaussRay(motion, worldObj, getThrower()) );
+		
+	}
+	
+	/**
+	 * Get the minium updateMotion radius for penetrating an block.
+	 * @return du = updateMotionRadius
+	 */
+	private double getMiniumUpdate(MovingObjectPosition result){
+		
+		double du = 0.0;
+		double dx = result.hitVec.xCoord - result.blockX
+				, dy = result.hitVec.yCoord - result.blockY
+				, dz = result.hitVec.zCoord - result.blockZ;
+		if(motionX > 0) dx = 1-dx;
+		if(motionY > 0) dy = 1-dy;
+		if(motionZ > 0) dz = 1-dz;
+		
+		dx =  Math.abs(dx / motionX);
+		dy =  Math.abs(dy / motionY);
+		dz =  Math.abs(dz / motionZ);
+		return Math.min(Math.min(dx, dy), dz);
+		
+	}
+	
+	@Override
+	protected void doBlockCollision(MovingObjectPosition result){	
+		this.setDead();
+	}
+	
+	@Override
+	public void doEntityCollision(MovingObjectPosition result){
+		
+		if( result.entityHit == null || (!(result.entityHit instanceof EntityLiving)))
+			return;
+
+		double var0 = damage/20;
+		double dx = motion.motionX * var0, dy = motion.motionY * var0, dz = motion.motionZ * var0;
+		
+		EntityLiving mob = (EntityLiving) result.entityHit;
+		mob.attackEntityFrom(DamageSource.causeMobDamage(player), damage);
+		mob.addVelocity(dx, dy, dz);
+		
+		
 	}
 	
 	@Override
 	public float func_70182_d(){
-		return 1.0F;
+		return 50.0F;
 	}
 	
 

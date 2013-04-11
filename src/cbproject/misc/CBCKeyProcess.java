@@ -3,16 +3,23 @@
  */
 package cbproject.misc;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.EnumSet;
+import java.util.Random;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet250CustomPayload;
 
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -55,17 +62,32 @@ public class CBCKeyProcess extends KeyHandler{
 		
 	}
 	
-	public static void onModeChange(InformationSet inf, EntityPlayer player, int maxModes){
+	public static void onModeChange(ItemStack itemStack, InformationSet inf, EntityPlayer player, int maxModes){
 		
 			modeChange = false;
-			InformationWeapon cl = inf.clientReference, sv = inf.serverReference;
-			if(player.worldObj.isRemote){
-				cl.mode = (maxModes -1 == cl.mode) ? 0 : cl.mode +1;
-				sv.mode = cl.mode;
+			if(player.worldObj.isRemote)
+				return;
+			
+			InformationWeapon sv = inf.serverReference;
+			sv.mode = (maxModes -1 <= sv.mode) ? 0 : sv.mode +1;
+			sv.modeChange = true;
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
+			DataOutputStream outputStream = new DataOutputStream(bos);
+			
+			try {
+					outputStream.writeInt(itemStack.itemID);
+					outputStream.writeInt(itemStack.getTagCompound().getInteger("weaponID"));
+			        outputStream.writeInt(sv.mode);
+			} catch (Exception ex) {
+			        ex.printStackTrace();
 			}
-			else sv.mode = cl.mode;
-			sv.modeChange = cl.modeChange = true;
-			player.sendChatToPlayer("New Mode: " + inf.getProperInf(player.worldObj).mode);
+			Packet250CustomPayload packet = new Packet250CustomPayload();
+			packet.channel = "CBCWeaponMode";
+			packet.data = bos.toByteArray();
+			packet.length = bos.size();
+			PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
+			
+			player.sendChatToPlayer("New Mode: " + sv.mode);
 			
 	}
 

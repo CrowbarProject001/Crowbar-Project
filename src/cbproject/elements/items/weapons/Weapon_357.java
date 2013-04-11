@@ -23,24 +23,13 @@ public class Weapon_357 extends WeaponGeneralBullet {
 		setMaxStackSize(1);
 		setMaxDamage(7); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
-		
-		String[] shoot  = { "cbc.weapons.pyt_shota", "cbc.weapons.pyt_shotb"};
-		String[] reload = { "cbc.weapons.pyt_reloada" };
+			
 		String[] jam = { "cbc.weapons.pyt_cock"};
 		int shootTime[] = {20}, dmg[] = {7}, off[] = {2};
 		double push[] = { 1.5 };
-		
-		setPathShoot(shoot);
-		setPathJam(jam);
-		setPathReload(reload);
-		
-		setShootTime(shootTime);
+
 		setReloadTime(100);
 		setJamTime(20);
-		
-		setPushForce(push);
-		setDamage(dmg);
-		setOffset(off);
 		setLiftProps(25, 3);
 		
 	}
@@ -75,5 +64,46 @@ public class Weapon_357 extends WeaponGeneralBullet {
     {
         return 200; //10s
     }
+
+	@Override
+	public String getSoundShoot(int mode) {
+		String[] shoot  = { "cbc.weapons.pyt_shota", "cbc.weapons.pyt_shotb"};
+		int index = (int) (Math.random() * 2);
+		return shoot[index];
+	}
+
+	@Override
+	public String getSoundJam(int mode) {
+		return "cbc.weapon.gunjam_a";
+	}
+
+	@Override
+	public String getSoundReload(int mode) {
+		return "cbc.weapons.pyt_reloada";
+	}
+
+	@Override
+	public int getShootTime(int mode) {
+		// TODO Auto-generated method stub
+		return 20;
+	}
+
+	@Override
+	public double getPushForce(int mode) {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+
+	@Override
+	public int getDamage(int mode) {
+		// TODO Auto-generated method stub
+		return 7;
+	}
+
+	@Override
+	public int getOffset(int mode) {
+		// TODO Auto-generated method stub
+		return 2;
+	}
 
 }

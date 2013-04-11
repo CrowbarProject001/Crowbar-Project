@@ -9,21 +9,20 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class EntityGauss extends EntityThrowable {
+public class EntityGaussRay extends EntityThrowable {
 	
-	public EntityGauss(World par1World,EntityLiving ent, double moX, double moY, double moZ){
+	public EntityGaussRay(World par1World,EntityLiving ent, double moX, double moY, double moZ){
 		
 		super(par1World, ent);
 		motionX = moX;
 		motionY = moY;
 		motionZ = moZ;
 		ignoreFrustumCheck = true;
-		System.out.println("Primary ray. Pos : " + posX + " " + posY + " " + posZ + " \n" +
-				"Motion: " + motionX + " " + motionY + " " + motionZ );
 		
 	}
 	
-	public EntityGauss(MotionXYZ begin, World par1World, EntityLiving ent){
+	public EntityGaussRay(MotionXYZ begin, World par1World, EntityLiving ent){
+		
 		super(par1World, ent);
 		this.posX = begin.posX;
 		this.posY = begin.posY;
@@ -31,11 +30,13 @@ public class EntityGauss extends EntityThrowable {
 		this.motionX = begin.motionX;
 		this.motionY = begin.motionY;
 		this.motionZ = begin.motionZ;
+		ignoreFrustumCheck = true;
+		
 	}
 
 	@Override
 	public void onUpdate(){
-		if(this.ticksExisted > 1000) //存在0.5秒
+		if(this.ticksExisted > 100) //存在0.5秒
 			this.setDead();
 	}
 	
