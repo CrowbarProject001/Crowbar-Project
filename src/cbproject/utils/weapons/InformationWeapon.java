@@ -12,5 +12,17 @@ public class InformationWeapon {
 		isRecovering = false;
 		modeChange = false;
 	}
+	
+	public void updateTick(){
+		ticksExisted++;
+	}
+	
+	public void setLastTick(){
+		lastTick = ticksExisted;
+	}
+
+	public int getDeltaTick(){
+		return ticksExisted - lastTick;
+	}
 
 }
