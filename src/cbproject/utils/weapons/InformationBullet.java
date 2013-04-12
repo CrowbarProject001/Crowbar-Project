@@ -11,13 +11,13 @@ public class InformationBullet extends InformationWeapon{
 	
 	public InformationBullet(EntityPlayer par7Player, ItemStack par8Weapon) {
 		
+		super(par7Player, par8Weapon);
 		ticksExisted = 0;
 		lastTick = 0;
 		recoverTick = 0;
 		
 		isShooting = false;
 		isReloading = false;
-		isRecovering = false;
 		
 		ammoManager = new AmmoManager(par7Player, par8Weapon);
 

@@ -42,11 +42,9 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
 		
-		InformationSet inf = getInformation(par1ItemStack);
-		if(inf == null)
-			return;
-		InformationEnergy information = inf.getProperEnergy(par2World);
-		onEnergyWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);	
+		InformationEnergy information = onEnergyWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+		if(information == null)
+				return;
 		if(information.mode == 1)
 			onChargeModeUpdate(information, par1ItemStack, par2World, par3Entity, par4, par5);
 		
@@ -117,7 +115,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		InformationSet i = getInformation(par1ItemStack);
+		InformationSet i = getInformation(par1ItemStack, par2World);
 		if(i == null)
 			return;
 		InformationEnergy inf = i.getProperEnergy(par2World);

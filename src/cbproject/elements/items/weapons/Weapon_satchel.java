@@ -44,6 +44,11 @@ public class Weapon_satchel extends WeaponGeneral {
 	}
 	
 	@Override
+	public void onModeChange(ItemStack itemStack, World world, int newMode){
+		itemStack.getTagCompound().setInteger("mode", newMode);
+	}
+	
+	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 		onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 	}
@@ -57,14 +62,9 @@ public class Weapon_satchel extends WeaponGeneral {
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
 			return null;
 		
-		InformationSet information = loadInformation((EntityPlayer)par3Entity, par1ItemStack);
+		InformationSet information = loadInformation(par1ItemStack, (EntityPlayer)par3Entity);
 		if(CBCKeyProcess.modeChange){
 			CBCKeyProcess.onModeChange(par1ItemStack, information, (EntityPlayer) par3Entity, maxModes);
-		}
-		if(par2World.isRemote){
-			if(par1ItemStack.getTagCompound() == null)
-				par1ItemStack.stackTagCompound = new NBTTagCompound();
-			par1ItemStack.stackTagCompound.setInteger("mode", information.getProperInf(par2World).mode);
 		}
 		return information.getProperInf(par2World);
 
@@ -77,7 +77,9 @@ public class Weapon_satchel extends WeaponGeneral {
 		if(par1ItemStack.stackSize == 1)
 			return par1ItemStack;
 		
-		InformationSatchel inf = loadInformation(par1ItemStack, par3EntityPlayer, par2World);
+		InformationSet information = loadInformation(par1ItemStack, par3EntityPlayer);
+		InformationSatchel inf = information.getProperSatchel(par2World);
+		
 		inf.ammoManager.setAmmoInformation((EntityPlayer)par3EntityPlayer);
 		int mode = par1ItemStack.stackTagCompound.getInteger("mode");
 		//最多放置6个Satchel
@@ -108,62 +110,42 @@ public class Weapon_satchel extends WeaponGeneral {
 		return par1ItemStack;
     }
 
-	@Deprecated
-	public InformationSet loadInformation(ItemStack par1ItemStack,
+	@Override
+	public InformationSet getInformation(ItemStack itemStack, World world) {
+		InformationSet inf = CBCMod.wpnInformation.getInformation(itemStack, world);   	
+	    return inf;
+	}
+	
+	@Override
+	public InformationSet loadInformation(ItemStack itemStack,
 			EntityPlayer entityPlayer) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Deprecated
-	public InformationSet getInformation(ItemStack itemStack) {
-		return null;
-	}
-	
-	public InformationSatchel loadInformation(ItemStack par1ItemStack, EntityPlayer entityPlayer, World world){
-		return loadInformation(entityPlayer, par1ItemStack).getProperSatchel(world);
-	}
-	
-	public InformationSet getInformation(EntityPlayer player){
-
-	  	NBTTagCompound nbt = player.getEntityData();
-	  	
-    	double uniqueID = nbt.getDouble("uniqueID");
-    	int id = nbt.getInteger("weaponID");
-    	if(id == 0 || id >= listItemStack.size())
-    		return null;
-    	
-    	InformationSet inf = (InformationSet) listItemStack.get(id);
-    	if(inf.signID != uniqueID)
-    		return null;
-    	
-    	return inf;
-	}
-	
-
-	public InformationSet loadInformation(EntityPlayer entityPlayer, ItemStack itemStack) {
-		
-		InformationSet inf = getInformation(entityPlayer);
+		InformationSet inf = getInformation(itemStack, entityPlayer.worldObj);
 		if(inf != null)
 			return inf;
 		
+		NBTTagCompound nbt = entityPlayer.getEntityData();
+		int weaponID = nbt.getInteger("weaponID");
+		double uniqueID = nbt.getDouble("uniqueID");
+		inf = CBCMod.wpnInformation.getInformationWithCheck(weaponID, uniqueID);
+		if(inf != null)
+			return inf;
+
 		InformationSatchel server = new InformationSatchel(entityPlayer, itemStack);
 		InformationSatchel client = new InformationSatchel(entityPlayer, itemStack);
-		
-		double uniqueID = Math.random()*65535D;
-		int id = listItemStack.size();
+		uniqueID = Math.random()*65535D;
 		
 		inf = new InformationSet(client, server, uniqueID);
-		listItemStack.add(inf);
-		NBTTagCompound nbt = entityPlayer.getEntityData();
+		int id = CBCMod.wpnInformation.addToList(inf);
 		
 		nbt.setDouble("uniqueID", uniqueID);
 		nbt.setInteger("weaponID", id);
-		System.out.println("Set ID: " + id);
-		//配合Renderer，写入模式信息
+		
 		if(itemStack.stackTagCompound == null)
 			itemStack.stackTagCompound = new NBTTagCompound();
 		itemStack.stackTagCompound.setInteger("mode", 0);
+		itemStack.stackTagCompound.setInteger("weaponID", id);
+		itemStack.stackTagCompound.setDouble("uniqueID", uniqueID);
 		
 		return inf;
 		
@@ -174,10 +156,6 @@ public class Weapon_satchel extends WeaponGeneral {
         return 100;
     }
 	
-	public InformationSatchel getInformation(EntityPlayer entityPlayer, World world){
-		InformationSet set = getInformation(entityPlayer);
-		return (set == null) ? null : set.getProperSatchel(world);
-	}
 
 	@Override
 	public double getPushForce(int mode) {
@@ -196,6 +174,9 @@ public class Weapon_satchel extends WeaponGeneral {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+
+
 
 
 }

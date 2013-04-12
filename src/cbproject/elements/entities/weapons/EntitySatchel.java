@@ -105,12 +105,12 @@ public class EntitySatchel extends EntityThrowable {
 	protected void onImpact(MovingObjectPosition var1) {
 		if(var1.typeOfHit == EnumMovingObjectType.ENTITY)
 			return;
-		/*
+		
 		switch(var1.sideHit){
 		case 1:
 			if(!onGround){
 				tickHit = ticksExisted;
-				motionY = 0;
+				motionY = -0.5 * motionY;
 			}
 			onGround = true;
 			break;
@@ -128,7 +128,7 @@ public class EntitySatchel extends EntityThrowable {
 		default:
 			break;
 		}
-		*/
+		
 		float var10 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(motionY, (double)var10) * 180.0D / Math.PI);
@@ -144,7 +144,7 @@ public class EntitySatchel extends EntityThrowable {
 			System.out.println("on ground.");
             this.motionX *= 0.6D;
             this.motionZ *= 0.6D;
-            this.motionY = 0;
+            this.motionY = -0.5 * motionY;
         }
 	}
     

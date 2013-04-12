@@ -35,7 +35,6 @@ public class CommandChangeMode extends CommandBase {
 			if(inf.mode == item.maxModes -1)
 				inf.mode = 0;
 			else inf.mode++;
-			
 			if(player.worldObj.isRemote)
 				var1.sendChatToPlayer("Client New mode : " + inf.mode);
 			else var1.sendChatToPlayer("Server New mode : " + inf.mode);

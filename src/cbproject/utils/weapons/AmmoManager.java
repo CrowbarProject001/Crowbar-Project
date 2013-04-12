@@ -128,6 +128,8 @@ public class AmmoManager {
 		ItemStack itemStack;
 		for( int i=0; i<36; i++){
 			itemStack = player.inventory.getStackInSlot(i);
+			if(itemStack == null)
+				continue;
 			if(itemStack.itemID == itemID){
 				itemStack.splitStack(1);
 				return true;

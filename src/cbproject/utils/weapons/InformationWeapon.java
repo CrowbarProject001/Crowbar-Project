@@ -1,16 +1,21 @@
 package cbproject.utils.weapons;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 public class InformationWeapon {
 	
+	public EntityPlayer player;
+	public ItemStack itemStack;
 	public int ticksExisted, lastTick, recoverTick, mode;
 	public AmmoManager ammoManager;
-	public Boolean isRecovering, modeChange;
-	public double signID;
+	public Boolean isRecovering;
 	public float originPitch;
 	
-	public InformationWeapon() {
+	public InformationWeapon(EntityPlayer p, ItemStack i) {
 		isRecovering = false;
-		modeChange = false;
+		player = p;
+		itemStack = i;
 	}
 	
 	public void updateTick(){

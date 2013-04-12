@@ -9,11 +9,10 @@ public class InformationEnergy extends InformationWeapon {
 	public Boolean isShooting;
 	
 	public InformationEnergy(ItemStack par1ItemStack, EntityPlayer par2Player) {
-		
+		super(par2Player, par1ItemStack);
 		charge = 0;
 		isShooting = false;
 		ammoManager = new AmmoManager(par2Player, par1ItemStack);
-		
 	}
 
 	public void updateTick(){

@@ -10,7 +10,7 @@ public class InformationSatchel extends InformationWeapon {
 	
 	public List list;
 	public InformationSatchel(EntityPlayer ent, ItemStack itemStack) {
-		super();
+		super(ent, itemStack);
 		list = new ArrayList();
 		ammoManager = new AmmoManager(ent, itemStack);
 	}

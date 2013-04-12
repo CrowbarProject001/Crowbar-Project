@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import cbproject.CBCMod;
 import cbproject.misc.CBCKeyProcess;
 import cbproject.utils.weapons.BulletManager;
@@ -18,8 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public abstract class WeaponGeneral extends Item {
-	
-	protected List listItemStack;
+
 	public int maxModes, type;
 	public int ammoID;
 	public  double upLiftRadius, recoverRadius; //player screen uplift radius in degree
@@ -33,7 +35,6 @@ public abstract class WeaponGeneral extends Item {
 		
 		super(par1);
 		maxModes = par3MaxModes;
-		listItemStack = new ArrayList();
 		ammoID = par2AmmoID;
 
 	}
@@ -64,14 +65,6 @@ public abstract class WeaponGeneral extends Item {
 
 	}
 	
-	public void onModeChange(ItemStack item, InformationWeapon inf, EntityPlayer player){
-		
-		inf.mode = (maxModes -1 == inf.mode) ? 0 : inf.mode +1;
-		player.sendChatToPlayer("New Mode : " + inf.mode);
-		item.getTagCompound().setInteger("mode", inf.mode);
-		
-	}
-	
 	public void doRecover(InformationWeapon information, EntityPlayer entityPlayer){
 		
 		if(!information.isRecovering)
@@ -84,19 +77,23 @@ public abstract class WeaponGeneral extends Item {
 	
 	
 	public abstract InformationSet loadInformation(ItemStack par1Itack, EntityPlayer entityPlayer);
-	public abstract InformationSet getInformation(ItemStack itemStack);
+	public abstract InformationSet getInformation(ItemStack itemStack, World world);
 	
 	public abstract double getPushForce(int mode);
 	public abstract int getDamage(int mode);
 	public abstract int getOffset(int mode);
 	
+	public void onModeChange(ItemStack itemStack, World world, int newMode){
+		CBCMod.wpnInformation.getInformation(itemStack, world).clientReference.mode = newMode;
+	}
+	
 	public InformationSet getInformation(int weaponID){
-		InformationSet inf = (InformationSet) listItemStack.get(weaponID);
+		InformationSet inf = CBCMod.wpnInformation.getInformation(weaponID);
 		return inf;
 	}
 	
 	public InformationWeapon getSpecInformation(ItemStack itemStack,World world){
-		InformationSet inf =  getInformation(itemStack);
+		InformationSet inf =  getInformation(itemStack, world);
 		if(inf != null)
 			return inf.getProperInf(world);
 		return null;

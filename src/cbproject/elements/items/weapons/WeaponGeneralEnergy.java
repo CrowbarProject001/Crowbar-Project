@@ -14,7 +14,7 @@ import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.InformationSet;
 
-public abstract class WeaponGeneralEnergy extends WeaponGeneral {
+public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 
 	public int jamTime;
 
@@ -66,7 +66,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
     		
     	}
     	
-		InformationSet inf = getInformation(par1ItemStack);
+		InformationSet inf = getInformation(par1ItemStack, par2World);
 		if(inf == null){
 			return null;
 		}
@@ -132,52 +132,37 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
 		
-		InformationSet inf = getInformation(par1ItemStack);
+		InformationSet inf = getInformation(par1ItemStack, par2World);
 		inf.getProperEnergy(par2World).isShooting = false;
 
 	}
 
-	
-	@Override
-	public InformationSet getInformation(ItemStack itemStack){
-		
-		  	if(itemStack.getTagCompound() == null)
-		  		itemStack.stackTagCompound = new NBTTagCompound();
-	    	int id = itemStack.getTagCompound().getInteger("weaponID");
-	    	double uniqueID = itemStack.getTagCompound().getDouble("uniqueID");
-	    	
-	    	if(id == 0 || id >= listItemStack.size())
-	    		return null;
-	    	
-	    	InformationSet inf = (InformationSet) listItemStack.get(id);
-	    	
-	    	if(inf.signID != uniqueID)
-	    		return null;
-	    	
-	    	return inf;
-	    	
-	}
-	    
 	@Override
 	public InformationSet loadInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer){
 		
-		InformationSet inf = getInformation(par1ItemStack);
+		InformationSet inf = getInformation(par1ItemStack, par2EntityPlayer.worldObj);
 		if(inf != null)
 			return inf;
 		
 		InformationEnergy server = new InformationEnergy(par1ItemStack, par2EntityPlayer);
 		InformationEnergy client = new InformationEnergy(par1ItemStack, par2EntityPlayer);
+		
 		double uniqueID = Math.random()*65535D;
-		
 		inf = new InformationSet(client, server, uniqueID);
+		int id = CBCMod.wpnInformation.addToList(inf);
 		
-		int id = listItemStack.size();
-		listItemStack.add(inf);
+		if(par1ItemStack.stackTagCompound == null)
+			par1ItemStack.stackTagCompound = new NBTTagCompound();
 		par1ItemStack.getTagCompound().setInteger("weaponID", id);
 		par1ItemStack.getTagCompound().setDouble("uniqueID", uniqueID);
-		
 		return inf;
 		
+	}
+
+	@Override
+	public InformationSet getInformation(ItemStack itemStack, World world) {
+		InformationSet inf = CBCMod.wpnInformation.getInformation(itemStack, world);   	
+	    return inf;
 	}
 
 

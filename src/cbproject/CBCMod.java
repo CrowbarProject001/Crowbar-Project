@@ -27,6 +27,7 @@ import cbproject.misc.CBCKeyProcess;
 import cbproject.misc.CBCPacketHandler;
 import cbproject.misc.CBCSoundEvents;
 import cbproject.misc.CCT;
+import cbproject.utils.CBCWeaponInformation;
 import cbproject.utils.weapons.BulletManager;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
@@ -55,6 +56,7 @@ public class CBCMod
 	public static CreativeTabs cct = new CCT("CBCMod");
 	public static CBCRenderManager renderManager;
 	public static CBCKeyProcess keyProcess;
+	public static CBCWeaponInformation wpnInformation;
 	
 	public static final int RENDER_TYPE_TRIPMINE = 400;
 	public static final int RENDER_TYPE_TRIPMINE_RAY = 401;
@@ -86,6 +88,7 @@ public class CBCMod
 		cbcItems=new ItemsRegister(config);
 		cbcBlocks = new BlocksRegister(config);
 		keyProcess = new CBCKeyProcess(config);
+		wpnInformation = new CBCWeaponInformation();
 		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess(config));
 		
 		Proxy.init();

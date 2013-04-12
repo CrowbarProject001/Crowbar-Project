@@ -4,7 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import cbproject.CBCMod;
 import cbproject.elements.items.weapons.WeaponGeneral;
+import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
 import net.minecraft.item.Item;
@@ -23,24 +25,22 @@ public class CBCPacketHandler implements IPacketHandler {
 		
 		switch(packet.channel){
 		case "CBCWeaponMode" :
-			
 			try {
 				
-				int itemID = inputStream.readInt(),
-				weaponID = inputStream.readInt(),
+				int weaponID = inputStream.readInt(),
 				mode = inputStream.readInt();
 
-				WeaponGeneral wpn = (WeaponGeneral) Item.itemsList[itemID];
-				System.out.println(wpn.getItemName());
-				InformationWeapon inf = wpn.getInformation(weaponID).clientReference;
-				inf.mode = mode;
-				System.out.println("Client mode : " + inf.mode);
+				InformationSet inf = CBCMod.wpnInformation.getInformation(weaponID);
+				InformationWeapon information = inf.clientReference;
+				WeaponGeneral item = (WeaponGeneral) information.itemStack.getItem();
+				item.onModeChange(information.itemStack, information.player.worldObj, mode);
+				System.out.println("Client mode : " + information.mode);
 				System.out.println("Get ID : " + weaponID);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+			break;
 		default:
 			break;
 		}

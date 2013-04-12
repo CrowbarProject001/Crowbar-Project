@@ -37,7 +37,7 @@ public class Weapon_egon extends WeaponGeneralEnergy {
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
 		
-		InformationSet inf = getInformation(par1ItemStack);
+		InformationSet inf = getInformation(par1ItemStack, par2World);
 		if(inf.getProperEnergy(par2World).isShooting && inf.getProperEnergy(par2World).ammoManager.getAmmoCapacity() > 0)
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_OFF, 0.5F, 1.0F);
 		inf.getProperEnergy(par2World).isShooting = false;

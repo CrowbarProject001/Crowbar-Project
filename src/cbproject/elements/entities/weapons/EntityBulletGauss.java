@@ -38,7 +38,7 @@ public class EntityBulletGauss extends EntityBullet {
 		motion = new MotionXYZ(par2EntityLiving);
 		worldObj.spawnEntityInWorld(new EntityGaussRay(par1World, par2EntityLiving, motion.motionX, motion.motionY, motion.motionZ));
 		item = (WeaponGeneral) itemStack.getItem();
-		inf = item.getInformation(itemStack).getProperEnergy(worldObj);
+		inf = item.getInformation(itemStack, worldObj).getProperEnergy(worldObj);
 	}
 	
 
@@ -171,7 +171,7 @@ public class EntityBulletGauss extends EntityBullet {
 			return;		
 		
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		InformationEnergy inf = item.getInformation(itemStack).getProperEnergy(worldObj);
+		InformationEnergy inf = item.getInformation(itemStack, world).getProperEnergy(worldObj);
 		int mode = inf.mode;
 		if(mode == 0){
 			doNormalAttack(result, inf, item);
