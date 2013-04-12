@@ -17,6 +17,10 @@ import cbproject.utils.weapons.InformationSet;
 
 public class Weapon_egon extends WeaponGeneralEnergy {
 
+	public static String SND_WINDUP = "cbc.weapons.egon_windup", 
+			SND_RUN = "cbc.weapons.egon_run",
+			SND_OFF = "cbc.weapons.egon_off";
+	
 	public Weapon_egon(int par1) {
 		
 		super(par1, CBCMod.cbcItems.itemAmmo_uranium.itemID, 1);
@@ -24,13 +28,9 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		setItemName("weapon_egon");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
 		setIconCoord(1,3);
-
-		setPathShoot("");
-		setPathSpecial("cbc.weapons.egon_windup", "cbc.weapons.egon_run", "cbc.weapons.egon_off");
-		setPathJam("cbc.weapons.gunjam_a");
-		setShootTime(4);
 		setJamTime(20);
 		
+		setLiftProps(5, 2);
 	}
 
 	@Override
@@ -38,13 +38,9 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 	{
 		
 		InformationSet inf = getInformation(par1ItemStack);
-		if( inf == null)
-			return;
-		if(inf.getProperEnergy(par2World).isShooting == true && inf.getProperEnergy(par2World).ammoManager.getAmmoCapacity() > 0)
-			par2World.playSoundAtEntity(par3EntityPlayer, pathSoundSpecial[2], 0.5F, 1.0F);
+		if(inf.getProperEnergy(par2World).isShooting && inf.getProperEnergy(par2World).ammoManager.getAmmoCapacity() > 0)
+			par2World.playSoundAtEntity(par3EntityPlayer, SND_OFF, 0.5F, 1.0F);
 		inf.getProperEnergy(par2World).isShooting = false;
-		
-
 	}
 	
 	@Override
@@ -56,12 +52,12 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		int dTick = inf.ticksExisted - inf.lastTick;
 		if(inf.isShooting){
 			if(inf.ticksExisted > 79 && (dTick - 79) % 42 == 0){
-				par2World.playSoundAtEntity(par3Entity, pathSoundSpecial[1], 0.5F, 1.0F);
+				par2World.playSoundAtEntity(par3Entity, SND_RUN, 0.5F, 1.0F);
 			}
 			if(dTick % 3 == 0 && !par2World.isRemote){
 				inf.ammoManager.consumeAmmo(1);
 				if(inf.ammoManager.ammoCapacity == 0){
-					par2World.playSoundAtEntity(par3Entity, pathSoundSpecial[2], 0.5F, 1.0F);
+					par2World.playSoundAtEntity(par3Entity, SND_OFF, 0.5F, 1.0F);
 					inf.isShooting = false;
 				}
 			}
@@ -74,11 +70,10 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		
 		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer).getProperEnergy(par2World);
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
-		
-		if(inf.ammoManager.getAmmoCapacity() > 0)
-			par2World.playSoundAtEntity(par3EntityPlayer, pathSoundSpecial[0], 0.5F, 1.0F);
-		if(inf.isShooting)
+		if(inf.isShooting){
 			par2World.spawnEntityInWorld(new EntityEgonRay(par2World, par3EntityPlayer, par1ItemStack));
+			par2World.playSoundAtEntity(par3EntityPlayer, SND_WINDUP, 0.5F, 1.0F);
+		}
 		inf.ticksExisted = inf.lastTick = 0;
 		
 		return par1ItemStack;
@@ -105,20 +100,32 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 
 	@Override
 	public double getPushForce(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getDamage(int mode) {
-		// TODO Auto-generated method stub
 		return 10;
 	}
 
 	@Override
 	public int getOffset(int mode) {
-		// TODO Auto-generated method stub
 		return 2;
+	}
+
+	@Override
+	public int getShootTime(int mode) {
+		return 4;
+	}
+
+	@Override
+	public String getSoundShoot(int mode) {
+		return "";
+	}
+
+	@Override
+	public String getSoundJam(int mode) {
+		return "cbc.weapons.gunjam_a";
 	}
 	
 }

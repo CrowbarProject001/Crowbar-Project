@@ -23,12 +23,4 @@ public class InformationBullet extends InformationWeapon{
 
 	}
 	
-	public void updateTick(){
-		ticksExisted++;
-	}
-	
-	public void setLastTick(){
-		lastTick = ticksExisted;
-	}
-
 }

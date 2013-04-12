@@ -38,18 +38,19 @@ public abstract class WeaponGeneral extends Item {
 
 	}
 	
-	public void onWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
+	public InformationWeapon onWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		
 		if(!(par3Entity instanceof EntityPlayer))
-			return;
-
-		ItemStack currentItem = ((EntityPlayer)par3Entity).inventory.getCurrentItem();
-		if(currentItem == null || !currentItem.equals(par1ItemStack))
-			return;	
+			return null;
 		
 		InformationSet inf = loadInformation(par1ItemStack, (EntityPlayer) par3Entity);
 		InformationWeapon information = inf.getProperInf(par2World);
 		
+		ItemStack currentItem = ((EntityPlayer)par3Entity).inventory.getCurrentItem();
+		if(currentItem == null || !currentItem.equals(par1ItemStack))
+			return null;	
+		
+
 		if(CBCKeyProcess.modeChange)
 			CBCKeyProcess.onModeChange(par1ItemStack ,inf, (EntityPlayer) par3Entity, maxModes);	
 		
@@ -59,6 +60,7 @@ public abstract class WeaponGeneral extends Item {
 			if(information.recoverTick >= (upLiftRadius / recoverRadius))
 				information.isRecovering = false;
 		}		
+		return information;
 
 	}
 	

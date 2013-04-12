@@ -49,30 +49,27 @@ public class Weapon_satchel extends WeaponGeneral {
 	}
 	
 	@Override
-	public void onWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
+	public InformationWeapon onWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		
 		if(!(par3Entity instanceof EntityPlayer))
-			return;
+			return null;
 		ItemStack currentItem = ((EntityPlayer)par3Entity).inventory.getCurrentItem();
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
-			return;
+			return null;
 		
-		InformationWeapon information = loadInformation(par1ItemStack, (EntityPlayer) par3Entity, par2World);
+		InformationSet information = loadInformation((EntityPlayer)par3Entity, par1ItemStack);
 		if(CBCKeyProcess.modeChange){
-			CBCKeyProcess.modeChange = false;
-			onModeChange(information, (EntityPlayer) par3Entity, par1ItemStack);	
+			CBCKeyProcess.onModeChange(par1ItemStack, information, (EntityPlayer) par3Entity, maxModes);
 		}
+		if(par2World.isRemote){
+			if(par1ItemStack.getTagCompound() == null)
+				par1ItemStack.stackTagCompound = new NBTTagCompound();
+			par1ItemStack.stackTagCompound.setInteger("mode", information.getProperInf(par2World).mode);
+		}
+		return information.getProperInf(par2World);
 
 	}
 	
-	public void onModeChange(InformationWeapon inf, EntityPlayer player, ItemStack itemStack){
-		
-		super.onModeChange(itemStack, inf, player);
-		if(itemStack.stackTagCompound == null)
-			itemStack.stackTagCompound = new NBTTagCompound();
-		itemStack.stackTagCompound.setInteger("mode", inf.mode);
-		
-	}
 	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
@@ -162,7 +159,7 @@ public class Weapon_satchel extends WeaponGeneral {
 		
 		nbt.setDouble("uniqueID", uniqueID);
 		nbt.setInteger("weaponID", id);
-		
+		System.out.println("Set ID: " + id);
 		//配合Renderer，写入模式信息
 		if(itemStack.stackTagCompound == null)
 			itemStack.stackTagCompound = new NBTTagCompound();

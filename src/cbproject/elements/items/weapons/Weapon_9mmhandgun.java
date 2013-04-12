@@ -33,25 +33,12 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		setMaxDamage(18); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
 		
-		String[] shoot  = { "cbc.weapons.plgun_c", "cbc.weapons.plgun_c"};
-		String[] reload = { "cbc.weapons.nmmclipa", "cbc.weapons.nmmclipa" };
-		String[] jam = { "cbc.weapons.gunjam_a" , "cbc.weapons.gunjam_a"};
 		int shootTime[] = {10, 5}, dmg[] = { 3, 3}, off[] = { 2, 8};
 		double push[] = {0.5, 0.5};
 		
-		setPathShoot(shoot);
-		setPathJam(jam);
-		setPathReload(reload);
-		
-		setShootTime(shootTime);
 		setReloadTime(60);
 		setJamTime(10);
 		
-		setPushForce(push);
-		setDamage(dmg);
-		setOffset(off);
-		
-		maxModes = 2; //低速
 	}
 
 	@Override
@@ -87,43 +74,42 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 	@Override
 	public String getSoundShoot(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.plgun_c";
 	}
 
 	@Override
 	public String getSoundJam(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.nmmclipa";
 	}
 
 	@Override
 	public int getShootTime(int mode) {
 		// TODO Auto-generated method stub
-		return 0;
+		return (mode == 0) ? 10 : 5;
 	}
 
 	@Override
 	public double getPushForce(int mode) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0.5;
 	}
 
 	@Override
 	public int getDamage(int mode) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 3;
 	}
 
 	@Override
 	public int getOffset(int mode) {
-		// TODO Auto-generated method stub
-		return 0;
+		return (mode == 1) ? 8 : 0;
 	}
 
 }

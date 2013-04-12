@@ -15,16 +15,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	public  int reloadTime ; //Time take to reload in tick
 	public  int jamTime; //sound playing gap between jams
 	
-	/*Local Variables in ItemStack InformationBulletWeapon
-	 * 
-	 * canUse(Boolean) : To flag whether the gun is available for shoot.
-	 * isShooting(Boolean) : To flag whether the gun is shooting or not.
-	 * isReloading(Boolean) : To flag whether the gun is reloading or not.
-	 * isAlive(Boolean) : To flag whether the itemEntity exists or not.
-	 * @See:cbproject.utils.weapons.InformationiBulletWeapon.java
-	 * 
-	 */
-	
 	public WeaponGeneralBullet(int par1 , int par2ammoID, int par3maxModes) {
 		
 		super(par1, par2ammoID, par3maxModes);	
@@ -56,108 +46,78 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	public void processRightClick(InformationBullet information, ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
 	
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
-		Boolean isShooting = information.isShooting;
-		Boolean isReloading = information.isReloading;
 		int mode = information.mode;
 		
-		if(!canUse && !isReloading){
-			if(par1ItemStack.getItemDamage() < getMaxDamage() -1)
-				canUse = true;
-			else {
-				isReloading = true;
-				par2World.playSoundAtEntity(par3EntityPlayer, getSoundReload(mode) , 0.5F, 1.0F);
-			}
-		}
-		
 		if(canUse){
-			isShooting = true;
-			if(information.ticksExisted - information.lastTick >= getShootTime(mode)){
+			if(information.getDeltaTick() >= getShootTime(mode)){
 				this.onBulletWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
 			}
-		}
-		information.isShooting = isShooting;
-		information.isReloading = isReloading;
+			information.isShooting = true;
+		} else information.isReloading = true;
+		
 		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
 		
 	}
 	
     public void onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+    	   	
+    	InformationBullet information = (InformationBullet) super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+    	if(information == null)
+    		return;
     	
-    	super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-    	if(par3Entity instanceof EntityPlayer){
-    		
-    		ItemStack held = ((EntityPlayer)par3Entity).getHeldItem();
-    		if(held == null || !held.equals(par1ItemStack))
-    			return;
-    		
-    	}
-    	
-		InformationSet inf = getInformation(par1ItemStack);
-		if(inf == null){
-			return;
-		}
-		
-		InformationBullet information = inf.getProperBullet(par2World);
 		information.updateTick();
-		
-		int ticksExisted = information.ticksExisted;
-		int lastTick = information.lastTick;
-		int recoverTick =  information.recoverTick;
-		int mode = information.mode;
 
-		Boolean isShooting = information.isShooting;
-		Boolean isReloading = information.isReloading;
-		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
-			
-		if(isShooting && canUse && ticksExisted - lastTick >= getShootTime(mode)){
+		if(doesShoot(information, par1ItemStack))
 			this.onBulletWpnShoot(par1ItemStack, par2World, (EntityPlayer) par3Entity, information);
-			return;
-		}
-
-		if( isReloading && ticksExisted - lastTick >= reloadTime ){
-			this.onBulletWpnReload(par1ItemStack, par2World, par3Entity, information);
-			return;
-		}
 		
-		if( isShooting && !canUse && ticksExisted - lastTick >= jamTime ){
+		if(doesReload(information, par1ItemStack))
+			this.onBulletWpnReload(par1ItemStack, par2World, par3Entity, information);
+		
+		if(doesReload(information, par1ItemStack))
 			this.onBulletWpnJam(par1ItemStack, par2World, par3Entity, information);
-			return;
-		}
 
 	}
 		
-		
-    
+	public Boolean doesShoot(InformationBullet inf, ItemStack itemStack){
+		Boolean canUse;
+		canUse = (itemStack.getMaxDamage() - itemStack.getItemDamage() -1 > 0);
+		return (getShootTime(inf.mode) != 0 && inf.isShooting && canUse && inf.getDeltaTick() >= getShootTime(inf.mode) );
+	}
+	
+	public Boolean doesReload(InformationBullet inf, ItemStack itemStack){
+		return ( inf.isReloading && inf.getDeltaTick() >= this.reloadTime);
+	}
+	
+	public Boolean doesJam(InformationBullet inf, ItemStack itemStack){
+		Boolean canUse;
+		canUse = (itemStack.getMaxDamage() - itemStack.getItemDamage() -1 > 0);
+		return ( jamTime != 0 && inf.isShooting && !canUse );
+	}
 
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
 
-    	if(par3Entity instanceof EntityPlayer){
-    		
-    		int dmg = par1ItemStack.getItemDamage();
-    		int maxDmg = par1ItemStack.getMaxDamage() -1;
-    		if( dmg <= 0){
-    			information.setLastTick();
-    			information.isReloading = false;
-    			return;
-    		}
-    		
-    		information.ammoManager.setAmmoInformation((EntityPlayer)par3Entity);
-    		int cap = information.ammoManager.ammoCapacity;
-
-    		if( dmg >= cap ){
-    			information.ammoManager.clearAmmo( (EntityPlayer)par3Entity );
-				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - cap);
-    		} else {
-    			if( information.ammoManager.consumeAmmo(dmg));
-    				par1ItemStack.setItemDamage( 0 );
-    		}
-		
+    	EntityPlayer ent = (EntityPlayer) par3Entity;
+    	
+    	int dmg = par1ItemStack.getItemDamage();
+    	int maxDmg = par1ItemStack.getMaxDamage() -1;
+    	if( dmg <= 0){
+    		information.setLastTick();
     		information.isReloading = false;
-    		information.lastTick = information.ticksExisted;
-
-    	} else { 
-    		par1ItemStack.setItemDamage( 0 );
+    		return;
     	}
+    		
+    	information.ammoManager.setAmmoInformation(ent);
+    	int cap = information.ammoManager.ammoCapacity;
+    	if( dmg >= cap ){
+    		information.ammoManager.clearAmmo( (EntityPlayer)par3Entity );
+			par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - cap);
+    	} else {
+    		if( information.ammoManager.consumeAmmo(dmg));
+    			par1ItemStack.setItemDamage( 0 );
+    	}
+		
+    	information.isReloading = false;
+    	information.setLastTick();
     	
 		return;
     }
@@ -167,14 +127,10 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		int mode = information.mode;
 		information.setLastTick();
 		
-		par2World.playSoundAtEntity(par3Entity, getSoundReload(mode), 0.5F, 1.0F);	
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
     	if(par3Entity instanceof EntityPlayer){
-    		if(!information.isRecovering)
-    			information.originPitch = par3Entity.rotationPitch;
-    		par3Entity.rotationPitch -= upLiftRadius;
-    		information.isRecovering = true;
-    		information.recoverTick = 0;
+    		doRecover(information, par3Entity);
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
     				par1ItemStack.damageItem( 1 , null);
     		}
@@ -185,15 +141,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     
     public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
  
-    	if(jamTime == 0)
-			return;
-    	
-    	int maxDmg = par1ItemStack.getMaxDamage();
-		if( par1ItemStack.getItemDamage() < maxDmg){
-			return;
-		}
 		par2World.playSoundAtEntity(par3Entity, getSoundJam(information.mode), 0.5F, 1.0F);
-
 		information.setLastTick();
 		
     }
@@ -204,8 +152,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	{
 		
 		InformationSet inf = getInformation(par1ItemStack);
-		if( inf == null)
-			return;
 		inf.getProperBullet(par2World).isShooting = false;
 
 	}

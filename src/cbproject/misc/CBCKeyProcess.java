@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.configure.Config;
+import cbproject.elements.items.weapons.Weapon_satchel;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
@@ -73,22 +74,43 @@ public class CBCKeyProcess extends KeyHandler{
 			sv.modeChange = true;
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
 			DataOutputStream outputStream = new DataOutputStream(bos);
-			
-			try {
-					outputStream.writeInt(itemStack.itemID);
+			if(!(itemStack.getItem() instanceof Weapon_satchel)){
+
+				try {
+						outputStream.writeInt(itemStack.itemID);
+						outputStream.writeInt(itemStack.getTagCompound().getInteger("weaponID"));
+				        outputStream.writeInt(sv.mode);
+				} catch (Exception ex) {
+				        ex.printStackTrace();
+				}
+				Packet250CustomPayload packet = new Packet250CustomPayload();
+				packet.channel = "CBCWeaponMode";
+				packet.data = bos.toByteArray();
+				packet.length = bos.size();
+				PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
+				
+			} else {
+				try {
+					int i;
+					for(i = 0; i < 36; i++){
+						if(player.inventory.getStackInSlot(i).equals(itemStack))
+							break;
+						if(i == 36)
+							return;
+					}
+					outputStream.writeInt(i); //StackID
 					outputStream.writeInt(itemStack.getTagCompound().getInteger("weaponID"));
 			        outputStream.writeInt(sv.mode);
-			} catch (Exception ex) {
+				} catch (Exception ex) {
 			        ex.printStackTrace();
-			}
-			Packet250CustomPayload packet = new Packet250CustomPayload();
-			packet.channel = "CBCWeaponMode";
-			packet.data = bos.toByteArray();
-			packet.length = bos.size();
-			PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
-			
+				}
+				Packet250CustomPayload packet = new Packet250CustomPayload();
+				packet.channel = "CBCSatchelMode";
+				packet.data = bos.toByteArray();
+				packet.length = bos.size();
+				PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
+			}	
 			player.sendChatToPlayer("New Mode: " + sv.mode);
-			
 	}
 
 	@Override

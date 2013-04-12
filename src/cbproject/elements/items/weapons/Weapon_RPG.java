@@ -46,13 +46,10 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 		
 		Boolean canUse = (par1ItemStack.getItemDamage() == 0), 
 				isReloading = information.isReloading;
-		int mode = information.mode;
 		
 		if(!canUse){
-			
 			isReloading = true;
-			int index = (int) (pathSoundReload.length * Math.random());
-			par2World.playSoundAtEntity(par3EntityPlayer, pathSoundReload[index] , 0.5F, 1.0F);
+			par2World.playSoundAtEntity(par3EntityPlayer, getSoundReload(0) , 0.5F, 1.0F);
 		} else{
 				this.onBulletWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
 		}
@@ -66,11 +63,6 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		par2World.spawnEntityInWorld(new EntityRocket(par2World, (EntityLiving) par3Entity));
-	}
-	
-	@Override
-	  public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
-		
 	}
 	
 	@Override

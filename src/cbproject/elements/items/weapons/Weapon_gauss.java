@@ -19,6 +19,8 @@ import cbproject.utils.weapons.MotionXYZ;
 
 public class Weapon_gauss extends WeaponGeneralEnergy {
 
+	public static String SND_CHARGE_PATH = "gauss_chargeb";
+	
 	public Weapon_gauss(int par1) {
 		
 		super(par1, CBCMod.cbcItems.itemAmmo_uranium.itemID, 2);
@@ -27,21 +29,12 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		setItemName("weapon_gauss");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
 		setIconCoord(0,3);
-		
-		String pshoot[] = {"cbc.weapons.gaussb", "cbc.weapons.gauss_chargea"};
-		String special[] = {"cbc.weapons.gauss_chargeb"};
+
 		String jam[] = {"cbc.weapons.gunjam_a"};
 		int shoot[] = { 5 , 0}, dmg[] = {8, 0}, off[] = { 0, 2 };
 		double push[] = { 1, 1};
 		
 		setJamTime(20);
-		setPathShoot(pshoot);
-		setPathSpecial(special);
-		setPathJam(jam);
-		setShootTime(shoot);
-		setDamage(dmg);
-		setOffset(off);
-		setPushForce(push);
 		
 	}
 
@@ -108,7 +101,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			if(inf.charge >= var1 && ticksChange > var1){
 				inf.setLastTick();
 				System.out.println("Played");
-				par2World.playSoundAtEntity(par3Entity, pathSoundSpecial[0], 0.5F, 1.0F);
+				par2World.playSoundAtEntity(par3Entity, SND_CHARGE_PATH, 0.5F, 1.0F);
 			}
 		}
 			
@@ -162,6 +155,36 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
     {
         return 201; //10s
     }
+
+	@Override
+	public int getShootTime(int mode) {
+		return 5;
+	}
+
+	@Override
+	public String getSoundShoot(int mode) {
+		return mode == 0 ? "cbc.weapons.gaussb" : "cbc.weapons.gauss_chargea";
+	}
+
+	@Override
+	public String getSoundJam(int mode) {
+		return "cbc.weapons.gunjam_a";
+	}
+
+	@Override
+	public int getDamage(int mode) {
+		return 8;
+	}
+
+	@Override
+	public double getPushForce(int mode) {
+		return 1;
+	}
+
+	@Override
+	public int getOffset(int mode) {
+		return 0;
+	}
 
 
 }

@@ -29,24 +29,8 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		setMaxDamage(51); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
 		
-		
-		String[] shoot  = { "cbc.weapons.hksa" };
-		String[] reload = { "cbc.weapons.nmmarr" };
-		String[] jam = { "cbc.weapons.gunjam_a"};
-		int shootTime[] = {4, 20}, dmg[] = { 3, 0}, off[] = { 8, 0};
-		double push[] = {0.5, 0};
-		
-		setPathShoot(shoot);
-		setPathJam(jam);
-		setPathReload(reload);
-		
-		setShootTime(shootTime);
 		setReloadTime(60);
 		setJamTime(10);
-		
-		setPushForce(push);
-		setDamage(dmg);
-		setOffset(off);
 		setLiftProps(8 , 2);
 
 	}
@@ -68,18 +52,18 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		
     }
 	
+	@Override
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
     	
     	if(information.mode == 0){
     		
-    		int index = (int) (pathSoundShoot.length * Math.random());
-    		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[index], 0.5F, 1.0F);	
+    		par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);	
     		int mode = information.mode;
     		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
     		if(par3Entity instanceof EntityPlayer){
     			doRecover(information, par3Entity);
     			if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
-    				par1ItemStack.damageItem( 1 , null);
+    				par1ItemStack.damageItem( 1 , par3Entity);
     			}
     		}
     		
@@ -111,25 +95,25 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	@Override
 	public String getSoundShoot(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.hksa";
 	}
 
 	@Override
 	public String getSoundJam(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.nmmarr";
 	}
 
 	@Override
 	public int getShootTime(int mode) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mode == 0 ? 4 : 20;
 	}
 
 	@Override
@@ -141,7 +125,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	@Override
 	public int getDamage(int mode) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 3;
 	}
 
 	@Override

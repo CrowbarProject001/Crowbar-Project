@@ -182,11 +182,11 @@ public class EntityBulletGauss extends EntityBullet {
 	private void doNormalAttack(MovingObjectPosition result, InformationEnergy information, WeaponGeneral item){
 		
 		int mode = 0;
-		double pf = item.pushForce[mode];
+		double pf = item.getPushForce(0);
 		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ * pf;
 		EntityLiving mob = (EntityLiving) result.entityHit;
 
-		mob.attackEntityFrom(DamageSource.causeMobDamage(player), item.damage[mode]);
+		mob.attackEntityFrom(DamageSource.causeMobDamage(player), item.getDamage(mode));
 		mob.addVelocity(dx, dy, dz);
 		
 		this.setDead();

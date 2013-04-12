@@ -29,24 +29,6 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		setMaxDamage(6);
 		setNoRepair(); //不可修补
 		
-		String[] shoot  = { "cbc.weapons.xbow_fire"};
-		String[] reload = { "cbc.weapons.xbow_reload" };
-		String[] jam = { ""};
-		int shootTime[] = {20, 20}, dmg[] = { 7, 7}, off[] = { 2, 2};
-		double push[] = {2, 2};
-		
-		setPathShoot(shoot);
-		setPathJam(jam);
-		setPathReload(reload);
-		
-		setShootTime(shootTime);
-		setReloadTime(7);
-		setJamTime(0);
-		
-		setPushForce(push);
-		setDamage(dmg);
-		setOffset(off);
-		
 		setLiftProps(10, 5);
 		
 		// TODO Auto-generated constructor stub
@@ -72,13 +54,14 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
+		int mode = information.mode;
 		
 		if(!canUse){
 			information.isReloading = true;
 			return;
 		}
 
-		par2World.playSoundAtEntity(par3Entity, pathSoundShoot[0], 0.5F, 1.0F);	
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		switch(information.mode){
 		case 0:
 			BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
@@ -125,37 +108,36 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	@Override
 	public String getSoundShoot(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.xbow_fire";
 	}
 
 	@Override
 	public String getSoundJam(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload(int mode) {
 		// TODO Auto-generated method stub
-		return null;
+		return "cbc.weapons.xbow_reload";
 	}
 
 	@Override
 	public int getShootTime(int mode) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 20;
 	}
 
 	@Override
 	public double getPushForce(int mode) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1.5;
 	}
 
 	@Override
 	public int getDamage(int mode) {
 		// TODO Auto-generated method stub
-		return 0;
+		return 20;
 	}
 
 	@Override

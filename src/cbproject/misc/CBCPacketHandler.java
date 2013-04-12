@@ -35,6 +35,7 @@ public class CBCPacketHandler implements IPacketHandler {
 				InformationWeapon inf = wpn.getInformation(weaponID).clientReference;
 				inf.mode = mode;
 				System.out.println("Client mode : " + inf.mode);
+				System.out.println("Get ID : " + weaponID);
 				
 			} catch (IOException e) {
 				e.printStackTrace();

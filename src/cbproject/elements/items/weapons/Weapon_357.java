@@ -24,11 +24,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 		setMaxDamage(7); // 最高伤害为18 0a0
 		setNoRepair(); //不可修补
 			
-		String[] jam = { "cbc.weapons.pyt_cock"};
-		int shootTime[] = {20}, dmg[] = {7}, off[] = {2};
-		double push[] = { 1.5 };
-
-		setReloadTime(100);
+		setReloadTime(70);
 		setJamTime(20);
 		setLiftProps(25, 3);
 		
@@ -43,21 +39,12 @@ public class Weapon_357 extends WeaponGeneralBullet {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-		//EVENT post
-		//fail:delete entity,setDead
 		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
 		processRightClick(( par2World.isRemote? inf.getClientAsBullet() : inf.getServerAsBullet() ), 
 				par1ItemStack, par2World, par3EntityPlayer);
 
 		return par1ItemStack;
     }
-	
-	@Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
-	{
-		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
-
-	}
 	
 	@Override
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
