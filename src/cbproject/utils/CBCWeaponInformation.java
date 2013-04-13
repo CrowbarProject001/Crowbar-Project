@@ -39,8 +39,10 @@ public class CBCWeaponInformation {
 		if(id >= list.size())
 			return null;
 		InformationSet i = (InformationSet) list.get(id);
-		if(i.signID != uniqueID)
+		if(i.signID != uniqueID){
+			System.out.println("ID doesn't match. " + "signID : " + i.signID + " uniqueID : " + uniqueID);
 			return null;
+		}
 		return i;
 	}
 	
@@ -56,5 +58,19 @@ public class CBCWeaponInformation {
 			return null;
 		return inf;
 	}
+	
+	public static InformationSet getInformation(ItemStack itemStack){
+		if(itemStack.getTagCompound() == null)
+			return null;
+		int id = itemStack.getTagCompound().getInteger("weaponID");
+		double uniqueID = itemStack.getTagCompound().getDouble("uniqueID");
+		if(id >= list.size())
+			return null;
+		InformationSet inf = (InformationSet) list.get(id);
+		if(inf.signID != uniqueID)
+			return null;
+		return inf;
+	}
+	
 
 }

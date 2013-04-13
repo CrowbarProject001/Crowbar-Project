@@ -12,28 +12,23 @@ import java.util.List;
 import java.util.Random;
 
 import cbproject.CBCMod;
+import cbproject.elements.blocks.BlocksRegister;
 import cbproject.proxy.ClientProxy;
-import cbproject.utils.weapons.MotionXYZ;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.BlockTripWireSource;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
+ * Tripmine Weapon block.
  * @author WeAthFolD
- * CBC Mod Tripmine Weapon
  */
-
 public class BlockTripmine extends Block {
 	
 	public static final int RAY_RANGE = 30;
@@ -55,7 +50,7 @@ public class BlockTripmine extends Block {
     	 int var6 = par1World.getBlockMetadata(par2, par3, par4);
     	 int var7 = var6 & 3;
     	 Boolean var8 = false;
-    	 //判断能否继续存在
+    	 //Check if the block still could exist
          if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH) && var7 == 3)
          {
              var8 = true;
@@ -93,16 +88,16 @@ public class BlockTripmine extends Block {
     	int var10 = par1World.getBlockMetadata(par2, par3, par4) & 3;
     	int i = (var10 == 3 || var10 == 1) ? par2: par4;
     	
-    	//收回光束方块
+    	//Retrieve the ray blocks
     	for(int j = 0; j <BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){ 
     		int id = 0;
 			if(var10 == 1 || var10 == 3){ //x+, x-方向
 				id = par1World.getBlockId(i, par3, par4);
-				if(id == CBCMod.cbcBlocks.blockTripmineRay.blockID)
+				if(id == BlocksRegister.blockTripmineRay.blockID)
 					par1World.setBlock(i, par3, par4, 0);
 			} else { //z+, z-方向
 				id = par1World.getBlockId(par2, par3, i);
-				if(id == CBCMod.cbcBlocks.blockTripmineRay.blockID)
+				if(id == BlocksRegister.blockTripmineRay.blockID)
 					par1World.setBlock(par2, par3, i, 0);
 			}
 		}
@@ -113,12 +108,14 @@ public class BlockTripmine extends Block {
     	
     }
     
-    public int quantityDropped(Random par1Random)
+    @Override
+	public int quantityDropped(Random par1Random)
     {
         return 0;
     }
 
-    public int idDropped(int par1, Random par2Random, int par3)
+    @Override
+	public int idDropped(int par1, Random par2Random, int par3)
     {
         return 0;
     }
@@ -193,7 +190,8 @@ public class BlockTripmine extends Block {
         
     }
 	
-    public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
+    @Override
+	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
     {
         byte var10 = 0;
 
@@ -227,11 +225,11 @@ public class BlockTripmine extends Block {
 		for(int j = 0; var0 && j <RAY_RANGE ; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){
 			if(var10 == 1 || var10 == 3){
 				if(par1World.getBlockId(i, par3, par4) == 0){
-				par1World.setBlockAndMetadataWithUpdate(i, par3, par4, CBCMod.cbcBlocks.blockTripmineRay.blockID, var10, true);
+				par1World.setBlockAndMetadataWithUpdate(i, par3, par4, BlocksRegister.blockTripmineRay.blockID, var10, true);
 				} else var0 = false;
 			} else {
 				if(par1World.getBlockId(par2, par3, i) == 0){
-					par1World.setBlockAndMetadataWithUpdate(par2, par3, i, CBCMod.cbcBlocks.blockTripmineRay.blockID, var10, true);
+					par1World.setBlockAndMetadataWithUpdate(par2, par3, i, BlocksRegister.blockTripmineRay.blockID, var10, true);
 				} else var0 = false;
 			}
 		}
@@ -248,17 +246,14 @@ public class BlockTripmine extends Block {
 		return CBCMod.RENDER_TYPE_TRIPMINE;
 	}
 
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-	 {
-	     return null;
-	 }
-
-	 public boolean isOpaqueCube()
+	@Override
+	public boolean isOpaqueCube()
 	 {
 		 return false;
      }
 
-	 public boolean renderAsNormalBlock()
+	@Override
+	public boolean renderAsNormalBlock()
 	 {
 	     return false;
 	 }

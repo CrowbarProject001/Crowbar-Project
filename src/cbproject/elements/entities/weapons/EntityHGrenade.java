@@ -2,30 +2,28 @@ package cbproject.elements.entities.weapons;
 
 
 import java.util.List;
-import java.util.Random;
 
-import cpw.mods.fml.common.Mod.Item;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumMovingObjectType;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+/**
+ * Hand grenade entity class.
+ * @author Administrator
+ * 
+ */
 public class EntityHGrenade extends EntityThrowable {
 
 	int delay;
 	int time;
+	
 	public EntityHGrenade(World par1World,int fuse) {
 		super(par1World);
 		delay = (int) (60 - fuse);
@@ -40,15 +38,6 @@ public class EntityHGrenade extends EntityThrowable {
         
     }
 
-    protected float getGravityVelocity()
-    {
-        return 0.025F;
-    }
-    
-    protected float func_70182_d()
-    {
-    	return 0.7F;
-    }
     
 	public EntityHGrenade(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6);
@@ -105,7 +94,7 @@ public class EntityHGrenade extends EntityThrowable {
 	
 	private void Explode(){
 		
-		float var1=2.0F; //TNT的一半
+		float var1=3.0F;
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
 	            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
@@ -115,7 +104,6 @@ public class EntityHGrenade extends EntityThrowable {
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
-		System.out.println("inited list.");
 		if(entitylist.size() > 0){
 			for(int i=0;i<entitylist.size();i++){
 				Entity ent = (Entity)entitylist.get(i);
@@ -126,27 +114,25 @@ public class EntityHGrenade extends EntityThrowable {
 					      Math.pow(ent.posY-posY,2) + 
 					      Math.pow(ent.posZ-posZ,2) ) , 0.33) 
 					     *0.33 * 25) ;
-					
+					System.out.println("Hgrenade damage : " + damage);
 					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode)
 						return;
 					
-
 					ent.attackEntityFrom(DamageSource.explosion2, damage);
 					ent.setFire(20);
 							
 				}
 			}
 		}
-		
-		worldObj.playSound(posX,posY,posZ, "cbc.weapons.explode_a", 0.5F, (float) (Math.random() * 0.4F + 0.8F),true);
 		this.setDead();
+		
 	}
 	
 	@Override
     public void onUpdate()
     {
         super.onUpdate();
-        if(this.ticksExisted >= delay) //该爆炸了=w=
+        if(this.ticksExisted >= delay) //Time to explode >)
         		Explode();
         
     }
@@ -157,6 +143,14 @@ public class EntityHGrenade extends EntityThrowable {
 	    return true;
 	}
 
+    protected float getGravityVelocity()
+    {
+        return 0.025F;
+    }
+    
+    protected float func_70182_d()
+    {
+    	return 0.7F;
+    }
 	
-
 }

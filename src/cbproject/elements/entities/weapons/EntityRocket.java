@@ -11,13 +11,17 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+/**
+ * RPG rocket entity.
+ * @author WeAthFolD
+ *
+ */
 public class EntityRocket extends EntityThrowable {
 
 	public EntityRocket(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
 		rotationPitch = par2EntityLiving.rotationPitch;
 		rotationYaw = par2EntityLiving.rotationYaw;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -31,20 +35,19 @@ public class EntityRocket extends EntityThrowable {
 	
 	@Override
 	protected void onImpact(MovingObjectPosition var1) {
-		// TODO Auto-generated method stub
-		Explode();
+		Explode(var1);
 	}
 	
-	private void Explode(){
+	private void Explode(MovingObjectPosition pos){
 		
-		float var1=4.0F; //手雷的3倍
+		float var1=6.0F; //手雷的3倍
 		double dmg = 40.0F;
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
 	            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 	    }    
 	    
-		worldObj.createExplosion(this, this.posX, this.posY, this.posZ, var1, true);
+		worldObj.createExplosion(this, pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, var1, true);
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
@@ -69,8 +72,6 @@ public class EntityRocket extends EntityThrowable {
 				}
 			}
 		}
-		
-		worldObj.playSound(posX,posY,posZ, "cbc.weapons.explode_a", 0.5F, (float) (Math.random() * 0.4F + 0.8F),true);
 		this.setDead();
 	}
 	

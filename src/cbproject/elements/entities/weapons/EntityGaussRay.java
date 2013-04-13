@@ -9,6 +9,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+/**
+ * Gauss ray rendering entity.
+ * @author WeAthFolD
+ *
+ */
 public class EntityGaussRay extends EntityThrowable {
 	
 	public EntityGaussRay(World par1World,EntityLiving ent, double moX, double moY, double moZ){
@@ -34,9 +39,14 @@ public class EntityGaussRay extends EntityThrowable {
 		
 	}
 
+	public EntityGaussRay(World world, EntityLiving ent){
+		super(world, ent);
+		ignoreFrustumCheck = true;
+	}
+	
 	@Override
 	public void onUpdate(){
-		if(this.ticksExisted > 100) //存在0.5秒
+		if(this.ticksExisted > 12) //存在0.5秒
 			this.setDead();
 	}
 	
@@ -48,7 +58,7 @@ public class EntityGaussRay extends EntityThrowable {
 
 	@Override
 	protected float func_70182_d(){
-		return 0.0F;
+		return 1.0F;
 	}
 
 	@Override

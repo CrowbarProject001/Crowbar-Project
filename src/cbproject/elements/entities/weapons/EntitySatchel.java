@@ -14,6 +14,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+/**
+ * Satchel entity.
+ * @author WeAthFolD
+ *
+ */
 public class EntitySatchel extends EntityThrowable {
 	
 	public static double HEIGHT = 0.083, WIDTH1 = 0.2, WIDTH2 = 0.15;
@@ -138,13 +143,11 @@ public class EntitySatchel extends EntityThrowable {
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
-		
 		if (this.onGround)
         {
-			System.out.println("on ground.");
-            this.motionX *= 0.6D;
-            this.motionZ *= 0.6D;
-            this.motionY = -0.5 * motionY;
+            this.motionX *= 0.7D;
+            this.motionZ *= 0.7D;
+            this.motionY = 0;
         }
 	}
     

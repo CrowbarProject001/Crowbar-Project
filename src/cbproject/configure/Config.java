@@ -4,8 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import net.minecraftforge.common.Configuration;
 
+/**
+ * 
+ * @author Mkpoli, WeAthFolD
+ * @description CBCMod Configuration load class.
+ */
+
 public class Config {
+	
 	private static Configuration config;
+	
 	public Config(File configFile)
 	{
 	    if(!configFile.exists())
@@ -71,4 +79,5 @@ public class Config {
 	{
 	    config.save();
 	}
+	
 }

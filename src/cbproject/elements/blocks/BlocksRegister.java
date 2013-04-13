@@ -5,6 +5,11 @@ import net.minecraft.src.ModLoader;
 import cbproject.configure.Config;
 import cbproject.elements.blocks.weapons.BlockTripmine;
 
+/**
+ * 
+ * @author WeAthFolD
+ * @description Block register,which handles all instance of blocks in mod.
+ */
 public class BlocksRegister {
 	
 	public static BlockTripmine blockTripmine;
@@ -12,11 +17,10 @@ public class BlocksRegister {
 	
 	public BlocksRegister(Config conf) {
 		registerItems(conf);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void registerItems(Config conf){
-		//TODO:添加调用config的部分
+		
 		try {
 			
 			blockTripmine = new BlockTripmine(conf.GetBlockID("tripmine", 400));
@@ -29,5 +33,6 @@ public class BlocksRegister {
 		ModLoader.registerBlock(blockTripmine);
 		LanguageRegistry.addName(blockTripmine, "Tripmine");
 		return;
+		
 	}
 }

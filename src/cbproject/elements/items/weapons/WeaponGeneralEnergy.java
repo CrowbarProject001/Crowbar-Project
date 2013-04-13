@@ -80,15 +80,14 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 
 		Boolean isShooting = information.isShooting;
 
-		Boolean canUse = information.ammoManager.getAmmoCapacity() > 0;
+		
 			
-		if(getShootTime(mode) > 0 && isShooting && canUse && ticksExisted - lastTick >= getShootTime(mode)){
+		if( doShoot(information) ){
 			this.onEnergyWpnShoot(par1ItemStack, par2World, par3Entity, information);
 			return information;
 		}
 
-		
-		if( isShooting && !canUse && ticksExisted - lastTick >= jamTime ){
+		if( doJam(information) ){
 			this.onEnergyWpnJam(par1ItemStack, par2World, par3Entity, information);
 			return information;
 		}
@@ -96,12 +95,21 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 		
 	}
 	
+	public Boolean doShoot(InformationEnergy inf){
+		Boolean canUse = inf.ammoManager.getAmmoCapacity() > 0;
+		return getShootTime(inf.mode) > 0 && inf.isShooting && canUse && inf.getDeltaTick() >= getShootTime(inf.mode);
+	}
+	
+	public Boolean doJam(InformationEnergy inf){
+		Boolean canUse = inf.ammoManager.getAmmoCapacity() > 0;
+		return inf.isShooting && !canUse && inf.getDeltaTick() >= jamTime;
+	}
 	//正常的、子弹式的射击，仅用于高斯枪第一模式和Egon
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
 		
 		int mode = information.mode;
 		
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
     	information.setLastTick();
 

@@ -19,54 +19,39 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+/**
+ * Bullet entity class which handles all bullet weapons.
+ * @author WeAthFolD
+ *
+ */
 public class EntityBullet extends EntityThrowable {
 	
-	protected static final double SCALE = 0.01D;
 	protected InformationWeapon information;
-	protected World world;
 	protected ItemStack itemStack;
-	protected EntityLiving player;
 	protected MotionXYZ motion;
 	private String effect;
+	
 	public EntityBullet(World par1World, EntityLiving par2EntityLiving, ItemStack par3itemStack, String eff) {
 		
-		this(par1World, par2EntityLiving);
+		super(par1World, par2EntityLiving);
 		
 		itemStack = par3itemStack;
-		player = par2EntityLiving;
 		eff = effect;
-		
-		if(itemStack == null)
-			return;
-		if(!(itemStack.getItem() instanceof WeaponGeneral))
-			return;
+		if( itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral) )
+			this.setDead();
 		
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		information = item.getSpecInformation(itemStack, par1World);
 		if(information == null)
-			return;
+			this.setDead();
 		
 		int mode = information.mode;
 		int offset = item.getOffset(mode);
+		//motion = new MotionXYZ(par2EntityLiving, mode);
 		motion = new MotionXYZ(par2EntityLiving, 0);
-		float var3 = 0.4F;
-		double dx = (Math.random() -1) * 2 * offset * SCALE,
-			   dy = (Math.random() -1) * 2 * offset * SCALE,
-			   dz = (Math.random() -1) * 2 * offset * SCALE;
-		
-        this.motionX += dx;
-        this.motionZ += dy;
-        this.motionY += dz;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
         
-        
 	}
-	
-	public EntityBullet(World par1World, EntityLiving par2EntityLiving) {
-		
-		super(par1World, par2EntityLiving);
-	}
-
 
     protected float getGravityVelocity()
     {
@@ -75,13 +60,13 @@ public class EntityBullet extends EntityThrowable {
     
     protected float func_70182_d()
     {
-    	return 100.0F;
+    	return 50.0F;
     }
     
 	@Override
 	protected void onImpact(MovingObjectPosition par1)
 	{    
-
+		
 	    switch(par1.typeOfHit){
 	    case TILE:
 	    	doBlockCollision(par1);
@@ -90,8 +75,8 @@ public class EntityBullet extends EntityThrowable {
 	    	doEntityCollision(par1);
 	    	break;
 	    }
-	    
 	    this.setDead();
+	    
 	}
 	
 	protected void doBlockCollision(MovingObjectPosition result){	
@@ -110,7 +95,7 @@ public class EntityBullet extends EntityThrowable {
 		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ * pf;
 		EntityLiving mob = (EntityLiving) result.entityHit;
 	
-		mob.attackEntityFrom(DamageSource.causeMobDamage(player), item.getDamage(mode));
+		mob.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), item.getDamage(mode));
 		mob.addVelocity(dx, dy, dz);
 		if(effect == "fire")
 			mob.setFire(40);
@@ -122,8 +107,5 @@ public class EntityBullet extends EntityThrowable {
 	{
 	    return true;
 	}
-	
-
-
 	
 }

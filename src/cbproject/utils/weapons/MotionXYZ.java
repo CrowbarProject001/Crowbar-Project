@@ -56,6 +56,7 @@ public class MotionXYZ {
 	}
 
 	public MotionXYZ(Entity par1Player, int par2){
+		
 		if(par1Player instanceof EntityLiving)
 			getPosByPlayer((EntityLiving) par1Player);
 		else { 

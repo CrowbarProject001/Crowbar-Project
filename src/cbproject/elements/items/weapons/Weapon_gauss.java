@@ -19,7 +19,9 @@ import cbproject.utils.weapons.MotionXYZ;
 
 public class Weapon_gauss extends WeaponGeneralEnergy {
 
-	public static String SND_CHARGE_PATH = "gauss_chargeb";
+	public static String SND_CHARGE_PATH = "cbc.weapons.gauss_chargeb", 
+			SND_CHARGEA_PATH = "cbc.weapons.gauss_chargea",
+			SND_SHOOT_PATH = "cbc.weapons.gaussb";
 	
 	public Weapon_gauss(int par1) {
 		
@@ -50,6 +52,10 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		
 	}
 	
+	@Override
+	public Boolean doShoot(InformationEnergy inf){
+		return inf.mode == 0 && super.doShoot(inf) ;
+	}
 	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
@@ -62,9 +68,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			
 			inf.isShooting = true;
 			inf.charge = inf.chargeTime = 0;
-			par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.gauss_chargea",  
-					0.5F, 1.0F);
-			inf.ammoManager = new AmmoManager(par3EntityPlayer, par1ItemStack);
+			inf.setLastTick();
+			inf.ammoManager.setAmmoInformation(par3EntityPlayer);
+			Boolean canUse = inf.ammoManager.getAmmoCapacity() > 0 || par3EntityPlayer.capabilities.isCreativeMode;
+			if(canUse)
+				par2World.playSoundAtEntity(par3EntityPlayer, SND_CHARGEA_PATH, 0.5F, 1.0F);
 			
 		}
 		par3EntityPlayer.setItemInUse(par1ItemStack,this.getMaxItemUseDuration(par1ItemStack));
@@ -76,7 +84,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			Entity par3Entity, int par4, boolean par5){
 		
 		int var1 = 29;
-		int var2 = 200; //最大蓄力10s
+		int var2 = 180; //最大蓄力9s
 		int var3 = 60;
 		int var4 = 100;
 		Boolean isShooting = inf.isShooting;
@@ -87,24 +95,24 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 				ignoreAmmo = true;
 		} else ignoreAmmo = true;
 		if(isShooting){
-			int ticksChange = inf.ticksExisted - inf.lastTick;
+			int ticksChange = inf.getDeltaTick();
 			inf.chargeTime++;
 			
 			if(ignoreAmmo || inf.ammoManager.getAmmoCapacity() > 0 )
 				inf.charge++;
 			
-			if(!ignoreAmmo && ticksChange <= var3 && ticksChange%6 == 0)
+			if(!ignoreAmmo && ticksChange <= var3 && inf.chargeTime %6 == 0)
 				inf.ammoManager.consumeAmmo(1);
 			
 			if(inf.charge >= var1 && ticksChange > var1){
 				inf.setLastTick();
-				System.out.println("Played");
+				System.out.println("Sound Played");
 				par2World.playSoundAtEntity(par3Entity, SND_CHARGE_PATH, 0.5F, 1.0F);
 			}
 		}
 			
-		
-		if(inf.charge > var2){ //过载，你懂的
+		//OverCharge!
+		if(inf.charge > var2){ 
 			isShooting = false;
 			inf.charge = 0;
 			par3Entity.attackEntityFrom(DamageSource.causeMobDamage((EntityLiving) (par3Entity)), 19);
@@ -125,6 +133,8 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		}
 		
 		int charge = (inf.charge > 60? 60 : inf.charge); //最大蓄力3秒(10点)
+		if(charge == 0)
+			return;
 		int damage = charge * 2/3; //最大为40
 		double vel = charge / 15; //最大为4
 
@@ -132,11 +142,18 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ * vel;
 		
 		inf.isShooting = false;
-		par2World.playSoundAtEntity(par3EntityPlayer, "cbc.weapons.gaussb",  
+		par2World.playSoundAtEntity(par3EntityPlayer, SND_SHOOT_PATH,  
 				0.5F, 1.0F);
 		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
 		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
 	
+	}
+	
+	@Override
+	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){	
+		super.onEnergyWpnShoot(par1ItemStack, par2World, par3Entity, information);
+		par2World.spawnEntityInWorld(new EntityGaussRay(par2World, (EntityLiving) par3Entity));
+		return;
 	}
 	
 	@Override
@@ -161,7 +178,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 
 	@Override
 	public String getSoundShoot(int mode) {
-		return mode == 0 ? "cbc.weapons.gaussb" : "cbc.weapons.gauss_chargea";
+		return mode == 0 ? SND_SHOOT_PATH : "";
 	}
 
 	@Override

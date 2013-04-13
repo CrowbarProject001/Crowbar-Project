@@ -34,7 +34,7 @@ public class CBCPacketHandler implements IPacketHandler {
 				InformationWeapon information = inf.clientReference;
 				WeaponGeneral item = (WeaponGeneral) information.itemStack.getItem();
 				item.onModeChange(information.itemStack, information.player.worldObj, mode);
-				System.out.println("Client mode : " + information.mode);
+				System.out.println("Server mode : " + information.mode);
 				System.out.println("Get ID : " + weaponID);
 				
 			} catch (IOException e) {

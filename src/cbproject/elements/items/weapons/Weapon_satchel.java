@@ -44,11 +44,6 @@ public class Weapon_satchel extends WeaponGeneral {
 	}
 	
 	@Override
-	public void onModeChange(ItemStack itemStack, World world, int newMode){
-		itemStack.getTagCompound().setInteger("mode", newMode);
-	}
-	
-	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 		onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 	}
@@ -80,23 +75,22 @@ public class Weapon_satchel extends WeaponGeneral {
 		InformationSet information = loadInformation(par1ItemStack, par3EntityPlayer);
 		InformationSatchel inf = information.getProperSatchel(par2World);
 		
-		inf.ammoManager.setAmmoInformation((EntityPlayer)par3EntityPlayer);
-		int mode = par1ItemStack.stackTagCompound.getInteger("mode");
+		int mode = inf.mode;
 		//最多放置6个Satchel
-		if(mode == 0){
+		if(mode == 0){ //放置模式
 			
 			if(inf.list.size() > 5)
 				return par1ItemStack;
 			
-			if(par3EntityPlayer.capabilities.isCreativeMode || inf.ammoManager.ammoCapacity > 1){
+			if(par3EntityPlayer.capabilities.isCreativeMode || par1ItemStack.stackSize > 1){
 				EntitySatchel ent = new EntitySatchel(par2World, par3EntityPlayer);
 				inf.list.add(ent);
 				par2World.spawnEntityInWorld(ent);
 			}
 			if( !par3EntityPlayer.capabilities.isCreativeMode)
-				inf.ammoManager.consumeAmmo(1);
+				par1ItemStack.splitStack(1);
 			
-		} else {
+		} else { //引爆模式
 			
 			for(int i = 0; i < inf.list.size(); i++){
 				EntitySatchel ent = (EntitySatchel) inf.list.get(i);
@@ -107,6 +101,7 @@ public class Weapon_satchel extends WeaponGeneral {
 		}
 		
 		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+		par3EntityPlayer.setEating(false);
 		return par1ItemStack;
     }
 
@@ -121,26 +116,16 @@ public class Weapon_satchel extends WeaponGeneral {
 			EntityPlayer entityPlayer) {
 		// TODO Auto-generated method stub
 		InformationSet inf = getInformation(itemStack, entityPlayer.worldObj);
-		if(inf != null)
+		if(inf != null){
 			return inf;
-		
-		NBTTagCompound nbt = entityPlayer.getEntityData();
-		int weaponID = nbt.getInteger("weaponID");
-		double uniqueID = nbt.getDouble("uniqueID");
-		inf = CBCMod.wpnInformation.getInformationWithCheck(weaponID, uniqueID);
-		if(inf != null)
-			return inf;
-
+		}
 		InformationSatchel server = new InformationSatchel(entityPlayer, itemStack);
 		InformationSatchel client = new InformationSatchel(entityPlayer, itemStack);
-		uniqueID = Math.random()*65535D;
+		double uniqueID = Math.random()*65535D;
 		
 		inf = new InformationSet(client, server, uniqueID);
 		int id = CBCMod.wpnInformation.addToList(inf);
-		
-		nbt.setDouble("uniqueID", uniqueID);
-		nbt.setInteger("weaponID", id);
-		
+
 		if(itemStack.stackTagCompound == null)
 			itemStack.stackTagCompound = new NBTTagCompound();
 		itemStack.stackTagCompound.setInteger("mode", 0);

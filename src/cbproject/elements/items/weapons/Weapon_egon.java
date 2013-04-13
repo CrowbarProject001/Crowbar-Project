@@ -30,7 +30,7 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		setIconCoord(1,3);
 		setJamTime(20);
 		
-		setLiftProps(5, 2);
+		setLiftProps(1, 0);
 	}
 
 	@Override

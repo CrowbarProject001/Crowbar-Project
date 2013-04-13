@@ -1,36 +1,18 @@
-/**
- * 
- */
-/**
- * @author WeAthFolD
- * @author mkpoli
- */
-//This packet is the main frame of the mod.
 package cbproject;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.configure.Config;
 import cbproject.elements.blocks.BlocksRegister;
-import cbproject.elements.blocks.Test_Block;
-import cbproject.elements.commands.CommandChangeMode;
 import cbproject.elements.items.ItemsRegister;
-import cbproject.elements.items.Test_Item;
 import cbproject.elements.renderers.CBCRenderManager;
 import cbproject.misc.CBCKeyProcess;
 import cbproject.misc.CBCPacketHandler;
 import cbproject.misc.CBCSoundEvents;
 import cbproject.misc.CCT;
 import cbproject.utils.CBCWeaponInformation;
-import cbproject.utils.weapons.BulletManager;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
-import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -48,11 +30,15 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.1")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {"CBCWeaponMode"}, packetHandler = CBCPacketHandler.class)
 
+/**
+ * The main mod class.
+ * @author WeAthFolD, mkpoli
+ */
 public class CBCMod
 {
+	
 	public static ItemsRegister cbcItems;
 	public static BlocksRegister cbcBlocks;;
-	
 	public static CreativeTabs cct = new CCT("CBCMod");
 	public static CBCRenderManager renderManager;
 	public static CBCKeyProcess keyProcess;
@@ -84,7 +70,7 @@ public class CBCMod
 	@Init
 	public void init(FMLInitializationEvent Init){
 		
-		//以下是物品的注册（武器统一封装到cbcWeapons)
+		//Items, Blocks, Recipes, Key registers, Weapon information loads.
 		cbcItems=new ItemsRegister(config);
 		cbcBlocks = new BlocksRegister(config);
 		keyProcess = new CBCKeyProcess(config);
@@ -103,9 +89,7 @@ public class CBCMod
 
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
-		
 	    CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();
-	    commandManager.registerCommand(new CommandChangeMode());
 
 	}
 	

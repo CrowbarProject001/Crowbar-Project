@@ -66,10 +66,10 @@ public class CBCKeyProcess extends KeyHandler{
 	public static void onModeChange(ItemStack itemStack, InformationSet inf, EntityPlayer player, int maxModes){
 		
 			modeChange = false;
-			if(player.worldObj.isRemote)
+			if(!player.worldObj.isRemote)
 				return;
 			
-			InformationWeapon sv = inf.serverReference;
+			InformationWeapon sv = inf.clientReference;
 			sv.mode = (maxModes -1 <= sv.mode) ? 0 : sv.mode +1;
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(16);
 			DataOutputStream outputStream = new DataOutputStream(bos);
@@ -83,7 +83,7 @@ public class CBCKeyProcess extends KeyHandler{
 			packet.channel = "CBCWeaponMode";
 			packet.data = bos.toByteArray();
 			packet.length = bos.size();
-			PacketDispatcher.sendPacketToPlayer(packet, (Player) player);
+			PacketDispatcher.sendPacketToServer(packet);
 			player.sendChatToPlayer("New Mode: " + sv.mode);
 	}
 

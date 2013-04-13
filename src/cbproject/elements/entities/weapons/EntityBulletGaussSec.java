@@ -33,22 +33,14 @@ public class EntityBulletGaussSec extends EntityBullet {
 		motionY = real.motionY;
 		motionZ = real.motionZ;
 		damage = dmg;
-		/*
-		 * sideHit: Which side was hit. 
-		 * If its -1 then it went the full length of the ray trace. 
-		 * Bottom = 0, Top = 1, East = 2, West = 3, North = 4, South = 5.
-		 * 
-		 * EAST: +Z, WEST: -Z, NORTH: -X SOUTH: +X
-		 */
+
 		if(typeOfRay == EnumGaussRayType.PENETRATION){
+			
 			double du = 0.0;
-			//Only effective on 1block penetration.
-			System.out.println("Hit Side : " + result.sideHit);
 			du = getMiniumUpdate(result);
 			real.updateMotion(du); //Should now be another side of block
 			this.setPosition(real.posX, real.posY, real.posZ);
-			System.out.println("du " + du);
-			System.out.println("Penetration ray. Start : " + real);
+			
 		} else {
 			
 			switch(result.sideHit){
@@ -67,8 +59,6 @@ public class EntityBulletGaussSec extends EntityBullet {
 			default:
 				return;
 			}
-			
-			System.out.println("Reflection ray. Start : " + real);
 			
 		}
 		
@@ -100,11 +90,6 @@ public class EntityBulletGaussSec extends EntityBullet {
 	}
 	
 	@Override
-	protected void doBlockCollision(MovingObjectPosition result){	
-		this.setDead();
-	}
-	
-	@Override
 	public void doEntityCollision(MovingObjectPosition result){
 		
 		if( result.entityHit == null || (!(result.entityHit instanceof EntityLiving)))
@@ -114,16 +99,9 @@ public class EntityBulletGaussSec extends EntityBullet {
 		double dx = motion.motionX * var0, dy = motion.motionY * var0, dz = motion.motionZ * var0;
 		
 		EntityLiving mob = (EntityLiving) result.entityHit;
-		mob.attackEntityFrom(DamageSource.causeMobDamage(player), damage);
+		mob.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), damage);
 		mob.addVelocity(dx, dy, dz);
 		
-		
 	}
-	
-	@Override
-	public float func_70182_d(){
-		return 50.0F;
-	}
-	
 
 }

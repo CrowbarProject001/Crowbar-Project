@@ -84,7 +84,7 @@ public abstract class WeaponGeneral extends Item {
 	public abstract int getOffset(int mode);
 	
 	public void onModeChange(ItemStack itemStack, World world, int newMode){
-		CBCMod.wpnInformation.getInformation(itemStack, world).clientReference.mode = newMode;
+		CBCMod.wpnInformation.getInformation(itemStack, world).serverReference.mode = newMode;
 	}
 	
 	public InformationSet getInformation(int weaponID){

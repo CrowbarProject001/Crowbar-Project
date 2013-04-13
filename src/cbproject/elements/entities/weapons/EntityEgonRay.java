@@ -14,6 +14,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+/**
+ * Egon ray rendering entity.
+ * @author WeAthFolD
+ *
+ */
 public class EntityEgonRay extends EntityThrowable {
 
 	public ItemStack item;
@@ -26,7 +31,6 @@ public class EntityEgonRay extends EntityThrowable {
 
 	@Override
 	public void onUpdate(){
-
 		InformationSet inf = ((Weapon_egon)item.getItem()).getInformation(item, worldObj);
 		if(inf == null || !getThrower().getHeldItem().equals(item) || !inf.getProperEnergy(worldObj).isShooting)
 			this.setDead();
