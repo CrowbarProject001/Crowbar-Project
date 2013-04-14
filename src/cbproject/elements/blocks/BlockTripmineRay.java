@@ -1,5 +1,7 @@
 package cbproject.elements.blocks;
 
+import java.util.Random;
+
 import cbproject.CBCMod;
 import cbproject.elements.blocks.weapons.BlockTripmine;
 import cbproject.proxy.ClientProxy;
@@ -23,6 +25,7 @@ public class BlockTripmineRay extends Block {
 		setTextureFile(ClientProxy.TRIPMINE_RAY_PATH);
 		setBlockUnbreakable();
 		setLightValue(0.1F);
+		setTickRandomly(true);
 	}
 	
     @Override
@@ -36,6 +39,12 @@ public class BlockTripmineRay extends Block {
     {
         return 1;
     }
+    
+    @Override
+    public int tickRate()
+    {
+        return 40;
+    }
 
     @Override
 	public boolean isOpaqueCube()
@@ -47,6 +56,13 @@ public class BlockTripmineRay extends Block {
 	public boolean renderAsNormalBlock()
     {
         return false;
+    }
+    
+    @Override
+    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    {
+        if(getSource(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4)) == null)
+        	par1World.setBlockWithNotify(par2, par3, par4, 0);
     }
     
     @Override
@@ -138,9 +154,9 @@ public class BlockTripmineRay extends Block {
     }
     
     @Override
-    public boolean isCollidable(){
-    	return false;
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    {
+        return null;
     }
     
-
 }

@@ -36,10 +36,10 @@ public class EntityBullet extends EntityThrowable {
 		super(par1World, par2EntityLiving);
 		
 		itemStack = par3itemStack;
-		eff = effect;
 		if( itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral) )
 			this.setDead();
 		
+		effect = eff;
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		information = item.getSpecInformation(itemStack, par1World);
 		if(information == null)
@@ -48,8 +48,12 @@ public class EntityBullet extends EntityThrowable {
 		int mode = information.mode;
 		int offset = item.getOffset(mode);
 		//motion = new MotionXYZ(par2EntityLiving, mode);
-		motion = new MotionXYZ(par2EntityLiving, 0);
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
+		motion = new MotionXYZ(par2EntityLiving, offset);
+		
+        this.setThrowableHeading(motion.motionX, motion.motionY, motion.motionZ, this.func_70182_d(), 1.0F);
+        if(effect == "smoke")
+        	par1World.spawnParticle(effect, posX, posY,
+        			posZ, motionX/25, motionY/25, motionZ/25);
         
 	}
 
@@ -98,7 +102,7 @@ public class EntityBullet extends EntityThrowable {
 		mob.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), item.getDamage(mode));
 		mob.addVelocity(dx, dy, dz);
 		if(effect == "fire")
-			mob.setFire(40);
+			mob.setFire(10);
 		
 	}
 	

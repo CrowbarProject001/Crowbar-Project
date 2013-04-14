@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 
 public class Weapon_shotgun extends WeaponGeneralBullet {
 
+	public static int BUCKSHOT_COUNT[] = {8, 16};
+	
 	public Weapon_shotgun(int par1) {
 		
 		super(par1 , CBCMod.cbcItems.itemBullet_Shotgun.itemID, 2);
@@ -25,12 +27,9 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		setMaxStackSize(1);
 		setMaxDamage(9); 
 		setNoRepair(); //不可修补
-		
-		int shootTime[] = {20, 35}, dmg[] = { 7, 7}, off[] = { 5, 10};
-		double push[] ={ 1.2, 2};
 
-		setReloadTime(7);
-		setJamTime(10);
+		setReloadTime(10);
+		setJamTime(20);
 		setLiftProps(30, 5);
 		
 	}
@@ -66,35 +65,26 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	@Override
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
-    	int var1 = 10; //上弹时间
+		
     	int mode = information.mode;
-    	if(par3Entity instanceof EntityPlayer){
-    		
-    		int dmg = par1ItemStack.getItemDamage();
-    		int maxDmg = par1ItemStack.getMaxDamage() -1;
-    		if( dmg <= 0){
-    			information.setLastTick();
-    			information.isReloading = false;
-    			return;
-    		}
-    		
-    		information.ammoManager.setAmmoInformation((EntityPlayer)par3Entity);
-    		int cap = information.ammoManager.ammoCapacity;
-    		int ticksPassed = information.ticksExisted - information.lastTick;
-    		if( ticksPassed >= var1){
-    			if( cap > 0 ){
-        			information.ammoManager.consumeAmmo(1);
-    				par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - 1);
-    		    	par2World.playSoundAtEntity(par3Entity, getSoundReload(mode), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
-        		} else 
-        			information.isReloading = false;
-    			
-        		information.lastTick = information.ticksExisted;
-    		}
-    		
-    	} else par1ItemStack.setItemDamage( 0 );
-    	
-    	
+		int dmg = par1ItemStack.getItemDamage();
+		if( dmg <= 0){
+			information.setLastTick();
+			information.isReloading = false;
+			return;
+		}
+		if(par2World.isRemote)
+			return;
+		information.ammoManager.setAmmoInformation((EntityPlayer)par3Entity);
+		int cap = information.ammoManager.ammoCapacity;
+		if( cap > 0 ){
+    		information.ammoManager.consumeAmmo(1);
+			par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - 1);
+		    par2World.playSoundAtEntity(par3Entity, getSoundReload(mode), 0.5F, 1.0F);	
+    	} else 
+    		information.isReloading = false;
+			
+    	information.setLastTick();
 		return;
     }
     
@@ -103,24 +93,26 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
     	int maxDmg = par1ItemStack.getMaxDamage() -1;
 		if( par1ItemStack.getItemDamage() >= maxDmg ){
-			information.lastTick = information.ticksExisted;
+			information.setLastTick();
 			return;
 		}
 		
 		int mode = information.mode;
-		for(int i=0; i<8; i++)
+		for(int i=0; i<BUCKSHOT_COUNT[mode]; i++)
 			BulletManager.Shoot( par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
 
     	information.setLastTick();
-    	par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));	
     	
-    	if(par3Entity instanceof EntityPlayer){
-    		
+		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
+		if(!canUse)
+			mode += 2;		
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
+		
+    	if(par3Entity instanceof EntityPlayer){	
     		doRecover(information, par3Entity);
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode){
-    				par1ItemStack.damageItem( 1 , null);
-    		}
-    		
+    				par1ItemStack.damageItem( ( mode == 0 || mode == 3 ) ? 1 : 2 , null);
+    		}	
     	}
 
 		return;
@@ -129,12 +121,20 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	@Override
 	public String getSoundShoot(int mode) {
-		return "cbc.weapons.sbarrela" ;
+		switch(mode){
+		case 0 :
+			return "cbc.weapons.sbarrela";
+		case 1 :
+			return "cbc.weapons.sbarrelb";
+		case 2 :
+			return "cbc.weapons.sbarrela_a";
+		default:
+			return "cbc.weapons.sbarrelb_a";
+		}
 	}
 
 	@Override
 	public String getSoundJam(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.scocka";
 	}
 
@@ -152,7 +152,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	@Override
 	public int getShootTime(int mode) {
-		return mode == 0? 18: 35;
+		return mode == 0? 20: 35;
 	}
 
 	@Override
@@ -162,13 +162,13 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	@Override
 	public int getDamage(int mode) {
-		return 7;
+		return 10;
 	}
 
 	@Override
 	public int getOffset(int mode) {
 		// TODO Auto-generated method stub
-		return (mode == 0) ? 5 : 10;
+		return (mode == 0) ? 5 : 15;
 	}
 
 }

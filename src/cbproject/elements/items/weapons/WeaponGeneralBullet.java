@@ -10,6 +10,7 @@ import cbproject.CBCMod;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
+import cbproject.utils.weapons.InformationWeapon;
 
 public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
@@ -54,7 +55,11 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 				this.onBulletWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
 			}
 			information.isShooting = true;
-		} else information.isReloading = true;
+			System.out.println("Shooting");
+		} else {
+			System.out.println("Reloading");
+			information.isReloading = true;
+		}
 		
 		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
 		
@@ -63,9 +68,16 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     public void onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
     	   	
     	InformationBullet information = (InformationBullet) super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-    	if(information == null)
+    	if(information == null){
+    		InformationSet inf = loadInformation(par1ItemStack, (EntityPlayer) par3Entity);	
+    		if(inf == null)
+    			return;
+    		
+    		information = inf.getProperBullet(par2World);
+    		information.isShooting = false;
+    		information.isReloading = false;
     		return;
-    	
+    	}
     	information.updateTick();
 
 		if(doesShoot(information, par1ItemStack))
@@ -154,7 +166,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		
 		InformationSet inf = getInformation(par1ItemStack, par2World);
 		inf.getProperBullet(par2World).isShooting = false;
-
+		System.out.println("Stopped using");
 	}
 	
 	@Override

@@ -30,6 +30,9 @@ public class CBCSoundEvents {
 		"pyt_cocka",
 		"pyt_reloada",
 		"sbarrela",
+		"sbarrela_a",
+		"sbarrelb",
+		"sbarrelb_a",
 		"scocka",
 		"cbar_hita",
 		"cbar_hitb",
@@ -47,7 +50,9 @@ public class CBCSoundEvents {
 		"xbow_reload",
 		"egon_run",
 		"egon_windup",
-		"egon_off"
+		"egon_off",
+		"rocket",
+		"rocketfire"
 		
 	};
 	
@@ -56,18 +61,14 @@ public class CBCSoundEvents {
 	{
 		
 		System.out.println("Attempting to load CBC sound files...");
-		
 		try{
 			SoundPoolEntry snd;
 			for(String path:PathWeapons){
 				snd = event.manager.soundPoolSounds.addSound("cbc/weapons/" + path + ".wav", CBCMod.class.getResource("/cbproject/gfx/sounds/weapons/" + path + ".wav"));
 				System.out.println("AddSound : " + snd.soundName + " URL: " + snd.soundUrl);
 			}
-
 		}catch(Exception e){
-			
-			System.out.println("Sound registering failed.");
-			
+			e.printStackTrace();
 		}
 	}
 	

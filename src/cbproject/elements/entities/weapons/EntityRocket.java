@@ -22,6 +22,7 @@ public class EntityRocket extends EntityThrowable {
 		super(par1World, par2EntityLiving);
 		rotationPitch = par2EntityLiving.rotationPitch;
 		rotationYaw = par2EntityLiving.rotationYaw;
+		worldObj.playSoundAtEntity(this, "cbc.weapons.rocket", 0.5F, 1.0F);
 	}
 
 	@Override
@@ -29,8 +30,8 @@ public class EntityRocket extends EntityThrowable {
 		super.onUpdate();
 		if(ticksExisted % 2 == 0)
 			worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0, 0.0, 0.0);
-		rotationPitch = getThrower().rotationPitch;
-		rotationYaw = getThrower().rotationYaw;
+		if(ticksExisted % 45 == 0)
+			worldObj.playSoundAtEntity(this, "cbc.weapons.rocket", 0.5F, 1.0F);
 	}
 	
 	@Override
@@ -84,7 +85,7 @@ public class EntityRocket extends EntityThrowable {
 	@Override
     protected float func_70182_d()
     {
-    	return 1.5F;
+    	return 2F;
     }
 	
 	@Override

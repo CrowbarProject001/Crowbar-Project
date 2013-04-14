@@ -23,9 +23,6 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 		setCreativeTab(CBCMod.cct);
 		setMaxDamage(2);
 		
-		int shoot[] = { 0, 0 }, dmg[] = {30, 30}, off[] = { 0 , 0};
-		double push[] = { 2, 2};
-		
 		setJamTime(20);
 		setLiftProps(20, 2);
 	}
@@ -40,37 +37,22 @@ public class Weapon_RPG extends WeaponGeneralBullet {
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
 		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		InformationBullet information = (inf == null? null : inf.getProperBullet(par2World));
-		if(information == null)
-			return par1ItemStack;
-		
-		Boolean canUse = (par1ItemStack.getItemDamage() == 0), 
-				isReloading = information.isReloading;
-		
-		if(!canUse){
-			isReloading = true;
-			par2World.playSoundAtEntity(par3EntityPlayer, getSoundReload(0) , 0.5F, 1.0F);
-		} else{
-				this.onBulletWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
-		}
-
-		information.isReloading = isReloading;
-		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
+		InformationBullet information = inf.getProperBullet(par2World);
+		processRightClick(information, par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
-		
     }
 	
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
-		par2World.spawnEntityInWorld(new EntityRocket(par2World, (EntityLiving) par3Entity));
+		information.setLastTick();
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);
+		par2World.spawnEntityInWorld(new EntityRocket(par2World, par3Entity));
 	}
 	
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		
 		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
-		
 	}
 	
 	@Override
@@ -82,7 +64,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	@Override
 	public String getSoundShoot(int mode) {
 		// TODO Auto-generated method stub
-		return "";
+		return "cbc.weapons.rocketfire";
 	}
 
 	@Override
