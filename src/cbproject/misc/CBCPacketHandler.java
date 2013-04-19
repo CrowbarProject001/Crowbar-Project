@@ -27,13 +27,14 @@ public class CBCPacketHandler implements IPacketHandler {
 		case "CBCWeaponMode" :
 			try {
 				
-				int weaponID = inputStream.readInt(),
-				mode = inputStream.readInt();
+				double weaponID = inputStream.readDouble();
+				int mode = inputStream.readInt();
 
 				InformationSet inf = CBCMod.wpnInformation.getInformation(weaponID);
 				InformationWeapon information = inf.clientReference;
 				WeaponGeneral item = (WeaponGeneral) information.itemStack.getItem();
 				item.onModeChange(information.itemStack, information.player.worldObj, mode);
+				
 				System.out.println("Server mode : " + information.mode);
 				System.out.println("Get ID : " + weaponID);
 				

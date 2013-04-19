@@ -33,7 +33,7 @@ public class EntityBulletGauss extends EntityBullet {
 		super(par1World, par2EntityLiving, par3itemStack, particle);
 		motion = new MotionXYZ(par2EntityLiving);
 		item = (WeaponGeneral) itemStack.getItem();
-		inf = item.getInformation(itemStack, worldObj).getProperEnergy(worldObj);
+		inf = item.getInformation(itemStack).getProperEnergy(worldObj);
 		worldObj.spawnEntityInWorld(new EntityGaussRay(par1World, par2EntityLiving, motionX, motionY, motionZ));	
 	}
 	
@@ -92,7 +92,7 @@ public class EntityBulletGauss extends EntityBullet {
 			return;
 		GaussBulletManager.Shoot2(EnumGaussRayType.PENETRATION, worldObj, getThrower(), itemStack, result, motion, damage);
 		
-	    double radius = Math.round(0.5 * damage); //Max: 5.28
+	    double radius = Math.round(0.3 * damage); //Max: 5.28
 		damage = (int) Math.round(damage * (1.0 - 0.33 * blockFront)); //Decay based on blockFront
 		
 		int[] s = getSideByMotion();
@@ -150,7 +150,7 @@ public class EntityBulletGauss extends EntityBullet {
 		}
 		
 		sin = b / a;
-		double sin45 = Math.sqrt(2) * 0.5;
+		double sin45 = 0.7071067812;
 		int damage = 0;
 		if( -sin45 < sin && sin < sin45 ){
 			damage = (int) Math.round( Math.sqrt(1 - sin * sin ) * getChargeDamage() );

@@ -13,7 +13,6 @@ public class ItemAmmo_bow extends ItemAmmo {
 		setIconCoord(6,1);
 		setMaxDamage(6);
 		setMaxStackSize (1);
-		// TODO Auto-generated constructor stub
 	}
 
 }

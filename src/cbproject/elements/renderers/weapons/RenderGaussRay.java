@@ -14,7 +14,12 @@ import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-
+import static cbproject.elements.renderers.RendererUtils.newV3;
+/**
+ * Gauss ray rendering class.
+ * @author WeAthFolD
+ *
+ */
 public class RenderGaussRay extends RenderEntity {
 
 	public static double RADIUS = 0.05F;
@@ -42,21 +47,16 @@ public class RenderGaussRay extends RenderEntity {
         double dz = end.zCoord - gauss.posZ;
         
         Vec3 v1, v2, v3, v4, v5, v6;
-        v1 = Vec3.createVectorHelper(- RADIUS,- RADIUS,- RADIUS);
-        v2 = Vec3.createVectorHelper(0, RADIUS, 0);
-        v3 = Vec3.createVectorHelper(RADIUS,-RADIUS,RADIUS);
+        v1 = newV3(- RADIUS,- RADIUS,- RADIUS);
+        v2 = newV3(0, RADIUS, 0);
+        v3 = newV3(RADIUS,-RADIUS,RADIUS);
         
-        v4 = Vec3.createVectorHelper(dx - RADIUS, dy - RADIUS, dz - RADIUS);
-        v5 = Vec3.createVectorHelper(dx, dy + RADIUS, dz);
-        v6 = Vec3.createVectorHelper(dx + RADIUS, dy - RADIUS, dz + RADIUS);
+        v4 = newV3(dx - RADIUS, dy - RADIUS, dz - RADIUS);
+        v5 = newV3(dx, dy + RADIUS, dz);
+        v6 = newV3(dx + RADIUS, dy - RADIUS, dz + RADIUS);
         
         double max = Math.abs(dx);
         
-        /*
-         * 1,4,5,2
-         * 3,2,5,6
-         * 1,4,6,3
-         */
         tessellator.startDrawingQuads();
         
         addVertex(v5, 1, max);
@@ -84,7 +84,6 @@ public class RenderGaussRay extends RenderEntity {
     }
     
     protected void addVertex(Vec3 vec3, double texU, double texV){
-    	
     	tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord, texU, texV);
     }
     

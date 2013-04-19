@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import cbproject.CBCMod;
+import cbproject.elements.entities.weapons.EntityBulletGaussSec.EnumGaussRayType;
 import cbproject.elements.entities.weapons.EntityGaussRay;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.AmmoManager;
@@ -31,11 +32,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		setItemName("weapon_gauss");
 		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
 		setIconCoord(0,3);
-
-		String jam[] = {"cbc.weapons.gunjam_a"};
-		int shoot[] = { 5 , 0}, dmg[] = {8, 0}, off[] = { 0, 2 };
-		double push[] = { 1, 1};
-		
+	
 		setJamTime(20);
 		
 	}
@@ -53,8 +50,8 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	}
 	
 	@Override
-	public Boolean doShoot(InformationEnergy inf){
-		return inf.mode == 0 && super.doShoot(inf) ;
+	public Boolean doesShoot(InformationEnergy inf, ItemStack itemStack){
+		return inf.mode == 0 && super.doesShoot(inf, itemStack) ;
 	}
 	
 	@Override
@@ -62,12 +59,15 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
     {
 		
 		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer).getProperEnergy(par2World);
-
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
+		
+		if(inf.mode == 0)
+			return par1ItemStack;
+		
 		if(inf.mode == 1) {
 			
-			inf.isShooting = true;
 			inf.charge = inf.chargeTime = 0;
+			inf.ticksExisted = 0;
 			inf.setLastTick();
 			inf.ammoManager.setAmmoInformation(par3EntityPlayer);
 			Boolean canUse = inf.ammoManager.getAmmoCapacity() > 0 || par3EntityPlayer.capabilities.isCreativeMode;
@@ -75,7 +75,6 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 				par2World.playSoundAtEntity(par3EntityPlayer, SND_CHARGEA_PATH, 0.5F, 1.0F);
 			
 		}
-		par3EntityPlayer.setItemInUse(par1ItemStack,this.getMaxItemUseDuration(par1ItemStack));
 		return par1ItemStack;
 		
     }
@@ -83,10 +82,9 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	public  void onChargeModeUpdate(InformationEnergy inf, ItemStack par1ItemStack, World par2World, 
 			Entity par3Entity, int par4, boolean par5){
 		
-		int var1 = 29;
-		int var2 = 180; //最大蓄力9s
-		int var3 = 60;
-		int var4 = 100;
+		int var1 = 29; //Charge Sound Play every 1.5s
+		int var2 = 160; //Max ChargeTime : 8s
+		int var3 = 60; //FullCharge Time : 3s
 		Boolean isShooting = inf.isShooting;
 		Boolean ignoreAmmo = false;
 		
@@ -101,12 +99,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			if(ignoreAmmo || inf.ammoManager.getAmmoCapacity() > 0 )
 				inf.charge++;
 			
-			if(!ignoreAmmo && ticksChange <= var3 && inf.chargeTime %6 == 0)
+			if(!ignoreAmmo && inf.ticksExisted <= var3 && inf.chargeTime %6 == 0)
 				inf.ammoManager.consumeAmmo(1);
 			
 			if(inf.charge >= var1 && ticksChange > var1){
 				inf.setLastTick();
-				System.out.println("Sound Played");
 				par2World.playSoundAtEntity(par3Entity, SND_CHARGE_PATH, 0.5F, 1.0F);
 			}
 		}
@@ -123,7 +120,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		InformationSet i = getInformation(par1ItemStack, par2World);
+		InformationSet i = getInformation(par1ItemStack);
 		if(i == null)
 			return;
 		InformationEnergy inf = i.getProperEnergy(par2World);
@@ -132,9 +129,12 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			return;
 		}
 		
-		int charge = (inf.charge > 60? 60 : inf.charge); //最大蓄力3秒(10点)
-		if(charge == 0)
+		//Do the charge attack part
+		int charge = (inf.charge > 60? 60 : inf.charge);
+		if(charge <= 6){
+			inf.isShooting = false;
 			return;
+		}
 		int damage = charge * 2/3; //最大为40
 		double vel = charge / 15; //最大为4
 
@@ -151,8 +151,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	
 	@Override
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){	
-		super.onEnergyWpnShoot(par1ItemStack, par2World, par3Entity, information);
-		par2World.spawnEntityInWorld(new EntityGaussRay(par2World, (EntityLiving) par3Entity));
+		GaussBulletManager.Shoot2(EnumGaussRayType.NORMAL, 
+				par2World, (EntityLiving) par3Entity, par1ItemStack, null, null, getDamage(information.mode));
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);
+		information.ammoManager.consumeAmmo(2);
+		information.setLastTick();
 		return;
 	}
 	
@@ -199,6 +202,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	@Override
 	public int getOffset(int mode) {
 		return 0;
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		return mode == 0? "Automatic mode" : "Charge mode";
 	}
 
 

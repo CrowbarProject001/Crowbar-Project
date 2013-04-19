@@ -2,16 +2,22 @@ package cbproject.elements.items;
 
 import cbproject.configure.Config;
 import cbproject.elements.items.ammos.*;
+import cbproject.elements.items.armor.ArmorHEVBoot;
 import cbproject.elements.items.bullets.ItemBullet_Shotgun;
+import cbproject.elements.items.craft.ItemRefinedIronIngot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cbproject.elements.items.misc.ItemRefinedIronIngot;
 import cbproject.elements.items.weapons.*;
 
+/**
+ * CBC Mod Item Register class.
+ * @author WeAthFolD, mkpoli
+ *
+ */
 public class ItemsRegister {
 	
 	public static Weapon_crowbar weapon_crowbar;
@@ -38,6 +44,8 @@ public class ItemsRegister {
 	public static ItemBullet_Shotgun itemBullet_Shotgun;
 
 	public static ItemRefinedIronIngot itemRefinedIronIngot;
+	
+	public static ArmorHEVBoot armorHEVBoot;
 	
 	public ItemsRegister(Config conf){
 		registerItems(conf);
@@ -74,6 +82,8 @@ public class ItemsRegister {
 			weapon_gauss = new Weapon_gauss(conf.GetItemID("weapon_gauss", 7050));
 			weapon_egon = new Weapon_egon(conf.GetItemID("weapon_egon", 7051));
 			
+			armorHEVBoot = new ArmorHEVBoot(conf.GetItemID("armorHEVShoe", 8000));
+			
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
@@ -84,6 +94,7 @@ public class ItemsRegister {
 		LanguageRegistry.addName(itemAmmo_uranium , "Uranium Ammo");
 		LanguageRegistry.addName(itemAmmo_9mm2, "9mmAR Clip");
 		LanguageRegistry.addName(itemAmmo_bow,"Crossbow Clip");
+		LanguageRegistry.addName(itemAmmo_357, ".357 Ammo");
 		LanguageRegistry.addName(itemAmmo_ARGrenade, "9mmAR Grenade");
 		
 		LanguageRegistry.addName(itemBullet_Shotgun,"Shotgun Ammo");
@@ -104,8 +115,8 @@ public class ItemsRegister {
         LanguageRegistry.addName(weapon_gauss, "Gauss Gun");
         LanguageRegistry.addName(itemRefinedIronIngot, "Refined Iron Ingot");
         
-		
-        //鍚堟垚琛細鎾
+		LanguageRegistry.addName(armorHEVBoot, "HEV boot");
+        //Recipes
         ItemStack rosereddyeStack = new ItemStack(351,1,0);
         ItemStack ingotIronStack = new ItemStack(Item.ingotIron);
         ItemStack crowbarStack = new ItemStack(weapon_crowbar);
@@ -113,6 +124,7 @@ public class ItemsRegister {
         GameRegistry.addShapelessRecipe(crowbarStack, rosereddyeStack,ingotIronStack);
         //End Crowbar
 
+        //Smeltings
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(itemRefinedIronIngot.itemID,1,0) );
         
         

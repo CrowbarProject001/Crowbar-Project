@@ -43,12 +43,8 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-		
-		InformationSet inf = loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick( inf.getProperBullet(par2World), par1ItemStack, par2World, par3EntityPlayer);
-
+		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
-		
     }
 	
 	@Override
@@ -109,7 +105,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		
     	if(par3Entity instanceof EntityPlayer){	
-    		doRecover(information, par3Entity);
+    		doUplift(information, par3Entity);
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode){
     				par1ItemStack.damageItem( ( mode == 0 || mode == 3 ) ? 1 : 2 , null);
     		}	
@@ -169,6 +165,11 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	public int getOffset(int mode) {
 		// TODO Auto-generated method stub
 		return (mode == 0) ? 5 : 15;
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		return mode == 0 ?  "Single Buckshot mode" : "Double Buckshot mode";
 	}
 
 }

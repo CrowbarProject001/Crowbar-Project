@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.configure.Config;
+import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.elements.items.weapons.Weapon_satchel;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
@@ -56,7 +57,7 @@ public class CBCKeyProcess extends KeyHandler{
 			Key_ModeChange = conf.GetKeyCode("ModeChange", Keyboard.KEY_LCONTROL);
 			Key_Reload = conf.GetKeyCode("Reload", Keyboard.KEY_R);
 		} catch(Exception e){
-			System.err.println("Something went wrong during loading key informations." + e);
+			e.printStackTrace();
 		}
 		KeyCodes[0].keyCode = Key_ModeChange;
 		KeyCodes[0].keyCode = Key_Reload;
@@ -71,20 +72,24 @@ public class CBCKeyProcess extends KeyHandler{
 			
 			InformationWeapon sv = inf.clientReference;
 			sv.mode = (maxModes -1 <= sv.mode) ? 0 : sv.mode +1;
+			WeaponGeneral weapon = (WeaponGeneral) itemStack.getItem();
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(16);
 			DataOutputStream outputStream = new DataOutputStream(bos);
+			
 			try {
-				outputStream.writeInt(itemStack.getTagCompound().getInteger("weaponID"));
+				outputStream.writeDouble(itemStack.getTagCompound().getDouble("uniqueID"));
 		        outputStream.writeInt(sv.mode);
 			} catch (Exception ex) {
 		        ex.printStackTrace();
 			}
+			
 			Packet250CustomPayload packet = new Packet250CustomPayload();
 			packet.channel = "CBCWeaponMode";
 			packet.data = bos.toByteArray();
 			packet.length = bos.size();
 			PacketDispatcher.sendPacketToServer(packet);
-			player.sendChatToPlayer("New Mode: " + sv.mode);
+			player.sendChatToPlayer("New Mode: " + weapon.getModeDescription(sv.mode));
+			
 	}
 
 	@Override
@@ -95,9 +100,9 @@ public class CBCKeyProcess extends KeyHandler{
 	@Override
 	public void keyDown(EnumSet<TickType> types, KeyBinding kb,
 			boolean tickEnd, boolean isRepeat) {
-		System.out.println("Key Down!> <");
-		if(KeyCodes[0].keyCode == kb.keyCode){
-			System.out.println("Setted");
+		if(tickEnd)
+			return;
+		if( KeyCodes[0].keyCode == kb.keyCode ){
 			modeChange = true;
 			return;
 		}

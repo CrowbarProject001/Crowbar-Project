@@ -1,4 +1,4 @@
-package cbproject.elements.items.misc;
+package cbproject.elements.items.craft;
 
 import net.minecraft.item.Item;
 

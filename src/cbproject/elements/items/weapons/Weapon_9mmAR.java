@@ -13,6 +13,12 @@ import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 
+/**
+ * 9mm Assault Rifle class.
+ * Mode I : Bullet, II : AR Grenade.
+ * @author WeAthFolD
+ *
+ */
 public class Weapon_9mmAR extends WeaponGeneralBullet {
 	
 	public Weapon_9mmAR(int par1) {
@@ -43,13 +49,8 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-		
-		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		InformationBullet information = inf.getProperBullet(par2World);
-		processRightClick(information, par1ItemStack, par2World, par3EntityPlayer);
-
+		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
-		
     }
 	
 	@Override
@@ -61,7 +62,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
     		int mode = information.mode;
     		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
     		if(par3Entity instanceof EntityPlayer){
-    			doRecover(information, par3Entity);
+    			doUplift(information, par3Entity);
     			if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
     				par1ItemStack.damageItem( 1 , par3Entity);
     			}
@@ -94,44 +95,42 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 
 	@Override
 	public String getSoundShoot(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.hksa";
 	}
 
 	@Override
 	public String getSoundJam(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.nmmarr";
 	}
 
 	@Override
 	public int getShootTime(int mode) {
-		// TODO Auto-generated method stub
 		return mode == 0 ? 4 : 20;
 	}
 
 	@Override
 	public double getPushForce(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getDamage(int mode) {
-		// TODO Auto-generated method stub
-		return 3;
+		return 4;
 	}
 
 	@Override
 	public int getOffset(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		return mode == 0 ? "9mm Bullet mode " : "AR Grenade mode";
 	}
 
 }

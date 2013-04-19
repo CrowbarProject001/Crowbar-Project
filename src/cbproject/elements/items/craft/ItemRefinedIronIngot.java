@@ -1,4 +1,4 @@
-package cbproject.elements.items.misc;
+package cbproject.elements.items.craft;
 
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;

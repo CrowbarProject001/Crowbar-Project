@@ -17,54 +17,54 @@ public class EntityBulletGaussSec extends EntityBullet {
 
 	public int damage;
 	public enum EnumGaussRayType {
-		PENETRATION, REFLECTION;
+		PENETRATION, REFLECTION, NORMAL;
 	}
 	
 	public EntityBulletGaussSec(EnumGaussRayType typeOfRay, World worldObj, EntityLiving entityPlayer,
 			ItemStack itemStack, MovingObjectPosition result, MotionXYZ motion, int dmg) {
 		
 		super(worldObj, entityPlayer, itemStack, "");
+		if(typeOfRay == EnumGaussRayType.NORMAL){
+			damage = dmg;
+			worldObj.spawnEntityInWorld( new EntityGaussRay(new MotionXYZ(this), worldObj, getThrower()) );
+			return;
+		}
 		
 		MotionXYZ real = new MotionXYZ(result.hitVec, motion.motionX, motion.motionY, motion.motionZ);
-		posX = real.posX;
-		posY = real.posY;
-		posZ = real.posZ;
-		motionX = real.motionX;
-		motionY = real.motionY;
-		motionZ = real.motionZ;
 		damage = dmg;
-
+		
 		if(typeOfRay == EnumGaussRayType.PENETRATION){
-			
 			double du = 0.0;
-			du = getMiniumUpdate(result);
-			real.updateMotion(du); //Should now be another side of block
-			this.setPosition(real.posX, real.posY, real.posZ);
-			
-		} else {
+			du = getMiniumUpdate(result, real);
+			real.updateMotion(du);
+		} else if(typeOfRay == EnumGaussRayType.REFLECTION) {
 			
 			switch(result.sideHit){
 			case 0:
 			case 1:
-				motionY = -motionY;
+				real.motionY = -real.motionY;
 				break;
 			case 2:
 			case 3:
-			    motionZ = -motionZ;
+				real.motionZ = -real.motionZ;
 				break;
 			case 4:
 			case 5:
-				motionX = -motionX;
+				real.motionX = -real.motionX;
 				break;
 			default:
-				return;
+				this.setDead();
 			}
 			
 		}
 		
+		motionX = real.motionX;
+		motionY = real.motionY;
+		motionZ = real.motionZ;
+		real.updateMotion(0.001);
+		setPosition(real.posX, real.posY, real.posZ);
 		this.setThrowableHeading(motionX, motionY, motionZ, func_70182_d(), 1.0F);
-		motion = new MotionXYZ(this);
-		worldObj.spawnEntityInWorld( new EntityGaussRay(motion, worldObj, getThrower()) );
+		worldObj.spawnEntityInWorld( new EntityGaussRay(real, worldObj, getThrower()) );
 		
 	}
 	
@@ -72,19 +72,25 @@ public class EntityBulletGaussSec extends EntityBullet {
 	 * Get the minium updateMotion radius for penetrating an block.
 	 * @return du = updateMotionRadius
 	 */
-	private double getMiniumUpdate(MovingObjectPosition result){
+	private double getMiniumUpdate(MovingObjectPosition result, MotionXYZ real){
 		
 		double du = 0.0;
-		double dx = result.hitVec.xCoord - result.blockX
-				, dy = result.hitVec.yCoord - result.blockY
-				, dz = result.hitVec.zCoord - result.blockZ;
-		if(motionX > 0) dx = 1-dx;
-		if(motionY > 0) dy = 1-dy;
-		if(motionZ > 0) dz = 1-dz;
+		double dx = -result.hitVec.xCoord + result.blockX
+				, dy = -result.hitVec.yCoord + result.blockY
+				, dz = -result.hitVec.zCoord + result.blockZ;
+		if(real.motionX > 0) dx = 1+dx;
+		if(real.motionY > 0) dy = 1+dy;
+		if(real.motionZ > 0) dz = 1+dz;
 		
-		dx =  Math.abs(dx / motionX);
-		dy =  Math.abs(dy / motionY);
-		dz =  Math.abs(dz / motionZ);
+		dx =  dx / real.motionX;
+		dy =  dy / real.motionY;
+		dz =  dz / real.motionZ;
+		if(dx < 0)
+			dx = 10000;
+		if(dy < 0)
+			dy = 10000;
+		if(dz < 0)
+			dz = 10000;
 		return Math.min(Math.min(dx, dy), dz);
 		
 	}

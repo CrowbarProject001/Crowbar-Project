@@ -9,7 +9,7 @@ import cbproject.elements.items.ItemsRegister;
 import cbproject.elements.renderers.CBCRenderManager;
 import cbproject.misc.CBCKeyProcess;
 import cbproject.misc.CBCPacketHandler;
-import cbproject.misc.CBCSoundEvents;
+import cbproject.misc.CBCEvents;
 import cbproject.misc.CCT;
 import cbproject.utils.CBCWeaponInformation;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
@@ -58,8 +58,8 @@ public class CBCMod
 	@PreInit
 	public void preInit(FMLPreInitializationEvent Init)
 	{
-		//声音的加载
-		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		//Events loading
+		MinecraftForge.EVENT_BUS.register(new CBCEvents());
 		
 		config=new Config(Init.getSuggestedConfigurationFile());
 		config.SaveConfig();

@@ -4,12 +4,18 @@ import java.io.File;
 import java.net.URL;
 
 import cbproject.CBCMod;
+import cbproject.elements.items.armor.ArmorHEVBoot;
 import net.minecraft.client.audio.SoundPool;
 import net.minecraft.client.audio.SoundPoolEntry;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
-public class CBCSoundEvents {
+public class CBCEvents {
 	
 	public final static String PathWeapons[]={
 		
@@ -72,5 +78,20 @@ public class CBCSoundEvents {
 		}
 	}
 	
-
+	@ForgeSubscribe
+	public void onLivingAttack(LivingAttackEvent event){
+		
+		if(event.source == DamageSource.fall){
+			if(event.entity instanceof EntityPlayer){
+				EntityPlayer player = (EntityPlayer) event.entity;				
+				if(player.inventory.armorInventory[0] == null)
+					return;
+				if(player.inventory.armorInventory[0].getItemName() == CBCMod.cbcItems.armorHEVBoot.getItemName()){
+					event.setCanceled(true);
+				}
+			}
+		}
+		
+	}
+	
 }

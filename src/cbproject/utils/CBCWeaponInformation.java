@@ -4,9 +4,11 @@
 package cbproject.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import cbproject.utils.weapons.InformationSet;
@@ -18,59 +20,27 @@ import cbproject.utils.weapons.InformationWeapon;
  */
 public class CBCWeaponInformation {
 
-	private static List list;
+	private static HashMap<Double, InformationSet> map;
 	
 	public CBCWeaponInformation() {
-		list = new ArrayList();
+		map = new HashMap<Double, InformationSet>();
 	}
 	
-	public static int addToList(InformationSet inf){
-		list.add(inf);
-		return list.size() - 1;
+	public static void addToList(double uniqueID, InformationSet inf){
+		map.put(uniqueID, inf);
 	}
 	
-	public static InformationSet getInformation(int id){
-		if(id >= list.size())
-			return null;
-		return (InformationSet) list.get(id);
-	}
-	
-	public static InformationSet getInformationWithCheck(int id, double uniqueID){
-		if(id >= list.size())
-			return null;
-		InformationSet i = (InformationSet) list.get(id);
-		if(i.signID != uniqueID){
-			System.out.println("ID doesn't match. " + "signID : " + i.signID + " uniqueID : " + uniqueID);
-			return null;
-		}
-		return i;
-	}
-	
-	public static InformationSet getInformation(ItemStack itemStack, World world){
-		if(itemStack.getTagCompound() == null)
-			return null;
-		int id = itemStack.getTagCompound().getInteger("weaponID");
-		double uniqueID = itemStack.getTagCompound().getDouble("uniqueID");
-		if(id >= list.size())
-			return null;
-		InformationSet inf = (InformationSet) list.get(id);
-		if(inf.signID != uniqueID)
-			return null;
-		return inf;
+	public static InformationSet getInformation(double uniqueID){
+		return map.get(uniqueID);
 	}
 	
 	public static InformationSet getInformation(ItemStack itemStack){
-		if(itemStack.getTagCompound() == null)
+		if(itemStack.getTagCompound() == null){
+			itemStack.stackTagCompound = new NBTTagCompound();
 			return null;
-		int id = itemStack.getTagCompound().getInteger("weaponID");
+		}
 		double uniqueID = itemStack.getTagCompound().getDouble("uniqueID");
-		if(id >= list.size())
-			return null;
-		InformationSet inf = (InformationSet) list.get(id);
-		if(inf.signID != uniqueID)
-			return null;
-		return inf;
+		return map.get(uniqueID);
 	}
-	
 
 }

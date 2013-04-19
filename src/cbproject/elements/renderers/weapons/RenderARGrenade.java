@@ -15,8 +15,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
 /**
- * @author Administrator
- * @description AR Grenade entity class renderer.
+ * AR Grenade Renderer.
+ * @author WeAthFolD
  */
 public class RenderARGrenade extends RenderEntity {
 
@@ -44,8 +44,7 @@ public class RenderARGrenade extends RenderEntity {
         		v7 = newV3(LENGTH, 0, HEIGHT),
         		v8 = newV3(LENGTH, 0, -HEIGHT);
         
-        //必要的旋转变换=v=
-        
+        //Necessary rotations
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);   
         GL11.glDepthMask(false);
@@ -83,7 +82,6 @@ public class RenderARGrenade extends RenderEntity {
     }
     
     protected void addVertex(Vec3 vec3, double texU, double texV){
-    	
     	tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord, texU, texV);
     }
     

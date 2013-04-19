@@ -36,9 +36,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		InformationBullet information = inf.getProperBullet(par2World);
-		processRightClick(information, par1ItemStack, par2World, par3EntityPlayer);
+		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
     }
 	
@@ -63,44 +61,42 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 
 	@Override
 	public String getSoundShoot(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.rocketfire";
 	}
 
 	@Override
 	public String getSoundJam(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload(int mode) {
-		// TODO Auto-generated method stub
 		return "";
 	}
 
 	@Override
 	public int getShootTime(int mode) {
-		// TODO Auto-generated method stub
 		return 40;
 	}
 
 	@Override
 	public double getPushForce(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getDamage(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getOffset(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		return "RPG Normal mode";
 	}
 		 
 

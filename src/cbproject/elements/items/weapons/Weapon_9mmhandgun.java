@@ -13,13 +13,14 @@ import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 
-
+/**
+ * 9mm Handgun.
+ * Mode I : low speed, high accuracy
+ * Mode II : high speed, low accuracy
+ * @author WeAthFolD
+ *
+ */
 public class Weapon_9mmhandgun extends WeaponGeneralBullet {
-	/*9mmHandgun:两种模式
-	 * 模式I(mode = 0 ):低速射击模式，准确度较高
-	 * 模式II (mode = 1):高速射击模式，准确度较低
-	 * 都是自动模式
-	 */
 
 	public Weapon_9mmhandgun(int par1) {
 		
@@ -49,20 +50,14 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-
-		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(inf.getProperBullet(par2World), 
-				par1ItemStack, par2World, par3EntityPlayer);
-
+		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
     }
 	
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		//if event calcelled setdead
 		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
-
 	}
 	
 	@Override
@@ -73,43 +68,42 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 
 	@Override
 	public String getSoundShoot(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.plgun_c";
 	}
 
 	@Override
 	public String getSoundJam(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.nmmclipa";
 	}
 
 	@Override
 	public int getShootTime(int mode) {
-		// TODO Auto-generated method stub
 		return (mode == 0) ? 10 : 5;
 	}
 
 	@Override
 	public double getPushForce(int mode) {
-		// TODO Auto-generated method stub
 		return 0.5;
 	}
 
 	@Override
 	public int getDamage(int mode) {
-		// TODO Auto-generated method stub
 		return 3;
 	}
 
 	@Override
 	public int getOffset(int mode) {
-		return (mode == 1) ? 8 : 0;
+		return mode == 0 ? 0 : 8;
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		return mode == 0 ? "Semi-Automatic mode " : "Full-Automatic mode";
 	}
 
 }

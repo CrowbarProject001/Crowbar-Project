@@ -19,9 +19,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 /**
+ * Remote detonation bomb.
+ * Mode I : Setting mode.
+ * Mode II : Detonating mode.
  * @author WeAthFolD
  *
- * @description Remote detonation bomb.
  */
 public class Weapon_satchel extends WeaponGeneral {
 
@@ -73,11 +75,14 @@ public class Weapon_satchel extends WeaponGeneral {
 			return par1ItemStack;
 		
 		InformationSet information = loadInformation(par1ItemStack, par3EntityPlayer);
+		if(information == null)
+			return par1ItemStack;
+		
 		InformationSatchel inf = information.getProperSatchel(par2World);
 		
 		int mode = inf.mode;
-		//最多放置6个Satchel
-		if(mode == 0){ //放置模式
+		//Max 6 satchel
+		if(mode == 0){ //Setting mode
 			
 			if(inf.list.size() > 5)
 				return par1ItemStack;
@@ -90,7 +95,7 @@ public class Weapon_satchel extends WeaponGeneral {
 			if( !par3EntityPlayer.capabilities.isCreativeMode)
 				par1ItemStack.splitStack(1);
 			
-		} else { //引爆模式
+		} else { //Detonating mode
 			
 			for(int i = 0; i < inf.list.size(); i++){
 				EntitySatchel ent = (EntitySatchel) inf.list.get(i);
@@ -104,18 +109,12 @@ public class Weapon_satchel extends WeaponGeneral {
 		par3EntityPlayer.setEating(false);
 		return par1ItemStack;
     }
-
-	@Override
-	public InformationSet getInformation(ItemStack itemStack, World world) {
-		InformationSet inf = CBCMod.wpnInformation.getInformation(itemStack, world);   	
-	    return inf;
-	}
 	
 	@Override
 	public InformationSet loadInformation(ItemStack itemStack,
 			EntityPlayer entityPlayer) {
-		// TODO Auto-generated method stub
-		InformationSet inf = getInformation(itemStack, entityPlayer.worldObj);
+		
+		InformationSet inf = getInformation(itemStack);
 		if(inf != null){
 			return inf;
 		}
@@ -123,17 +122,15 @@ public class Weapon_satchel extends WeaponGeneral {
 		InformationSatchel client = new InformationSatchel(entityPlayer, itemStack);
 		double uniqueID = Math.random()*65535D;
 		
-		inf = new InformationSet(client, server, uniqueID);
-		int id = CBCMod.wpnInformation.addToList(inf);
+		inf = new InformationSet(client, server);
+		CBCMod.wpnInformation.addToList(uniqueID, inf);
 
 		if(itemStack.stackTagCompound == null)
 			itemStack.stackTagCompound = new NBTTagCompound();
-		itemStack.stackTagCompound.setInteger("mode", 0);
-		itemStack.stackTagCompound.setInteger("weaponID", id);
+		
 		itemStack.stackTagCompound.setDouble("uniqueID", uniqueID);
 		
 		return inf;
-		
 	}
 	
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
@@ -144,24 +141,23 @@ public class Weapon_satchel extends WeaponGeneral {
 
 	@Override
 	public double getPushForce(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getDamage(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getOffset(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
-
-
+	@Override
+	public String getModeDescription(int mode) {
+		return mode == 0 ? "Setting mode" : "Detonating mode";
+	}
 
 
 }

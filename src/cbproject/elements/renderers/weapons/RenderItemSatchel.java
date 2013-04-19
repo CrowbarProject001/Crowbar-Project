@@ -2,6 +2,7 @@ package cbproject.elements.renderers.weapons;
 
 import org.lwjgl.opengl.GL11;
 
+import cbproject.CBCMod;
 import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.elements.items.weapons.Weapon_satchel;
 import cbproject.elements.renderers.RendererUtils;
@@ -72,10 +73,8 @@ public class RenderItemSatchel implements IItemRenderer {
 
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLiving entity) {
-
-		if (item.stackTagCompound == null)
-			item.stackTagCompound = new NBTTagCompound();
-		int mode = item.getTagCompound().getInteger("mode");
+		
+		int mode = CBCMod.wpnInformation.getInformation(item).clientReference.mode;
 		int index = (mode == 0) ? 64 : 66;
 
 		float v1 = MathHelper.floor_float(index / 16) / 16.0F;

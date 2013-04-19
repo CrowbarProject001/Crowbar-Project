@@ -13,6 +13,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+/**
+ * Crossbow in HLDM Style.
+ * Mode I : Non-delay, sniper rifle like.
+ * Mode II : Explosive arrow.
+ * @author WeAthFolD
+ */
 public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	public Weapon_crossbow(int par1) {
@@ -20,18 +26,15 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		
 		setItemName("weapon_crossbow");
 		
-		//setTextureFile(ClientProxy.ITEMS_MOTION1_PATH);
 		setTextureFile(ClientProxy.ITEMS_MOTION1_PATH);
-		//setIconCoord(0, 0);
 		setIconIndex(0);
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
 		setMaxDamage(6);
-		setNoRepair(); //不可修补
+		setNoRepair();
 		
 		setLiftProps(10, 5);
 		
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -43,10 +46,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-		
-		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(( par2World.isRemote? inf.getClientAsBullet() : inf.getServerAsBullet() ), 
-				par1ItemStack, par2World, par3EntityPlayer);
+		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
     }
 	
@@ -55,9 +55,8 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
 		int mode = information.mode;
-		
 		if(!canUse){
-			information.isReloading = true;
+			information.setLastTick();
 			return;
 		}
 
@@ -74,52 +73,38 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		}
 		information.setLastTick();
     	if(par3Entity instanceof EntityPlayer){
-    		if(!information.isRecovering)
-    			information.originPitch = par3Entity.rotationPitch;
-    		par3Entity.rotationPitch -= upLiftRadius;
-    		information.isRecovering = true;
-    		information.recoverTick = 0;
+    		doUplift(information, par3Entity);
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
-    				par1ItemStack.damageItem( 1 , null);
+    				par1ItemStack.damageItem( 1 , par3Entity);
     		}
     	}
 		
 	}
 	
 	@Override
-	  public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
-		
-	}
-	
-	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
-	{
-		
+	{	
 		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
-		
 	}
 	
 	@Override
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
-        return 200; //10s
+        return 200;
     }
 
 	@Override
 	public String getSoundShoot(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.xbow_fire";
 	}
 
 	@Override
 	public String getSoundJam(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload(int mode) {
-		// TODO Auto-generated method stub
 		return "cbc.weapons.xbow_reload";
 	}
 
@@ -130,19 +115,21 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	@Override
 	public double getPushForce(int mode) {
-		// TODO Auto-generated method stub
 		return 1.5;
 	}
 
 	@Override
 	public int getDamage(int mode) {
-		// TODO Auto-generated method stub
 		return 20;
 	}
 
 	@Override
 	public int getOffset(int mode) {
-		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		return mode == 0 ? "Normal mode" : "Explosive Arrow mode";
 	}
 }

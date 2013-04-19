@@ -15,66 +15,63 @@ public class AmmoManager {
 	
 	//type:0 Bullet Weapon ; 1 Energy Weapon
 	//Stacksize=1:Damage型；StackSize>1:stack型
-	public int type;
 	public EntityPlayer player;
 	public ItemStack Weapon;
-	public List ammoList;
 	public int ammoItemID;
 	public int ammoCapacity;
+	
+	private List<ItemStack> ammoList;
+	
 	//加载基本的玩家背包子弹信息xD
 	public AmmoManager(EntityPlayer par1Player,ItemStack par2Weapon) {
 		
-		// TODO Auto-generated constructor stub
-		//type = ( par2Weapon.itemID == CBCMod.cbcItems.weapon_gauss.itemID || 
-		//		par2Weapon.itemID == CBCMod.cbcItems.weapon_egon.itemID) ? 1 : 0 ;
 		WeaponGeneral wpn = (WeaponGeneral)par2Weapon.getItem();
-		type = wpn.type;
-		ammoList = new ArrayList();
+		ammoList = new ArrayList<ItemStack>();
 		player = par1Player;
 		Weapon = par2Weapon;
 		ammoItemID = getAmmoItemIDByWeapon(par2Weapon);
 		setAmmoInformation(par1Player);
-		System.out.println("Player Ammo Capacity : " + this.ammoCapacity);
 		
 	}
 	
-	public Boolean consumeAmmo(int amount){
+	
+	public int consumeAmmo(int amount){
 		
-		ItemStack itemStack;
 		int left = amount;
 		updateAmmoCapacity();
-		if(ammoCapacity < amount)return false;
+		
+		if(ammoList.isEmpty())
+			return left;
 		
 		if(((ItemStack)ammoList.get(0)).getMaxStackSize() == 1){
-			for(int i=0; i<ammoList.size(); i++){
-				itemStack = (ItemStack)ammoList.get(i);
+			
+			for(ItemStack itemStack : ammoList){
 				int cap = itemStack.getMaxDamage() - itemStack.getItemDamage() -1;
 				if(cap >0){
 					if(cap >= left){
-					
-						itemStack.damageItem(left, null);
+						itemStack.damageItem(left, player);
 						ammoCapacity -= left;
-						return true;
-					
+						return 0;
 					}			
 					left -= cap;
-					
-					itemStack.damageItem(cap, null);
+					itemStack.damageItem(cap, player);
 				} 
 			}
 			
 		} else {
-				for( ; left>0; left--){
-						if(!player.inventory.consumeInventoryItem(ammoItemID)){
-							updateAmmoCapacity();
-							return true;
+			
+				for(ItemStack itemStack : ammoList){
+						if(itemStack.stackSize >= left){
+							itemStack.splitStack(left);
+							return 0;
 						}
-						else ammoCapacity--;
+						left -= itemStack.stackSize;
+						itemStack.splitStack(itemStack.stackSize);
 				}
-				return true;	
+				
 		}
 		
-		return false; //should never happen
+		return left;
 	}
 	
 	public int getAmmoCapacity(){

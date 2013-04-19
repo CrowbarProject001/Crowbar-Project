@@ -31,8 +31,9 @@ public class EntityEgonRay extends EntityThrowable {
 
 	@Override
 	public void onUpdate(){
-		InformationSet inf = ((Weapon_egon)item.getItem()).getInformation(item, worldObj);
-		if(inf == null || !getThrower().getHeldItem().equals(item) || !inf.getProperEnergy(worldObj).isShooting)
+		InformationSet inf = ((Weapon_egon)item.getItem()).getInformation(item);
+		if(inf == null || !getThrower().getHeldItem().equals(item) || 
+				!(inf.getProperEnergy(worldObj).isShooting && ((Weapon_egon)item.getItem()).canShoot(inf.getProperEnergy(worldObj))))
 			this.setDead();
 		
 		EntityLiving ent = getThrower();

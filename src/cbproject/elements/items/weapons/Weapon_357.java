@@ -10,6 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+/**
+ * .357 Magnum weapon class.
+ * @author WeAthFolD
+ *
+ */
 public class Weapon_357 extends WeaponGeneralBullet {
 
 	public Weapon_357(int par1) {
@@ -21,8 +26,8 @@ public class Weapon_357 extends WeaponGeneralBullet {
 		setIconCoord(4,2);
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
-		setMaxDamage(7); // 最高伤害为18 0a0
-		setNoRepair(); //不可修补
+		setMaxDamage(7);
+		setNoRepair();
 			
 		setReloadTime(70);
 		setJamTime(20);
@@ -39,10 +44,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
-		InformationSet inf = super.loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(( par2World.isRemote? inf.getClientAsBullet() : inf.getServerAsBullet() ), 
-				par1ItemStack, par2World, par3EntityPlayer);
-
+		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
     }
 	
@@ -91,6 +93,12 @@ public class Weapon_357 extends WeaponGeneralBullet {
 	public int getOffset(int mode) {
 		// TODO Auto-generated method stub
 		return 2;
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		// TODO Auto-generated method stub
+		return ".357 Bullet mode";
 	}
 
 }

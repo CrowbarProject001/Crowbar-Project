@@ -36,8 +36,6 @@ public class RenderRocket extends RenderEntity {
         		v7 = newV3(LENGTH, 0, HEIGHT),
         		v8 = newV3(LENGTH, 0, -HEIGHT);
         
-        //必要的旋转变换=v=
-        
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);   
         GL11.glDepthMask(false);

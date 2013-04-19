@@ -15,6 +15,11 @@ import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.InformationSet;
 
+/**
+ * Egon energy weapon.
+ * @author WeAthFolD
+ *
+ */
 public class Weapon_egon extends WeaponGeneralEnergy {
 
 	public static String SND_WINDUP = "cbc.weapons.egon_windup", 
@@ -22,7 +27,6 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 			SND_OFF = "cbc.weapons.egon_off";
 	
 	public Weapon_egon(int par1) {
-		
 		super(par1, CBCMod.cbcItems.itemAmmo_uranium.itemID, 1);
 		setCreativeTab(CBCMod.cct);
 		setItemName("weapon_egon");
@@ -36,8 +40,7 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		
-		InformationSet inf = getInformation(par1ItemStack, par2World);
+		InformationSet inf = getInformation(par1ItemStack);
 		if(inf.getProperEnergy(par2World).isShooting && inf.getProperEnergy(par2World).ammoManager.getAmmoCapacity() > 0)
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_OFF, 0.5F, 1.0F);
 		inf.getProperEnergy(par2World).isShooting = false;
@@ -49,11 +52,11 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		InformationEnergy inf = onEnergyWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 		if(inf == null)
 			return;
-		int dTick = inf.ticksExisted - inf.lastTick;
+		int dTick = inf.getDeltaTick();
 		if(inf.isShooting){
-			if(inf.ticksExisted > 79 && (dTick - 79) % 42 == 0){
+			if(inf.ticksExisted > 79 && (dTick - 79) % 42 == 0)
 				par2World.playSoundAtEntity(par3Entity, SND_RUN, 0.5F, 1.0F);
-			}
+			
 			if(dTick % 3 == 0 && !par2World.isRemote){
 				inf.ammoManager.consumeAmmo(1);
 				if(inf.ammoManager.ammoCapacity == 0){
@@ -70,10 +73,12 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		
 		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer).getProperEnergy(par2World);
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
-		if(inf.isShooting){
+		
+		if(inf.isShooting && canShoot(inf)){
 			par2World.spawnEntityInWorld(new EntityEgonRay(par2World, par3EntityPlayer, par1ItemStack));
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_WINDUP, 0.5F, 1.0F);
 		}
+		
 		inf.ticksExisted = inf.lastTick = 0;
 		
 		return par1ItemStack;
@@ -83,11 +88,9 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 	@Override
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
 		
-		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "fire");
-		
-    	if(par3Entity instanceof EntityPlayerSP){
-    		doRecover(information, (EntityPlayer) par3Entity);
-    	}
+		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "fire");	
+    	if(par3Entity instanceof EntityPlayerSP)
+    		doUplift(information, (EntityPlayer) par3Entity);
     	
 		return;
 	}
@@ -126,6 +129,11 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 	@Override
 	public String getSoundJam(int mode) {
 		return "cbc.weapons.gunjam_a";
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		return "Normal mode";
 	}
 	
 }

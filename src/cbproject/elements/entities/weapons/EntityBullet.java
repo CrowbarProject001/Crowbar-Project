@@ -93,7 +93,7 @@ public class EntityBullet extends EntityThrowable {
 			return;
 
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		InformationWeapon inf = item.getInformation(itemStack, worldObj).getProperInf(worldObj);
+		InformationWeapon inf = item.getInformation(itemStack).getProperInf(worldObj);
 		int mode = inf.mode;
 		double pf = item.getPushForce(mode);
 		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ * pf;

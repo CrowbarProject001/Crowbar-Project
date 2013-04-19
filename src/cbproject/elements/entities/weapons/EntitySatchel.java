@@ -26,17 +26,14 @@ public class EntitySatchel extends EntityThrowable {
 	
 	public EntitySatchel(World par1World) {
 		super(par1World);
-		// TODO Auto-generated constructor stub
 	}
 
 	public EntitySatchel(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
-		// TODO Auto-generated constructor stub
 	}
 
 	public EntitySatchel(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -115,7 +112,7 @@ public class EntitySatchel extends EntityThrowable {
 		case 1:
 			if(!onGround){
 				tickHit = ticksExisted;
-				motionY = -0.5 * motionY;
+				motionY = 0;
 			}
 			onGround = true;
 			break;

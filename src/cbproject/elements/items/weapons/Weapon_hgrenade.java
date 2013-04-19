@@ -13,6 +13,11 @@ import net.minecraftforge.event.Event;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import cbproject.CBCMod;
 
+/**
+ * Hand grenade weapon class.
+ * @author WeAthFolD
+ *
+ */
 public class Weapon_hgrenade extends Item {
 
 	public Weapon_hgrenade(int par1ID) {
@@ -23,7 +28,6 @@ public class Weapon_hgrenade extends Item {
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(4);
 		this.maxStackSize = 4;
-		// TODO Auto-generated constructor stub
 	}
 	
 	
@@ -60,9 +64,6 @@ public class Weapon_hgrenade extends Item {
         
     }
 	
-    /**
-     * How long it takes to use or consume an item
-     */
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 400; //20s

@@ -15,7 +15,7 @@ public class ItemAmmo_uranium extends ItemAmmo {
 		setIconCoord(0,1);
 		setMaxDamage( 100 );
 		setMaxStackSize ( 1 );
-		// TODO Auto-generated constructor stub
+		
 	}
 
 }

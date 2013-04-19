@@ -13,6 +13,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
+/**
+ * Egon ray rendering class.
+ * @author WeAthFolD
+ *
+ */
 public class RenderEgonRay extends RenderEntity {
 	
 	public static double WIDTH = 0.3F;
@@ -30,10 +35,6 @@ public class RenderEgonRay extends RenderEntity {
 		
         GL11.glPushMatrix();
         
-        /*
-         * Basic colors(No lighting)
-         */    
-        
         double dx = end.xCoord - egon.posX;
         double dy = end.yCoord - egon.posY;
         double dz = end.zCoord - egon.posZ;
@@ -50,8 +51,7 @@ public class RenderEgonRay extends RenderEntity {
         		v7 = newV3(d, -WIDTH, 0),
         		v8 = newV3(d, WIDTH, 0);
         
-        //必要的旋转变换=v=
-        
+        //Translations and rotations
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         
@@ -64,6 +64,7 @@ public class RenderEgonRay extends RenderEntity {
         GL11.glRotatef(7.5F, -1.0F, 0.0F, 0.0F);
         GL11.glTranslatef(0, -0.4F, 0);
         GL11.glRotatef(angle, -1.0F, 0.0F, 0.0F);
+        //drawing>)
         tessellator.startDrawingQuads();
         
         addVertex(v1, 0 + du, 0);
@@ -87,6 +88,7 @@ public class RenderEgonRay extends RenderEntity {
         addVertex(v5, 0 + du, 0);
         
         tessellator.draw();
+        
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }
@@ -96,7 +98,6 @@ public class RenderEgonRay extends RenderEntity {
     }
     
     protected void addVertex(Vec3 vec3, double texU, double texV){
-    	
     	tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord, texU, texV);
     }
     
