@@ -25,7 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.configure.Config;
 import cbproject.elements.items.weapons.WeaponGeneral;
+import cbproject.elements.items.weapons.WeaponGeneralBullet;
 import cbproject.elements.items.weapons.Weapon_satchel;
+import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
@@ -34,7 +36,6 @@ import cbproject.utils.weapons.InformationWeapon;
  *
  */
 
-@SideOnly(Side.CLIENT)
 public class CBCKeyProcess extends KeyHandler{
 	
 	public int Key_ModeChange, Key_Reload;
@@ -73,7 +74,7 @@ public class CBCKeyProcess extends KeyHandler{
 			InformationWeapon sv = inf.clientReference;
 			sv.mode = (maxModes -1 <= sv.mode) ? 0 : sv.mode +1;
 			WeaponGeneral weapon = (WeaponGeneral) itemStack.getItem();
-			ByteArrayOutputStream bos = new ByteArrayOutputStream(16);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(12);
 			DataOutputStream outputStream = new DataOutputStream(bos);
 			
 			try {
@@ -91,6 +92,20 @@ public class CBCKeyProcess extends KeyHandler{
 			player.sendChatToPlayer("New Mode: " + weapon.getModeDescription(sv.mode));
 			
 	}
+	
+	public static void onReload(ItemStack itemStack, InformationBullet inf, EntityPlayer player){
+
+		if(inf.isReloading)
+			reload = false;
+		WeaponGeneralBullet item = (WeaponGeneralBullet) inf.itemStack.getItem();
+		if(!inf.isReloading){
+			System.out.println(inf.player.worldObj.isRemote);
+			inf.player.worldObj.playSoundAtEntity(inf.player, item.getSoundReload(inf.mode), 0.5F, 1.0F);
+		}
+		inf.isReloading = true;
+		
+		
+	}
 
 	@Override
 	public String  getLabel() {
@@ -102,8 +117,13 @@ public class CBCKeyProcess extends KeyHandler{
 			boolean tickEnd, boolean isRepeat) {
 		if(tickEnd)
 			return;
+		System.out.println(types);
 		if( KeyCodes[0].keyCode == kb.keyCode ){
 			modeChange = true;
+			return;
+		}
+		if( KeyCodes[1].keyCode == kb.keyCode){
+			reload = true;
 			return;
 		}
 		

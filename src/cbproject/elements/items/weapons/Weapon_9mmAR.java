@@ -70,7 +70,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
     		
     	} else {
     		
-    		if(par3Entity.capabilities.isCreativeMode  || information.ammoManager.tryConsume(par3Entity, CBCMod.cbcItems.itemAmmo_ARGrenade.itemID));
+    		if(par3Entity.capabilities.isCreativeMode  || information.ammoManager.tryConsume(par3Entity, CBCMod.cbcItems.itemAmmo_ARGrenade.itemID, 1) != 0)
     			par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
     		
     	}

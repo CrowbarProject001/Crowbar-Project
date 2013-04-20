@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import cbproject.CBCMod;
 import cbproject.elements.items.weapons.WeaponGeneral;
+import cbproject.elements.items.weapons.WeaponGeneralBullet;
+import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
@@ -31,7 +33,7 @@ public class CBCPacketHandler implements IPacketHandler {
 				int mode = inputStream.readInt();
 
 				InformationSet inf = CBCMod.wpnInformation.getInformation(weaponID);
-				InformationWeapon information = inf.clientReference;
+				InformationWeapon information = inf.serverReference;
 				WeaponGeneral item = (WeaponGeneral) information.itemStack.getItem();
 				item.onModeChange(information.itemStack, information.player.worldObj, mode);
 				
@@ -42,6 +44,22 @@ public class CBCPacketHandler implements IPacketHandler {
 				e.printStackTrace();
 			}
 			break;
+			
+		case "CBCReload":
+			try {
+				
+				double id = inputStream.readDouble();
+
+				InformationSet inf = CBCMod.wpnInformation.getInformation(id);
+				InformationBullet information = inf.getServerAsBullet();
+				WeaponGeneralBullet item = (WeaponGeneralBullet) information.itemStack.getItem();
+				if(!information.isReloading)
+					information.player.worldObj.playSoundAtEntity(information.player, item.getSoundReload(information.mode), 0.5F, 1.0F);
+				information.isReloading = true;
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		default:
 			break;
 		}

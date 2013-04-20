@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cbproject.CBCMod;
+import cbproject.misc.CBCKeyProcess;
 import cbproject.utils.CBCWeaponInformation;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
@@ -52,8 +53,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			}
 			information.isShooting = true;
 		} else  {
+			if(!information.isReloading)
+				par2World.playSoundAtEntity(par3EntityPlayer, getSoundReload(mode), 0.5F, 1.0F);
 			information.isReloading = true;
-			par2World.playSoundAtEntity(par3EntityPlayer, getSoundReload(mode), 0.5F, 1.0F);
 		}
 		
 		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
@@ -64,8 +66,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     public void onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
     	   	
     	InformationBullet information = (InformationBullet) super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+
+		InformationSet inf = getInformation(par1ItemStack);
     	if(information == null){
-    		InformationSet inf = loadInformation(par1ItemStack, (EntityPlayer) par3Entity);	
     		if(inf == null)
     			return;
     		
@@ -76,6 +79,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     	}
     	information.updateTick();
     	
+    	if(CBCKeyProcess.reload){
+    		CBCKeyProcess.onReload(par1ItemStack, information, (EntityPlayer) par3Entity);
+    	}
 		if(doesShoot(information, par1ItemStack))
 			this.onBulletWpnShoot(par1ItemStack, par2World, (EntityPlayer) par3Entity, information);
 		

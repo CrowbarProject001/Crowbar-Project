@@ -40,11 +40,10 @@ public class AmmoManager {
 		int left = amount;
 		updateAmmoCapacity();
 		
-		if(ammoList.isEmpty())
-			return left;
-		
-		if(((ItemStack)ammoList.get(0)).getMaxStackSize() == 1){
+		if(Item.itemsList[ammoItemID].getItemStackLimit() == 1){
 			
+			if(ammoList.isEmpty())
+				return left;
 			for(ItemStack itemStack : ammoList){
 				int cap = itemStack.getMaxDamage() - itemStack.getItemDamage() -1;
 				if(cap >0){
@@ -57,21 +56,14 @@ public class AmmoManager {
 					itemStack.damageItem(cap, player);
 				} 
 			}
+			return left;
 			
 		} else {
 			
-				for(ItemStack itemStack : ammoList){
-						if(itemStack.stackSize >= left){
-							itemStack.splitStack(left);
-							return 0;
-						}
-						left -= itemStack.stackSize;
-						itemStack.splitStack(itemStack.stackSize);
-				}
+				return left - tryConsume(player, ammoItemID, amount);
 				
 		}
 		
-		return left;
 	}
 	
 	public int getAmmoCapacity(){
@@ -118,22 +110,19 @@ public class AmmoManager {
 	
 	/**
 	 * Tries to consume one specific item in player's inventory.
-	 * @return whether the consume process is successful or not
+	 *  ** Stackable only.
+	 * @return how many of the stack consumed
 	 */
-	public boolean tryConsume(EntityPlayer player, int itemID){
-		
-		ItemStack itemStack;
-		for( int i=0; i<36; i++){
-			itemStack = player.inventory.getStackInSlot(i);
-			if(itemStack == null)
-				continue;
-			if(itemStack.itemID == itemID){
-				itemStack.splitStack(1);
-				return true;
+	public int tryConsume(EntityPlayer player, int itemID, int amount){	
+		if(!player.inventory.hasItem(itemID))
+			return 0;
+		int i;
+		for(i = 1; i <= amount; i++)
+			if(!player.inventory.consumeInventoryItem(itemID)){
+				i--;
+				break;
 			}
-		}
-		return false;
-		
+		return i;
 	}
 	
 

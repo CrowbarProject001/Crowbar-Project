@@ -28,7 +28,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.1")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {"CBCWeaponMode"}, packetHandler = CBCPacketHandler.class)
+@NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {"CBCWeaponMode", "CBCReload"}, packetHandler = CBCPacketHandler.class)
 
 /**
  * The main mod class.

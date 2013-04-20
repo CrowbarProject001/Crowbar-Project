@@ -72,9 +72,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		if(par2World.isRemote)
 			return;
 		information.ammoManager.setAmmoInformation((EntityPlayer)par3Entity);
-		int cap = information.ammoManager.ammoCapacity;
-		if( cap > 0 ){
-    		information.ammoManager.consumeAmmo(1);
+		if( information.ammoManager.consumeAmmo(1) == 0 ){
 			par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - 1);
 		    par2World.playSoundAtEntity(par3Entity, getSoundReload(mode), 0.5F, 1.0F);	
     	} else 
@@ -164,7 +162,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	@Override
 	public int getOffset(int mode) {
 		// TODO Auto-generated method stub
-		return (mode == 0) ? 5 : 15;
+		return (mode == 0) ? 3 : 9;
 	}
 
 	@Override
