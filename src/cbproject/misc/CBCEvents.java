@@ -5,6 +5,8 @@ import java.net.URL;
 
 import cbproject.CBCMod;
 import cbproject.elements.items.armor.ArmorHEVBoot;
+
+
 import net.minecraft.client.audio.SoundPool;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,7 +72,7 @@ public class CBCEvents {
 		try{
 			SoundPoolEntry snd;
 			for(String path:PathWeapons){
-				snd = event.manager.soundPoolSounds.addSound("cbc/weapons/" + path + ".wav", CBCMod.class.getResource("/cbproject/gfx/sounds/weapons/" + path + ".wav"));
+				snd = event.manager.soundPoolSounds.addSound("cbc/weapons/" + path + ".wav", CBCMod.class.getResource("/cbproject/sounds/weapons/" + path + ".wav"));
 				System.out.println("AddSound : " + snd.soundName + " URL: " + snd.soundUrl);
 			}
 		}catch(Exception e){
@@ -86,7 +88,7 @@ public class CBCEvents {
 				EntityPlayer player = (EntityPlayer) event.entity;				
 				if(player.inventory.armorInventory[0] == null)
 					return;
-				if(player.inventory.armorInventory[0].getItemName() == CBCMod.cbcItems.armorHEVBoot.getItemName()){
+				if(player.inventory.armorInventory[0].getItemName() == CBCMod.cbcItems.armorHEVBoot.getUnlocalizedName()){
 					event.setCanceled(true);
 				}
 			}

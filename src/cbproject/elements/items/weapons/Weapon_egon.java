@@ -1,12 +1,7 @@
 package cbproject.elements.items.weapons;
 
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityEgonRay;
 import cbproject.proxy.ClientProxy;
@@ -14,6 +9,14 @@ import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.InformationSet;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 /**
  * Egon energy weapon.
@@ -29,13 +32,18 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 	public Weapon_egon(int par1) {
 		super(par1, CBCMod.cbcItems.itemAmmo_uranium.itemID, 1);
 		setCreativeTab(CBCMod.cct);
-		setItemName("weapon_egon");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(1,3);
+		setUnlocalizedName("weapon_egon");
 		setJamTime(20);
 		
 		setLiftProps(1, 0);
 	}
+	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_egon");
+    }
 
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 

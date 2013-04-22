@@ -9,7 +9,7 @@ public class ArmorHEVBoot extends ItemArmor {
 	public ArmorHEVBoot(int par1) {
 		super(par1, EnumArmorMaterial.IRON, 2, 3);
 		setCreativeTab(CBCMod.cct);
-		this.setItemName("armorHEVBoot");
+		setUnlocalizedName("armorHEVBoot");
 	}
 
 }

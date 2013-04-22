@@ -12,6 +12,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 /**
@@ -50,7 +51,7 @@ public class EntitySatchel extends EntityThrowable {
 	            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 	    }    
 	    
-		worldObj.createExplosion( this, this.posX, this.posY, this.posZ, var1, true);
+		Explosion ex = worldObj.createExplosion( this, this.posX, this.posY, this.posZ, var1, true);
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
@@ -69,7 +70,7 @@ public class EntitySatchel extends EntityThrowable {
 						return;
 					
 					System.out.println("damage applied : " + damage);
-					ent.attackEntityFrom(DamageSource.explosion2, damage);
+					ent.attackEntityFrom(DamageSource.setExplosionSource(ex), damage);
 					ent.setFire(20);
 							
 				}

@@ -8,10 +8,8 @@ public class ItemBullet_Bow extends Item {
 
 	public ItemBullet_Bow(int par1) {
 		super(par1);
-		setTextureFile( ClientProxy.ITEMS_TEXTURE_PATH );
 		setCreativeTab( CBCMod.cct );
-		setItemName("bullet_bow");
-		setIconCoord(3,5);
+		setUnlocalizedName("bullet_bow");
 		setMaxStackSize (64);
 	}
 	

@@ -8,10 +8,8 @@ public class ItemBullet_9mm extends Item {
 
 	public ItemBullet_9mm(int par1) {
 		super(par1);
-		setTextureFile( ClientProxy.ITEMS_TEXTURE_PATH );
 		setCreativeTab( CBCMod.cct );
-		setItemName("bullet_9mm");
-		setIconCoord(0,5);
+		setUnlocalizedName("bullet_9mm");
 		setMaxStackSize (64);
 	}
 	

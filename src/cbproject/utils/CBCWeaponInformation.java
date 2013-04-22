@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cbproject.utils.weapons.InformationSet;
+import cbproject.utils.weapons.InformationWeapon;
+
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import cbproject.utils.weapons.InformationSet;
-import cbproject.utils.weapons.InformationWeapon;
 
 /**
  * @author WeAthFolD

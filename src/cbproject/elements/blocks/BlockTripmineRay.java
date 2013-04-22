@@ -6,6 +6,8 @@ import cbproject.CBCMod;
 import cbproject.elements.blocks.weapons.BlockTripmine;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.BlockPos;
+
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -21,11 +23,11 @@ import net.minecraft.world.World;
 public class BlockTripmineRay extends Block {
 
 	public BlockTripmineRay(int par1) {
-		super(par1, 0, Material.circuits);
-		setTextureFile(ClientProxy.TRIPMINE_RAY_PATH);
+		super(par1, Material.circuits);
 		setBlockUnbreakable();
 		setLightValue(0.1F);
 		setTickRandomly(true);
+		setUnlocalizedName("blockTripmineRay");
 	}
 	
     @Override
@@ -41,11 +43,11 @@ public class BlockTripmineRay extends Block {
     }
     
     @Override
-    public int tickRate()
+    public int tickRate(World par1World)
     {
-        return 40;
+        return 10;
     }
-
+    
     @Override
 	public boolean isOpaqueCube()
     {
@@ -62,7 +64,7 @@ public class BlockTripmineRay extends Block {
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
         if(getSource(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4)) == null)
-        	par1World.setBlockWithNotify(par2, par3, par4, 0);
+        	par1World.setBlockToAir(par2, par3, par4);
     }
     
     @Override
@@ -93,7 +95,7 @@ public class BlockTripmineRay extends Block {
     	
     	BlockPos pos = getSource(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
     	if(pos == null){
-    		par1World.setBlockWithNotify(par2, par3, par4, 0);
+    		par1World.setBlockToAir(par2, par3, par4);
     		return;
     	}
     	par1World.notifyBlockChange(pos.x, pos.y, pos.z, BlockTripmine.NOTIFY_ID);
@@ -104,7 +106,7 @@ public class BlockTripmineRay extends Block {
     @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
     	if(par5 == BlockTripmine.NOTIFY_ID){
-    		par1World.setBlockWithNotify(par2, par3, par4, 0);
+    		par1World.setBlockToAir(par2, par3, par4);
     	}
     }
     

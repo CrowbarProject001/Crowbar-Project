@@ -3,6 +3,8 @@
  */
 package cbproject.elements.items.weapons;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntitySatchel;
 import cbproject.misc.CBCKeyProcess;
@@ -11,6 +13,7 @@ import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSatchel;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -31,9 +34,7 @@ public class Weapon_satchel extends WeaponGeneral {
 	public Weapon_satchel(int par1) {
 		
 		super(par1, 0, 2);
-		setItemName("weapon_satchel");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(0,4);
+		setUnlocalizedName("weapon_satchel");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(64);
 
@@ -44,6 +45,7 @@ public class Weapon_satchel extends WeaponGeneral {
 		int dam[] = {0, 0}, offset[] = {0, 0};
 		
 	}
+	
 	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {

@@ -11,16 +11,23 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import cbproject.CBCMod;
 import cbproject.elements.blocks.BlocksRegister;
 import cbproject.proxy.ClientProxy;
+
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -36,14 +43,17 @@ public class BlockTripmine extends Block {
 	
 	public BlockTripmine(int par1) {
 		
-		super(par1, 65, Material.circuits);
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
+		super(par1, Material.circuits);
 		setCreativeTab(CBCMod.cct);
-		setBlockName("tripmine");
-		
+		setUnlocalizedName("blockTripmine");
 	}
 	
-
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:blockTripmine");
+    }
     @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
     	
@@ -72,8 +82,7 @@ public class BlockTripmine extends Block {
          }
          if (var8)
          {
-             this.dropBlockAsItem(par1World, par2, par3, par4, par5, 0);
-             par1World.setBlockWithNotify(par2, par3, par4, 0);
+             par1World.setBlockToAir(par2, par3, par4);
              return;
          }
          
@@ -91,11 +100,11 @@ public class BlockTripmine extends Block {
     	//Retrieve the ray blocks
     	for(int j = 0; j <BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){ 
     		int id = 0;
-			if(var10 == 1 || var10 == 3){ //x+, x-方向
+			if(var10 == 1 || var10 == 3){ //x+, x-鏂瑰悜
 				id = par1World.getBlockId(i, par3, par4);
 				if(id == BlocksRegister.blockTripmineRay.blockID)
 					par1World.setBlock(i, par3, par4, 0);
-			} else { //z+, z-方向
+			} else { //z+, z-鏂瑰悜
 				id = par1World.getBlockId(par2, par3, i);
 				if(id == BlocksRegister.blockTripmineRay.blockID)
 					par1World.setBlock(par2, par3, i, 0);
@@ -103,7 +112,7 @@ public class BlockTripmine extends Block {
 		}
     	
     	Explode(par1World, par2, par3, par4);
-    	par1World.setBlockWithNotify(par2, par3, par4, 0);
+    	par1World.setBlockToAir(par2, par3, par4);
     	super.breakBlock(par1World, par2, par3, par4, par5, par6);
     	
     }
@@ -122,14 +131,14 @@ public class BlockTripmine extends Block {
 
     private void Explode(World worldObj, int posX, int posY, int posZ){
     	
-		float var1=1.5F; //手雷的0.25倍
+		float var1=1.5F; //鎵嬮浄鐨�.25鍊�
 		double dmg = 20.0F;
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
 	            worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0D, 0.0D, 0.0D);
 	    }    
 	    
-		worldObj.createExplosion(null, posX, posY, posZ, var1, true);
+		Explosion ex = worldObj.createExplosion(null, posX, posY, posZ, var1, true);
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		List entitylist = worldObj.getEntitiesWithinAABBExcludingEntity(null, par2);
@@ -147,7 +156,7 @@ public class BlockTripmine extends Block {
 					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode)
 						return;
 					
-					ent.attackEntityFrom(DamageSource.explosion2, damage);
+					ent.attackEntityFrom(DamageSource.setExplosionSource(ex), damage);
 					ent.setFire(20);
 				}
 			}
@@ -195,22 +204,22 @@ public class BlockTripmine extends Block {
     {
         byte var10 = 0;
 
-        if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST, true)) // Z-方向
+        if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST, true)) // Z-鏂瑰悜
         {
             var10 = 2;
         }
 
-        if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true)) // Z+方向
+        if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true)) // Z+鏂瑰悜
         {
             var10 = 0;
         }
 
-        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true)) // X-方向
+        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true)) // X-鏂瑰悜
         {
             var10 = 1;
         }
 
-        if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true)) // X+方向
+        if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true)) // X+鏂瑰悜
         {
             var10 = 3;
         }
@@ -225,11 +234,11 @@ public class BlockTripmine extends Block {
 		for(int j = 0; var0 && j <RAY_RANGE ; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){
 			if(var10 == 1 || var10 == 3){
 				if(par1World.getBlockId(i, par3, par4) == 0){
-				par1World.setBlockAndMetadataWithUpdate(i, par3, par4, BlocksRegister.blockTripmineRay.blockID, var10, true);
+				par1World.setBlock(i, par3, par4, BlocksRegister.blockTripmineRay.blockID, var10, 0x02);
 				} else var0 = false;
 			} else {
 				if(par1World.getBlockId(par2, par3, i) == 0){
-					par1World.setBlockAndMetadataWithUpdate(par2, par3, i, BlocksRegister.blockTripmineRay.blockID, var10, true);
+					par1World.setBlock(par2, par3, i, BlocksRegister.blockTripmineRay.blockID, var10, 0x02);
 				} else var0 = false;
 			}
 		}

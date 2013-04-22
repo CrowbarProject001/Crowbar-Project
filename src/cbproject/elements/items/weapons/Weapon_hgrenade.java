@@ -1,17 +1,21 @@
 package cbproject.elements.items.weapons;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityHGrenade;
 import cbproject.proxy.ClientProxy;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import cbproject.CBCMod;
 
 /**
  * Hand grenade weapon class.
@@ -22,14 +26,18 @@ public class Weapon_hgrenade extends Item {
 
 	public Weapon_hgrenade(int par1ID) {
 		super(par1ID);
-		setItemName("weapon_hgrenade");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(1,2);
+		setUnlocalizedName("weapon_hgrenade");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(4);
 		this.maxStackSize = 4;
 	}
 	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_hgrenade");
+    }
 	
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)

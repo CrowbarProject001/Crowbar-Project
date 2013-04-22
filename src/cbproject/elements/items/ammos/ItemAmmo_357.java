@@ -1,5 +1,8 @@
 package cbproject.elements.items.ammos;
 
+import net.minecraft.client.renderer.texture.IconRegister;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
 
@@ -8,13 +11,18 @@ public class ItemAmmo_357 extends ItemAmmo {
 	public ItemAmmo_357(int par1) {
 		
 		super(par1);
-		setTextureFile( ClientProxy.ITEMS_TEXTURE_PATH );
 		setCreativeTab( CBCMod.cct );
-		setItemName("ammo_357");
-		setIconCoord(3,1);
+		setUnlocalizedName("ammo_357");
 		setMaxDamage(7);
 		setMaxStackSize (1);
 		
 	}
+	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:ammo_357");
+    }
 
 }

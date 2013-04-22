@@ -1,11 +1,8 @@
 package cbproject.elements.items.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+
+import org.lwjgl.input.Keyboard;
+
 import cbproject.CBCMod;
 import cbproject.misc.CBCKeyProcess;
 import cbproject.utils.CBCWeaponInformation;
@@ -13,6 +10,13 @@ import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 /**
  * General bullet weapon class, including 9mmhandgun, rpg, etc...
@@ -79,8 +83,11 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     	}
     	information.updateTick();
     	
-    	if(CBCKeyProcess.reload){
-    		CBCKeyProcess.onReload(par1ItemStack, information, (EntityPlayer) par3Entity);
+    	if(Keyboard.isKeyDown(CBCKeyProcess.Key_Reload)){
+    		System.out.println(par2World.isRemote);
+    		if(!information.isReloading)
+    			par2World.playSoundAtEntity(par3Entity, getSoundReload(information.mode), 0.5F, 1.0F);
+    		information.isReloading = true;
     	}
 		if(doesShoot(information, par1ItemStack))
 			this.onBulletWpnShoot(par1ItemStack, par2World, (EntityPlayer) par3Entity, information);

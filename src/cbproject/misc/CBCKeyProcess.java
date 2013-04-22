@@ -8,12 +8,20 @@ import java.io.DataOutputStream;
 import java.util.EnumSet;
 import java.util.Random;
 
+
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 import org.lwjgl.input.Keyboard;
+
+import cbproject.configure.Config;
+import cbproject.elements.items.weapons.WeaponGeneral;
+import cbproject.elements.items.weapons.WeaponGeneralBullet;
+import cbproject.elements.items.weapons.Weapon_satchel;
+import cbproject.utils.weapons.InformationSet;
+import cbproject.utils.weapons.InformationWeapon;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
@@ -23,32 +31,24 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import cbproject.configure.Config;
-import cbproject.elements.items.weapons.WeaponGeneral;
-import cbproject.elements.items.weapons.WeaponGeneralBullet;
-import cbproject.elements.items.weapons.Weapon_satchel;
-import cbproject.utils.weapons.InformationBullet;
-import cbproject.utils.weapons.InformationSet;
-import cbproject.utils.weapons.InformationWeapon;
 
 /**
  * @author WeAthFolD
- *
+ * Generally handle the keyPress event,load key config in .cfg.
+ * Not all keys are processed here, some are within item's handle classes.
  */
-
+@SideOnly(Side.CLIENT)
 public class CBCKeyProcess extends KeyHandler{
 	
-	public int Key_ModeChange, Key_Reload;
+	public static int Key_ModeChange, Key_Reload;
 	public static Boolean modeChange = false;
-	public static Boolean reload = false;
 	
 	public static KeyBinding KeyCodes[] = {
-			new KeyBinding("Mode Change Key", Keyboard.KEY_LCONTROL),
-			new KeyBinding("Reload Key", Keyboard.KEY_R)
+			new KeyBinding("Mode Change Key", Keyboard.KEY_LCONTROL)
 	};
 	
 	public static boolean isRepeating[] = {
-			false, false
+			false
 	};
 	
 	public CBCKeyProcess(Config conf){
@@ -61,7 +61,6 @@ public class CBCKeyProcess extends KeyHandler{
 			e.printStackTrace();
 		}
 		KeyCodes[0].keyCode = Key_ModeChange;
-		KeyCodes[0].keyCode = Key_Reload;
 		
 	}
 	
@@ -92,20 +91,6 @@ public class CBCKeyProcess extends KeyHandler{
 			player.sendChatToPlayer("New Mode: " + weapon.getModeDescription(sv.mode));
 			
 	}
-	
-	public static void onReload(ItemStack itemStack, InformationBullet inf, EntityPlayer player){
-
-		if(inf.isReloading)
-			reload = false;
-		WeaponGeneralBullet item = (WeaponGeneralBullet) inf.itemStack.getItem();
-		if(!inf.isReloading){
-			System.out.println(inf.player.worldObj.isRemote);
-			inf.player.worldObj.playSoundAtEntity(inf.player, item.getSoundReload(inf.mode), 0.5F, 1.0F);
-		}
-		inf.isReloading = true;
-		
-		
-	}
 
 	@Override
 	public String  getLabel() {
@@ -117,13 +102,12 @@ public class CBCKeyProcess extends KeyHandler{
 			boolean tickEnd, boolean isRepeat) {
 		if(tickEnd)
 			return;
-		System.out.println(types);
 		if( KeyCodes[0].keyCode == kb.keyCode ){
 			modeChange = true;
 			return;
 		}
 		if( KeyCodes[1].keyCode == kb.keyCode){
-			reload = true;
+			//do the processing within weaponGeneralBullet
 			return;
 		}
 		

@@ -1,5 +1,7 @@
 package cbproject.elements.items.weapons;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityCrossbowArrow;
 import cbproject.elements.entities.weapons.EntityRocket;
@@ -7,6 +9,7 @@ import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,10 +27,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	public Weapon_crossbow(int par1) {
 		super(par1 , CBCMod.cbcItems.itemAmmo_bow.itemID, 2);
 		
-		setItemName("weapon_crossbow");
-		
-		setTextureFile(ClientProxy.ITEMS_MOTION1_PATH);
-		setIconIndex(0);
+		setUnlocalizedName("weapon_crossbow");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
 		setMaxDamage(6);
@@ -36,6 +36,13 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		setLiftProps(10, 5);
 		
 	}
+	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_crossbow");
+    }
 
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
@@ -131,5 +138,9 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	@Override
 	public String getModeDescription(int mode) {
 		return mode == 0 ? "Normal mode" : "Explosive Arrow mode";
+	}
+
+	public boolean isBowPulling(ItemStack item) {
+		return false;
 	}
 }

@@ -5,13 +5,13 @@ import cbproject.elements.items.ammos.*;
 import cbproject.elements.items.armor.ArmorHEVBoot;
 import cbproject.elements.items.bullets.ItemBullet_Shotgun;
 import cbproject.elements.items.craft.ItemRefinedIronIngot;
+import cbproject.elements.items.weapons.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cbproject.elements.items.weapons.*;
 
 /**
  * CBC Mod Item Register class.

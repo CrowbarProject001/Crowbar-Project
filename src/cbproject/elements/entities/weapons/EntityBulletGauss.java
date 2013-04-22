@@ -8,6 +8,8 @@ import cbproject.utils.BlockPos;
 import cbproject.utils.weapons.GaussBulletManager;
 import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.MotionXYZ;
+
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;

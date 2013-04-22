@@ -1,17 +1,17 @@
 package cbproject;
 
-import net.minecraft.command.CommandHandler;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.MinecraftForge;
 import cbproject.configure.Config;
 import cbproject.elements.blocks.BlocksRegister;
 import cbproject.elements.items.ItemsRegister;
 import cbproject.elements.renderers.CBCRenderManager;
+import cbproject.misc.CBCEvents;
 import cbproject.misc.CBCKeyProcess;
 import cbproject.misc.CBCPacketHandler;
-import cbproject.misc.CBCEvents;
 import cbproject.misc.CCT;
 import cbproject.utils.CBCWeaponInformation;
+import net.minecraft.command.CommandHandler;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -27,13 +27,15 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="cbc",name="Crowbar Craft",version="0.0.0.1")
+@Mod(modid="lambdacraft",name="lambdacraft",version="0.0.0.1")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {"CBCWeaponMode", "CBCReload"}, packetHandler = CBCPacketHandler.class)
 
 /**
  * The main mod class.
  * @author WeAthFolD, mkpoli
  */
+
+
 public class CBCMod
 {
 	
@@ -95,6 +97,8 @@ public class CBCMod
 	
 	
 }
+
+
 
 
 

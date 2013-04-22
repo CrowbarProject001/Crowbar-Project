@@ -11,6 +11,8 @@ import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
+
+
 import net.minecraft.item.Item;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -53,8 +55,10 @@ public class CBCPacketHandler implements IPacketHandler {
 				InformationSet inf = CBCMod.wpnInformation.getInformation(id);
 				InformationBullet information = inf.getServerAsBullet();
 				WeaponGeneralBullet item = (WeaponGeneralBullet) information.itemStack.getItem();
-				if(!information.isReloading)
+				if(!information.isReloading){
+					System.out.println(information.player.worldObj.isRemote);
 					information.player.worldObj.playSoundAtEntity(information.player, item.getSoundReload(information.mode), 0.5F, 1.0F);
+				}
 				information.isReloading = true;
 				
 			} catch (IOException e) {

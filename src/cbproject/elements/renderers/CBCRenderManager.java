@@ -1,9 +1,9 @@
 package cbproject.elements.renderers;
 
-import net.minecraftforge.client.MinecraftForgeClient;
 import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.*;
 import cbproject.elements.renderers.weapons.*;
+import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class CBCRenderManager {
@@ -14,7 +14,7 @@ public class CBCRenderManager {
 	
 	private void Load(){
 		
-		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RendererHGrenade(33));
+		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RendererHGrenade());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySatchel.class, new RenderSatchel());
 		RenderingRegistry.registerEntityRenderingHandler(EntityARGrenade.class, new RenderARGrenade());

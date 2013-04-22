@@ -1,7 +1,10 @@
 package cbproject.elements.items.weapons;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumToolMaterial;
@@ -14,11 +17,16 @@ public class Weapon_crowbar extends ItemSword {
 	public Weapon_crowbar(int item_id) {
 		super(item_id, EnumToolMaterial.IRON); //铁剑的基本属性
 		
-		setItemName("weapon_crowbar");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(0, 2);
+		setUnlocalizedName("weapon_crowbar");
 		setCreativeTab( CBCMod.cct );
 	}
+	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_crowbar");
+    }
 	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)

@@ -7,6 +7,8 @@ import cbproject.CBCMod;
 import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.elements.items.weapons.Weapon_egon;
 import cbproject.elements.items.weapons.Weapon_gauss;
+
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;

@@ -2,16 +2,22 @@ package cbproject.elements.items.weapons;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import cbproject.CBCMod;
+import cbproject.proxy.ClientProxy;
+import cbproject.utils.weapons.InformationBullet;
+import cbproject.utils.weapons.InformationSet;
+
+
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cbproject.CBCMod;
-import cbproject.proxy.ClientProxy;
-import cbproject.utils.weapons.InformationBullet;
-import cbproject.utils.weapons.InformationSet;
 
 /**
  * 9mm Handgun.
@@ -26,9 +32,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		
 		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID, 2);
 		
-		setItemName("weapon_9mmhandgun");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(2,2);
+		setUnlocalizedName("weapon_9mmhandgun");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
 		setMaxDamage(18); // 最高伤害为18 0a0
@@ -41,6 +45,13 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		setJamTime(10);
 		
 	}
+	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_9mmhandgun");
+    }
 
 	@Override
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {

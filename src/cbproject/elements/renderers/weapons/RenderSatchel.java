@@ -1,9 +1,11 @@
 package cbproject.elements.renderers.weapons;
 
+
 import org.lwjgl.opengl.GL11;
 
 import cbproject.elements.entities.weapons.EntitySatchel;
 import cbproject.proxy.ClientProxy;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;

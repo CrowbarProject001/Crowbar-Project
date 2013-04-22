@@ -48,7 +48,7 @@ public class Config {
 	    {
 	        throw new Exception("Null Pointer");
 	    }
-	    return config.get("general", PropertyName, DefaultValue).value;
+	    return config.get("general", PropertyName, DefaultValue).getString();
 	}
 	
 	public int GetItemID(String ItemName, int DefaultValue) throws Exception

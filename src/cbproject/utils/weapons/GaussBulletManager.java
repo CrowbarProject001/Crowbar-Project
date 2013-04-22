@@ -2,6 +2,16 @@ package cbproject.utils.weapons;
 
 import java.util.List;
 
+import cbproject.CBCMod;
+import cbproject.elements.entities.weapons.EntityBullet;
+import cbproject.elements.entities.weapons.EntityBulletGauss;
+import cbproject.elements.entities.weapons.EntityBulletGaussSec;
+import cbproject.elements.entities.weapons.EntityGaussRay;
+import cbproject.elements.entities.weapons.EntityBulletGaussSec.EnumGaussRayType;
+import cbproject.elements.items.weapons.WeaponGeneral;
+import cbproject.utils.BlockPos;
+
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,14 +23,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cbproject.CBCMod;
-import cbproject.elements.entities.weapons.EntityBullet;
-import cbproject.elements.entities.weapons.EntityBulletGauss;
-import cbproject.elements.entities.weapons.EntityBulletGaussSec;
-import cbproject.elements.entities.weapons.EntityGaussRay;
-import cbproject.elements.entities.weapons.EntityBulletGaussSec.EnumGaussRayType;
-import cbproject.elements.items.weapons.WeaponGeneral;
-import cbproject.utils.BlockPos;
 
 public class GaussBulletManager{
 

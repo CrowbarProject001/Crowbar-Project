@@ -1,15 +1,10 @@
 package cbproject.elements.items.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
-import cbproject.elements.entities.weapons.EntityBulletGaussSec.EnumGaussRayType;
 import cbproject.elements.entities.weapons.EntityGaussRay;
+import cbproject.elements.entities.weapons.EntityBulletGaussSec.EnumGaussRayType;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.BulletManager;
@@ -17,6 +12,14 @@ import cbproject.utils.weapons.GaussBulletManager;
 import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.MotionXYZ;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 
 public class Weapon_gauss extends WeaponGeneralEnergy {
 
@@ -29,13 +32,18 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		super(par1, CBCMod.cbcItems.itemAmmo_uranium.itemID, 2);
 		
 		setCreativeTab(CBCMod.cct);
-		setItemName("weapon_gauss");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(0,3);
+		setUnlocalizedName("weapon_gauss");
 	
 		setJamTime(20);
 		
 	}
+	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_gauss");
+    }
 
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,

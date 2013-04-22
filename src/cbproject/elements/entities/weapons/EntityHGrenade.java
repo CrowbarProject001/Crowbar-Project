@@ -12,6 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 /**
@@ -100,7 +101,7 @@ public class EntityHGrenade extends EntityThrowable {
 	            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 	    }    
 	    
-		worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, var1, true);
+		Explosion ex = worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, var1, true);
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
@@ -118,7 +119,7 @@ public class EntityHGrenade extends EntityThrowable {
 					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode)
 						return;
 					
-					ent.attackEntityFrom(DamageSource.explosion2, damage);
+					ent.attackEntityFrom(DamageSource.setExplosionSource(ex), damage);
 					ent.setFire(20);
 							
 				}

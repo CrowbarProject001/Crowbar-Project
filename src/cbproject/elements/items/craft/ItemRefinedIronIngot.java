@@ -9,9 +9,7 @@ public class ItemRefinedIronIngot extends Item{
 	public ItemRefinedIronIngot(int par1) {
 		
 		super(par1);
-		setItemName("itemRefinedIronIngot");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(1,0);
+		setUnlocalizedName("refinedIron");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(64);
 

@@ -10,6 +10,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 /**
@@ -44,7 +45,7 @@ public class EntityCrossbowArrow extends EntityThrowable {
 	            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 	    }    
 	    
-		worldObj.createExplosion(this, pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, var1, true);
+		Explosion ex = worldObj.createExplosion(this, pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, var1, true);
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
 		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
@@ -63,7 +64,7 @@ public class EntityCrossbowArrow extends EntityThrowable {
 						return;
 					
 				
-					ent.attackEntityFrom(DamageSource.explosion2, damage);
+					ent.attackEntityFrom(DamageSource.setExplosionSource(ex), damage);
 					ent.setFire(20);
 							
 				}

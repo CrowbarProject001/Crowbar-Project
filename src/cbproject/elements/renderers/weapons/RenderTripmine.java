@@ -3,11 +3,13 @@
  */
 package cbproject.elements.renderers.weapons;
 
+
 import org.lwjgl.opengl.GL11;
 
 import cbproject.CBCMod;
 import cbproject.elements.renderers.RendererUtils;
 import cbproject.proxy.ClientProxy;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -79,7 +81,7 @@ public class RenderTripmine extends RendererUtils implements ISimpleBlockRenderi
         int side = getTexture(ClientProxy.TRIPMINE_SIDE_PATH), front = getTexture(ClientProxy.TRIPMINE_FRONT_PATH),
         		top = getTexture(ClientProxy.TRIPMINE_TOP_PATH);
 
-        
+        GL11.glPushMatrix();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, side);
 
         if(var5 == 1 || var5 == 3){
@@ -169,6 +171,7 @@ public class RenderTripmine extends RendererUtils implements ISimpleBlockRenderi
         tessellator.draw();
         
         tessellator.startDrawingQuads();
+        GL11.glPopMatrix();
         return true;
     }
 	

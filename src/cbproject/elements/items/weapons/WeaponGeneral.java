@@ -3,10 +3,8 @@ package cbproject.elements.items.weapons;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import cbproject.CBCMod;
 import cbproject.misc.CBCKeyProcess;
@@ -14,6 +12,11 @@ import cbproject.utils.CBCWeaponInformation;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +42,8 @@ public abstract class WeaponGeneral extends Item {
 		ammoID = par2AmmoID;
 
 	}
+	
+
 	
 	public void setLiftProps(double uplift, double recover){
 		upLiftRadius = uplift;

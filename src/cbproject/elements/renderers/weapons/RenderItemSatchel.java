@@ -1,12 +1,16 @@
 package cbproject.elements.renderers.weapons;
 
+
 import org.lwjgl.opengl.GL11;
 
 import cbproject.CBCMod;
 import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.elements.items.weapons.Weapon_satchel;
 import cbproject.elements.renderers.RendererUtils;
+import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.InformationSatchel;
+import cbproject.utils.weapons.InformationSet;
+
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -74,45 +78,50 @@ public class RenderItemSatchel implements IItemRenderer {
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLiving entity) {
 		
-		int mode = CBCMod.wpnInformation.getInformation(item).clientReference.mode;
-		int index = (mode == 0) ? 64 : 66;
-
-		float v1 = MathHelper.floor_float(index / 16) / 16.0F;
-		float u1 = (index % 16) / 16.0F;
-		float u2 = u1 + 1 / 16F;
-		float v2 = v1 + 1 / 16F;
+		int mode;
+		InformationSet set = CBCMod.wpnInformation.getInformation(item);
+		if(set == null)
+			mode = 0;
+		else mode = set.clientReference.mode;
+		GL11.glPushMatrix();
+		
+		bindTextureByItem(item);
 		float width = (mode == 0) ? 0.15F : 0.0625F;
-
-		RendererUtils.renderItemIn2d(t, u1, v1, u2, v2, width);
+		RendererUtils.renderItemIn2d(t, width);
+		
+		GL11.glPopMatrix();
 
 	}
 
 	public void renderInventory(ItemStack item, RenderBlocks render) {
 
-		if (item.stackTagCompound == null)
-			item.stackTagCompound = new NBTTagCompound();
+		GL11.glPushMatrix();
 
-		int index = item.getTagCompound().getInteger("mode");
-
-		index = (index == 0) ? 64 : 66;
-		float v1 = MathHelper.floor_float(index / 16) / 16.0F;
-		float u1 = (index % 16) / 16.0F;
-		float u2 = u1 + 1 / 16F;
-		float v2 = v1 + 1 / 16F;
-
+		bindTextureByItem(item);
 		t.startDrawingQuads();
-		t.addVertexWithUV(0, 0, 0, u1, v1);
-		t.addVertexWithUV(0, 16, 0, u1, v2);
-		t.addVertexWithUV(16, 16, 0, u2, v2);
-		t.addVertexWithUV(16, 0, 0, u2, v1);
+		t.addVertexWithUV(0, 0, 0, 0.0, 0.0);
+		t.addVertexWithUV(0, 16, 0, 0.0, 1.0);
+		t.addVertexWithUV(16, 16, 0, 1.0, 1.0);
+		t.addVertexWithUV(16, 0, 0, 1.0, 0.0);
 		t.draw();
-
+		
+		GL11.glPopMatrix();
 	}
 
 	protected void addVertex(Vec3 vec3, double texU, double texV) {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord,
 				texU, texV);
+	}
+	
+	private void bindTextureByItem(ItemStack item){
+		int mode;
+		InformationSet set = CBCMod.wpnInformation.getInformation(item);
+		if(set == null)
+			mode = 0;
+		else mode = set.clientReference.mode;
+		int tex = RendererUtils.getTexture(ClientProxy.ITEM_SATCHEL_PATH[mode]);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
 	}
 
 }

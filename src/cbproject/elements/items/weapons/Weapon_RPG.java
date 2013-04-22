@@ -1,10 +1,13 @@
 package cbproject.elements.items.weapons;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityRocket;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,9 +20,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	public Weapon_RPG(int par1) {
 		super(par1,CBCMod.cbcItems.itemAmmo_rpg.itemID, 1);
 		
-		setItemName("weapon_rpg");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(7,2);
+		setUnlocalizedName("weapon_rpg");
 		setCreativeTab(CBCMod.cct);
 		setMaxDamage(2);
 		
@@ -27,6 +28,13 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 		setLiftProps(20, 2);
 	}
 
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_rpg");
+    }
+	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {

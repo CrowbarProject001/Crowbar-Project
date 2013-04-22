@@ -43,7 +43,7 @@ public class RendererUtils {
 		maxZ = block.getBlockBoundsMaxZ();
 	}
 
-	protected int getTexture(String path) {
+	public static int getTexture(String path) {
 		return FMLClientHandler.instance().getClient().renderEngine
 				.getTexture(path);
 	}
@@ -69,14 +69,13 @@ public class RendererUtils {
 
 	}
 
-	public static void renderItemIn2d(Tessellator t, float u1, float v1,
-			float u2, float v2, double w) {
+	public static void renderItemIn2d(Tessellator t, double w) {
 
-		Vec3 a1 = newV3(0, 0, w), a2 = newV3(1, 0, w), a3 = newV3(1, 1, w), a4 = newV3(
-				0, 1, w),
-
-		a5 = newV3(0, 0, -w), a6 = newV3(1, 0, -w), a7 = newV3(1, 1, -w), a8 = newV3(
-				0, 1, -w);
+		Vec3 a1 = newV3(0, 0, w), a2 = newV3(1, 0, w), a3 = newV3(1, 1, w), a4 = newV3(0, 1, w),
+		a5 = newV3(0, 0, -w), a6 = newV3(1, 0, -w), a7 = newV3(1, 1, -w), a8 = newV3(0, 1, -w);
+		
+		float u1 = 0.0F, v1 = 0.0F,
+				u2 = 1.0F, v2 = 1.0F;
 
 		t = Tessellator.instance;
 
@@ -104,8 +103,7 @@ public class RendererUtils {
 		 * Gets the width/16 of the currently bound texture, used to fix the
 		 * side rendering issues on textures != 16
 		 */
-		int tileSize = TextureFXManager.instance().getTextureDimensions(
-				GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D)).width / 16;
+		int tileSize = 32;
 		float tx = 1.0f / (32 * tileSize);
 		float tz = 1.0f / tileSize;
 

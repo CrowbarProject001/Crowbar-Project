@@ -1,11 +1,13 @@
 package cbproject.elements.renderers.weapons;
 
+
 import org.lwjgl.opengl.GL11;
 
 import cbproject.elements.entities.weapons.EntityARGrenade;
 import cbproject.elements.entities.weapons.EntityEgonRay;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.MotionXYZ;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;

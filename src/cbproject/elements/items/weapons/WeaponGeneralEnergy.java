@@ -1,5 +1,10 @@
 package cbproject.elements.items.weapons;
 
+import cbproject.CBCMod;
+import cbproject.utils.weapons.BulletManager;
+import cbproject.utils.weapons.InformationBullet;
+import cbproject.utils.weapons.InformationEnergy;
+import cbproject.utils.weapons.InformationSet;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -8,11 +13,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cbproject.CBCMod;
-import cbproject.utils.weapons.BulletManager;
-import cbproject.utils.weapons.InformationBullet;
-import cbproject.utils.weapons.InformationEnergy;
-import cbproject.utils.weapons.InformationSet;
 
 public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 

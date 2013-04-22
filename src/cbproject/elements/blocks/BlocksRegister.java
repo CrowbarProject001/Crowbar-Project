@@ -1,9 +1,9 @@
 package cbproject.elements.blocks;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.src.ModLoader;
 import cbproject.configure.Config;
 import cbproject.elements.blocks.weapons.BlockTripmine;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.src.ModLoader;
 
 /**
  * 

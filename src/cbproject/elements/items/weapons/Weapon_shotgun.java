@@ -1,10 +1,13 @@
 package cbproject.elements.items.weapons;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,9 +23,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		
 		super(par1 , CBCMod.cbcItems.itemBullet_Shotgun.itemID, 2);
 		
-		setItemName("weapon_shotgun");
-		setTextureFile(ClientProxy.ITEMS_TEXTURE_PATH);
-		setIconCoord(5,2);
+		setUnlocalizedName("weapon_shotgun");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
 		setMaxDamage(9); 
@@ -34,6 +35,13 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		
 	}
 
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void updateIcons(IconRegister par1IconRegister)
+    {
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_shotgun");
+    }
+	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
