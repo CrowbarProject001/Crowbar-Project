@@ -22,7 +22,11 @@ public class ClientProxy extends Proxy{
 			RPG_ROCKET_PATH = "/cbproject/textures/entities/rpg_rocket.png",
 			SHOTGUN_SHELL_PATH = "/cbproject/textures/entities/shotgun_shell.png",
 			EGON_BEAM_PATH = "/cbproject/textures/entities/egon_beam.png",
-			HGRENADE_PATH = "/cbproject/lambdacraft/textures/items/weapon_hgrenade.png";
+			HGRENADE_PATH = "/cbproject/textures/items/weapon_hgrenade.png";
+
+	public final static String EGON_EQUIPPED_PATH = "/cbproject/textures/items/weapon_egon0.png";
+	
+	public final static String GUI_WEAPONCRAFTER_PATH = "/cbproject/textures/gui/crafter.png";
 	
 	public final static String ITEM_SATCHEL_PATH[] = {"/cbproject/textures/items/weapon_satchel1.png",
 			"/cbproject/textures/item/weapon_satchel2.png"};
@@ -36,7 +40,8 @@ public class ClientProxy extends Proxy{
 			CROSSBOW_FRONT_PATH[] = {"/cbproject/textures/items/crossbow_front0.png",
 		"/cbproject/textures/items/crossbow_front1.png"};
 	
-	public final static String EGON_EQUIPPED_PATH = "/cbproject/textures/weapon_egon0.png";
+	public final static String HEV_ARMOR_PATH[] = {"/cbproject/textures/armor/hev_1.png",
+		"/cbproject/textures/armor/hev_2.png"};
 	@Override 
 	public void init() { 
 		
@@ -58,10 +63,15 @@ public class ClientProxy extends Proxy{
 		MinecraftForgeClient.preloadTexture(RPG_ROCKET_PATH);
 		MinecraftForgeClient.preloadTexture(SHOTGUN_SHELL_PATH);
 		MinecraftForgeClient.preloadTexture(EGON_BEAM_PATH);
+		MinecraftForgeClient.preloadTexture(HGRENADE_PATH);
+		
+		MinecraftForgeClient.preloadTexture(EGON_EQUIPPED_PATH);
 		
 		for(String s:CROSSBOW_FRONT_PATH)
 			MinecraftForgeClient.preloadTexture(s);
 		for(String s:CROSSBOW_SIDE_PATH)
+			MinecraftForgeClient.preloadTexture(s);
+		for(String s:HEV_ARMOR_PATH)
 			MinecraftForgeClient.preloadTexture(s);
 		
 	}

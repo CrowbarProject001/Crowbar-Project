@@ -1,53 +1,82 @@
-/**
- * 
- */
 package cbproject.elements.renderers.weapons;
 
-
-import org.lwjgl.opengl.GL11;
-
-import cbproject.CBCMod;
-import cbproject.elements.renderers.RendererUtils;
+import cbproject.elements.blocks.weapons.BlockTripmine;
 import cbproject.proxy.ClientProxy;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.MinecraftForgeClient;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-/**
- * @author Administrator
- *
- */
-public class RenderTripmine extends RendererUtils implements ISimpleBlockRenderingHandler {
-	
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID,
-			RenderBlocks renderer) {
+public class RenderTileTripmine extends TileEntitySpecialRenderer {
+
+
+	/** The minimum X value for rendering (default 0.0). */
+	public double minX;
+
+	/** The maximum X value for rendering (default 1.0). */
+	public double maxX;
+
+	/** The minimum Y value for rendering (default 0.0). */
+	public double minY;
+
+	/** The maximum Y value for rendering (default 1.0). */
+	public double maxY;
+
+	/** The minimum Z value for rendering (default 0.0). */
+	public double minZ;
+
+	/** The maximum Z value for rendering (default 1.0). */
+	public double maxZ;
+
+	public static void addVertex(Vec3 vec3, double texU, double texV) {
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord,
+				texU, texV);
 	}
 
+	protected void setBound(Block block) {
+		minX = block.getBlockBoundsMinX();
+		minY = block.getBlockBoundsMinY();
+		minZ = block.getBlockBoundsMinZ();
+		maxX = block.getBlockBoundsMaxX();
+		maxY = block.getBlockBoundsMaxY();
+		maxZ = block.getBlockBoundsMaxZ();
+	}
 	
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-			Block block, int modelId, RenderBlocks renderer) {
-		renderBlockTripmine(renderer, block, world.getBlockMetadata(x, y, z), x, y, z, world);
-		return false;
+	public void setBlockBounds(double par1, double par3, double par5,
+			double par7, double par9, double par11) {
+		this.minX = par1;
+		this.maxX = par7;
+		this.minY = par3;
+		this.maxY = par9;
+		this.minZ = par5;
+		this.maxZ = par11;
 	}
 
-	
-    public boolean renderBlockTripmine(RenderBlocks renderer, Block par1Block,int metadata, int x, int y, int z, IBlockAccess blockAccess)
-    {
-    	
-        Tessellator tessellator = Tessellator.instance;
-        int var5 = metadata & 3;
+	public void addCoord(double offX, double offY, double offZ) {
 
-        setBound(par1Block);
+		minX += offX;
+		maxX += offX;
+		minY += offY;
+		maxY += offY;
+		minZ += offZ;
+		maxZ += offZ;
+
+	}
+	
+	@Override
+	public void renderTileEntityAt(TileEntity tileentity, double x, double y,
+			double z, float f) {
+		
+		Tessellator tessellator = Tessellator.instance;
+        int var5 = tileentity.getBlockMetadata() & 3;
+        BlockTripmine block = (BlockTripmine)tileentity.blockType;
+        setBound(tileentity.blockType);
         this.addCoord(x, y, z);
+        
         Vec3 v1, v2, v3, v4, v5, v6, v7, v8;
         switch(var5){
         case 1:
@@ -78,12 +107,9 @@ public class RenderTripmine extends RendererUtils implements ISimpleBlockRenderi
         	break;
         }
         
-        int side = getTexture(ClientProxy.TRIPMINE_SIDE_PATH), front = getTexture(ClientProxy.TRIPMINE_FRONT_PATH),
-        		top = getTexture(ClientProxy.TRIPMINE_TOP_PATH);
+        this.bindTextureByName(ClientProxy.TRIPMINE_SIDE_PATH);
 
-        GL11.glPushMatrix();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, side);
-
+        tessellator.startDrawingQuads();
         if(var5 == 1 || var5 == 3){
         	
         	addVertex(v4 , 0, 0);
@@ -112,7 +138,7 @@ public class RenderTripmine extends RendererUtils implements ISimpleBlockRenderi
         }
         tessellator.draw();
         
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, front);
+        this.bindTextureByName(ClientProxy.TRIPMINE_FRONT_PATH);
         tessellator.startDrawingQuads();
         if( var5 == 0 ){
         	
@@ -145,7 +171,7 @@ public class RenderTripmine extends RendererUtils implements ISimpleBlockRenderi
         }
         tessellator.draw();
         
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, top);
+        this.bindTextureByName(ClientProxy.TRIPMINE_TOP_PATH);
         tessellator.startDrawingQuads();
         if(var5 == 1 || var5 == 3){
         	addVertex(v4 , 0, 0);
@@ -168,24 +194,11 @@ public class RenderTripmine extends RendererUtils implements ISimpleBlockRenderi
             addVertex(v6 , 1, 1); 
             addVertex(v5 , 0, 1); 
         }
+
         tessellator.draw();
-        
-        tessellator.startDrawingQuads();
-        GL11.glPopMatrix();
-        return true;
-    }
+        return;
+		      
+	}
 	
-
-    
-	@Override
-	public boolean shouldRender3DInInventory() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int getRenderId() {
-		return CBCMod.RENDER_TYPE_TRIPMINE;
-	}
 
 }

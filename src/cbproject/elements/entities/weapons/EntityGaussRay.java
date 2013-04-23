@@ -16,12 +16,11 @@ import net.minecraft.world.World;
  */
 public class EntityGaussRay extends EntityThrowable {
 	
-	public EntityGaussRay(World par1World,EntityLiving ent, double moX, double moY, double moZ){
+	public EntityGaussRay(World par1World,EntityLiving ent, EntityBulletGauss gauss){
 		
 		super(par1World, ent);
-		motionX = moX;
-		motionY = moY;
-		motionZ = moZ;
+		this.setLocationAndAngles(gauss.posX, gauss.posY, gauss.posZ, ent.rotationYawHead, gauss.rotationPitch);
+		this.setThrowableHeading(motionX, motionY, motionZ, func_70182_d(), 1.0F);
 		ignoreFrustumCheck = true;
 		
 	}
@@ -35,6 +34,7 @@ public class EntityGaussRay extends EntityThrowable {
 		this.motionX = begin.motionX;
 		this.motionY = begin.motionY;
 		this.motionZ = begin.motionZ;
+		this.setThrowableHeading(motionX, motionY, motionZ, func_70182_d(), 1.0F);
 		ignoreFrustumCheck = true;
 		
 	}

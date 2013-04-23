@@ -10,6 +10,7 @@ import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.MotionXYZ;
 
 
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
@@ -21,14 +22,18 @@ import net.minecraft.world.World;
 
 /**
  * @author WeAthFolD
- * @description Gauss ray collision entity.
+ * @description Gauss ray collision entity(used in charge mode only).
  */
 public class EntityBulletGauss extends EntityBullet {
 	
-	private static final float CHARGE_DAMAGE_SCALE = 10.0F;
+	private static final float CHARGE_DAMAGE_SCALE = 3.0F;
 
 	private WeaponGeneral item;
 	private InformationEnergy inf;
+	
+	public enum EnumSubPlain{
+		PLAIN_X, PLAIN_Y, PLAIN_Z;
+	}
 	
 	public EntityBulletGauss(World par1World, EntityLiving par2EntityLiving,
 			ItemStack par3itemStack, String particle) {
@@ -36,7 +41,7 @@ public class EntityBulletGauss extends EntityBullet {
 		motion = new MotionXYZ(par2EntityLiving);
 		item = (WeaponGeneral) itemStack.getItem();
 		inf = item.getInformation(itemStack).getProperEnergy(worldObj);
-		worldObj.spawnEntityInWorld(new EntityGaussRay(par1World, par2EntityLiving, motionX, motionY, motionZ));	
+		worldObj.spawnEntityInWorld(new EntityGaussRay(par1World, par2EntityLiving, this));	
 	}
 	
 	@Override
@@ -68,11 +73,7 @@ public class EntityBulletGauss extends EntityBullet {
 		if( result.entityHit == null || (!(result.entityHit instanceof EntityLiving)))
 			return;		
 		
-		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		int mode = inf.mode;
-		if(mode == 0){
-			doNormalAttack(result, inf, item);
-		} else doChargeAttack(result, inf, item);
+		doChargeAttack(result, inf, item);
 	}
 	
 	/**
@@ -87,8 +88,7 @@ public class EntityBulletGauss extends EntityBullet {
 		//do reflection and decay damage
 		int damage = doReflection(result);
 		
-		int blockFront = 1 + getFrontBlockCount(new BlockPos(result.blockX, result.blockY, result.blockZ, 0)
-			, worldObj, true);
+		int blockFront = getFrontBlockCount(result);
 		
 		if(blockFront >= 3) //Too thick,cannot penetrate
 			return;
@@ -96,15 +96,14 @@ public class EntityBulletGauss extends EntityBullet {
 		
 	    double radius = Math.round(0.3 * damage); //Max: 5.28
 		damage = (int) Math.round(damage * (1.0 - 0.33 * blockFront)); //Decay based on blockFront
-		
-		int[] s = getSideByMotion();
-	    double cx = result.blockX, cy = result.blockY, cz = result.blockZ;
-	    cx += s[0] * (radius - 1);
-	    cy += s[1] * (radius - 1);
-	    cz += s[2] * (radius - 1);
-	    AxisAlignedBB box = AxisAlignedBB.getBoundingBox(cx - radius, cy - radius, cz - radius,
-	    		cx + radius, cy + radius, cz + radius);   //穿墙伤害到的范围
-	    List var1 = worldObj.getEntitiesWithinAABBExcludingEntity(null, box);
+	    System.out.println("penetrated  damage : " + damage+ " radius : " + radius);
+	    
+	    AxisAlignedBB box = getPenetratingBox(radius, result);
+	    if(box == null)
+	    	return;
+	    
+	    System.out.println(box);
+	    List var1 = worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 	    System.out.println("list size : " + var1.size() + "; radius :" + radius);
 	    Entity var2;
 
@@ -113,11 +112,10 @@ public class EntityBulletGauss extends EntityBullet {
 	    	if(!(var2 instanceof EntityLiving))
 	    		continue;
 	    	//Calculate distance & damage, damage entities.
-	    	double distance =Math.pow(Math.pow((result.blockX - var2.posX),2) + Math.pow((result.blockY - var2.posY),2) + 
-	    			Math.pow((result.blockZ - var2.posZ),2), 0.5);
-	    	int dmg = (int) Math.round((damage * (1.0 - distance/ (radius * 1.414)) * CHARGE_DAMAGE_SCALE)) ;
+	    	double distance =Math.sqrt(Math.pow((result.hitVec.xCoord - var2.posX),2) + Math.pow((result.hitVec.yCoord - var2.posY),2) + 
+	    			Math.pow((result.hitVec.zCoord - var2.posZ),2));
+	    	int dmg = (int) Math.round((damage * (1.0 - 2 * distance/ (radius * 1.414)) * CHARGE_DAMAGE_SCALE)) ;
 	    	System.out.println("Damage: " + dmg);
-	    	distance = Math.pow(distance, 0.5);
 	    	((EntityLiving)var2).attackEntityFrom(DamageSource.causeMobDamage(getThrower()), dmg);
 	    }
 		
@@ -129,29 +127,9 @@ public class EntityBulletGauss extends EntityBullet {
 	 */
 	private int doReflection(MovingObjectPosition result) {
 			
-		double a = Math.sqrt(motionX * motionX + 
-				motionY * motionY +  motionZ * motionZ);
-		double sin = 0.0; //入射角正弦值
-		double b = 0.0;
-
-		switch(result.sideHit){
-		case 0:
-		case 1:
-			b = motionY;
-			break;
-		case 2:
-		case 3:
-			b = motionZ;
-			break;
-		case 4:
-		case 5:
-			b = motionX;
-			break;
-		default:
+		double sin = getSinBySideAndMotion(result.sideHit);
+		if(sin == -2)
 			return getChargeDamage();
-		}
-		
-		sin = b / a;
 		double sin45 = 0.7071067812;
 		int damage = 0;
 		if( -sin45 < sin && sin < sin45 ){
@@ -160,20 +138,6 @@ public class EntityBulletGauss extends EntityBullet {
 			GaussBulletManager.Shoot2(EnumGaussRayType.REFLECTION, worldObj, getThrower(), itemStack, result, motion, damage);
 		}
 		return getChargeDamage() - damage;
-		
-	}
-	
-	private void doNormalAttack(MovingObjectPosition result, InformationEnergy information, WeaponGeneral item){
-		
-		int mode = 0;
-		double pf = item.getPushForce(0);
-		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ * pf;
-		EntityLiving mob = (EntityLiving) result.entityHit;
-
-		mob.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), item.getDamage(mode));
-		mob.addVelocity(dx, dy, dz);
-		
-		this.setDead();
 		
 	}
 	
@@ -192,17 +156,11 @@ public class EntityBulletGauss extends EntityBullet {
 	/**
 	 * Get blockCount in front of player direction by judging with getSidebyMotion().
 	 */
-	private int getFrontBlockCount(BlockPos pos, World worldObj, Boolean recall) {
+	private int getFrontBlockCount(MovingObjectPosition result) {
 		
-		int[] side = getSideByMotion();
-		int x = pos.x + side[0], y = pos.y + side[1], z = pos.z + side[2];
-		int id = worldObj.getBlockId(x, y, z);
-		if(id <= 1){
-			return 0;
-		}
-		if(!recall)
-			return 1;
-		return 1 + getFrontBlockCount(new BlockPos(x,y,z,0), worldObj, false);
+		Vec3 side = getSideByMotion();
+		return 1 + (worldObj.getBlockId(result.blockX + (int)side.xCoord,
+				result.blockY + (int)side.yCoord, result.blockZ + (int)side.zCoord) > 0 ? 1 : 0);
 		
 	}
 	
@@ -213,7 +171,7 @@ public class EntityBulletGauss extends EntityBullet {
 	 *  int[2] : Z direction facing;
 	 *  value : +1, -1, 0
 	 */
-	private int[] getSideByMotion(){
+	private Vec3 getSideByMotion(){
 		
 		int dx = 0, dy, dz = 0;
 		if(rotationPitch > -45 && rotationPitch < 45){
@@ -231,9 +189,110 @@ public class EntityBulletGauss extends EntityBullet {
 			else dx = rotationYaw < 180 ? -1 : 1;
 		} else dy = (dy >0? 1 : -1);
 		
-		int[] side = {dx, dy, dz};
-		return side;
-			
+		return Vec3.createVectorHelper(dx, dy, dz);
+	}
+	
+	private AxisAlignedBB getPenetratingBox(double radius, MovingObjectPosition result){
+		if(radius <= 0.0){
+			System.err.println("radius should be larger than 0.");
+			return null;
+		}
+		double dx, dy, dz;
+		//center is inside the hitting block.
+		if(radius > 5) radius = 5;
+		switch(result.sideHit){
+		case -1:
+			return null;
+		case 0:
+		case 1:
+			dy = (motionY > 0) ?radius +1 : -radius - 1;
+			dx = getTanBySideAndMotion(result.sideHit, EnumSubPlain.PLAIN_X) * radius * (motionY > 0 ? 1 : -1);
+			dz = getTanBySideAndMotion(result.sideHit, EnumSubPlain.PLAIN_Z) * radius * (motionY > 0 ? 1 : -1); 
+			break;
+		case 2:
+		case 3:
+			dz = (motionZ > 0) ?radius+1 : -radius - 1;
+			dx = getTanBySideAndMotion(result.sideHit, EnumSubPlain.PLAIN_X) * radius * (motionZ > 0 ? 1 : -1);
+			dy = getTanBySideAndMotion(result.sideHit, EnumSubPlain.PLAIN_Y) * radius * (motionZ > 0 ? 1 : -1);
+			break;
+		case 4:
+		case 5:
+			dx = (motionX > 0) ?radius+1 : -radius - 1;
+			dy = getTanBySideAndMotion(result.sideHit, EnumSubPlain.PLAIN_Y) * radius * (motionX > 0 ? 1 : -1);
+			dz = getTanBySideAndMotion(result.sideHit, EnumSubPlain.PLAIN_Z) * radius * (motionX > 0 ? 1 : -1);
+			break;
+		default:
+			return null;
+		}
+		Vec3 center = result.hitVec.addVector(dx, dy, dz);
+		return AxisAlignedBB.getBoundingBox(center.xCoord - radius, center.yCoord - radius, center.zCoord - radius,
+				center.xCoord + radius, center.yCoord + radius, center.zCoord + radius);
+		
+	}
+	
+	/**
+	 * get the tangent value of the motion in a specific subplain.
+	 * @param sideHit HitVec sidehit
+	 * @param subPlain with sideHit determines a single plain,such as XoZ
+	 * @return tangent value, could be lower than 0
+	 */
+	private double getTanBySideAndMotion(int sideHit, EnumSubPlain subPlain){
+		double a = 0.0;
+		if(subPlain == EnumSubPlain.PLAIN_X)
+			a = motionX;
+		if(subPlain == EnumSubPlain.PLAIN_Y)
+			a = motionY;
+		if(subPlain == EnumSubPlain.PLAIN_Z)
+			a = motionZ;
+		
+		double b = 0.0;
+		switch(sideHit){
+		case 0:
+		case 1:
+			b = motionY;
+			break;
+		case 2:
+		case 3:
+			b = motionZ;
+			break;
+		case 4:
+		case 5:
+			b = motionX;
+			break;
+		default:
+			return -2;
+		}
+		
+		double tan = a/b;
+		System.out.println("tangent value : " + tan);
+		return tan;
+	}
+	
+	private double getSinBySideAndMotion(int sideHit){
+		double a = Math.sqrt(motionX * motionX + 
+				motionY * motionY +  motionZ * motionZ);
+		double sin = 0.0; //入射角正弦值
+		double b = 0.0;
+
+		switch(sideHit){
+		case 0:
+		case 1:
+			b = motionY;
+			break;
+		case 2:
+		case 3:
+			b = motionZ;
+			break;
+		case 4:
+		case 5:
+			b = motionX;
+			break;
+		default:
+			return -2;
+		}
+		
+		sin = b / a;
+		return sin;
 	}
 	
 	private int getChargeDamage(){

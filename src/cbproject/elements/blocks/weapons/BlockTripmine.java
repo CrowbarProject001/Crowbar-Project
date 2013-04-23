@@ -15,18 +15,21 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.CBCMod;
-import cbproject.elements.blocks.BlocksRegister;
+import cbproject.elements.blocks.CBCBlocks;
 import cbproject.proxy.ClientProxy;
 
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Icon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -36,10 +39,15 @@ import net.minecraftforge.common.ForgeDirection;
  * Tripmine Weapon block.
  * @author WeAthFolD
  */
-public class BlockTripmine extends Block {
+public class BlockTripmine extends BlockContainer {
 	
 	public static final int RAY_RANGE = 30;
 	public static final int NOTIFY_ID = 4098;
+	public static Icon iconSide, iconFront, iconTop;
+	
+	public class TileEntityTripmine extends TileEntity{
+		
+	};
 	
 	public BlockTripmine(int par1) {
 		
@@ -53,7 +61,11 @@ public class BlockTripmine extends Block {
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("lambdacraft:blockTripmine");
+        iconSide = par1IconRegister.registerIcon("lambdacraft:tripmine_side");
+        iconFront = par1IconRegister.registerIcon("lambdacraft:tripmine_front");
+        iconTop = par1IconRegister.registerIcon("lambdacraft:tripmine_top");
     }
+	
     @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
     	
@@ -102,11 +114,11 @@ public class BlockTripmine extends Block {
     		int id = 0;
 			if(var10 == 1 || var10 == 3){ //x+, x-鏂瑰悜
 				id = par1World.getBlockId(i, par3, par4);
-				if(id == BlocksRegister.blockTripmineRay.blockID)
+				if(id == CBCBlocks.blockTripmineRay.blockID)
 					par1World.setBlock(i, par3, par4, 0);
 			} else { //z+, z-鏂瑰悜
 				id = par1World.getBlockId(par2, par3, i);
-				if(id == BlocksRegister.blockTripmineRay.blockID)
+				if(id == CBCBlocks.blockTripmineRay.blockID)
 					par1World.setBlock(par2, par3, i, 0);
 			}
 		}
@@ -234,11 +246,11 @@ public class BlockTripmine extends Block {
 		for(int j = 0; var0 && j <RAY_RANGE ; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){
 			if(var10 == 1 || var10 == 3){
 				if(par1World.getBlockId(i, par3, par4) == 0){
-				par1World.setBlock(i, par3, par4, BlocksRegister.blockTripmineRay.blockID, var10, 0x02);
+				par1World.setBlock(i, par3, par4, CBCBlocks.blockTripmineRay.blockID, var10, 0x02);
 				} else var0 = false;
 			} else {
 				if(par1World.getBlockId(par2, par3, i) == 0){
-					par1World.setBlock(par2, par3, i, BlocksRegister.blockTripmineRay.blockID, var10, 0x02);
+					par1World.setBlock(par2, par3, i, CBCBlocks.blockTripmineRay.blockID, var10, 0x02);
 				} else var0 = false;
 			}
 		}
@@ -252,7 +264,7 @@ public class BlockTripmine extends Block {
     
 	@Override
 	public int getRenderType() {
-		return CBCMod.RENDER_TYPE_TRIPMINE;
+		return CBCMod.RENDER_TYPE_EMPTY;
 	}
 
 	@Override
@@ -266,6 +278,11 @@ public class BlockTripmine extends Block {
 	 {
 	     return false;
 	 }
+
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new TileEntityTripmine();
+	}
 
 
 	 

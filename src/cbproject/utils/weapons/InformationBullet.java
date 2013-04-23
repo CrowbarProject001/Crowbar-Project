@@ -9,7 +9,7 @@ public class InformationBullet extends InformationWeapon{
 	public int ticksExisted, lastTick;
 	public Boolean isShooting,isReloading;
 	
-	public InformationBullet(EntityPlayer par7Player, ItemStack par8Weapon) {
+	public InformationBullet(ItemStack par8Weapon, EntityPlayer par7Player) {
 		
 		super(par7Player, par8Weapon);
 		ticksExisted = 0;

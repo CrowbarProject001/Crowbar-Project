@@ -83,9 +83,16 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 	public InformationEnergy onEnergyWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		
 		InformationEnergy information = (InformationEnergy) super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-		if(information == null)
-			return null;
-		
+
+		InformationSet inf = getInformation(par1ItemStack);
+		if(information == null){
+    		if(inf == null)
+    			return null;
+    		
+    		information = inf.getProperEnergy(par2World);
+    		information.isShooting = false;
+    		return null;
+    	}
 		information.updateTick();
 		
 		int ticksExisted = information.ticksExisted;

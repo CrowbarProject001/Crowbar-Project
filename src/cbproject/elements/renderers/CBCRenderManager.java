@@ -1,9 +1,12 @@
 package cbproject.elements.renderers;
 
 import cbproject.CBCMod;
+import cbproject.elements.blocks.BlockTripmineRay;
+import cbproject.elements.blocks.weapons.BlockTripmine;
 import cbproject.elements.entities.weapons.*;
 import cbproject.elements.renderers.weapons.*;
 import net.minecraftforge.client.MinecraftForgeClient;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class CBCRenderManager {
@@ -28,8 +31,10 @@ public class CBCRenderManager {
 		MinecraftForgeClient.registerItemRenderer(CBCMod.cbcItems.weapon_satchel.itemID, new RenderItemSatchel());
 		MinecraftForgeClient.registerItemRenderer(CBCMod.cbcItems.weapon_egon.itemID, new RenderEgon());
 		
-		RenderingRegistry.registerBlockHandler(new RenderTripmine());
-		RenderingRegistry.registerBlockHandler(new RenderTripmineRay());
+		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
+		
+		ClientRegistry.bindTileEntitySpecialRenderer(BlockTripmine.TileEntityTripmine.class, new RenderTileTripmine());
+		ClientRegistry.bindTileEntitySpecialRenderer(BlockTripmineRay.TileEntityTripmineRay.class, new RenderTileTripmineRay());
 		
 		System.out.println("LambdaCraft renderers registered");
 		

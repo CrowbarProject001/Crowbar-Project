@@ -1,6 +1,7 @@
 package cbproject.utils.weapons;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cbproject.CBCMod;
@@ -22,13 +23,15 @@ public class AmmoManager {
 	public int ammoItemID;
 	public int ammoCapacity;
 	
-	private List<ItemStack> ammoList;
+	private HashMap<Integer, ItemStack> ammoList;
+	private List<Integer> stackList;
 	
 	//加载基本的玩家背包子弹信息xD
 	public AmmoManager(EntityPlayer par1Player,ItemStack par2Weapon) {
 		
 		WeaponGeneral wpn = (WeaponGeneral)par2Weapon.getItem();
-		ammoList = new ArrayList<ItemStack>();
+		ammoList = new HashMap<Integer, ItemStack>();
+		stackList = new ArrayList<Integer>();
 		player = par1Player;
 		Weapon = par2Weapon;
 		ammoItemID = getAmmoItemIDByWeapon(par2Weapon);
@@ -46,7 +49,9 @@ public class AmmoManager {
 			
 			if(ammoList.isEmpty())
 				return left;
-			for(ItemStack itemStack : ammoList){
+			ItemStack itemStack;
+			for(int i : stackList){
+				itemStack = ammoList.get(i);
 				int cap = itemStack.getMaxDamage() - itemStack.getItemDamage() -1;
 				if(cap >0){
 					if(cap >= left){
@@ -96,15 +101,16 @@ public class AmmoManager {
 	
 	public void setAmmoInformation(EntityPlayer par1Player){
 		
-		ItemStack itemStack;
 		ammoList.clear();
+		stackList.clear();
 		//遍历寻找对应的Ammo
-		for( int i=0; i<36; i++){
-			itemStack = par1Player.inventory.getStackInSlot(i);
+		ItemStack itemStack;
+		for(int i = 0; i < par1Player.inventory.mainInventory.length; i++){
+			itemStack = par1Player.inventory.mainInventory[i];
 			if( itemStack != null && itemStack.itemID == ammoItemID) {
-				ammoList.add(itemStack);
+				ammoList.put(i, itemStack);
+				stackList.add(i);
 			}
-			
 		}
 		updateAmmoCapacity();
 		
@@ -138,15 +144,11 @@ public class AmmoManager {
 
 	private void updateAmmoCapacity(){
 		
-		int size = ammoList.size();
-		ItemStack item = null;
 		ammoCapacity = 0;
-		if( size == 0) 
-			return;
 		
-		for(int i=0;i < size; i++)
+		for(int i: stackList)
 		{
-			item = (ItemStack)ammoList.get(i);
+			ItemStack item = ammoList.get(i);
 			if(item.getMaxStackSize() == 1){
 				int a = item.getMaxDamage() - item.getItemDamage() -1; 
 				ammoCapacity += a;

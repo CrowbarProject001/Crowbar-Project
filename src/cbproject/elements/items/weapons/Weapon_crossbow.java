@@ -34,6 +34,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		setNoRepair();
 		
 		setLiftProps(10, 5);
+		setReloadTime(30);
 		
 	}
 	

@@ -113,7 +113,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     	if(par3Entity instanceof EntityPlayer){	
     		doUplift(information, par3Entity);
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode){
-    				par1ItemStack.damageItem( ( mode == 0 || mode == 3 ) ? 1 : 2 , null);
+    				par1ItemStack.damageItem( ( mode == 0 || mode == 3 ) ? 1 : 2 , par3Entity);
     		}	
     	}
 

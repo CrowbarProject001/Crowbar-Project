@@ -9,12 +9,16 @@ import java.util.EnumSet;
 import java.util.Random;
 
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 
 import cbproject.configure.Config;
 import cbproject.elements.items.weapons.WeaponGeneral;
@@ -107,7 +111,6 @@ public class CBCKeyProcess extends KeyHandler{
 			return;
 		}
 		if( KeyCodes[1].keyCode == kb.keyCode){
-			//do the processing within weaponGeneralBullet
 			return;
 		}
 		

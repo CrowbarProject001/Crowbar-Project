@@ -4,7 +4,8 @@ import java.io.File;
 import java.net.URL;
 
 import cbproject.CBCMod;
-import cbproject.elements.items.armor.ArmorHEVBoot;
+import cbproject.elements.items.ItemsRegister;
+import cbproject.elements.items.armor.ArmorHEV;
 
 
 import net.minecraft.client.audio.SoundPool;
@@ -51,8 +52,11 @@ public class CBCEvents {
 		"reloadb",
 		"reloadc",
 		"gaussb",
-		"gauss_chargea",
-		"gauss_chargeb",
+		"gauss_charge",
+		"gauss_windupa",
+		"gauss_windupb",
+		"gauss_windupc",
+		"gauss_windupd",
 		"rocketfirea",
 		"xbow_fire",
 		"xbow_reload",
@@ -82,13 +86,19 @@ public class CBCEvents {
 	
 	@ForgeSubscribe
 	public void onLivingAttack(LivingAttackEvent event){
-		
+		System.out.println("LivingAttackEvent.");
 		if(event.source == DamageSource.fall){
 			if(event.entity instanceof EntityPlayer){
 				EntityPlayer player = (EntityPlayer) event.entity;				
 				if(player.inventory.armorInventory[0] == null)
 					return;
-				if(player.inventory.armorInventory[0].getItemName() == CBCMod.cbcItems.armorHEVBoot.getUnlocalizedName()){
+				for(ItemStack i : player.inventory.armorInventory){
+					if(i == null)
+						System.out.println(i + ": " + null);
+					else System.out.println(i + ": " + i.getItemName());
+				}
+					
+				if(player.inventory.armorInventory[0].getItem() instanceof ArmorHEV){
 					event.setCanceled(true);
 				}
 			}

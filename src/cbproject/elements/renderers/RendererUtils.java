@@ -4,11 +4,13 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.TextureFXManager;
 
-public class RendererUtils {
+public class RendererUtils{
 
 	/** The minimum X value for rendering (default 0.0). */
 	public double minX;
@@ -138,5 +140,6 @@ public class RendererUtils {
 	public static Vec3 newV3(double x, double y, double z) {
 		return Vec3.createVectorHelper(x, y, z);
 	}
+
 
 }

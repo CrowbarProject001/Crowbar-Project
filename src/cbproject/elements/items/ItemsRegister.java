@@ -2,7 +2,7 @@ package cbproject.elements.items;
 
 import cbproject.configure.Config;
 import cbproject.elements.items.ammos.*;
-import cbproject.elements.items.armor.ArmorHEVBoot;
+import cbproject.elements.items.armor.ArmorHEV;
 import cbproject.elements.items.bullets.ItemBullet_Shotgun;
 import cbproject.elements.items.craft.ItemRefinedIronIngot;
 import cbproject.elements.items.weapons.*;
@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -45,8 +46,7 @@ public class ItemsRegister {
 
 	public static ItemRefinedIronIngot itemRefinedIronIngot;
 	
-	public static ArmorHEVBoot armorHEVBoot;
-	
+	public static ArmorHEV armorHEVBoot, armorHEVChestplate, armorHEVHelmet, armorHEVLeggings;
 	public ItemsRegister(Config conf){
 		registerItems(conf);
 		return;
@@ -82,7 +82,10 @@ public class ItemsRegister {
 			weapon_gauss = new Weapon_gauss(conf.GetItemID("weapon_gauss", 7050));
 			weapon_egon = new Weapon_egon(conf.GetItemID("weapon_egon", 7051));
 			
-			armorHEVBoot = new ArmorHEVBoot(conf.GetItemID("armorHEVShoe", 8000));
+			armorHEVHelmet = new ArmorHEV(conf.GetItemID("armorHEVHelmet", 8001), 0);
+			armorHEVChestplate = new ArmorHEV(conf.GetItemID("armorHEVChestplate", 8002), 1);
+			armorHEVLeggings = new ArmorHEV(conf.GetItemID("armorHEVLeggings", 8003), 2);
+			armorHEVBoot = new ArmorHEV(conf.GetItemID("armorHEVBoot", 8000), 3);
 			
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
@@ -116,6 +119,10 @@ public class ItemsRegister {
         LanguageRegistry.addName(itemRefinedIronIngot, "Refined Iron Ingot");
         
 		LanguageRegistry.addName(armorHEVBoot, "HEV boot");
+		LanguageRegistry.addName(armorHEVHelmet, "HEV helmet");
+		LanguageRegistry.addName(armorHEVChestplate, "HEV chestplate");
+		LanguageRegistry.addName(armorHEVLeggings, "HEV leggings");
+		
         //Recipes
         ItemStack rosereddyeStack = new ItemStack(351,1,0);
         ItemStack ingotIronStack = new ItemStack(Item.ingotIron);

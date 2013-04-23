@@ -8,6 +8,7 @@ import cbproject.misc.CBCKeyProcess;
 import cbproject.utils.CBCWeaponInformation;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
+import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
@@ -138,7 +139,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     	if(par3Entity instanceof EntityPlayer){
     		doUplift(information, par3Entity);
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
-    				par1ItemStack.damageItem( 1 , null);
+    				par1ItemStack.damageItem( 1 , par3Entity);
     		}
     	}
 		return;	
@@ -235,32 +236,19 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		if(inf != null)
 			return inf;
 		
-		double uniqueID = par1ItemStack.stackTagCompound.getDouble("uniqueID");
+		double uniqueID = Math.random()*65535D;	
+		CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer));
 		
-		if(!par2EntityPlayer.worldObj.isRemote){
-			/*
-			if(uniqueID != 0){
-				inf = createInformation(par1ItemStack, par2EntityPlayer);
-				System.out.println(par2EntityPlayer.worldObj.isRemote + " id :" + uniqueID);
-				CBCMod.wpnInformation.addToList(uniqueID, inf);
-			}*/
-			return inf;
-		}
-		
-		if(uniqueID == 0)
-			uniqueID = Math.random()*65535D;
-		inf = createInformation(par1ItemStack, par2EntityPlayer);
-		System.out.println(par2EntityPlayer.worldObj.isRemote + " id :" + uniqueID);
-		CBCMod.wpnInformation.addToList(uniqueID, inf);
-		
+		if(par1ItemStack.stackTagCompound == null)
+			par1ItemStack.stackTagCompound = new NBTTagCompound();
 		par1ItemStack.getTagCompound().setDouble("uniqueID", uniqueID);
 		return inf;
 		
 	}
 	
 	private InformationSet createInformation(ItemStack is, EntityPlayer player){
-		InformationBullet server = new InformationBullet(player, is);
-		InformationBullet client = new InformationBullet(player, is);
+		InformationBullet server = new InformationBullet(is, player);
+		InformationBullet client = new InformationBullet(is, player);
 		return new InformationSet(client, server);
 	}
 

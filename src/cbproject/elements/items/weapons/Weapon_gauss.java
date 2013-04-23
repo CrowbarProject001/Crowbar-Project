@@ -23,8 +23,9 @@ import net.minecraft.world.World;
 
 public class Weapon_gauss extends WeaponGeneralEnergy {
 
-	public static String SND_CHARGE_PATH = "cbc.weapons.gauss_chargeb", 
-			SND_CHARGEA_PATH = "cbc.weapons.gauss_chargea",
+	public static String SND_CHARGE_PATH = "cbc.weapons.gauss_charge", 
+			SND_CHARGEA_PATH[] = {"cbc.weapons.gauss_windupa", "cbc.weapons.gauss_windupb",
+		"cbc.weapons.gauss_windupc", "cbc.weapons.gauss_windupd"},
 			SND_SHOOT_PATH = "cbc.weapons.gaussb";
 	
 	public Weapon_gauss(int par1) {
@@ -33,7 +34,6 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_gauss");
-	
 		setJamTime(20);
 		
 	}
@@ -73,15 +73,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			return par1ItemStack;
 		
 		if(inf.mode == 1) {
-			
-			inf.charge = inf.chargeTime = 0;
-			inf.ticksExisted = 0;
-			inf.setLastTick();
+			inf.resetState();
 			inf.ammoManager.setAmmoInformation(par3EntityPlayer);
-			Boolean canUse = inf.ammoManager.getAmmoCapacity() > 0 || par3EntityPlayer.capabilities.isCreativeMode;
-			if(canUse)
-				par2World.playSoundAtEntity(par3EntityPlayer, SND_CHARGEA_PATH, 0.5F, 1.0F);
-			
+			inf.isShooting = true;
+			if(this.canShoot(inf))
+				par2World.playSoundAtEntity(par3EntityPlayer, SND_CHARGEA_PATH[0], 0.5F, 1.0F);	
 		}
 		return par1ItemStack;
 		
@@ -90,37 +86,52 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	public  void onChargeModeUpdate(InformationEnergy inf, ItemStack par1ItemStack, World par2World, 
 			Entity par3Entity, int par4, boolean par5){
 		
-		int var1 = 29; //Charge Sound Play every 1.5s
-		int var2 = 160; //Max ChargeTime : 8s
-		int var3 = 60; //FullCharge Time : 3s
-		Boolean isShooting = inf.isShooting;
+		final int var1 = 12;
+		final int var2 = 160;
+		final int var3 = 41;
+		
 		Boolean ignoreAmmo = false;
 		
 		if(par3Entity instanceof EntityPlayer){
 			if(((EntityPlayer)par3Entity).capabilities.isCreativeMode)
 				ignoreAmmo = true;
 		} else ignoreAmmo = true;
-		if(isShooting){
+		
+		if(inf.isShooting){
 			int ticksChange = inf.getDeltaTick();
 			inf.chargeTime++;
 			
-			if(ignoreAmmo || inf.ammoManager.getAmmoCapacity() > 0 )
+			if((ignoreAmmo || inf.ammoManager.getAmmoCapacity() > 0) && inf.chargeTime < var3)
 				inf.charge++;
+
+			if(inf.ammoManager.getAmmoCapacity() <= 0)
+				inf.player.stopUsingItem();
 			
-			if(!ignoreAmmo && inf.ticksExisted <= var3 && inf.chargeTime %6 == 0)
+			if(!ignoreAmmo && inf.ticksExisted <= var3 && inf.chargeTime %4 == 0)
 				inf.ammoManager.consumeAmmo(1);
+
+			//OverCharge!
+			if(inf.chargeTime > var2){ 
+				inf.isShooting = false;
+				inf.resetState();
+				par3Entity.attackEntityFrom(DamageSource.causeMobDamage((EntityLiving) (par3Entity)), 15);
+			}
 			
-			if(inf.charge >= var1 && ticksChange > var1){
+			int i = -1;
+			if(inf.ticksExisted == 9){
+				i = 1;
+			} else if(inf.ticksExisted == 18){
+				i = 2;
+			} else if(inf.ticksExisted == 27){
+				i = 3;
+			}
+			if(i>0)
+				par2World.playSoundAtEntity(par3Entity, SND_CHARGEA_PATH[i], 0.5F, 1.0F);
+			
+			if(inf.chargeTime >= 39 && inf.chargeTime%15 == 0){
 				inf.setLastTick();
 				par2World.playSoundAtEntity(par3Entity, SND_CHARGE_PATH, 0.5F, 1.0F);
 			}
-		}
-			
-		//OverCharge!
-		if(inf.charge > var2){ 
-			isShooting = false;
-			inf.charge = 0;
-			par3Entity.attackEntityFrom(DamageSource.causeMobDamage((EntityLiving) (par3Entity)), 19);
 		}
 		
 	}
@@ -132,6 +143,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		if(i == null)
 			return;
 		InformationEnergy inf = i.getProperEnergy(par2World);
+		
 		if(inf.mode == 0){
 			super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
 			return;
@@ -168,18 +180,9 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	}
 	
 	@Override
-	public void onEnergyWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
-		if(information.mode == 0 || (information.mode != 0 && information.isShooting == false)){
-			super.onEnergyWpnJam(par1ItemStack, par2World, par3Entity, information);
-			return;
-		}
-			
-	}
-	
-	@Override
     public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
-        return 201; //10s
+        return 500;
     }
 
 	@Override

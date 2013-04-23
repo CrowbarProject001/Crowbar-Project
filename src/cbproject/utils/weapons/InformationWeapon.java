@@ -29,5 +29,10 @@ public class InformationWeapon {
 	public int getDeltaTick(){
 		return ticksExisted - lastTick;
 	}
+	
+	public void resetState(){
+		ticksExisted = lastTick = recoverTick = 0;
+		isRecovering = false;
+	}
 
 }

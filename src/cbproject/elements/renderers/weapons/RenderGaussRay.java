@@ -24,7 +24,7 @@ import static cbproject.elements.renderers.RendererUtils.newV3;
  */
 public class RenderGaussRay extends RenderEntity {
 
-	public static double RADIUS = 0.05F;
+	public static double WIDTH = 0.05F;
 	private static Tessellator tessellator = Tessellator.instance;
 	
 	@Override
@@ -39,45 +39,59 @@ public class RenderGaussRay extends RenderEntity {
 		
         GL11.glPushMatrix();
         
+        double dx = end.xCoord - gauss.posX;
+        double dy = end.yCoord - gauss.posY;
+        double dz = end.zCoord - gauss.posZ;
+        double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        Vec3 v1 = newV3(0.05, 0, -WIDTH), 
+        		v2 = newV3(0.05, 0, WIDTH), 
+        		v3 = newV3(d, 0, -WIDTH),
+        		v4 = newV3(d, 0, WIDTH),
+        		
+        		v5 = newV3(0.05, WIDTH, 0), 
+        		v6 = newV3(0.05, -WIDTH, 0),
+        		v7 = newV3(d, -WIDTH, 0),
+        		v8 = newV3(d, WIDTH, 0);
+        
+        //Translations and rotations
+        //Translations and rotations
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_LIGHTING);
+        
         loadTexture(ClientProxy.GAUSS_BEAM_PATH);
-        double dx = end.xCoord - gauss.posX;
-        double dy = end.yCoord - gauss.posY;
-        double dz = end.zCoord - gauss.posZ;
-        
-        Vec3 v1, v2, v3, v4, v5, v6;
-        v1 = newV3(- RADIUS,- RADIUS,- RADIUS);
-        v2 = newV3(0, RADIUS, 0);
-        v3 = newV3(RADIUS,-RADIUS,RADIUS);
-        
-        v4 = newV3(dx - RADIUS, dy - RADIUS, dz - RADIUS);
-        v5 = newV3(dx, dy + RADIUS, dz);
-        v6 = newV3(dx + RADIUS, dy - RADIUS, dz + RADIUS);
-        
-        double max = Math.abs(dx);
-        
+        GL11.glRotatef(90.0F - gauss.rotationYaw, 0.0F, -1.0F, 0.0F); //左右旋转
+        GL11.glRotatef(gauss.rotationPitch, 0.0F, 0.0F, 1.0F); //上下旋转
+        GL11.glTranslatef(0, 0.4F, 0);
+        GL11.glRotatef(7.5F, -1.0F, 0.0F, 0.0F);
+        GL11.glTranslatef(0, -0.4F, 0);
+        //drawing>)
         tessellator.startDrawingQuads();
         
-        addVertex(v5, 1, max);
-        addVertex(v4, 0, max);
         addVertex(v1, 0, 0);
-        addVertex(v2, 1, 0);
+        addVertex(v2, 0, 1);
+        addVertex(v3, d , 1);
+        addVertex(v4, d , 0);
         
-        addVertex(v5, 1, max);
-        addVertex(v2, 1, 0);
-        addVertex(v3, 0, 0);
-        addVertex(v6, 0, max);
+        addVertex(v4, d , 0);
+        addVertex(v3, d , 1);
+        addVertex(v2, 0 , 1);
+        addVertex(v1, 0 , 0);
         
-        addVertex(v1, 0, 0);
-        addVertex(v4, 0, max); 
-        addVertex(v6, 1, max);  
-        addVertex(v3, 1, 0);	
+        addVertex(v5, 0 , 0);
+        addVertex(v6, 0 , 1);
+        addVertex(v7, d , 1);
+        addVertex(v8, d , 0);
+        
+        addVertex(v8, d , 0);
+        addVertex(v7, d , 1);
+        addVertex(v6, 0 , 1);
+        addVertex(v5, 0 , 0);
         
         tessellator.draw();
         
+        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
     }
 	

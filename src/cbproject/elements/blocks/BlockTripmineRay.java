@@ -2,6 +2,9 @@ package cbproject.elements.blocks;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import cbproject.CBCMod;
 import cbproject.elements.blocks.weapons.BlockTripmine;
 import cbproject.proxy.ClientProxy;
@@ -9,9 +12,12 @@ import cbproject.utils.BlockPos;
 
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -20,7 +26,7 @@ import net.minecraft.world.World;
  * Tripmine Ray block, which was used with Tripmine block.
  * @author WeAthFolD
  */
-public class BlockTripmineRay extends Block {
+public class BlockTripmineRay extends BlockContainer {
 
 	public BlockTripmineRay(int par1) {
 		super(par1, Material.circuits);
@@ -30,12 +36,22 @@ public class BlockTripmineRay extends Block {
 		setUnlocalizedName("blockTripmineRay");
 	}
 	
-    @Override
-	public int getRenderType()
+	public class TileEntityTripmineRay extends TileEntity{
+		
+	};
+	
+	@Override
+	public int getRenderType() {
+		return CBCMod.RENDER_TYPE_EMPTY;
+	}
+	
+	@Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        return CBCMod.RENDER_TYPE_TRIPMINE_RAY;
+        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:empty");
     }
-    
+	
     @Override
 	public int getRenderBlockPass()
     {
@@ -138,14 +154,14 @@ public class BlockTripmineRay extends Block {
     	int j = 0;
 		for(int i = (var10 == 1 || var10 == 3)? x : z; j < BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i-1 : i + 1, j++){
 			if(var10 == 1 || var10 == 3){
-				if(worldObj.getBlockId(i, y, z) == BlocksRegister.blockTripmine.blockID){
-					blockPos = new BlockPos(i, y, z, BlocksRegister.blockTripmine.blockID);
+				if(worldObj.getBlockId(i, y, z) == CBCBlocks.blockTripmine.blockID){
+					blockPos = new BlockPos(i, y, z, CBCBlocks.blockTripmine.blockID);
 					blockPos.x = (var10 == 3)? blockPos.x +1: blockPos.x -1;
 					return blockPos;
 				} 
 			} else {
-				if(worldObj.getBlockId(x, y, i) == BlocksRegister.blockTripmine.blockID){
-					blockPos = new BlockPos(x, y, i, BlocksRegister.blockTripmine.blockID);
+				if(worldObj.getBlockId(x, y, i) == CBCBlocks.blockTripmine.blockID){
+					blockPos = new BlockPos(x, y, i, CBCBlocks.blockTripmine.blockID);
 					blockPos.z = (var10 == 0) ? blockPos.z+1:blockPos.z-1;
 					return blockPos;
 				}
@@ -160,5 +176,10 @@ public class BlockTripmineRay extends Block {
     {
         return null;
     }
+
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new TileEntityTripmineRay();
+	}
     
 }

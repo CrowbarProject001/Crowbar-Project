@@ -23,4 +23,11 @@ public class InformationEnergy extends InformationWeapon {
 		lastTick = ticksExisted;
 	}
 	
+	@Override
+	public void resetState(){
+		super.resetState();
+		charge = chargeTime = 0;
+		isShooting = false;
+	}
+	
 }

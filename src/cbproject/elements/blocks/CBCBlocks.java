@@ -10,12 +10,13 @@ import net.minecraft.src.ModLoader;
  * @author WeAthFolD
  * @description Block register,which handles all instance of blocks in mod.
  */
-public class BlocksRegister {
+public class CBCBlocks {
 	
 	public static BlockTripmine blockTripmine;
 	public static BlockTripmineRay blockTripmineRay;
+	public static BlockWeaponCrafter blockWeaponCrafter;
 	
-	public BlocksRegister(Config conf) {
+	public CBCBlocks(Config conf) {
 		registerItems(conf);
 	}
 
@@ -25,13 +26,20 @@ public class BlocksRegister {
 			
 			blockTripmine = new BlockTripmine(conf.GetBlockID("tripmine", 400));
 			blockTripmineRay = new BlockTripmineRay(conf.GetBlockID("tripmine ray", 401));
+			blockWeaponCrafter = new BlockWeaponCrafter(conf.GetBlockID("weaponcrafter", 4077));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		ModLoader.registerBlock(blockTripmine);
+		ModLoader.registerBlock(blockWeaponCrafter);
 		LanguageRegistry.addName(blockTripmine, "Tripmine");
+		LanguageRegistry.addName(blockWeaponCrafter, "Weapon Crafter");
+		
+		ModLoader.registerTileEntity(BlockTripmine.TileEntityTripmine.class, "tile_entity_tripmine");
+		ModLoader.registerTileEntity(BlockTripmineRay.TileEntityTripmineRay.class, "tile_entity_tripmine_ray");
+		ModLoader.registerTileEntity(BlockWeaponCrafter.TileEntityWeaponCrafter.class, "tile_entity_weapon_crafter");
 		return;
 		
 	}
