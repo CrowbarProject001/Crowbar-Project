@@ -6,12 +6,14 @@ import org.lwjgl.input.Keyboard;
 import cbproject.CBCMod;
 import cbproject.misc.CBCKeyProcess;
 import cbproject.utils.CBCWeaponInformation;
+import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationEnergy;
 import cbproject.utils.weapons.InformationSet;
 import cbproject.utils.weapons.InformationWeapon;
 
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,16 +41,14 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		type = 0;
 		
 	}
+
 	
 	/**
 	 * Generally do the itemRightClick processing.
 	 */
 	public InformationBullet processRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		InformationSet inf = loadInformation(par1ItemStack, par3EntityPlayer);
-		if(inf == null)
-			return null;
-		
-		InformationBullet information = inf.getProperBullet(par2World);
+
+		InformationBullet information = loadInformation(par1ItemStack, par3EntityPlayer);
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
 		int mode = information.mode;
 		
@@ -72,12 +72,11 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     	   	
     	InformationBullet information = (InformationBullet) super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 
-		InformationSet inf = getInformation(par1ItemStack);
     	if(information == null){
-    		if(inf == null)
+    		information = getInformation(par1ItemStack, par2World);
+    		if(information == null)
     			return;
     		
-    		information = inf.getProperBullet(par2World);
     		information.isShooting = false;
     		information.isReloading = false;
     		return;
@@ -90,16 +89,25 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     			par2World.playSoundAtEntity(par3Entity, getSoundReload(information.mode), 0.5F, 1.0F);
     		information.isReloading = true;
     	}
+    	
+    	EntityPlayer player = (EntityPlayer) par3Entity;
+    	if(!player.isUsingItem())
+    		information.isShooting  = false;
+    	
 		if(doesShoot(information, par1ItemStack))
-			this.onBulletWpnShoot(par1ItemStack, par2World, (EntityPlayer) par3Entity, information);
+			this.onBulletWpnShoot(par1ItemStack, par2World, player, information);
 		
 		if(doesReload(information, par1ItemStack))
-			this.onBulletWpnReload(par1ItemStack, par2World, par3Entity, information);
+			this.onBulletWpnReload(par1ItemStack, par2World, player, information);
 		
 		if(doesReload(information, par1ItemStack))
-			this.onBulletWpnJam(par1ItemStack, par2World, par3Entity, information);
+			this.onBulletWpnJam(par1ItemStack, par2World, player, information);
 
 	}
+    
+    public Boolean canShoot(EntityPlayer player, ItemStack is){
+    	return (is.getMaxDamage() - is.getItemDamage() -1 > 0) || player.capabilities.isCreativeMode;
+    }
     
     /**
      * Determine if the shoot method should be called this tick.
@@ -145,14 +153,14 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		return;	
     }
     
-    public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){ 	 
+    public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){ 	 
 		par2World.playSoundAtEntity(par3Entity, getSoundJam(information.mode), 0.5F, 1.0F);
 		information.setLastTick();
     }
 
-    public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
+    public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 
-    	EntityPlayer ent = (EntityPlayer) par3Entity;
+    	EntityPlayer player = (EntityPlayer) par3Entity;
     	
     	int dmg = par1ItemStack.getItemDamage();
     	if( dmg <= 0){
@@ -161,8 +169,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     		return;
     	}
     		
-    	information.ammoManager.setAmmoInformation(ent);
-    	par1ItemStack.setItemDamage(information.ammoManager.consumeAmmo(dmg));
+    	par1ItemStack.setItemDamage(AmmoManager.consumeAmmo(player, this, par1ItemStack.getItemDamage()));
 		
     	information.isReloading = false;
     	information.setLastTick();
@@ -174,33 +181,33 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		InformationSet inf = getInformation(par1ItemStack);
-		inf.getProperBullet(par2World).isShooting = false;
+		InformationBullet inf = getInformation(par1ItemStack, par2World);
+		inf.isShooting = false;
 	}
     
 	/**
-	 * Get the shoot sound path corressponding to the mode.
+	 * Get the shoot sound path corresponding to the mode.
 	 * @param mode
 	 * @return sound path
 	 */
 	public abstract String getSoundShoot(int mode);
 	
 	/**
-	 * Get the gun jamming sound path corressponding to the mode.
+	 * Get the gun jamming sound path corresponding to the mode.
 	 * @param mode
 	 * @return sound path
 	 */
 	public abstract String getSoundJam(int mode);
 	
 	/**
-	 * Get the reload sound path corressponding to the mode.
+	 * Get the reload sound path corresponding to the mode.
 	 * @param mode
 	 * @return sound path
 	 */
 	public abstract String getSoundReload(int mode);
 	
 	/**
-	 * Get the shoot time corressponding to the mode.
+	 * Get the shoot time corresponding to the mode.
 	 * @param mode
 	 * @return shoot time
 	 */
@@ -225,18 +232,20 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5);
 	
 	@Override
-	public InformationSet getInformation(ItemStack itemStack){	
-	    return CBCWeaponInformation.getInformation(itemStack);
+	public InformationBullet getInformation(ItemStack itemStack, World world){	
+	   InformationSet set = CBCWeaponInformation.getInformation(itemStack);
+	   return set == null ? null : set.getProperBullet(world);
 	}
 	    
 	@Override
-	public InformationSet loadInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer){
+	public InformationBullet loadInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer){
 		
-		InformationSet inf = getInformation(par1ItemStack);
+		InformationBullet inf = getInformation(par1ItemStack, par2EntityPlayer.worldObj);
+
 		if(inf != null)
 			return inf;
 		
-		double uniqueID = Math.random()*65535D;	
+		double uniqueID = Math.random()*65535D;
 		CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer));
 		
 		if(par1ItemStack.stackTagCompound == null)
@@ -245,11 +254,11 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		return inf;
 		
 	}
-	
+
 	private InformationSet createInformation(ItemStack is, EntityPlayer player){
-		InformationBullet server = new InformationBullet(is, player);
-		InformationBullet client = new InformationBullet(is, player);
-		return new InformationSet(client, server);
+		InformationBullet inf = new InformationBullet(is, player);
+		InformationBullet inf2 = new InformationBullet(is, player);
+		return new InformationSet(inf, inf2);
 	}
 
 }

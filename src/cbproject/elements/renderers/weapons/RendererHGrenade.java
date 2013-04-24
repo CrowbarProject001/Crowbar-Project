@@ -24,16 +24,13 @@ import net.minecraft.util.Icon;
 @SideOnly(Side.CLIENT)
 public class RendererHGrenade extends Render
 {
-    /**
-     * Have the icon index (in items.png) that will be used to render the image. Currently, eggs and snowballs uses this
-     * classes.
-     */
-    private Icon icon;
+    private Item field_94151_a;
+    private int field_94150_f;
 
-    public RendererHGrenade()
+    public RendererHGrenade(Item par1)
     {
-    	super();
-        icon = ItemsRegister.weapon_hgrenade.getIconFromDamage(0);
+        this.field_94151_a = par1;
+        this.field_94150_f = 0;
     }
 
     /**
@@ -44,6 +41,7 @@ public class RendererHGrenade extends Render
      */
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
+        Icon icon = this.field_94151_a.getIconFromDamage(this.field_94150_f);
 
         if (icon != null)
         {

@@ -108,7 +108,7 @@ public class RenderTileTripmineRay extends TileEntitySpecialRenderer {
 	        }
 	        GL11.glPushMatrix();
 	        GL11.glDisable(GL11.GL_LIGHTING);
-	        
+	        GL11.glColor3d(0.7, 0.7, 0.7);
 	        tessellator.startDrawingQuads();
 	        
 		    addVertex(v1 , 0, 1);

@@ -29,7 +29,7 @@ public class ClientProxy extends Proxy{
 	public final static String GUI_WEAPONCRAFTER_PATH = "/cbproject/textures/gui/crafter.png";
 	
 	public final static String ITEM_SATCHEL_PATH[] = {"/cbproject/textures/items/weapon_satchel1.png",
-			"/cbproject/textures/item/weapon_satchel2.png"};
+			"/cbproject/textures/items/weapon_satchel2.png"};
 	public final static String CROSSBOW_SIDE_PATH[] = {
 		"/cbproject/textures/items/crossbow_side0.png",
 		"/cbproject/textures/items/crossbow_side1.png",

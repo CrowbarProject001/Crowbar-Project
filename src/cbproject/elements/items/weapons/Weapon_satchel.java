@@ -9,6 +9,8 @@ import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntitySatchel;
 import cbproject.misc.CBCKeyProcess;
 import cbproject.proxy.ClientProxy;
+import cbproject.utils.CBCWeaponInformation;
+import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSatchel;
 import cbproject.utils.weapons.InformationSet;
@@ -61,71 +63,93 @@ public class Weapon_satchel extends WeaponGeneral {
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
 			return null;
 		
-		InformationSet information = loadInformation(par1ItemStack, (EntityPlayer)par3Entity);
+		InformationSatchel information = loadInformation(par1ItemStack, (EntityPlayer)par3Entity);
 		if(CBCKeyProcess.modeChange){
 			CBCKeyProcess.onModeChange(par1ItemStack, information, (EntityPlayer) par3Entity, maxModes);
 		}
-		return information.getProperInf(par2World);
+		return information;
 
 	}
 	
 	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		
 		if(par1ItemStack.stackSize == 1)
 			return par1ItemStack;
-		
-		InformationSet information = loadInformation(par1ItemStack, par3EntityPlayer);
-		if(information == null)
+		System.out.println("To 1");
+		InformationSatchel inf = loadInformation(par1ItemStack, par3EntityPlayer);
+		if(inf == null)
 			return par1ItemStack;
-		
-		InformationSatchel inf = information.getProperSatchel(par2World);
-		
+		System.out.println("To 2");
 		int mode = inf.mode;
+		inf.satchelIDs = this.getSatchelsFromPlayer(par3EntityPlayer);
+		if(inf.satchelIDs.length < 6){
+			int []temp = new int[6];
+			for(int i = 0; i < inf.satchelIDs.length; i++)
+				temp[i] = inf.satchelIDs[i];
+			inf.satchelIDs = temp;
+		}
 		//Max 6 satchel
 		if(mode == 0){ //Setting mode
 			
-			if(inf.list.size() > 5)
+			if(!inf.canAddSatchel())
 				return par1ItemStack;
-			
-			if(par3EntityPlayer.capabilities.isCreativeMode || par1ItemStack.stackSize > 1){
-				EntitySatchel ent = new EntitySatchel(par2World, par3EntityPlayer);
-				inf.list.add(ent);
-				par2World.spawnEntityInWorld(ent);
-			}
+			System.out.println("To 3");
+			EntitySatchel ent = new EntitySatchel(par2World, par3EntityPlayer);
+			inf.addSatchel(ent.entityId);
+			System.out.println(ent.entityId);
+			par2World.spawnEntityInWorld(ent);	
 			if( !par3EntityPlayer.capabilities.isCreativeMode)
-				par1ItemStack.splitStack(1);
+				AmmoManager.tryConsume(par3EntityPlayer,this.itemID , 1);
 			
 		} else { //Detonating mode
 			
-			for(int i = 0; i < inf.list.size(); i++){
-				EntitySatchel ent = (EntitySatchel) inf.list.get(i);
-				ent.Explode();
+			for(int id : inf.satchelIDs){
+				Entity ent = par2World.getEntityByID(id);
+				System.out.println(id);
+				if(ent != null)
+					System.out.println(ent.getEntityName());
+				if(ent != null && ent instanceof EntitySatchel)
+					((EntitySatchel)ent).Explode();
 			}
-			inf.list.clear();
+			inf.clearSatchel();
 			
 		}
 		
+		System.out.println(inf.satchelIDs.toString());
 		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		par3EntityPlayer.setEating(false);
+		writeInformationToPlayer(inf, par3EntityPlayer);
 		return par1ItemStack;
     }
 	
+	public void writeInformationToPlayer(InformationSatchel inf, EntityPlayer player){
+		NBTTagCompound nbt = player.getEntityData();
+		nbt.setIntArray("satchelIDs", inf.satchelIDs);
+	}
+	
+	public int[] getSatchelsFromPlayer(EntityPlayer player){
+		return player.getEntityData().getIntArray("satchelIDs");
+	}
+	
 	@Override
-	public InformationSet loadInformation(ItemStack itemStack,
+	public InformationSatchel getInformation(ItemStack itemStack, World world){	
+	   InformationSet set = CBCWeaponInformation.getInformation(itemStack);
+	   return set == null ? null : set.getProperSatchel(world);
+	}
+	    
+	
+	@Override
+	public InformationSatchel loadInformation(ItemStack itemStack,
 			EntityPlayer entityPlayer) {
 		
-		InformationSet inf = getInformation(itemStack);
+		InformationSatchel inf = getInformation(itemStack, entityPlayer.worldObj);
 		if(inf != null){
 			return inf;
 		}
-		InformationSatchel server = new InformationSatchel(entityPlayer, itemStack);
-		InformationSatchel client = new InformationSatchel(entityPlayer, itemStack);
+
 		double uniqueID = Math.random()*65535D;
-		
-		inf = new InformationSet(client, server);
-		CBCMod.wpnInformation.addToList(uniqueID, inf);
+		CBCMod.wpnInformation.addToList(uniqueID, createInformation(itemStack, entityPlayer));
 
 		if(itemStack.stackTagCompound == null)
 			itemStack.stackTagCompound = new NBTTagCompound();
@@ -133,6 +157,12 @@ public class Weapon_satchel extends WeaponGeneral {
 		itemStack.stackTagCompound.setDouble("uniqueID", uniqueID);
 		
 		return inf;
+	}
+	
+	private InformationSet createInformation(ItemStack is, EntityPlayer player){
+		InformationSatchel inf = new InformationSatchel(player, is);
+		InformationSatchel inf2 = new InformationSatchel(player, is);
+		return new InformationSet(inf, inf2);
 	}
 	
     public int getMaxItemUseDuration(ItemStack par1ItemStack)

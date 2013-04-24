@@ -21,9 +21,6 @@ public class RenderSatchel extends RenderEntity {
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
 		
-		if(par1Entity.isDead)
-			return;
-		
         GL11.glPushMatrix();
         
         GL11.glTranslated(par2, par4 , par6);

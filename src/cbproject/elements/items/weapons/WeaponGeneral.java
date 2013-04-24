@@ -55,11 +55,7 @@ public abstract class WeaponGeneral extends Item {
 		if(!(par3Entity instanceof EntityPlayer))
 			return null;
 		
-		InformationSet inf = loadInformation(par1ItemStack, (EntityPlayer) par3Entity);
-		if(inf == null)
-			return null;
-		
-		InformationWeapon information = inf.getProperInf(par2World);
+		InformationWeapon information = loadInformation(par1ItemStack, (EntityPlayer) par3Entity);
 		
 		ItemStack currentItem = ((EntityPlayer)par3Entity).inventory.getCurrentItem();
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
@@ -67,8 +63,11 @@ public abstract class WeaponGeneral extends Item {
 		
 
 		if(CBCKeyProcess.modeChange)
-			CBCKeyProcess.onModeChange(par1ItemStack ,inf, (EntityPlayer) par3Entity, maxModes);	
-		
+			CBCKeyProcess.onModeChange(par1ItemStack, information, (EntityPlayer) par3Entity, maxModes);	
+		if(information == null){
+			System.err.println(par2World.isRemote + " side is null");
+			return null;
+		}
 		if(information.isRecovering){
 			par3Entity.rotationPitch += recoverRadius;
 			information.recoverTick++;
@@ -102,16 +101,16 @@ public abstract class WeaponGeneral extends Item {
 	
 	/**
 	 * get and load the WeaponInformation for the itemStack.
-	 * @return required InformationSet
+	 * @return required InformationWeapon
 	 */
-	public abstract InformationSet loadInformation(ItemStack par1Itack, EntityPlayer entityPlayer);
+	public abstract InformationWeapon loadInformation(ItemStack par1Itack, EntityPlayer entityPlayer);
 	
 	/**
 	 * get the WeaponInformation for the itemStack.
 	 * @return required InformationSet, could be null
 	 */
-	public InformationSet getInformation(ItemStack itemStack){
-	    return CBCWeaponInformation.getInformation(itemStack);
+	public InformationWeapon getInformation(ItemStack itemStack, World world){
+	    return CBCWeaponInformation.getInformation(itemStack).getProperInf(world);
 	}
 	
 	public abstract double getPushForce(int mode);
@@ -123,16 +122,6 @@ public abstract class WeaponGeneral extends Item {
 	 */
 	public void onModeChange(ItemStack itemStack, World world, int newMode){
 		CBCMod.wpnInformation.getInformation(itemStack).serverReference.mode = newMode;
-	}
-	
-	/**
-	 * get the InformationWeapon correspond to the world.
-	 */
-	public InformationWeapon getSpecInformation(ItemStack itemStack,World world){
-		InformationSet inf =  getInformation(itemStack);
-		if(inf != null)
-			return inf.getProperInf(world);
-		return null;
 	}
 	
 

@@ -18,8 +18,6 @@ public class InformationBullet extends InformationWeapon{
 		
 		isShooting = false;
 		isReloading = false;
-		
-		ammoManager = new AmmoManager(par7Player, par8Weapon);
 
 	}
 	

@@ -64,7 +64,9 @@ public class CBCEvents {
 		"egon_windup",
 		"egon_off",
 		"rocket",
-		"rocketfire"
+		"rocketfire",
+		"glauncher",
+		"glauncherb"
 		
 	};
 	
@@ -86,7 +88,6 @@ public class CBCEvents {
 	
 	@ForgeSubscribe
 	public void onLivingAttack(LivingAttackEvent event){
-		System.out.println("LivingAttackEvent.");
 		if(event.source == DamageSource.fall){
 			if(event.entity instanceof EntityPlayer){
 				EntityPlayer player = (EntityPlayer) event.entity;				

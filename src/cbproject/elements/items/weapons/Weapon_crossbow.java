@@ -6,9 +6,11 @@ import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityCrossbowArrow;
 import cbproject.elements.entities.weapons.EntityRocket;
 import cbproject.proxy.ClientProxy;
+import cbproject.utils.CBCWeaponInformation;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
+import cbproject.utils.weapons.InformationWeapon;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -34,7 +36,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		setNoRepair();
 		
 		setLiftProps(10, 5);
-		setReloadTime(30);
+		setReloadTime(40);
 		
 	}
 	
@@ -118,7 +120,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	@Override
 	public int getShootTime(int mode) {
-		return 20;
+		return 30;
 	}
 
 	@Override
@@ -142,6 +144,8 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	}
 
 	public boolean isBowPulling(ItemStack item) {
-		return false;
+		InformationSet inf = CBCWeaponInformation.getInformation(item);
+		InformationBullet information = (InformationBullet) (inf == null ? null : inf.clientReference);
+		return !(information.isShooting && information.getDeltaTick() < 17);
 	}
 }

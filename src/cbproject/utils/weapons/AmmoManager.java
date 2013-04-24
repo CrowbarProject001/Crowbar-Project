@@ -16,147 +16,65 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class AmmoManager {
 	
-	//type:0 Bullet Weapon ; 1 Energy Weapon
-	//Stacksize=1:Damage型；StackSize>1:stack型
-	public EntityPlayer player;
-	public ItemStack Weapon;
-	public int ammoItemID;
-	public int ammoCapacity;
-	
-	private HashMap<Integer, ItemStack> ammoList;
-	private List<Integer> stackList;
-	
-	//加载基本的玩家背包子弹信息xD
-	public AmmoManager(EntityPlayer par1Player,ItemStack par2Weapon) {
+	/**
+	 * Tries to consume a specific amount of ammo  in player's inventory.
+	 * @return how many are left to be consumed
+	 */
+	public static int consumeAmmo(EntityPlayer player, WeaponGeneral item, int amount){
 		
-		WeaponGeneral wpn = (WeaponGeneral)par2Weapon.getItem();
-		ammoList = new HashMap<Integer, ItemStack>();
-		stackList = new ArrayList<Integer>();
-		player = par1Player;
-		Weapon = par2Weapon;
-		ammoItemID = getAmmoItemIDByWeapon(par2Weapon);
-		setAmmoInformation(par1Player);
-		
-	}
-	
-	
-	public int consumeAmmo(int amount){
-		
-		int left = amount;
-		updateAmmoCapacity();
-		
-		if(Item.itemsList[ammoItemID].getItemStackLimit() == 1){
-			
-			if(ammoList.isEmpty())
-				return left;
-			ItemStack itemStack;
-			for(int i : stackList){
-				itemStack = ammoList.get(i);
-				int cap = itemStack.getMaxDamage() - itemStack.getItemDamage() -1;
-				if(cap >0){
-					if(cap >= left){
-						itemStack.damageItem(left, player);
-						ammoCapacity -= left;
-						return 0;
-					}			
-					left -= cap;
-					itemStack.damageItem(cap, player);
-				} 
-			}
-			return left;
-			
-		} else {
-			
-				return left - tryConsume(player, ammoItemID, amount);
-				
-		}
-		
-	}
-	
-	public int getAmmoCapacity(){
-		updateAmmoCapacity();
-		return ammoCapacity;
-	}
-	
-	public void clearAmmo(EntityPlayer par1Player){
-		
-		if(ammoList.size() == 0 || ((ItemStack)ammoList.get(0)).getMaxStackSize() == 1){
-			
-			for(int i=0;i<ammoList.size();i++){
-				ItemStack item = (ItemStack)ammoList.get(i);
-				item.setItemDamage(item.getMaxDamage() -1);
-			}
-			
-		} else {
-			
-			updateAmmoCapacity();
-			for(int i=0; i < ammoCapacity; i++)
-				player.inventory.consumeInventoryItem(ammoItemID);
-			
-		}
-		ammoList.clear();
-		setAmmoInformation(par1Player);
-		
-	}
-	
-	public void setAmmoInformation(EntityPlayer par1Player){
-		
-		ammoList.clear();
-		stackList.clear();
-		//遍历寻找对应的Ammo
-		ItemStack itemStack;
-		for(int i = 0; i < par1Player.inventory.mainInventory.length; i++){
-			itemStack = par1Player.inventory.mainInventory[i];
-			if( itemStack != null && itemStack.itemID == ammoItemID) {
-				ammoList.put(i, itemStack);
-				stackList.add(i);
-			}
-		}
-		updateAmmoCapacity();
+		return tryConsume(player, item.ammoID, amount);
 		
 	}
 	
 	/**
 	 * Tries to consume one specific item in player's inventory.
-	 *  ** Stackable only.
-	 * @return how many of the stack consumed
+	 * @return how many are left to be consumed
 	 */
-	public int tryConsume(EntityPlayer player, int itemID, int amount){	
-		if(!player.inventory.hasItem(itemID))
-			return 0;
-		int i;
-		for(i = 1; i <= amount; i++)
-			if(!player.inventory.consumeInventoryItem(itemID)){
-				i--;
-				break;
+	public static int tryConsume(EntityPlayer player, int itemID, int amount){	
+		
+		int left = amount;
+		ItemStack is;
+		if(Item.itemsList[itemID].getItemStackLimit() > 1){
+			
+			for(int i = 0; i < player.inventory.mainInventory.length; i++){
+				is = player.inventory.mainInventory[i];
+				if(is != null && is.itemID == itemID){
+					if(is.stackSize > left){
+						player.inventory.decrStackSize(i, left);
+						return 0;
+					} else {
+						left -= is.stackSize;
+						player.inventory.setInventorySlotContents(i, null);
+					}
+				}
 			}
-		return i;
-	}
-	
-
-	private int getAmmoItemIDByWeapon(ItemStack par1Weapon){
-	
-		WeaponGeneral item =  (WeaponGeneral) par1Weapon.getItem();
-		return item.ammoID;
-		
-	}
-	
-
-	private void updateAmmoCapacity(){
-		
-		ammoCapacity = 0;
-		
-		for(int i: stackList)
-		{
-			ItemStack item = ammoList.get(i);
-			if(item.getMaxStackSize() == 1){
-				int a = item.getMaxDamage() - item.getItemDamage() -1; 
-				ammoCapacity += a;
-			} else {
-				int a = item.stackSize;
-				ammoCapacity += a;
+			return left;
+			
+		} else {
+			
+			for(int i=0; i< player.inventory.mainInventory.length; i++){
+				is = player.inventory.mainInventory[i];
+				int stackCap;
+				if(is != null && is.itemID == itemID){
+					stackCap = is.getMaxDamage() - is.getItemDamage() - 1;
+					if(stackCap > left){
+						is.damageItem(left, player);
+						return 0;
+					} else {
+						left -= stackCap;
+						is.setItemDamage(is.getMaxDamage() - 1);
+					}
+				}
 			}
+			return left;
+			
 		}
-
+	}
+	
+	/**
+	 * determine if player have any ammo for reloading/energy weapon shooting.
+	 */
+	public static Boolean hasAmmo(WeaponGeneral is, EntityPlayer player){
+		return player.inventory.hasItem(is.ammoID);
 	}
 }

@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.proxy.ClientProxy;
+import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
@@ -68,7 +69,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     }
 
 	@Override
-    public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationBullet information ){
+    public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationBullet information ){
 		
     	int mode = information.mode;
 		int dmg = par1ItemStack.getItemDamage();
@@ -79,10 +80,10 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		}
 		if(par2World.isRemote)
 			return;
-		information.ammoManager.setAmmoInformation((EntityPlayer)par3Entity);
-		if( information.ammoManager.consumeAmmo(1) == 0 ){
+		
+		if( AmmoManager.consumeAmmo(player, this, 1) == 0){
 			par1ItemStack.setItemDamage( par1ItemStack.getItemDamage() - 1);
-		    par2World.playSoundAtEntity(par3Entity, getSoundReload(mode), 0.5F, 1.0F);	
+		    par2World.playSoundAtEntity(player, getSoundReload(mode), 0.5F, 1.0F);	
     	} else 
     		information.isReloading = false;
 			

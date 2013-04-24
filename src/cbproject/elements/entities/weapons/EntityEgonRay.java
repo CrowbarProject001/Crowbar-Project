@@ -6,6 +6,7 @@ import cbproject.utils.weapons.InformationSet;
 import cpw.mods.fml.common.Mod.Item;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
@@ -31,9 +32,8 @@ public class EntityEgonRay extends EntityThrowable {
 
 	@Override
 	public void onUpdate(){
-		InformationSet inf = ((Weapon_egon)item.getItem()).getInformation(item);
-		if(inf == null || !getThrower().getHeldItem().equals(item) || 
-				!(inf.getProperEnergy(worldObj).isShooting && ((Weapon_egon)item.getItem()).canShoot(inf.getProperEnergy(worldObj))))
+		InformationEnergy inf = ((Weapon_egon)item.getItem()).getInformation(item, worldObj);
+		if(inf == null || !(inf.isShooting && ((Weapon_egon)item.getItem()).canShoot((EntityPlayer) getThrower(), item)))
 			this.setDead();
 		
 		EntityLiving ent = getThrower();

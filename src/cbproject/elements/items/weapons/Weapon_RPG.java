@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityRocket;
 import cbproject.proxy.ClientProxy;
+import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationSet;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -51,8 +52,11 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		information.setLastTick();
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);
-		par2World.spawnEntityInWorld(new EntityRocket(par2World, par3Entity));
+		if(this.canShoot(par3Entity, par1ItemStack)){
+			par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);
+			par2World.spawnEntityInWorld(new EntityRocket(par2World, par3Entity));
+			AmmoManager.consumeAmmo(par3Entity, this, 1);
+		}
 	}
 	
 	@Override

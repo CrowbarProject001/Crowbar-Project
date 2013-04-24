@@ -69,7 +69,7 @@ public class RenderCrossbow implements IItemRenderer {
 		t = Tessellator.instance;
 		
 		Weapon_crossbow wpn = (Weapon_crossbow) item.getItem();
-		InformationBullet inf = (InformationBullet) wpn.getSpecInformation(item, ent.worldObj);
+		InformationBullet inf = wpn.getInformation(item, ent.worldObj);
 		float w = 0.05F;
 		float w2 = 0.1F;
 		int tex = RendererUtils.getTexture(ClientProxy.CROSSBOW_SIDE_PATH[5 - item.getItemDamage()]);
@@ -128,7 +128,7 @@ public class RenderCrossbow implements IItemRenderer {
             t.addVertexWithUV(1.0+w2, 1.0, var10, var9, 0.0F);
             t.addVertexWithUV(w2 , 0.0, var10, var9, 1.0F);
 
-            t.addVertexWithUV(w2 , 0.0, var10, var9, 0.0F);
+            t.addVertexWithUV(w2 , 0.0, var10, var9, 1.0F);
             t.addVertexWithUV(1.0+w2, 1.0, var10, var9, 0.0F);
             t.addVertexWithUV(1.0, 1.0, var10, var9, 0.0F);
             t.addVertexWithUV(0.0, 0.0 + w2, var10, var9, 1.0F);

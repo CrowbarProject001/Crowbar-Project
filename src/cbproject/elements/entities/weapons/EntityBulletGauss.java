@@ -4,6 +4,7 @@ import java.util.List;
 
 import cbproject.elements.entities.weapons.EntityBulletGaussSec.EnumGaussRayType;
 import cbproject.elements.items.weapons.WeaponGeneral;
+import cbproject.elements.items.weapons.Weapon_gauss;
 import cbproject.utils.BlockPos;
 import cbproject.utils.weapons.GaussBulletManager;
 import cbproject.utils.weapons.InformationEnergy;
@@ -28,7 +29,7 @@ public class EntityBulletGauss extends EntityBullet {
 	
 	private static final float CHARGE_DAMAGE_SCALE = 3.0F;
 
-	private WeaponGeneral item;
+	private Weapon_gauss item;
 	private InformationEnergy inf;
 	
 	public enum EnumSubPlain{
@@ -39,8 +40,8 @@ public class EntityBulletGauss extends EntityBullet {
 			ItemStack par3itemStack, String particle) {
 		super(par1World, par2EntityLiving, par3itemStack, particle);
 		motion = new MotionXYZ(par2EntityLiving);
-		item = (WeaponGeneral) itemStack.getItem();
-		inf = item.getInformation(itemStack).getProperEnergy(worldObj);
+		item = (Weapon_gauss) itemStack.getItem();
+		inf = item.getInformation(itemStack, worldObj);
 		worldObj.spawnEntityInWorld(new EntityGaussRay(par1World, par2EntityLiving, this));	
 	}
 	

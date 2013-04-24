@@ -13,6 +13,7 @@ import cbproject.utils.weapons.InformationWeapon;
 
 
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -47,6 +48,7 @@ public class CBCPacketHandler implements IPacketHandler {
 			}
 			break;
 			
+			/*
 		case "CBCReload":
 			try {
 				
@@ -64,6 +66,7 @@ public class CBCPacketHandler implements IPacketHandler {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			*/
 		default:
 			break;
 		}

@@ -1,6 +1,8 @@
 package cbproject.elements.items.weapons;
 
 import cbproject.CBCMod;
+import cbproject.utils.CBCWeaponInformation;
+import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.BulletManager;
 import cbproject.utils.weapons.InformationBullet;
 import cbproject.utils.weapons.InformationEnergy;
@@ -38,14 +40,14 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 	public abstract int getDamage(int mode);
 	
 	/**
-	 * Get the shoot sound path corressponding to the mode.
+	 * Get the shoot sound path corresponding to the mode.
 	 * @param mode
 	 * @return sound path
 	 */
 	public abstract String getSoundShoot(int mode);
 	
 	/**
-	 * Get the jam sound path corressponding to the mode.
+	 * Get the jam sound path corresponding to the mode.
 	 * @param mode
 	 * @return sound path
 	 */
@@ -69,9 +71,9 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 			World par2World, EntityPlayer par3EntityPlayer){
 
 		int mode = information.mode;
-		information.ammoManager.setAmmoInformation(par3EntityPlayer);
-		Boolean canUse = canShoot(information);
-		if(doesShoot(information, par1ItemStack))
+		
+		Boolean canUse = canShoot(par3EntityPlayer, par1ItemStack);
+		if(doesShoot(information, par1ItemStack, par3EntityPlayer))
 			onEnergyWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
 
 		information.isShooting = true;
@@ -84,12 +86,11 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 		
 		InformationEnergy information = (InformationEnergy) super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 
-		InformationSet inf = getInformation(par1ItemStack);
 		if(information == null){
-    		if(inf == null)
+    		information = getInformation(par1ItemStack, par2World);
+    		if(information == null)
     			return null;
     		
-    		information = inf.getProperEnergy(par2World);
     		information.isShooting = false;
     		return null;
     	}
@@ -100,14 +101,15 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 		int mode = information.mode;
 
 		Boolean isShooting = information.isShooting;
-
-		if( doesShoot(information, par1ItemStack) ){
-			this.onEnergyWpnShoot(par1ItemStack, par2World, par3Entity, information);
+		EntityPlayer player = (EntityPlayer) par3Entity;
+		
+		if( doesShoot(information, par1ItemStack, player) ){
+			this.onEnergyWpnShoot(par1ItemStack, par2World, player, information);
 			return information;
 		}
 
-		if( doesJam(information, par1ItemStack) ){
-			this.onEnergyWpnJam(par1ItemStack, par2World, par3Entity, information);
+		if( doesJam(information, par1ItemStack, player) ){
+			this.onEnergyWpnJam(par1ItemStack, par2World, player, information);
 			return information;
 		}
 		return information;
@@ -118,8 +120,8 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
      * Determine if the shoot method should be called this tick.
      * @return If the shoot method should be called in this tick or not.
      */
-	public Boolean doesShoot(InformationEnergy inf, ItemStack itemStack){
-		Boolean canUse = canShoot(inf);
+	public Boolean doesShoot(InformationEnergy inf, ItemStack itemStack, EntityPlayer player){
+		Boolean canUse = canShoot(player, itemStack);
 		return getShootTime(inf.mode) > 0 && inf.isShooting && canUse && inf.getDeltaTick() >= getShootTime(inf.mode);
 	}
 	
@@ -127,15 +129,15 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
      * Determine if the jam method should be called this tick.
      * @return If the jam method should be called in this tick or not.
      */
-	public Boolean doesJam(InformationEnergy inf, ItemStack itemStack){
-		Boolean canUse = canShoot(inf);
+	public Boolean doesJam(InformationEnergy inf, ItemStack itemStack, EntityPlayer player){
+		Boolean canUse = canShoot(player, itemStack);
 		return inf.isShooting && !canUse && inf.getDeltaTick() >= jamTime;
 	}
 	
     /**
      * Very normal Energy shooting process, currently not used.
      */
-	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
+	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationEnergy information ){
 		
 		int mode = information.mode;
 		
@@ -145,15 +147,16 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 
     	if(par3Entity instanceof EntityPlayer){
     		doUplift(information, (EntityPlayer) par3Entity);
+    		EntityPlayer player = (EntityPlayer) par3Entity;
     		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
-    				information.ammoManager.consumeAmmo(1);
+    				AmmoManager.consumeAmmo(player, this, 1);
     		}
     	}
     	
 		return;
 	}
 	
-	public void onEnergyWpnJam(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
+	public void onEnergyWpnJam(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationEnergy information ){
 		
     	int maxDmg = par1ItemStack.getMaxDamage();
     	int mode = information.mode;
@@ -169,28 +172,24 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		InformationSet inf = getInformation(par1ItemStack);
-		inf.getProperEnergy(par2World).isShooting = false;
+		InformationEnergy inf = getInformation(par1ItemStack, par2World);
+		inf.isShooting = false;
 	}
 	
-	public Boolean canShoot(InformationEnergy inf){
-		return inf.ammoManager.player.capabilities.isCreativeMode || inf.ammoManager.getAmmoCapacity() > 0;
-	}
+    public Boolean canShoot(EntityPlayer player, ItemStack is){
+    	return AmmoManager.hasAmmo(this, player) || player.capabilities.isCreativeMode;
+    }
 
 	@Override
-	public InformationSet loadInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer){
+	public InformationEnergy loadInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer){
 		
-		InformationSet inf = getInformation(par1ItemStack);
+		InformationEnergy inf = getInformation(par1ItemStack, par2EntityPlayer.worldObj);
 		if(inf != null)
 			return inf;
 		
-		InformationEnergy server = new InformationEnergy(par1ItemStack, par2EntityPlayer);
-		InformationEnergy client = new InformationEnergy(par1ItemStack, par2EntityPlayer);
-		
 		double uniqueID = Math.random()*65535D;
-		inf = new InformationSet(client, server);
 		
-		CBCMod.wpnInformation.addToList(uniqueID, inf);
+		CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer));
 		
 		if(par1ItemStack.stackTagCompound == null)
 			par1ItemStack.stackTagCompound = new NBTTagCompound();
@@ -200,10 +199,15 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 	}
 
 	@Override
-	public InformationSet getInformation(ItemStack itemStack) {
-		InformationSet inf = CBCMod.wpnInformation.getInformation(itemStack);   	
-	    return inf;
+	public InformationEnergy getInformation(ItemStack itemStack, World world){	
+	   InformationSet set = CBCWeaponInformation.getInformation(itemStack);
+	   return set == null ? null : set.getProperEnergy(world);
 	}
-
+	
+	private InformationSet createInformation(ItemStack is, EntityPlayer player){
+		InformationEnergy inf = new InformationEnergy(is, player);
+		InformationEnergy inf2 = new InformationEnergy(is, player);
+		return new InformationSet(inf, inf2);
+	}
 
 }

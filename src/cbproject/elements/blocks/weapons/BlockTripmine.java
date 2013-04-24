@@ -43,7 +43,6 @@ public class BlockTripmine extends BlockContainer {
 	
 	public static final int RAY_RANGE = 30;
 	public static final int NOTIFY_ID = 4098;
-	public static Icon iconSide, iconFront, iconTop;
 	
 	public class TileEntityTripmine extends TileEntity{
 		
@@ -61,9 +60,6 @@ public class BlockTripmine extends BlockContainer {
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.blockIcon = par1IconRegister.registerIcon("lambdacraft:blockTripmine");
-        iconSide = par1IconRegister.registerIcon("lambdacraft:tripmine_side");
-        iconFront = par1IconRegister.registerIcon("lambdacraft:tripmine_front");
-        iconTop = par1IconRegister.registerIcon("lambdacraft:tripmine_top");
     }
 	
     @Override

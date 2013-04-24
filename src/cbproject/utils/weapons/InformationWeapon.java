@@ -8,7 +8,6 @@ public class InformationWeapon {
 	public EntityPlayer player;
 	public ItemStack itemStack;
 	public int ticksExisted, lastTick, recoverTick, mode;
-	public AmmoManager ammoManager;
 	public Boolean isRecovering;
 	public float originPitch;
 	

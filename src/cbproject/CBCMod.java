@@ -29,6 +29,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.NetworkMod.NULL;
+import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
@@ -38,7 +40,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 
 @Mod(modid="lambdacraft",name="lambdacraft",version="0.0.0.1")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {"CBCWeaponMode", "CBCReload"}, packetHandler = CBCPacketHandler.class)
+@NetworkMod(clientSideRequired=true,serverSideRequired=false,
+serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeaponMode"}, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
 {
 	

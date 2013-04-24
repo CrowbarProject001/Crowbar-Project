@@ -53,20 +53,20 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		if(information == null)
 				return;
 		if(information.mode == 1)
-			onChargeModeUpdate(information, par1ItemStack, par2World, par3Entity, par4, par5);
+			onChargeModeUpdate(information, par1ItemStack, par2World, (EntityPlayer) par3Entity, par4, par5);
 		
 	}
 	
 	@Override
-	public Boolean doesShoot(InformationEnergy inf, ItemStack itemStack){
-		return inf.mode == 0 && super.doesShoot(inf, itemStack) ;
+	public Boolean doesShoot(InformationEnergy inf, ItemStack itemStack, EntityPlayer player){
+		return inf.mode == 0 && super.doesShoot(inf, itemStack, player) ;
 	}
 	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
 		
-		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer).getProperEnergy(par2World);
+		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer);
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
 		
 		if(inf.mode == 0)
@@ -74,9 +74,8 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		
 		if(inf.mode == 1) {
 			inf.resetState();
-			inf.ammoManager.setAmmoInformation(par3EntityPlayer);
 			inf.isShooting = true;
-			if(this.canShoot(inf))
+			if(AmmoManager.hasAmmo(this, par3EntityPlayer))
 				par2World.playSoundAtEntity(par3EntityPlayer, SND_CHARGEA_PATH[0], 0.5F, 1.0F);	
 		}
 		return par1ItemStack;
@@ -84,37 +83,33 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
     }
 	
 	public  void onChargeModeUpdate(InformationEnergy inf, ItemStack par1ItemStack, World par2World, 
-			Entity par3Entity, int par4, boolean par5){
+			EntityPlayer player, int par4, boolean par5){
 		
 		final int var1 = 12;
 		final int var2 = 160;
 		final int var3 = 41;
 		
-		Boolean ignoreAmmo = false;
-		
-		if(par3Entity instanceof EntityPlayer){
-			if(((EntityPlayer)par3Entity).capabilities.isCreativeMode)
-				ignoreAmmo = true;
-		} else ignoreAmmo = true;
-		
 		if(inf.isShooting){
 			int ticksChange = inf.getDeltaTick();
 			inf.chargeTime++;
 			
-			if((ignoreAmmo || inf.ammoManager.getAmmoCapacity() > 0) && inf.chargeTime < var3)
+			Boolean canUse = this.canShoot(player, par1ItemStack);
+			Boolean ignoreAmmo = player.capabilities.isCreativeMode;
+			
+			if(canUse && inf.chargeTime < var3)
 				inf.charge++;
 
-			if(inf.ammoManager.getAmmoCapacity() <= 0)
+			if(!canUse)
 				inf.player.stopUsingItem();
 			
 			if(!ignoreAmmo && inf.ticksExisted <= var3 && inf.chargeTime %4 == 0)
-				inf.ammoManager.consumeAmmo(1);
+				AmmoManager.consumeAmmo(player, this, 1);
 
 			//OverCharge!
 			if(inf.chargeTime > var2){ 
 				inf.isShooting = false;
 				inf.resetState();
-				par3Entity.attackEntityFrom(DamageSource.causeMobDamage((EntityLiving) (par3Entity)), 15);
+				player.attackEntityFrom(DamageSource.causeMobDamage(player), 15);
 			}
 			
 			int i = -1;
@@ -126,11 +121,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 				i = 3;
 			}
 			if(i>0)
-				par2World.playSoundAtEntity(par3Entity, SND_CHARGEA_PATH[i], 0.5F, 1.0F);
+				par2World.playSoundAtEntity(player, SND_CHARGEA_PATH[i], 0.5F, 1.0F);
 			
 			if(inf.chargeTime >= 39 && inf.chargeTime%15 == 0){
 				inf.setLastTick();
-				par2World.playSoundAtEntity(par3Entity, SND_CHARGE_PATH, 0.5F, 1.0F);
+				par2World.playSoundAtEntity(player, SND_CHARGE_PATH, 0.5F, 1.0F);
 			}
 		}
 		
@@ -139,10 +134,9 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		InformationSet i = getInformation(par1ItemStack);
-		if(i == null)
+		InformationEnergy inf = getInformation(par1ItemStack, par2World);
+		if(inf == null)
 			return;
-		InformationEnergy inf = i.getProperEnergy(par2World);
 		
 		if(inf.mode == 0){
 			super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
@@ -170,11 +164,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	}
 	
 	@Override
-	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){	
+	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationEnergy information ){	
 		GaussBulletManager.Shoot2(EnumGaussRayType.NORMAL, 
-				par2World, (EntityLiving) par3Entity, par1ItemStack, null, null, getDamage(information.mode));
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);
-		information.ammoManager.consumeAmmo(2);
+				par2World, player, par1ItemStack, null, null, getDamage(information.mode));
+		par2World.playSoundAtEntity(player, getSoundShoot(information.mode), 0.5F, 1.0F);
+		AmmoManager.consumeAmmo(player, this, 2);
 		information.setLastTick();
 		return;
 	}

@@ -48,10 +48,10 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
-		InformationSet inf = getInformation(par1ItemStack);
-		if(inf.getProperEnergy(par2World).isShooting && inf.getProperEnergy(par2World).ammoManager.getAmmoCapacity() > 0)
+		InformationEnergy inf = getInformation(par1ItemStack, par2World);
+		if(inf.isShooting && AmmoManager.hasAmmo(this, par3EntityPlayer))
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_OFF, 0.5F, 1.0F);
-		inf.getProperEnergy(par2World).isShooting = false;
+		inf.isShooting = false;
 	}
 	
 	@Override
@@ -66,8 +66,9 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 				par2World.playSoundAtEntity(par3Entity, SND_RUN, 0.5F, 1.0F);
 			
 			if(dTick % 3 == 0 && !par2World.isRemote){
-				inf.ammoManager.consumeAmmo(1);
-				if(inf.ammoManager.ammoCapacity == 0){
+				EntityPlayer player = (EntityPlayer) par3Entity;
+				AmmoManager.consumeAmmo((EntityPlayer) par3Entity, this, 1);
+				if(!AmmoManager.hasAmmo(this, player)){
 					par2World.playSoundAtEntity(par3Entity, SND_OFF, 0.5F, 1.0F);
 					inf.isShooting = false;
 				}
@@ -79,10 +80,10 @@ public class Weapon_egon extends WeaponGeneralEnergy {
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
 		
-		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer).getProperEnergy(par2World);
+		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer);
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
 		
-		if(inf.isShooting && canShoot(inf)){
+		if(inf.isShooting && canShoot(par3EntityPlayer, par1ItemStack)){
 			par2World.spawnEntityInWorld(new EntityEgonRay(par2World, par3EntityPlayer, par1ItemStack));
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_WINDUP, 0.5F, 1.0F);
 		}
@@ -94,11 +95,11 @@ public class Weapon_egon extends WeaponGeneralEnergy {
     }
 	
 	@Override
-	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, Entity par3Entity, InformationEnergy information ){
+	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationEnergy information ){
 		
-		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "fire");	
-    	if(par3Entity instanceof EntityPlayerSP)
-    		doUplift(information, (EntityPlayer) par3Entity);
+		BulletManager.Shoot(par1ItemStack, player, par2World, "fire");	
+    	if(player instanceof EntityPlayerSP)
+    		doUplift(information, player);
     	
 		return;
 	}

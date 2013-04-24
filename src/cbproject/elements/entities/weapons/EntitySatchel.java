@@ -45,6 +45,7 @@ public class EntitySatchel extends EntityThrowable {
 	
 	public void Explode(){
 		
+		this.posY = -1;
 		float var1=2.0F; //TNT的一半
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
@@ -118,7 +119,7 @@ public class EntitySatchel extends EntityThrowable {
 			onGround = true;
 			break;
 		case 0:
-			motionY = -0.1 * motionY;
+			motionY = -0.01 * motionY;
 			break;
 		case 2:
 		case 3:

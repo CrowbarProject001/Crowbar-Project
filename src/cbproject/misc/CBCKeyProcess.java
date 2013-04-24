@@ -41,7 +41,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  * Generally handle the keyPress event,load key config in .cfg.
  * Not all keys are processed here, some are within item's handle classes.
  */
-@SideOnly(Side.CLIENT)
 public class CBCKeyProcess extends KeyHandler{
 	
 	public static int Key_ModeChange, Key_Reload;
@@ -68,13 +67,13 @@ public class CBCKeyProcess extends KeyHandler{
 		
 	}
 	
-	public static void onModeChange(ItemStack itemStack, InformationSet inf, EntityPlayer player, int maxModes){
+	public static void onModeChange(ItemStack itemStack, InformationWeapon inf, EntityPlayer player, int maxModes){
 		
 			modeChange = false;
 			if(!player.worldObj.isRemote)
 				return;
 			
-			InformationWeapon sv = inf.clientReference;
+			InformationWeapon sv = inf;
 			sv.mode = (maxModes -1 <= sv.mode) ? 0 : sv.mode +1;
 			WeaponGeneral weapon = (WeaponGeneral) itemStack.getItem();
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(12);
