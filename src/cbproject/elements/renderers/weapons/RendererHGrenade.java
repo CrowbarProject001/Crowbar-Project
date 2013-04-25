@@ -4,7 +4,7 @@ package cbproject.elements.renderers.weapons;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cbproject.elements.items.ItemsRegister;
+import cbproject.elements.items.CBCItems;
 import cbproject.proxy.ClientProxy;
 
 import cpw.mods.fml.relauncher.Side;

@@ -3,8 +3,11 @@ package cbproject.misc;
 import java.io.File;
 import java.net.URL;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import cbproject.CBCMod;
-import cbproject.elements.items.ItemsRegister;
+import cbproject.elements.items.CBCItems;
 import cbproject.elements.items.armor.ArmorHEV;
 
 
@@ -71,6 +74,7 @@ public class CBCEvents {
 	};
 	
 	@ForgeSubscribe
+	@SideOnly(Side.CLIENT)
 	public void onSound(SoundLoadEvent event)
 	{
 		

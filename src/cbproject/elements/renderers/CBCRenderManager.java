@@ -4,7 +4,7 @@ import cbproject.CBCMod;
 import cbproject.elements.blocks.BlockTripmineRay;
 import cbproject.elements.blocks.weapons.BlockTripmine;
 import cbproject.elements.entities.weapons.*;
-import cbproject.elements.items.ItemsRegister;
+import cbproject.elements.items.CBCItems;
 import cbproject.elements.renderers.weapons.*;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -18,7 +18,7 @@ public class CBCRenderManager {
 	
 	private void Load(){
 		
-		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RendererHGrenade(ItemsRegister.weapon_hgrenade));
+		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RendererHGrenade(CBCItems.weapon_hgrenade));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySatchel.class, new RenderSatchel());
 		RenderingRegistry.registerEntityRenderingHandler(EntityARGrenade.class, new RenderARGrenade());

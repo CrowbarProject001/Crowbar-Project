@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import cbproject.CBCMod;
+import cbproject.elements.blocks.BlockWeaponCrafter.TileEntityWeaponCrafter;
 import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.elements.items.weapons.WeaponGeneralBullet;
 import cbproject.utils.weapons.InformationBullet;
@@ -17,6 +18,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -48,25 +51,28 @@ public class CBCPacketHandler implements IPacketHandler {
 			}
 			break;
 			
-			/*
-		case "CBCReload":
+		case "CBCCrafterScroll":
+			System.out.println("recieved packet");
 			try {
 				
-				double id = inputStream.readDouble();
+				int x = inputStream.readInt(),
+						y = inputStream.readInt(),
+						z = inputStream.readInt();
+				boolean direction = inputStream.readBoolean();
 
-				InformationSet inf = CBCMod.wpnInformation.getInformation(id);
-				InformationBullet information = inf.getServerAsBullet();
-				WeaponGeneralBullet item = (WeaponGeneralBullet) information.itemStack.getItem();
-				if(!information.isReloading){
-					System.out.println(information.player.worldObj.isRemote);
-					information.player.worldObj.playSoundAtEntity(information.player, item.getSoundReload(information.mode), 0.5F, 1.0F);
+				TileEntity te = Minecraft.getMinecraft().theWorld.getBlockTileEntity(x, y, z);
+				MinecraftServer.getServer().worldServerForDimension(1);
+				if(te == null || !(te instanceof TileEntityWeaponCrafter)){
+					System.err.println("Didn't get the right tileentity...");
+					return;
 				}
-				information.isReloading = true;
+				if(!te.worldObj.isRemote)
+					((TileEntityWeaponCrafter)te).addScrollFactor(direction);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			*/
+			break;
 		default:
 			break;
 		}

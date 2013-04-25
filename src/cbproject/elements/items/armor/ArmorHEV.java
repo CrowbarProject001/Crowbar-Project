@@ -3,7 +3,7 @@ package cbproject.elements.items.armor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
-import cbproject.elements.items.ItemsRegister;
+import cbproject.elements.items.CBCItems;
 import cbproject.proxy.ClientProxy;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.EnumArmorMaterial;
@@ -26,7 +26,7 @@ public class ArmorHEV extends ItemArmor implements IArmorTextureProvider  {
 
 	@Override
 	public String getArmorTextureFile(ItemStack itemstack) {
-		if(itemstack.getItem().itemID == ItemsRegister.armorHEVLeggings.itemID){
+		if(itemstack.getItem().itemID == CBCItems.armorHEVLeggings.itemID){
 			return ClientProxy.HEV_ARMOR_PATH[1];
 		} else {
 			return ClientProxy.HEV_ARMOR_PATH[0];

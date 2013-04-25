@@ -4,8 +4,10 @@ import cbproject.configure.Config;
 import cbproject.elements.items.ammos.*;
 import cbproject.elements.items.armor.ArmorHEV;
 import cbproject.elements.items.bullets.ItemBullet_Shotgun;
-import cbproject.elements.items.craft.ItemRefinedIronIngot;
+import cbproject.elements.items.craft.*;
 import cbproject.elements.items.weapons.*;
+import cbproject.elements.recipes.RecipeWeaponEntry;
+import cbproject.elements.recipes.RecipeWeapons;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
@@ -19,7 +21,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * @author WeAthFolD, mkpoli
  *
  */
-public class ItemsRegister {
+public class CBCItems {
 	
 	public static Weapon_crowbar weapon_crowbar;
 	public static Weapon_hgrenade weapon_hgrenade;
@@ -46,8 +48,11 @@ public class ItemsRegister {
 
 	public static ItemRefinedIronIngot itemRefinedIronIngot;
 	
+	public static ItemMaterial mat_accessories, mat_ammunition, mat_bio,
+		mat_heavy, mat_light, mat_pistol, mat_tech;
+	
 	public static ArmorHEV armorHEVBoot, armorHEVChestplate, armorHEVHelmet, armorHEVLeggings;
-	public ItemsRegister(Config conf){
+	public CBCItems(Config conf){
 		registerItems(conf);
 		return;
 	}
@@ -87,6 +92,13 @@ public class ItemsRegister {
 			armorHEVLeggings = new ArmorHEV(conf.GetItemID("armorHEVLeggings", 8003), 2);
 			armorHEVBoot = new ArmorHEV(conf.GetItemID("armorHEVBoot", 8000), 3);
 			
+			mat_accessories = new Material_accessories(conf.GetItemID("mat_a", 8050));
+			mat_ammunition = new Material_ammunition(conf.GetItemID("mat_b", 8051));
+			mat_bio = new Material_bio(conf.GetItemID("mat_c", 8052));
+			mat_heavy = new Material_heavy(conf.GetItemID("mat_d", 8053));
+			mat_light = new Material_light(conf.GetItemID("mat_e", 8054));
+			mat_pistol = new Material_pistol(conf.GetItemID("mat_f", 8055));
+			mat_tech = new Material_tech(conf.GetItemID("mat_g", 8056));
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
@@ -123,6 +135,20 @@ public class ItemsRegister {
 		LanguageRegistry.addName(armorHEVChestplate, "HEV chestplate");
 		LanguageRegistry.addName(armorHEVLeggings, "HEV leggings");
 		
+		LanguageRegistry.addName(mat_accessories, "Accessories Material");
+		LanguageRegistry.addName(mat_heavy, "Heavy Material");
+		LanguageRegistry.addName(mat_light, "Light Material");
+		LanguageRegistry.addName(mat_pistol, "Pistol Material");
+		LanguageRegistry.addName(mat_tech, "Tech Material");
+		LanguageRegistry.addName(mat_bio, "Bio Material");
+		LanguageRegistry.addName(mat_ammunition, "Ammunition Material");
+		
+
+        addRecipes();
+		return;
+	}
+	
+	public void addRecipes(){
         //Recipes
         ItemStack rosereddyeStack = new ItemStack(351,1,0);
         ItemStack ingotIronStack = new ItemStack(Item.ingotIron);
@@ -134,7 +160,15 @@ public class ItemsRegister {
         //Smeltings
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(itemRefinedIronIngot.itemID,1,0) );
         
+        RecipeWeaponEntry recipeWeapons[] = { 
+        		new RecipeWeaponEntry(new ItemStack(weapon_9mmhandgun), 500, new ItemStack(mat_pistol, 2)),
+        		new RecipeWeaponEntry(new ItemStack(weapon_357), 500, new ItemStack(mat_pistol, 3), new ItemStack(mat_accessories, 2)),
+        		new RecipeWeaponEntry(new ItemStack(weapon_gauss), 500, new ItemStack(mat_light, 2), new ItemStack(mat_tech, 3)),
+        		new RecipeWeaponEntry(new ItemStack(weapon_egon), 500, new ItemStack(mat_heavy, 2), new ItemStack(mat_tech, 4)),
+        		new RecipeWeaponEntry(new ItemStack(weapon_shotgun), 500, new ItemStack(mat_light, 5), new ItemStack(Item.diamond, 2)),
+        		new RecipeWeaponEntry(new ItemStack(weapon_9mmhandgun), 500, new ItemStack(mat_tech, 3))
+        		};
+        RecipeWeapons.addWeaponRecipe(recipeWeapons);
         
-		return;
 	}
 }

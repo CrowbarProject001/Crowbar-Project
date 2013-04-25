@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
 import cbproject.elements.entities.weapons.EntityARGrenade;
-import cbproject.elements.items.ItemsRegister;
+import cbproject.elements.items.CBCItems;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.weapons.AmmoManager;
 import cbproject.utils.weapons.BulletManager;
@@ -77,7 +77,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
     		
     	} else {
     		
-    		if(par3Entity.capabilities.isCreativeMode  || AmmoManager.tryConsume(par3Entity, ItemsRegister.itemAmmo_ARGrenade.itemID, 1) == 0){
+    		if(par3Entity.capabilities.isCreativeMode  || AmmoManager.tryConsume(par3Entity, CBCItems.itemAmmo_ARGrenade.itemID, 1) == 0){
     			par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
     			par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);	
     		}

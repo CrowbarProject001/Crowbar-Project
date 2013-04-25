@@ -2,7 +2,8 @@ package cbproject;
 
 import cbproject.configure.Config;
 import cbproject.elements.blocks.CBCBlocks;
-import cbproject.elements.items.ItemsRegister;
+import cbproject.elements.items.CBCItems;
+import cbproject.elements.recipes.RecipeWeapons;
 import cbproject.elements.renderers.CBCRenderManager;
 import cbproject.misc.CBCEvents;
 import cbproject.misc.CBCGuiHandler;
@@ -32,6 +33,8 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkMod.NULL;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 /**
@@ -41,16 +44,16 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="lambdacraft",name="lambdacraft",version="0.0.0.1")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
-serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeaponMode"}, packetHandler = CBCPacketHandler.class ))
+serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeaponMode", "CBCCrafterScroll"}, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
 {
 	
-	public static ItemsRegister cbcItems;
+	public static CBCItems cbcItems;
 	public static CBCBlocks cbcBlocks;;
 	public static CreativeTabs cct = new CCT("CBCMod");
 	public static CBCRenderManager renderManager;
-	public static CBCKeyProcess keyProcess;
 	public static CBCWeaponInformation wpnInformation;
+	public static RecipeWeapons recipeWeapons;
 	
 	public static final int RENDER_TYPE_TRIPMINE = RenderingRegistry.getNextAvailableRenderId();;
 	public static final int RENDER_TYPE_TRIPMINE_RAY = RenderingRegistry.getNextAvailableRenderId();;
@@ -80,11 +83,12 @@ public class CBCMod
 	public void init(FMLInitializationEvent Init){
 		
 		//Items, Blocks, Recipes, Key registers, Weapon information loads.
-		cbcItems=new ItemsRegister(config);
+		cbcItems=new CBCItems(config);
 		cbcBlocks = new CBCBlocks(config);
-		keyProcess = new CBCKeyProcess(config);
 		wpnInformation = new CBCWeaponInformation();
-		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess(config));
+		recipeWeapons = new RecipeWeapons();
+		if(Init.getSide() == Side.CLIENT)
+			KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess(config));
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		Proxy.init();
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "en_US", "LambdaCraft");
