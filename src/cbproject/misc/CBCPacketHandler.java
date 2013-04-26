@@ -5,7 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import cbproject.CBCMod;
-import cbproject.elements.blocks.BlockWeaponCrafter.TileEntityWeaponCrafter;
+import cbproject.elements.blocks.tileentities.TileEntityWeaponCrafter;
 import cbproject.elements.items.weapons.WeaponGeneral;
 import cbproject.elements.items.weapons.WeaponGeneralBullet;
 import cbproject.utils.weapons.InformationBullet;
@@ -39,6 +39,8 @@ public class CBCPacketHandler implements IPacketHandler {
 				int mode = inputStream.readInt();
 
 				InformationSet inf = CBCMod.wpnInformation.getInformation(weaponID);
+				if(inf == null)
+					return;
 				InformationWeapon information = inf.serverReference;
 				WeaponGeneral item = (WeaponGeneral) information.itemStack.getItem();
 				item.onModeChange(information.itemStack, information.player.worldObj, mode);
@@ -52,18 +54,18 @@ public class CBCPacketHandler implements IPacketHandler {
 			break;
 			
 		case "CBCCrafterScroll":
-			System.out.println("recieved packet");
 			try {
-				
+				short dimention = inputStream.readShort();
 				int x = inputStream.readInt(),
 						y = inputStream.readInt(),
 						z = inputStream.readInt();
 				boolean direction = inputStream.readBoolean();
 
-				TileEntity te = Minecraft.getMinecraft().theWorld.getBlockTileEntity(x, y, z);
-				MinecraftServer.getServer().worldServerForDimension(1);
+				System.out.println("Dimension : " + dimention);
+				TileEntity te = MinecraftServer.getServer().worldServerForDimension(dimention).getBlockTileEntity(x, y, z);
 				if(te == null || !(te instanceof TileEntityWeaponCrafter)){
-					System.err.println("Didn't get the right tileentity...");
+					if(te != null)
+						te.validate();
 					return;
 				}
 				if(!te.worldObj.isRemote)

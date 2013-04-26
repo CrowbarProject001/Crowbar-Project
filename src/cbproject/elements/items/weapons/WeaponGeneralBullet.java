@@ -82,14 +82,14 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     		return;
     	}
     	information.updateTick();
-    	
+    	/*
     	if(Keyboard.isKeyDown(CBCKeyProcess.Key_Reload)){
     		System.out.println(par2World.isRemote);
     		if(!information.isReloading)
     			par2World.playSoundAtEntity(par3Entity, getSoundReload(information.mode), 0.5F, 1.0F);
     		information.isReloading = true;
     	}
-    	
+    	*/
     	EntityPlayer player = (EntityPlayer) par3Entity;
     	if(!player.isUsingItem())
     		information.isShooting  = false;

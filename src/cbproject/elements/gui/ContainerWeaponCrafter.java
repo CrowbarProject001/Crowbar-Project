@@ -1,23 +1,20 @@
 package cbproject.elements.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.elements.blocks.BlockWeaponCrafter.TileEntityWeaponCrafter;
-import cbproject.elements.items.CBCItems;
-import cbproject.elements.recipes.RecipeWeaponEntry;
-import cbproject.elements.recipes.RecipeWeapons;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
+import cbproject.elements.blocks.tileentities.TileEntityWeaponCrafter;
+import cbproject.elements.recipes.RecipeWeaponEntry;
+import cbproject.elements.recipes.RecipeWeapons;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerWeaponCrafter extends Container {
 
 	public TileEntityWeaponCrafter tileEntity;
-	public boolean doesScroll;
 	public int scrollFactor;
 	
 	public ContainerWeaponCrafter(InventoryPlayer inventoryPlayer, TileEntityWeaponCrafter te) {
@@ -36,7 +33,6 @@ public class ContainerWeaponCrafter extends Container {
 		
 		addSlotToContainer(new Slot(te, 13, 136, 63));
 		Slot s = addSlotToContainer(new SlotResult(te, 12, 136, 19));
-		System.out.println("sz : " + s.slotNumber);
 		//Block Storage
 		for(int i = 0; i < 2; i++){
 			for(int j = 0; j < 9; j++){
@@ -46,7 +42,6 @@ public class ContainerWeaponCrafter extends Container {
 		
 		bindPlayerInventory(inventoryPlayer);
 		
-		doesScroll = RecipeWeapons.doesNeedScrollBar();
 		scrollFactor = te.scrollFactor;
 		writeRecipeInfoToSlot();
 	}
@@ -58,16 +53,20 @@ public class ContainerWeaponCrafter extends Container {
         for (int i = 0; i < this.crafters.size(); ++i)
         {
             ICrafting icrafting = (ICrafting)this.crafters.get(i);
-            icrafting.sendProgressBarUpdate(this, 0, tileEntity.scrollFactor);
+            icrafting.sendProgressBarUpdate(this, (tileEntity.redraw) ? 1 : 0, tileEntity.scrollFactor);
+            if(tileEntity.redraw)
+            	tileEntity.redraw = false;
         }
     }
 	
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
-    	if(this.scrollFactor != tileEntity.scrollFactor){
-    		scrollFactor = tileEntity.scrollFactor;
+    	if(this.scrollFactor != par2){
+    		scrollFactor = par2;
     		writeRecipeInfoToSlot();
     	}
+    	if(par1 == 1)
+    		writeRecipeInfoToSlot();
     }
 
 	
@@ -87,12 +86,6 @@ public class ContainerWeaponCrafter extends Container {
 		for(int i = 0; i < 12; i++){
 				tileEntity.setInventorySlotContents(i, null);
 		}
-	}
-
-	private int getHeatBySlot(int slot){
-		if(slot < 9 || slot > 11)
-			return -1;
-		return RecipeWeapons.getRecipe(scrollFactor + slot - 9).heatRequired;
 	}
 	
     @Override
@@ -119,7 +112,6 @@ public class ContainerWeaponCrafter extends Container {
     public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
             ItemStack stack = null;
             Slot slotObject = (Slot) inventorySlots.get(slot);
-            System.out.println("Slot ID : " + slot);
             //null checks and checks if the item can be stacked (maxStackSize > 1)
             if (slotObject != null && slotObject.getHasStack()) {
                     ItemStack stackInSlot = slotObject.getStack();

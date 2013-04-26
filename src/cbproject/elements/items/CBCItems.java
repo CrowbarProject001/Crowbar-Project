@@ -1,6 +1,7 @@
 package cbproject.elements.items;
 
 import cbproject.configure.Config;
+import cbproject.elements.blocks.CBCBlocks;
 import cbproject.elements.items.ammos.*;
 import cbproject.elements.items.armor.ArmorHEV;
 import cbproject.elements.items.bullets.ItemBullet_Shotgun;
@@ -8,6 +9,7 @@ import cbproject.elements.items.craft.*;
 import cbproject.elements.items.weapons.*;
 import cbproject.elements.recipes.RecipeWeaponEntry;
 import cbproject.elements.recipes.RecipeWeapons;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
@@ -49,7 +51,9 @@ public class CBCItems {
 	public static ItemRefinedIronIngot itemRefinedIronIngot;
 	
 	public static ItemMaterial mat_accessories, mat_ammunition, mat_bio,
-		mat_heavy, mat_light, mat_pistol, mat_tech;
+		mat_heavy, mat_light, mat_pistol, mat_tech, mat_explosive;
+	
+	public static ItemIronBar ironBar;
 	
 	public static ArmorHEV armorHEVBoot, armorHEVChestplate, armorHEVHelmet, armorHEVLeggings;
 	public CBCItems(Config conf){
@@ -99,6 +103,9 @@ public class CBCItems {
 			mat_light = new Material_light(conf.GetItemID("mat_e", 8054));
 			mat_pistol = new Material_pistol(conf.GetItemID("mat_f", 8055));
 			mat_tech = new Material_tech(conf.GetItemID("mat_g", 8056));
+			mat_explosive = new Material_explosive(conf.GetItemID("mat_h", 8057));
+			
+			ironBar = new ItemIronBar(conf.GetItemID("ironBar", 8058));
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
@@ -142,23 +149,70 @@ public class CBCItems {
 		LanguageRegistry.addName(mat_tech, "Tech Material");
 		LanguageRegistry.addName(mat_bio, "Bio Material");
 		LanguageRegistry.addName(mat_ammunition, "Ammunition Material");
+		LanguageRegistry.addName(mat_explosive, "Explosiove Material");
 		
-
-        addRecipes();
+		LanguageRegistry.addName(ironBar, "Refined Iron Bar");
+		
+		this.addRecipes();
 		return;
 	}
 	
-	public void addRecipes(){
+	public static void addRecipes(){
         //Recipes
         ItemStack rosereddyeStack = new ItemStack(351,1,0);
         ItemStack ingotIronStack = new ItemStack(Item.ingotIron);
         ItemStack crowbarStack = new ItemStack(weapon_crowbar);
-        ModLoader.addShapelessRecipe(crowbarStack, rosereddyeStack);
         GameRegistry.addShapelessRecipe(crowbarStack, rosereddyeStack,ingotIronStack);
-        //End Crowbar
+
+        ItemStack output[] = {
+        		new ItemStack(mat_pistol, 3),
+        		new ItemStack(mat_accessories, 3),
+        		new ItemStack(mat_light, 3),
+        		new ItemStack(mat_heavy, 3),
+        		new ItemStack(mat_explosive, 4),
+        		new ItemStack(mat_bio, 3),
+        		new ItemStack(mat_ammunition, 4),
+        		new ItemStack(mat_tech, 3)
+        };
+        
+        ItemStack sredstone = new ItemStack(Item.redstone),
+        		swood = new ItemStack(Block.wood),
+        		sglow = new ItemStack(Item.lightStoneDust),
+        		sstick = new ItemStack(Item.stick),
+        		srefined = new ItemStack(itemRefinedIronIngot),
+        		sglass = new ItemStack(Block.glass),
+        		scoal = new ItemStack(Item.coal),
+        		sgold = new ItemStack(Item.ingotGold),
+        		sblazep = new ItemStack(Item.blazePowder),
+        		sdiamond = new ItemStack(Item.diamond),
+        		sbrefined = new ItemStack(CBCBlocks.blockRefined),
+        		sbredstone = new ItemStack(Block.blockRedstone),
+        		sgunpowder = new ItemStack(Item.gunpowder),
+        		sflint = new ItemStack(Item.flint),
+        		sfspieye = new ItemStack(Item.fermentedSpiderEye),
+        		srotten = new ItemStack(Item.rottenFlesh),
+        		smagma = new ItemStack(Item.magmaCream);
+ 
+        Object input[][] = new Object[][]{
+        		{"ABA", "CCC", "DBD", 'A', sredstone,'B', sglass, 'C', srefined, 'D', swood},
+        		{"ABA", "CDC", "EBE", 'A', sstick, 'B', sglass, 'C', scoal, 'D', sglow, 'E', srefined},
+        		{"ABA", "CDC", "EBE", 'A', sglow, 'B', sglass, 'C', sgold, 'D', srefined, 'E', swood},
+        		{"ABA", "CDC", "EBE", 'A', sblazep, 'B', sglass, 'C', sdiamond, 'D', sbrefined, 'E', swood},
+        		{"ABA", "CCC", "DBD", 'A', sredstone, 'B', sglass, 'C', sgunpowder, 'D', sflint},
+        		{"ABA", "DED", "CBC", 'A', sfspieye, 'B', sglass, 'C', srotten, 'E', smagma, 'D', sblazep},
+        		{"ABA", "CDC", "ABA", 'A', sgunpowder, 'B', sglass, 'C', srefined, 'D', sredstone},
+        		{"ABA", "CDC", "EBE", 'A', sglow, 'B', sglass, 'C',sbredstone, 'D', sdiamond, 'E', sgold}
+        
+        };
+        
+        for(int i = 0; i < output.length; i++){
+        	GameRegistry.addRecipe(output[i], input[i]);
+        }
+        
 
         //Smeltings
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(itemRefinedIronIngot.itemID,1,0) );
+        
         
         RecipeWeaponEntry recipeWeapons[] = { 
         		new RecipeWeaponEntry(new ItemStack(weapon_9mmhandgun), 500, new ItemStack(mat_pistol, 2)),
@@ -171,4 +225,5 @@ public class CBCItems {
         RecipeWeapons.addWeaponRecipe(recipeWeapons);
         
 	}
+	
 }

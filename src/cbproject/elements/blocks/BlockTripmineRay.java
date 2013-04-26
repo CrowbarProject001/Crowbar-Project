@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.CBCMod;
+import cbproject.elements.blocks.tileentities.TileEntityTripmineRay;
 import cbproject.elements.blocks.weapons.BlockTripmine;
 import cbproject.proxy.ClientProxy;
 import cbproject.utils.BlockPos;
@@ -35,10 +36,6 @@ public class BlockTripmineRay extends BlockContainer {
 		setTickRandomly(true);
 		setUnlocalizedName("blockTripmineRay");
 	}
-	
-	public class TileEntityTripmineRay extends TileEntity{
-		
-	};
 	
 	@Override
 	public int getRenderType() {

@@ -75,7 +75,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		if(inf.mode == 1) {
 			inf.resetState();
 			inf.isShooting = true;
-			if(AmmoManager.hasAmmo(this, par3EntityPlayer))
+			if(canShoot(par3EntityPlayer, par1ItemStack))
 				par2World.playSoundAtEntity(par3EntityPlayer, SND_CHARGEA_PATH[0], 0.5F, 1.0F);	
 		}
 		return par1ItemStack;
@@ -150,7 +150,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			return;
 		}
 		int damage = charge * 2/3; //最大为40
-		double vel = charge / 15; //最大为4
+		double vel = charge / 10; //最大为4
 
 		MotionXYZ var0 = MotionXYZ.getPosByPlayer2(par3EntityPlayer);
 		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ * vel;

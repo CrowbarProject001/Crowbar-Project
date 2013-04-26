@@ -1,11 +1,10 @@
 package cbproject.misc;
 
-import cbproject.elements.blocks.BlockWeaponCrafter.TileEntityWeaponCrafter;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+import cbproject.elements.blocks.tileentities.TileEntityWeaponCrafter;
 import cbproject.elements.gui.ContainerWeaponCrafter;
 import cbproject.elements.gui.GuiWeaponCrafter;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CBCGuiHandler implements IGuiHandler {

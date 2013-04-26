@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumMovingObjectType;
@@ -45,7 +46,6 @@ public class EntitySatchel extends EntityThrowable {
 	
 	public void Explode(){
 		
-		this.posY = -1;
 		float var1=2.0F; //TNT的一半
 	    for (int var3 = 0; var3 < 8; ++var3)
 	    {
@@ -77,6 +77,7 @@ public class EntitySatchel extends EntityThrowable {
 				}
 			}
 		}
+		this.posY = -1;
 		this.setDead();
 		
 	}
@@ -142,6 +143,11 @@ public class EntitySatchel extends EntityThrowable {
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
+		NBTTagCompound nbt = getThrower().getEntityData();
+		boolean doesExplode = nbt.getBoolean("doesExplode");
+		if(doesExplode)
+			Explode();
+		
 		if (this.onGround)
         {
             this.motionX *= 0.7D;

@@ -83,8 +83,10 @@ public class CBCMod
 	public void init(FMLInitializationEvent Init){
 		
 		//Items, Blocks, Recipes, Key registers, Weapon information loads.
-		cbcItems=new CBCItems(config);
+		
 		cbcBlocks = new CBCBlocks(config);
+		cbcItems=new CBCItems(config);
+		
 		wpnInformation = new CBCWeaponInformation();
 		recipeWeapons = new RecipeWeapons();
 		if(Init.getSide() == Side.CLIENT)

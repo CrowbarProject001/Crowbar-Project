@@ -16,13 +16,13 @@ public class SlotLocked extends Slot {
     public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)   {
     }
 	
-	/*
+	
 	@Override
     public boolean getHasStack()
     {
-        return true;
+        return false;
     }
-	*/
+	
     public ItemStack decrStackSize(int par1){
         return null;
     }

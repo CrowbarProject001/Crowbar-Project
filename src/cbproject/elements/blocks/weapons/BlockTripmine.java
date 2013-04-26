@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.CBCMod;
 import cbproject.elements.blocks.CBCBlocks;
+import cbproject.elements.blocks.tileentities.TileEntityTripmine;
 import cbproject.proxy.ClientProxy;
 
 
@@ -43,10 +44,6 @@ public class BlockTripmine extends BlockContainer {
 	
 	public static final int RAY_RANGE = 30;
 	public static final int NOTIFY_ID = 4098;
-	
-	public class TileEntityTripmine extends TileEntity{
-		
-	};
 	
 	public BlockTripmine(int par1) {
 		

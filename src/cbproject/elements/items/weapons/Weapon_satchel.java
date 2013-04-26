@@ -3,6 +3,8 @@
  */
 package cbproject.elements.items.weapons;
 
+import org.bouncycastle.util.Arrays;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.CBCMod;
@@ -81,56 +83,33 @@ public class Weapon_satchel extends WeaponGeneral {
 		if(inf == null)
 			return par1ItemStack;
 		System.out.println("To 2");
+		
 		int mode = inf.mode;
-		inf.satchelIDs = this.getSatchelsFromPlayer(par3EntityPlayer);
-		if(inf.satchelIDs.length < 6){
-			int []temp = new int[6];
-			for(int i = 0; i < inf.satchelIDs.length; i++)
-				temp[i] = inf.satchelIDs[i];
-			inf.satchelIDs = temp;
-		}
+		
+		NBTTagCompound nbt = par3EntityPlayer.getEntityData();
+		int count = nbt.getInteger("satchelCount");
+		
 		//Max 6 satchel
 		if(mode == 0){ //Setting mode
-			
-			if(!inf.canAddSatchel())
+			if(count > 5)
 				return par1ItemStack;
-			System.out.println("To 3");
+			
+			nbt.setBoolean("doesExplode", false);
 			EntitySatchel ent = new EntitySatchel(par2World, par3EntityPlayer);
-			inf.addSatchel(ent.entityId);
-			System.out.println(ent.entityId);
 			par2World.spawnEntityInWorld(ent);	
+			nbt.setInteger("satchelCount", ++count);
 			if( !par3EntityPlayer.capabilities.isCreativeMode)
 				AmmoManager.tryConsume(par3EntityPlayer,this.itemID , 1);
 			
 		} else { //Detonating mode
-			
-			for(int id : inf.satchelIDs){
-				Entity ent = par2World.getEntityByID(id);
-				System.out.println(id);
-				if(ent != null)
-					System.out.println(ent.getEntityName());
-				if(ent != null && ent instanceof EntitySatchel)
-					((EntitySatchel)ent).Explode();
-			}
-			inf.clearSatchel();
-			
+			nbt.setBoolean("doesExplode", true);
+			nbt.setInteger("satchelCount", 0);
 		}
 		
-		System.out.println(inf.satchelIDs.toString());
 		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		par3EntityPlayer.setEating(false);
-		writeInformationToPlayer(inf, par3EntityPlayer);
 		return par1ItemStack;
     }
-	
-	public void writeInformationToPlayer(InformationSatchel inf, EntityPlayer player){
-		NBTTagCompound nbt = player.getEntityData();
-		nbt.setIntArray("satchelIDs", inf.satchelIDs);
-	}
-	
-	public int[] getSatchelsFromPlayer(EntityPlayer player){
-		return player.getEntityData().getIntArray("satchelIDs");
-	}
 	
 	@Override
 	public InformationSatchel getInformation(ItemStack itemStack, World world){	

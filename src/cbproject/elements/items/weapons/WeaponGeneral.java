@@ -61,9 +61,9 @@ public abstract class WeaponGeneral extends Item {
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
 			return null;	
 		
-
-		if(CBCKeyProcess.modeChange)
-			CBCKeyProcess.onModeChange(par1ItemStack, information, (EntityPlayer) par3Entity, maxModes);	
+		if(par2World.isRemote && CBCKeyProcess.modeChange)
+				CBCKeyProcess.onModeChange(par1ItemStack, information, (EntityPlayer) par3Entity, maxModes);
+		
 		if(information == null){
 			System.err.println(par2World.isRemote + " side is null");
 			return null;

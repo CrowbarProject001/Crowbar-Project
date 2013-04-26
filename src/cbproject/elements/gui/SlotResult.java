@@ -1,6 +1,5 @@
 package cbproject.elements.gui;
 
-import cbproject.elements.blocks.BlockWeaponCrafter.TileEntityWeaponCrafter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

@@ -3,23 +3,17 @@ package cbproject.elements.gui;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
-import org.lwjgl.input.Keyboard;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.network.packet.Packet250CustomPayload;
+
 import org.lwjgl.opengl.GL11;
 
+import cbproject.elements.blocks.BlockWeaponCrafter.CrafterIconType;
+import cbproject.elements.blocks.tileentities.TileEntityWeaponCrafter;
+import cbproject.proxy.ClientProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
-
-import cbproject.elements.blocks.BlockWeaponCrafter.TileEntityWeaponCrafter;
-import cbproject.proxy.ClientProxy;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.util.StatCollector;
 
 public class GuiWeaponCrafter extends CBCGuiContainer {
 
@@ -73,6 +67,17 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         int y = (height - ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
         this.drawButtons();
+        int dy = 0;
+        if(te.worldObj.getWorldTime() - te.lastTime < 20){
+        	if(te.iconType == CrafterIconType.SUCCESSFUL)
+        		dy = 16;
+        	else if(te.iconType == CrafterIconType.NOMATERIAL)
+            	dy = 60;
+        } else {
+        	dy = 38;
+        }
+        drawTexturedModalRect(x + 160, y + dy, 232, dy, 8, 18);
+        
 	}
 
 	@Override
@@ -83,10 +88,11 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 			boolean isDown = button.buttonName == "down" ? true: false;
 			
 			te.addScrollFactor(isDown);
-			ByteArrayOutputStream bos = new ByteArrayOutputStream(13);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(15);
 			DataOutputStream outputStream = new DataOutputStream(bos);
 			
 			try {
+				outputStream.writeShort(te.worldObj.getWorldInfo().getDimension());
 				outputStream.writeInt(te.xCoord);
 				outputStream.writeInt(te.yCoord);
 				outputStream.writeInt(te.zCoord);
@@ -100,7 +106,6 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 			packet.data = bos.toByteArray();
 			packet.length = bos.size();
 			PacketDispatcher.sendPacketToServer(packet);
-			System.out.println(FMLCommonHandler.instance().getSide());
 			
 		}
 	}

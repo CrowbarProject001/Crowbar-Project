@@ -2,6 +2,7 @@ package cbproject.elements.renderers;
 
 import cbproject.CBCMod;
 import cbproject.elements.blocks.BlockTripmineRay;
+import cbproject.elements.blocks.tileentities.*;
 import cbproject.elements.blocks.weapons.BlockTripmine;
 import cbproject.elements.entities.weapons.*;
 import cbproject.elements.items.CBCItems;
@@ -34,8 +35,8 @@ public class CBCRenderManager {
 		
 		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
 		
-		ClientRegistry.bindTileEntitySpecialRenderer(BlockTripmine.TileEntityTripmine.class, new RenderTileTripmine());
-		ClientRegistry.bindTileEntitySpecialRenderer(BlockTripmineRay.TileEntityTripmineRay.class, new RenderTileTripmineRay());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripmine.class, new RenderTileTripmine());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripmineRay.class, new RenderTileTripmineRay());
 		
 		System.out.println("LambdaCraft renderers registered");
 		
