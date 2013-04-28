@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.items.ItemMaterial;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
@@ -11,12 +12,17 @@ import cbproject.crafting.recipes.RecipeWeapons;
 
 public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 
+	public static int MAX_HEAT = 4000;
+	
 	public ItemStack[] inventory;
 	public ItemStack[] craftingStacks;
 	public int scrollFactor = 0;
+	public int page = 0;
+	public int heat, burnTimeLeft, maxBurnTime;
+	public RecipeWeaponEntry currentRecipe;
 	public CrafterIconType iconType;
 	public long lastTime = 0;
-	public boolean redraw;
+	public boolean redraw, isCrafting, isBurning;
 
 	/**
 	 * 1-18 storage Inventory 19 furnace inventory 20 output inventory
@@ -29,10 +35,10 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	}
 
 	public void addScrollFactor(boolean isForward) {
-		if (!RecipeWeapons.doesNeedWeaponScrollBar())
+		if (!RecipeWeapons.doesNeedWeaponScrollBar(page))
 			return;
 		if (isForward) {
-			if (scrollFactor < RecipeWeapons.weaponRecipes.size() - 3) {
+			if (scrollFactor < RecipeWeapons.recipes[page].size() - 3) {
 				scrollFactor++;
 			}
 		} else {
@@ -42,30 +48,53 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		}
 	}
 
+    public void tryBurn(){
+    	if(inventory[1] != null && TileEntityFurnace.getItemBurnTime(inventory[1]) > 0){
+    		this.burnTimeLeft = TileEntityFurnace.getItemBurnTime(inventory[1]) / 2;
+    		this.maxBurnTime = this.burnTimeLeft;
+    		inventory[1].splitStack(1);
+    		isBurning = true;
+    	}
+    }
+	
 	@Override
 	public void updateEntity() {
+		if(heat > 0)
+			heat--;
+		
+		if(iconType == CrafterIconType.NOMATERIAL && worldObj.getWorldTime() - lastTime > 20){
+			iconType = isCrafting? CrafterIconType.CRAFTING : CrafterIconType.NONE;
+		}
+		
+		if(isCrafting){
+			if(currentRecipe.heatRequired <= this.heat && hasEnoughMaterial(currentRecipe)){
+				craftItem();
+			}
+        	if(!isBurning){
+        		tryBurn();
+        	}
+        	if(worldObj.getWorldTime() - lastTime > 500){
+        		isCrafting = false;
+        	}
+        }
+		if(isBurning){
+			burnTimeLeft--;
+			if(heat < MAX_HEAT)
+				heat+=3;
+			if(burnTimeLeft <= 0)
+				isBurning = false;
+		}
 		this.onInventoryChanged();
 	}
 
 	public void doItemCrafting(int slot) {
-		
 		RecipeWeaponEntry r = getRecipeBySlotAndScroll(slot, this.scrollFactor);
 
 		if (hasEnoughMaterial(r)) {
-			if (inventory[0] != null) {
-				if (!(inventory[0].itemID != r.output.itemID || inventory[0]
-						.isStackable()))
-					return;
-				if (inventory[0].isStackable()) {
-					if (inventory[0].stackSize >= inventory[0]
-							.getMaxStackSize())
-						return;
-					inventory[0].stackSize += r.output.stackSize;
-				}
-			} else
-				inventory[0] = r.output.copy();
-			consumeMaterial(r);
-			iconType = CrafterIconType.SUCCESSFUL;
+			resetCraftingState();
+			iconType = CrafterIconType.CRAFTING;
+			this.isCrafting = true;
+			this.currentRecipe = r;
 		} else {
 			iconType = CrafterIconType.NOMATERIAL;
 		}
@@ -73,6 +102,34 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		this.redraw = true;
 		this.onInventoryChanged();
 	    
+	}
+	
+	public void craftItem(){
+		if(this.currentRecipe == null){
+			resetCraftingState();
+			return;
+		}
+		if (inventory[0] != null) {
+			if (!(inventory[0].itemID != currentRecipe.output.itemID || inventory[0]
+					.isStackable()))
+				return;
+			if (inventory[0].isStackable()) {
+				if (inventory[0].stackSize >= inventory[0].getMaxStackSize()){
+					iconType = CrafterIconType.NOMATERIAL;
+					return;
+				}
+				inventory[0].stackSize += currentRecipe.output.stackSize;
+			}
+		} else
+			inventory[0] = currentRecipe.output.copy();
+		consumeMaterial(currentRecipe);
+		resetCraftingState();
+	}
+	
+	public void resetCraftingState(){
+		isCrafting = false;
+		currentRecipe = null;
+		iconType = CrafterIconType.NONE;
 	}
 
 	public boolean hasEnoughMaterial(RecipeWeaponEntry r) {
@@ -171,7 +228,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			i = 1;
 		if (slot == 8)
 			i = 2;
-		return RecipeWeapons.getWeaponRecipe(factor + i);
+		return RecipeWeapons.getRecipe(page, factor + i);
 	}
 
 	@Override

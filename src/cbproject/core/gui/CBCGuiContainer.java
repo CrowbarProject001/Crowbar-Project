@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import cbproject.core.gui.CBCGuiButton.ButtonState;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
@@ -27,8 +29,10 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		super.mouseClicked(par1, par2, par3);
 		for(CBCGuiButton b : buttons){
 			if(isPointWithin(b, par1, par2)){
-				b.isButtonDown = true;
-				onButtonClicked(b);
+				if(b.buttonState != ButtonState.INVAILD){
+					b.setButtonState(ButtonState.DOWN);
+					onButtonClicked(b);
+				}
 			}
 		}
     }
@@ -40,17 +44,46 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		if(par3 == 0 || par3 == 1){
 			for(CBCGuiButton b : buttons){
 				if(isPointWithin(b, par1, par2))
-					b.isButtonDown = false;
+					b.setButtonState(ButtonState.IDLE);
 			}
 		}
     }
+	
+	public void setButtonState(String buttonName, ButtonState state){
+		for(CBCGuiButton b : buttons){
+			if(b.buttonName == buttonName){
+				b.buttonState = state;
+				return;
+			}
+		}
+	}
+	
+	public ButtonState getButtonState(String name){
+		for(CBCGuiButton b : buttons){
+			if(b.buttonName == name)
+				return b.buttonState;
+		}
+		return null;
+	}
+	
 	
 	public void drawButtons(){
 		for(CBCGuiButton b : buttons){
 			int x = (width - xSize) / 2;
 	        int y = (height - ySize) / 2;
-	        int texU = b.isButtonDown? b.downTexU : b.idleTexU;
-	        int texV = b.isButtonDown? b.downTexV : b.idleTexV;
+	        int texU = 0, texV = 0;
+	        
+	        if(b.buttonState == ButtonState.IDLE){
+	        	texU = b.idleTexU;
+	        	texV = b.idleTexV;
+	        } else if (b.buttonState == ButtonState.DOWN){
+	        	texU = b.downTexU;
+	        	texV = b.downTexV;
+	        } else if (b.buttonState == ButtonState.INVAILD){
+	        	texU = b.invaildTexU;
+	        	texV = b.invaildTexV;
+	        }
+	        
 	        drawTexturedModalRect(x + b.posX, y + b.posY, texU, texV, b.width, b.height);
 		}
 	}

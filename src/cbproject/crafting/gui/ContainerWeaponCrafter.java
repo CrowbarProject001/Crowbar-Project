@@ -1,11 +1,13 @@
 package cbproject.crafting.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
 import cbproject.crafting.recipes.RecipeWeapons;
@@ -49,32 +51,32 @@ public class ContainerWeaponCrafter extends Container {
     public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
-
         for (int i = 0; i < this.crafters.size(); ++i)
         {
             ICrafting icrafting = (ICrafting)this.crafters.get(i);
-            icrafting.sendProgressBarUpdate(this, (tileEntity.redraw) ? 1 : 0, tileEntity.scrollFactor);
+            icrafting.sendProgressBarUpdate(this, 0, (tileEntity.redraw? -1 : 1) *tileEntity.scrollFactor);
             if(tileEntity.redraw)
             	tileEntity.redraw = false;
         }
     }
+
 	
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int par1, int par2) {
-    	if(this.scrollFactor != par2){
-    		scrollFactor = par2;
-    		writeRecipeInfoToSlot();
+    	
+    	if(par1 == 0){
+    		scrollFactor = Math.abs(par2);
+    		if(par2 > 0)
+    			writeRecipeInfoToSlot();
     	}
-    	if(par1 == 1)
-    		writeRecipeInfoToSlot();
     }
 
 	
 	private void writeRecipeInfoToSlot(){
 		clearRecipeInfo();
-		System.out.println(RecipeWeapons.weaponRecipes.size());
-		for(int i = 0; i < RecipeWeapons.weaponRecipes.size() && i < 3; i++){
-			RecipeWeaponEntry r = RecipeWeapons.weaponRecipes.get(i + scrollFactor);
+		int length = RecipeWeapons.getRecipeLength(tileEntity.page);
+		for(int i = 0; i < length&& i < 3; i++){
+			RecipeWeaponEntry r = RecipeWeapons.getRecipe(tileEntity.page, i + scrollFactor);
 			for(int j = 0; j < 3; j++){
 				if(r.input.length > j)
 					tileEntity.setInventorySlotContents(j + i*3, r.input[j]);

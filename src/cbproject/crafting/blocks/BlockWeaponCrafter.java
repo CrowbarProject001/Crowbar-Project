@@ -25,7 +25,7 @@ public class BlockWeaponCrafter extends BlockContainer {
 
 	public Icon iconSide, iconTop, iconBottom;
 	public enum CrafterIconType{
-		CRAFTING, NOMATERIAL, SUCCESSFUL, NONE;
+		CRAFTING, NOMATERIAL, NONE;
 	}
 	
 	public BlockWeaponCrafter(int par1) {
