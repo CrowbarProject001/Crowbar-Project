@@ -24,6 +24,7 @@ import cbproject.core.configure.Config;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cbproject.deathmatch.items.wpns.Weapon_satchel;
+import cbproject.deathmatch.network.NetDeathmatch;
 import cbproject.deathmatch.utils.InformationSet;
 import cbproject.deathmatch.utils.InformationWeapon;
 
@@ -70,28 +71,24 @@ public class CBCKeyProcess extends KeyHandler{
 	public static void onModeChange(ItemStack itemStack, InformationWeapon inf, EntityPlayer player, int maxModes){
 		
 			modeChange = false;
-			if(!player.worldObj.isRemote)
+			if(!player.worldObj.isRemote || itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral))
 				return;
-			
-			InformationWeapon sv = inf;
-			sv.mode = (maxModes -1 <= sv.mode) ? 0 : sv.mode +1;
-			WeaponGeneral weapon = (WeaponGeneral) itemStack.getItem();
-			ByteArrayOutputStream bos = new ByteArrayOutputStream(12);
-			DataOutputStream outputStream = new DataOutputStream(bos);
-			
-			try {
-				outputStream.writeDouble(itemStack.getTagCompound().getDouble("uniqueID"));
-		        outputStream.writeInt(sv.mode);
-			} catch (Exception ex) {
-		        ex.printStackTrace();
+
+			WeaponGeneral wpn = (WeaponGeneral) itemStack.getItem();
+			int stackInSlot = -1;
+			for(int i = 0; i < player.inventory.mainInventory.length; i++){
+				if(player.inventory.mainInventory[i] == itemStack){
+					stackInSlot = i;
+					break;
+				}
 			}
-			
-			Packet250CustomPayload packet = new Packet250CustomPayload();
-			packet.channel = "CBCWeaponMode";
-			packet.data = bos.toByteArray();
-			packet.length = bos.size();
-			PacketDispatcher.sendPacketToServer(packet);
-			player.sendChatToPlayer("New Mode: " + weapon.getModeDescription(sv.mode));
+			if(stackInSlot == -1){
+				System.err.println("Didn't find the right IS!");
+				return;
+			}
+			inf.mode = (maxModes -1 <= inf.mode) ? 0 : inf.mode +1;
+			player.sendChatToPlayer("New mode : " + wpn.getModeDescription(inf.mode));
+			NetDeathmatch.sendModePacket(stackInSlot, inf.mode);
 			
 	}
 

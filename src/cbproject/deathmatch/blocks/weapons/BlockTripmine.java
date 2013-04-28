@@ -19,6 +19,7 @@ import cbproject.core.props.ClientProps;
 import cbproject.core.proxy.ClientProxy;
 import cbproject.core.register.CBCBlocks;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
+import cbproject.deathmatch.utils.BulletManager;
 
 
 import net.minecraft.block.Block;
@@ -117,7 +118,7 @@ public class BlockTripmine extends BlockContainer {
 			}
 		}
     	
-    	Explode(par1World, par2, par3, par4);
+    	BulletManager.Explode(par1World, 4.0F, 4.0F, par2, par3, par4, 35);
     	par1World.setBlockToAir(par2, par3, par4);
     	super.breakBlock(par1World, par2, par3, par4, par5, par6);
     	
@@ -134,40 +135,6 @@ public class BlockTripmine extends BlockContainer {
     {
         return 0;
     }
-
-    private void Explode(World worldObj, int posX, int posY, int posZ){
-    	
-		float var1=1.5F; //鎵嬮浄鐨�.25鍊�
-		double dmg = 20.0F;
-	    for (int var3 = 0; var3 < 8; ++var3)
-	    {
-	            worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0D, 0.0D, 0.0D);
-	    }    
-	    
-		Explosion ex = worldObj.createExplosion(null, posX, posY, posZ, var1, true);
-		
-		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
-		List entitylist = worldObj.getEntitiesWithinAABBExcludingEntity(null, par2);
-		if(entitylist.size() > 0){
-			for(int i=0;i<entitylist.size();i++){
-				Entity ent = (Entity)entitylist.get(i);
-				if(!ent.isEntityInvulnerable() && ent instanceof EntityLiving){
-					int damage = 
-							(int) (Math.pow(
-						( Math.pow(ent.posX-posX,2) + 
-					      Math.pow(ent.posY-posY,2) + 
-					      Math.pow(ent.posZ-posZ,2) ) , 0.5) 
-					     /4 * dmg) ;
-					
-					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode)
-						return;
-					
-					ent.attackEntityFrom(DamageSource.setExplosionSource(ex), damage);
-					ent.setFire(20);
-				}
-			}
-		}
-	}
     
     @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
@@ -237,13 +204,16 @@ public class BlockTripmine extends BlockContainer {
 		Boolean var0 = true;
 		
 		System.out.println("Playced meta: " + var10);
+		int id;
 		for(int j = 0; var0 && j <RAY_RANGE ; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){
 			if(var10 == 1 || var10 == 3){
-				if(par1World.getBlockId(i, par3, par4) == 0){
+				id = par1World.getBlockId(i, par3, par4);
+				if(id == 0 || Block.blocksList[id].isBlockReplaceable(par1World, i, par3, par4)){
 				par1World.setBlock(i, par3, par4, CBCBlocks.blockTripmineRay.blockID, var10, 0x02);
 				} else var0 = false;
 			} else {
-				if(par1World.getBlockId(par2, par3, i) == 0){
+				id = par1World.getBlockId(par2, par3, i);
+				if(id == 0 || Block.blocksList[id].isBlockReplaceable(par1World, par2, par3, i)){
 					par1World.setBlock(par2, par3, i, CBCBlocks.blockTripmineRay.blockID, var10, 0x02);
 				} else var0 = false;
 			}

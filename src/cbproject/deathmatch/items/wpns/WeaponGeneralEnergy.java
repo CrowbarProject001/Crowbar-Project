@@ -189,7 +189,7 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 		
 		double uniqueID = Math.random()*65535D;
 		
-		CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer));
+		inf = CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer)).getProperEnergy(par2EntityPlayer.worldObj);
 		
 		if(par1ItemStack.stackTagCompound == null)
 			par1ItemStack.stackTagCompound = new NBTTagCompound();

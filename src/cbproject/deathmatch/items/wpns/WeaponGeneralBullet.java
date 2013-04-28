@@ -246,7 +246,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return inf;
 		
 		double uniqueID = Math.random()*65535D;
-		CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer));
+		inf = CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer)).getProperBullet(par2EntityPlayer.worldObj);
 		
 		if(par1ItemStack.stackTagCompound == null)
 			par1ItemStack.stackTagCompound = new NBTTagCompound();

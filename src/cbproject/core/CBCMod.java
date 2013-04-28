@@ -40,9 +40,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author WeAthFolD, mkpoli
  */
 
-@Mod(modid="lambdacraft",name="lambdacraft",version="0.0.0.1")
+@Mod(modid="lambdacraft",name="lambdacraft",version="0.8.0.0a")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
-serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeaponMode", "CBCCrafterScroll"}, packetHandler = CBCPacketHandler.class ))
+serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeaponMode", "CBCCrafter"}, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
 {
 	
@@ -79,6 +79,7 @@ public class CBCMod
 	public void init(FMLInitializationEvent Init){
 		
 		//Items, Blocks, Recipes, Key registers, Weapon information loads.
+		CBCLanguage.bindLanguage("zh_CN");
 		Proxy.init();
 		cbcBlocks = new CBCBlocks(config);
 		cbcItems=new CBCItems(config);

@@ -46,6 +46,22 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 				scrollFactor--;
 			}
 		}
+		redraw = true;
+		this.onInventoryChanged();
+	}
+	
+	public void addPage(boolean isForward) {
+		if (isForward) {
+			if (page < RecipeWeapons.recipes.length - 1) {
+				page++;
+			}
+		} else {
+			if (page > 0) {
+				page--;
+			}
+		}
+		redraw = true;
+		this.onInventoryChanged();
 	}
 
     public void tryBurn(){

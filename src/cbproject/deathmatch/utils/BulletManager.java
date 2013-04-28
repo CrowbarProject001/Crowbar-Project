@@ -19,6 +19,7 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class BulletManager {
@@ -33,6 +34,28 @@ public class BulletManager {
 	
 	public static void Shoot(ItemStack itemStack, EntityLiving entityPlayer, World worldObj, String effect){
 		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, entityPlayer, itemStack, effect));
+	}
+	
+	public static void Explode(World world,float strengh, double radius, double posX, double posY, double posZ, int additionalDamage){
+	    
+		Explosion ex = world.createExplosion(null, posX, posY, posZ, strengh, true);
+		
+		if(additionalDamage <= 0)
+			return;
+		
+		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
+		List entitylist = world.getEntitiesWithinAABBExcludingEntity(null, par2);
+		if(entitylist.size() > 0){
+			for(int i=0;i<entitylist.size();i++){
+				Entity ent = (Entity)entitylist.get(i);
+				if(ent instanceof EntityLiving){
+					double distance = Math.sqrt(Math.pow(ent.posX-posX,2) + Math.pow(ent.posY-posY,2) + Math.pow(ent.posZ-posZ,2));
+					int damage = (int) ((1 - distance/6.928) * additionalDamage);
+					System.out.println("explosion damage for distance " + distance + " : " + damage);
+					ent.attackEntityFrom(DamageSource.setExplosionSource(ex), damage);
+				}
+			}
+		}
 	}
 	
 }

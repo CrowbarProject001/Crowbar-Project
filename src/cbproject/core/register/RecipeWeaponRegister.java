@@ -1,13 +1,14 @@
 package cbproject.core.register;
 
 import net.minecraft.item.ItemStack;
+import cbproject.core.misc.CBCLanguage;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
 import cbproject.crafting.recipes.RecipeWeapons;
 
 public class RecipeWeaponRegister {
 	
 	public static void addRecipes(){
-		String description[] = {"Weapon Forging", "Ammo Crafting"};
+		String description[] = {"crafter.weapon", "crafter.ammo"};
 		RecipeWeapons.InitializeRecipes(2, description);
 		
 		RecipeWeaponEntry wpnRecipes[] = {
@@ -19,6 +20,11 @@ public class RecipeWeaponRegister {
 				new RecipeWeaponEntry(new ItemStack(CBCItems.weapon_RPG), 500, new ItemStack(CBCItems.mat_heavy, 3), new ItemStack(CBCItems.mat_accessories, 3), new ItemStack(CBCItems.mat_explosive, 2))
 		};
 		RecipeWeapons.addWeaponRecipe(0, wpnRecipes);
+		CBCLanguage.addDefaultName("crafter.weapon", "Weapon Forging");
+		CBCLanguage.addDefaultName("crafter.ammo", "Ammo Forging");
+		
+		CBCLanguage.addLocalName("crafter.weapon", "武器制造");
+		CBCLanguage.addLocalName("crafter.ammo", "弹药制造");
 	}
 	
 }

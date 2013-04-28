@@ -76,13 +76,9 @@ public class Weapon_satchel extends WeaponGeneral {
 	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		if(par1ItemStack.stackSize == 1)
-			return par1ItemStack;
-		System.out.println("To 1");
 		InformationSatchel inf = loadInformation(par1ItemStack, par3EntityPlayer);
 		if(inf == null)
 			return par1ItemStack;
-		System.out.println("To 2");
 		
 		int mode = inf.mode;
 		

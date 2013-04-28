@@ -187,14 +187,14 @@ public class CBCItems {
 		CBCLanguage.addLocalName(armorHEVChestplate, "HEV甲");
 		CBCLanguage.addLocalName(armorHEVLeggings, "HEV腿");
 		
-		CBCLanguage.addLocalName(mat_accessories, "配件材质");
-		CBCLanguage.addLocalName(mat_heavy, "重型材质");
-		CBCLanguage.addLocalName(mat_light, "轻型材质");
-		CBCLanguage.addLocalName(mat_pistol, "手枪材质");
-		CBCLanguage.addLocalName(mat_tech, "科技材质");
-		CBCLanguage.addLocalName(mat_bio, "生化材质");
-		CBCLanguage.addLocalName(mat_ammunition, "弹药材质");
-		CBCLanguage.addLocalName(mat_explosive, "爆裂材质");
+		CBCLanguage.addLocalName(mat_accessories, "配件材料");
+		CBCLanguage.addLocalName(mat_heavy, "重型材料");
+		CBCLanguage.addLocalName(mat_light, "轻型材料");
+		CBCLanguage.addLocalName(mat_pistol, "手枪材料");
+		CBCLanguage.addLocalName(mat_tech, "科技材料");
+		CBCLanguage.addLocalName(mat_bio, "生化材料");
+		CBCLanguage.addLocalName(mat_ammunition, "弹药材料");
+		CBCLanguage.addLocalName(mat_explosive, "爆裂材料");
 		
 		CBCLanguage.addLocalName(ironBar, "精铁条");
 	}

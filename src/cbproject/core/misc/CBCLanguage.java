@@ -24,5 +24,10 @@ public class CBCLanguage {
 			i.addStringLocalization((String) objectToName, name);
 		else i.addName(objectToName, name);
 	}
+	
+	public static void bindLanguage(String lang){
+		if(StringTranslate.getInstance().getLanguageList().containsKey(lang))
+			currentLanguage = lang;
+	}
 
 }

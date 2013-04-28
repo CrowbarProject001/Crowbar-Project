@@ -63,7 +63,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		
-		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
+		Boolean canUse = this.canShoot(par3Entity, par1ItemStack);
 		int mode = information.mode;
 		if(!canUse){
 			information.setLastTick();

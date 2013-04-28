@@ -54,7 +54,7 @@ public class ContainerWeaponCrafter extends Container {
         for (int i = 0; i < this.crafters.size(); ++i)
         {
             ICrafting icrafting = (ICrafting)this.crafters.get(i);
-            icrafting.sendProgressBarUpdate(this, 0, (tileEntity.redraw? -1 : 1) *tileEntity.scrollFactor);
+            icrafting.sendProgressBarUpdate(this, 0, (tileEntity.redraw? 1 : -1) *tileEntity.scrollFactor);
             if(tileEntity.redraw)
             	tileEntity.redraw = false;
         }
@@ -66,8 +66,9 @@ public class ContainerWeaponCrafter extends Container {
     	
     	if(par1 == 0){
     		scrollFactor = Math.abs(par2);
-    		if(par2 > 0)
+    		if(par2 >= 0){
     			writeRecipeInfoToSlot();
+    		}
     	}
     }
 

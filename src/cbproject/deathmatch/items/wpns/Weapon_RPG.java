@@ -53,9 +53,10 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		information.setLastTick();
 		if(this.canShoot(par3Entity, par1ItemStack)){
-			if(AmmoManager.consumeAmmo(par3Entity, this, 1) == 0){
+			if(this.canShoot(par3Entity, par1ItemStack)){
 				par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);
 				par2World.spawnEntityInWorld(new EntityRocket(par2World, par3Entity));
+				AmmoManager.consumeAmmo(par3Entity, this, 1);
 			}
 		}
 	}

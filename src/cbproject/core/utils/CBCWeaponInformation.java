@@ -28,8 +28,9 @@ public class CBCWeaponInformation {
 		map = new HashMap<Double, InformationSet>();
 	}
 	
-	public static void addToList(double uniqueID, InformationSet inf){
+	public static InformationSet addToList(double uniqueID, InformationSet inf){
 		map.put(uniqueID, inf);
+		return inf;
 	}
 	
 	public static InformationSet getInformation(double uniqueID){

@@ -17,6 +17,7 @@ import cbproject.core.props.ClientProps;
 import cbproject.core.proxy.ClientProxy;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
+import cbproject.crafting.network.NetWeaponCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -48,9 +49,13 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
     {
         super.initGui();
         CBCGuiButton up = new CBCGuiButton("up", 111, 19, 7, 6).setidleCoords(208, 13).setDownCoords(220, 13).setInvaildCoords(220, 6),
-        		down = new CBCGuiButton("down", 111, 74, 7, 6).setidleCoords(208, 43).setDownCoords(220, 43).setInvaildCoords(208, 6);
+        		down = new CBCGuiButton("down", 111, 74, 7, 6).setidleCoords(208, 43).setDownCoords(220, 43).setInvaildCoords(208, 6),
+        		left = new CBCGuiButton("left", 5, 2, 5, 6).setidleCoords(210, 53).setDownCoords(220, 53).setInvaildCoords(245, 53),
+        		right = new CBCGuiButton("right", 190, 2, 5, 6).setidleCoords(210, 63).setDownCoords(220, 63).setInvaildCoords(245, 63);
         this.addButton(up);
         this.addButton(down);
+        addButton(left);
+        addButton(right);
         this.updateButtonState();
     }
 	
@@ -62,7 +67,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
     {
     	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     	String storage = StatCollector.translateToLocal("crafter.storage");
-    	String currentPage = StatCollector.translateToLocal("crafter.weapons");
+    	String currentPage = StatCollector.translateToLocal(RecipeWeapons.pageDescriptions[te.page]);
         this.fontRenderer.drawString(storage, 8, 86, 4210752);
         fontRenderer.drawString(currentPage, 100 - fontRenderer.getStringWidth("Weapon Forger") / 2, 1, 4210752);
     }
@@ -94,7 +99,6 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         else if(te.iconType == CrafterIconType.CRAFTING)
         	dy = 16;
         else dy = 38;
-        System.out.println(te.iconType);
         drawTexturedModalRect(x + 160, y + 16, 232, dy, 8, 18);
         
         int height = te.heat * 64 / te.MAX_HEAT;
@@ -118,31 +122,19 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
-		switch(button.buttonName){
-		case "up":
-		case "down":
+		if(button.buttonName == "up" || button.buttonName =="down"){
 			boolean isDown = button.buttonName == "down" ? true: false;
 			te.addScrollFactor(isDown);
+			NetWeaponCrafter.sendCrafterPacket((short)te.worldObj.getWorldInfo().getDimension(), (short) 0, te.xCoord, te.yCoord, te.zCoord, isDown);
 			this.updateButtonState();
-			ByteArrayOutputStream bos = new ByteArrayOutputStream(15);
-			DataOutputStream outputStream = new DataOutputStream(bos);
-			
-			try {
-				outputStream.writeShort(te.worldObj.getWorldInfo().getDimension());
-				outputStream.writeInt(te.xCoord);
-				outputStream.writeInt(te.yCoord);
-				outputStream.writeInt(te.zCoord);
-		        outputStream.writeBoolean(isDown);
-			} catch (Exception ex) {
-		        ex.printStackTrace();
-			}
-			
-			Packet250CustomPayload packet = new Packet250CustomPayload();
-			packet.channel = "CBCCrafterScroll";
-			packet.data = bos.toByteArray();
-			packet.length = bos.size();
-			PacketDispatcher.sendPacketToServer(packet);
-			
+			return;
+		}
+		if(button.buttonName == "left" || button.buttonName == "right"){
+			boolean isForward = button.buttonName == "right" ? true: false;
+			te.addPage(isForward);
+			NetWeaponCrafter.sendCrafterPacket((short)te.worldObj.getWorldInfo().getDimension(), (short) 1, te.xCoord, te.yCoord, te.zCoord, isForward);
+			this.updateButtonState();
+			return;
 		}
 	}
 

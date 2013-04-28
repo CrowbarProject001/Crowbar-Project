@@ -2,6 +2,8 @@ package cbproject.deathmatch.entities;
 
 import java.util.List;
 
+import cbproject.deathmatch.utils.BulletManager;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,39 +43,7 @@ public class EntityRocket extends EntityThrowable {
 	}
 	
 	private void Explode(MovingObjectPosition pos){
-		
-		float var1=6.0F; //手雷的3倍
-		double dmg = 40.0F;
-	    for (int var3 = 0; var3 < 8; ++var3)
-	    {
-	            this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
-	    }    
-	    
-		Explosion ex = worldObj.createExplosion(this, pos.hitVec.xCoord, pos.hitVec.yCoord, pos.hitVec.zCoord, var1, true);
-		
-		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);
-		List entitylist = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, par2);
-		if(entitylist.size() > 0){
-			for(int i=0;i<entitylist.size();i++){
-				Entity ent = (Entity)entitylist.get(i);
-				if(!ent.isEntityInvulnerable() && ent instanceof EntityLiving){
-					int damage = 
-							(int) (Math.pow(
-						( Math.pow(ent.posX-posX,2) + 
-					      Math.pow(ent.posY-posY,2) + 
-					      Math.pow(ent.posZ-posZ,2) ) , 0.5) 
-					     /4 * dmg) ;
-					
-					if( ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.isCreativeMode)
-						return;
-					
-				
-					ent.attackEntityFrom(DamageSource.setExplosionSource(ex), damage);
-					ent.setFire(20);
-							
-				}
-			}
-		}
+		BulletManager.Explode(worldObj, 6.0F, 7.0F, posX, posY, posZ, 40);
 		this.setDead();
 	}
 	

@@ -68,9 +68,6 @@ public class CBCBlocks {
 		CBCLanguage.addLocalName(blockWeaponCrafter, "武器制作台");
 		CBCLanguage.addLocalName(blockRefined, "精铁块");
 		
-		CBCLanguage.addLocalName("crafter.storage", "材料存储");
-		CBCLanguage.addLocalName("crafter.weapons", "武器合成");
-		
 	}
 	
 }
