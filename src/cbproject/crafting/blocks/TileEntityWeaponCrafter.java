@@ -120,6 +120,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 				page--;
 			}
 		}
+		scrollFactor = 0;
 		redraw = true;
 		this.onInventoryChanged();
 	}

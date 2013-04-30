@@ -81,7 +81,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         	this.setButtonState("left", ButtonState.INVAILD);
         } else if(this.getButtonState("left") == ButtonState.INVAILD)
         	this.setButtonState("left", ButtonState.IDLE);
-        if(te.page == RecipeWeapons.recipes.length){
+        if(te.page == RecipeWeapons.recipes.length - 1){
         	this.setButtonState("right", ButtonState.INVAILD);
         } else if(this.getButtonState("right") == ButtonState.INVAILD)
         	this.setButtonState("right", ButtonState.IDLE);

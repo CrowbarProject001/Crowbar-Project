@@ -13,6 +13,7 @@ import cbproject.core.register.CBCItems;
 import cbproject.core.register.CBCPacketHandler;
 import cbproject.core.register.CBCRenderManager;
 import cbproject.core.utils.CBCWeaponInformation;
+import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -28,6 +29,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -67,6 +69,7 @@ public class CBCMod
 	{
 		//Events loading
 		CBCEventHandler.registerAll();
+		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
 		config=new Config(Init.getSuggestedConfigurationFile());
 
 	}

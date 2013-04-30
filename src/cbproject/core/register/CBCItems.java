@@ -41,7 +41,7 @@ public class CBCItems {
 	public static ItemAmmo_RPG itemAmmo_rpg;
 	public static ItemAmmo_ARGrenade itemAmmo_ARGrenade;
 	
-	public static ItemBullet_Shotgun itemBullet_Shotgun;
+	public static Item itemBullet_Shotgun, itemBullet_9mm, itemBullet_bow;
 
 	public static IngotSteel itemRefinedIronIngot;
 	
@@ -49,6 +49,7 @@ public class CBCItems {
 		mat_heavy, mat_light, mat_pistol, mat_tech, mat_explosive, mat_box;
 	public static LambdaChipset lambdaChip;
 	public static ItemIronBar ironBar;
+	public static IngotUranium ingotUranium;
 	
 	public static ArmorHEV armorHEVBoot, armorHEVChestplate, armorHEVHelmet, armorHEVLeggings;
 	public CBCItems(Config conf){
@@ -71,6 +72,7 @@ public class CBCItems {
 			itemAmmo_ARGrenade = new ItemAmmo_ARGrenade(conf.GetItemID("itemAmmo_ARGrenade", 7306));
 			
 			itemBullet_Shotgun = new ItemBullet_Shotgun(conf.GetItemID("itemBullet_Shotgun", 7350));
+			itemBullet_9mm = new ItemBullet_9mm(conf.GetItemID("itemBullet_Shotgun", 7351));
 	
 			weapon_crowbar = new Weapon_crowbar(conf.GetItemID("weapon_crowbar", 7000));
 			
@@ -103,11 +105,12 @@ public class CBCItems {
 			
 			ironBar = new ItemIronBar(conf.GetItemID("ironBar", 8059));
 			lambdaChip = new LambdaChipset(conf.GetItemID("lambdachip", 8060));
+			ingotUranium = new IngotUranium(conf.GetItemID("ingotUranium", 8061));
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
 		
-		CBCItems.addRecipes();
+		addRecipes();
 		return;
 	}
 	
@@ -135,8 +138,10 @@ public class CBCItems {
         CBCLanguage.addDefaultName(weapon_RPG, "RPG Rocket Launcher");
         CBCLanguage.addDefaultName(weapon_crossbow, "High Heat Crossbow");
         CBCLanguage.addDefaultName(weapon_gauss, "Gauss Gun");
-        CBCLanguage.addDefaultName(itemRefinedIronIngot, "Refined Iron Ingot");
         CBCLanguage.addDefaultName(weapon_egon, "Egon");
+
+        CBCLanguage.addDefaultName(itemRefinedIronIngot, "Refined Iron Ingot");
+        CBCLanguage.addDefaultName(itemBullet_9mm, "9mm Ammo");
         
 		CBCLanguage.addDefaultName(armorHEVBoot, "HEV boot");
 		CBCLanguage.addDefaultName(armorHEVHelmet, "HEV helmet");
@@ -154,6 +159,7 @@ public class CBCItems {
 		
 		CBCLanguage.addDefaultName(ironBar, "Refined Iron Bar");
 		CBCLanguage.addDefaultName(lambdaChip, "λ Chipset");
+		CBCLanguage.addDefaultName(ingotUranium, "Uranium Ingot");
 		
 		CBCLanguage.addLocalName(itemAmmo_uranium , "铀燃料");
 		CBCLanguage.addLocalName(itemAmmo_9mm, "9毫米手枪弹匣");
@@ -174,7 +180,7 @@ public class CBCItems {
         CBCLanguage.addLocalName(weapon_357, ".357麦林枪");
         CBCLanguage.addLocalName(weapon_satchel, "遥控炸药");
         CBCLanguage.addLocalName(weapon_RPG, "RPG火箭发射器");
-        CBCLanguage.addLocalName(weapon_crossbow, "高耐热弩");
+        CBCLanguage.addLocalName(weapon_crossbow, "复合十字弩");
         CBCLanguage.addLocalName(weapon_gauss, "高斯枪");
         CBCLanguage.addDefaultName(weapon_egon, "离子光束枪");
         CBCLanguage.addLocalName(itemRefinedIronIngot, "精铁锭");
@@ -191,10 +197,11 @@ public class CBCItems {
 		CBCLanguage.addLocalName(mat_tech, "科技材料");
 		CBCLanguage.addLocalName(mat_bio, "生化材料");
 		CBCLanguage.addLocalName(mat_ammunition, "弹药材料");
-		CBCLanguage.addLocalName(mat_explosive, "爆裂材料");
+		CBCLanguage.addLocalName(mat_explosive, "爆炸物材料");
 		
-		CBCLanguage.addLocalName(ironBar, "精铁条");
+		CBCLanguage.addLocalName(ironBar, "钢质长棍");
 		CBCLanguage.addLocalName(lambdaChip, "λ集成芯片");
+		CBCLanguage.addLocalName(ingotUranium, "铀锭");
 	}
 	
 	public static void addRecipes(){
@@ -213,7 +220,10 @@ public class CBCItems {
         		new ItemStack(mat_bio, 1),
         		new ItemStack(mat_ammunition, 1),
         		new ItemStack(mat_tech, 1),
-        		new ItemStack(mat_box, 5)
+        		new ItemStack(mat_box, 5),
+        		new ItemStack(CBCBlocks.blockRefined, 1),
+        		new ItemStack(ironBar),
+        		new ItemStack(lambdaChip)
         };
         
         ItemStack sredstone = new ItemStack(Item.redstone),
@@ -238,7 +248,9 @@ public class CBCItems {
         		sbox = new ItemStack(CBCItems.mat_box),
         		stnt = new ItemStack(Block.tnt),
         		sendereye = new ItemStack(Item.eyeOfEnder),
-        		slambdachip = new ItemStack(lambdaChip);
+        		slambdachip = new ItemStack(lambdaChip),
+        		suranium = new ItemStack(ingotUranium),
+        		semerald = new ItemStack(Item.emerald);
  
         Object input[][] = new Object[][]{
         		{"ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', srefined, 'D', sredstone, 'E', sglass},
@@ -249,18 +261,20 @@ public class CBCItems {
         		{"ACA", "DFD", "EBE", 'A', srotten, 'B', sbox, 'C', smagma, 'D', sfspieye, 'E', sglass, 'F', sendereye},
         		{"AAA", "ACA", "EBE", 'A', sgunpowder, 'B', sbox, 'C', sredstone, 'E', sglass},
         		{"ACA", "DFD", "EBE", 'A', sglow, 'B', sbox, 'C',sbredstone, 'D', sdiamond, 'E', sglass, 'F', slambdachip},
-        		{"A A", "AAA", 'A', srefined}
-        
+        		{"A A", "AAA", 'A', srefined},
+        		{"AAA", "AAA", "AAA", 'A', srefined},
+        		{"A  ", "A  ", 'A', srefined},
+        		{"ABA","CDC","ABA", 'A', sglass, 'B', semerald, 'C', sredstone, 'D', sdiamond}
         };
         
         addRecipes(output, input);
         
         //Smeltings
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(itemRefinedIronIngot.itemID,1,0) );
-        
+        ModLoader.addSmelting(CBCBlocks.blockUraniumOre.blockID, suranium);
 	}
 	
-	public static void addRecipes(ItemStack[] output, Object[][] input){
+	private static void addRecipes(ItemStack[] output, Object[][] input){
 		if(output.length != input.length){
 			throw new WrongUsageException("Two par's size should be the same", input[0]);
 		}

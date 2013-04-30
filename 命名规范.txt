@@ -1,4 +1,4 @@
-命名规则
+﻿命名规则
 
 1、Items:遵从HL命名规范
 
@@ -35,5 +35,5 @@ f.e.EntityAmmoUranium
 f.e.EntityHGrenade
 
 4、Renderer:MC命名规范
-类名:RendererXXX
-f.e.RendererHGrenade
+类名:RenderXXX
+f.e.RenderHGrenade
