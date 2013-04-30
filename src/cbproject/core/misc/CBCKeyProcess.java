@@ -87,7 +87,7 @@ public class CBCKeyProcess extends KeyHandler{
 				return;
 			}
 			inf.mode = (maxModes -1 <= inf.mode) ? 0 : inf.mode +1;
-			player.sendChatToPlayer("New mode : " + StatCollector.translateToLocal(wpn.getModeDescription(inf.mode)));
+			player.sendChatToPlayer(StatCollector.translateToLocal("mode.new") + ": \u00a74" + StatCollector.translateToLocal(wpn.getModeDescription(inf.mode)));
 			NetDeathmatch.sendModePacket(stackInSlot, (short) 0, inf.mode);
 			
 	}
