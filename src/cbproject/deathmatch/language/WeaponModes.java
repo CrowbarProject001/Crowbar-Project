@@ -5,9 +5,9 @@ import cbproject.core.misc.CBCLanguage;
 public class WeaponModes {
 	public static void registerModeDescriptions(){
 		CBCLanguage.addDefaultName("mode.new", "New Mode");
-		CBCLanguage.addDefaultName("mode.357", ".357 Bullet Mode");
-		CBCLanguage.addDefaultName("mode.9mmar1","9mmAR Automatic Mode");
-		CBCLanguage.addDefaultName("mode.9mmar2","9mmAR Grenade Mode");
+		CBCLanguage.addDefaultName("mode.357", "Normal Mode");
+		CBCLanguage.addDefaultName("mode.9mmar1","Automatic Mode");
+		CBCLanguage.addDefaultName("mode.9mmar2","Grenade Mode");
 		CBCLanguage.addDefaultName("mode.9mmhg1","Semi Automatic Mode");
 		CBCLanguage.addDefaultName("mode.9mmhg2","Full Automatic Mode");
 		CBCLanguage.addDefaultName("mode.bow1","Normal Shot");
