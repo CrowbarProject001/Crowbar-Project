@@ -113,11 +113,10 @@ public class CBCItems {
 		}
 		
 		this.addRecipes();
-		this.addItemNames();
 		return;
 	}
 	
-	private void addItemNames(){
+	public static void addItemNames(){
 		
 		CBCLanguage.addDefaultName(itemAmmo_uranium , "Uranium Ammo");
 

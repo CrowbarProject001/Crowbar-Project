@@ -23,22 +23,16 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public class EntitySatchel extends EntityThrowable {
+public class EntitySatchel extends EntityProjectile {
 	
 	public static double HEIGHT = 0.083, WIDTH1 = 0.2, WIDTH2 = 0.15;
 	public int tickHit = 0;
-	
-	public EntitySatchel(World par1World) {
-		super(par1World);
-	}
+	public float rotationFactor;
 
 	public EntitySatchel(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
 	}
 
-	public EntitySatchel(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
-	}
 
 	@Override
     public boolean canBeCollidedWith()
@@ -53,78 +47,73 @@ public class EntitySatchel extends EntityThrowable {
 		
 	}
 	
+	@Override
     protected float getGravityVelocity()
     {
         return 0.025F;
     }
-    
-    protected float func_70182_d()
-    {
-    	return 0.7F;
-    }
-    
     
     @Override
     public AxisAlignedBB getBoundingBox()
     {
         return AxisAlignedBB.getBoundingBox(-WIDTH1, -HEIGHT, -WIDTH2, WIDTH1, HEIGHT, WIDTH2);
     }
-    
-    
-    @Override
-    public AxisAlignedBB getCollisionBox(Entity par1Entity)
-    {
-        return AxisAlignedBB.getBoundingBox(-WIDTH1, -HEIGHT, -WIDTH2, WIDTH1, HEIGHT, WIDTH2);
-    }
-    
+
 	@Override
-	protected void onImpact(MovingObjectPosition var1) {
-		if(var1.typeOfHit == EnumMovingObjectType.ENTITY)
-			return;
-		
-		switch(var1.sideHit){
-		case 1:
-			if(!onGround){
-				tickHit = ticksExisted;
-				motionY = 0;
-			}
-			onGround = true;
-			break;
-		case 0:
-			motionY = -0.01 * motionY;
-			break;
-		case 2:
-		case 3:
-			motionZ = - 0.2 * motionZ;
-			break;
-		case 4:
-		case 5:
-			motionX = - 0.2 * motionX;
-			break;
-		default:
-			break;
-		}
-		
-		float var10 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(motionX, motionZ) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(motionY, (double)var10) * 180.0D / Math.PI);
-		
+	protected float getHeadingVelocity() {
+		return 0.7F;
 	}
-	
+
+	@Override
+	protected float getMotionYOffset() {
+		return 0;
+	}
+
+	@Override
+	protected void entityInit() {
+		rotationFactor = 0.0F;
+	}
+
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
-		NBTTagCompound nbt = getThrower().getEntityData();
-		boolean doesExplode = nbt.getBoolean("doesExplode");
+		boolean doesExplode = getThrower().getEntityData().getBoolean("doesExplode");
 		if(doesExplode)
 			Explode();
-		
-		if (this.onGround)
-        {
-            this.motionX *= 0.7D;
-            this.motionZ *= 0.7D;
-            this.motionY = 0;
-        }
+		if(this.onGround){
+			rotationFactor += 0.01F;
+		} else rotationFactor += 3.0F;
+		if(rotationFactor > 360.0F)
+			rotationFactor = 0.0F;
 	}
+
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+		
+	}
+
+
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+		
+	}
+
+
+	@Override
+	protected void onCollide(MovingObjectPosition result) {
+		switch(result.sideHit){
+		case 2:
+		case 3:
+			motionZ = -0.6 * motionZ;
+			return;
+		case 4:
+		case 5:
+			motionX = -0.6*motionX;
+			return;
+		default:
+			return;
+		}
+	}
+
     
 }

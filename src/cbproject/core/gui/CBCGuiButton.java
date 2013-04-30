@@ -1,5 +1,10 @@
 package cbproject.core.gui;
 
+/**
+ * LambdaCraft GUI Button.
+ * @author WeAthFolD
+ *
+ */
 public class CBCGuiButton {
 	
 	public enum ButtonState{

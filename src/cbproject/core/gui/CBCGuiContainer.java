@@ -10,6 +10,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 
+/**
+ * LambdaCraft Container GUI,currently have:
+ * button functions
+ * @author WeAthFolD
+ *
+ */
 public abstract class CBCGuiContainer extends GuiContainer {
 	
 	private HashSet<CBCGuiButton> buttons;

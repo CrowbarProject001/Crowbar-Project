@@ -176,7 +176,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	@Override
 	public String getModeDescription(int mode) {
-		return mode == 0 ?  "Single Buckshot mode" : "Double Buckshot mode";
+		return mode == 0 ?  "mode.sg1" : "mode.sg2";
 	}
 
 }

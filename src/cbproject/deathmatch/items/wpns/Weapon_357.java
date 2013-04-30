@@ -105,8 +105,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 
 	@Override
 	public String getModeDescription(int mode) {
-		// TODO Auto-generated method stub
-		return ".357 Bullet mode";
+		return "mode.357";
 	}
 
 }

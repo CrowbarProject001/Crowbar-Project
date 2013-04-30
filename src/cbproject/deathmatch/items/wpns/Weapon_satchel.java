@@ -160,7 +160,7 @@ public class Weapon_satchel extends WeaponGeneral {
 
 	@Override
 	public String getModeDescription(int mode) {
-		return mode == 0 ? "Setting mode" : "Detonating mode";
+		return mode == 0 ? "mode.satchel1" : "mode.satchel2";
 	}
 
 

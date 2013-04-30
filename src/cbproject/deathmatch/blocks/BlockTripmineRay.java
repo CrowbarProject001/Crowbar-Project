@@ -1,5 +1,6 @@
 package cbproject.deathmatch.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
@@ -107,6 +108,12 @@ public class BlockTripmineRay extends BlockContainer {
     @Override
     public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
     {
+    	
+    	double x1 = minX + par2, y1 = minY + par3, z1 = minZ + par4, x2 = maxX + par2, y2 = maxY + par3, z2 = maxZ + par4;
+    	AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x1, y1, z1, x2, y2, z2);
+    	List list = par1World.getEntitiesWithinAABBExcludingEntity(null, box);
+    	if(list.size() == 0)
+    		return;
     	
     	BlockPos pos = getSource(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
     	if(pos == null){

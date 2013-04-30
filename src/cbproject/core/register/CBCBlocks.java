@@ -50,19 +50,15 @@ public class CBCBlocks {
 		ModLoader.registerTileEntity(TileEntityTripmine.class, "tile_entity_tripmine");
 		ModLoader.registerTileEntity(TileEntityTripmineRay.class, "tile_entity_tripmine_ray");
 		ModLoader.registerTileEntity(TileEntityWeaponCrafter.class, "tile_entity_weapon_crafter");
-		this.addNameForBlocks();
 		return;
 		
 	}
 	
-	private void addNameForBlocks(){
+	public static void addNameForBlocks(){
 		
 		CBCLanguage.addDefaultName(blockTripmine, "Tripmine");
 		CBCLanguage.addDefaultName(blockWeaponCrafter, "Weapon Crafter");
 		CBCLanguage.addDefaultName(blockRefined, "Refined Iron Block");
-
-		CBCLanguage.addDefaultName("crafter.storage", "Material Storage");
-		CBCLanguage.addDefaultName("crafter.weapons", "Weapons Forging");
 		
 		CBCLanguage.addLocalName(blockTripmine, "激光绊雷");
 		CBCLanguage.addLocalName(blockWeaponCrafter, "武器制作台");

@@ -139,7 +139,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 
 	@Override
 	public String getModeDescription(int mode) {
-		return mode == 0 ? "9mm Bullet mode " : "AR Grenade mode";
+		return mode == 0 ? "mode.9mmar1" : "mode.9mmar2";
 	}
 
 }

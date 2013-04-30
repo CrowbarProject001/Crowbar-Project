@@ -140,7 +140,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	@Override
 	public String getModeDescription(int mode) {
-		return mode == 0 ? "Normal mode" : "Explosive Arrow mode";
+		return mode == 0 ? "mode.bow1" : "mode.bow2";
 	}
 
 	public boolean isBowPulling(ItemStack item) {

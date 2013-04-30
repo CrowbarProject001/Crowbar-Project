@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 /**
  * 
  * @author mkpoli
- * custom creativeTab.
+ * Custom CreativeTab.
  */
 public class CBCCreativeTab extends CreativeTabs {
 

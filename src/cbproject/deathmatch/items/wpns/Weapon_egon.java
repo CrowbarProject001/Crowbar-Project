@@ -142,7 +142,7 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 
 	@Override
 	public String getModeDescription(int mode) {
-		return "Normal mode";
+		return "mode.egon";
 	}
 	
 }

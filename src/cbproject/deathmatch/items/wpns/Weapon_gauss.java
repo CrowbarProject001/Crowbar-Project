@@ -211,7 +211,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 
 	@Override
 	public String getModeDescription(int mode) {
-		return mode == 0? "Automatic mode" : "Charge mode";
+		return mode == 0? "mode.gauss1" : "mode.gauss2";
 	}
 
 

@@ -114,7 +114,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 
 	@Override
 	public String getModeDescription(int mode) {
-		return mode == 0 ? "Semi-Automatic mode " : "Full-Automatic mode";
+		return mode == 0 ? "mode.9mmhg1" : "mode.9mmhg2";
 	}
 
 }

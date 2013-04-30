@@ -118,7 +118,7 @@ public class BlockTripmine extends BlockContainer {
 			}
 		}
     	
-    	BulletManager.Explode(par1World,null, 1.5F, 4.0F, par2, par3, par4, 40);
+    	BulletManager.Explode(par1World, null, 0.5F, 4.0F, par2, par3, par4, 47);
     	par1World.setBlockToAir(par2, par3, par4);
     	super.breakBlock(par1World, par2, par3, par4, par5, par6);
     	

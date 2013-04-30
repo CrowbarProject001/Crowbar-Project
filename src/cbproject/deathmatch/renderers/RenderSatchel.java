@@ -24,12 +24,9 @@ public class RenderSatchel extends RenderEntity {
 		
         GL11.glPushMatrix();
         
-        GL11.glTranslated(par2, par4 , par6);
-        if(!par1Entity.onGround){
-        	GL11.glRotatef(par1Entity.ticksExisted * 3, 0, 1, 0);
-        } else {
-        	GL11.glRotatef(((EntitySatchel)par1Entity).tickHit * 3, 0, 1, 0);
-        }
+        GL11.glTranslated(par2, par4 + EntitySatchel.HEIGHT , par6);
+        GL11.glRotatef(((EntitySatchel)par1Entity).rotationFactor, 0, 1, 0);
+
         
         int top = getTexture(ClientProps.SATCHEL_TOP_PATH), bottom = getTexture(ClientProps.SATCHEL_BOTTOM_PATH),
         		side = getTexture(ClientProps.SATCHEL_SIDE_PATH), side2 = getTexture(ClientProps.SATCHEL_SIDE2_PATH);

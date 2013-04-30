@@ -9,7 +9,6 @@ import net.minecraftforge.common.Configuration;
  * @author Mkpoli, WeAthFolD
  * @description CBCMod Configuration load class.
  */
-
 public class Config {
 	
 	private static Configuration config;

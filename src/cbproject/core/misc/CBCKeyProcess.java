@@ -14,6 +14,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -86,7 +87,7 @@ public class CBCKeyProcess extends KeyHandler{
 				return;
 			}
 			inf.mode = (maxModes -1 <= inf.mode) ? 0 : inf.mode +1;
-			player.sendChatToPlayer("New mode : " + wpn.getModeDescription(inf.mode));
+			player.sendChatToPlayer("New mode : " + StatCollector.translateToLocal(wpn.getModeDescription(inf.mode)));
 			NetDeathmatch.sendModePacket(stackInSlot, (short) 0, inf.mode);
 			
 	}
