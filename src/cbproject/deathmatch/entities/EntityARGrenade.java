@@ -38,7 +38,7 @@ public class EntityARGrenade extends EntityThrowable {
 	}
 
 	private void Explode(MovingObjectPosition pos) {
-		BulletManager.Explode(worldObj, 3.0F, 4.0F, posX, posY, posZ, 35);
+		BulletManager.Explode(worldObj, this, 3.0F, 4.0F, posX, posY, posZ, 35);
 		this.setDead();
 	}
 

@@ -97,7 +97,7 @@ public class EntityHGrenade extends EntityThrowable {
 	
 	private void Explode(){
 		
-		BulletManager.Explode(worldObj, 2.5F, 3.5F, posX, posY, posZ, 30);
+		BulletManager.Explode(worldObj,this, 2.5F, 3.5F, posX, posY, posZ, 30);
 		this.setDead();
 		
 	}

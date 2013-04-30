@@ -25,6 +25,7 @@ import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cbproject.deathmatch.items.wpns.Weapon_satchel;
 import cbproject.deathmatch.network.NetDeathmatch;
+import cbproject.deathmatch.utils.InformationBullet;
 import cbproject.deathmatch.utils.InformationSet;
 import cbproject.deathmatch.utils.InformationWeapon;
 
@@ -45,19 +46,19 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CBCKeyProcess extends KeyHandler{
 	
 	public static int Key_ModeChange, Key_Reload;
-	public static Boolean modeChange = false;
 	
 	public static KeyBinding KeyCodes[] = {
-			new KeyBinding("Mode Change Key", Keyboard.KEY_LCONTROL)
+			new KeyBinding("Mode Change Key", Keyboard.KEY_LCONTROL),
+			new KeyBinding("Reload Key", Keyboard.KEY_R)
 	};
 	
 	public static boolean isRepeating[] = {
-			false
+			false, false
 	};
 	
 	public CBCKeyProcess(Config conf){
-		
 		super(KeyCodes, isRepeating);
+		/*
 		try{
 			Key_ModeChange = conf.GetKeyCode("ModeChange", Keyboard.KEY_LCONTROL);
 			Key_Reload = conf.GetKeyCode("Reload", Keyboard.KEY_R);
@@ -65,13 +66,11 @@ public class CBCKeyProcess extends KeyHandler{
 			e.printStackTrace();
 		}
 		KeyCodes[0].keyCode = Key_ModeChange;
-		
+		*/
 	}
 	
 	public static void onModeChange(ItemStack itemStack, InformationWeapon inf, EntityPlayer player, int maxModes){
-		
-			modeChange = false;
-			if(!player.worldObj.isRemote || itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral))
+			if(!player.worldObj.isRemote)
 				return;
 
 			WeaponGeneral wpn = (WeaponGeneral) itemStack.getItem();
@@ -88,10 +87,30 @@ public class CBCKeyProcess extends KeyHandler{
 			}
 			inf.mode = (maxModes -1 <= inf.mode) ? 0 : inf.mode +1;
 			player.sendChatToPlayer("New mode : " + wpn.getModeDescription(inf.mode));
-			NetDeathmatch.sendModePacket(stackInSlot, inf.mode);
+			NetDeathmatch.sendModePacket(stackInSlot, (short) 0, inf.mode);
 			
 	}
 
+	public static void onReload(ItemStack is, InformationBullet inf, EntityPlayer player){
+		if(!player.worldObj.isRemote)
+			return;
+
+		WeaponGeneralBullet wpn = (WeaponGeneralBullet) is.getItem();
+		int stackInSlot = -1;
+		for(int i = 0; i < player.inventory.mainInventory.length; i++){
+			if(player.inventory.mainInventory[i] == is){
+				stackInSlot = i;
+				break;
+			}
+		}
+		if(stackInSlot == -1){
+			System.err.println("Didn't find the right IS!");
+			return;
+		}
+		if(wpn.onSetReload(is, player))
+			NetDeathmatch.sendModePacket(stackInSlot, (short) 1, 0);
+	}
+	
 	@Override
 	public String  getLabel() {
 		return "CrowbarCraft Keys";
@@ -103,10 +122,23 @@ public class CBCKeyProcess extends KeyHandler{
 		if(tickEnd)
 			return;
 		if( KeyCodes[0].keyCode == kb.keyCode ){
-			modeChange = true;
+			EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+			ItemStack currentItem = player.inventory.getCurrentItem();
+			if(currentItem!= null && currentItem.getItem() instanceof WeaponGeneral){
+				WeaponGeneral wpn = (WeaponGeneral) currentItem.getItem();
+				InformationWeapon inf = wpn.loadInformation(currentItem, player);
+				onModeChange(currentItem, inf, player, wpn.maxModes);
+			}
 			return;
 		}
 		if( KeyCodes[1].keyCode == kb.keyCode){
+			EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+			ItemStack currentItem = player.inventory.getCurrentItem();
+			if(currentItem!= null && currentItem.getItem() instanceof WeaponGeneralBullet){
+				WeaponGeneralBullet wpn = (WeaponGeneralBullet) currentItem.getItem();
+				InformationBullet inf = wpn.loadInformation(currentItem, player);
+				onReload(currentItem, inf, player);
+			}
 			return;
 		}
 		

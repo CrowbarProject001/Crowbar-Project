@@ -66,9 +66,6 @@ public class Weapon_satchel extends WeaponGeneral {
 			return null;
 		
 		InformationSatchel information = loadInformation(par1ItemStack, (EntityPlayer)par3Entity);
-		if(CBCKeyProcess.modeChange){
-			CBCKeyProcess.onModeChange(par1ItemStack, information, (EntityPlayer) par3Entity, maxModes);
-		}
 		return information;
 
 	}

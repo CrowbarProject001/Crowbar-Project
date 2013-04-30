@@ -61,9 +61,6 @@ public abstract class WeaponGeneral extends Item {
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
 			return null;	
 		
-		if(par2World.isRemote && CBCKeyProcess.modeChange)
-				CBCKeyProcess.onModeChange(par1ItemStack, information, (EntityPlayer) par3Entity, maxModes);
-		
 		if(information == null){
 			System.err.println(par2World.isRemote + " side is null");
 			return null;
@@ -120,8 +117,10 @@ public abstract class WeaponGeneral extends Item {
 	/**
 	 * Only called in server, set the mode to required on client's will.
 	 */
-	public void onModeChange(ItemStack itemStack, World world, int newMode){
-		CBCMod.wpnInformation.getInformation(itemStack).serverReference.mode = newMode;
+	public void onModeChange(ItemStack itemStack, EntityPlayer player, int newMode){
+		InformationWeapon inf = loadInformation(itemStack, player);
+		System.out.println(player.worldObj.isRemote);
+		inf.mode = newMode;
 	}
 	
 

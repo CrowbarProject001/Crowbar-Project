@@ -39,7 +39,7 @@ public class EntityCrossbowArrow extends EntityThrowable {
 	}
 	
 	private void Explode(MovingObjectPosition pos){
-		BulletManager.Explode(worldObj, 1.0F, 3.0F, posX, posY, posZ, 30);
+		BulletManager.Explode(worldObj, this, 1.0F, 3.0F, posX, posY, posZ, 30);
 		this.setDead();
 	}
 	

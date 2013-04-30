@@ -58,9 +58,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			}
 			information.isShooting = true;
 		} else  {
-			if(!information.isReloading)
-				par2World.playSoundAtEntity(par3EntityPlayer, getSoundReload(mode), 0.5F, 1.0F);
-			information.isReloading = true;
+			onSetReload(par1ItemStack, par3EntityPlayer);
 		}
 		
 		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
@@ -158,6 +156,17 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		information.setLastTick();
     }
 
+	public boolean onSetReload(ItemStack itemStack, EntityPlayer player){
+		InformationBullet inf = loadInformation(itemStack, player);
+		if(itemStack.getItemDamage() <= 0)
+			return false;
+		if(!inf.isReloading)
+			player.worldObj.playSoundAtEntity(player, getSoundReload(inf.mode), 0.5F, 1.0F);
+		inf.isReloading = true;
+		inf.setLastTick();
+		return true;
+	}
+    
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 
     	EntityPlayer player = (EntityPlayer) par3Entity;

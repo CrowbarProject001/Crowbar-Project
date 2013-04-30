@@ -7,16 +7,15 @@ import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.CBCGuiHandler;
 import cbproject.core.misc.CBCKeyProcess;
 import cbproject.core.misc.CBCLanguage;
-import cbproject.core.misc.CBCPacketHandler;
 import cbproject.core.register.CBCBlocks;
 import cbproject.core.register.CBCEventHandler;
+import cbproject.core.register.CBCGeneralRegistry;
 import cbproject.core.register.CBCItems;
+import cbproject.core.register.CBCPacketHandler;
 import cbproject.core.register.CBCRenderManager;
-import cbproject.core.register.RecipeWeaponRegister;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -42,7 +41,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(modid="lambdacraft",name="lambdacraft",version="0.8.0.0a")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
-serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeaponMode", "CBCCrafter"}, packetHandler = CBCPacketHandler.class ))
+serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeapons", "CBCCrafter"}, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
 {
 	
@@ -93,7 +92,7 @@ public class CBCMod
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
         
 		CBCLanguage.addDefaultName("itemGroup.CBCMod", "LambdaCraft");
-		RecipeWeaponRegister.addRecipes();
+		CBCGeneralRegistry.register();
 	}
 
 	@PostInit

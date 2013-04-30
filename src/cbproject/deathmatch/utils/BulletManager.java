@@ -36,10 +36,16 @@ public class BulletManager {
 		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, entityPlayer, itemStack, effect));
 	}
 	
-	public static void Explode(World world,float strengh, double radius, double posX, double posY, double posZ, int additionalDamage){
+	public static void Explode(World world,Entity entity, float strengh, double radius, double posX, double posY, double posZ, int additionalDamage){
 	    
 		Explosion ex = world.createExplosion(null, posX, posY, posZ, strengh, true);
 		
+		Explosion explosion = new Explosion(world, entity, posX, posY, posZ, strengh);
+        explosion.isFlaming = false;
+        explosion.isSmoking = true;
+        explosion.doExplosionA();
+        explosion.doExplosionB(true);
+        
 		if(additionalDamage <= 0)
 			return;
 		

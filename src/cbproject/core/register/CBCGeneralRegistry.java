@@ -2,12 +2,29 @@ package cbproject.core.register;
 
 import net.minecraft.item.ItemStack;
 import cbproject.core.misc.CBCLanguage;
+import cbproject.crafting.network.NetWeaponCrafter;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
 import cbproject.crafting.recipes.RecipeWeapons;
+import cbproject.deathmatch.network.NetDeathmatch;
 
-public class RecipeWeaponRegister {
+public class CBCGeneralRegistry {
 	
-	public static void addRecipes(){
+	public static void register(){
+		addRecipes();
+		registerNetPackets();
+		addLanguages();
+	}
+	
+	private static void registerNetPackets(){
+		CBCPacketHandler.addChannel("CBCCrafter", new NetWeaponCrafter());
+		CBCPacketHandler.addChannel("CBCWeapons", new NetDeathmatch());
+	}
+	
+	private static void addLanguages(){
+		
+	}
+	
+	private static void addRecipes(){
 		String description[] = {"crafter.weapon", "crafter.ammo"};
 		RecipeWeapons.InitializeRecipes(2, description);
 		
@@ -28,4 +45,3 @@ public class RecipeWeaponRegister {
 	}
 	
 }
-

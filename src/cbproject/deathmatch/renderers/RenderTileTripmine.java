@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
 import cbproject.core.proxy.ClientProxy;
+import cbproject.core.renderers.RendererUtils;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -84,31 +85,34 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         switch(var5){
         case 1:
         case 3:
-        	v1 = Vec3.createVectorHelper(minX, minY, minZ);
-        	v2 = Vec3.createVectorHelper(minX, minY, maxZ);
-        	v3 = Vec3.createVectorHelper(minX, maxY, maxZ);
-        	v4 = Vec3.createVectorHelper(minX, maxY, minZ);
+        	v1 = RendererUtils.newV3(minX, minY, minZ);
+        	v2 = RendererUtils.newV3(minX, minY, maxZ);
+        	v3 = RendererUtils.newV3(minX, maxY, maxZ);
+        	v4 = RendererUtils.newV3(minX, maxY, minZ);
         	
-        	v5 = Vec3.createVectorHelper(maxX, minY, minZ);
-        	v6 = Vec3.createVectorHelper(maxX, minY, maxZ);
-        	v7 = Vec3.createVectorHelper(maxX, maxY, maxZ);
-        	v8 = Vec3.createVectorHelper(maxX, maxY, minZ);
+        	v5 = RendererUtils.newV3(maxX, minY, minZ);
+        	v6 = RendererUtils.newV3(maxX, minY, maxZ);
+        	v7 = RendererUtils.newV3(maxX, maxY, maxZ);
+        	v8 = RendererUtils.newV3(maxX, maxY, minZ);
         	
         	break;
         	
         default:
-        	v1 = Vec3.createVectorHelper(minX, minY, minZ);
-        	v2 = Vec3.createVectorHelper(maxX, minY, minZ);
-        	v3 = Vec3.createVectorHelper(maxX, maxY, minZ);
-        	v4 = Vec3.createVectorHelper(minX, maxY, minZ);
+        	v1 = RendererUtils.newV3(minX, minY, minZ);
+        	v2 = RendererUtils.newV3(maxX, minY, minZ);
+        	v3 = RendererUtils.newV3(maxX, maxY, minZ);
+        	v4 = RendererUtils.newV3(minX, maxY, minZ);
         	
-        	v5 = Vec3.createVectorHelper(minX, minY, maxZ);
-        	v6 = Vec3.createVectorHelper(maxX, minY, maxZ);
-        	v7 = Vec3.createVectorHelper(maxX, maxY, maxZ);
-        	v8 = Vec3.createVectorHelper(minX, maxY, maxZ);
+        	v5 = RendererUtils.newV3(minX, minY, maxZ);
+        	v6 = RendererUtils.newV3(maxX, minY, maxZ);
+        	v7 = RendererUtils.newV3(maxX, maxY, maxZ);
+        	v8 = RendererUtils.newV3(minX, maxY, maxZ);
         	
         	break;
         }
+        
+        GL11.glPushMatrix();
+        
         
         this.bindTextureByName(ClientProps.TRIPMINE_SIDE_PATH);
 
@@ -200,6 +204,8 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
 
         tessellator.draw();
         
+        GL11.glPopMatrix();
+        
         //Tripmine ray drawing
         float h = 0.025F, w = 0.025F;
         if (var5 == 3 || var5 == 1) //X+, X-
@@ -213,28 +219,28 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         switch(var5){
         case 1:
         case 3:
-        	v1 = Vec3.createVectorHelper(minX, y+0.5, minZ);
-         	v2 = Vec3.createVectorHelper(minX, y+0.5, maxZ);
-         	v3 = Vec3.createVectorHelper(maxX, y+0.5, maxZ);
-         	v4 = Vec3.createVectorHelper(maxX, y+0.5, minZ);
+        	v1 = RendererUtils.newV3(minX, y+0.5, minZ);
+         	v2 = RendererUtils.newV3(minX, y+0.5, maxZ);
+         	v3 = RendererUtils.newV3(maxX, y+0.5, maxZ);
+         	v4 = RendererUtils.newV3(maxX, y+0.5, minZ);
          	
-        	v5 = Vec3.createVectorHelper(minX, maxY, z + 0.5);
-        	v6 = Vec3.createVectorHelper(maxX, maxY, z + 0.5);
-        	v7 = Vec3.createVectorHelper(maxX, minY, z + 0.5);
-        	v8 = Vec3.createVectorHelper(minX, minY, z + 0.5);
+        	v5 = RendererUtils.newV3(minX, maxY, z + 0.5);
+        	v6 = RendererUtils.newV3(maxX, maxY, z + 0.5);
+        	v7 = RendererUtils.newV3(maxX, minY, z + 0.5);
+        	v8 = RendererUtils.newV3(minX, minY, z + 0.5);
         	
         	break;
         	
         default:
-        	v1 = Vec3.createVectorHelper(minX, y+0.5, minZ);
-         	v2 = Vec3.createVectorHelper(minX, y+0.5, maxZ);
-         	v3 = Vec3.createVectorHelper(maxX, y+0.5, maxZ);
-         	v4 = Vec3.createVectorHelper(maxX, y+0.5, minZ);
+        	v1 = RendererUtils.newV3(minX, y+0.5, minZ);
+         	v2 = RendererUtils.newV3(minX, y+0.5, maxZ);
+         	v3 = RendererUtils.newV3(maxX, y+0.5, maxZ);
+         	v4 = RendererUtils.newV3(maxX, y+0.5, minZ);
          	
-        	v5 = Vec3.createVectorHelper(x+0.5, maxY, minZ);
-        	v6 = Vec3.createVectorHelper(x+0.5, maxY, maxZ);
-        	v7 = Vec3.createVectorHelper(x+0.5, minY, maxZ);
-        	v8 = Vec3.createVectorHelper(x+0.5, minY, minZ);
+        	v5 = RendererUtils.newV3(x+0.5, maxY, minZ);
+        	v6 = RendererUtils.newV3(x+0.5, maxY, maxZ);
+        	v7 = RendererUtils.newV3(x+0.5, minY, maxZ);
+        	v8 = RendererUtils.newV3(x+0.5, minY, minZ);
         	
         	break;
         }

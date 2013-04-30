@@ -1,10 +1,13 @@
-package cbproject.core.misc;
+package cbproject.core.register;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import cbproject.core.CBCMod;
+import cbproject.core.network.IChannelProcess;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.network.NetWeaponCrafter;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
@@ -29,35 +32,22 @@ import cpw.mods.fml.common.network.Player;
 
 public class CBCPacketHandler implements IPacketHandler {
 
+	private static HashMap<String, IChannelProcess> channels = new HashMap();
+	
 	@Override
 	public void onPacketData(INetworkManager manager,
 			Packet250CustomPayload packet, Player player) {
 		
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
-		
-		if(packet.channel == "CBCWeaponMode"){ 
-			EntityPlayer p = (EntityPlayer) player;
-			int[] prop = NetDeathmatch.getModePacket(packet);
-			ItemStack is = p.inventory.mainInventory[prop[0]];
-			if(is == null ||!(is.getItem() instanceof WeaponGeneral)){
-				System.err.println("Didn't find correct information for" + p.getEntityName() + " @" + prop[0]);
-			} else {
-				WeaponGeneral wpn = (WeaponGeneral) is.getItem();
-				wpn.onModeChange(is, p.worldObj, prop[1]);
-				System.out.println("Server new mode :" + prop[1]);
-			}
-			return;
-		}
-		if(packet.channel == "CBCWeaponMode"){
-			NetWeaponCrafter c = new NetWeaponCrafter().getCrafterPacket(packet);
-			TileEntity te = MinecraftServer.getServer().worldServerForDimension(c.dimension).getBlockTileEntity(c.blockX, c.blockY, c.blockZ);
-			if(!te.worldObj.isRemote){
-				if(c.id == 0)
-					((TileEntityWeaponCrafter)te).addScrollFactor(c.direction);
-				else ((TileEntityWeaponCrafter)te).addPage(c.direction);
-			}
-			return;
-		}
+		IChannelProcess p = channels.get(packet.channel);
+		System.out.println(p);
+		if(p != null)
+			p.onPacketData(packet, player);
+
+	}
+	
+	public static void addChannel(String channel, IChannelProcess process){
+		channels.put(channel, process);
 	}
 
 }

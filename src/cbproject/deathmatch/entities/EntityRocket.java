@@ -43,7 +43,7 @@ public class EntityRocket extends EntityThrowable {
 	}
 	
 	private void Explode(MovingObjectPosition pos){
-		BulletManager.Explode(worldObj, 6.0F, 7.0F, posX, posY, posZ, 40);
+		BulletManager.Explode(worldObj, this, 6.0F, 7.0F, posX, posY, posZ, 40);
 		this.setDead();
 	}
 	

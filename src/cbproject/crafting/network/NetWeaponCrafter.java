@@ -6,14 +6,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import cbproject.core.network.IChannelProcess;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 
-public class NetWeaponCrafter {
+public class NetWeaponCrafter implements IChannelProcess{
 	
 	public short dimension, id;
 	public int blockX, blockY, blockZ;
@@ -60,6 +62,18 @@ public class NetWeaponCrafter {
 		}
 		return this;
 		
+	}
+
+	@Override
+	public void onPacketData(Packet250CustomPayload packet, Player player) {
+		NetWeaponCrafter c = new NetWeaponCrafter().getCrafterPacket(packet);
+		TileEntity te = MinecraftServer.getServer().worldServerForDimension(c.dimension).getBlockTileEntity(c.blockX, c.blockY, c.blockZ);
+		if(!te.worldObj.isRemote){
+			if(c.id == 0)
+				((TileEntityWeaponCrafter)te).addScrollFactor(c.direction);
+			else ((TileEntityWeaponCrafter)te).addPage(c.direction);
+		}
+		return;
 	}
 	
 	
