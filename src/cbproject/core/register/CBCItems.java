@@ -202,6 +202,7 @@ public class CBCItems {
 		CBCLanguage.addLocalName(ironBar, "钢质长棍");
 		CBCLanguage.addLocalName(lambdaChip, "λ集成芯片");
 		CBCLanguage.addLocalName(ingotUranium, "铀锭");
+		 CBCLanguage.addDefaultName(itemBullet_9mm, "9mm子弹");
 	}
 	
 	public static void addRecipes(){
