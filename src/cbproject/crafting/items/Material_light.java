@@ -11,7 +11,8 @@ public class Material_light extends ItemMaterial {
 		setUnlocalizedName("mat_light");
 	}
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
         this.iconIndex = par1IconRegister.registerIcon("lambdacraft:mat_lightweapon");

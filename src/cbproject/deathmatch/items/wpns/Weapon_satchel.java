@@ -3,24 +3,14 @@
  */
 package cbproject.deathmatch.items.wpns;
 
-import org.bouncycastle.util.Arrays;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.misc.CBCKeyProcess;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.entities.EntitySatchel;
 import cbproject.deathmatch.utils.AmmoManager;
-import cbproject.deathmatch.utils.InformationBullet;
-import cbproject.deathmatch.utils.InformationSatchel;
-import cbproject.deathmatch.utils.InformationSet;
 import cbproject.deathmatch.utils.InformationWeapon;
-import net.minecraft.client.renderer.texture.IconRegister;
+import cbproject.deathmatch.utils.InformationSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -65,7 +55,7 @@ public class Weapon_satchel extends WeaponGeneral {
 		if(currentItem == null || !currentItem.equals(par1ItemStack))
 			return null;
 		
-		InformationSatchel information = loadInformation(par1ItemStack, (EntityPlayer)par3Entity);
+		InformationWeapon information = loadInformation(par1ItemStack, (EntityPlayer)par3Entity);
 		return information;
 
 	}
@@ -73,7 +63,7 @@ public class Weapon_satchel extends WeaponGeneral {
 	
 	@Override
     public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer){
-		InformationSatchel inf = loadInformation(par1ItemStack, par3EntityPlayer);
+		InformationWeapon inf = loadInformation(par1ItemStack, par3EntityPlayer);
 		if(inf == null)
 			return par1ItemStack;
 		
@@ -105,23 +95,23 @@ public class Weapon_satchel extends WeaponGeneral {
     }
 	
 	@Override
-	public InformationSatchel getInformation(ItemStack itemStack, World world){	
+	public InformationWeapon getInformation(ItemStack itemStack, World world){	
 	   InformationSet set = CBCWeaponInformation.getInformation(itemStack);
-	   return set == null ? null : set.getProperSatchel(world);
+	   return set == null ? null : set.getProperInf(world);
 	}
 	    
 	
 	@Override
-	public InformationSatchel loadInformation(ItemStack itemStack,
+	public InformationWeapon loadInformation(ItemStack itemStack,
 			EntityPlayer entityPlayer) {
 		
-		InformationSatchel inf = getInformation(itemStack, entityPlayer.worldObj);
+		InformationWeapon inf = getInformation(itemStack, entityPlayer.worldObj);
 		if(inf != null){
 			return inf;
 		}
 
 		double uniqueID = Math.random()*65535D;
-		CBCMod.wpnInformation.addToList(uniqueID, createInformation(itemStack, entityPlayer));
+		CBCWeaponInformation.addToList(uniqueID, createInformation(itemStack, entityPlayer));
 
 		if(itemStack.stackTagCompound == null)
 			itemStack.stackTagCompound = new NBTTagCompound();
@@ -132,12 +122,13 @@ public class Weapon_satchel extends WeaponGeneral {
 	}
 	
 	private InformationSet createInformation(ItemStack is, EntityPlayer player){
-		InformationSatchel inf = new InformationSatchel(player, is);
-		InformationSatchel inf2 = new InformationSatchel(player, is);
+		InformationWeapon inf = new InformationWeapon(player, is);
+		InformationWeapon inf2 = new InformationWeapon(player, is);
 		return new InformationSet(inf, inf2);
 	}
 	
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    @Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 100;
     }

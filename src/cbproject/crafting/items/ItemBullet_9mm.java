@@ -1,7 +1,6 @@
 package cbproject.crafting.items;
 
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
 import net.minecraft.item.Item;
 
 public class ItemBullet_9mm extends Item {

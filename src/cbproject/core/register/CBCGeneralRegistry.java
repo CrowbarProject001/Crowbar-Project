@@ -1,5 +1,7 @@
 package cbproject.core.register;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import cbproject.core.misc.CBCLanguage;
 import cbproject.crafting.network.NetWeaponCrafter;
@@ -21,6 +23,7 @@ public class CBCGeneralRegistry {
 		CBCPacketHandler.addChannel("CBCWeapons", new NetDeathmatch());
 	}
 	
+	@SideOnly(Side.CLIENT)
 	private static void addLanguages(){
 		CBCItems.addItemNames();
 		CBCBlocks.addNameForBlocks();

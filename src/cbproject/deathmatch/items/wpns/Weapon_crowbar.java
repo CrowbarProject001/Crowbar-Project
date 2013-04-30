@@ -3,9 +3,7 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemStack;
@@ -15,8 +13,7 @@ import net.minecraft.world.World;
 public class Weapon_crowbar extends ItemSword {
 
 	public Weapon_crowbar(int item_id) {
-		super(item_id, EnumToolMaterial.IRON); //铁剑的基本属性
-		
+		super(item_id, EnumToolMaterial.IRON);
 		setUnlocalizedName("weapon_crowbar");
 		setCreativeTab( CBCMod.cct );
 	}

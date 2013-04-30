@@ -29,9 +29,5 @@ public class InformationSet {
 	public InformationWeapon getProperInf(World world){
 		return (world.isRemote)? clientReference: serverReference;
 	}
-	
-	public InformationSatchel getProperSatchel(World world){
-		return (InformationSatchel) ((world.isRemote)? clientReference: serverReference);
-	}
 
 }

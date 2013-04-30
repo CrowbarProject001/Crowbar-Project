@@ -3,19 +3,15 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.register.CBCItems;
 import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
-import cbproject.deathmatch.utils.InformationSet;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 /**
@@ -28,7 +24,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	
 	public Weapon_9mmAR(int par1) {
 		
-		super(par1 , CBCMod.cbcItems.itemAmmo_9mm2.itemID, 2);
+		super(par1 , CBCItems.itemAmmo_9mm2.itemID, 2);
 		setUnlocalizedName("weapon_9mmar");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
@@ -67,10 +63,10 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
     		
     		par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);	
     		int mode = information.mode;
-    		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
+    		BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
     		if(par3Entity instanceof EntityPlayer){
     			doUplift(information, par3Entity);
-    			if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
+    			if(!par3Entity.capabilities.isCreativeMode ){
     				par1ItemStack.damageItem( 1 , par3Entity);
     			}
     		}

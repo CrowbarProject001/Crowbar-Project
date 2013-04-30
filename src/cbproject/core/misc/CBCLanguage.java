@@ -1,8 +1,6 @@
 package cbproject.core.misc;
 
 import net.minecraft.util.StringTranslate;
-import cbproject.core.register.CBCBlocks;
-import cbproject.core.register.CBCItems;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class CBCLanguage {
@@ -22,7 +20,7 @@ public class CBCLanguage {
 	public static void addDefaultName(Object objectToName, String name){
 		if(objectToName instanceof String)
 			i.addStringLocalization((String) objectToName, name);
-		else i.addName(objectToName, name);
+		else LanguageRegistry.addName(objectToName, name);
 	}
 	
 	public static void bindLanguage(String lang){

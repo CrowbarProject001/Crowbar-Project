@@ -1,21 +1,12 @@
 package cbproject.deathmatch.items.wpns;
 
 
-import org.lwjgl.input.Keyboard;
-
-import cbproject.core.CBCMod;
-import cbproject.core.misc.CBCKeyProcess;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
-import cbproject.deathmatch.utils.InformationEnergy;
 import cbproject.deathmatch.utils.InformationSet;
-import cbproject.deathmatch.utils.InformationWeapon;
-
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -80,14 +71,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     		return;
     	}
     	information.updateTick();
-    	/*
-    	if(Keyboard.isKeyDown(CBCKeyProcess.Key_Reload)){
-    		System.out.println(par2World.isRemote);
-    		if(!information.isReloading)
-    			par2World.playSoundAtEntity(par3Entity, getSoundReload(information.mode), 0.5F, 1.0F);
-    		information.isReloading = true;
-    	}
-    	*/
+
     	EntityPlayer player = (EntityPlayer) par3Entity;
     	if(!player.isUsingItem())
     		information.isShooting  = false;
@@ -141,13 +125,11 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		information.setLastTick();
 		
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
-		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
-    	if(par3Entity instanceof EntityPlayer){
-    		doUplift(information, par3Entity);
-    		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
-    				par1ItemStack.damageItem( 1 , par3Entity);
-    		}
-    	}
+		BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
+    	doUplift(information, par3Entity);
+    	if(!par3Entity.capabilities.isCreativeMode )
+    			par1ItemStack.damageItem( 1 , par3Entity);
+    	
 		return;	
     }
     
@@ -169,7 +151,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 
-    	EntityPlayer player = (EntityPlayer) par3Entity;
+    	EntityPlayer player = par3Entity;
     	
     	int dmg = par1ItemStack.getItemDamage();
     	if( dmg <= 0){
@@ -238,6 +220,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		jamTime = par1;
 	}
 	
+	@Override
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5);
 	
 	@Override
@@ -255,7 +238,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			return inf;
 		
 		double uniqueID = Math.random()*65535D;
-		inf = CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer)).getProperBullet(par2EntityPlayer.worldObj);
+		inf = CBCWeaponInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer)).getProperBullet(par2EntityPlayer.worldObj);
 		
 		if(par1ItemStack.stackTagCompound == null)
 			par1ItemStack.stackTagCompound = new NBTTagCompound();

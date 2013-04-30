@@ -3,7 +3,6 @@ package cbproject.crafting.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 

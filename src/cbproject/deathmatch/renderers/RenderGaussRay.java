@@ -2,10 +2,7 @@ package cbproject.deathmatch.renderers;
 
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.entities.EntityGaussRay;
 
@@ -36,7 +33,7 @@ public class RenderGaussRay extends RenderEntity {
 		MotionXYZ motion = new MotionXYZ(gauss);
 		MovingObjectPosition trace = gauss.worldObj.rayTraceBlocks(motion.asVec3(gauss.worldObj), motion.updateMotion(100.0F).asVec3(gauss.worldObj));
 		Vec3 end = (trace == null)? motion.asVec3(gauss.worldObj) : trace.hitVec;
-		tessellator = tessellator.instance;
+		tessellator = Tessellator.instance;
 		
         GL11.glPushMatrix();
         

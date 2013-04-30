@@ -16,7 +16,8 @@ public class SlotOutput extends Slot {
 		((TileEntityWeaponCrafter)inventory).doItemCrafting(this.slotNumber);
     }
 
-    public ItemStack decrStackSize(int par1){
+    @Override
+	public ItemStack decrStackSize(int par1){
         return null;
     }
 

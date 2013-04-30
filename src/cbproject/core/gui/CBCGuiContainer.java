@@ -1,12 +1,8 @@
 package cbproject.core.gui;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-
 import cbproject.core.gui.CBCGuiButton.ButtonState;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 

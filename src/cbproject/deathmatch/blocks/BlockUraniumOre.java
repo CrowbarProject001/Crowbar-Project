@@ -3,12 +3,7 @@ package cbproject.deathmatch.blocks;
 import java.util.Random;
 
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
-
-
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockOre;
-import net.minecraft.block.material.Material;
 
 public class BlockUraniumOre extends BlockOre {
 

@@ -1,23 +1,18 @@
 package cbproject.deathmatch.entities;
 
-import java.util.List;
-
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
+import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationWeapon;
 
 
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumMovingObjectType;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -59,12 +54,14 @@ public class EntityBullet extends EntityThrowable {
         
 	}
 
-    protected float getGravityVelocity()
+    @Override
+	protected float getGravityVelocity()
     {
         return 0.0F;
     }
     
-    protected float func_70182_d()
+    @Override
+	protected float func_70182_d()
     {
     	return 50.0F;
     }
@@ -91,20 +88,16 @@ public class EntityBullet extends EntityThrowable {
 	
 	public void doEntityCollision(MovingObjectPosition result){
 	
-		if( result.entityHit == null || (!(result.entityHit instanceof EntityLiving)))
+		if( result.entityHit == null)
 			return;
-
+		if(!(result.entityHit instanceof EntityLiving || result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
+			return;
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		InformationWeapon inf = item.getInformation(itemStack, worldObj);
 		int mode = inf.mode;
 		double pf = item.getPushForce(mode);
 		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ * pf;
-		EntityLiving mob = (EntityLiving) result.entityHit;
-	
-		mob.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), item.getDamage(mode));
-		mob.addVelocity(dx, dy, dz);
-		if(effect == "fire")
-			mob.setFire(10);
+		BulletManager.doEntityAttack(result.entityHit, DamageSource.causeMobDamage(getThrower()), item.getDamage(mode), dx, dy, dz);
 		
 	}
 	

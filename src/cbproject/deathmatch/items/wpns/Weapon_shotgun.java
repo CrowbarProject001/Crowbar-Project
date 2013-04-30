@@ -3,17 +3,14 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
+import cbproject.core.register.CBCItems;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
-import cbproject.deathmatch.utils.InformationSet;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class Weapon_shotgun extends WeaponGeneralBullet {
@@ -22,7 +19,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	
 	public Weapon_shotgun(int par1) {
 		
-		super(par1 , CBCMod.cbcItems.itemBullet_Shotgun.itemID, 2);
+		super(par1 , CBCItems.itemBullet_Shotgun.itemID, 2);
 		
 		setUnlocalizedName("weapon_shotgun");
 		setCreativeTab( CBCMod.cct );
@@ -102,7 +99,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		
 		int mode = information.mode;
 		for(int i=0; i<BUCKSHOT_COUNT[mode]; i++)
-			BulletManager.Shoot( par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
+			BulletManager.Shoot( par1ItemStack, par3Entity, par2World, "smoke");
 
     	information.setLastTick();
     	
@@ -113,7 +110,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		
     	if(par3Entity instanceof EntityPlayer){	
     		doUplift(information, par3Entity);
-    		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode){
+    		if(!par3Entity.capabilities.isCreativeMode){
     				par1ItemStack.damageItem( ( mode == 0 || mode == 3 ) ? 1 : 2 , par3Entity);
     		}	
     	}

@@ -4,7 +4,6 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.renderers.RendererUtils;
 
 import net.minecraft.client.renderer.RenderBlocks;
@@ -12,10 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
 /**
  * Weapon Egon Renderer Class.

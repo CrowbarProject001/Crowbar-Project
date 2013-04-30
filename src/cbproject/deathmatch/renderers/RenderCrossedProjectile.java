@@ -1,39 +1,33 @@
 package cbproject.deathmatch.renderers;
 
-
 import org.lwjgl.opengl.GL11;
 
-import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.entities.EntityARGrenade;
-import cbproject.deathmatch.entities.EntityEgonRay;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
-/**
- * AR Grenade Renderer.
- * @author WeAthFolD
- */
-public class RenderARGrenade extends RenderEntity {
+public class RenderCrossedProjectile extends RenderEntity {
 
-	
-	public static double LENGTH = 0.4F, HEIGHT = 0.1235F;
+	protected static double LENGTH;
+	protected static double HEIGHT;
+	protected static String TEXTURE_PATH;
 	private static Tessellator tessellator = Tessellator.instance;
+	
+	public RenderCrossedProjectile(double l, double h, String texturePath) {
+		LENGTH = l;
+		HEIGHT = h;
+		TEXTURE_PATH = texturePath;
+	}
 	
 	@Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
-		
-		EntityARGrenade gren = (EntityARGrenade) par1Entity;
+		Entity gren = par1Entity;
 		MotionXYZ motion = new MotionXYZ(gren);
-		tessellator = tessellator.instance;
+		tessellator = Tessellator.instance;
 		
         GL11.glPushMatrix();
         
@@ -47,11 +41,10 @@ public class RenderARGrenade extends RenderEntity {
         		v7 = newV3(LENGTH, 0, HEIGHT),
         		v8 = newV3(LENGTH, 0, -HEIGHT);
         
-        //Necessary rotations
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);   
         GL11.glDepthMask(false);
-        loadTexture(ClientProps.AR_GRENADE_PATH);
+        loadTexture(TEXTURE_PATH);
         GL11.glRotatef(gren.rotationYaw - 270.0F, 0.0F, -1.0F, 0.0F); //左右旋转
         GL11.glRotatef(gren.rotationPitch, 0.0F, 0.0F, -1.0F); //上下旋转
         tessellator.startDrawingQuads();
@@ -85,6 +78,7 @@ public class RenderARGrenade extends RenderEntity {
     }
     
     protected void addVertex(Vec3 vec3, double texU, double texV){
+    	
     	tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord, texU, texV);
     }
     

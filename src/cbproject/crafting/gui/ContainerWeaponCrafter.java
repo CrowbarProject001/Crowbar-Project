@@ -1,13 +1,11 @@
 package cbproject.crafting.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
 import cbproject.crafting.recipes.RecipeWeapons;
@@ -48,7 +46,20 @@ public class ContainerWeaponCrafter extends Container {
 		writeRecipeInfoToSlot();
 	}
 	
-    public void detectAndSendChanges()
+    protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
+        for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 9; j++) {
+                	addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
+                                        8 + j * 21, 156 + i * 22));
+                }
+        }
+        for (int i = 0; i < 9; i++) {
+                addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 21, 229));
+        }
+    }
+	
+    @Override
+	public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
         for (int i = 0; i < this.crafters.size(); ++i)
@@ -62,8 +73,8 @@ public class ContainerWeaponCrafter extends Container {
 
 	
     @SideOnly(Side.CLIENT)
+    @Override
     public void updateProgressBar(int par1, int par2) {
-    	
     	if(par1 == 0){
     		scrollFactor = Math.abs(par2);
     		if(par2 >= 0){
@@ -95,21 +106,6 @@ public class ContainerWeaponCrafter extends Container {
     @Override
     public boolean canInteractWith(EntityPlayer player) {
             return tileEntity.isUseableByPlayer(player);
-    }
-
-
-    protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
-
-            for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 9; j++) {
-                    	addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
-                                            8 + j * 21, 156 + i * 22));
-                    }
-            }
-
-            for (int i = 0; i < 9; i++) {
-                    addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 21, 229));
-            }
     }
 
     @Override

@@ -4,17 +4,14 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
 
 public class ItemAmmo_357 extends ItemAmmo {
 
 	public ItemAmmo_357(int par1) {
-		
 		super(par1);
 		setCreativeTab( CBCMod.cct );
 		setUnlocalizedName("ammo_357");
 		setMaxStackSize (64);
-		
 	}
 	
 	@Override

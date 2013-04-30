@@ -1,11 +1,6 @@
 package cbproject.crafting.gui;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -14,13 +9,10 @@ import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiButton.ButtonState;
 import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.network.NetWeaponCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GuiWeaponCrafter extends CBCGuiContainer {
 
@@ -45,6 +37,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 		super.mouseClicked(par1, par2, par3);
     }
     
+	@Override
     public void initGui()
     {
         super.initGui();
@@ -83,6 +76,16 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         	this.setButtonState("down", ButtonState.INVAILD);
         } else if(this.getButtonState("down") == ButtonState.INVAILD)
         	this.setButtonState("down", ButtonState.IDLE);
+        
+        if(te.page == 0){
+        	this.setButtonState("left", ButtonState.INVAILD);
+        } else if(this.getButtonState("left") == ButtonState.INVAILD)
+        	this.setButtonState("left", ButtonState.IDLE);
+        if(te.page == RecipeWeapons.recipes.length){
+        	this.setButtonState("right", ButtonState.INVAILD);
+        } else if(this.getButtonState("right") == ButtonState.INVAILD)
+        	this.setButtonState("right", ButtonState.IDLE);
+        	
 	}
 	
 	@Override
@@ -101,7 +104,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         else dy = 38;
         drawTexturedModalRect(x + 160, y + 16, 232, dy, 8, 18);
         
-        int height = te.heat * 64 / te.MAX_HEAT;
+        int height = te.heat * 64 / TileEntityWeaponCrafter.MAX_HEAT;
         if(height > 0)
         	drawTexturedModalRect(x + 174, y + 78 - height, 232, 150 - height, 8, height);
         if(te.maxBurnTime != 0){

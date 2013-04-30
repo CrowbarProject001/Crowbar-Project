@@ -1,14 +1,9 @@
 package cbproject.core.renderers;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.TextureFXManager;
 
 public class RendererUtils{
 
@@ -115,23 +110,23 @@ public class RendererUtils{
 			var8 = (float) var7 / tileSize;
 			var9 = u2 - (u2 - u1) * var8 - tx;
 			var10 = 1.0F * var8;
-			t.addVertexWithUV((double) var10, 0.0D, -w, (double) var9,
-					(double) v2);
-			t.addVertexWithUV((double) var10, 0.0D, w, (double) var9,
-					(double) v2);
-			t.addVertexWithUV((double) var10, 1.0D, w, (double) var9,
-					(double) v1);
-			t.addVertexWithUV((double) var10, 1.0D, -w, (double) var9,
-					(double) v1);
+			t.addVertexWithUV(var10, 0.0D, -w, var9,
+					v2);
+			t.addVertexWithUV(var10, 0.0D, w, var9,
+					v2);
+			t.addVertexWithUV(var10, 1.0D, w, var9,
+					v1);
+			t.addVertexWithUV(var10, 1.0D, -w, var9,
+					v1);
 
-			t.addVertexWithUV((double) var10, 1.0D, w, (double) var9,
-					(double) v1);
-			t.addVertexWithUV((double) var10, 0.0D, w, (double) var9,
-					(double) v2);
-			t.addVertexWithUV((double) var10, 0.0D, -w, (double) var9,
-					(double) v2);
-			t.addVertexWithUV((double) var10, 1.0D, -w, (double) var9,
-					(double) v1);
+			t.addVertexWithUV(var10, 1.0D, w, var9,
+					v1);
+			t.addVertexWithUV(var10, 0.0D, w, var9,
+					v2);
+			t.addVertexWithUV(var10, 0.0D, -w, var9,
+					v2);
+			t.addVertexWithUV(var10, 1.0D, -w, var9,
+					v1);
 		}
 		t.draw();
 

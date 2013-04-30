@@ -2,18 +2,19 @@ package cbproject.deathmatch.entities;
 
 import java.util.List;
 
-import cbproject.core.utils.BlockPos;
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.entities.EntityBulletGaussSec.EnumGaussRayType;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.Weapon_gauss;
+import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.GaussBulletManager;
 import cbproject.deathmatch.utils.InformationEnergy;
 
 
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -71,7 +72,7 @@ public class EntityBulletGauss extends EntityBullet {
 	 */
 	@Override
 	public void doEntityCollision(MovingObjectPosition result){
-		if( result.entityHit == null || (!(result.entityHit instanceof EntityLiving)))
+		if( result.entityHit == null )
 			return;		
 		
 		doChargeAttack(result, inf, item);
@@ -97,8 +98,6 @@ public class EntityBulletGauss extends EntityBullet {
 		
 	    double radius = Math.round(0.3 * damage); //Max: 5.28
 		damage = (int) Math.round(damage * (1.0 - 0.33 * blockFront)); //Decay based on blockFront
-	    System.out.println("penetrated  damage : " + damage+ " radius : " + radius);
-	    System.out.println("Shoot Damage :" + this.getChargeDamage());
 	    
 	    AxisAlignedBB box = getPenetratingBox(radius, result);
 	    if(box == null)
@@ -110,14 +109,17 @@ public class EntityBulletGauss extends EntityBullet {
 
 	    for(int i = 0; i < var1.size(); i++){
 	    	var2 = (Entity) var1.get(i);
-	    	if(!(var2 instanceof EntityLiving))
-	    		continue;
+	    	if(result.entityHit == null)
+				continue;
+	    	if(!(result.entityHit instanceof EntityLiving || result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
+				continue;
 	    	//Calculate distance & damage, damage entities.
 	    	double distance =Math.sqrt(Math.pow((result.hitVec.xCoord - var2.posX),2) + Math.pow((result.hitVec.yCoord - var2.posY),2) + 
 	    			Math.pow((result.hitVec.zCoord - var2.posZ),2));
-	    	int dmg = (int) Math.round((damage * Math.pow(1.0 - distance/ (radius * 1.732), 2) * CHARGE_DAMAGE_SCALE)) ;
-	    	System.out.println("Damage for distance " + distance + " :" + dmg);
-	    	((EntityLiving)var2).attackEntityFrom(DamageSource.causeMobDamage(getThrower()), dmg);
+	    	int dmg = (int) Math.round((damage * Math.pow(1.0 - distance/ (radius * 1.732), 2) * CHARGE_DAMAGE_SCALE));
+	    	double var0 = dmg/20;
+			double dx = motion.motionX * var0, dy = motion.motionY * var0, dz = motion.motionZ * var0;
+	    	BulletManager.doEntityAttack(result.entityHit, DamageSource.causeMobDamage(getThrower()), dmg, dx, dy, dz);
 	    }
 		
 	}
@@ -135,7 +137,6 @@ public class EntityBulletGauss extends EntityBullet {
 		int damage = 0;
 		if( -sin45 < sin && sin < sin45 ){
 			damage = (int) Math.round( Math.sqrt(1 - sin * sin ) * getChargeDamage() );
-			System.out.println("Refelection dmg : " + damage);
 			GaussBulletManager.Shoot2(EnumGaussRayType.REFLECTION, worldObj, getThrower(), itemStack, result, motion, damage);
 		}
 		return getChargeDamage() - damage;
@@ -147,10 +148,11 @@ public class EntityBulletGauss extends EntityBullet {
 		int damage = getChargeDamage();
 		double var0 = damage/20;
 		double dx = motion.motionX * var0, dy = motion.motionY * var0, dz = motion.motionZ * var0;
-		
-		EntityLiving mob = (EntityLiving) result.entityHit;
-		mob.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), damage);
-		mob.addVelocity(dx, dy, dz);
+		if(result.entityHit == null)
+			return;
+		if(!(result.entityHit instanceof EntityLiving || result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
+			return;
+		BulletManager.doEntityAttack(result.entityHit, DamageSource.causeMobDamage(getThrower()), damage, dx, dy, dz);
 		
 	}
 	
@@ -297,7 +299,7 @@ public class EntityBulletGauss extends EntityBullet {
 	}
 	
 	private int getChargeDamage(){
-		return (int) Math.round(inf.charge) ;
+		return Math.round(inf.charge) ;
 	}
 	
 }

@@ -1,9 +1,10 @@
 package cbproject.deathmatch.entities;
 
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.items.wpns.WeaponGeneral;
-import cbproject.deathmatch.utils.InformationWeapon;
+import cbproject.deathmatch.utils.BulletManager;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
@@ -11,7 +12,7 @@ import net.minecraft.world.World;
 
 /**
  * @author WeAthFolD
- * @description Gauss sencondary ray used to do penetration and reflection.
+ * @description Gauss secondary ray used to do penetration and reflection.
  */
 public class EntityBulletGaussSec extends EntityBullet {
 
@@ -98,15 +99,15 @@ public class EntityBulletGaussSec extends EntityBullet {
 	@Override
 	public void doEntityCollision(MovingObjectPosition result){
 		
-		if( result.entityHit == null || (!(result.entityHit instanceof EntityLiving)))
+		if(result.entityHit == null)
 			return;
-
+		if(!(result.entityHit instanceof EntityLiving || result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
+			return;
+		
 		double var0 = damage/20;
 		double dx = motion.motionX * var0, dy = motion.motionY * var0, dz = motion.motionZ * var0;
 		
-		EntityLiving mob = (EntityLiving) result.entityHit;
-		mob.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), damage);
-		mob.addVelocity(dx, dy, dz);
+		BulletManager.doEntityAttack(result.entityHit, DamageSource.causeMobDamage(getThrower()), damage, dx, dy, dz);
 		
 	}
 

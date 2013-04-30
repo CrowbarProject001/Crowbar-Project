@@ -2,15 +2,10 @@ package cbproject.deathmatch.entities;
 
 import cbproject.deathmatch.items.wpns.Weapon_egon;
 import cbproject.deathmatch.utils.InformationEnergy;
-import cbproject.deathmatch.utils.InformationSet;
-import cpw.mods.fml.common.Mod.Item;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -40,9 +35,9 @@ public class EntityEgonRay extends EntityThrowable {
 		this.setLocationAndAngles(ent.posX, ent.posY, ent.posZ, ent.rotationYawHead, ent.rotationPitch);
 		
 		float var3 = 0.4F;
-		this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3);
-        this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3);
-        this.motionY = (double)(-MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * var3);
+		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3;
+        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3;
+        this.motionY = -MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * var3;
 	}
 	
 	@Override

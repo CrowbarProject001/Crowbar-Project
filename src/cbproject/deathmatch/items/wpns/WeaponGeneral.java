@@ -1,24 +1,9 @@
 package cbproject.deathmatch.items.wpns;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-import org.lwjgl.input.Keyboard;
-
-import cbproject.core.CBCMod;
-import cbproject.core.misc.CBCKeyProcess;
 import cbproject.core.utils.CBCWeaponInformation;
-import cbproject.deathmatch.utils.BulletManager;
-import cbproject.deathmatch.utils.InformationSet;
 import cbproject.deathmatch.utils.InformationWeapon;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,14 +21,10 @@ public abstract class WeaponGeneral extends Item {
 	public  double upLiftRadius, recoverRadius;
 	
 	public WeaponGeneral(int par1, int par2AmmoID,int par3MaxModes) {
-		
 		super(par1);
 		maxModes = par3MaxModes;
 		ammoID = par2AmmoID;
-
 	}
-	
-
 	
 	public void setLiftProps(double uplift, double recover){
 		upLiftRadius = uplift;
@@ -65,8 +46,10 @@ public abstract class WeaponGeneral extends Item {
 			System.err.println(par2World.isRemote + " side is null");
 			return null;
 		}
+		if(!par2World.isRemote)
+			return information;
 		if(information.isRecovering){
-			par3Entity.rotationPitch += recoverRadius;
+			par3Entity.setAngles(0, -(float) recoverRadius * 6.67F);
 			information.recoverTick++;
 			if(information.recoverTick >= (upLiftRadius / recoverRadius))
 				information.isRecovering = false;
@@ -86,7 +69,7 @@ public abstract class WeaponGeneral extends Item {
 		entityPlayer.rotationPitch -= upLiftRadius;
 		information.isRecovering = true;
 		information.recoverTick = 0;
-		
+		System.out.println("Doing uplift : ");
 	}
 	
 	/**

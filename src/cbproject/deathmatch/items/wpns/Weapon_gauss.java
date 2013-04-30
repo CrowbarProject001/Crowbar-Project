@@ -3,20 +3,15 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
+import cbproject.core.register.CBCItems;
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.entities.EntityGaussRay;
 import cbproject.deathmatch.entities.EntityBulletGaussSec.EnumGaussRayType;
 import cbproject.deathmatch.utils.AmmoManager;
-import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.GaussBulletManager;
 import cbproject.deathmatch.utils.InformationEnergy;
-import cbproject.deathmatch.utils.InformationSet;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -29,13 +24,10 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			SND_SHOOT_PATH = "cbc.weapons.gaussb";
 	
 	public Weapon_gauss(int par1) {
-		
-		super(par1, CBCMod.cbcItems.itemAmmo_uranium.itemID, 2);
-		
+		super(par1, CBCItems.itemAmmo_uranium.itemID, 2);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_gauss");
 		setJamTime(20);
-		
 	}
 	
 	@Override

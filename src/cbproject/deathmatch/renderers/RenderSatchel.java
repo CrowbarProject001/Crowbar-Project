@@ -4,15 +4,12 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.deathmatch.entities.EntitySatchel;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 
 public class RenderSatchel extends RenderEntity {

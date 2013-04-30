@@ -3,19 +3,12 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.deathmatch.entities.EntityHGrenade;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event;
-import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
 /**
  * Hand grenade weapon class.
@@ -72,7 +65,8 @@ public class Weapon_hgrenade extends Item {
         
     }
 	
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    @Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 400; //20s
     }

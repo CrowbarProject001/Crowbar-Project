@@ -1,9 +1,7 @@
 package cbproject.crafting.items;
 
 import cbproject.core.CBCMod;
-import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 
 public abstract class ItemMaterial extends Item{
 

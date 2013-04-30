@@ -2,8 +2,6 @@ package cbproject.core.register;
 
 import cbproject.core.configure.Config;
 import cbproject.crafting.items.*;
-import cbproject.crafting.recipes.RecipeWeaponEntry;
-import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ammos.*;
 import cbproject.deathmatch.items.wpns.*;
@@ -12,10 +10,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cbproject.core.misc.CBCLanguage;
 
 /**
@@ -48,7 +43,7 @@ public class CBCItems {
 	
 	public static ItemBullet_Shotgun itemBullet_Shotgun;
 
-	public static SteelIngot itemRefinedIronIngot;
+	public static IngotSteel itemRefinedIronIngot;
 	
 	public static ItemMaterial mat_accessories, mat_ammunition, mat_bio,
 		mat_heavy, mat_light, mat_pistol, mat_tech, mat_explosive, mat_box;
@@ -65,7 +60,7 @@ public class CBCItems {
 	
 		try{
 
-			itemRefinedIronIngot = new SteelIngot(conf.GetItemID("itemRefinedIronIngot",7100));
+			itemRefinedIronIngot = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
 			
 			itemAmmo_uranium = new ItemAmmo_uranium(conf.GetItemID("itemAmmo_uranium", 7300));
 			itemAmmo_9mm = new ItemAmmo_9mm(conf.GetItemID("itemAmmo_9mm", 7301));
@@ -112,7 +107,7 @@ public class CBCItems {
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
 		
-		this.addRecipes();
+		CBCItems.addRecipes();
 		return;
 	}
 	
@@ -141,6 +136,7 @@ public class CBCItems {
         CBCLanguage.addDefaultName(weapon_crossbow, "High Heat Crossbow");
         CBCLanguage.addDefaultName(weapon_gauss, "Gauss Gun");
         CBCLanguage.addDefaultName(itemRefinedIronIngot, "Refined Iron Ingot");
+        CBCLanguage.addDefaultName(weapon_egon, "Egon");
         
 		CBCLanguage.addDefaultName(armorHEVBoot, "HEV boot");
 		CBCLanguage.addDefaultName(armorHEVHelmet, "HEV helmet");
@@ -157,6 +153,7 @@ public class CBCItems {
 		CBCLanguage.addDefaultName(mat_explosive, "Explosiove Material");
 		
 		CBCLanguage.addDefaultName(ironBar, "Refined Iron Bar");
+		CBCLanguage.addDefaultName(lambdaChip, "λ Chipset");
 		
 		CBCLanguage.addLocalName(itemAmmo_uranium , "铀燃料");
 		CBCLanguage.addLocalName(itemAmmo_9mm, "9毫米手枪弹匣");
@@ -179,6 +176,7 @@ public class CBCItems {
         CBCLanguage.addLocalName(weapon_RPG, "RPG火箭发射器");
         CBCLanguage.addLocalName(weapon_crossbow, "高耐热弩");
         CBCLanguage.addLocalName(weapon_gauss, "高斯枪");
+        CBCLanguage.addDefaultName(weapon_egon, "离子光束枪");
         CBCLanguage.addLocalName(itemRefinedIronIngot, "精铁锭");
         
 		CBCLanguage.addLocalName(armorHEVBoot, "HEV靴");
@@ -196,6 +194,7 @@ public class CBCItems {
 		CBCLanguage.addLocalName(mat_explosive, "爆裂材料");
 		
 		CBCLanguage.addLocalName(ironBar, "精铁条");
+		CBCLanguage.addLocalName(lambdaChip, "λ集成芯片");
 	}
 	
 	public static void addRecipes(){

@@ -9,7 +9,6 @@ public class SlotLocked extends Slot {
 
 	public SlotLocked(IInventory par1iInventory, int par2, int par3, int par4) {
 		super(par1iInventory, par2, par3, par4);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
@@ -17,7 +16,8 @@ public class SlotLocked extends Slot {
     }
 	
 	
-    public ItemStack decrStackSize(int par1){
+    @Override
+	public ItemStack decrStackSize(int par1){
         return null;
     }
 

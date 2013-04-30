@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -79,6 +78,7 @@ public class MotionXYZ {
 		return world.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
 	}
 	
+	@Override
 	public String toString(){
 		
 		return "[ Pos : " + posX + " " + posY + " "  + posZ + " ; Motion: " + motionX + " " + motionY + " " + motionZ + " ] "; 
@@ -135,9 +135,9 @@ public class MotionXYZ {
 		
 		float var3 = 1.0F, var4 = 0.0F;
 		
-        this.motionX = (double)(-MathHelper.sin(par1Player.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(par1Player.rotationPitch / 180.0F * (float)Math.PI) * var3);
-        this.motionZ = (double)( MathHelper.cos(par1Player.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(par1Player.rotationPitch / 180.0F * (float)Math.PI) * var3);
-        this.motionY = (double)( -MathHelper.sin((par1Player.rotationPitch + var4)/180.0F *(float)Math.PI) * var3 );
+        this.motionX = -MathHelper.sin(par1Player.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(par1Player.rotationPitch / 180.0F * (float)Math.PI) * var3;
+        this.motionZ = MathHelper.cos(par1Player.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(par1Player.rotationPitch / 180.0F * (float)Math.PI) * var3;
+        this.motionY = -MathHelper.sin((par1Player.rotationPitch + var4)/180.0F *(float)Math.PI) * var3;
 	}
 	
 	public static final MotionXYZ getPosByPlayer2(EntityLiving par1Player){

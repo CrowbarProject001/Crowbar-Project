@@ -8,7 +8,6 @@ import static net.minecraftforge.common.ForgeDirection.NORTH;
 import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
-import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
@@ -16,7 +15,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.register.CBCBlocks;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.utils.BulletManager;
@@ -26,14 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Icon;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -208,13 +199,13 @@ public class BlockTripmine extends BlockContainer {
 		for(int j = 0; var0 && j <RAY_RANGE ; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){
 			if(var10 == 1 || var10 == 3){
 				id = par1World.getBlockId(i, par3, par4);
-				if(id == 0 || Block.blocksList[id].isBlockReplaceable(par1World, i, par3, par4)){
-				par1World.setBlock(i, par3, par4, CBCBlocks.blockTripmineRay.blockID, var10, 0x02);
+				if(id == 0 || id == Block.snow.blockID){
+				par1World.setBlock(i, par3, par4, CBCBlocks.blockTripmineRay.blockID, var10, 0x04);
 				} else var0 = false;
 			} else {
 				id = par1World.getBlockId(par2, par3, i);
-				if(id == 0 || Block.blocksList[id].isBlockReplaceable(par1World, par2, par3, i)){
-					par1World.setBlock(par2, par3, i, CBCBlocks.blockTripmineRay.blockID, var10, 0x02);
+				if(id == 0 || id == Block.snow.blockID){
+					par1World.setBlock(par2, par3, i, CBCBlocks.blockTripmineRay.blockID, var10, 0x04);
 				} else var0 = false;
 			}
 		}

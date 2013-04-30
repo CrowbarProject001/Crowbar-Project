@@ -3,16 +3,13 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.renderers.RendererUtils;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.IBlockAccess;
 
 public class RenderTileTripmine extends TileEntitySpecialRenderer {
 

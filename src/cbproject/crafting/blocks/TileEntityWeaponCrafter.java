@@ -34,6 +34,66 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		craftingStacks = new ItemStack[12];
 	}
 
+	@Override
+	public void updateEntity() {
+		if(heat > 0)
+			heat--;
+		
+		if(iconType == CrafterIconType.NOMATERIAL && worldObj.getWorldTime() - lastTime > 20){
+			iconType = isCrafting? CrafterIconType.CRAFTING : CrafterIconType.NONE;
+		}
+		
+		if(isCrafting){
+			if(currentRecipe.heatRequired <= this.heat && hasEnoughMaterial(currentRecipe)){
+				craftItem();
+			}
+        	if(!isBurning){
+        		tryBurn();
+        	}
+        	if(worldObj.getWorldTime() - lastTime > 500){
+        		isCrafting = false;
+        	}
+        }
+		if(isBurning){
+			burnTimeLeft--;
+			if(heat < MAX_HEAT)
+				heat+=3;
+			if(burnTimeLeft <= 0)
+				isBurning = false;
+		}
+		this.onInventoryChanged();
+	}
+	
+	@Override
+	public int getSizeInventory() {
+		return inventory.length;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int i) {
+		if (i >= 12)
+			return inventory[i - 12];
+		return craftingStacks[i];
+	}
+
+	@Override
+	public ItemStack decrStackSize(int slot, int amt) {
+		ItemStack stack = getStackInSlot(slot);
+		if (stack != null) {
+			if (stack.stackSize <= amt) {
+				setInventorySlotContents(slot, null);
+			} else {
+				stack = stack.splitStack(amt);
+				if (stack.stackSize == 0) {
+					setInventorySlotContents(slot, null);
+				}
+			}
+		}
+		return stack;
+	}
+	
+	
+	
 	public void addScrollFactor(boolean isForward) {
 		if (!RecipeWeapons.doesNeedWeaponScrollBar(page))
 			return;
@@ -73,36 +133,6 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
     	}
     }
 	
-	@Override
-	public void updateEntity() {
-		if(heat > 0)
-			heat--;
-		
-		if(iconType == CrafterIconType.NOMATERIAL && worldObj.getWorldTime() - lastTime > 20){
-			iconType = isCrafting? CrafterIconType.CRAFTING : CrafterIconType.NONE;
-		}
-		
-		if(isCrafting){
-			if(currentRecipe.heatRequired <= this.heat && hasEnoughMaterial(currentRecipe)){
-				craftItem();
-			}
-        	if(!isBurning){
-        		tryBurn();
-        	}
-        	if(worldObj.getWorldTime() - lastTime > 500){
-        		isCrafting = false;
-        	}
-        }
-		if(isBurning){
-			burnTimeLeft--;
-			if(heat < MAX_HEAT)
-				heat+=3;
-			if(burnTimeLeft <= 0)
-				isBurning = false;
-		}
-		this.onInventoryChanged();
-	}
-
 	public void doItemCrafting(int slot) {
 		RecipeWeaponEntry r = getRecipeBySlotAndScroll(slot, this.scrollFactor);
 
@@ -206,34 +236,6 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			}
 		}
 
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return inventory.length;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		if (i >= 12)
-			return inventory[i - 12];
-		return craftingStacks[i];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int slot, int amt) {
-		ItemStack stack = getStackInSlot(slot);
-		if (stack != null) {
-			if (stack.stackSize <= amt) {
-				setInventorySlotContents(slot, null);
-			} else {
-				stack = stack.splitStack(amt);
-				if (stack.stackSize == 0) {
-					setInventorySlotContents(slot, null);
-				}
-			}
-		}
-		return stack;
 	}
 
 	public RecipeWeaponEntry getRecipeBySlotAndScroll(int slot, int factor) {

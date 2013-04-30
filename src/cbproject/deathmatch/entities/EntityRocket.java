@@ -1,17 +1,10 @@
 package cbproject.deathmatch.entities;
 
-import java.util.List;
-
 import cbproject.deathmatch.utils.BulletManager;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 /**
@@ -31,8 +24,7 @@ public class EntityRocket extends EntityThrowable {
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
-		if(ticksExisted % 2 == 0)
-			worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0, 0.0, 0.0);
+		worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0, 0.0, 0.0);
 		if(ticksExisted % 45 == 0)
 			worldObj.playSoundAtEntity(this, "cbc.weapons.rocket", 0.5F, 1.0F);
 	}

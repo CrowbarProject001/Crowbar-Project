@@ -1,17 +1,12 @@
 package cbproject.deathmatch.items.wpns;
 
-import cbproject.core.CBCMod;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
-import cbproject.deathmatch.utils.InformationBullet;
 import cbproject.deathmatch.utils.InformationEnergy;
 import cbproject.deathmatch.utils.InformationSet;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -37,6 +32,7 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 	 * @param mode
 	 * @return damage
 	 */
+	@Override
 	public abstract int getDamage(int mode);
 	
 	/**
@@ -62,6 +58,7 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 	}
 	
 	
+	@Override
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5);
 	
 	/**
@@ -142,13 +139,13 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 		int mode = information.mode;
 		
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
-		BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
+		BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
     	information.setLastTick();
 
     	if(par3Entity instanceof EntityPlayer){
-    		doUplift(information, (EntityPlayer) par3Entity);
-    		EntityPlayer player = (EntityPlayer) par3Entity;
-    		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
+    		doUplift(information, par3Entity);
+    		EntityPlayer player = par3Entity;
+    		if(!par3Entity.capabilities.isCreativeMode ){
     				AmmoManager.consumeAmmo(player, this, 1);
     		}
     	}
@@ -189,7 +186,7 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 		
 		double uniqueID = Math.random()*65535D;
 		
-		inf = CBCMod.wpnInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer)).getProperEnergy(par2EntityPlayer.worldObj);
+		inf = CBCWeaponInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer)).getProperEnergy(par2EntityPlayer.worldObj);
 		
 		if(par1ItemStack.stackTagCompound == null)
 			par1ItemStack.stackTagCompound = new NBTTagCompound();

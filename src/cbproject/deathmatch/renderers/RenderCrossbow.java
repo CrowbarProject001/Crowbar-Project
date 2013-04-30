@@ -13,13 +13,9 @@ import static cbproject.core.renderers.RendererUtils.renderItemIn2d;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.renderers.RendererUtils;
 import cbproject.deathmatch.items.wpns.Weapon_crossbow;
 import cbproject.deathmatch.utils.InformationBullet;
-
-
-import cpw.mods.fml.client.TextureFXManager;
 
 public class RenderCrossbow implements IItemRenderer {
 

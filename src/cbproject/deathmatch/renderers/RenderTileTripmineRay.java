@@ -3,10 +3,7 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;

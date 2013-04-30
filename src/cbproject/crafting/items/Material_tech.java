@@ -11,7 +11,8 @@ public class Material_tech extends ItemMaterial {
 		setUnlocalizedName("mat_tech");
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
         this.iconIndex = par1IconRegister.registerIcon("lambdacraft:mat_tech");

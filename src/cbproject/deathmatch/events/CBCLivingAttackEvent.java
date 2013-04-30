@@ -7,7 +7,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import cbproject.deathmatch.items.ArmorHEV;
 
-public class OnLivingAttack {
+public class CBCLivingAttackEvent {
 	
 	@ForgeSubscribe
 	public void onLivingAttack(LivingAttackEvent event){

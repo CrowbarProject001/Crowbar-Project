@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.register.CBCItems;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.EnumArmorMaterial;
@@ -22,7 +21,7 @@ public class ArmorHEV extends ItemArmor implements IArmorTextureProvider  {
 		super(par1, material, 2, armorType);
 		int reductionAmount[] = {0, 0, 0, 0};
 		setCreativeTab(CBCMod.cct);
-		setUnlocalizedName("armorHEV" + this.armorType);
+		setUnlocalizedName("hev" + this.armorType);
 	}
 
 	@Override
@@ -38,7 +37,7 @@ public class ArmorHEV extends ItemArmor implements IArmorTextureProvider  {
     @SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("cbproject:armorHEV" + this.armorType);
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:hev" + this.armorType);
     }
 
 }

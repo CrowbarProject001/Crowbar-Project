@@ -3,23 +3,20 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
+import cbproject.core.register.CBCItems;
 import cbproject.deathmatch.entities.EntityRocket;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.InformationBullet;
-import cbproject.deathmatch.utils.InformationSet;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class Weapon_RPG extends WeaponGeneralBullet {
 
 	public Weapon_RPG(int par1) {
-		super(par1,CBCMod.cbcItems.itemAmmo_rpg.itemID, 1);
+		super(par1,CBCItems.itemAmmo_rpg.itemID, 1);
 		
 		setUnlocalizedName("weapon_rpg");
 		setCreativeTab(CBCMod.cct);

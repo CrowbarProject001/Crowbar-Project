@@ -6,16 +6,13 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.register.CBCBlocks;
 import cbproject.core.utils.BlockPos;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmineRay;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
 
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;

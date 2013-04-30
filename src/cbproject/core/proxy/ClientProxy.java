@@ -1,7 +1,9 @@
 package cbproject.core.proxy;
 
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cbproject.core.CBCMod;
 import cbproject.core.register.CBCRenderManager;
+import cbproject.core.misc.CBCKeyProcess;
 import cbproject.core.props.*;
 import net.minecraftforge.client.MinecraftForgeClient;
 
@@ -11,6 +13,7 @@ public class ClientProxy extends Proxy{
 	public void init() { 
 		
 		CBCMod.renderManager = new CBCRenderManager();
+		CBCMod.renderManager.Load();
 		
 		MinecraftForgeClient.preloadTexture(ClientProps.GAUSS_BEAM_PATH); 
 		
@@ -28,7 +31,7 @@ public class ClientProxy extends Proxy{
 		MinecraftForgeClient.preloadTexture(ClientProps.RPG_ROCKET_PATH);
 		MinecraftForgeClient.preloadTexture(ClientProps.SHOTGUN_SHELL_PATH);
 		MinecraftForgeClient.preloadTexture(ClientProps.EGON_BEAM_PATH);
-		MinecraftForgeClient.preloadTexture(ClientProps.HGRENADE_PATH);
+		MinecraftForgeClient.preloadTexture(ClientProps.CROSSBOW_BOW_PATH);
 		
 		MinecraftForgeClient.preloadTexture(ClientProps.EGON_EQUIPPED_PATH);
 		
@@ -38,6 +41,8 @@ public class ClientProxy extends Proxy{
 			MinecraftForgeClient.preloadTexture(s);
 		for(String s:ClientProps.HEV_ARMOR_PATH)
 			MinecraftForgeClient.preloadTexture(s);
+		
+		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess());
 		
 	}
 	

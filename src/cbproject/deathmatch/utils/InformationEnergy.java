@@ -14,10 +14,12 @@ public class InformationEnergy extends InformationWeapon {
 		isShooting = false;
 	}
 
+	@Override
 	public void updateTick(){
 		ticksExisted++;
 	}
 	
+	@Override
 	public void setLastTick(){
 		lastTick = ticksExisted;
 	}

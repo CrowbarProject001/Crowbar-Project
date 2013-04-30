@@ -1,22 +1,14 @@
 package cbproject.deathmatch.items.wpns;
 
-import java.util.ArrayList;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
-import cbproject.deathmatch.utils.InformationBullet;
-import cbproject.deathmatch.utils.InformationSet;
-
-
+import cbproject.core.register.CBCItems;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 /**
@@ -30,7 +22,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 
 	public Weapon_9mmhandgun(int par1) {
 		
-		super(par1 , CBCMod.cbcItems.itemAmmo_9mm.itemID, 2);
+		super(par1 , CBCItems.itemAmmo_9mm.itemID, 2);
 		
 		setUnlocalizedName("weapon_9mmhandgun");
 		setCreativeTab( CBCMod.cct );

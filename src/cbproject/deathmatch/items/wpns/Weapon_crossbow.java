@@ -3,31 +3,28 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
+import cbproject.core.register.CBCItems;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.entities.EntityCrossbowArrow;
-import cbproject.deathmatch.entities.EntityRocket;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
 import cbproject.deathmatch.utils.InformationSet;
-import cbproject.deathmatch.utils.InformationWeapon;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
  * Crossbow in HLDM Style.
- * Mode I : Non-delay, sniper rifle like.
+ * Mode I : Non-delay, sniper rifle style.
  * Mode II : Explosive arrow.
  * @author WeAthFolD
  */
 public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	public Weapon_crossbow(int par1) {
-		super(par1 , CBCMod.cbcItems.itemAmmo_bow.itemID, 2);
+		super(par1 , CBCItems.itemAmmo_bow.itemID, 2);
 		
 		setUnlocalizedName("weapon_crossbow");
 		setCreativeTab( CBCMod.cct );
@@ -73,10 +70,10 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		switch(information.mode){
 		case 0:
-			BulletManager.Shoot(par1ItemStack, (EntityLiving) par3Entity, par2World, "smoke");
+			BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
 			break;
 		case 1:
-			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World, (EntityLiving) par3Entity));
+			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World, par3Entity));
 			break;
 		default:
 			break;
@@ -84,7 +81,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		information.setLastTick();
     	if(par3Entity instanceof EntityPlayer){
     		doUplift(information, par3Entity);
-    		if(!((EntityPlayer)par3Entity).capabilities.isCreativeMode ){
+    		if(!par3Entity.capabilities.isCreativeMode ){
     				par1ItemStack.damageItem( 1 , par3Entity);
     		}
     	}

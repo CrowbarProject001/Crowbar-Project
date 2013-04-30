@@ -4,11 +4,8 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.entities.EntityEgonRay;
-import cbproject.deathmatch.entities.EntityGaussRay;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
@@ -34,7 +31,7 @@ public class RenderEgonRay extends RenderEntity {
 		MotionXYZ motion = new MotionXYZ(egon);
 		MovingObjectPosition trace = egon.worldObj.rayTraceBlocks(motion.asVec3(egon.worldObj), motion.updateMotion(100.0F).asVec3(egon.worldObj));
 		Vec3 end = (trace == null)? motion.asVec3(egon.worldObj) : trace.hitVec;
-		tessellator = tessellator.instance;
+		tessellator = Tessellator.instance;
 		
         GL11.glPushMatrix();
         

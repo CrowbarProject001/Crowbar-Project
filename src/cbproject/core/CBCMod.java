@@ -5,7 +5,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import cbproject.core.configure.Config;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.CBCGuiHandler;
-import cbproject.core.misc.CBCKeyProcess;
 import cbproject.core.misc.CBCLanguage;
 import cbproject.core.register.CBCBlocks;
 import cbproject.core.register.CBCEventHandler;
@@ -15,7 +14,6 @@ import cbproject.core.register.CBCPacketHandler;
 import cbproject.core.register.CBCRenderManager;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.crafting.recipes.RecipeWeapons;
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -39,7 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author WeAthFolD, mkpoli
  */
 
-@Mod(modid="lambdacraft",name="lambdacraft",version="0.8.0.0a")
+@Mod(modid="lambdacraft",name="lambdacraft",version="0.8.5.0a")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
 serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeapons", "CBCCrafter"}, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
@@ -77,22 +75,18 @@ public class CBCMod
 	@Init
 	public void init(FMLInitializationEvent Init){
 		
-		//Items, Blocks, Recipes, Key registers, Weapon information loads.
 		CBCLanguage.bindLanguage("zh_CN");
-		Proxy.init();
+		
 		cbcBlocks = new CBCBlocks(config);
 		cbcItems=new CBCItems(config);
 		wpnInformation = new CBCWeaponInformation();
 		recipeWeapons = new RecipeWeapons();
-		
-		if(Init.getSide() == Side.CLIENT){
-			KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess(config));
-			renderManager.Load();
-		}
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
         
 		CBCLanguage.addDefaultName("itemGroup.CBCMod", "LambdaCraft");
 		CBCGeneralRegistry.register();
+		Proxy.init();
+		
 	}
 
 	@PostInit

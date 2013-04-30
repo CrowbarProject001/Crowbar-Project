@@ -1,12 +1,9 @@
 package cbproject.deathmatch.entities;
 
 import cbproject.core.utils.MotionXYZ;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
@@ -52,7 +49,6 @@ public class EntityGaussRay extends EntityThrowable {
 	
 	@Override
 	protected void entityInit() {
-		// TODO Auto-generated method stub
 
 	}
 

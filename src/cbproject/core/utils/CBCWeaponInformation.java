@@ -3,17 +3,10 @@
  */
 package cbproject.core.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 import cbproject.deathmatch.utils.InformationSet;
-import cbproject.deathmatch.utils.InformationWeapon;
-
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 
 /**

@@ -3,18 +3,14 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
+import cbproject.core.register.CBCItems;
 import cbproject.deathmatch.entities.EntityEgonRay;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationEnergy;
-import cbproject.deathmatch.utils.InformationSet;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -30,11 +26,10 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 			SND_OFF = "cbc.weapons.egon_off";
 	
 	public Weapon_egon(int par1) {
-		super(par1, CBCMod.cbcItems.itemAmmo_uranium.itemID, 1);
+		super(par1, CBCItems.itemAmmo_uranium.itemID, 1);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_egon");
 		setJamTime(20);
-		
 		setLiftProps(1, 0);
 	}
 	
@@ -98,8 +93,7 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationEnergy information ){
 		
 		BulletManager.Shoot(par1ItemStack, player, par2World, "fire");	
-    	if(player instanceof EntityPlayerSP)
-    		doUplift(information, player);
+    	doUplift(information, player);
     	
 		return;
 	}

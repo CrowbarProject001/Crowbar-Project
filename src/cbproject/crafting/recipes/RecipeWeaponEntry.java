@@ -20,6 +20,7 @@ public class RecipeWeaponEntry {
 		heatRequired = heat;
 	}
 
+	@Override
 	public String toString(){
 		String out = "[recipe:";
 		for(ItemStack s : input)

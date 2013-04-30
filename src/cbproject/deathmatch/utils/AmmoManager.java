@@ -1,18 +1,8 @@
 package cbproject.deathmatch.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import cbproject.core.CBCMod;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
-import cbproject.deathmatch.items.wpns.Weapon_egon;
-import cbproject.deathmatch.items.wpns.Weapon_gauss;
-
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class AmmoManager {
 	
@@ -28,7 +18,7 @@ public class AmmoManager {
 	
 	/**
 	 * Tries to consume one specific item in player's inventory.
-	 * @return how many are left to be consumed
+	 * @return how many are left not consumed
 	 */
 	public static int tryConsume(EntityPlayer player, int itemID, int amount){	
 		

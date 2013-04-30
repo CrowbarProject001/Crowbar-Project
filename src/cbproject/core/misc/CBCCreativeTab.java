@@ -2,7 +2,6 @@ package cbproject.core.misc;
 
 import cbproject.core.register.CBCItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**

@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.proxy.ClientProxy;
 
 public class ItemAmmo_9mm2 extends ItemAmmo {
 
@@ -14,7 +13,6 @@ public class ItemAmmo_9mm2 extends ItemAmmo {
 		setUnlocalizedName("ammo_9mmar");
 		setMaxDamage(51);
 		setMaxStackSize (1);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

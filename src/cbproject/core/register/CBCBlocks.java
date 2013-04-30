@@ -7,9 +7,7 @@ import cbproject.deathmatch.blocks.BlockRefined;
 import cbproject.deathmatch.blocks.BlockTripmineRay;
 import cbproject.deathmatch.blocks.tileentities.*;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneLight;
 import net.minecraft.src.ModLoader;
 import cbproject.core.misc.CBCLanguage;
 /**

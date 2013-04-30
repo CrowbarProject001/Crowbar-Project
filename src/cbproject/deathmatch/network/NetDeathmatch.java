@@ -11,7 +11,6 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import cbproject.core.network.IChannelProcess;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
-import cbproject.deathmatch.utils.InformationWeapon;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 

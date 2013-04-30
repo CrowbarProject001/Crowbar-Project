@@ -3,29 +3,18 @@ package cbproject.deathmatch.renderers;
 
 import org.lwjgl.opengl.GL11;
 
-import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.renderers.RendererUtils;
-import cbproject.deathmatch.items.wpns.WeaponGeneral;
-import cbproject.deathmatch.items.wpns.Weapon_satchel;
-import cbproject.deathmatch.utils.InformationSatchel;
+import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.utils.InformationSet;
 
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
 public class RenderItemSatchel implements IItemRenderer {
 
@@ -80,7 +69,7 @@ public class RenderItemSatchel implements IItemRenderer {
 			EntityLiving entity) {
 		
 		int mode;
-		InformationSet set = CBCMod.wpnInformation.getInformation(item);
+		InformationSet set = CBCWeaponInformation.getInformation(item);
 		if(set == null)
 			mode = 0;
 		else mode = set.clientReference.mode;
@@ -117,7 +106,7 @@ public class RenderItemSatchel implements IItemRenderer {
 	
 	private void bindTextureByItem(ItemStack item){
 		int mode;
-		InformationSet set = CBCMod.wpnInformation.getInformation(item);
+		InformationSet set = CBCWeaponInformation.getInformation(item);
 		if(set == null)
 			mode = 0;
 		else mode = set.clientReference.mode;

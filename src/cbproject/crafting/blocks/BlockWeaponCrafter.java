@@ -6,9 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.CBCMod;
-import cbproject.crafting.items.ItemMaterial;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
@@ -18,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockWeaponCrafter extends BlockContainer {
@@ -31,6 +28,7 @@ public class BlockWeaponCrafter extends BlockContainer {
 	public BlockWeaponCrafter(int par1) {
 		super(par1, Material.iron);
 		setCreativeTab(CBCMod.cct);
+		setUnlocalizedName("crafter");
 	}
 	
     @SideOnly(Side.CLIENT)
@@ -44,7 +42,8 @@ public class BlockWeaponCrafter extends BlockContainer {
         return iconSide;
     }
     
-    public void registerIcons(IconRegister par1IconRegister)
+    @Override
+	public void registerIcons(IconRegister par1IconRegister)
     {
         this.iconSide = par1IconRegister.registerIcon("lambdacraft:crafter_side");
         iconTop = par1IconRegister.registerIcon("lambdacraft:crafter_top");

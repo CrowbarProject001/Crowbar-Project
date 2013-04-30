@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.ItemStack;
 
-import cbproject.core.register.CBCItems;
-
 public class RecipeWeapons {
 	
 	public static ArrayList<RecipeWeaponEntry>recipes[]; 
