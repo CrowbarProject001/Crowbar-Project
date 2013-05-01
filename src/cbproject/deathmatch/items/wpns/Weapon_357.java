@@ -19,7 +19,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 
 	public Weapon_357(int par1) {
 		
-		super(par1 , CBCItems.itemAmmo_357.itemID, 1);
+		super(par1 , CBCItems.ammo_357.itemID, 1);
 
 		setUnlocalizedName("weapon_357");
 		setCreativeTab( CBCMod.cct );

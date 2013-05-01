@@ -19,7 +19,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	
 	public Weapon_shotgun(int par1) {
 		
-		super(par1 , CBCItems.itemBullet_Shotgun.itemID, 2);
+		super(par1 , CBCItems.ammo_shotgun.itemID, 2);
 		
 		setUnlocalizedName("weapon_shotgun");
 		setCreativeTab( CBCMod.cct );

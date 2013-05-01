@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	public Weapon_crossbow(int par1) {
-		super(par1 , CBCItems.itemAmmo_bow.itemID, 2);
+		super(par1 , CBCItems.ammo_bow.itemID, 2);
 		
 		setUnlocalizedName("weapon_crossbow");
 		setCreativeTab( CBCMod.cct );

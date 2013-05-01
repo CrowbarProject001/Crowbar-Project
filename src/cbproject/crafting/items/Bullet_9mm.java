@@ -3,28 +3,24 @@ package cbproject.crafting.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
+import cbproject.core.register.CBCItems;
+import cbproject.deathmatch.items.ammos.ItemAmmo;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 
-public class ItemBullet_Shotgun extends Item{
+public class Bullet_9mm extends ItemBullet {
 
-	public ItemBullet_Shotgun(int par1) {
+	public Bullet_9mm(int par1) {
 		super(par1);
 		setCreativeTab( CBCMod.cct );
-		setUnlocalizedName("ammo_shotgun");
+		setUnlocalizedName("bullet_9mm");
 		setMaxStackSize (64);
 	}
 	
-	@Override
     @SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:ammo_shotgun");
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:bullet_9mm");
     }
-	
-	@Override
-	public boolean isDamageable(){
-		return false;
-	}
-	
+
 }

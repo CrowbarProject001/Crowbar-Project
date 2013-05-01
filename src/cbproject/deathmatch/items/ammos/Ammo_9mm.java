@@ -5,20 +5,21 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 
-public class ItemAmmo_ARGrenade extends ItemAmmo {
+public class Ammo_9mm extends ItemAmmo {
 
-	public ItemAmmo_ARGrenade(int par1) {
+	public Ammo_9mm(int par1) {
 		super(par1);
-		setCreativeTab(CBCMod.cct);
-		setUnlocalizedName("ammo_argrenade");
-		setMaxStackSize(10);
+		setCreativeTab( CBCMod.cct );
+		setUnlocalizedName("ammo_9mmhandgun");
+		setMaxDamage(19);
+		setMaxStackSize (1);
 	}
-
+	
 	@Override
     @SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:ammo_argrenade");
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:ammo_9mmhandgun");
     }
-	
+
 }

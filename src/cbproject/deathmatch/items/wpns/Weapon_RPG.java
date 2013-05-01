@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class Weapon_RPG extends WeaponGeneralBullet {
 
 	public Weapon_RPG(int par1) {
-		super(par1,CBCItems.itemAmmo_rpg.itemID, 1);
+		super(par1,CBCItems.ammo_rpg.itemID, 1);
 		
 		setUnlocalizedName("weapon_rpg");
 		setCreativeTab(CBCMod.cct);

@@ -24,7 +24,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	
 	public Weapon_9mmAR(int par1) {
 		
-		super(par1 , CBCItems.itemAmmo_9mm2.itemID, 2);
+		super(par1 , CBCItems.ammo_9mm2.itemID, 2);
 		setUnlocalizedName("weapon_9mmar");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
@@ -73,7 +73,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
     		
     	} else {
     		
-    		if(par3Entity.capabilities.isCreativeMode  || AmmoManager.tryConsume(par3Entity, CBCItems.itemAmmo_ARGrenade.itemID, 1) == 0){
+    		if(par3Entity.capabilities.isCreativeMode  || AmmoManager.tryConsume(par3Entity, CBCItems.ammo_argrenade.itemID, 1) == 0){
     			par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
     			par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);	
     		}

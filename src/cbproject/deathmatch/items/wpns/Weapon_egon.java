@@ -26,7 +26,7 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 			SND_OFF = "cbc.weapons.egon_off";
 	
 	public Weapon_egon(int par1) {
-		super(par1, CBCItems.itemAmmo_uranium.itemID, 1);
+		super(par1, CBCItems.ammo_uranium.itemID, 1);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_egon");
 		setJamTime(20);

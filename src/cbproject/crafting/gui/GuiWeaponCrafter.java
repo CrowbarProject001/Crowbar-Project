@@ -104,13 +104,20 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         else dy = 38;
         drawTexturedModalRect(x + 160, y + 16, 232, dy, 8, 18);
         
-        int height = te.heat * 64 / TileEntityWeaponCrafter.MAX_HEAT;
-        if(height > 0)
+        int height = te.heat * 64 / te.MAX_HEAT;
+        if(height > 0){
         	drawTexturedModalRect(x + 174, y + 78 - height, 232, 150 - height, 8, height);
+        }
+        if(te.isCrafting){
+        	if(te.currentRecipe != null){
+        		height = te.currentRecipe.heatRequired * 64 / te.MAX_HEAT;
+        		drawTexturedModalRect(x + 173, y + 77 - height, 201, 1, 6, 3);
+        	}
+        }
         if(te.maxBurnTime != 0){
-        	height = te.burnTimeLeft * 24 / te.maxBurnTime;
+        	height = te.burnTimeLeft * 22 / te.maxBurnTime;
         	if(height > 0)
-        		drawTexturedModalRect(x + 156, y + 78 - height, 211, 103 - height, 17, height);
+        		drawTexturedModalRect(x + 156, y + 78 - height, 211, 101 - height, 16, height);
         }
 	}
 	

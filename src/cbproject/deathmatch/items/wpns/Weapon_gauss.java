@@ -24,7 +24,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			SND_SHOOT_PATH = "cbc.weapons.gaussb";
 	
 	public Weapon_gauss(int par1) {
-		super(par1, CBCItems.itemAmmo_uranium.itemID, 2);
+		super(par1, CBCItems.ammo_uranium.itemID, 2);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_gauss");
 		setJamTime(20);

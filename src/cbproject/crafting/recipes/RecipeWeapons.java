@@ -53,6 +53,8 @@ public class RecipeWeapons {
 	}
 
 	public static RecipeWeaponEntry getRecipe(int page, int i) {
+		if(recipes[page].size() < i + 1)
+			return null;
 		return recipes[page].get(i);
 	}
 

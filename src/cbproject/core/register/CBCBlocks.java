@@ -1,15 +1,16 @@
 package cbproject.core.register;
 
 import cbproject.core.configure.Config;
+import cbproject.crafting.blocks.BlockUraniumOre;
 import cbproject.crafting.blocks.BlockWeaponCrafter;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.deathmatch.blocks.BlockRefined;
 import cbproject.deathmatch.blocks.BlockTripmineRay;
-import cbproject.deathmatch.blocks.BlockUraniumOre;
 import cbproject.deathmatch.blocks.tileentities.*;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
 import net.minecraft.block.Block;
 import net.minecraft.src.ModLoader;
+import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.CBCLanguage;
 /**
  * 
@@ -47,7 +48,8 @@ public class CBCBlocks {
 		ModLoader.registerBlock(blockWeaponCrafter);
 		ModLoader.registerBlock(blockRefined);
 		ModLoader.registerBlock(blockUraniumOre);
-		
+		MinecraftForge.setBlockHarvestLevel(blockUraniumOre, "pickaxe", 3)
+		;
 		ModLoader.registerTileEntity(TileEntityTripmine.class, "tile_entity_tripmine");
 		ModLoader.registerTileEntity(TileEntityTripmineRay.class, "tile_entity_tripmine_ray");
 		ModLoader.registerTileEntity(TileEntityWeaponCrafter.class, "tile_entity_weapon_crafter");

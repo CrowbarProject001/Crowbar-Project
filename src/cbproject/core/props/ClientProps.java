@@ -26,7 +26,7 @@ public class ClientProps {
 			RPG_ROCKET_PATH = "/cbproject/textures/entities/rpg_rocket.png",
 			SHOTGUN_SHELL_PATH = "/cbproject/textures/entities/shotgun_shell.png",
 			EGON_BEAM_PATH = "/cbproject/textures/entities/egon_beam.png",
-			CROSSBOW_BOW_PATH = "/cbproject/textures/entities/weapon_steelbow.png";
+			CROSSBOW_BOW_PATH = "/cbproject/textures/entities/steelbow.png";
 
 	public static final String EGON_EQUIPPED_PATH = "/cbproject/textures/items/weapon_egon0.png";
 

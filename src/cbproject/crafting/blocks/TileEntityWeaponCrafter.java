@@ -1,14 +1,19 @@
 package cbproject.crafting.blocks;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.items.ItemMaterial;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
+import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
+import cbproject.deathmatch.utils.AmmoManager;
 
 public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 
@@ -156,20 +161,52 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			resetCraftingState();
 			return;
 		}
-		if (inventory[0] != null) {
-			if (!(inventory[0].itemID != currentRecipe.output.itemID || inventory[0]
-					.isStackable()))
-				return;
-			if (inventory[0].isStackable()) {
-				if (inventory[0].stackSize >= inventory[0].getMaxStackSize()){
-					iconType = CrafterIconType.NOMATERIAL;
+		if(!(currentRecipe instanceof RecipeWeaponSpecial)){
+			if (inventory[0] != null) {
+				if (!(inventory[0].itemID != currentRecipe.output.itemID || inventory[0]
+						.isStackable()))
 					return;
+				if (inventory[0].isStackable()) {
+					if (inventory[0].stackSize >= inventory[0].getMaxStackSize()){
+						iconType = CrafterIconType.NOMATERIAL;
+						return;
+					}
+					inventory[0].stackSize += currentRecipe.output.stackSize;
 				}
-				inventory[0].stackSize += currentRecipe.output.stackSize;
+			} else
+				inventory[0] = currentRecipe.output.copy();
+			consumeMaterial(currentRecipe);
+		} else {
+			System.out.println("Attempting crafting...");
+			if(inventory[0] != null){
+				iconType = CrafterIconType.NOMATERIAL;
+				System.out.println("0 is not empty");
+				return;
 			}
-		} else
-			inventory[0] = currentRecipe.output.copy();
-		consumeMaterial(currentRecipe);
+			RecipeWeaponSpecial rs = (RecipeWeaponSpecial) currentRecipe;
+			int bulletCount = 0;
+			int slotWeapon = 0;
+			for(int i = 2; i < 20; i++){
+				if(inventory[i] == null)
+					continue;
+				if(slotWeapon == 0 && inventory[i].getItem() == rs.inputA && inventory[i].getItemDamage() > 0)
+					slotWeapon = i;
+				if(inventory[i].getItem() == rs.inputB)
+					bulletCount += inventory[i].stackSize;
+			}
+			System.out.println("slot : " + slotWeapon + " bullet : " + bulletCount);
+			if(slotWeapon == 0 || bulletCount == 0){
+				iconType = CrafterIconType.NOMATERIAL;
+				return;
+			}
+			System.out.println("Attempting final crafting...");
+			int damage = inventory[slotWeapon].getItemDamage() - bulletCount;
+			int bulletToConsume = (damage<0) ? inventory[slotWeapon].getItemDamage() : bulletCount;
+			damage = damage < 0? 0 : damage;
+			AmmoManager.consumeInventoryItem(inventory, rs.inputB.itemID, bulletToConsume, 2);
+			inventory[slotWeapon] = null;
+			inventory[0] = new ItemStack(rs.inputA, 1, damage);
+		}
 		resetCraftingState();
 	}
 	
@@ -182,6 +219,25 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public boolean hasEnoughMaterial(RecipeWeaponEntry r) {
 		ItemStack is;
 
+		if(r instanceof RecipeWeaponSpecial){
+			RecipeWeaponSpecial rs = (RecipeWeaponSpecial) r;
+			boolean flag1 = false, flag2 = false;
+			for(int i = 2; i < 20; i++){
+				is = inventory[i];
+				if(is == null)
+					continue;
+				if(is.getItem() == rs.inputA){
+					if(is.getItemDamage() > 0)
+						flag1 = true;
+				} else if(is.getItem() == rs.inputB){
+					flag2 = true;
+				}
+			}
+			if(flag1 && flag2)
+				return true;
+			return false;
+		}
+		
 		int left[] = new int[3];
 		for (int j = 0; j < r.input.length; j++) {
 			if (r.input[j] != null) {
@@ -302,5 +358,37 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		else
 			inventory[i - 12] = itemstack;
 	}
+	
+    /**
+     * Reads a tile entity from NBT.
+     */
+	@Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        for(int i = 0; i < 20; i++){
+        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
+        	byte count = nbt.getByte("count" + i);
+        	if(id == 0)
+        		continue;
+        	ItemStack is = new ItemStack(id, count, damage);
+        	inventory[i] = is;
+        }
+    }
+
+    /**
+     * Writes a tile entity to NBT.
+     */
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        for(int i = 0; i < 20; i++){
+        	if(inventory[i] == null)
+        		continue;
+        	nbt.setShort("id"+i, (short) inventory[i].itemID);
+        	nbt.setByte("count"+i, (byte) inventory[i].stackSize);
+        	nbt.setShort("damage"+i, (short)inventory[i].getItemDamage());
+        }
+    }
 
 }

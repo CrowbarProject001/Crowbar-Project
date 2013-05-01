@@ -33,22 +33,22 @@ public class CBCItems {
 	public static Item weapon_RPG;
 	public static Item weapon_crossbow;
 	
-	public static ItemAmmo_uranium itemAmmo_uranium;
-	public static ItemAmmo_9mm itemAmmo_9mm;
-	public static ItemAmmo_357 itemAmmo_357;
-	public static ItemAmmo_9mm2 itemAmmo_9mm2;
-	public static ItemAmmo_bow itemAmmo_bow;
-	public static ItemAmmo_RPG itemAmmo_rpg;
-	public static ItemAmmo_ARGrenade itemAmmo_ARGrenade;
+	public static ItemAmmo ammo_uranium;
+	public static Ammo_9mm ammo_9mm;
+	public static Ammo_357 ammo_357;
+	public static Ammo_9mm2 ammo_9mm2;
+	public static Ammo_bow ammo_bow;
+	public static Ammo_rpg ammo_rpg;
+	public static ItemAmmo ammo_argrenade, ammo_shotgun;
 	
-	public static Item itemBullet_Shotgun, itemBullet_9mm, itemBullet_bow;
+	public static ItemBullet bullet_9mm,bullet_steelbow;
 
-	public static IngotSteel itemRefinedIronIngot;
+	public static IngotSteel ingotSteel;
 	
 	public static ItemMaterial mat_accessories, mat_ammunition, mat_bio,
 		mat_heavy, mat_light, mat_pistol, mat_tech, mat_explosive, mat_box;
 	public static LambdaChipset lambdaChip;
-	public static ItemIronBar ironBar;
+	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
 	
 	public static ArmorHEV armorHEVBoot, armorHEVChestplate, armorHEVHelmet, armorHEVLeggings;
@@ -61,18 +61,18 @@ public class CBCItems {
 	
 		try{
 
-			itemRefinedIronIngot = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
+			ingotSteel = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
 			
-			itemAmmo_uranium = new ItemAmmo_uranium(conf.GetItemID("itemAmmo_uranium", 7300));
-			itemAmmo_9mm = new ItemAmmo_9mm(conf.GetItemID("itemAmmo_9mm", 7301));
-			itemAmmo_9mm2 = new ItemAmmo_9mm2(conf.GetItemID("itemAmmo_9mm2", 7302));
-			itemAmmo_357 = new ItemAmmo_357(conf.GetItemID("itemAmmo_357", 7303));
-			itemAmmo_bow = new ItemAmmo_bow(conf.GetItemID("itemAmmo_bow", 7304));
-			itemAmmo_rpg = new ItemAmmo_RPG(conf.GetItemID("itemAmmo_RPG", 7305));
-			itemAmmo_ARGrenade = new ItemAmmo_ARGrenade(conf.GetItemID("itemAmmo_ARGrenade", 7306));
+			ammo_uranium = new Ammo_uranium(conf.GetItemID("itemAmmo_uranium", 7300));
+			ammo_9mm = new Ammo_9mm(conf.GetItemID("itemAmmo_9mm", 7301));
+			ammo_9mm2 = new Ammo_9mm2(conf.GetItemID("itemAmmo_9mm2", 7302));
+			ammo_357 = new Ammo_357(conf.GetItemID("itemAmmo_357", 7303));
+			ammo_bow = new Ammo_bow(conf.GetItemID("itemAmmo_bow", 7304));
+			ammo_rpg = new Ammo_rpg(conf.GetItemID("itemAmmo_RPG", 7305));
+			ammo_argrenade = new Ammo_argrenade(conf.GetItemID("itemAmmo_ARGrenade", 7306));
 			
-			itemBullet_Shotgun = new ItemBullet_Shotgun(conf.GetItemID("itemBullet_Shotgun", 7350));
-			itemBullet_9mm = new ItemBullet_9mm(conf.GetItemID("itemBullet_Shotgun", 7351));
+			ammo_shotgun = new Ammo_shotgun(conf.GetItemID("itemBullet_Shotgun", 7350));
+			bullet_9mm = new Bullet_9mm(conf.GetItemID("itemBullet_Shotgun", 7351));
 	
 			weapon_crowbar = new Weapon_crowbar(conf.GetItemID("weapon_crowbar", 7000));
 			
@@ -103,9 +103,10 @@ public class CBCItems {
 			mat_explosive = new Material_explosive(conf.GetItemID("mat_h", 8057));
 			mat_box = new Material_box(conf.GetItemID("mat_0", 8058));
 			
-			ironBar = new ItemIronBar(conf.GetItemID("ironBar", 8059));
+			ironBar = new SteelBar(conf.GetItemID("ironBar", 8059));
 			lambdaChip = new LambdaChipset(conf.GetItemID("lambdachip", 8060));
 			ingotUranium = new IngotUranium(conf.GetItemID("ingotUranium", 8061));
+			bullet_steelbow = new Bullet_steelbow(conf.GetItemID("ingotUranium", 8062));
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
@@ -116,15 +117,16 @@ public class CBCItems {
 	
 	public static void addItemNames(){
 		
-		CBCLanguage.addDefaultName(itemAmmo_uranium , "Uranium Ammo");
+		CBCLanguage.addDefaultName(ammo_uranium , "Uranium Ammo");
 
-		CBCLanguage.addDefaultName(itemAmmo_9mm2, "9mm Handgun Clip");
-		CBCLanguage.addDefaultName(itemAmmo_9mm2, "9mmAR Clip");
-		CBCLanguage.addDefaultName(itemAmmo_bow,"Crossbow Clip");
-		CBCLanguage.addDefaultName(itemAmmo_357, ".357 Ammo");
-		CBCLanguage.addDefaultName(itemAmmo_ARGrenade, "9mmAR Grenade");
+		CBCLanguage.addDefaultName(ammo_9mm2, "9mm Handgun Clip");
+		CBCLanguage.addDefaultName(ammo_9mm2, "9mmAR Clip");
+		CBCLanguage.addDefaultName(ammo_bow,"Crossbow Clip");
+		CBCLanguage.addDefaultName(ammo_357, ".357 Ammo");
+		CBCLanguage.addDefaultName(ammo_argrenade, "9mmAR Grenade");
+		CBCLanguage.addDefaultName(ammo_rpg, "RPG Rocket");
 		
-		CBCLanguage.addDefaultName(itemBullet_Shotgun,"Shotgun Ammo");
+		CBCLanguage.addDefaultName(ammo_shotgun,"Shotgun Ammo");
 		
 		CBCLanguage.addDefaultName(weapon_crowbar, "Crowbar");
 		
@@ -140,8 +142,9 @@ public class CBCItems {
         CBCLanguage.addDefaultName(weapon_gauss, "Gauss Gun");
         CBCLanguage.addDefaultName(weapon_egon, "Egon");
 
-        CBCLanguage.addDefaultName(itemRefinedIronIngot, "Refined Iron Ingot");
-        CBCLanguage.addDefaultName(itemBullet_9mm, "9mm Ammo");
+        CBCLanguage.addDefaultName(ingotSteel, "Refined Iron Ingot");
+        CBCLanguage.addDefaultName(bullet_9mm, "9mm Ammo");
+        CBCLanguage.addDefaultName(bullet_steelbow, "Steel Bow");
         
 		CBCLanguage.addDefaultName(armorHEVBoot, "HEV boot");
 		CBCLanguage.addDefaultName(armorHEVHelmet, "HEV helmet");
@@ -161,14 +164,15 @@ public class CBCItems {
 		CBCLanguage.addDefaultName(lambdaChip, "λ Chipset");
 		CBCLanguage.addDefaultName(ingotUranium, "Uranium Ingot");
 		
-		CBCLanguage.addLocalName(itemAmmo_uranium , "铀燃料");
-		CBCLanguage.addLocalName(itemAmmo_9mm, "9毫米手枪弹匣");
-		CBCLanguage.addLocalName(itemAmmo_9mm2, "9毫米步枪弹匣");
-		CBCLanguage.addLocalName(itemAmmo_bow,"弩箭弹夹");
-		CBCLanguage.addLocalName(itemAmmo_357, ".357子弹");
-		CBCLanguage.addLocalName(itemAmmo_ARGrenade, "9毫米步枪用榴弹");
+		CBCLanguage.addLocalName(ammo_uranium , "铀燃料");
+		CBCLanguage.addLocalName(ammo_9mm, "9毫米手枪弹匣");
+		CBCLanguage.addLocalName(ammo_9mm2, "9毫米步枪弹匣");
+		CBCLanguage.addLocalName(ammo_bow,"弩箭弹夹");
+		CBCLanguage.addLocalName(ammo_357, ".357子弹");
+		CBCLanguage.addLocalName(ammo_argrenade, "9毫米步枪用榴弹");
+		CBCLanguage.addDefaultName(ammo_rpg, "RPG火箭弹");
 		
-		CBCLanguage.addLocalName(itemBullet_Shotgun,"霰弹枪子弹");
+		CBCLanguage.addLocalName(ammo_shotgun,"霰弹枪子弹");
 		
 		CBCLanguage.addLocalName(weapon_crowbar, "物理学圣剑");
 		
@@ -183,7 +187,7 @@ public class CBCItems {
         CBCLanguage.addLocalName(weapon_crossbow, "复合十字弩");
         CBCLanguage.addLocalName(weapon_gauss, "高斯枪");
         CBCLanguage.addDefaultName(weapon_egon, "离子光束枪");
-        CBCLanguage.addLocalName(itemRefinedIronIngot, "精铁锭");
+        CBCLanguage.addLocalName(ingotSteel, "精铁锭");
         
 		CBCLanguage.addLocalName(armorHEVBoot, "HEV靴");
 		CBCLanguage.addLocalName(armorHEVHelmet, "HEV盔");
@@ -198,11 +202,12 @@ public class CBCItems {
 		CBCLanguage.addLocalName(mat_bio, "生化材料");
 		CBCLanguage.addLocalName(mat_ammunition, "弹药材料");
 		CBCLanguage.addLocalName(mat_explosive, "爆炸物材料");
+		CBCLanguage.addLocalName(bullet_steelbow, "钢质弩箭");
 		
 		CBCLanguage.addLocalName(ironBar, "钢质长棍");
 		CBCLanguage.addLocalName(lambdaChip, "λ集成芯片");
 		CBCLanguage.addLocalName(ingotUranium, "铀锭");
-		 CBCLanguage.addDefaultName(itemBullet_9mm, "9mm子弹");
+		CBCLanguage.addLocalName(bullet_9mm, "9mm子弹");
 	}
 	
 	public static void addRecipes(){
@@ -231,7 +236,7 @@ public class CBCItems {
         		swood = new ItemStack(Block.wood),
         		sglow = new ItemStack(Item.lightStoneDust),
         		sstick = new ItemStack(Item.stick),
-        		srefined = new ItemStack(itemRefinedIronIngot),
+        		srefined = new ItemStack(ingotSteel),
         		sglass = new ItemStack(Block.glass),
         		scoal = new ItemStack(Item.coal),
         		sgold = new ItemStack(Item.ingotGold),
@@ -271,7 +276,7 @@ public class CBCItems {
         addRecipes(output, input);
         
         //Smeltings
-        ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(itemRefinedIronIngot.itemID,1,0) );
+        ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(ingotSteel.itemID,1,0) );
         ModLoader.addSmelting(CBCBlocks.blockUraniumOre.blockID, suranium);
 	}
 	

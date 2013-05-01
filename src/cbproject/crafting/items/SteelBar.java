@@ -6,9 +6,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 
-public class ItemIronBar extends Item {
+public class SteelBar extends Item {
 
-	public ItemIronBar(int par1) {
+	public SteelBar(int par1) {
 		super(par1);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("ironbar");

@@ -22,7 +22,7 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 
 	public Weapon_9mmhandgun(int par1) {
 		
-		super(par1 , CBCItems.itemAmmo_9mm.itemID, 2);
+		super(par1 , CBCItems.ammo_9mm.itemID, 2);
 		
 		setUnlocalizedName("weapon_9mmhandgun");
 		setCreativeTab( CBCMod.cct );

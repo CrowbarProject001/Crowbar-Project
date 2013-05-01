@@ -67,4 +67,49 @@ public class AmmoManager {
 	public static Boolean hasAmmo(WeaponGeneral is, EntityPlayer player){
 		return player.inventory.hasItem(is.ammoID);
 	}
+	
+	public static int consumeInventoryItem(ItemStack[] inv, int itemID, int count){
+		int left = count;
+		ItemStack is;
+		if(Item.itemsList[itemID].getItemStackLimit() > 1){
+			
+			for(int i = 0; i < inv.length; i++){
+				is = inv[i];
+				if(is != null && is.itemID == itemID){
+					if(is.stackSize > left){
+						inv[i].splitStack(left);
+						return 0;
+					} else {
+						left -= is.stackSize;
+						inv[i] = null;
+					}
+				}
+			}
+			return left;
+			
+		} else return left;
+	}
+	
+	public static int consumeInventoryItem(ItemStack[] inv, int itemID, int count,int startFrom){
+		int left = count;
+		ItemStack is;
+		if(Item.itemsList[itemID].getItemStackLimit() > 1){
+			
+			for(int i = startFrom; i < inv.length; i++){
+				is = inv[i];
+				if(is != null && is.itemID == itemID){
+					if(is.stackSize > left){
+						inv[i].splitStack(left);
+						return 0;
+					} else {
+						left -= is.stackSize;
+						inv[i] = null;
+					}
+				}
+			}
+			return left;
+			
+		} else return left;
+	}
+	
 }

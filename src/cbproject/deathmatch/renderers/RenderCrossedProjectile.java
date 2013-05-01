@@ -11,9 +11,9 @@ import net.minecraft.util.Vec3;
 
 public class RenderCrossedProjectile extends RenderEntity {
 
-	protected static double LENGTH;
-	protected static double HEIGHT;
-	protected static String TEXTURE_PATH;
+	protected double LENGTH;
+	protected double HEIGHT;
+	protected String TEXTURE_PATH;
 	private static Tessellator tessellator = Tessellator.instance;
 	
 	public RenderCrossedProjectile(double l, double h, String texturePath) {
