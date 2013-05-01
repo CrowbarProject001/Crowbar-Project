@@ -11,7 +11,7 @@ public class Ammo_rpg extends ItemAmmo {
 		super(par1);
 		setCreativeTab( CBCMod.cct );
 		setUnlocalizedName("ammo_rpg");
-		setMaxStackSize (5);
+		setMaxStackSize (10);
 	}
 	
 	@Override

@@ -4,7 +4,6 @@ import cbproject.core.CBCMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.item.Item;
 
 public class Bullet_steelbow extends ItemBullet{
 
@@ -14,7 +13,8 @@ public class Bullet_steelbow extends ItemBullet{
 		setUnlocalizedName("steelbow");
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
         this.iconIndex = par1IconRegister.registerIcon("lambdacraft:steelbow");

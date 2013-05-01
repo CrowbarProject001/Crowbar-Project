@@ -49,7 +49,7 @@ public abstract class WeaponGeneral extends Item {
 		if(!par2World.isRemote)
 			return information;
 		if(information.isRecovering){
-			par3Entity.setAngles(0, -(float) recoverRadius * 6.67F);
+			par3Entity.rotationPitch += recoverRadius;
 			information.recoverTick++;
 			if(information.recoverTick >= (upLiftRadius / recoverRadius))
 				information.isRecovering = false;

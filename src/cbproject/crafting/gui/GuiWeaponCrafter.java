@@ -61,8 +61,8 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
     	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     	String storage = StatCollector.translateToLocal("crafter.storage");
     	String currentPage = StatCollector.translateToLocal(RecipeWeapons.pageDescriptions[te.page]);
-        this.fontRenderer.drawString(storage, 8, 86, 4210752);
-        fontRenderer.drawString(currentPage, 100 - fontRenderer.getStringWidth("Weapon Forger") / 2, 1, 4210752);
+        this.fontRenderer.drawString(storage, 8, 88, 4210752);
+        fontRenderer.drawString(currentPage, 100 - fontRenderer.getStringWidth(currentPage) / 2, 1, 4210752);
     }
 	
 	public void updateButtonState(){
@@ -104,13 +104,13 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         else dy = 38;
         drawTexturedModalRect(x + 160, y + 16, 232, dy, 8, 18);
         
-        int height = te.heat * 64 / te.MAX_HEAT;
+        int height = te.heat * 64 / TileEntityWeaponCrafter.MAX_HEAT;
         if(height > 0){
         	drawTexturedModalRect(x + 174, y + 78 - height, 232, 150 - height, 8, height);
         }
         if(te.isCrafting){
         	if(te.currentRecipe != null){
-        		height = te.currentRecipe.heatRequired * 64 / te.MAX_HEAT;
+        		height = te.currentRecipe.heatRequired * 64 / TileEntityWeaponCrafter.MAX_HEAT;
         		drawTexturedModalRect(x + 173, y + 77 - height, 201, 1, 6, 3);
         	}
         }

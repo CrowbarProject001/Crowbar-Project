@@ -1,24 +1,12 @@
 package cbproject.core.register;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.world.World;
 import cbproject.core.misc.CBCLanguage;
-import cbproject.crafting.items.ItemBullet;
 import cbproject.crafting.network.NetWeaponCrafter;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
 import cbproject.crafting.recipes.RecipeWeapons;
-import cbproject.deathmatch.items.ammos.ItemAmmo;
 import cbproject.deathmatch.language.WeaponModes;
 import cbproject.deathmatch.network.NetDeathmatch;
 import cbproject.crafting.recipes.*;
@@ -36,7 +24,6 @@ public class CBCGeneralRegistry {
 		CBCPacketHandler.addChannel("CBCWeapons", new NetDeathmatch());
 	}
 	
-	@SideOnly(Side.CLIENT)
 	private static void addLanguages(){
 		CBCItems.addItemNames();
 		CBCBlocks.addNameForBlocks();
@@ -76,8 +63,9 @@ public class CBCGeneralRegistry {
 				new RecipeWeaponEntry(new ItemStack(CBCItems.ammo_9mm2, 1), 600, new ItemStack(CBCItems.mat_ammunition, 5), new ItemStack(CBCItems.mat_light, 1)),
 				new RecipeWeaponEntry(new ItemStack(CBCItems.bullet_steelbow, 10), 650, new ItemStack(CBCItems.ironBar, 10), new ItemStack(CBCItems.mat_explosive, 1)),
 				new RecipeWeaponEntry(new ItemStack(CBCItems.ammo_bow, 1), 950, new ItemStack(CBCItems.mat_ammunition, 3)),
-				new RecipeWeaponEntry(new ItemStack(CBCItems.ammo_argrenade, 5), 600, new ItemStack(CBCItems.mat_light, 1), new ItemStack(CBCItems.mat_explosive, 1)),
-				new RecipeWeaponEntry(new ItemStack(CBCItems.ammo_rpg, 6), 1500, new ItemStack(CBCItems.mat_heavy, 1), new ItemStack(CBCItems.mat_explosive, 2)),
+				new RecipeWeaponEntry(new ItemStack(CBCItems.ammo_argrenade, 5), 600, new ItemStack(CBCItems.mat_light, 1), new ItemStack(CBCItems.mat_explosive, 2)),
+				new RecipeWeaponEntry(new ItemStack(CBCItems.ammo_rpg, 6), 1500, new ItemStack(CBCItems.mat_heavy, 1), new ItemStack(CBCItems.mat_explosive, 3)),
+				new RecipeWeaponEntry(new ItemStack(CBCItems.ammo_uranium, 1), 1500, new ItemStack(CBCItems.mat_box, 1), new ItemStack(CBCItems.ingotUranium, 3)),
 				new RecipeWeaponSpecial(CBCItems.ammo_9mm, CBCItems.bullet_9mm),
 				new RecipeWeaponSpecial(CBCItems.ammo_9mm2, CBCItems.bullet_9mm),
 				new RecipeWeaponSpecial(CBCItems.ammo_bow, CBCItems.bullet_steelbow)

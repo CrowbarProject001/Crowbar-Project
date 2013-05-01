@@ -48,8 +48,8 @@ public class CBCBlocks {
 		ModLoader.registerBlock(blockWeaponCrafter);
 		ModLoader.registerBlock(blockRefined);
 		ModLoader.registerBlock(blockUraniumOre);
-		MinecraftForge.setBlockHarvestLevel(blockUraniumOre, "pickaxe", 3)
-		;
+		MinecraftForge.setBlockHarvestLevel(blockUraniumOre, "pickaxe", 2);
+		MinecraftForge.setBlockHarvestLevel(blockRefined, "pickaxe", 1);
 		ModLoader.registerTileEntity(TileEntityTripmine.class, "tile_entity_tripmine");
 		ModLoader.registerTileEntity(TileEntityTripmineRay.class, "tile_entity_tripmine_ray");
 		ModLoader.registerTileEntity(TileEntityWeaponCrafter.class, "tile_entity_weapon_crafter");

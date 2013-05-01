@@ -72,7 +72,7 @@ public class CBCItems {
 			ammo_argrenade = new Ammo_argrenade(conf.GetItemID("itemAmmo_ARGrenade", 7306));
 			
 			ammo_shotgun = new Ammo_shotgun(conf.GetItemID("itemBullet_Shotgun", 7350));
-			bullet_9mm = new Bullet_9mm(conf.GetItemID("itemBullet_Shotgun", 7351));
+			bullet_9mm = new Bullet_9mm(conf.GetItemID("itemBullet_9mm", 7351));
 	
 			weapon_crowbar = new Weapon_crowbar(conf.GetItemID("weapon_crowbar", 7000));
 			
@@ -106,7 +106,7 @@ public class CBCItems {
 			ironBar = new SteelBar(conf.GetItemID("ironBar", 8059));
 			lambdaChip = new LambdaChipset(conf.GetItemID("lambdachip", 8060));
 			ingotUranium = new IngotUranium(conf.GetItemID("ingotUranium", 8061));
-			bullet_steelbow = new Bullet_steelbow(conf.GetItemID("ingotUranium", 8062));
+			bullet_steelbow = new Bullet_steelbow(conf.GetItemID("steelbow", 8062));
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
@@ -151,6 +151,7 @@ public class CBCItems {
 		CBCLanguage.addDefaultName(armorHEVChestplate, "HEV chestplate");
 		CBCLanguage.addDefaultName(armorHEVLeggings, "HEV leggings");
 		
+		CBCLanguage.addDefaultName(mat_box, "Material Box");
 		CBCLanguage.addDefaultName(mat_accessories, "Accessories Material");
 		CBCLanguage.addDefaultName(mat_heavy, "Heavy Material");
 		CBCLanguage.addDefaultName(mat_light, "Light Material");
@@ -194,6 +195,7 @@ public class CBCItems {
 		CBCLanguage.addLocalName(armorHEVChestplate, "HEV甲");
 		CBCLanguage.addLocalName(armorHEVLeggings, "HEV腿");
 		
+		CBCLanguage.addLocalName(mat_box, "材料盒子");
 		CBCLanguage.addLocalName(mat_accessories, "配件材料");
 		CBCLanguage.addLocalName(mat_heavy, "重型材料");
 		CBCLanguage.addLocalName(mat_light, "轻型材料");
@@ -228,7 +230,7 @@ public class CBCItems {
         		new ItemStack(mat_tech, 1),
         		new ItemStack(mat_box, 5),
         		new ItemStack(CBCBlocks.blockRefined, 1),
-        		new ItemStack(ironBar),
+        		new ItemStack(ironBar, 5),
         		new ItemStack(lambdaChip)
         };
         
@@ -274,7 +276,7 @@ public class CBCItems {
         };
         
         addRecipes(output, input);
-        
+        GameRegistry.addShapelessRecipe(new ItemStack(ingotSteel, 9), sbrefined);
         //Smeltings
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(ingotSteel.itemID,1,0) );
         ModLoader.addSmelting(CBCBlocks.blockUraniumOre.blockID, suranium);

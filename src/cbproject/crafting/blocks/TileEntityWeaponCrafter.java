@@ -1,7 +1,5 @@
 package cbproject.crafting.blocks;
 
-import java.util.Arrays;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -55,7 +53,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
         	if(!isBurning){
         		tryBurn();
         	}
-        	if(worldObj.getWorldTime() - lastTime > 500){
+        	if(worldObj.getWorldTime() - lastTime > 1000){
         		isCrafting = false;
         	}
         }
@@ -161,26 +159,26 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			resetCraftingState();
 			return;
 		}
+		if(!hasEnoughMaterial(currentRecipe))
+			return;
 		if(!(currentRecipe instanceof RecipeWeaponSpecial)){
 			if (inventory[0] != null) {
-				if (!(inventory[0].itemID != currentRecipe.output.itemID || inventory[0]
-						.isStackable()))
+				if (!(inventory[0].itemID == currentRecipe.output.itemID && inventory[0].isStackable()))
 					return;
-				if (inventory[0].isStackable()) {
-					if (inventory[0].stackSize >= inventory[0].getMaxStackSize()){
-						iconType = CrafterIconType.NOMATERIAL;
-						return;
-					}
-					inventory[0].stackSize += currentRecipe.output.stackSize;
+				if (inventory[0].stackSize >= inventory[0].getMaxStackSize()){
+					lastTime = worldObj.getWorldTime();
+					iconType = CrafterIconType.NOMATERIAL;
+					return;
 				}
-			} else
+				inventory[0].stackSize += currentRecipe.output.stackSize;
+			} else {
 				inventory[0] = currentRecipe.output.copy();
+			} 
 			consumeMaterial(currentRecipe);
 		} else {
-			System.out.println("Attempting crafting...");
 			if(inventory[0] != null){
 				iconType = CrafterIconType.NOMATERIAL;
-				System.out.println("0 is not empty");
+				lastTime = worldObj.getWorldTime();
 				return;
 			}
 			RecipeWeaponSpecial rs = (RecipeWeaponSpecial) currentRecipe;
@@ -194,12 +192,11 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 				if(inventory[i].getItem() == rs.inputB)
 					bulletCount += inventory[i].stackSize;
 			}
-			System.out.println("slot : " + slotWeapon + " bullet : " + bulletCount);
 			if(slotWeapon == 0 || bulletCount == 0){
+				lastTime = worldObj.getWorldTime();
 				iconType = CrafterIconType.NOMATERIAL;
 				return;
 			}
-			System.out.println("Attempting final crafting...");
 			int damage = inventory[slotWeapon].getItemDamage() - bulletCount;
 			int bulletToConsume = (damage<0) ? inventory[slotWeapon].getItemDamage() : bulletCount;
 			damage = damage < 0? 0 : damage;
@@ -379,7 +376,8 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound nbt)
+    @Override
+	public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         for(int i = 0; i < 20; i++){

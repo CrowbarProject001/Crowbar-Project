@@ -82,7 +82,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		if(doesReload(information, par1ItemStack))
 			this.onBulletWpnReload(par1ItemStack, par2World, player, information);
 		
-		if(doesReload(information, par1ItemStack))
+		if(doesJam(information, par1ItemStack))
 			this.onBulletWpnJam(par1ItemStack, par2World, player, information);
 
 	}

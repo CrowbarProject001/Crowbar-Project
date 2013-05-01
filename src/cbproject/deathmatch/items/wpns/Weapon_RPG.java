@@ -59,6 +59,11 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	}
 	
 	@Override
+    public Boolean canShoot(EntityPlayer player, ItemStack is){
+    	return AmmoManager.hasAmmo(this, player) || player.capabilities.isCreativeMode;
+    }
+	
+	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
 		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);

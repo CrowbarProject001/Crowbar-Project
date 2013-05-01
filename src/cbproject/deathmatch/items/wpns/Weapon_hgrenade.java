@@ -22,7 +22,7 @@ public class Weapon_hgrenade extends Item {
 		setUnlocalizedName("weapon_hgrenade");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(4);
-		this.maxStackSize = 4;
+		this.maxStackSize = 8;
 	}
 	
 	@Override
@@ -48,6 +48,8 @@ public class Weapon_hgrenade extends Item {
         if (!par3EntityPlayer.capabilities.isCreativeMode)
         {
             --par1ItemStack.stackSize;
+            if(par1ItemStack.stackSize == 0)
+            	par1ItemStack = null;
         }
 		
 		return;

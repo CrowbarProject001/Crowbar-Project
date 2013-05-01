@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.item.Item;
 
 public class Ammo_shotgun extends ItemAmmo{
 

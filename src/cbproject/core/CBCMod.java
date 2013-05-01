@@ -71,7 +71,6 @@ public class CBCMod
 		CBCEventHandler.registerAll();
 		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
 		config=new Config(Init.getSuggestedConfigurationFile());
-
 	}
 
 	
@@ -94,6 +93,7 @@ public class CBCMod
 
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
+		config.SaveConfig();
 	}
 
 	@ServerStarting
