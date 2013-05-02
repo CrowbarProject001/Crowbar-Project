@@ -6,11 +6,12 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import cbproject.core.misc.CBCBlocks;
 import cbproject.core.props.ClientProps;
-import cbproject.core.register.CBCBlocks;
 import cbproject.core.utils.BlockPos;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmineRay;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
+import cbproject.deathmatch.register.DMBlocks;
 
 
 import net.minecraft.block.BlockContainer;
@@ -157,14 +158,14 @@ public class BlockTripmineRay extends BlockContainer {
     	int j = 0;
 		for(int i = (var10 == 1 || var10 == 3)? x : z; j < BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i-1 : i + 1, j++){
 			if(var10 == 1 || var10 == 3){
-				if(worldObj.getBlockId(i, y, z) == CBCBlocks.blockTripmine.blockID){
-					blockPos = new BlockPos(i, y, z, CBCBlocks.blockTripmine.blockID);
+				if(worldObj.getBlockId(i, y, z) == DMBlocks.blockTripmine.blockID){
+					blockPos = new BlockPos(i, y, z, DMBlocks.blockTripmine.blockID);
 					blockPos.x = (var10 == 3)? blockPos.x +1: blockPos.x -1;
 					return blockPos;
 				} 
 			} else {
-				if(worldObj.getBlockId(x, y, i) == CBCBlocks.blockTripmine.blockID){
-					blockPos = new BlockPos(x, y, i, CBCBlocks.blockTripmine.blockID);
+				if(worldObj.getBlockId(x, y, i) == DMBlocks.blockTripmine.blockID){
+					blockPos = new BlockPos(x, y, i, DMBlocks.blockTripmine.blockID);
 					blockPos.z = (var10 == 0) ? blockPos.z+1:blockPos.z-1;
 					return blockPos;
 				}

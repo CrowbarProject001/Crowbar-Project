@@ -1,6 +1,7 @@
 package cbproject.core.misc;
 
 import cbproject.core.register.CBCItems;
+import cbproject.deathmatch.register.DMItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
@@ -17,7 +18,7 @@ public class CBCCreativeTab extends CreativeTabs {
 	
 	@Override
 	public ItemStack getIconItemStack() {
-	    return new ItemStack(CBCItems.weapon_crowbar);
+	    return new ItemStack(DMItems.weapon_crowbar);
 	}
 	
 }

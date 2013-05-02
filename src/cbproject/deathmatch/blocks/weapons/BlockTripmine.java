@@ -14,9 +14,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.CBCMod;
+import cbproject.core.misc.CBCBlocks;
 import cbproject.core.props.ClientProps;
-import cbproject.core.register.CBCBlocks;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
+import cbproject.deathmatch.register.DMBlocks;
 import cbproject.deathmatch.utils.BulletManager;
 
 
@@ -100,11 +101,11 @@ public class BlockTripmine extends BlockContainer {
     		int id = 0;
 			if(var10 == 1 || var10 == 3){ //x+, x-鏂瑰悜
 				id = par1World.getBlockId(i, par3, par4);
-				if(id == CBCBlocks.blockTripmineRay.blockID)
+				if(id == DMBlocks.blockTripmineRay.blockID)
 					par1World.setBlock(i, par3, par4, 0);
 			} else { //z+, z-鏂瑰悜
 				id = par1World.getBlockId(par2, par3, i);
-				if(id == CBCBlocks.blockTripmineRay.blockID)
+				if(id == DMBlocks.blockTripmineRay.blockID)
 					par1World.setBlock(par2, par3, i, 0);
 			}
 		}
@@ -200,12 +201,12 @@ public class BlockTripmine extends BlockContainer {
 			if(var10 == 1 || var10 == 3){
 				id = par1World.getBlockId(i, par3, par4);
 				if(id == 0 || id == Block.snow.blockID){
-				par1World.setBlock(i, par3, par4, CBCBlocks.blockTripmineRay.blockID, var10, 0x04);
+				par1World.setBlock(i, par3, par4, DMBlocks.blockTripmineRay.blockID, var10, 0x04);
 				} else var0 = false;
 			} else {
 				id = par1World.getBlockId(par2, par3, i);
 				if(id == 0 || id == Block.snow.blockID){
-					par1World.setBlock(par2, par3, i, CBCBlocks.blockTripmineRay.blockID, var10, 0x04);
+					par1World.setBlock(par2, par3, i, DMBlocks.blockTripmineRay.blockID, var10, 0x04);
 				} else var0 = false;
 			}
 		}

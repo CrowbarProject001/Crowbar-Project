@@ -1,6 +1,7 @@
 package cbproject.core.register;
 
 import cbproject.core.configure.Config;
+import cbproject.core.misc.CBCBlocks;
 import cbproject.crafting.items.*;
 import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ammos.*;
@@ -11,7 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cbproject.core.misc.CBCLanguage;
 
 /**
  * CBC Mod Item Register class.
@@ -19,19 +19,6 @@ import cbproject.core.misc.CBCLanguage;
  *
  */
 public class CBCItems {
-	
-	public static Weapon_crowbar weapon_crowbar;
-	public static Weapon_hgrenade weapon_hgrenade;
-	
-	public static Weapon_gauss weapon_gauss;
-	public static Weapon_satchel weapon_satchel;
-	public static Item weapon_egon;
-	public static Item weapon_9mmhandgun;
-	public static Item weapon_9mmAR;
-	public static Item weapon_357;
-	public static Item weapon_shotgun;
-	public static Item weapon_RPG;
-	public static Item weapon_crossbow;
 	
 	public static ItemAmmo ammo_uranium;
 	public static Ammo_9mm ammo_9mm;
@@ -51,18 +38,10 @@ public class CBCItems {
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
 	
-	public static ArmorHEV armorHEVBoot, armorHEVChestplate, armorHEVHelmet, armorHEVLeggings;
-	public CBCItems(Config conf){
-		registerItems(conf);
-		return;
-	}
-	
-	public void registerItems(Config conf){
-	
+	public static void init(Config conf){
+		
 		try{
 
-			ingotSteel = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
-			
 			ammo_uranium = new Ammo_uranium(conf.GetItemID("itemAmmo_uranium", 7300));
 			ammo_9mm = new Ammo_9mm(conf.GetItemID("itemAmmo_9mm", 7301));
 			ammo_9mm2 = new Ammo_9mm2(conf.GetItemID("itemAmmo_9mm2", 7302));
@@ -73,26 +52,8 @@ public class CBCItems {
 			
 			ammo_shotgun = new Ammo_shotgun(conf.GetItemID("itemBullet_Shotgun", 7350));
 			bullet_9mm = new Bullet_9mm(conf.GetItemID("itemBullet_9mm", 7351));
+			bullet_steelbow = new Bullet_steelbow(conf.GetItemID("steelbow", 8062));
 	
-			weapon_crowbar = new Weapon_crowbar(conf.GetItemID("weapon_crowbar", 7000));
-			
-			weapon_hgrenade = new Weapon_hgrenade(conf.GetItemID("weapon_hgrenade", 7001));
-			weapon_9mmhandgun = new Weapon_9mmhandgun(conf.GetItemID("weapon_nmmhandgun", 7002));
-			weapon_9mmAR = new Weapon_9mmAR(conf.GetItemID("weapon_nmmAR", 7003));
-			weapon_357 = new Weapon_357(conf.GetItemID("weapon_357", 7004));
-			weapon_shotgun = new Weapon_shotgun(conf.GetItemID("weapon_shotgun", 7005));
-			weapon_RPG = new Weapon_RPG(conf.GetItemID("weapon_RPG", 7006));
-			weapon_crossbow = new Weapon_crossbow(conf.GetItemID("weapon_crossbow", 7007));	
-			weapon_satchel = new Weapon_satchel(conf.GetItemID("weapon_satchel", 7008));
-			
-			weapon_gauss = new Weapon_gauss(conf.GetItemID("weapon_gauss", 7050));
-			weapon_egon = new Weapon_egon(conf.GetItemID("weapon_egon", 7051));
-			
-			armorHEVHelmet = new ArmorHEV(conf.GetItemID("armorHEVHelmet", 8001), 0);
-			armorHEVChestplate = new ArmorHEV(conf.GetItemID("armorHEVChestplate", 8002), 1);
-			armorHEVLeggings = new ArmorHEV(conf.GetItemID("armorHEVLeggings", 8003), 2);
-			armorHEVBoot = new ArmorHEV(conf.GetItemID("armorHEVBoot", 8000), 3);
-			
 			mat_accessories = new Material_accessories(conf.GetItemID("mat_a", 8050));
 			mat_ammunition = new Material_ammunition(conf.GetItemID("mat_b", 8051));
 			mat_bio = new Material_bio(conf.GetItemID("mat_c", 8052));
@@ -106,118 +67,17 @@ public class CBCItems {
 			ironBar = new SteelBar(conf.GetItemID("ironBar", 8059));
 			lambdaChip = new LambdaChipset(conf.GetItemID("lambdachip", 8060));
 			ingotUranium = new IngotUranium(conf.GetItemID("ingotUranium", 8061));
-			bullet_steelbow = new Bullet_steelbow(conf.GetItemID("steelbow", 8062));
+			ingotSteel = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
+			
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
 		}
 		
-		addRecipes();
-		return;
+		addItemRecipes();
 	}
 	
-	public static void addItemNames(){
-		
-		CBCLanguage.addDefaultName(ammo_uranium , "Uranium Ammo");
-
-		CBCLanguage.addDefaultName(ammo_9mm2, "9mm Handgun Clip");
-		CBCLanguage.addDefaultName(ammo_9mm2, "9mmAR Clip");
-		CBCLanguage.addDefaultName(ammo_bow,"Crossbow Clip");
-		CBCLanguage.addDefaultName(ammo_357, ".357 Ammo");
-		CBCLanguage.addDefaultName(ammo_argrenade, "9mmAR Grenade");
-		CBCLanguage.addDefaultName(ammo_rpg, "RPG Rocket");
-		
-		CBCLanguage.addDefaultName(ammo_shotgun,"Shotgun Ammo");
-		
-		CBCLanguage.addDefaultName(weapon_crowbar, "Crowbar");
-		
-		CBCLanguage.addDefaultName(weapon_shotgun, "Shotgun");
-		CBCLanguage.addDefaultName(weapon_9mmhandgun , "9mm Handgun");
-		CBCLanguage.addDefaultName(weapon_9mmAR, "9mmAR");
-        CBCLanguage.addDefaultName(weapon_hgrenade, "Hand Grenade");
-        
-        CBCLanguage.addDefaultName(weapon_357, ".357 Magnum");
-        CBCLanguage.addDefaultName(weapon_satchel, "Satchel");
-        CBCLanguage.addDefaultName(weapon_RPG, "RPG Rocket Launcher");
-        CBCLanguage.addDefaultName(weapon_crossbow, "High Heat Crossbow");
-        CBCLanguage.addDefaultName(weapon_gauss, "Gauss Gun");
-        CBCLanguage.addDefaultName(weapon_egon, "Egon");
-
-        CBCLanguage.addDefaultName(ingotSteel, "Refined Iron Ingot");
-        CBCLanguage.addDefaultName(bullet_9mm, "9mm Ammo");
-        CBCLanguage.addDefaultName(bullet_steelbow, "Steel Bow");
-        
-		CBCLanguage.addDefaultName(armorHEVBoot, "HEV boot");
-		CBCLanguage.addDefaultName(armorHEVHelmet, "HEV helmet");
-		CBCLanguage.addDefaultName(armorHEVChestplate, "HEV chestplate");
-		CBCLanguage.addDefaultName(armorHEVLeggings, "HEV leggings");
-		
-		CBCLanguage.addDefaultName(mat_box, "Material Box");
-		CBCLanguage.addDefaultName(mat_accessories, "Accessories Material");
-		CBCLanguage.addDefaultName(mat_heavy, "Heavy Material");
-		CBCLanguage.addDefaultName(mat_light, "Light Material");
-		CBCLanguage.addDefaultName(mat_pistol, "Pistol Material");
-		CBCLanguage.addDefaultName(mat_tech, "Tech Material");
-		CBCLanguage.addDefaultName(mat_bio, "Bio Material");
-		CBCLanguage.addDefaultName(mat_ammunition, "Ammunition Material");
-		CBCLanguage.addDefaultName(mat_explosive, "Explosiove Material");
-		
-		CBCLanguage.addDefaultName(ironBar, "Refined Iron Bar");
-		CBCLanguage.addDefaultName(lambdaChip, "λ Chipset");
-		CBCLanguage.addDefaultName(ingotUranium, "Uranium Ingot");
-		
-		CBCLanguage.addLocalName(ammo_uranium , "铀燃料");
-		CBCLanguage.addLocalName(ammo_9mm, "9毫米手枪弹匣");
-		CBCLanguage.addLocalName(ammo_9mm2, "9毫米步枪弹匣");
-		CBCLanguage.addLocalName(ammo_bow,"弩箭弹夹");
-		CBCLanguage.addLocalName(ammo_357, ".357子弹");
-		CBCLanguage.addLocalName(ammo_argrenade, "9毫米步枪用榴弹");
-		CBCLanguage.addDefaultName(ammo_rpg, "RPG火箭弹");
-		
-		CBCLanguage.addLocalName(ammo_shotgun,"霰弹枪子弹");
-		
-		CBCLanguage.addLocalName(weapon_crowbar, "物理学圣剑");
-		
-		CBCLanguage.addLocalName(weapon_shotgun, "霰弹枪");
-		CBCLanguage.addLocalName(weapon_9mmhandgun , "9毫米手枪");
-		CBCLanguage.addLocalName(weapon_9mmAR, "9毫米步枪");
-        CBCLanguage.addLocalName(weapon_hgrenade, "手雷");
-        
-        CBCLanguage.addLocalName(weapon_357, ".357麦林枪");
-        CBCLanguage.addLocalName(weapon_satchel, "遥控炸药");
-        CBCLanguage.addLocalName(weapon_RPG, "RPG火箭发射器");
-        CBCLanguage.addLocalName(weapon_crossbow, "复合十字弩");
-        CBCLanguage.addLocalName(weapon_gauss, "高斯枪");
-        CBCLanguage.addDefaultName(weapon_egon, "离子光束枪");
-        CBCLanguage.addLocalName(ingotSteel, "精铁锭");
-        
-		CBCLanguage.addLocalName(armorHEVBoot, "HEV靴");
-		CBCLanguage.addLocalName(armorHEVHelmet, "HEV盔");
-		CBCLanguage.addLocalName(armorHEVChestplate, "HEV甲");
-		CBCLanguage.addLocalName(armorHEVLeggings, "HEV腿");
-		
-		CBCLanguage.addLocalName(mat_box, "材料盒子");
-		CBCLanguage.addLocalName(mat_accessories, "配件材料");
-		CBCLanguage.addLocalName(mat_heavy, "重型材料");
-		CBCLanguage.addLocalName(mat_light, "轻型材料");
-		CBCLanguage.addLocalName(mat_pistol, "手枪材料");
-		CBCLanguage.addLocalName(mat_tech, "科技材料");
-		CBCLanguage.addLocalName(mat_bio, "生化材料");
-		CBCLanguage.addLocalName(mat_ammunition, "弹药材料");
-		CBCLanguage.addLocalName(mat_explosive, "爆炸物材料");
-		CBCLanguage.addLocalName(bullet_steelbow, "钢质弩箭");
-		
-		CBCLanguage.addLocalName(ironBar, "钢质长棍");
-		CBCLanguage.addLocalName(lambdaChip, "λ集成芯片");
-		CBCLanguage.addLocalName(ingotUranium, "铀锭");
-		CBCLanguage.addLocalName(bullet_9mm, "9mm子弹");
-	}
-	
-	public static void addRecipes(){
+	public static void addItemRecipes(){
         //Recipes
-        ItemStack rosereddyeStack = new ItemStack(351,1,0);
-        ItemStack ingotIronStack = new ItemStack(Item.ingotIron);
-        ItemStack crowbarStack = new ItemStack(weapon_crowbar);
-        GameRegistry.addShapelessRecipe(crowbarStack, rosereddyeStack,ingotIronStack);
 
         ItemStack output[] = {
         		new ItemStack(mat_pistol, 1),

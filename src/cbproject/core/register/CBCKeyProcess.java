@@ -1,15 +1,22 @@
 /**
  * 
  */
-package cbproject.core.misc;
+package cbproject.core.register;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.input.Keyboard;
+
+import cbproject.core.misc.CBCKey;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cbproject.deathmatch.network.NetDeathmatch;
@@ -23,27 +30,49 @@ import cpw.mods.fml.common.TickType;
 
 /**
  * @author WeAthFolD
- * Generally handle the keyPress event,load key config in .cfg.
- * Not all keys are processed here, some are within item's handle classes.
+ * Generally handle the keyPress event.
  */
 public class CBCKeyProcess extends KeyHandler{
 	
-	public static int Key_ModeChange, Key_Reload;
+	private static HashMap<Integer, CBCKey>keyProcesses = new HashMap();
 	
-	public static KeyBinding KeyCodes[] = {
-			new KeyBinding("Mode Change Key", Keyboard.KEY_LCONTROL),
-			new KeyBinding("Reload Key", Keyboard.KEY_R)
-	};
-	
-	public static boolean isRepeating[] = {
-			false, false
-	};
+	private static List<KeyBinding>keyCodes = new ArrayList();
+	private static List<Boolean>isRepeating = new ArrayList();
+	public static CBCKeyProcess instance;
 	
 	public CBCKeyProcess(){
-		super(KeyCodes, isRepeating);
+		super(toKeyBindingArray(), toBooleanArray());
+		if(instance == null)
+			instance = this;
 	}
 	
-	public static void onModeChange(ItemStack itemStack, InformationWeapon inf, EntityPlayer player, int maxModes){
+	private static boolean[] toBooleanArray(){
+		boolean[] b = new boolean[isRepeating.size()];
+		for(int i = 0; i < b.length; i++){
+			b[i] = isRepeating.get(i);
+		}
+		return b;
+	}
+	
+	private static KeyBinding[] toKeyBindingArray(){
+		KeyBinding kb[] = new KeyBinding[keyCodes.size()];
+		for(int i = 0; i < kb.length; i++){
+			kb[i] = keyCodes.get(i);
+		}
+		return kb;
+	}
+	
+	public static void addKey(KeyBinding key, boolean isRep, CBCKey process){
+		if(instance != null)
+			throw new WrongUsageException("Trying to add a key after the process is instanted.");
+		
+		keyCodes.add(key);
+		isRepeating.add(isRep);
+		keyProcesses.put(key.keyCode, process);
+		System.out.println(keyCodes.size() == isRepeating.size());
+	}
+	
+	private static void onModeChange(ItemStack itemStack, InformationWeapon inf, EntityPlayer player, int maxModes){
 			if(!player.worldObj.isRemote)
 				return;
 
@@ -95,37 +124,20 @@ public class CBCKeyProcess extends KeyHandler{
 			boolean tickEnd, boolean isRepeat) {
 		if(tickEnd)
 			return;
-		if( KeyCodes[0].keyCode == kb.keyCode ){
-			EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-			ItemStack currentItem = player.inventory.getCurrentItem();
-			if(currentItem!= null && currentItem.getItem() instanceof WeaponGeneral){
-				WeaponGeneral wpn = (WeaponGeneral) currentItem.getItem();
-				InformationWeapon inf = wpn.loadInformation(currentItem, player);
-				onModeChange(currentItem, inf, player, wpn.maxModes);
-			}
-			return;
-		}
-		if( KeyCodes[1].keyCode == kb.keyCode){
-			EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-			ItemStack currentItem = player.inventory.getCurrentItem();
-			if(currentItem!= null && currentItem.getItem() instanceof WeaponGeneralBullet){
-				WeaponGeneralBullet wpn = (WeaponGeneralBullet) currentItem.getItem();
-				InformationBullet inf = wpn.loadInformation(currentItem, player);
-				onReload(currentItem, inf, player);
-			}
-			return;
-		}
-		
+		if(keyProcesses.containsKey(kb.keyCode))
+			keyProcesses.get(kb.keyCode).onKeyDown();
 	}
 
 	@Override
 	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
-
+		if(tickEnd)
+			return;
+		if(keyProcesses.containsKey(kb.keyCode))
+			keyProcesses.get(kb.keyCode).onKeyUp();
 	}
 
 	@Override
 	public EnumSet<TickType> ticks() {
 		return EnumSet.of(TickType.CLIENT);
 	}
-	
 }

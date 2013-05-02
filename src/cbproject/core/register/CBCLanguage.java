@@ -1,4 +1,4 @@
-package cbproject.core.misc;
+package cbproject.core.register;
 
 import net.minecraft.util.StringTranslate;
 import cpw.mods.fml.common.registry.LanguageRegistry;

@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
 import cbproject.core.register.CBCItems;
+import cbproject.deathmatch.register.DMItems;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemArmor;
@@ -26,7 +27,7 @@ public class ArmorHEV extends ItemArmor implements IArmorTextureProvider  {
 
 	@Override
 	public String getArmorTextureFile(ItemStack itemstack) {
-		if(itemstack.getItem().itemID == CBCItems.armorHEVLeggings.itemID){
+		if(itemstack.getItem().itemID == DMItems.armorHEVLeggings.itemID){
 			return ClientProps.HEV_ARMOR_PATH[1];
 		} else {
 			return ClientProps.HEV_ARMOR_PATH[0];

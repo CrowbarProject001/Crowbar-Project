@@ -59,7 +59,7 @@ public class BlockWeaponCrafter extends BlockContainer {
             if (tileEntity == null || player.isSneaking()) {
                     return false;
             }
-            player.openGui(CBCMod.cbcMod, 0, world, x, y, z);
+            player.openGui(CBCMod.instance, 0, world, x, y, z);
             return true;
     }
 

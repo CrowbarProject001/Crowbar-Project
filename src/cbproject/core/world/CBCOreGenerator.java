@@ -2,7 +2,7 @@ package cbproject.core.world;
 
 import java.util.Random;
 
-import cbproject.core.register.CBCBlocks;
+import cbproject.core.misc.CBCBlocks;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
