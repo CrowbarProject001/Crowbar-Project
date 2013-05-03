@@ -1,8 +1,11 @@
 package cbproject.core.register;
 
-import cbproject.core.misc.Config;
+import cbproject.core.configure.Config;
+import cbproject.core.misc.CBCBlocks;
 import cbproject.crafting.items.*;
+import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ammos.*;
+import cbproject.deathmatch.items.wpns.*;
 import net.minecraft.block.Block;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.Item;
@@ -88,8 +91,7 @@ public class CBCItems {
         		new ItemStack(mat_box, 5),
         		new ItemStack(CBCBlocks.blockRefined, 1),
         		new ItemStack(ironBar, 5),
-        		new ItemStack(lambdaChip),
-        		new ItemStack(CBCBlocks.blockWeaponCrafter)
+        		new ItemStack(lambdaChip)
         };
         
         ItemStack sredstone = new ItemStack(Item.redstone),
@@ -116,8 +118,7 @@ public class CBCItems {
         		sendereye = new ItemStack(Item.eyeOfEnder),
         		slambdachip = new ItemStack(lambdaChip),
         		suranium = new ItemStack(ingotUranium),
-        		semerald = new ItemStack(Item.emerald),
-        		schest = new ItemStack(Block.chest);
+        		semerald = new ItemStack(Item.emerald);
  
         Object input[][] = new Object[][]{
         		{"ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', srefined, 'D', sredstone, 'E', sglass},
@@ -131,8 +132,7 @@ public class CBCItems {
         		{"A A", "AAA", 'A', srefined},
         		{"AAA", "AAA", "AAA", 'A', srefined},
         		{"A  ", "A  ", 'A', srefined},
-        		{"ABA","CDC","ABA", 'A', sglass, 'B', semerald, 'C', sredstone, 'D', sdiamond},
-        		{"AAA","BCB","EDE", 'A', sglass, 'B', sbredstone, 'C', slambdachip, 'D', schest, 'E', sbrefined}
+        		{"ABA","CDC","ABA", 'A', sglass, 'B', semerald, 'C', sredstone, 'D', sdiamond}
         };
         
         addRecipes(output, input);

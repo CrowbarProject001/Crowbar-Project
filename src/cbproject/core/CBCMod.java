@@ -2,14 +2,16 @@ package cbproject.core;
 
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.MinecraftForge;
+import cbproject.core.configure.Config;
+import cbproject.core.misc.CBCBlocks;
 import cbproject.core.misc.CBCCreativeTab;
-import cbproject.core.misc.Config;
-import cbproject.core.register.CBCBlocks;
+import cbproject.core.misc.CBCGeneralRegistry;
+import cbproject.core.register.CBCEventHandler;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCItems;
+import cbproject.core.register.CBCLanguage;
 import cbproject.core.register.CBCPacketHandler;
-import cbproject.core.register.CBCSoundEvents;
+import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cpw.mods.fml.common.Mod;
@@ -27,7 +29,8 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 /**
@@ -35,11 +38,11 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * @author WeAthFolD, mkpoli
  */
 
-@Mod(modid="lc",name="lambdacraft",version="0.9.0beta")
+@Mod(modid="lc",name="lambdacraft",version="0.8.5.0a")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { "CBCCrafter" }, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
-{ 
+{
 	public static RecipeWeapons recipeWeapons;
 	
 	public static CreativeTabs cct = new CBCCreativeTab("CBCMod");
@@ -55,21 +58,22 @@ public class CBCMod
 	@PreInit
 	public void preInit(FMLPreInitializationEvent Init)
 	{
-		//Events, World gen, Config
+		//Events loading
+		CBCEventHandler.registerAll();
 		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
 		config=new Config(Init.getSuggestedConfigurationFile());
-		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		CBCLanguage.bindLanguage("zh_CN");
 	}
 
 	
 	@Init
 	public void init(FMLInitializationEvent Init){
-		//Blocks, Items, GUI Handler,Key Process.
 		CBCBlocks.init(config);
 		CBCItems.init(config);
 		recipeWeapons = new RecipeWeapons();
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
-		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
+		CBCLanguage.addDefaultName("itemGroup.CBCMod", "LambdaCraft");
+		CBCGeneralRegistry.register();
 		proxy.init();
 		
 	}

@@ -10,6 +10,20 @@ import java.util.List;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
+import org.lwjgl.input.Keyboard;
+
+import cbproject.core.misc.CBCKey;
+import cbproject.deathmatch.items.wpns.WeaponGeneral;
+import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
+import cbproject.deathmatch.network.NetDeathmatch;
+import cbproject.deathmatch.utils.InformationBullet;
+import cbproject.deathmatch.utils.InformationWeapon;
+
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -20,10 +34,10 @@ import cpw.mods.fml.common.TickType;
  */
 public class CBCKeyProcess extends KeyHandler{
 	
-	private static HashMap<Integer, IKeyProcess>keyProcesses = new HashMap();
+	private static HashMap<Integer, CBCKey>keyProcesses = new HashMap();
+	
 	private static List<KeyBinding>keyCodes = new ArrayList();
 	private static List<Boolean>isRepeating = new ArrayList();
-	
 	public static CBCKeyProcess instance;
 	
 	public CBCKeyProcess(){
@@ -48,18 +62,61 @@ public class CBCKeyProcess extends KeyHandler{
 		return kb;
 	}
 	
-	public static void addKey(KeyBinding key, boolean isRep, IKeyProcess process){
+	public static void addKey(KeyBinding key, boolean isRep, CBCKey process){
 		if(instance != null)
 			throw new WrongUsageException("Trying to add a key after the process is instanted.");
 		
 		keyCodes.add(key);
 		isRepeating.add(isRep);
 		keyProcesses.put(key.keyCode, process);
+		System.out.println(keyCodes.size() == isRepeating.size());
+	}
+	
+	private static void onModeChange(ItemStack itemStack, InformationWeapon inf, EntityPlayer player, int maxModes){
+			if(!player.worldObj.isRemote)
+				return;
+
+			WeaponGeneral wpn = (WeaponGeneral) itemStack.getItem();
+			int stackInSlot = -1;
+			for(int i = 0; i < player.inventory.mainInventory.length; i++){
+				if(player.inventory.mainInventory[i] == itemStack){
+					stackInSlot = i;
+					break;
+				}
+			}
+			if(stackInSlot == -1)
+				return;
+			
+			if(inf == null)
+				return;
+			inf.mode = (maxModes -1 <= inf.mode) ? 0 : inf.mode +1;
+			player.sendChatToPlayer(StatCollector.translateToLocal("mode.new") + ": \u00a74" + StatCollector.translateToLocal(wpn.getModeDescription(inf.mode)));
+			NetDeathmatch.sendModePacket(stackInSlot, (short) 0, inf.mode);
+			
+	}
+
+	public static void onReload(ItemStack is, InformationBullet inf, EntityPlayer player){
+		if(!player.worldObj.isRemote)
+			return;
+
+		WeaponGeneralBullet wpn = (WeaponGeneralBullet) is.getItem();
+		int stackInSlot = -1;
+		for(int i = 0; i < player.inventory.mainInventory.length; i++){
+			if(player.inventory.mainInventory[i] == is){
+				stackInSlot = i;
+				break;
+			}
+		}
+		if(stackInSlot == -1)
+			return;
+		
+		if(wpn.onSetReload(is, player))
+			NetDeathmatch.sendModePacket(stackInSlot, (short) 1, 0);
 	}
 	
 	@Override
 	public String  getLabel() {
-		return "LambdaCraft Keys";
+		return "CrowbarCraft Keys";
 	}
 
 	@Override

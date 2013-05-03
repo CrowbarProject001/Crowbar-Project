@@ -15,7 +15,11 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public class CBCWeaponInformation {
 
-	private static HashMap<Double, InformationSet> map = new HashMap();
+	private static HashMap<Double, InformationSet> map;
+	
+	public CBCWeaponInformation() {
+		map = new HashMap<Double, InformationSet>();
+	}
 	
 	public static InformationSet addToList(double uniqueID, InformationSet inf){
 		map.put(uniqueID, inf);

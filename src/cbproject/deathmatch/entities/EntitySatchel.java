@@ -68,7 +68,7 @@ public class EntitySatchel extends EntityProjectile {
 	public void onUpdate(){
 		super.onUpdate();
 		boolean doesExplode = getThrower().getEntityData().getBoolean("doesExplode");
-		if(doesExplode || isBurning())
+		if(doesExplode)
 			Explode();
 		if(this.onGround){
 			rotationFactor += 0.01F;
