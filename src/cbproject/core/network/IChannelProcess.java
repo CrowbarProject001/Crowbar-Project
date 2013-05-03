@@ -1,4 +1,4 @@
-package cbproject.core.register;
+package cbproject.core.network;
 
 import net.minecraft.network.packet.Packet250CustomPayload;
 import cpw.mods.fml.common.network.Player;

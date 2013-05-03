@@ -43,9 +43,11 @@ public abstract class WeaponGeneral extends Item {
 			return null;	
 		
 		if(information == null){
+			System.err.println(par2World.isRemote + " side is null");
 			return null;
 		}
-		
+		if(!par2World.isRemote)
+			return information;
 		if(information.isRecovering){
 			par3Entity.rotationPitch += recoverRadius;
 			information.recoverTick++;
@@ -67,6 +69,7 @@ public abstract class WeaponGeneral extends Item {
 		entityPlayer.rotationPitch -= upLiftRadius;
 		information.isRecovering = true;
 		information.recoverTick = 0;
+		System.out.println("Doing uplift : ");
 	}
 	
 	/**
@@ -99,6 +102,7 @@ public abstract class WeaponGeneral extends Item {
 	 */
 	public void onModeChange(ItemStack itemStack, EntityPlayer player, int newMode){
 		InformationWeapon inf = loadInformation(itemStack, player);
+		System.out.println(player.worldObj.isRemote);
 		inf.mode = newMode;
 	}
 	

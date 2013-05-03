@@ -8,7 +8,7 @@ import java.io.DataOutputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import cbproject.core.register.IChannelProcess;
+import cbproject.core.network.IChannelProcess;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cpw.mods.fml.common.network.PacketDispatcher;

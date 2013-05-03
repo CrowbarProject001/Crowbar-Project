@@ -52,7 +52,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			onSetReload(par1ItemStack, par3EntityPlayer);
 		}
 		
-		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
+		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
+		par3EntityPlayer.setEating(false);
 		return information;
 	}
 	
@@ -72,6 +73,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     	information.updateTick();
 
     	EntityPlayer player = (EntityPlayer) par3Entity;
+    	if(!player.isUsingItem())
+    		information.isShooting  = false;
     	
 		if(doesShoot(information, par1ItemStack))
 			this.onBulletWpnShoot(par1ItemStack, par2World, player, information);
@@ -113,7 +116,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	public Boolean doesJam(InformationBullet inf, ItemStack itemStack){
 		Boolean canUse;
 		canUse = (itemStack.getMaxDamage() - itemStack.getItemDamage() -1 > 0);
-		return ( jamTime != 0 && inf.isShooting && !canUse && inf.getDeltaTick() > jamTime );
+		return ( jamTime != 0 && inf.isShooting && !canUse );
 	}
 	
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
@@ -124,10 +127,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
     	doUplift(information, par3Entity);
-    	if(!par3Entity.capabilities.isCreativeMode ){
+    	if(!par3Entity.capabilities.isCreativeMode )
     			par1ItemStack.damageItem( 1 , par3Entity);
-    			par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-    	}
     	
 		return;	
     }
@@ -141,11 +142,10 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		InformationBullet inf = loadInformation(itemStack, player);
 		if(itemStack.getItemDamage() <= 0)
 			return false;
-		if(!inf.isReloading && itemStack.getItemDamage() > 0){
+		if(!inf.isReloading)
 			player.worldObj.playSoundAtEntity(player, getSoundReload(inf.mode), 0.5F, 1.0F);
-			inf.isReloading = true;
-			inf.setLastTick();
-		}
+		inf.isReloading = true;
+		inf.setLastTick();
 		return true;
 	}
     

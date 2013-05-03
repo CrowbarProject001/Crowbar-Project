@@ -64,12 +64,8 @@ public class AmmoManager {
 	/**
 	 * determine if player have any ammo for reloading/energy weapon shooting.
 	 */
-	public static boolean hasAmmo(WeaponGeneral is, EntityPlayer player){
+	public static Boolean hasAmmo(WeaponGeneral is, EntityPlayer player){
 		return player.inventory.hasItem(is.ammoID);
-	}
-	
-	public static boolean hasAmmo(int itemID, EntityPlayer player){
-		return player.inventory.hasItem(itemID);
 	}
 	
 	public static int consumeInventoryItem(ItemStack[] inv, int itemID, int count){
