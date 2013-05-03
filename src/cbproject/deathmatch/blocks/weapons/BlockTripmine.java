@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.CBCMod;
-import cbproject.core.misc.CBCBlocks;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.register.DMBlocks;
@@ -43,7 +42,7 @@ public class BlockTripmine extends BlockContainer {
 		
 		super(par1, Material.circuits);
 		setCreativeTab(CBCMod.cct);
-		setUnlocalizedName("blockTripmine");
+		setUnlocalizedName("tripmine");
 	}
 	
 	@Override

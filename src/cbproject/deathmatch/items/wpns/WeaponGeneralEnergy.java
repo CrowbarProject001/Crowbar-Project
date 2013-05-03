@@ -74,8 +74,7 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 			onEnergyWpnShoot(par1ItemStack, par2World, par3EntityPlayer, information);
 
 		information.isShooting = true;
-		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack) );
-		par3EntityPlayer.setEating(false);
+		par3EntityPlayer.setItemInUse(par1ItemStack, getMaxItemUseDuration(par1ItemStack));
 		
 	}
 	

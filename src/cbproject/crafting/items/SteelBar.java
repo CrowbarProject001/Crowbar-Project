@@ -18,6 +18,6 @@ public class SteelBar extends Item {
 	@SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:ironbar");
+        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:steelbar");
     }
 }

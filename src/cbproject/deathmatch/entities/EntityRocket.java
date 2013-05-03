@@ -25,16 +25,18 @@ public class EntityRocket extends EntityThrowable {
 	public void onUpdate(){
 		super.onUpdate();
 		worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0, 0.0, 0.0);
+		if(this.isBurning())
+			Explode();
 		if(ticksExisted % 45 == 0)
 			worldObj.playSoundAtEntity(this, "cbc.weapons.rocket", 0.5F, 1.0F);
 	}
 	
 	@Override
 	protected void onImpact(MovingObjectPosition var1) {
-		Explode(var1);
+		Explode();
 	}
 	
-	private void Explode(MovingObjectPosition pos){
+	private void Explode(){
 		BulletManager.Explode(worldObj, this, 6.0F, 7.0F, posX, posY, posZ, 40);
 		this.setDead();
 	}

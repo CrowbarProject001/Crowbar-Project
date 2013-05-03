@@ -2,19 +2,14 @@ package cbproject.core.register;
 
 import java.util.HashMap;
 
-import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
-import cbproject.crafting.gui.ContainerWeaponCrafter;
-import cbproject.crafting.gui.GuiWeaponCrafter;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CBCGuiHandler implements IGuiHandler {
 
-	public static HashMap<Class<? extends TileEntity>, CBCGuiElement> guis = new HashMap();
+	public static HashMap<Class<? extends TileEntity>, IGuiElement> guis = new HashMap();
 	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world,
@@ -40,7 +35,7 @@ public class CBCGuiHandler implements IGuiHandler {
 		return null;
 	}
 	
-	public static void addGuiElement(Class<? extends TileEntity> tileEntity, CBCGuiElement process){
+	public static void addGuiElement(Class<? extends TileEntity> tileEntity, IGuiElement process){
 		guis.put(tileEntity, process);
 	}
 
