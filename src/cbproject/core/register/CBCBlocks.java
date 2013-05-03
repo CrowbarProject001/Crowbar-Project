@@ -1,14 +1,10 @@
-package cbproject.core.misc;
+package cbproject.core.register;
 
-import cbproject.core.configure.Config;
-import cbproject.core.register.CBCLanguage;
+import cbproject.core.misc.Config;
+import cbproject.crafting.blocks.BlockRefined;
 import cbproject.crafting.blocks.BlockUraniumOre;
 import cbproject.crafting.blocks.BlockWeaponCrafter;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
-import cbproject.deathmatch.blocks.BlockRefined;
-import cbproject.deathmatch.blocks.BlockTripmineRay;
-import cbproject.deathmatch.blocks.tileentities.*;
-import cbproject.deathmatch.blocks.weapons.BlockTripmine;
 import net.minecraft.block.Block;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;

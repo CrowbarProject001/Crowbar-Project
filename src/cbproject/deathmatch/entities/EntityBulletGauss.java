@@ -196,10 +196,9 @@ public class EntityBulletGauss extends EntityBullet {
 	}
 	
 	private AxisAlignedBB getPenetratingBox(double radius, MovingObjectPosition result){
-		if(radius <= 0.0){
-			System.err.println("radius should be larger than 0.");
+		if(radius <= 0.0)
 			return null;
-		}
+		
 		double dx, dy, dz;
 		//center is inside the hitting block.
 		if(radius > 5) radius = 5;
@@ -267,7 +266,6 @@ public class EntityBulletGauss extends EntityBullet {
 		}
 		
 		double tan = a/b;
-		System.out.println("tangent value : " + tan);
 		return tan;
 	}
 	

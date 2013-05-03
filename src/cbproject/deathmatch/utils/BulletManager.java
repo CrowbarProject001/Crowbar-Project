@@ -2,6 +2,7 @@ package cbproject.deathmatch.utils;
 
 import java.util.List;
 
+import cbproject.core.props.GeneralProps;
 import cbproject.deathmatch.entities.EntityBullet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -35,8 +36,13 @@ public class BulletManager {
 	}
 	
 	public static void Explode(World world,Entity entity, float strengh, double radius, double posX, double posY, double posZ, int additionalDamage){
-		
-		Explosion explosion =  world.createExplosion(entity, posX, posY, posZ, strengh, true);
+		Explosion explosion = new Explosion(world, entity, posX, posY, posZ, strengh);
+		explosion.isSmoking = true;
+		explosion.isFlaming = false;
+		if(!GeneralProps.ignoreBlockDestroy){
+			 explosion.doExplosionA();
+			 explosion.doExplosionB(true);
+		}
         
 		if(additionalDamage <= 0)
 			return;

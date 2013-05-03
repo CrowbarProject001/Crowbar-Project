@@ -6,26 +6,21 @@ import net.minecraft.block.Block;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.ForgeSubscribe;
-import cbproject.core.misc.CBCBlocks;
-import cbproject.core.misc.CBCGeneralRegistry;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCItems;
 import cbproject.core.register.CBCKeyProcess;
-import cbproject.core.register.CBCLanguage;
 import cbproject.core.register.CBCPacketHandler;
 import cbproject.core.register.CBCSoundEvents;
-import cbproject.core.utils.CBCWeaponInformation;
+import cbproject.crafting.blocks.TileEntityWeaponCrafter;
+import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.keys.DMMode;
 import cbproject.deathmatch.keys.DMReload;
-import cbproject.deathmatch.lang.DMLanguages;
 import cbproject.deathmatch.network.NetDeathmatch;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class DMRegister {
 
@@ -80,13 +75,17 @@ public class DMRegister {
 	};
 	
 	public static void preRegister(){
-		CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R), false, new DMReload());
-		CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V), false, new DMMode());
+		if(FMLCommonHandler.instance().getSide() == Side.CLIENT){
+			for(String s : SOUND_WEAPONS)
+				CBCSoundEvents.addSoundPath("cbc/weapons/" + s, "/cbproject/gfx/sounds/weapons/" + s);
+			CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R), false, new DMReload());
+			CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V), false, new DMMode());
+		}
 	}
 	
 	public static void register(){
 		CBCPacketHandler.addChannel("CBCWeapons", new NetDeathmatch());
-		DMLanguages.register();
+		CBCGuiHandler.addGuiElement(TileEntityWeaponCrafter.class, new ElementCrafter());
 		
 		String description[] = {"crafter.weapon", "crafter.ammo"};
 		RecipeWeapons.InitializeRecipes(2, description);
@@ -103,8 +102,9 @@ public class DMRegister {
 				new RecipeWeaponEntry(new ItemStack(DMItems.weapon_satchel, 15), 2000, new ItemStack(CBCItems.mat_light, 3), new ItemStack(CBCItems.mat_tech, 1), new ItemStack(CBCItems.mat_explosive, 6)),
 				new RecipeWeaponEntry(new ItemStack(DMItems.weapon_gauss), 2300, new ItemStack(CBCItems.mat_light, 8), new ItemStack(CBCItems.mat_tech, 3), new ItemStack(Block.glass, 5)),
 				new RecipeWeaponEntry(new ItemStack(DMItems.weapon_egon), 2300, new ItemStack(CBCItems.mat_heavy, 5), new ItemStack(CBCItems.mat_accessories, 3), new ItemStack(CBCItems.mat_tech, 4)),
+				new RecipeWeaponEntry(new ItemStack(DMItems.armorHEVBoot), 3000, new ItemStack(CBCItems.mat_tech, 3), new ItemStack(CBCItems.mat_light, 6), new ItemStack(CBCItems.mat_accessories, 3))
 		};
-		//new ItemStack()
+		
 		RecipeWeaponEntry ammoRecipes[] = {
 				new RecipeWeaponEntry(new ItemStack(CBCItems.bullet_9mm, 18), 600, new ItemStack(CBCItems.mat_ammunition, 3)),
 				new RecipeWeaponEntry(new ItemStack(CBCItems.ammo_357, 12), 650, new ItemStack(CBCItems.mat_accessories, 2), new ItemStack(CBCItems.mat_ammunition, 3)),
@@ -121,10 +121,6 @@ public class DMRegister {
 		};
 		
 		RecipeWeapons.addWeaponRecipe(0, wpnRecipes);
-		RecipeWeapons.addWeaponRecipe(1, ammoRecipes);
-		
-		for(String s : SOUND_WEAPONS)
-			CBCSoundEvents.addSoundPath("cbc/weapons/" + s, "/cbproject/gfx/sounds/weapons/" + s);
-		
+		RecipeWeapons.addWeaponRecipe(1, ammoRecipes);	
 	}
 }

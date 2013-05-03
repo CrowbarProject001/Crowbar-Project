@@ -6,7 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import cbproject.core.network.IChannelProcess;
+import cbproject.core.register.IChannelProcess;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 
 import cpw.mods.fml.common.network.PacketDispatcher;

@@ -1,5 +1,7 @@
 package cbproject.core.renderers;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Vec3;
@@ -75,7 +77,8 @@ public class RendererUtils{
 				u2 = 1.0F, v2 = 1.0F;
 
 		t = Tessellator.instance;
-
+		GL11.glPushMatrix();
+		
 		t.startDrawingQuads();
 		t.setNormal(0.0F, 0.0F, 1.0F);
 		addVertex(a1, u2, v2);
@@ -129,6 +132,8 @@ public class RendererUtils{
 					v1);
 		}
 		t.draw();
+		
+		GL11.glPopMatrix();
 
 	}
 
