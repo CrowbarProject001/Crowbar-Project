@@ -70,7 +70,6 @@ public class RenderCrossbow implements IItemRenderer {
 		float w = 0.05F;
 		float w2 = 0.1F;
 		int tex = RendererUtils.getTexture(ClientProps.CROSSBOW_SIDE_PATH[5 - item.getItemDamage()]);
-		GL11.glPushMatrix();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
 		renderItemIn2d(t, w); //Vertical rendering
 
@@ -131,7 +130,7 @@ public class RenderCrossbow implements IItemRenderer {
             t.addVertexWithUV(0.0, 0.0 + w2, var10, var9, 1.0F);
         }
         t.draw();
-	    GL11.glPopMatrix();
+	    
 	}
 
 }

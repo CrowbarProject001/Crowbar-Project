@@ -36,12 +36,6 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		setLiftProps(8 , 2);
 
 	}
-	
-	@Override
-	public Boolean canShoot(EntityPlayer player, ItemStack is){
-    	InformationBullet inf = this.getInformation(is, player.worldObj);
-    	return inf.mode == 0 ? super.canShoot(player, is) : AmmoManager.hasAmmo(CBCItems.ammo_argrenade.itemID, player);
-    }
 
 	@Override
     @SideOnly(Side.CLIENT)
@@ -67,21 +61,27 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
     	
     	if(information.mode == 0){
     		
-    		super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
+    		par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);	
+    		int mode = information.mode;
+    		BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
+    		if(par3Entity instanceof EntityPlayer){
+    			doUplift(information, par3Entity);
+    			if(!par3Entity.capabilities.isCreativeMode ){
+    				par1ItemStack.damageItem( 1 , par3Entity);
+    			}
+    		}
     		
     	} else {
     		
     		if(par3Entity.capabilities.isCreativeMode  || AmmoManager.tryConsume(par3Entity, CBCItems.ammo_argrenade.itemID, 1) == 0){
     			par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
-    			par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);
+    			par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);	
     		}
     	}
     	
     	information.setLastTick();
 		return;
     }
-	
-	
 	
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 

@@ -18,6 +18,12 @@ public class CBCLivingAttackEvent {
 				EntityPlayer player = (EntityPlayer) event.entity;				
 				if(player.inventory.armorInventory[0] == null)
 					return;
+				for(ItemStack i : player.inventory.armorInventory){
+					if(i == null)
+						System.out.println(i + ": " + null);
+					else System.out.println(i + ": " + i.getItemName());
+				}
+					
 				if(player.inventory.armorInventory[0].getItem() instanceof ArmorHEV){
 					player.attackEntityFrom(DamageSource.fall, 2);
 					event.setCanceled(true);

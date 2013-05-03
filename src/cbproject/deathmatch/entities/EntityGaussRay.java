@@ -43,7 +43,7 @@ public class EntityGaussRay extends EntityThrowable {
 	
 	@Override
 	public void onUpdate(){
-		if(this.ticksExisted > 4) //存在0.5秒
+		if(this.ticksExisted > 7) //存在0.5秒
 			this.setDead();
 	}
 	

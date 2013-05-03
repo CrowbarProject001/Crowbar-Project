@@ -6,6 +6,7 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import cbproject.core.misc.CBCBlocks;
 import cbproject.core.props.ClientProps;
 import cbproject.core.utils.BlockPos;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmineRay;

@@ -1,5 +1,6 @@
 package cbproject.core.misc;
 
+import cbproject.core.register.CBCItems;
 import cbproject.deathmatch.register.DMItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;

@@ -1,7 +1,8 @@
 package cbproject.deathmatch.register;
 
 import net.minecraft.src.ModLoader;
-import cbproject.core.misc.Config;
+import cbproject.core.configure.Config;
+import cbproject.core.register.CBCLanguage;
 import cbproject.deathmatch.blocks.BlockTripmineRay;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmineRay;
@@ -27,5 +28,8 @@ public class DMBlocks {
 
 		ModLoader.registerTileEntity(TileEntityTripmine.class, "tile_entity_tripmine");
 		ModLoader.registerTileEntity(TileEntityTripmineRay.class, "tile_entity_tripmine_ray");
+		
+		CBCLanguage.addLocalName(blockTripmine, "激光绊雷");
+		CBCLanguage.addDefaultName(blockTripmine, "Tripmine");
 	}
 }
