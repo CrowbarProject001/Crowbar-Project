@@ -81,7 +81,7 @@ public class EntityHGrenade extends EntityProjectile {
     public void onUpdate()
     {
         super.onUpdate();
-        if(this.ticksExisted >= delay) //Time to explode >)
+        if(this.ticksExisted >= delay || this.isBurning()) //Time to explode >)
         		Explode();
     }
 	

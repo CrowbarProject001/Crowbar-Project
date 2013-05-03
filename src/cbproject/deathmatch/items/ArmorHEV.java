@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
-import cbproject.core.register.CBCItems;
 import cbproject.deathmatch.register.DMItems;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.EnumArmorMaterial;

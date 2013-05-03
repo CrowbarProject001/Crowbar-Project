@@ -25,10 +25,17 @@ public class EntityARGrenade extends EntityThrowable {
 	 */
 	@Override
 	protected void onImpact(MovingObjectPosition par1) {
-		Explode(par1);
+		Explode();
+	}
+	
+	@Override
+	public void onUpdate(){
+		super.onUpdate();
+		if(this.isBurning())
+			Explode();
 	}
 
-	private void Explode(MovingObjectPosition pos) {
+	private void Explode() {
 		BulletManager.Explode(worldObj, this, 3.0F, 4.0F, posX, posY, posZ, 35);
 		this.setDead();
 	}

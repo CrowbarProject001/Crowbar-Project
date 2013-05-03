@@ -24,7 +24,7 @@ public class RecipeWeaponEntry {
 	public String toString(){
 		String out = "[recipe:";
 		for(ItemStack s : input)
-			out.concat(" " + s.getItemName());
+			out.concat(" " + s.getDisplayName());
 		out += " -> " + output.getDisplayName() + "]";
 		return out;
 	}

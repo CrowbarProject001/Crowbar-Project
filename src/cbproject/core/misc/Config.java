@@ -1,4 +1,4 @@
-package cbproject.core.configure;
+package cbproject.core.misc;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,6 @@ public class Config {
 	        try
 	        {
 	            configFile.createNewFile();
-	            System.out.println(configFile.getAbsolutePath());
 	        }
 	        catch(IOException e)
 	        {
@@ -45,16 +44,23 @@ public class Config {
 	{
 	    if(this == null)
 	    {
-	        throw new Exception("Null Pointer");
+	        throw new NullPointerException();
 	    }
 	    return config.get("general", PropertyName, DefaultValue).getString();
+	}
+	
+	public Boolean getBoolean(String name, Boolean defaultValue)throws Exception{
+		if(this == null){
+			throw new NullPointerException();
+		}
+		return config.get("general", name, defaultValue).getBoolean(defaultValue);
 	}
 	
 	public int GetItemID(String ItemName, int DefaultValue) throws Exception
 	{
 	    if(this == null)
 	    {
-	        throw new Exception("Null Pointer");
+	        throw new NullPointerException();
 	    }
 	    return config.getItem("item", "ID." + ItemName, DefaultValue).getInt();
 	}
@@ -63,14 +69,14 @@ public class Config {
 	{
 	    if( this  == null)
 	    {
-	        throw new Exception("Null Pointer");
+	        throw new NullPointerException();
 	    }
 	    return config.getBlock("ID." + BlockName, DefaultID).getInt();
 	}
 	
 	public int GetKeyCode(String keyName, int defaultKey) throws Exception{
 		if(this == null)
-			 throw new Exception("Null Pointer");
+			 throw new NullPointerException();
 		return config.get("key", "KB." + keyName, defaultKey).getInt();
 	}
 	

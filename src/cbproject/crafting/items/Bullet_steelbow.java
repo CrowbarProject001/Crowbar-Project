@@ -10,7 +10,7 @@ public class Bullet_steelbow extends ItemBullet{
 	public Bullet_steelbow(int id) {
 		super(id);
 		setCreativeTab(CBCMod.cct);
-		setUnlocalizedName("steelbow");
+		setUnlocalizedName("bullet_steelbow");
 	}
 	
     @Override

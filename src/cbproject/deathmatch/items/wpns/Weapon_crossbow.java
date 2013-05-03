@@ -83,6 +83,7 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
     		doUplift(information, par3Entity);
     		if(!par3Entity.capabilities.isCreativeMode ){
     				par1ItemStack.damageItem( 1 , par3Entity);
+    				par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
     		}
     	}
 		
@@ -143,6 +144,8 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	public boolean isBowPulling(ItemStack item) {
 		InformationSet inf = CBCWeaponInformation.getInformation(item);
 		InformationBullet information = (InformationBullet) (inf == null ? null : inf.clientReference);
+		if(information == null)
+			return false;
 		return !(information.isShooting && information.getDeltaTick() < 17);
 	}
 }
