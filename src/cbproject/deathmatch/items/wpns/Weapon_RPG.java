@@ -49,9 +49,10 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		information.setLastTick();
+		int mode = getMode(par1ItemStack);
 		if(this.canShoot(par3Entity, par1ItemStack)){
 			if(this.canShoot(par3Entity, par1ItemStack)){
-				par2World.playSoundAtEntity(par3Entity, getSoundShoot(information.mode), 0.5F, 1.0F);
+				par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
 				par2World.spawnEntityInWorld(new EntityRocket(par2World, par3Entity));
 				AmmoManager.consumeAmmo(par3Entity, this, 1);
 			}
@@ -68,12 +69,6 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	{
 		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
 	}
-	
-	@Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 400; //20s
-    }
 
 	@Override
 	public String getSoundShoot(int mode) {

@@ -61,14 +61,14 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		
 		Boolean canUse = this.canShoot(par3Entity, par1ItemStack);
-		int mode = information.mode;
+		int mode = getMode(par1ItemStack);
 		if(!canUse){
 			information.setLastTick();
 			return;
 		}
 
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
-		switch(information.mode){
+		switch(mode){
 		case 0:
 			BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
 			break;
@@ -94,12 +94,6 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 	{	
 		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
 	}
-	
-	@Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 200;
-    }
 
 	@Override
 	public String getSoundShoot(int mode) {

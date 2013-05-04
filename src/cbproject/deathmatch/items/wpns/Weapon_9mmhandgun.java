@@ -62,12 +62,6 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 	{
 		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
 	}
-	
-	@Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 200; //10s
-    }
 
 	@Override
 	public String getSoundShoot(int mode) {

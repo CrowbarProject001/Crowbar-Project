@@ -42,16 +42,18 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			Entity par3Entity, int par4, boolean par5) {
 		
 		InformationEnergy information = onEnergyWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+		int mode = getMode(par1ItemStack);
 		if(information == null)
 				return;
-		if(information.mode == 1)
+		if(mode == 1)
 			onChargeModeUpdate(information, par1ItemStack, par2World, (EntityPlayer) par3Entity, par4, par5);
 		
 	}
 	
 	@Override
 	public Boolean doesShoot(InformationEnergy inf, ItemStack itemStack, EntityPlayer player){
-		return inf.mode == 0 && super.doesShoot(inf, itemStack, player) ;
+		int mode = getMode(itemStack);
+		return mode == 0 && super.doesShoot(inf, itemStack, player) ;
 	}
 	
 	@Override
@@ -60,11 +62,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		
 		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer);
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
-		
-		if(inf.mode == 0)
+		int mode = getMode(par1ItemStack);
+		if(mode == 0)
 			return par1ItemStack;
 		
-		if(inf.mode == 1) {
+		if(mode == 1) {
 			inf.resetState();
 			inf.isShooting = true;
 			if(canShoot(par3EntityPlayer, par1ItemStack))
@@ -92,7 +94,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 				inf.charge++;
 
 			if(!canUse)
-				inf.player.stopUsingItem();
+				player.stopUsingItem();
 			
 			if(!ignoreAmmo && inf.ticksExisted <= var3 && inf.chargeTime %4 == 0)
 				AmmoManager.consumeAmmo(player, this, 1);
@@ -127,10 +129,11 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
 	{
 		InformationEnergy inf = getInformation(par1ItemStack, par2World);
+		int mode = getMode(par1ItemStack);
 		if(inf == null)
 			return;
 		
-		if(inf.mode == 0){
+		if(mode == 0){
 			super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
 			return;
 		}
@@ -157,9 +160,10 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	
 	@Override
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationEnergy information ){	
+		int mode = getMode(par1ItemStack);
 		GaussBulletManager.Shoot2(EnumGaussRayType.NORMAL, 
-				par2World, player, par1ItemStack, null, null, getDamage(information.mode));
-		par2World.playSoundAtEntity(player, getSoundShoot(information.mode), 0.5F, 1.0F);
+				par2World, player, par1ItemStack, null, null, getDamage(mode));
+		par2World.playSoundAtEntity(player, getSoundShoot(mode), 0.5F, 1.0F);
 		AmmoManager.consumeAmmo(player, this, 2);
 		information.setLastTick();
 		return;

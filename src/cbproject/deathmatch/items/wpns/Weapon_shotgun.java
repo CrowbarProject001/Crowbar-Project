@@ -58,17 +58,11 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	{
 		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
 	}
-	
-	@Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 400; //20s
-    }
 
 	@Override
     public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationBullet information ){
 		
-    	int mode = information.mode;
+		int mode = getMode(par1ItemStack);
 		int dmg = par1ItemStack.getItemDamage();
 		if( dmg <= 0){
 			information.setLastTick();
@@ -97,7 +91,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 			return;
 		}
 		
-		int mode = information.mode;
+		int mode = getMode(par1ItemStack);
 		for(int i=0; i<BUCKSHOT_COUNT[mode]; i++)
 			BulletManager.Shoot( par1ItemStack, par3Entity, par2World, "smoke");
 

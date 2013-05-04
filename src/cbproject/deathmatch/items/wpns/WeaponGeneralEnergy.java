@@ -67,7 +67,9 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 	public void processRightClick(InformationEnergy information, ItemStack par1ItemStack, 
 			World par2World, EntityPlayer par3EntityPlayer){
 
-		int mode = information.mode;
+		if(par1ItemStack.stackTagCompound == null)
+			par1ItemStack.stackTagCompound = new NBTTagCompound();
+		int mode = par1ItemStack.getTagCompound().getInteger("mode");
 		
 		Boolean canUse = canShoot(par3EntityPlayer, par1ItemStack);
 		if(doesShoot(information, par1ItemStack, par3EntityPlayer))
@@ -94,7 +96,7 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 		
 		int ticksExisted = information.ticksExisted;
 		int lastTick = information.lastTick;
-		int mode = information.mode;
+		int mode = getMode(par1ItemStack);
 
 		Boolean isShooting = information.isShooting;
 		EntityPlayer player = (EntityPlayer) par3Entity;
@@ -118,7 +120,8 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
      */
 	public Boolean doesShoot(InformationEnergy inf, ItemStack itemStack, EntityPlayer player){
 		Boolean canUse = canShoot(player, itemStack);
-		return getShootTime(inf.mode) > 0 && inf.isShooting && canUse && inf.getDeltaTick() >= getShootTime(inf.mode);
+		int mode = getMode(itemStack);
+		return getShootTime(mode) > 0 && inf.isShooting && canUse && inf.getDeltaTick() >= getShootTime(mode);
 	}
 	
     /**
@@ -135,7 +138,7 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
      */
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationEnergy information ){
 		
-		int mode = information.mode;
+		int mode = getMode(par1ItemStack);
 		
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
@@ -155,7 +158,8 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 	public void onEnergyWpnJam(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationEnergy information ){
 		
     	int maxDmg = par1ItemStack.getMaxDamage();
-    	int mode = information.mode;
+		int mode = getMode(par1ItemStack);
+		
 		if( par1ItemStack.getItemDamage() < maxDmg){
 			return;
 		}

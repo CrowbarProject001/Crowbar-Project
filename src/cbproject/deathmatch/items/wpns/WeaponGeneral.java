@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 /**
@@ -97,9 +98,16 @@ public abstract class WeaponGeneral extends Item {
 	/**
 	 * Only called in server, set the mode to required on client's will.
 	 */
-	public void onModeChange(ItemStack itemStack, EntityPlayer player, int newMode){
-		InformationWeapon inf = loadInformation(itemStack, player);
-		inf.mode = newMode;
+	public void onModeChange(ItemStack item, EntityPlayer player, int newMode){
+		if(item.stackTagCompound == null)
+			item.stackTagCompound = new NBTTagCompound();
+		item.getTagCompound().setInteger("mode", newMode);
+	}
+	
+	public int getMode(ItemStack item){
+		if(item.stackTagCompound == null)
+			item.stackTagCompound = new NBTTagCompound();
+		return item.getTagCompound().getInteger("mode");
 	}
 	
 

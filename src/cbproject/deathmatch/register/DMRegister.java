@@ -19,6 +19,7 @@ import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.keys.DMMode;
 import cbproject.deathmatch.keys.DMReload;
 import cbproject.deathmatch.network.NetDeathmatch;
+import cbproject.deathmatch.network.NetTripmine;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -85,6 +86,7 @@ public class DMRegister {
 	
 	public static void register(){
 		CBCPacketHandler.addChannel("CBCWeapons", new NetDeathmatch());
+		CBCPacketHandler.addChannel("CBCTripmine", new NetTripmine());
 		CBCGuiHandler.addGuiElement(TileEntityWeaponCrafter.class, new ElementCrafter());
 		
 		String description[] = {"crafter.weapon", "crafter.ammo"};

@@ -52,12 +52,6 @@ public class Weapon_357 extends WeaponGeneralBullet {
 		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
     }
-	
-	@Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 200; //10s
-    }
 
 	@Override
 	public String getSoundShoot(int mode) {

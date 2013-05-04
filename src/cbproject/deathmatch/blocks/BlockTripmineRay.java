@@ -96,8 +96,11 @@ public class BlockTripmineRay extends BlockContainer {
     {
     	BlockPos pos = getSource(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
     	
-    	if(pos == null)
+    	if(pos == null){
+    		par1World.setBlockToAir(par2, par3, par4);
     		return;
+    	}
+    	System.out.println(par1World.isRemote);
     	par1World.notifyBlockChange(pos.x, pos.y, pos.z, BlockTripmine.NOTIFY_ID);
         return;
     }

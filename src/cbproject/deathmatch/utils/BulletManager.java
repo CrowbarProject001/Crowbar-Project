@@ -3,6 +3,7 @@ package cbproject.deathmatch.utils;
 import java.util.List;
 
 import cbproject.core.props.GeneralProps;
+import cbproject.core.utils.CBCExplosion;
 import cbproject.deathmatch.entities.EntityBullet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -36,13 +37,16 @@ public class BulletManager {
 	}
 	
 	public static void Explode(World world,Entity entity, float strengh, double radius, double posX, double posY, double posZ, int additionalDamage){
-		Explosion explosion = new Explosion(world, entity, posX, posY, posZ, strengh);
+		Explode(world, entity, strengh, radius, posX, posY, posZ, additionalDamage, 1.0, 1.0F);
+	}
+	
+	public static void Explode(World world,Entity entity, float strengh, double radius, double posX, double posY, double posZ, int additionalDamage, double velocityRadius, float soundRadius){
+		CBCExplosion explosion = new CBCExplosion(world, entity, posX, posY, posZ, strengh).setSoundFactor(soundRadius).setVelocityFactor(velocityRadius);
 		explosion.isSmoking = true;
 		explosion.isFlaming = false;
-		if(!GeneralProps.ignoreBlockDestroy){
-			 explosion.doExplosionA();
-			 explosion.doExplosionB(true);
-		}
+		
+		explosion.doExplosionA();
+		explosion.doExplosionB(true);
         
 		if(additionalDamage <= 0)
 			return;
@@ -55,8 +59,7 @@ public class BulletManager {
 				if(ent instanceof EntityLiving){
 					double distance = Math.sqrt(Math.pow(ent.posX-posX,2) + Math.pow(ent.posY-posY,2) + Math.pow(ent.posZ-posZ,2));
 					int damage = (int) ((1 - distance/6.928) * additionalDamage);
-					System.out.println("explosion damage for distance " + distance + " : " + damage);
-					ent.attackEntityFrom(DamageSource.setExplosionSource(explosion), damage);
+					ent.attackEntityFrom(DamageSource.setExplosionSource(explosion.asDefaultExplosion()), damage);
 				}
 			}
 		}

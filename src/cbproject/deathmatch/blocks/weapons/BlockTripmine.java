@@ -16,6 +16,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
+import cbproject.deathmatch.entities.EntityEmptyExplosion;
+import cbproject.deathmatch.network.NetTripmine;
 import cbproject.deathmatch.register.DMBlocks;
 import cbproject.deathmatch.utils.BulletManager;
 
@@ -24,6 +26,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -101,18 +104,16 @@ public class BlockTripmine extends BlockContainer {
 			if(var10 == 1 || var10 == 3){ //x+, x-鏂瑰悜
 				id = par1World.getBlockId(i, par3, par4);
 				if(id == DMBlocks.blockTripmineRay.blockID)
-					par1World.setBlock(i, par3, par4, 0);
+					par1World.setBlockToAir(i, par3, par4);
 			} else { //z+, z-鏂瑰悜
 				id = par1World.getBlockId(par2, par3, i);
 				if(id == DMBlocks.blockTripmineRay.blockID)
-					par1World.setBlock(par2, par3, i, 0);
+					par1World.setBlockToAir(par2, par3, i);
 			}
 		}
-    	
-    	BulletManager.Explode(par1World, null, 0.5F, 4.0F, par2, par3, par4, 47);
-    	par1World.setBlockToAir(par2, par3, par4);
+    	BulletManager.Explode(par1World, null, 1.0F, 4.0F, par2, par3, par4, 40, 0.5D, 1.0F);
+    	NetTripmine.sendNetPacket(par1World.getWorldInfo().getDimension(), par2, par3, par4);
     	super.breakBlock(par1World, par2, par3, par4, par5, par6);
-    	
     }
     
     @Override
@@ -143,22 +144,22 @@ public class BlockTripmine extends BlockContainer {
     	
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
         float var6 = 0.15F;
-        float var7 =  0.3F;
+        float var7 =  0.28F;
         if (var5 == 3) //X+
         {
-            this.setBlockBounds(0.0F, 0.35F, 0.5F - var7, var6 * 2.0F, 0.65F, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2, 0.8)
+            this.setBlockBounds(0.0F, 0.5F - var6, 0.5F - var7, var6 * 2.0F, 0.5F + var6, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2, 0.8)
         }
         else if (var5 == 1) //X-
         {
-            this.setBlockBounds(1.0F - var6 * 2.0F, 0.3F, 0.5F - var7, 1.0F, 0.7F, 0.5F + var7);
+            this.setBlockBounds(1.0F - var6 * 2.0F, 0.5F - var6, 0.5F - var7, 1.0F, 0.5F + var6, 0.5F + var7);
         }
         else if (var5 == 0) //Z+
         {
-            this.setBlockBounds(0.5F - var7, 0.3F, 0.0F, 0.5F + var7, 0.7F, var6 * 2.0F);
+            this.setBlockBounds(0.5F - var7, 0.5F - var6, 0.0F, 0.5F + var7, 0.5F + var6, var6 * 2.0F);
         }
         else if (var5 == 2) //Z-
         {
-            this.setBlockBounds(0.5F - var7, 0.3F, 1.0F - var6 * 2.0F, 0.5F + var7, 0.7F, 1.0F);
+            this.setBlockBounds(0.5F - var7, 0.5F - var6, 1.0F - var6 * 2.0F, 0.5F + var7, 0.5F + var6, 1.0F);
         }
         
     }
@@ -194,7 +195,6 @@ public class BlockTripmine extends BlockContainer {
         
 		Boolean var0 = true;
 		
-		System.out.println("Playced meta: " + var10);
 		int id;
 		for(int j = 0; var0 && j <RAY_RANGE ; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){
 			if(var10 == 1 || var10 == 3){

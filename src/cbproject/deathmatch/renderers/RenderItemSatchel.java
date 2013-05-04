@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -68,11 +69,9 @@ public class RenderItemSatchel implements IItemRenderer {
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLiving entity) {
 		
-		int mode;
-		InformationSet set = CBCWeaponInformation.getInformation(item);
-		if(set == null)
-			mode = 0;
-		else mode = set.clientReference.mode;
+		if(item.stackTagCompound == null)
+			item.stackTagCompound = new NBTTagCompound();
+		int mode = item.getTagCompound().getInteger("mode");
 		GL11.glPushMatrix();
 		
 		bindTextureByItem(item);
@@ -105,11 +104,9 @@ public class RenderItemSatchel implements IItemRenderer {
 	}
 	
 	private void bindTextureByItem(ItemStack item){
-		int mode;
-		InformationSet set = CBCWeaponInformation.getInformation(item);
-		if(set == null)
-			mode = 0;
-		else mode = set.clientReference.mode;
+		if(item.stackTagCompound == null)
+			item.stackTagCompound = new NBTTagCompound();
+		int mode = item.getTagCompound().getInteger("mode");
 		int tex = RendererUtils.getTexture(ClientProps.ITEM_SATCHEL_PATH[mode]);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
 	}

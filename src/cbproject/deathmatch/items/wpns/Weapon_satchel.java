@@ -75,7 +75,7 @@ public class Weapon_satchel extends WeaponGeneral {
 		if(inf == null)
 			return par1ItemStack;
 		
-		int mode = inf.mode;
+		int mode = getMode(par1ItemStack);
 		
 		NBTTagCompound nbt = par3EntityPlayer.getEntityData();
 		int count = nbt.getInteger("satchelCount");
@@ -130,8 +130,8 @@ public class Weapon_satchel extends WeaponGeneral {
 	}
 	
 	private InformationSet createInformation(ItemStack is, EntityPlayer player){
-		InformationWeapon inf = new InformationWeapon(player, is);
-		InformationWeapon inf2 = new InformationWeapon(player, is);
+		InformationWeapon inf = new InformationWeapon(is);
+		InformationWeapon inf2 = new InformationWeapon(is);
 		return new InformationSet(inf, inf2);
 	}
 	

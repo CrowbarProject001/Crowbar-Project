@@ -41,7 +41,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 
 		InformationBullet information = loadInformation(par1ItemStack, par3EntityPlayer);
 		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
-		int mode = information.mode;
+		int mode = getMode(par1ItemStack);
 		
 		if(canUse){
 			if(information.getDeltaTick() >= getShootTime(mode)){
@@ -94,8 +94,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
      */
 	public Boolean doesShoot(InformationBullet inf, ItemStack itemStack){
 		Boolean canUse;
+		int mode = getMode(itemStack);
 		canUse = (itemStack.getMaxDamage() - itemStack.getItemDamage() -1 > 0);
-		return (getShootTime(inf.mode) != 0 && inf.isShooting && canUse && inf.getDeltaTick() >= getShootTime(inf.mode) );
+		return (getShootTime(mode) != 0 && inf.isShooting && canUse && inf.getDeltaTick() >= getShootTime(mode) );
 	}
 	
     /**
@@ -118,7 +119,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 	
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		
-		int mode = information.mode;
+    	int mode = getMode(par1ItemStack);
 		information.setLastTick();
 		
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
@@ -133,16 +134,19 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     }
     
     public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){ 	 
-		par2World.playSoundAtEntity(par3Entity, getSoundJam(information.mode), 0.5F, 1.0F);
+    	int mode = getMode(par1ItemStack);
+		par2World.playSoundAtEntity(par3Entity, getSoundJam(mode), 0.5F, 1.0F);
 		information.setLastTick();
     }
 
 	public boolean onSetReload(ItemStack itemStack, EntityPlayer player){
+		
 		InformationBullet inf = loadInformation(itemStack, player);
+		int mode = getMode(itemStack);
 		if(itemStack.getItemDamage() <= 0)
 			return false;
 		if(!inf.isReloading && itemStack.getItemDamage() > 0){
-			player.worldObj.playSoundAtEntity(player, getSoundReload(inf.mode), 0.5F, 1.0F);
+			player.worldObj.playSoundAtEntity(player, getSoundReload(mode), 0.5F, 1.0F);
 			inf.isReloading = true;
 			inf.setLastTick();
 		}
@@ -246,10 +250,16 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		return inf;
 		
 	}
+	
+	@Override
+    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    {
+        return 100;
+    }
 
 	private InformationSet createInformation(ItemStack is, EntityPlayer player){
-		InformationBullet inf = new InformationBullet(is, player);
-		InformationBullet inf2 = new InformationBullet(is, player);
+		InformationBullet inf = new InformationBullet(is);
+		InformationBullet inf2 = new InformationBullet(is);
 		return new InformationSet(inf, inf2);
 	}
 

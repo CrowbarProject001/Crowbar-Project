@@ -47,12 +47,13 @@ public class DMMode implements IKeyProcess {
 
 		if (inf == null)
 			return;
-		inf.mode = (maxModes - 1 <= inf.mode) ? 0 : inf.mode + 1;
+		int mode = wpn.getMode(itemStack);
+		mode = (maxModes - 1 <= mode) ? 0 : mode + 1;
 		player.sendChatToPlayer(StatCollector.translateToLocal("mode.new")
 				+ ": \u00a74"
 				+ StatCollector.translateToLocal(wpn
-						.getModeDescription(inf.mode)));
-		NetDeathmatch.sendModePacket(stackInSlot, (short) 0, inf.mode);
+						.getModeDescription(mode)));
+		NetDeathmatch.sendModePacket(stackInSlot, (short) 0, mode);
 
 	}
 

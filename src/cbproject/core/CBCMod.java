@@ -5,6 +5,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
+import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCBlocks;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCItems;
@@ -68,6 +69,7 @@ public class CBCMod
 		CBCBlocks.init(config);
 		CBCItems.init(config);
 		recipeWeapons = new RecipeWeapons();
+		CBCAchievements.init(config);
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
 		proxy.init();

@@ -56,6 +56,13 @@ public class Config {
 		return config.get("general", name, defaultValue).getBoolean(defaultValue);
 	}
 	
+	public int getInteger(String name, Integer defaultValue)throws Exception{
+		if(this == null){
+			throw new NullPointerException();
+		}
+		return config.get("general", name, defaultValue).getInt();
+	}
+	
 	public int GetItemID(String ItemName, int DefaultValue) throws Exception
 	{
 	    if(this == null)

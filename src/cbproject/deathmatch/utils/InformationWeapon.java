@@ -5,15 +5,14 @@ import net.minecraft.item.ItemStack;
 
 public class InformationWeapon {
 	
-	public EntityPlayer player;
+	
 	public ItemStack itemStack;
-	public int ticksExisted, lastTick, recoverTick, mode;
+	public int ticksExisted, lastTick, recoverTick;
 	public Boolean isRecovering;
 	public float originPitch;
 	
-	public InformationWeapon(EntityPlayer p, ItemStack i) {
+	public InformationWeapon(ItemStack i) {
 		isRecovering = false;
-		player = p;
 		itemStack = i;
 	}
 	

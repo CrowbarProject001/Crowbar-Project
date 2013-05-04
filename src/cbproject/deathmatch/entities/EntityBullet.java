@@ -42,7 +42,7 @@ public class EntityBullet extends EntityThrowable {
 		if(information == null)
 			this.setDead();
 		
-		int mode = information.mode;
+		int mode = item.getMode(par3itemStack);
 		int offset = item.getOffset(mode);
 		//motion = new MotionXYZ(par2EntityLiving, mode);
 		motion = new MotionXYZ(par2EntityLiving, offset);
@@ -94,7 +94,7 @@ public class EntityBullet extends EntityThrowable {
 			return;
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		InformationWeapon inf = item.getInformation(itemStack, worldObj);
-		int mode = inf.mode;
+		int mode = item.getMode(itemStack);
 		double pf = item.getPushForce(mode);
 		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ * pf;
 		BulletManager.doEntityAttack(result.entityHit, DamageSource.causeMobDamage(getThrower()), item.getDamage(mode), dx, dy, dz);

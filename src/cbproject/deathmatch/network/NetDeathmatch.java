@@ -50,23 +50,20 @@ public class NetDeathmatch implements IChannelProcess{
 
 	@Override
 	public void onPacketData(Packet250CustomPayload packet, Player player) {
-		System.out.println("process called");
 		EntityPlayer p = (EntityPlayer) player;
 		int[] prop = getModePacket(packet);
 		ItemStack is = p.inventory.mainInventory[prop[0]];
 		
-		if(is == null ||!(is.getItem() instanceof WeaponGeneral)){
-			System.err.println("Didn't find correct information for" + p.getEntityName() + " @" + prop[0]);
+		if(is == null ||!(is.getItem() instanceof WeaponGeneral))
+			return;
+		
+		WeaponGeneral wpn = (WeaponGeneral) is.getItem();
+		if(prop[1] == 1){
+			if(!(wpn instanceof WeaponGeneralBullet))
+				return;
+			((WeaponGeneralBullet)wpn).onSetReload(is, p);
 		} else {
-			WeaponGeneral wpn = (WeaponGeneral) is.getItem();
-			if(prop[1] == 1){
-				if(!(wpn instanceof WeaponGeneralBullet))
-					return;
-				((WeaponGeneralBullet)wpn).onSetReload(is, p);
-			} else {
-				wpn.onModeChange(is, p, prop[2]);
-				System.out.println("Server new mode :" + prop[2]);
-			}
+			wpn.onModeChange(is, p, prop[2]);
 		}
 		return;
 		
