@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.util.StatCollector;
 import cbproject.core.register.IChannelProcess;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
@@ -64,6 +65,10 @@ public class NetDeathmatch implements IChannelProcess{
 			((WeaponGeneralBullet)wpn).onSetReload(is, p);
 		} else {
 			wpn.onModeChange(is, p, prop[2]);
+			((EntityPlayer)player).sendChatToPlayer(StatCollector.translateToLocal("mode.new")
+					+ ": \u00a74"
+					+ StatCollector.translateToLocal(wpn
+							.getModeDescription(prop[1])));
 		}
 		return;
 		

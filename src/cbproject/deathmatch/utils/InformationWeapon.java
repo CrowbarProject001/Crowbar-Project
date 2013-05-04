@@ -1,6 +1,5 @@
 package cbproject.deathmatch.utils;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public class InformationWeapon {

@@ -100,7 +100,6 @@ public class BlockTripmineRay extends BlockContainer {
     		par1World.setBlockToAir(par2, par3, par4);
     		return;
     	}
-    	System.out.println(par1World.isRemote);
     	par1World.notifyBlockChange(pos.x, pos.y, pos.z, BlockTripmine.NOTIFY_ID);
         return;
     }

@@ -1,17 +1,10 @@
 package cbproject.core.register;
 
-import javax.swing.text.html.parser.Entity;
-
 import cbproject.core.misc.Config;
 import cbproject.crafting.CraftingHandler;
 
-import com.google.common.base.CaseFormat;
-
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.src.ModLoader;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 

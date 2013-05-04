@@ -43,7 +43,8 @@ public class Weapon_satchel extends WeaponGeneral {
 		
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void updateIcons(IconRegister par1IconRegister)
     {
         this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_satchel");

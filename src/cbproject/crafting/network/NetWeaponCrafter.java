@@ -68,7 +68,7 @@ public class NetWeaponCrafter implements IChannelProcess{
 	public void onPacketData(Packet250CustomPayload packet, Player player) {
 		NetWeaponCrafter c = new NetWeaponCrafter().getCrafterPacket(packet);
 		TileEntity te = MinecraftServer.getServer().worldServerForDimension(c.dimension).getBlockTileEntity(c.blockX, c.blockY, c.blockZ);
-		if(!te.worldObj.isRemote){
+		if(te != null && !te.worldObj.isRemote){
 			if(c.id == 0)
 				((TileEntityWeaponCrafter)te).addScrollFactor(c.direction);
 			else ((TileEntityWeaponCrafter)te).addPage(c.direction);

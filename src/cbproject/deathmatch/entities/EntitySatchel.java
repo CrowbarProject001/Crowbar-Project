@@ -33,6 +33,7 @@ public class EntitySatchel extends EntityProjectile {
 	public void Explode(){
 		
 		BulletManager.Explode(worldObj, this, 3.0F, 4.0F, posX, posY, posZ, 35);
+		getThrower().getEntityData().setInteger("satchelCount", getThrower().getEntityData().getInteger("satchelCount") - 1);
 		this.setDead();
 		
 	}

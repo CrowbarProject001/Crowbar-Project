@@ -2,9 +2,9 @@ package cbproject.deathmatch.utils;
 
 import java.util.List;
 
-import cbproject.core.props.GeneralProps;
 import cbproject.core.utils.CBCExplosion;
 import cbproject.deathmatch.entities.EntityBullet;
+import cbproject.deathmatch.network.NetTripmine;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;
@@ -12,7 +12,6 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class BulletManager {
@@ -41,6 +40,7 @@ public class BulletManager {
 	}
 	
 	public static void Explode(World world,Entity entity, float strengh, double radius, double posX, double posY, double posZ, int additionalDamage, double velocityRadius, float soundRadius){
+		
 		CBCExplosion explosion = new CBCExplosion(world, entity, posX, posY, posZ, strengh).setSoundFactor(soundRadius).setVelocityFactor(velocityRadius);
 		explosion.isSmoking = true;
 		explosion.isFlaming = false;
@@ -63,6 +63,15 @@ public class BulletManager {
 				}
 			}
 		}
+		NetTripmine.sendNetPacket(world, (float)posX, (float)posY, (float)posZ, strengh);
 	}
 	
+	public static void clientExplode(World world, float strengh, double posX, double posY, double posZ){
+		CBCExplosion explosion = new CBCExplosion(world, null, posX, posY, posZ, strengh);
+		explosion.isSmoking = true;
+		explosion.isFlaming = false;
+		
+		explosion.doExplosionA();
+		explosion.doExplosionB(true);
+	}
 }

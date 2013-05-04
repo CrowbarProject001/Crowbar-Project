@@ -3,6 +3,7 @@ package cbproject.deathmatch.proxy;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cbproject.core.props.ClientProps;
+import cbproject.core.register.CBCPacketHandler;
 import cbproject.core.renderers.RenderEmpty;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmineRay;
@@ -16,6 +17,7 @@ import cbproject.deathmatch.entities.EntityGaussRay;
 import cbproject.deathmatch.entities.EntityHGrenade;
 import cbproject.deathmatch.entities.EntityRocket;
 import cbproject.deathmatch.entities.EntitySatchel;
+import cbproject.deathmatch.network.NetTripmine;
 import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.renderers.RenderCrossbow;
 import cbproject.deathmatch.renderers.RenderCrossedProjectile;
@@ -32,6 +34,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 public class ClientProxy extends Proxy {
 	@Override
 	public void init(){
+		CBCPacketHandler.addChannel("CBCExplosion", new NetTripmine());
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RenderSnowball(DMItems.weapon_hgrenade));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay());

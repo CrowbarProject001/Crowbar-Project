@@ -36,7 +36,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  * @author WeAthFolD, mkpoli
  */
 
-@Mod(modid="lc",name="lambdacraft",version="0.9.0beta")
+@Mod(modid="lc",name="lambdacraft",version="0.9.5beta")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { "CBCCrafter" }, packetHandler = CBCPacketHandler.class ))
 public class CBCMod

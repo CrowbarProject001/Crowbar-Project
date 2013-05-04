@@ -99,9 +99,9 @@ public class CBCExplosion {
                 {
                     if (i == 0 || i == this.field_77289_h - 1 || j == 0 || j == this.field_77289_h - 1 || k == 0 || k == this.field_77289_h - 1)
                     {
-                        double d3 = (double)((float)i / ((float)this.field_77289_h - 1.0F) * 2.0F - 1.0F);
-                        double d4 = (double)((float)j / ((float)this.field_77289_h - 1.0F) * 2.0F - 1.0F);
-                        double d5 = (double)((float)k / ((float)this.field_77289_h - 1.0F) * 2.0F - 1.0F);
+                        double d3 = i / (this.field_77289_h - 1.0F) * 2.0F - 1.0F;
+                        double d4 = j / (this.field_77289_h - 1.0F) * 2.0F - 1.0F;
+                        double d5 = k / (this.field_77289_h - 1.0F) * 2.0F - 1.0F;
                         double d6 = Math.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
                         d3 /= d6;
                         d4 /= d6;
@@ -130,9 +130,9 @@ public class CBCExplosion {
                                 hashset.add(new ChunkPosition(l, i1, j1));
                             }
 
-                            d0 += d3 * (double)f2;
-                            d1 += d4 * (double)f2;
-                            d2 += d5 * (double)f2;
+                            d0 += d3 * f2;
+                            d1 += d4 * f2;
+                            d2 += d5 * f2;
                         }
                     }
                 }
@@ -141,35 +141,35 @@ public class CBCExplosion {
 
         this.affectedBlockPositions.addAll(hashset);
         this.explosionSize *= 2.0F;
-        i = MathHelper.floor_double(this.explosionX - (double)this.explosionSize - 1.0D);
-        j = MathHelper.floor_double(this.explosionX + (double)this.explosionSize + 1.0D);
-        k = MathHelper.floor_double(this.explosionY - (double)this.explosionSize - 1.0D);
-        int l1 = MathHelper.floor_double(this.explosionY + (double)this.explosionSize + 1.0D);
-        int i2 = MathHelper.floor_double(this.explosionZ - (double)this.explosionSize - 1.0D);
-        int j2 = MathHelper.floor_double(this.explosionZ + (double)this.explosionSize + 1.0D);
-        List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getAABBPool().getAABB((double)i, (double)k, (double)i2, (double)j, (double)l1, (double)j2));
+        i = MathHelper.floor_double(this.explosionX - this.explosionSize - 1.0D);
+        j = MathHelper.floor_double(this.explosionX + this.explosionSize + 1.0D);
+        k = MathHelper.floor_double(this.explosionY - this.explosionSize - 1.0D);
+        int l1 = MathHelper.floor_double(this.explosionY + this.explosionSize + 1.0D);
+        int i2 = MathHelper.floor_double(this.explosionZ - this.explosionSize - 1.0D);
+        int j2 = MathHelper.floor_double(this.explosionZ + this.explosionSize + 1.0D);
+        List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this.exploder, AxisAlignedBB.getAABBPool().getAABB(i, k, i2, j, l1, j2));
         Vec3 vec3 = this.worldObj.getWorldVec3Pool().getVecFromPool(this.explosionX, this.explosionY, this.explosionZ);
 
         for (int k2 = 0; k2 < list.size(); ++k2)
         {
             Entity entity = (Entity)list.get(k2);
-            double d7 = entity.getDistance(this.explosionX, this.explosionY, this.explosionZ) / (double)this.explosionSize;
+            double d7 = entity.getDistance(this.explosionX, this.explosionY, this.explosionZ) / this.explosionSize;
 
             if (d7 <= 1.0D)
             {
                 d0 = entity.posX - this.explosionX;
-                d1 = entity.posY + (double)entity.getEyeHeight() - this.explosionY;
+                d1 = entity.posY + entity.getEyeHeight() - this.explosionY;
                 d2 = entity.posZ - this.explosionZ;
-                double d8 = (double)MathHelper.sqrt_double(d0 * d0 + d1 * d1 + d2 * d2);
+                double d8 = MathHelper.sqrt_double(d0 * d0 + d1 * d1 + d2 * d2);
 
                 if (d8 != 0.0D)
                 {
                     d0 /= d8;
                     d1 /= d8;
                     d2 /= d8;
-                    double d9 = (double)this.worldObj.getBlockDensity(vec3, entity.boundingBox);
+                    double d9 = this.worldObj.getBlockDensity(vec3, entity.boundingBox);
                     double d10 = (1.0D - d7) * d9;
-                    entity.attackEntityFrom(DamageSource.setExplosionSource(explosion), (int)((d10 * d10 + d10) / 2.0D * 8.0D * (double)this.explosionSize + 1.0D));
+                    entity.attackEntityFrom(DamageSource.setExplosionSource(explosion), (int)((d10 * d10 + d10) / 2.0D * 8.0D * this.explosionSize + 1.0D));
                     double d11 = EnchantmentProtection.func_92092_a(entity, d10) * velocityFactor;
                     entity.motionX += d0 * d11;
                     entity.motionY += d1 * d11;
@@ -177,7 +177,7 @@ public class CBCExplosion {
 
                     if (entity instanceof EntityPlayer)
                     {
-                        this.field_77288_k.put((EntityPlayer)entity, this.worldObj.getWorldVec3Pool().getVecFromPool(d0 * d10, d1 * d10, d2 * d10));
+                        this.field_77288_k.put(entity, this.worldObj.getWorldVec3Pool().getVecFromPool(d0 * d10, d1 * d10, d2 * d10));
                     }
                 }
             }
@@ -223,18 +223,18 @@ public class CBCExplosion {
 
                 if (par1)
                 {
-                    double d0 = (double)((float)i + this.worldObj.rand.nextFloat());
-                    double d1 = (double)((float)j + this.worldObj.rand.nextFloat());
-                    double d2 = (double)((float)k + this.worldObj.rand.nextFloat());
+                    double d0 = i + this.worldObj.rand.nextFloat();
+                    double d1 = j + this.worldObj.rand.nextFloat();
+                    double d2 = k + this.worldObj.rand.nextFloat();
                     double d3 = d0 - this.explosionX;
                     double d4 = d1 - this.explosionY;
                     double d5 = d2 - this.explosionZ;
-                    double d6 = (double)MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
+                    double d6 = MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5);
                     d3 /= d6;
                     d4 /= d6;
                     d5 /= d6;
-                    double d7 = 0.5D / (d6 / (double)this.explosionSize + 0.1D);
-                    d7 *= (double)(this.worldObj.rand.nextFloat() * this.worldObj.rand.nextFloat() + 0.3F);
+                    double d7 = 0.5D / (d6 / this.explosionSize + 0.1D);
+                    d7 *= this.worldObj.rand.nextFloat() * this.worldObj.rand.nextFloat() + 0.3F;
                     d3 *= d7;
                     d4 *= d7;
                     d5 *= d7;

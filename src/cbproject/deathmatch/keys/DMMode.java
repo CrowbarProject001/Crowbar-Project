@@ -3,7 +3,6 @@ package cbproject.deathmatch.keys;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import cbproject.core.register.IKeyProcess;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.network.NetDeathmatch;
@@ -49,10 +48,6 @@ public class DMMode implements IKeyProcess {
 			return;
 		int mode = wpn.getMode(itemStack);
 		mode = (maxModes - 1 <= mode) ? 0 : mode + 1;
-		player.sendChatToPlayer(StatCollector.translateToLocal("mode.new")
-				+ ": \u00a74"
-				+ StatCollector.translateToLocal(wpn
-						.getModeDescription(mode)));
 		NetDeathmatch.sendModePacket(stackInSlot, (short) 0, mode);
 
 	}

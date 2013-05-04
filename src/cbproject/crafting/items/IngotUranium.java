@@ -26,7 +26,8 @@ public class IngotUranium extends Item {
         this.iconIndex = par1IconRegister.registerIcon("lambdacraft:uranium");
     }
     
-    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+    @Override
+	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
     	if(!(par3Entity instanceof EntityPlayer))
     		return;
     	EntityPlayer p = (EntityPlayer) par3Entity;

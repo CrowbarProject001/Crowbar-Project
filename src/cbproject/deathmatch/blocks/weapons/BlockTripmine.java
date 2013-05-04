@@ -10,27 +10,22 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import cbproject.core.CBCMod;
-import cbproject.core.props.ClientProps;
-import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
-import cbproject.deathmatch.entities.EntityEmptyExplosion;
-import cbproject.deathmatch.network.NetTripmine;
-import cbproject.deathmatch.register.DMBlocks;
-import cbproject.deathmatch.utils.BulletManager;
-
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cbproject.core.CBCMod;
+import cbproject.core.props.ClientProps;
+import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
+import cbproject.deathmatch.network.NetTripmine;
+import cbproject.deathmatch.register.DMBlocks;
+import cbproject.deathmatch.utils.BulletManager;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Tripmine Weapon block.
@@ -57,6 +52,9 @@ public class BlockTripmine extends BlockContainer {
 	
     @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
+    	
+    	if(par5 == NOTIFY_ID)
+    		this.breakBlock(par1World, par2, par3, par4, 0, 0);   
     	
     	 int var6 = par1World.getBlockMetadata(par2, par3, par4);
     	 int var7 = var6 & 3;
@@ -87,8 +85,7 @@ public class BlockTripmine extends BlockContainer {
              return;
          }
          
-    	if(par5 == NOTIFY_ID)
-    		this.breakBlock(par1World, par2, par3, par4, 0, 0);   	
+    	
     	
     }
     
@@ -111,9 +108,11 @@ public class BlockTripmine extends BlockContainer {
 					par1World.setBlockToAir(par2, par3, i);
 			}
 		}
-    	BulletManager.Explode(par1World, null, 1.0F, 4.0F, par2, par3, par4, 40, 0.5D, 1.0F);
-    	NetTripmine.sendNetPacket(par1World.getWorldInfo().getDimension(), par2, par3, par4);
     	super.breakBlock(par1World, par2, par3, par4, par5, par6);
+    	par1World.setBlockToAir(par2, par3, par4);
+    	BulletManager.Explode(par1World, null, 1.0F, 4.0F, par2, par3, par4, 40, 0.5D, 1.0F);
+    	NetTripmine.sendNetPacket(par1World, par2, par3, par4, 1.0F);
+    	
     }
     
     @Override

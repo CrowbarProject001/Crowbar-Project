@@ -5,10 +5,6 @@ import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
 import cbproject.core.renderers.RendererUtils;
-import cbproject.core.utils.CBCWeaponInformation;
-import cbproject.deathmatch.utils.InformationSet;
-
-
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;

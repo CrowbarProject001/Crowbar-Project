@@ -1,5 +1,6 @@
 package cbproject.crafting.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 
@@ -135,14 +136,14 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 		if(button.buttonName == "up" || button.buttonName =="down"){
 			boolean isDown = button.buttonName == "down" ? true: false;
 			te.addScrollFactor(isDown);
-			NetWeaponCrafter.sendCrafterPacket((short)te.worldObj.getWorldInfo().getDimension(), (short) 0, te.xCoord, te.yCoord, te.zCoord, isDown);
+			NetWeaponCrafter.sendCrafterPacket((short)Minecraft.getMinecraft().theWorld.getWorldInfo().getDimension(), (short) 0, te.xCoord, te.yCoord, te.zCoord, isDown);
 			this.updateButtonState();
 			return;
 		}
 		if(button.buttonName == "left" || button.buttonName == "right"){
 			boolean isForward = button.buttonName == "right" ? true: false;
 			te.addPage(isForward);
-			NetWeaponCrafter.sendCrafterPacket((short)te.worldObj.getWorldInfo().getDimension(), (short) 1, te.xCoord, te.yCoord, te.zCoord, isForward);
+			NetWeaponCrafter.sendCrafterPacket((short)Minecraft.getMinecraft().theWorld.getWorldInfo().getDimension(), (short) 1, te.xCoord, te.yCoord, te.zCoord, isForward);
 			this.updateButtonState();
 			return;
 		}
