@@ -68,7 +68,7 @@ public class NetDeathmatch implements IChannelProcess{
 			((EntityPlayer)player).sendChatToPlayer(StatCollector.translateToLocal("mode.new")
 					+ ": \u00a74"
 					+ StatCollector.translateToLocal(wpn
-							.getModeDescription(prop[1])));
+							.getModeDescription(wpn.getMode(is))));
 		}
 		return;
 		
