@@ -8,18 +8,24 @@ import static net.minecraftforge.common.ForgeDirection.NORTH;
 import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
+import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.network.NetTripmine;
 import cbproject.deathmatch.register.DMBlocks;
@@ -33,13 +39,13 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BlockTripmine extends BlockContainer {
 	
-	public static final int RAY_RANGE = 30;
-	public static final int NOTIFY_ID = 4098;
+	public static final float HEIGHT = 0.15F, WIDTH = 0.28F, RAY_RAD = 0.025F;
 	
 	public BlockTripmine(int par1) {
 		
 		super(par1, Material.circuits);
 		setCreativeTab(CBCMod.cct);
+		setTickRandomly(true);
 		setUnlocalizedName("tripmine");
 	}
 	
@@ -50,43 +56,72 @@ public class BlockTripmine extends BlockContainer {
         this.blockIcon = par1IconRegister.registerIcon("lambdacraft:blockTripmine");
     }
 	
+    /**
+     * How many world ticks before ticking
+     */
+	@Override
+    public int tickRate(World par1World)
+    {
+        return 10;
+    }
+	
+	@Override
+    public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+
+		
+	}
+	
+	public void updateRayRange(World par1World, int par2, int par3, int par4){
+		MotionXYZ begin = new MotionXYZ(par2, par3, par4, 0, 0, 0);
+		int meta = par1World.getBlockMetadata(par2, par3, par4);
+		TileEntityTripmine tileEntity = (TileEntityTripmine) par1World.getBlockTileEntity(par2, par3, par4);
+		if(tileEntity == null)
+			return;
+		if(meta == 3)
+			begin.motionX = 1.0;
+		else if (meta == 1)
+			begin.motionX = -1.0;
+		else if(meta == 0)
+			begin.motionZ = 1.0;
+		else 
+			begin.motionZ = -1.0;
+		MotionXYZ end = new MotionXYZ(begin).updateMotion(20.0);
+		Vec3 vec1 = begin.asVec3(par1World), vec2 = end.asVec3(par1World);
+		MovingObjectPosition result = par1World.rayTraceBlocks(vec1, vec2);
+		if(result == null){
+			tileEntity.setEndCoords((int)end.posX, (int)end.posY, (int)end.posZ);
+		}
+		else{
+			tileEntity.setEndCoords(result.blockX, result.blockY, result.blockZ);
+		}
+	}
+	
+	@Override
+    public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+    {
+
+    }
+
     @Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
     	
-    	if(par5 == NOTIFY_ID)
-    		this.breakBlock(par1World, par2, par3, par4, 0, 0);   
-    	
-    	 int var6 = par1World.getBlockMetadata(par2, par3, par4);
-    	 int var7 = var6 & 3;
+    	 int var7 = par1World.getBlockMetadata(par2, par3, par4);
     	 Boolean var8 = false;
     	 //Check if the block still could exist
          if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH) && var7 == 3)
-         {
              var8 = true;
-         }
-
          if (!par1World.isBlockSolidOnSide(par2 + 1, par3, par4, NORTH) && var7 == 1)
-         {
              var8 = true;
-         }
-
          if (!par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST) && var7 == 0)
-         {
              var8 = true;
-         }
-
          if (!par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST) && var7 == 2)
-         {
              var8 = true;
-         }
          if (var8)
          {
              par1World.setBlockToAir(par2, par3, par4);
              return;
          }
          
-    	
-    	
     }
     
     @Override
@@ -94,25 +129,9 @@ public class BlockTripmine extends BlockContainer {
     {    	
     	int var10 = par1World.getBlockMetadata(par2, par3, par4) & 3;
     	int i = (var10 == 3 || var10 == 1) ? par2: par4;
-    	
-    	//Retrieve the ray blocks
-    	for(int j = 0; j <BlockTripmine.RAY_RANGE; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){ 
-    		int id = 0;
-			if(var10 == 1 || var10 == 3){ //x+, x-鏂瑰悜
-				id = par1World.getBlockId(i, par3, par4);
-				if(id == DMBlocks.blockTripmineRay.blockID)
-					par1World.setBlockToAir(i, par3, par4);
-			} else { //z+, z-鏂瑰悜
-				id = par1World.getBlockId(par2, par3, i);
-				if(id == DMBlocks.blockTripmineRay.blockID)
-					par1World.setBlockToAir(par2, par3, i);
-			}
-		}
     	super.breakBlock(par1World, par2, par3, par4, par5, par6);
     	par1World.setBlockToAir(par2, par3, par4);
-    	BulletManager.Explode(par1World, null, 1.0F, 4.0F, par2, par3, par4, 40, 0.5D, 1.0F);
-    	NetTripmine.sendNetPacket(par1World, par2, par3, par4, 1.0F);
-    	
+    	BulletManager.Explode(par1World, null, 1.5F, 3.5F, par2, par3, par4, 40, 0.5D, 1.0F); 	
     }
     
     @Override
@@ -142,8 +161,8 @@ public class BlockTripmine extends BlockContainer {
     {
     	
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-        float var6 = 0.15F;
-        float var7 =  0.28F;
+        float var6 = HEIGHT;
+        float var7 =  WIDTH;
         if (var5 == 3) //X+
         {
             this.setBlockBounds(0.0F, 0.5F - var6, 0.5F - var7, var6 * 2.0F, 0.5F + var6, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2, 0.8)
@@ -168,53 +187,34 @@ public class BlockTripmine extends BlockContainer {
     {
         byte var10 = 0;
 
-        if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST, true)) // Z-鏂瑰悜
+        if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST, true))
         {
             var10 = 2;
         }
 
-        if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true)) // Z+鏂瑰悜
+        if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true))
         {
             var10 = 0;
         }
 
-        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true)) // X-鏂瑰悜
+        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true))
         {
             var10 = 1;
         }
 
-        if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true)) // X+鏂瑰悜
+        if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true))
         {
             var10 = 3;
         }
-        
-        int i = (var10 == 1 || var10 == 3)? par2 : par4;
-        if(var10 == 0 || var10 == 3)i++;
-        else i--;
-        
-		Boolean var0 = true;
-		
-		int id;
-		for(int j = 0; var0 && j <RAY_RANGE ; i = (var10 == 0 || var10 == 3)? i+1 : i-1, j++){
-			if(var10 == 1 || var10 == 3){
-				id = par1World.getBlockId(i, par3, par4);
-				if(id == 0 || id == Block.snow.blockID){
-				par1World.setBlock(i, par3, par4, DMBlocks.blockTripmineRay.blockID, var10, 0x04);
-				} else var0 = false;
-			} else {
-				id = par1World.getBlockId(par2, par3, i);
-				if(id == 0 || id == Block.snow.blockID){
-					par1World.setBlock(par2, par3, i, DMBlocks.blockTripmineRay.blockID, var10, 0x04);
-				} else var0 = false;
-			}
-		}
 		
         return var10;
     }
     
     
     @Override
-    public void onPostBlockPlaced(World par1World, int par2, int par3, int par4, int par5) {}
+    public void onPostBlockPlaced(World par1World, int par2, int par3, int par4, int par5) {
+    	this.updateRayRange(par1World, par2, par3, par4);
+    }
     
 	@Override
 	public int getRenderType() {

@@ -126,6 +126,31 @@ public class MotionXYZ {
 		
 	}
 	
+	public final AxisAlignedBB getBoundingBox(MotionXYZ another){
+		double minX, minY, minZ, maxX, maxY, maxZ;
+		if(another.posX > this.posX){
+			minX = this.posX;
+			maxX = another.posX;
+		} else {
+			minX = another.posX;
+			maxX = this.posX;
+		}
+		if(another.posY > this.posY){
+			minY = this.posY;
+			maxY = another.posY;
+		} else {
+			minY = another.posY;
+			maxY = this.posY;
+		}
+		if(another.posZ > this.posZ){
+			minZ = this.posZ;
+			maxZ = another.posZ;
+		} else {
+			minZ = another.posZ;
+			maxZ = this.posZ;
+		}
+		return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+	}
 	
 	private void getPosByPlayer(EntityLiving par1Player){
 		
@@ -142,6 +167,11 @@ public class MotionXYZ {
 	
 	public static final MotionXYZ getPosByPlayer2(EntityLiving par1Player){
 		return new MotionXYZ(par1Player,0);
+	}
+	
+	public static final double calculateDistance(double x1, double y1, double z1, double x2, double y2, double z2){
+		double dx = x2 - x1, dy = y2 - y1, dz = z2 - z1;
+		return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 	
 }

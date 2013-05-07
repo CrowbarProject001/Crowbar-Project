@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.register.CBCItems;
-import cbproject.deathmatch.entities.EntityEgonRay;
+import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationEnergy;
@@ -35,9 +35,9 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_egon");
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_egon");
     }
 
 	@Override

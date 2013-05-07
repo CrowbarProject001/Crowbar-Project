@@ -286,6 +286,6 @@ public class CBCExplosion {
 
     public EntityLiving func_94613_c()
     {
-        return this.exploder == null ? null : (this.exploder instanceof EntityTNTPrimed ? ((EntityTNTPrimed)this.exploder).func_94083_c() : (this.exploder instanceof EntityLiving ? (EntityLiving)this.exploder : null));
+        return this.exploder == null ? null : (this.exploder instanceof EntityTNTPrimed ? ((EntityTNTPrimed)this.exploder).getTntPlacedBy() : (this.exploder instanceof EntityLiving ? (EntityLiving)this.exploder : null));
     }
 }

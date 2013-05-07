@@ -1,6 +1,7 @@
-package cbproject.deathmatch.entities;
+package cbproject.deathmatch.entities.fx;
 
 import cbproject.core.utils.MotionXYZ;
+import cbproject.deathmatch.entities.EntityBulletGauss;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.MovingObjectPosition;

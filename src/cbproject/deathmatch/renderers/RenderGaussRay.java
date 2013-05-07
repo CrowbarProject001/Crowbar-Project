@@ -4,7 +4,7 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 import cbproject.core.props.ClientProps;
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.entities.EntityGaussRay;
+import cbproject.deathmatch.entities.fx.EntityGaussRay;
 
 
 import cpw.mods.fml.client.FMLClientHandler;

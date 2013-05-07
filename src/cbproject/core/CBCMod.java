@@ -2,6 +2,7 @@ package cbproject.core;
 
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.src.PlayerAPI;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
@@ -38,7 +39,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="lc",name="lambdacraft",version="0.9.5beta")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
-serverPacketHandlerSpec = @SidedPacketHandler(channels = { "CBCCrafter" }, packetHandler = CBCPacketHandler.class ))
+serverPacketHandlerSpec = @SidedPacketHandler(channels = { "CBCCrafter" }, packetHandler = CBCPacketHandler.class ),
+clientPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCExplosion"}, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
 { 
 	public static RecipeWeapons recipeWeapons;
@@ -57,10 +59,11 @@ public class CBCMod
 	public void preInit(FMLPreInitializationEvent Init)
 	{
 		//Events, World gen, Config
-		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
+		
 		config=new Config(Init.getSuggestedConfigurationFile());
+		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
 		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
-	}
+	} 
 
 	
 	@Init
@@ -68,7 +71,6 @@ public class CBCMod
 		//Blocks, Items, GUI Handler,Key Process.
 		CBCBlocks.init(config);
 		CBCItems.init(config);
-		recipeWeapons = new RecipeWeapons();
 		CBCAchievements.init(config);
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");

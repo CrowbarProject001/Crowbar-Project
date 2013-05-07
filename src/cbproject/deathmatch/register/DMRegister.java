@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.src.PlayerAPI;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCItems;
@@ -17,6 +18,7 @@ import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.recipes.RecipeWeaponEntry;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
+import cbproject.deathmatch.entities.CBCPlayer;
 import cbproject.deathmatch.events.CBCLivingAttackEvent;
 import cbproject.deathmatch.keys.DMMode;
 import cbproject.deathmatch.keys.DMReload;
@@ -78,6 +80,7 @@ public class DMRegister {
 	
 	public static void preRegister(){
 		MinecraftForge.EVENT_BUS.register(new CBCLivingAttackEvent());
+		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
 		if(FMLCommonHandler.instance().getSide() == Side.CLIENT){
 			for(String s : SOUND_WEAPONS)
 				CBCSoundEvents.addSoundPath("cbc/weapons/" + s, "/cbproject/gfx/sounds/weapons/" + s);

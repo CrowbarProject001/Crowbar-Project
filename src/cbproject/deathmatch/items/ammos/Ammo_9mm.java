@@ -17,9 +17,9 @@ public class Ammo_9mm extends ItemAmmo {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:ammo_9mmhandgun");
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:ammo_9mmhandgun");
     }
 
 }

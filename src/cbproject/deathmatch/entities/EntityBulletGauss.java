@@ -4,6 +4,7 @@ import java.util.List;
 
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.entities.EntityBulletGaussSec.EnumGaussRayType;
+import cbproject.deathmatch.entities.fx.EntityGaussRay;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.Weapon_gauss;
 import cbproject.deathmatch.utils.BulletManager;

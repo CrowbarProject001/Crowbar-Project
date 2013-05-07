@@ -13,9 +13,9 @@ public class Material_bio extends ItemMaterial{
 	
     @Override
 	@SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:mat_bio");
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:mat_bio");
     }
 
 

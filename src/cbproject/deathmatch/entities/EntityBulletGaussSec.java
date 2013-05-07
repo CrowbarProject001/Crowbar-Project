@@ -1,6 +1,7 @@
 package cbproject.deathmatch.entities;
 
 import cbproject.core.utils.MotionXYZ;
+import cbproject.deathmatch.entities.fx.EntityGaussRay;
 import cbproject.deathmatch.utils.BulletManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;

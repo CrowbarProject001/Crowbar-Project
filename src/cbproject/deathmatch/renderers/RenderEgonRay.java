@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.entities.EntityEgonRay;
+import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;

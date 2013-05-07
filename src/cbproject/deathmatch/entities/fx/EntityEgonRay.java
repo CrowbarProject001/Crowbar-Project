@@ -1,4 +1,4 @@
-package cbproject.deathmatch.entities;
+package cbproject.deathmatch.entities.fx;
 
 import cbproject.deathmatch.items.wpns.Weapon_egon;
 import cbproject.deathmatch.utils.InformationEnergy;

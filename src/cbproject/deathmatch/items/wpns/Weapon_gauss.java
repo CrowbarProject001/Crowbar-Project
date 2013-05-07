@@ -32,9 +32,9 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_gauss");
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_gauss");
     }
 
 	@Override
@@ -144,8 +144,8 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			inf.isShooting = false;
 			return;
 		}
-		int damage = charge * 2/3; //最大为40
-		double vel = charge / 13; //最大为4
+		int damage = charge * 2/3; //鏈�ぇ涓�0
+		double vel = charge / 13; //鏈�ぇ涓�
 
 		MotionXYZ var0 = MotionXYZ.getPosByPlayer2(par3EntityPlayer);
 		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ * vel;

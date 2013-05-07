@@ -4,7 +4,10 @@ import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
 import cbproject.core.renderers.RendererUtils;
+import cbproject.core.utils.MotionXYZ;
+import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
+import cbproject.deathmatch.register.DMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -74,10 +77,12 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
 		
 		Tessellator tessellator = Tessellator.instance;
         int var5 = tileentity.getBlockMetadata() & 3;
-        BlockTripmine block = (BlockTripmine)tileentity.blockType;
-        setBound(tileentity.blockType);
-        this.addCoord(x, y, z);
+        BlockTripmine block = (BlockTripmine)DMBlocks.blockTripmine;
+        TileEntityTripmine tileEntity = (TileEntityTripmine) tileentity;
         
+        block.setBlockBoundsBasedOnState(tileentity.worldObj, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+        setBound(block);
+        this.addCoord(x, y, z);
         Vec3 v1, v2, v3, v4, v5, v6, v7, v8;
         switch(var5){
         case 1:
@@ -107,10 +112,7 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         	
         	break;
         }
-        
         GL11.glPushMatrix();
-        
-        
         this.bindTextureByName(ClientProps.TRIPMINE_SIDE_PATH);
 
         tessellator.startDrawingQuads();
@@ -200,40 +202,56 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         }
 
         tessellator.draw();
-        
         GL11.glPopMatrix();
         
         //Tripmine ray drawing
-        float h = 0.025F, w = 0.025F;
-        if (var5 == 3 || var5 == 1) //X+, X-
-        {
-            this.setBlockBounds(0.0F, 0.5F - h, 0.5F - w, 1.0F, 0.5F + h, 0.5F + w);
-        } else {
-            this.setBlockBounds(0.5F - w, 0.5F - h, 0.0F, 0.5F + w, 0.5F + h, 1.0F);
-        }
-        this.addCoord(x, y, z);
+        float h = 0.025F;
+        double du = tileEntity.getRayDistance();
+		MotionXYZ end = new MotionXYZ(tileEntity.endX, tileEntity.endY, tileEntity.endZ, 0, 0, 0);
+		minY = y + 0.5 - h;
+		maxY = y + 0.5 + h;
+		switch(var5){
+		case 3:
+			minX = x - 1;
+			maxX = x + du;
+			minZ = z + 0.5 - h;
+			maxZ = z + 0.5 + h;
+			break;
+		case 1:
+			minX = x - du;
+			maxX = x + 1;
+			minZ = z + 0.5 - h;
+			maxZ = z + 0.5 + h;
+			break;
+		case 0:
+			minZ = z - 1;
+			maxZ = z + du;
+			minX = x + 0.5 - h;
+			maxX = x + 0.5 + h;
+			break;
+		case 2:
+			minZ = z - du;
+			maxZ = z + 1;
+			minX = x + 0.5 - h;
+			maxX = x + 0.5 + h;
+			break;
+		}
+		
         this.bindTextureByName(ClientProps.TRIPMINE_RAY_PATH);
+        v1 = RendererUtils.newV3(minX, y+0.5, minZ);
+     	v2 = RendererUtils.newV3(minX, y+0.5, maxZ);
+     	v3 = RendererUtils.newV3(maxX, y+0.5, maxZ);
+     	v4 = RendererUtils.newV3(maxX, y+0.5, minZ);
         switch(var5){
         case 1:
         case 3:
-        	v1 = RendererUtils.newV3(minX, y+0.5, minZ);
-         	v2 = RendererUtils.newV3(minX, y+0.5, maxZ);
-         	v3 = RendererUtils.newV3(maxX, y+0.5, maxZ);
-         	v4 = RendererUtils.newV3(maxX, y+0.5, minZ);
-         	
         	v5 = RendererUtils.newV3(minX, maxY, z + 0.5);
         	v6 = RendererUtils.newV3(maxX, maxY, z + 0.5);
         	v7 = RendererUtils.newV3(maxX, minY, z + 0.5);
         	v8 = RendererUtils.newV3(minX, minY, z + 0.5);
-        	
         	break;
         	
         default:
-        	v1 = RendererUtils.newV3(minX, y+0.5, minZ);
-         	v2 = RendererUtils.newV3(minX, y+0.5, maxZ);
-         	v3 = RendererUtils.newV3(maxX, y+0.5, maxZ);
-         	v4 = RendererUtils.newV3(maxX, y+0.5, minZ);
-         	
         	v5 = RendererUtils.newV3(x+0.5, maxY, minZ);
         	v6 = RendererUtils.newV3(x+0.5, maxY, maxZ);
         	v7 = RendererUtils.newV3(x+0.5, minY, maxZ);
@@ -241,29 +259,30 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         	
         	break;
         }
+        
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glColor3d(0.7, 0.7, 0.7);
+        GL11.glColor3d(1.0, 1.0, 1.0);
         tessellator.startDrawingQuads();
         
 	    addVertex(v1 , 0, 1);
-        addVertex(v2 , 1, 1);
-        addVertex(v3 , 1, 0);
+        addVertex(v2 , du, 1);
+        addVertex(v3 , du, 0);
         addVertex(v4 , 0, 0);
 
         addVertex(v4 , 0, 0);
-        addVertex(v3 , 1, 0);
-        addVertex(v2 , 1, 1);
+        addVertex(v3 , du, 0);
+        addVertex(v2 , du, 1);
         addVertex(v1 , 0, 1);
         
         addVertex(v5 , 0, 1);
-        addVertex(v6 , 1, 1);
-        addVertex(v7 , 1, 0);
+        addVertex(v6 , du, 1);
+        addVertex(v7 , du, 0);
         addVertex(v8 , 0, 0);
         
         addVertex(v8 , 0, 0);
-        addVertex(v7 , 1, 0);
-        addVertex(v6 , 1, 1);
+        addVertex(v7 , du, 0);
+        addVertex(v6 , du, 1);
         addVertex(v5 , 0, 1);
         
 
@@ -273,7 +292,6 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
         
         return;
-		      
 	}
 	
 

@@ -2,6 +2,9 @@ package cbproject.deathmatch.utils;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import cbproject.core.utils.CBCExplosion;
 import cbproject.deathmatch.entities.EntityBullet;
 import cbproject.deathmatch.network.NetTripmine;
@@ -66,6 +69,7 @@ public class BulletManager {
 		NetTripmine.sendNetPacket(world, (float)posX, (float)posY, (float)posZ, strengh);
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public static void clientExplode(World world, float strengh, double posX, double posY, double posZ){
 		CBCExplosion explosion = new CBCExplosion(world, null, posX, posY, posZ, strengh);
 		explosion.isSmoking = true;

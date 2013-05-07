@@ -35,9 +35,9 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_shotgun");
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_shotgun");
     }
 	
 	@Override

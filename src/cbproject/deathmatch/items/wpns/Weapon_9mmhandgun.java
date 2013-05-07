@@ -27,8 +27,8 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		setUnlocalizedName("weapon_9mmhandgun");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
-		setMaxDamage(18); // 最高伤害为18 0a0
-		setNoRepair(); //不可修补
+		setMaxDamage(18); // 鏈�珮浼ゅ涓�8 0a0
+		setNoRepair(); //涓嶅彲淇ˉ
 		
 		int shootTime[] = {10, 5}, dmg[] = { 3, 3}, off[] = { 2, 8};
 		double push[] = {0.5, 0.5};
@@ -40,9 +40,9 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_9mmhandgun");
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_9mmhandgun");
     }
 
 	@Override

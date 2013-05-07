@@ -56,18 +56,18 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		return information;
 	}
 	
-    public void onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+    public InformationBullet onBulletWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
     	   	
     	InformationBullet information = (InformationBullet) super.onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
 
     	if(information == null){
     		information = getInformation(par1ItemStack, par2World);
     		if(information == null)
-    			return;
+    			return null;
     		
     		information.isShooting = false;
     		information.isReloading = false;
-    		return;
+    		return null;
     	}
     	information.updateTick();
 
@@ -81,7 +81,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		
 		if(doesJam(information, par1ItemStack))
 			this.onBulletWpnJam(par1ItemStack, par2World, player, information);
-
+		
+		return information;
 	}
     
     public Boolean canShoot(EntityPlayer player, ItemStack is){

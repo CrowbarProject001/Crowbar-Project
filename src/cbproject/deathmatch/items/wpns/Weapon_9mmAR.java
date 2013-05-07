@@ -27,8 +27,8 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		setUnlocalizedName("weapon_9mmar");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
-		setMaxDamage(51); // 最高伤害为18 0a0
-		setNoRepair(); //不可修补
+		setMaxDamage(51); // 鏈�珮浼ゅ涓�8 0a0
+		setNoRepair(); //涓嶅彲淇ˉ
 		
 		setReloadTime(60);
 		setJamTime(10);
@@ -45,9 +45,9 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_9mmar");
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_9mmar");
     }
 	
 	@Override

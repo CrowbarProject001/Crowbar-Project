@@ -96,7 +96,7 @@ public abstract class WeaponGeneral extends Item {
 	public abstract int getOffset(int mode);
 	
 	/**
-	 * Only called in server, set the mode to required on client's will.
+	 * Set the mode to required on client's will.
 	 */
 	public void onModeChange(ItemStack item, EntityPlayer player, int newMode){
 		if(item.stackTagCompound == null)

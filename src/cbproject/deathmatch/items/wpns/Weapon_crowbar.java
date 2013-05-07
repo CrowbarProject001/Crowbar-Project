@@ -20,9 +20,9 @@ public class Weapon_crowbar extends ItemSword {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void updateIcons(IconRegister par1IconRegister)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        this.iconIndex = par1IconRegister.registerIcon("lambdacraft:weapon_crowbar");
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_crowbar");
     }
 	
 	@Override
