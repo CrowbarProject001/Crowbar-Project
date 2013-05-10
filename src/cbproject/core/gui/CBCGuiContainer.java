@@ -1,3 +1,17 @@
+/** 
+ * Copyright (c) LambdaCraft Modding Team, 2013
+ * 版权许可：LambdaCraft 制作小组， 2013.
+ * http://lambdacraft.half-life.cn/
+ * 
+ * LambdaCraft is open-source. It is distributed under the terms of the
+ * LambdaCraft Open Source License. It grants rights to read, modify, compile
+ * or run the code. It does *NOT* grant the right to redistribute this software
+ * or its modifications in any form, binary or source, except if expressively
+ * granted by the copyright holder.
+ *
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开原协议》你允许阅读，修改以及调试运行
+ * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ */
 package cbproject.core.gui;
 
 import java.util.HashSet;
@@ -7,13 +21,15 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 
 /**
- * LambdaCraft Container GUI,currently have:
- * button functions
  * @author WeAthFolD
- *
+ * LambdaCraft的GUI Container，目前具有：
+ * 按钮功能
  */
 public abstract class CBCGuiContainer extends GuiContainer {
 	
+	/**
+	 * GUI按钮列表。
+	 */
 	private HashSet<CBCGuiButton> buttons;
 	
 	public CBCGuiContainer(Container par1Container) {
@@ -21,6 +37,10 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		buttons = new HashSet<CBCGuiButton>();
 	}
 	
+	/**
+	 * 添加一个按钮。
+	 * @param button
+	 */
 	public void addButton(CBCGuiButton button){
 		buttons.add(button);
 	}
@@ -51,6 +71,11 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		}
     }
 	
+	/**
+	 * 设置某一个按钮的状态。
+	 * @param buttonName 按钮名称
+	 * @param state 状态
+	 */
 	public void setButtonState(String buttonName, ButtonState state){
 		for(CBCGuiButton b : buttons){
 			if(b.buttonName == buttonName){
@@ -60,6 +85,11 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		}
 	}
 	
+	/**
+	 * 获取某一按钮的状态
+	 * @param name 按钮名称
+	 * @return 对应按钮状态
+	 */
 	public ButtonState getButtonState(String name){
 		for(CBCGuiButton b : buttons){
 			if(b.buttonName == name)
@@ -68,7 +98,9 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		return null;
 	}
 	
-	
+	/**
+	 * 绘制按钮，在drawGuiBackgroundLayer()中调用。
+	 */
 	public void drawButtons(){
 		for(CBCGuiButton b : buttons){
 			int x = (width - xSize) / 2;
@@ -94,6 +126,10 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		return this.isPointInRegion(button.posX, button.posY, button.width, button.height, x, y);
 	}
 	
+	/**
+	 * 处理每个按钮按下时行为的函数，在子类中覆盖它来做些什么。
+	 * @param button 被按下的按钮
+	 */
 	public abstract void onButtonClicked(CBCGuiButton button);
 
 }
