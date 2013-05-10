@@ -32,7 +32,7 @@ public class CBCSoundEvents {
 	/**
 	 * 
 	 * @param name : name of the sound. i.e. "cbc/weapons/rocket"
-	 * @param sndname : sound name . i.e."/cbproject/gfx/weapons/glauncherb"
+	 * @param absPath : sound name . i.e."/cbproject/gfx/weapons/glauncherb"
 	 * Both params are auto prefixed by .wav.
 	 */
 	public static void addSoundPath(String name, String absPath){

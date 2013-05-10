@@ -19,7 +19,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 
-@Mod(modid="lcdm",name="LambdaCraft DM Module",version="0.9.5beta")
+@Mod(modid="lcdm",name="LambdaCraft DM Module",version="0.9.9 pre")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
 serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeapons"}, packetHandler = CBCPacketHandler.class )
 )

@@ -1,5 +1,6 @@
 package cbproject.core.props;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cbproject.core.misc.Config;
 
 public class GeneralProps {

@@ -4,9 +4,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProps {
 	public static final int RENDER_TYPE_TRIPMINE = RenderingRegistry
-			.getNextAvailableRenderId();;
-	public static final int RENDER_TYPE_TRIPMINE_RAY = RenderingRegistry
-			.getNextAvailableRenderId();;
+			.getNextAvailableRenderId();
 	public static final int RENDER_TYPE_EMPTY = RenderingRegistry
 			.getNextAvailableRenderId();
 
@@ -25,7 +23,7 @@ public class ClientProps {
 	public static final String AR_GRENADE_PATH = "/cbproject/gfx/textures/entities/argrenade.png",
 			RPG_ROCKET_PATH = "/cbproject/gfx/textures/entities/rpg_rocket.png",
 			SHOTGUN_SHELL_PATH = "/cbproject/gfx/textures/entities/shotgun_shell.png",
-			EGON_BEAM_PATH = "/cbproject/gfx/textures/entities/egon_beam.png",
+			EGON_BEAM_PATH[] = {"/cbproject/gfx/textures/entities/egon_beam.png", "/cbproject/gfx/textures/entities/egon_ray2.png"},
 			CROSSBOW_BOW_PATH = "/cbproject/gfx/textures/entities/steelbow.png";
 
 	public static final String EGON_EQUIPPED_PATH = "/cbproject/gfx/textures/items/weapon_egon0.png";
@@ -49,5 +47,10 @@ public class ClientProps {
 	public static final String HEV_ARMOR_PATH[] = {
 			"/cbproject/gfx/textures/armor/hev_1.png",
 			"/cbproject/gfx/textures/armor/hev_2.png" };
+	
+	public static final String RPG_TRAIL_PATH[] = {
+		"/cbproject/gfx/textures/entities/rpg_trail.png",
+		"/cbproject/gfx/textures/entities/rpg_trail_tail.png"
+	};
 
 }

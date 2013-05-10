@@ -43,17 +43,25 @@ public class Weapon_RPG extends WeaponGeneralBullet {
         iconDot = par1IconRegister.registerIcon("lambdacraft:rpg_dot");
     }
 	
-	@SideOnly(Side.CLIENT)
-	public static Icon getDotIcon(){
-		return iconDot;
-	}
-	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
+		
+		
 		InformationRPG inf = (InformationRPG) super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-		if(inf == null)
+		if(inf == null){
+			if(!(par3Entity instanceof EntityPlayer))
+				return;
+			inf = getInformation(par1ItemStack, par2World);
+			if(inf != null){
+				if(inf.currentDot != null){
+					inf.currentDot.setDead();
+					inf.currentDot = null;
+					return;
+				}
+			}
 			return;
+		}
 		int mode = getMode(par1ItemStack);
 		
 		EntityPlayer player = (EntityPlayer) par3Entity;

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class EntityRPGDot extends EntityThrowable {
 
-	public static final double DOT_MAX_RANGE = 30.0;
+	public static final double DOT_MAX_RANGE = 100.0;
 	private EntityPlayer shooter;
 	//-1:Render facing the player. else : Render on block surface.
 	private int side;
@@ -35,7 +35,6 @@ public class EntityRPGDot extends EntityThrowable {
 		MotionXYZ begin = new MotionXYZ(shooter);
 		MotionXYZ end = new MotionXYZ(begin).updateMotion(DOT_MAX_RANGE);
 		MovingObjectPosition result = worldObj.rayTraceBlocks(begin.asVec3(worldObj), end.asVec3(worldObj));
-		System.out.println("pos : " + posX + " " + posY + " " + posZ);
 		if(result != null){
 			posX = result.hitVec.xCoord;
 			posY = result.hitVec.yCoord;

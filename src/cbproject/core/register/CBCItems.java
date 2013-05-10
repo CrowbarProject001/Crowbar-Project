@@ -8,6 +8,9 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -77,33 +80,28 @@ public class CBCItems {
         //Recipes
 
         ItemStack output[] = {
-        		new ItemStack(mat_pistol, 1),
         		new ItemStack(mat_accessories, 1),
-        		new ItemStack(mat_light, 1),
-        		new ItemStack(mat_heavy, 1),
-        		new ItemStack(mat_explosive, 1),
         		new ItemStack(mat_bio, 1),
         		new ItemStack(mat_ammunition, 1),
         		new ItemStack(mat_tech, 1),
-        		new ItemStack(mat_box, 5),
-        		new ItemStack(CBCBlocks.blockRefined, 1),
-        		new ItemStack(ironBar, 5),
-        		new ItemStack(lambdaChip),
-        		new ItemStack(CBCBlocks.blockWeaponCrafter)
+        		new ItemStack(lambdaChip)
         };
+        
+        OreDictionary.registerOre("oreUranium", CBCBlocks.blockUraniumOre);
+        OreDictionary.registerOre("ingotUranium", CBCItems.ingotUranium);
+        OreDictionary.registerOre("ingotSteel", CBCItems.ingotSteel);
+        OreDictionary.registerOre("blockSteel", CBCBlocks.blockRefined);
         
         ItemStack sredstone = new ItemStack(Item.redstone),
         		swood = new ItemStack(Block.wood),
         		sglow = new ItemStack(Item.lightStoneDust),
         		sstick = new ItemStack(Item.stick),
-        		srefined = new ItemStack(ingotSteel),
         		sglass = new ItemStack(Block.glass),
         		scoal = new ItemStack(Item.coal),
         		sgold = new ItemStack(Item.ingotGold),
         		siron = new ItemStack(Item.ingotIron),
         		sblazep = new ItemStack(Item.blazePowder),
         		sdiamond = new ItemStack(Item.diamond),
-        		sbrefined = new ItemStack(CBCBlocks.blockRefined),
         		sbredstone = new ItemStack(Block.blockRedstone),
         		sblap = new ItemStack(Block.blockLapis),
         		sgunpowder = new ItemStack(Item.gunpowder),
@@ -115,31 +113,31 @@ public class CBCItems {
         		stnt = new ItemStack(Block.tnt),
         		sendereye = new ItemStack(Item.eyeOfEnder),
         		slambdachip = new ItemStack(lambdaChip),
-        		suranium = new ItemStack(ingotUranium),
         		semerald = new ItemStack(Item.emerald),
         		schest = new ItemStack(Block.chest);
  
         Object input[][] = new Object[][]{
-        		{"ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', srefined, 'D', sredstone, 'E', sglass},
         		{"ADA", "CCC", "EBE", 'A', sstick, 'B', sbox, 'C', scoal, 'D', sglow, 'E', sglass},
-        		{"ADA", "CCC", "EBE", 'A', sgold, 'B', sbox, 'C', srefined, 'D', sglow, 'E', sglass},
-        		{"ADA", "CCC", "EBE", 'A', sblazep, 'B', sbox, 'C', srefined, 'D', sblap, 'E', sglass},
-        		{"ACA", "DCD", "EBE", 'A', srefined, 'B', sbox, 'C', stnt, 'D', sgunpowder, 'E', sglass},
         		{"ACA", "DFD", "EBE", 'A', srotten, 'B', sbox, 'C', smagma, 'D', sfspieye, 'E', sglass, 'F', sendereye},
         		{"AAA", "ACA", "EBE", 'A', sgunpowder, 'B', sbox, 'C', sredstone, 'E', sglass},
         		{"ACA", "DFD", "EBE", 'A', sglow, 'B', sbox, 'C',sbredstone, 'D', sdiamond, 'E', sglass, 'F', slambdachip},
-        		{"A A", "AAA", 'A', srefined},
-        		{"AAA", "AAA", "AAA", 'A', srefined},
-        		{"A  ", "A  ", 'A', srefined},
-        		{"ABA","CDC","ABA", 'A', sglass, 'B', semerald, 'C', sredstone, 'D', sdiamond},
-        		{"AAA","BCB","EDE", 'A', sglass, 'B', sbredstone, 'C', slambdachip, 'D', schest, 'E', sbrefined}
+        		{"ABA","CDC","ABA", 'A', sglass, 'B', semerald, 'C', sredstone, 'D', sdiamond}
         };
         
         addRecipes(output, input);
-        GameRegistry.addShapelessRecipe(new ItemStack(ingotSteel, 9), sbrefined);
+       // GameRegistry.addShapelessRecipe(new ItemStack(ingotSteel, 9), sbrefined);
         //Smeltings
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ingotSteel, 9), "blockSteel"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.blockRefined), "AAA", "AAA", "AAA", 'A', "ingotSteel"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.blockWeaponCrafter), "AAA", "BCB", "EDE", 'A', sglass, 'B', sbredstone, 'C', slambdachip, 'D', schest, 'E', "blockSteel"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ironBar, 3), "A  ", "A  ", 'A', "ingotSteel"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(mat_box, 5), "A A", "AAA", 'A', "ingotSteel"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(mat_pistol), "ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', "ingotSteel", 'D', sredstone, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(mat_light), "ADA", "CCC", "EBE", 'A', sgold, 'B', sbox, 'C', "ingotSteel", 'D', sglow, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(mat_heavy), "ADA", "CCC", "EBE", 'A', sblazep, 'B', sbox, 'C', "ingotSteel", 'D', sblap, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(mat_explosive), "ACA", "DCD", "EBE", 'A', "ingotSteel", 'B', sbox, 'C', stnt, 'D', sgunpowder, 'E', sglass));
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(ingotSteel.itemID,1,0) );
-        ModLoader.addSmelting(CBCBlocks.blockUraniumOre.blockID, suranium);
+        ModLoader.addSmelting(CBCBlocks.blockUraniumOre.blockID, new ItemStack(ingotUranium), 2);
 	}
 	
 	private static void addRecipes(ItemStack[] output, Object[][] input){

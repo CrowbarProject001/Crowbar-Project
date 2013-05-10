@@ -17,6 +17,7 @@ import cbproject.deathmatch.entities.EntityRocket;
 import cbproject.deathmatch.entities.EntitySatchel;
 import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cbproject.deathmatch.entities.fx.EntityGaussRay;
+import cbproject.deathmatch.entities.fx.EntityTrailFX;
 import cbproject.deathmatch.items.wpns.Weapon_RPG;
 import cbproject.deathmatch.network.NetTripmine;
 import cbproject.deathmatch.register.DMItems;
@@ -28,6 +29,7 @@ import cbproject.deathmatch.renderers.RenderGaussRay;
 import cbproject.deathmatch.renderers.RenderItemSatchel;
 import cbproject.deathmatch.renderers.RenderSatchel;
 import cbproject.deathmatch.renderers.RenderTileTripmine;
+import cbproject.deathmatch.renderers.RenderTrail;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -47,6 +49,7 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGauss.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGaussSec.class, new RenderEmpty());
+		RenderingRegistry.registerEntityRenderingHandler(EntityTrailFX.class, new RenderTrail());
 		
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_satchel.itemID, new RenderItemSatchel());
