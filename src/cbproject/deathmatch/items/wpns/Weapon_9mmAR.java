@@ -14,88 +14,97 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
- * 9mm Assault Rifle class.
- * Mode I : Bullet, II : AR Grenade.
+ * 9mm Assault Rifle class. Mode I : Bullet, II : AR Grenade.
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class Weapon_9mmAR extends WeaponGeneralBullet {
-	
+
 	public Weapon_9mmAR(int par1) {
-		
-		super(par1 , CBCItems.ammo_9mm2.itemID, 2);
+
+		super(par1, CBCItems.ammo_9mm2.itemID, 2);
 		setUnlocalizedName("weapon_9mmar");
-		setCreativeTab( CBCMod.cct );
+		setCreativeTab(CBCMod.cct);
 		setMaxStackSize(1);
-		setMaxDamage(51); // 鏈�珮浼ゅ涓�8 0a0
-		setNoRepair(); //涓嶅彲淇ˉ
-		
+		setMaxDamage(51);
+		setNoRepair(); // 涓嶅彲淇ˉ
+
 		setReloadTime(60);
 		setJamTime(10);
-		setLiftProps(8 , 2);
+		setLiftProps(8, 2);
 
 	}
-	
-	@Override
-	public Boolean canShoot(EntityPlayer player, ItemStack is){
-    	InformationBullet inf = this.getInformation(is, player.worldObj);
-    	int mode = getMode(is);
-    	return mode == 0 ? super.canShoot(player, is) : AmmoManager.hasAmmo(CBCItems.ammo_argrenade.itemID, player);
-    }
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_9mmar");
-    }
-	
-	@Override
-    public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
-		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-    }
+	public Boolean canShoot(EntityPlayer player, ItemStack is) {
+		InformationBullet inf = this.getInformation(is, player.worldObj);
+		int mode = getMode(is);
+		return mode == 0 ? super.canShoot(player, is) : AmmoManager.hasAmmo(
+				CBCItems.ammo_argrenade.itemID, player);
+	}
 
 	@Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.itemIcon = par1IconRegister
+				.registerIcon("lambdacraft:weapon_9mmar");
+	}
+
+	@Override
+	public void onUpdate(ItemStack par1ItemStack, World par2World,
+			Entity par3Entity, int par4, boolean par5) {
+		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4,
+				par5);
+	}
+
+	@Override
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3EntityPlayer) {
 		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
-    }
-	
+	}
+
 	@Override
-    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
-    	
+	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3Entity, InformationBullet information) {
+
 		int mode = getMode(par1ItemStack);
-    	if(mode == 0){
-    		
-    		super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
-    		
-    	} else {
-    		
-    		if(par3Entity.capabilities.isCreativeMode  || AmmoManager.tryConsume(par3Entity, CBCItems.ammo_argrenade.itemID, 1) == 0){
-    			par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
-    			par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
-    		}
-    	}
-    	
-    	information.setLastTick();
+		if (mode == 0) {
+
+			super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity,
+					information);
+
+		} else {
+			if (!par2World.isRemote)
+				if (par3Entity.capabilities.isCreativeMode
+						|| AmmoManager.tryConsume(par3Entity,
+								CBCItems.ammo_argrenade.itemID, 1) == 0) {
+					par2World.spawnEntityInWorld(new EntityARGrenade(par2World,
+							par3Entity));
+					par2World.playSoundAtEntity(par3Entity,
+							getSoundShoot(mode), 0.5F, 1.0F);
+				}
+		}
+
+		information.setLastTick();
 		return;
-    }
-	
-	
-	
+	}
+
 	@Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
-	{
-		
-		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
-		
+	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3EntityPlayer, int par4) {
+
+		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer,
+				par4);
+
 	}
 
 	@Override
 	public String getSoundShoot(int mode) {
-		return mode == 0 ? "cbc.weapons.hksa" : 
-			(Math.random() * 2 > 1 ? "cbc.weapons.glauncher" : "cbc.weapons.glauncherb");
+		return mode == 0 ? "cbc.weapons.hksa"
+				: (Math.random() * 2 > 1 ? "cbc.weapons.glauncher"
+						: "cbc.weapons.glauncherb");
 	}
 
 	@Override

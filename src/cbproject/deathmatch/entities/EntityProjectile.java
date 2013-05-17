@@ -1,7 +1,23 @@
+/** 
+ * Copyright (c) LambdaCraft Modding Team, 2013
+ * 版权许可：LambdaCraft 制作小组， 2013.
+ * http://lambdacraft.half-life.cn/
+ * 
+ * LambdaCraft is open-source. It is distributed under the terms of the
+ * LambdaCraft Open Source License. It grants rights to read, modify, compile
+ * or run the code. It does *NOT* grant the right to redistribute this software
+ * or its modifications in any form, binary or source, except if expressively
+ * granted by the copyright holder.
+ *
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
+ * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ */
 package cbproject.deathmatch.entities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -9,7 +25,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 
-
+/**
+ * 不进行实体碰撞的简单投射类，在EntitySatchel中被使用。
+ * @author WeAthFolD
+ *
+ */
 public abstract class EntityProjectile extends Entity {
 
 	private EntityLiving thrower;
@@ -29,6 +49,10 @@ public abstract class EntityProjectile extends Entity {
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * f;
         this.motionY = -MathHelper.sin((this.rotationPitch + this.getMotionYOffset()) / 180.0F * (float)Math.PI) * f;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.getHeadingVelocity(), 1.0F);
+	}
+	
+	public EntityProjectile(World world){
+		super(world);
 	}
 	
 	protected abstract float getHeadingVelocity();
@@ -65,6 +89,8 @@ public abstract class EntityProjectile extends Entity {
     @Override
 	public void onUpdate()
     {
+    	if(worldObj.isRemote)
+    		return;
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
@@ -112,5 +138,35 @@ public abstract class EntityProjectile extends Entity {
     public EntityLiving getThrower(){
     	return thrower;
     }
+    
+    @Override
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
+    	if(worldObj.isRemote){
+    		this.setDead();
+    		return;
+    	}
+		posX = nbt.getDouble("posX");
+		posY = nbt.getDouble("posY");
+		posZ = nbt.getDouble("posZ");
+		motionX = nbt.getDouble("motionX");
+		motionY = nbt.getDouble("motionY");
+		motionZ = nbt.getDouble("motionZ");
+		EntityPlayer th = worldObj.getPlayerEntityByName(nbt.getString("thrower"));
+		if(th != null)
+			this.thrower = th;
+	}
+
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
+		if(worldObj.isRemote)
+    		return;
+		nbt.setDouble("posX", posX);
+		nbt.setDouble("posY", posY);
+		nbt.setDouble("posZ", posZ);
+		nbt.setDouble("motionX", motionX);
+		nbt.setDouble("motionY", motionY);
+		nbt.setDouble("motionZ", motionZ);
+		nbt.setString("thrower", getThrower().getEntityName());
+	}
     
 }

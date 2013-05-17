@@ -18,7 +18,9 @@ public class CBCGuiHandler implements IGuiHandler {
 		if(te == null)
 			return null;
 		if(guis.containsKey(te)){
-			return guis.get(te).getServerContainer(ID, player, world, x, y, z);
+			Object gui = guis.get(te).getServerContainer(ID, player, world, x, y, z);
+			System.out.println(te + " " + gui);
+			return gui;
 		}
 		return null;
 	}
@@ -30,7 +32,8 @@ public class CBCGuiHandler implements IGuiHandler {
 		if(te == null)
 			return null;
 		if(guis.containsKey(te)){
-			return guis.get(te).getClientGui(ID, player, world, x, y, z);
+			Object gui = guis.get(te).getClientGui(ID, player, world, x, y, z);
+			return gui;
 		}
 		return null;
 	}

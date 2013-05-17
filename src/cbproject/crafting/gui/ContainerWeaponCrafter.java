@@ -7,7 +7,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
-import cbproject.crafting.recipes.RecipeWeaponEntry;
+import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -84,12 +84,16 @@ public class ContainerWeaponCrafter extends Container {
 		}
 	}
 
-	private void writeRecipeInfoToSlot() {
+	protected void writeRecipeInfoToSlot() {
 		clearRecipeInfo();
-		int length = RecipeWeapons.getRecipeLength(tileEntity.page);
+		int length;
+		if(!tileEntity.isAdvanced)
+			length = RecipeWeapons.getRecipeLength(tileEntity.page);
+		else length = RecipeWeapons.getAdvRecipeLength(tileEntity.page);
+		
 		for (int i = 0; i < length && i < 3; i++) {
-			RecipeWeaponEntry r = RecipeWeapons.getRecipe(tileEntity.page, i
-					+ scrollFactor);
+			RecipeCrafter r = !tileEntity.isAdvanced ? RecipeWeapons.getRecipe(tileEntity.page, i
+					+ scrollFactor) : RecipeWeapons.getAdvRecipe(tileEntity.page, i + scrollFactor);
 			for (int j = 0; j < 3; j++) {
 				if (r.input.length > j)
 					tileEntity.setInventorySlotContents(j + i * 3, r.input[j]);
@@ -98,7 +102,7 @@ public class ContainerWeaponCrafter extends Container {
 		}
 	}
 
-	private void clearRecipeInfo() {
+	protected void clearRecipeInfo() {
 		for (int i = 0; i < 12; i++) {
 			tileEntity.setInventorySlotContents(i, null);
 		}

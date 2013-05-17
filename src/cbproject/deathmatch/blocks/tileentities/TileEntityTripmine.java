@@ -6,10 +6,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.utils.MotionXYZ;
-import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
 import cbproject.deathmatch.register.DMBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
@@ -56,7 +54,7 @@ public class TileEntityTripmine extends TileEntity {
 			maxZ = begin.posZ;
 		}
 		
-		float RAY_RAD = blockType.RAY_RAD;
+		float RAY_RAD = BlockTripmine.RAY_RAD;
 		minY = minY + 0.5 - RAY_RAD;
 		maxY = maxY + 0.5 + RAY_RAD;
 		if(meta == 3 || meta == 1){ //X
@@ -72,7 +70,7 @@ public class TileEntityTripmine extends TileEntity {
 			blockType.breakBlock(worldObj, xCoord, yCoord, zCoord, meta, 0);
 		}
 		if(worldObj.getWorldTime() % 5 == 0)
-			((BlockTripmine)blockType).updateRayRange(worldObj, xCoord, yCoord, zCoord);
+			blockType.updateRayRange(worldObj, xCoord, yCoord, zCoord);
 	}
 	
 	public double getRayDistance(){
@@ -87,7 +85,8 @@ public class TileEntityTripmine extends TileEntity {
         return 4096.0D;
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         return INFINITE_EXTENT_AABB;

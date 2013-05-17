@@ -8,16 +8,13 @@ import static net.minecraftforge.common.ForgeDirection.NORTH;
 import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
-import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -27,8 +24,6 @@ import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
-import cbproject.deathmatch.network.NetTripmine;
-import cbproject.deathmatch.register.DMBlocks;
 import cbproject.deathmatch.utils.BulletManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

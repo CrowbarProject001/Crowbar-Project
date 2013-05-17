@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import static cbproject.core.renderers.RendererUtils.newV3;
+import static cbproject.core.renderers.RenderUtils.newV3;
 /**
  * Gauss ray rendering class.
  * @author WeAthFolD
@@ -55,7 +55,8 @@ public class RenderGaussRay extends RenderEntity {
         //Translations and rotations
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
-        GL11.glDepthMask(false);
+        GL11.glDepthMask(true);
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LIGHTING);
         
         loadTexture(ClientProps.GAUSS_BEAM_PATH);

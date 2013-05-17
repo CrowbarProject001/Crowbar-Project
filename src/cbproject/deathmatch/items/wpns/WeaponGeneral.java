@@ -21,6 +21,12 @@ public abstract class WeaponGeneral extends Item {
 	public int ammoID;
 	public  double upLiftRadius, recoverRadius;
 	
+	/**
+	 * 
+	 * @param par1 物品的ID.
+	 * @param par2AmmoID 对应子弹的ID.(不一定被使用）
+	 * @param par3MaxModes 最大模式数。（不一定被使用）
+	 */
 	public WeaponGeneral(int par1, int par2AmmoID,int par3MaxModes) {
 		super(par1);
 		maxModes = par3MaxModes;

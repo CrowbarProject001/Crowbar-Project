@@ -24,8 +24,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
+ * 高斯枪蓄力射击的判断实体。
  * @author WeAthFolD
- * @description Gauss ray collision entity(used in charge mode only).
  */
 public class EntityBulletGauss extends EntityBullet {
 	
@@ -38,18 +38,29 @@ public class EntityBulletGauss extends EntityBullet {
 		PLAIN_X, PLAIN_Y, PLAIN_Z;
 	}
 	
+	public EntityBulletGauss(World world){
+		super(world);
+	}
+	
 	public EntityBulletGauss(World par1World, EntityLiving par2EntityLiving,
 			ItemStack par3itemStack, String particle) {
-		super(par1World, par2EntityLiving, par3itemStack, particle);
+		super(par1World, par2EntityLiving, par3itemStack);
 		motion = new MotionXYZ(par2EntityLiving);
 		item = (Weapon_gauss) itemStack.getItem();
 		inf = item.getInformation(itemStack, worldObj);
-		worldObj.spawnEntityInWorld(new EntityGaussRay(par1World, par2EntityLiving, this));	
+		if(!worldObj.isRemote)
+			worldObj.spawnEntityInWorld(new EntityGaussRay(new MotionXYZ(this), worldObj));	
+	}
+	
+	@Override
+	public void entityInit(){
 	}
 	
 	@Override
 	protected void onImpact(MovingObjectPosition par1)
 	{    
+		if(worldObj.isRemote)
+			return;
 	    switch(par1.typeOfHit){
 	    case TILE:
 	    	doBlockCollision(par1);
@@ -68,9 +79,6 @@ public class EntityBulletGauss extends EntityBullet {
 		doWallPenetrate(result);
 	}
 	
-	/**
-	 * Damages entity base on gauss mode.
-	 */
 	@Override
 	public void doEntityCollision(MovingObjectPosition result){
 		if( result.entityHit == null )
@@ -80,8 +88,8 @@ public class EntityBulletGauss extends EntityBullet {
 	}
 	
 	/**
-	 * @description Gauss wall penetrating func.
-	 * @param result - RayTrace result.
+	 * 进行蓄力射击的穿墙。
+	 * @param result RayTrace result.
 	 */
 	private void doWallPenetrate(MovingObjectPosition result) {
 		
@@ -126,8 +134,8 @@ public class EntityBulletGauss extends EntityBullet {
 	}
 	
 	/**
-	 * @param result - RayTrace result
-	 * @return Decayed charge damage
+	 * @param result RayTrace result
+	 * @return 衰减后的伤害
 	 */
 	private int doReflection(MovingObjectPosition result) {
 			
@@ -144,6 +152,12 @@ public class EntityBulletGauss extends EntityBullet {
 		
 	}
 	
+	/**
+	 * 实际进行蓄力伤害计算。
+	 * @param result
+	 * @param information
+	 * @param item
+	 */
 	private void doChargeAttack(MovingObjectPosition result, InformationEnergy information, WeaponGeneral item) {
 
 		int damage = getChargeDamage();
@@ -158,7 +172,7 @@ public class EntityBulletGauss extends EntityBullet {
 	}
 	
 	/**
-	 * Get blockCount in front of player direction by judging with getSidebyMotion().
+	 * 获得RayTrace结果方向前的方块数。(粗略估算)
 	 */
 	private int getFrontBlockCount(MovingObjectPosition result) {
 		
@@ -196,6 +210,12 @@ public class EntityBulletGauss extends EntityBullet {
 		return Vec3.createVectorHelper(dx, dy, dz);
 	}
 	
+	/**
+	 * 获取高斯穿墙计算伤害的碰撞箱。
+	 * @param radius 计算半径
+	 * @param result
+	 * @return
+	 */
 	private AxisAlignedBB getPenetratingBox(double radius, MovingObjectPosition result){
 		if(radius <= 0.0)
 			return null;
@@ -270,6 +290,9 @@ public class EntityBulletGauss extends EntityBullet {
 		return tan;
 	}
 	
+	/**
+	 * 根据碰撞方向判断入射角正弦值。
+	 */
 	private double getSinBySideAndMotion(int sideHit){
 		double a = Math.sqrt(motionX * motionX + 
 				motionY * motionY +  motionZ * motionZ);

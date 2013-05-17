@@ -22,8 +22,8 @@ public class BulletManager {
 	private static final double BB_SIZE = 0.5D;
 	private static final int ENTITY_TRACE_RANGE = 128;
 	
-	public static void Shoot(ItemStack itemStack, EntityLiving entityPlayer, World worldObj, String effect){
-		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, entityPlayer, itemStack, effect));
+	public static void Shoot(ItemStack itemStack, EntityLiving entityPlayer, World worldObj){
+		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, entityPlayer, itemStack));
 	}
 	
 	public static void doEntityAttack(Entity ent, DamageSource ds, int damage, double dx, double dy, double dz){
@@ -36,6 +36,10 @@ public class BulletManager {
 		if(ent instanceof EntityEnderCrystal)
 			((EntityEnderCrystal)ent).attackEntityFrom(ds, damage);
 		ent.addVelocity(dx, dy, dz);
+	}
+	
+	public static void doEntityAttack(Entity ent, DamageSource ds, int damage){
+		doEntityAttack(ent, ds, damage, 0, 0, 0);
 	}
 	
 	public static void Explode(World world,Entity entity, float strengh, double radius, double posX, double posY, double posZ, int additionalDamage){

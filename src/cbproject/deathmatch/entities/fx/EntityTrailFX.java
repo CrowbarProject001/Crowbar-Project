@@ -1,12 +1,8 @@
 package cbproject.deathmatch.entities.fx;
 
 import java.util.LinkedList;
-import java.util.Queue;
-
 import cbproject.deathmatch.utils.SamplePoint;
 
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -33,6 +29,7 @@ public class EntityTrailFX extends Entity {
 		this.width = 0.5;
 		this.ignoreFrustumCheck  = true;
 	}
+	
 	
 	public EntityTrailFX setTrailWidth(double w){
 		width = w;
@@ -66,6 +63,11 @@ public class EntityTrailFX extends Entity {
 	
 	@Override
 	public void onUpdate(){
+		if(posX == 0 && posY == 0 && posZ == 0){
+			posX = linkedEntity.posX;
+			posY = linkedEntity.posY;
+			posZ = linkedEntity.posZ;
+		}
 		
 		if(this.ticksExisted % sampleFreq == 0){
 			if(ticksExisted > 2 * decayTime)
@@ -76,7 +78,6 @@ public class EntityTrailFX extends Entity {
 				return;
 			}
 			samples.offer(new SamplePoint(linkedEntity.posX - posX, linkedEntity.posY - posY, linkedEntity.posZ - posZ, ticksExisted));
-			
 		}
 	}
 	

@@ -1,9 +1,8 @@
 package cbproject.mob.utils;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
 
-import cbproject.api.entities.IPlayerLink;
+import cbproject.api.entities.IEntityLink;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -19,17 +18,16 @@ public class MobSpawnHandler {
 	 * by the last three parameters. Parameters: world, entityID, x, y, z.
 	 */
 	public static Entity spawnCreature(World par0World,
-			int par1, EntityPlayer thrower) {
-
-		if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1)))
-        {
-            return null;
-        }
-		
+			Class <? extends EntityLiving> c, EntityPlayer thrower) {
+	
 		Entity entity = null;
 
-		entity = EntityList.createEntityByID(par1, par0World);
-
+		try {
+			entity = c.getConstructor(World.class).newInstance(par0World);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		if (entity != null && entity instanceof EntityLiving) {
 			EntityLiving entityliving = (EntityLiving) entity;
 			float f = 0.4F;
@@ -38,8 +36,8 @@ public class MobSpawnHandler {
 			entityliving.setLocationAndAngles(thrower.posX + motionX * 2, thrower.posY, thrower.posZ + motionZ * 2, thrower.rotationYawHead, 0.0F);
 			entityliving.rotationYawHead = entityliving.rotationYaw;
             entityliving.renderYawOffset = entityliving.rotationYaw;
-            if(entityliving instanceof IPlayerLink){
-            	((IPlayerLink)entityliving).setLinkedPlayer(thrower);
+            if(entityliving instanceof IEntityLink){
+            	((IEntityLink)entityliving).setLinkedEntity(thrower);
             }
 			entityliving.initCreature();
 			par0World.spawnEntityInWorld(entity);

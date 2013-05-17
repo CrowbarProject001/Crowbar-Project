@@ -1,3 +1,17 @@
+/** 
+ * Copyright (c) LambdaCraft Modding Team, 2013
+ * 版权许可：LambdaCraft 制作小组， 2013.
+ * http://lambdacraft.half-life.cn/
+ * 
+ * LambdaCraft is open-source. It is distributed under the terms of the
+ * LambdaCraft Open Source License. It grants rights to read, modify, compile
+ * or run the code. It does *NOT* grant the right to redistribute this software
+ * or its modifications in any form, binary or source, except if expressively
+ * granted by the copyright holder.
+ *
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
+ * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ */
 package cbproject.deathmatch.entities;
 
 
@@ -5,17 +19,18 @@ import cbproject.deathmatch.utils.BulletManager;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 /**
- * Hand grenade entity class.
+ * 手雷实体。
  * @author Administrator
  * 
  */
-public class EntityHGrenade extends EntityProjectile {
+public class EntityHGrenade extends EntityThrowable {
 
 	int delay;
 	int time;
@@ -27,26 +42,29 @@ public class EntityHGrenade extends EntityProjectile {
         time = 0;
         
     }
+    
+    public EntityHGrenade(World world){
+    	super(world);
+    }
 
 	@Override
-	protected void onCollide(MovingObjectPosition par1)
+	protected void onImpact(MovingObjectPosition par1)
 	{    
-
+		if(worldObj.isRemote)
+			return;
+		
 	    if(ticksExisted - time > 5){ //最小时间间隔0.3s
 	    	worldObj.playSound(posX,posY,posZ, "cbc.weapons.hgrenadebounce", 0.5F, (float) (Math.random() * 0.4F + 0.8F),true);
 	    	time = ticksExisted;
 	    }
 	    
 
-	    int id =  this.worldObj.getBlockId(par1.blockX,par1.blockY,par1.blockZ);
-	    Boolean canCollide = !( id == Block.tallGrass.blockID || id == Block.reed.blockID 
-	    		|| id == Block.plantRed.blockID
-	    		|| id == Block.plantYellow.blockID);
-	    
+	    int id =  this.worldObj.getBlockId(par1.blockX, par1.blockY, par1.blockZ);
 	    //碰撞代码
-	    if(par1.typeOfHit == EnumMovingObjectType.TILE && canCollide)
+	    if(par1.typeOfHit == EnumMovingObjectType.TILE)
 	    {
-	    	
+	    	if(!Block.blocksList[id].isCollidable())
+	    		return;
 	    	switch(par1.sideHit){
 	    	
 	    	case 0:
@@ -73,6 +91,8 @@ public class EntityHGrenade extends EntityProjectile {
 	}
 	
 	private void Explode(){
+		if(worldObj.isRemote)
+			return;
 		BulletManager.Explode(worldObj,this, 3.0F, 3.5F, posX, posY, posZ, 35);
 		this.setDead();
 	}
@@ -98,23 +118,9 @@ public class EntityHGrenade extends EntityProjectile {
     }
     
 	@Override
-    protected float getHeadingVelocity()
+    protected float func_70182_d()
     {
     	return 0.7F;
     }
-    
-    @Override
-	protected float getMotionYOffset(){
-    	return 0.0F;
-    }
 
-	@Override
-	protected void entityInit() {}
-
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {}
-
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {}
-	
 }

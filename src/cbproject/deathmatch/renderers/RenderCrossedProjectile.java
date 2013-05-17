@@ -41,11 +41,12 @@ public class RenderCrossedProjectile extends RenderEntity {
         		v7 = newV3(LENGTH, 0, HEIGHT),
         		v8 = newV3(LENGTH, 0, -HEIGHT);
         
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);   
-        GL11.glDepthMask(false);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ZERO);
         loadTexture(TEXTURE_PATH);
-        GL11.glRotatef(gren.rotationYaw - 270.0F, 0.0F, -1.0F, 0.0F); //左右旋转
+        GL11.glRotatef(270.0F - gren.rotationYaw, 0.0F, -1.0F, 0.0F); //左右旋转
         GL11.glRotatef(gren.rotationPitch, 0.0F, 0.0F, -1.0F); //上下旋转
         tessellator.startDrawingQuads();
         
@@ -70,6 +71,7 @@ public class RenderCrossedProjectile extends RenderEntity {
         addVertex(v5, 0, 1);
         
         tessellator.draw();
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
     }
 	

@@ -4,6 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.register.CBCItems;
+import cbproject.deathmatch.entities.BulletSG;
+import cbproject.deathmatch.entities.EntityBulletSG;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
@@ -86,30 +88,28 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 
     	int maxDmg = par1ItemStack.getMaxDamage() -1;
+    	int mode = getMode(par1ItemStack);
 		if( par1ItemStack.getItemDamage() >= maxDmg ){
 			information.setLastTick();
 			return;
 		}
-		
-		int mode = getMode(par1ItemStack);
-		for(int i=0; i<BUCKSHOT_COUNT[mode]; i++)
-			BulletManager.Shoot( par1ItemStack, par3Entity, par2World, "smoke");
-
-    	information.setLastTick();
-    	
-		Boolean canUse = (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() -1 > 0);
-		if(!canUse)
-			mode += 2;		
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
-		
-    	if(par3Entity instanceof EntityPlayer){	
+		if(par3Entity instanceof EntityPlayer){	
     		doUplift(information, par3Entity);
     		if(!par3Entity.capabilities.isCreativeMode){
     				par1ItemStack.damageItem( ( mode == 0 || mode == 3 ) ? 1 : 2 , par3Entity);
     		}	
     	}
 
-		return;
+		information.setLastTick();
+		if(par2World.isRemote)
+			return;
+		int count = mode == 0 ? 8 : 16;
+		BulletSG sg = new BulletSG(par2World, par3Entity, par1ItemStack, mode);
+		for(int i = 0; i < count ; i++)
+			par2World.spawnEntityInWorld(new EntityBulletSG(par2World, par3Entity, par1ItemStack,sg));
+		sg.postInit();
+		par2World.spawnEntityInWorld(sg);
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		
     }
 
@@ -156,13 +156,13 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	@Override
 	public int getDamage(int mode) {
-		return 10;
+		return 4;
 	}
 
 	@Override
 	public int getOffset(int mode) {
 		// TODO Auto-generated method stub
-		return (mode == 0) ? 3 : 9;
+		return (mode == 0) ? 0 : 3;
 	}
 
 	@Override

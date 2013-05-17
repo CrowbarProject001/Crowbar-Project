@@ -70,7 +70,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     		return null;
     	}
     	information.updateTick();
-
+    	
     	EntityPlayer player = (EntityPlayer) par3Entity;
     	
 		if(doesShoot(information, par1ItemStack))
@@ -78,7 +78,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		
 		if(doesReload(information, par1ItemStack))
 			this.onBulletWpnReload(par1ItemStack, par2World, player, information);
-		
 		if(doesJam(information, par1ItemStack))
 			this.onBulletWpnJam(par1ItemStack, par2World, player, information);
 		
@@ -123,15 +122,17 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
     	int mode = getMode(par1ItemStack);
 		information.setLastTick();
 		
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
-		BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
-    	doUplift(information, par3Entity);
-    	if(!par3Entity.capabilities.isCreativeMode ){
-    			par1ItemStack.damageItem( 1 , par3Entity);
-    			par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-    	}
-    	
-		return;	
+		if(!par2World.isRemote){
+	    	par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
+			BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
+			if(!par3Entity.capabilities.isCreativeMode ){
+				par1ItemStack.damageItem( 1 , par3Entity);
+				par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+	    	}
+			return;
+	    }
+		
+    	doUplift(information, par3Entity);	
     }
     
     public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){ 	 

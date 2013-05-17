@@ -6,14 +6,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
-import static cbproject.core.renderers.RendererUtils.addVertex;
-import static cbproject.core.renderers.RendererUtils.newV3;
-import static cbproject.core.renderers.RendererUtils.renderItemIn2d;
+import static cbproject.core.renderers.RenderUtils.addVertex;
+import static cbproject.core.renderers.RenderUtils.newV3;
+import static cbproject.core.renderers.RenderUtils.renderItemIn2d;
 
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.renderers.RendererUtils;
+import cbproject.core.renderers.RenderUtils;
 import cbproject.deathmatch.items.wpns.Weapon_crossbow;
 import cbproject.deathmatch.utils.InformationBullet;
 
@@ -69,7 +69,7 @@ public class RenderCrossbow implements IItemRenderer {
 		InformationBullet inf = wpn.getInformation(item, ent.worldObj);
 		float w = 0.05F;
 		float w2 = 0.1F;
-		int tex = RendererUtils.getTexture(ClientProps.CROSSBOW_SIDE_PATH[5 - item.getItemDamage()]);
+		int tex = RenderUtils.getTexture(ClientProps.CROSSBOW_SIDE_PATH[5 - item.getItemDamage()]);
 		GL11.glPushMatrix();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
 		renderItemIn2d(t, w); //Vertical rendering
@@ -85,7 +85,7 @@ public class RenderCrossbow implements IItemRenderer {
 	    	    b7 = newV3(1.0 + w2, 1.0, 0.5),
 	    	    b8 = newV3(1.0 + w2, 1.0, -0.5);
 	    
-	    tex = RendererUtils.getTexture(ClientProps.CROSSBOW_FRONT_PATH[wpn.isBowPulling(item) ? 0: 1]);
+	    tex = RenderUtils.getTexture(ClientProps.CROSSBOW_FRONT_PATH[wpn.isBowPulling(item) ? 0: 1]);
 	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
 	    t.startDrawingQuads();
 		t.setNormal(1.0F, 0.0F, 0.0F);

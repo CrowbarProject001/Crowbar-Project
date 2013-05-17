@@ -1,3 +1,17 @@
+/** 
+ * Copyright (c) LambdaCraft Modding Team, 2013
+ * 版权许可：LambdaCraft 制作小组， 2013.
+ * http://lambdacraft.half-life.cn/
+ * 
+ * LambdaCraft is open-source. It is distributed under the terms of the
+ * LambdaCraft Open Source License. It grants rights to read, modify, compile
+ * or run the code. It does *NOT* grant the right to redistribute this software
+ * or its modifications in any form, binary or source, except if expressively
+ * granted by the copyright holder.
+ *
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
+ * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ */
 package cbproject.deathmatch.entities;
 
 import cbproject.core.utils.MotionXYZ;
@@ -13,6 +27,7 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -26,32 +41,43 @@ public class EntityBullet extends EntityThrowable {
 	protected InformationWeapon information;
 	protected ItemStack itemStack;
 	protected MotionXYZ motion;
-	private String effect;
 	
-	public EntityBullet(World par1World, EntityLiving par2EntityLiving, ItemStack par3itemStack, String eff) {
+	public EntityBullet(World par1World, EntityLiving par2EntityLiving, ItemStack par3itemStack) {
 		
 		super(par1World, par2EntityLiving);
 		
 		itemStack = par3itemStack;
 		if( itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral) )
 			this.setDead();
-		
-		effect = eff;
-		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		information = item.getInformation(par3itemStack, par1World);
-		if(information == null)
-			this.setDead();
-		
-		int mode = item.getMode(par3itemStack);
-		int offset = item.getOffset(mode);
-		//motion = new MotionXYZ(par2EntityLiving, mode);
-		motion = new MotionXYZ(par2EntityLiving, offset);
-		
-        this.setThrowableHeading(motion.motionX, motion.motionY, motion.motionZ, this.func_70182_d(), 1.0F);
-        if(effect == "smoke")
-        	par1World.spawnParticle(effect, posX, posY,
-        			posZ, motionX/25, motionY/25, motionZ/25);
+		this.setSize(0.0F, 0.0F);
+        this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYawHead, par2EntityLiving.rotationPitch);
+        this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
+        this.posZ -= (double)(MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
+        this.setPosition(this.posX, this.posY, this.posZ);
+        this.yOffset = 0.0F;
+        float f = 0.4F;
+        this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * f);
+        this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * f);
+        this.motionY = (double)(-MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * f);
+        motion = new MotionXYZ(this);
+        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
         
+	}
+	
+	@Override
+	public void onUpdate(){
+		super.onUpdate();
+		if(ticksExisted > 50)
+			this.setDead();
+	}
+
+	
+	@Override
+	protected void entityInit() {
+	}
+	
+	public EntityBullet(World world){
+		super(world);
 	}
 
     @Override
@@ -60,16 +86,11 @@ public class EntityBullet extends EntityThrowable {
         return 0.0F;
     }
     
-    @Override
-	protected float func_70182_d()
-    {
-    	return 50.0F;
-    }
+
     
 	@Override
 	protected void onImpact(MovingObjectPosition par1)
 	{    
-		
 	    switch(par1.typeOfHit){
 	    case TILE:
 	    	doBlockCollision(par1);
@@ -79,11 +100,9 @@ public class EntityBullet extends EntityThrowable {
 	    	break;
 	    }
 	    this.setDead();
-	    
 	}
 	
 	protected void doBlockCollision(MovingObjectPosition result){	
-		
 	}
 	
 	public void doEntityCollision(MovingObjectPosition result){
@@ -101,10 +120,20 @@ public class EntityBullet extends EntityThrowable {
 		
 	}
 	
+	public int getBulletDamage(int mode){
+		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
+		return item.getDamage(mode);
+	}
+	
 	@Override
 	public boolean canBeCollidedWith()
 	{
-	    return true;
+	    return false;
+	}
+
+	@Override
+	protected float func_70182_d() {
+		return 50.0F;
 	}
 	
 }

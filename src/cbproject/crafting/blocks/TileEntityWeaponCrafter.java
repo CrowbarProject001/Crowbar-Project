@@ -1,5 +1,7 @@
 package cbproject.crafting.blocks;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -8,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.items.ItemMaterial;
-import cbproject.crafting.recipes.RecipeWeaponEntry;
+import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.utils.AmmoManager;
@@ -22,11 +24,11 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public int scrollFactor = 0;
 	public int page = 0;
 	public int heat, burnTimeLeft, maxBurnTime;
-	public RecipeWeaponEntry currentRecipe;
+	public RecipeCrafter currentRecipe;
 	public CrafterIconType iconType;
 	public long lastTime = 0;
 	public boolean redraw, isCrafting, isBurning;
-
+	public boolean isAdvanced = false;
 	/**
 	 * 1-18 storage Inventory 19 furnace inventory 20 output inventory
 	 * 
@@ -35,6 +37,14 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public TileEntityWeaponCrafter() {
 		inventory = new ItemStack[20];
 		craftingStacks = new ItemStack[12];
+	}
+	
+	public TileEntityWeaponCrafter setAdvanced(boolean is){
+		isAdvanced = is;
+		if(is)
+			MAX_HEAT = 8000;
+		else MAX_HEAT = 4000;
+		return this;
 	}
 
 	@Override
@@ -61,8 +71,10 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			burnTimeLeft--;
 			if(heat < MAX_HEAT)
 				heat+=3;
-			if(burnTimeLeft <= 0)
+			if(burnTimeLeft <= 0){
 				isBurning = false;
+				blockType.setLightValue(0.0F);
+			}
 		}
 		this.onInventoryChanged();
 	}
@@ -98,10 +110,16 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	
 	
 	public void addScrollFactor(boolean isForward) {
-		if (!RecipeWeapons.doesNeedWeaponScrollBar(page))
-			return;
+		if(isAdvanced){
+			if (!RecipeWeapons.doesNeedScrollBar(page))
+				return;
+		} else {
+			if (!RecipeWeapons.doesAdvNeedScrollBar(page))
+				return;
+		}
+		ArrayList<RecipeCrafter> recipes[] = (!isAdvanced? RecipeWeapons.recipes : RecipeWeapons.advancedRecipes);
 		if (isForward) {
-			if (scrollFactor < RecipeWeapons.recipes[page].size() - 3) {
+			if (scrollFactor < recipes[page].size() - 3) {
 				scrollFactor++;
 			}
 		} else {
@@ -114,8 +132,9 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	}
 	
 	public void addPage(boolean isForward) {
+		ArrayList<RecipeCrafter> recipes[] = (!isAdvanced? RecipeWeapons.recipes : RecipeWeapons.advancedRecipes);
 		if (isForward) {
-			if (page < RecipeWeapons.recipes.length - 1) {
+			if (page < recipes.length - 1) {
 				page++;
 			}
 		} else {
@@ -134,11 +153,12 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
     		this.maxBurnTime = this.burnTimeLeft;
     		inventory[1].splitStack(1);
     		isBurning = true;
+    		blockType.setLightValue(0.4F);
     	}
     }
 	
 	public void doItemCrafting(int slot) {
-		RecipeWeaponEntry r = getRecipeBySlotAndScroll(slot, this.scrollFactor);
+		RecipeCrafter r = getRecipeBySlotAndScroll(slot, this.scrollFactor);
 
 		if (hasEnoughMaterial(r)) {
 			resetCraftingState();
@@ -213,7 +233,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		iconType = CrafterIconType.NONE;
 	}
 
-	public boolean hasEnoughMaterial(RecipeWeaponEntry r) {
+	public boolean hasEnoughMaterial(RecipeCrafter r) {
 		ItemStack is;
 
 		if(r instanceof RecipeWeaponSpecial){
@@ -265,7 +285,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 
 	}
 
-	public void consumeMaterial(RecipeWeaponEntry r) {
+	public void consumeMaterial(RecipeCrafter r) {
 
 		int left[] = new int[r.input.length];
 		for (int j = 0; j < r.input.length; j++) {
@@ -292,7 +312,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 
 	}
 
-	public RecipeWeaponEntry getRecipeBySlotAndScroll(int slot, int factor) {
+	public RecipeCrafter getRecipeBySlotAndScroll(int slot, int factor) {
 		int i = 0;
 		if (slot == 0)
 			i = 0;
@@ -300,7 +320,9 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			i = 1;
 		if (slot == 8)
 			i = 2;
-		return RecipeWeapons.getRecipe(page, factor + i);
+		if(!isAdvanced)
+			return RecipeWeapons.getRecipe(page, factor + i);
+		else return RecipeWeapons.getAdvRecipe(page, factor + i);
 	}
 
 	@Override

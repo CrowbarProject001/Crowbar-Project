@@ -87,8 +87,10 @@ public class Weapon_satchel extends WeaponGeneral {
 				return par1ItemStack;
 			
 			nbt.setBoolean("doesExplode", false);
-			EntitySatchel ent = new EntitySatchel(par2World, par3EntityPlayer);
-			par2World.spawnEntityInWorld(ent);	
+			if(!par2World.isRemote){
+				EntitySatchel ent = new EntitySatchel(par2World, par3EntityPlayer);
+				par2World.spawnEntityInWorld(ent);	
+			}
 			nbt.setInteger("satchelCount", ++count);
 			if( !par3EntityPlayer.capabilities.isCreativeMode)
 				AmmoManager.tryConsume(par3EntityPlayer,this.itemID , 1);

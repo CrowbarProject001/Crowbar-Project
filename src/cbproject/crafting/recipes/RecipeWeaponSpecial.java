@@ -4,7 +4,7 @@ import cbproject.crafting.items.ItemBullet;
 import cbproject.deathmatch.items.ammos.ItemAmmo;
 import net.minecraft.item.ItemStack;
 
-public class RecipeWeaponSpecial extends RecipeWeaponEntry{
+public class RecipeWeaponSpecial extends RecipeCrafter{
 
 	public ItemAmmo inputA;
 	public ItemBullet inputB;

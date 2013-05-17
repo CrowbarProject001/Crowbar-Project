@@ -7,6 +7,7 @@ import cbproject.core.props.ClientProps;
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
@@ -20,7 +21,7 @@ import net.minecraft.util.Vec3;
  */
 public class RenderEgonRay extends RenderEntity {
 	
-	public static final double WIDTH = 0.05F, RADIUS = 0.07F;
+	public static final double WIDTH = 0.05F, RADIUS = 0.14F;
 	public static final int IDENSITY = 16;
 	private static Tessellator tessellator = Tessellator.instance;
 	
@@ -42,13 +43,15 @@ public class RenderEgonRay extends RenderEntity {
         double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
         float angle = egon.ticksExisted;
         float du =  -egon.ticksExisted * 0.05F;
-        Vec3 v1 = newV3(0, 0, -WIDTH), 
-        		v2 = newV3(0, 0, WIDTH), 
+        double tx = 0.1, tz = 0.2;
+        double ty = Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && egon.getThrower() == Minecraft.getMinecraft().thePlayer? -0.07 : -0.5;
+        Vec3 v1 = newV3(0, 0, -WIDTH).addVector(tx, ty, tz), 
+        		v2 = newV3(0, 0, WIDTH).addVector(tx, ty, tz), 
         		v3 = newV3(d, 0, -WIDTH),
         		v4 = newV3(d, 0, WIDTH),
         		
-        		v5 = newV3(0, WIDTH, 0), 
-        		v6 = newV3(0, -WIDTH, 0),
+        		v5 = newV3(0, WIDTH, 0).addVector(tx, ty, tz), 
+        		v6 = newV3(0, -WIDTH, 0).addVector(tx, ty, tz),
         		v7 = newV3(d, -WIDTH, 0),
         		v8 = newV3(d, WIDTH, 0);
         
@@ -67,14 +70,11 @@ public class RenderEgonRay extends RenderEntity {
         GL11.glTranslatef((float)par2, (float)par4, (float)par6);
         GL11.glRotatef(270.0F - egon.rotationYaw, 0.0F, 1.0F, 0.0F); //左右旋转
         GL11.glRotatef(egon.rotationPitch, 0.0F, 0.0F, -1.0F); //上下旋转
-        GL11.glTranslatef(0, 0.4F, 0);
-        GL11.glRotatef(7.5F, -1.0F, 0.0F, 0.0F);
-        GL11.glTranslatef(0, -0.4F, 0);
-        GL11.glRotatef(angle, 1.0F, 0, 0);
+        //GL11.glRotatef(angle, 1.0F, 0, 0);
         this.loadTexture(ClientProps.EGON_BEAM_PATH[0]);
         
         tessellator.startDrawingQuads();
-        tessellator.setColorRGBA(255, 255, 255, 120);
+        tessellator.setColorRGBA(200, 200, 200, 200);
         addVertex(v1, 0 + du, 0);
         addVertex(v2, 0 + du, 1);
         addVertex(v3, d + du, 1);
@@ -99,18 +99,20 @@ public class RenderEgonRay extends RenderEntity {
         
         this.loadTexture(ClientProps.EGON_BEAM_PATH[1]);
         tessellator.startDrawingQuads();
-        tessellator.setColorRGBA(255, 255, 255, 120);
+        tessellator.setColorRGBA(200, 200, 200, 200);
+        float dt = 0.5f;
         for(int i = 0; i < 2 * IDENSITY - 1; i++){ //upper half
-        	addVertex(vecs[i], i /2.0/IDENSITY, d/2);
-        	addVertex(vecs[i+1], (i+1)/2.0/IDENSITY, d/2);
-        	addVertex(vecs[i+1].addVector(d, 0, 0), (i+1)/2.0/IDENSITY, 0);
-        	addVertex(vecs[i].addVector(d, 0, 0), i/2.0/IDENSITY,0);
+        	addVertex(vecs[i].addVector(tx, ty, tz),dt +  i /2.0/IDENSITY, d/4);
+        	addVertex(vecs[i+1].addVector(tx, ty, tz),dt + (i+1)/2.0/IDENSITY, d/4);
+        	addVertex(vecs[i+1].addVector(d, 0, 0),dt + (i+1)/2.0/IDENSITY, 0);
+        	addVertex(vecs[i].addVector(d, 0, 0),dt + i/2.0/IDENSITY,0);
         	
-        	addVertex(vecs[i].addVector(d, 0, 0), i/2.0/IDENSITY,0);
-        	addVertex(vecs[i], i /2.0/IDENSITY, d/2);
-        	addVertex(vecs[i+1], (i+1)/2.0/IDENSITY, d/2);
-        	addVertex(vecs[i+1].addVector(d, 0, 0), (i+1)/2.0/IDENSITY, 0);
+        	addVertex(vecs[i].addVector(d, 0, 0),dt + i/2.0/IDENSITY,0);
+        	addVertex(vecs[i+1].addVector(d, 0, 0),dt + (i+1)/2.0/IDENSITY, 0);
+        	addVertex(vecs[i+1].addVector(tx, ty, tz),dt + (i+1)/2.0/IDENSITY, d/4);
+        	addVertex(vecs[i].addVector(tx, ty, tz),dt +  i /2.0/IDENSITY, d/4);
         }
+        
         tessellator.draw();
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_BLEND);

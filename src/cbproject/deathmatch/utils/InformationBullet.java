@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 public class InformationBullet extends InformationWeapon{
 	//357,9mmAR,9mmhandgun等的辅助类
 	
-	public int ticksExisted, lastTick;
 	public Boolean isShooting,isReloading;
 	
 	public InformationBullet(ItemStack par8Weapon) {

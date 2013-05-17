@@ -16,7 +16,6 @@ package cbproject.core;
 
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.src.PlayerAPI;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
@@ -27,6 +26,8 @@ import cbproject.core.register.CBCItems;
 import cbproject.core.register.CBCPacketHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
+import cbproject.crafting.blocks.TileEntityWeaponCrafter;
+import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -97,6 +98,7 @@ public class CBCMod
 		CBCBlocks.init(config);
 		CBCItems.init(config);
 		CBCAchievements.init(config);
+		CBCGuiHandler.addGuiElement(TileEntityWeaponCrafter.class, new ElementCrafter());
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
 		proxy.init();

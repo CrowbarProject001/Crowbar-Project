@@ -4,7 +4,7 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.renderers.RendererUtils;
+import cbproject.core.renderers.RenderUtils;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
@@ -72,7 +72,7 @@ public class RenderItemSatchel implements IItemRenderer {
 		
 		bindTextureByItem(item);
 		float width = (mode == 0) ? 0.15F : 0.0625F;
-		RendererUtils.renderItemIn2d(t, width);
+		RenderUtils.renderItemIn2d(t, width);
 		
 		GL11.glPopMatrix();
 
@@ -103,7 +103,7 @@ public class RenderItemSatchel implements IItemRenderer {
 		if(item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();
 		int mode = item.getTagCompound().getInteger("mode");
-		int tex = RendererUtils.getTexture(ClientProps.ITEM_SATCHEL_PATH[mode]);
+		int tex = RenderUtils.getTexture(ClientProps.ITEM_SATCHEL_PATH[mode]);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
 	}
 

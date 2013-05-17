@@ -1,3 +1,17 @@
+/** 
+ * Copyright (c) LambdaCraft Modding Team, 2013
+ * 版权许可：LambdaCraft 制作小组， 2013.
+ * http://lambdacraft.half-life.cn/
+ * 
+ * LambdaCraft is open-source. It is distributed under the terms of the
+ * LambdaCraft Open Source License. It grants rights to read, modify, compile
+ * or run the code. It does *NOT* grant the right to redistribute this software
+ * or its modifications in any form, binary or source, except if expressively
+ * granted by the copyright holder.
+ *
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
+ * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ */
 package cbproject.deathmatch.entities;
 
 import cbproject.core.props.ClientProps;
@@ -5,7 +19,6 @@ import cbproject.deathmatch.entities.fx.EntityTrailFX;
 import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.utils.BulletManager;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
@@ -14,14 +27,14 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 /**
- * RPG rocket entity.
+ * RPG火箭弹实体。
  * @author WeAthFolD
  *
  */
 public class EntityRocket extends EntityThrowable {
 
 	private EntityRPGDot dot;
-	public static double TURNING_SPEED = 0.3;
+	public static double TURNING_SPEED = 0.6;
 	
 	public EntityRocket(World par1World, EntityPlayer player, ItemStack is) {
 		super(par1World, player);
@@ -29,14 +42,16 @@ public class EntityRocket extends EntityThrowable {
 		rotationYaw = player.rotationYaw;
 		worldObj.playSoundAtEntity(this, "cbc.weapons.rocket", 0.3F, 1.0F);
 		this.dot = DMItems.weapon_RPG.getRPGDot(is, par1World, player);
-		if(par1World.isRemote)
-			par1World.spawnEntityInWorld(new EntityTrailFX(par1World, this).setSampleFreq(1).setTrailWidth(0.4F).setTextures(ClientProps.RPG_TRAIL_PATH[0], ClientProps.RPG_TRAIL_PATH[1]).setDoesRenderEnd(true).setDecayTime(60));
+	}
+	
+	public EntityRocket(World world){
+		super(world);
+		worldObj.spawnEntityInWorld(new EntityTrailFX(worldObj, this).setSampleFreq(1).setTrailWidth(0.4F).setTextures(ClientProps.RPG_TRAIL_PATH[0], ClientProps.RPG_TRAIL_PATH[1]).setDoesRenderEnd(true).setDecayTime(60));
 	}
 
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
-		worldObj.spawnParticle("smoke", posX, posY, posZ, 0.0, 0.0, 0.0);
 		if(this.isBurning())
 			Explode();
 		if(ticksExisted % 45 == 0)
@@ -58,12 +73,12 @@ public class EntityRocket extends EntityThrowable {
     public void setRocketHeading(double par1, double par3, double par5, float par7)
     {
         float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
-        par1 /= (double)f2;
-        par3 /= (double)f2;
-        par5 /= (double)f2;
-        par1 *= (double)par7;
-        par3 *= (double)par7;
-        par5 *= (double)par7;
+        par1 /= f2;
+        par3 /= f2;
+        par5 /= f2;
+        par1 *= par7;
+        par3 *= par7;
+        par5 *= par7;
         if(Math.abs(this.motionX - par1) < TURNING_SPEED);
         double dx = par1 - motionX, dy = par3 - motionY, dz = par5 - motionZ;
         float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
@@ -79,7 +94,7 @@ public class EntityRocket extends EntityThrowable {
         else this.motionZ += (dz > 0) ? TURNING_SPEED : -TURNING_SPEED;
        
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)f3) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, f3) * 180.0D / Math.PI);
     }
 	
 	@Override

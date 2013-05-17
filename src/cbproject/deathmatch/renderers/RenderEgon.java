@@ -4,7 +4,7 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.renderers.RendererUtils;
+import cbproject.core.renderers.RenderUtils;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -66,10 +66,10 @@ public class RenderEgon implements IItemRenderer {
 		if(item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();
 		
-        int tex = RendererUtils.getTexture(ClientProps.EGON_EQUIPPED_PATH);
+        int tex = RenderUtils.getTexture(ClientProps.EGON_EQUIPPED_PATH);
 		float width = 0.0625F;
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
-		RendererUtils.renderItemIn2d(t, width); 
+		RenderUtils.renderItemIn2d(t, width); 
 
 	}
 

@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.PlayerBase;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumHelper;
 

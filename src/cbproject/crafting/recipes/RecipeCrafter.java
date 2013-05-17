@@ -3,12 +3,13 @@ package cbproject.crafting.recipes;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.ItemStack;
 
-public class RecipeWeaponEntry {
+public class RecipeCrafter {
 	public ItemStack[] input;
 	public ItemStack output;
 	public int heatRequired;
+	public boolean isAdvancedRecipe = false;;
 	
-	public RecipeWeaponEntry(ItemStack out, int heat, ItemStack...in) {
+	public RecipeCrafter(ItemStack out, int heat, ItemStack...in) {
 		if(in == null){
 			System.err.println("dont register null!");
 			return;
@@ -18,6 +19,11 @@ public class RecipeWeaponEntry {
 		output = out;
 		input = in;
 		heatRequired = heat;
+	}
+	
+	public RecipeCrafter setAdvancedRecipe(){
+		isAdvancedRecipe = true;
+		return this;
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package cbproject.deathmatch.renderers;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.renderers.RendererUtils;
+import cbproject.core.renderers.RenderUtils;
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.blocks.weapons.BlockTripmine;
@@ -77,7 +77,7 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
 		
 		Tessellator tessellator = Tessellator.instance;
         int var5 = tileentity.getBlockMetadata() & 3;
-        BlockTripmine block = (BlockTripmine)DMBlocks.blockTripmine;
+        BlockTripmine block = DMBlocks.blockTripmine;
         TileEntityTripmine tileEntity = (TileEntityTripmine) tileentity;
         
         block.setBlockBoundsBasedOnState(tileentity.worldObj, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
@@ -87,28 +87,28 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         switch(var5){
         case 1:
         case 3:
-        	v1 = RendererUtils.newV3(minX, minY, minZ);
-        	v2 = RendererUtils.newV3(minX, minY, maxZ);
-        	v3 = RendererUtils.newV3(minX, maxY, maxZ);
-        	v4 = RendererUtils.newV3(minX, maxY, minZ);
+        	v1 = RenderUtils.newV3(minX, minY, minZ);
+        	v2 = RenderUtils.newV3(minX, minY, maxZ);
+        	v3 = RenderUtils.newV3(minX, maxY, maxZ);
+        	v4 = RenderUtils.newV3(minX, maxY, minZ);
         	
-        	v5 = RendererUtils.newV3(maxX, minY, minZ);
-        	v6 = RendererUtils.newV3(maxX, minY, maxZ);
-        	v7 = RendererUtils.newV3(maxX, maxY, maxZ);
-        	v8 = RendererUtils.newV3(maxX, maxY, minZ);
+        	v5 = RenderUtils.newV3(maxX, minY, minZ);
+        	v6 = RenderUtils.newV3(maxX, minY, maxZ);
+        	v7 = RenderUtils.newV3(maxX, maxY, maxZ);
+        	v8 = RenderUtils.newV3(maxX, maxY, minZ);
         	
         	break;
         	
         default:
-        	v1 = RendererUtils.newV3(minX, minY, minZ);
-        	v2 = RendererUtils.newV3(maxX, minY, minZ);
-        	v3 = RendererUtils.newV3(maxX, maxY, minZ);
-        	v4 = RendererUtils.newV3(minX, maxY, minZ);
+        	v1 = RenderUtils.newV3(minX, minY, minZ);
+        	v2 = RenderUtils.newV3(maxX, minY, minZ);
+        	v3 = RenderUtils.newV3(maxX, maxY, minZ);
+        	v4 = RenderUtils.newV3(minX, maxY, minZ);
         	
-        	v5 = RendererUtils.newV3(minX, minY, maxZ);
-        	v6 = RendererUtils.newV3(maxX, minY, maxZ);
-        	v7 = RendererUtils.newV3(maxX, maxY, maxZ);
-        	v8 = RendererUtils.newV3(minX, maxY, maxZ);
+        	v5 = RenderUtils.newV3(minX, minY, maxZ);
+        	v6 = RenderUtils.newV3(maxX, minY, maxZ);
+        	v7 = RenderUtils.newV3(maxX, maxY, maxZ);
+        	v8 = RenderUtils.newV3(minX, maxY, maxZ);
         	
         	break;
         }
@@ -238,24 +238,24 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
 		}
 		
         this.bindTextureByName(ClientProps.TRIPMINE_RAY_PATH);
-        v1 = RendererUtils.newV3(minX, y+0.5, minZ);
-     	v2 = RendererUtils.newV3(minX, y+0.5, maxZ);
-     	v3 = RendererUtils.newV3(maxX, y+0.5, maxZ);
-     	v4 = RendererUtils.newV3(maxX, y+0.5, minZ);
+        v1 = RenderUtils.newV3(minX, y+0.5, minZ);
+     	v2 = RenderUtils.newV3(minX, y+0.5, maxZ);
+     	v3 = RenderUtils.newV3(maxX, y+0.5, maxZ);
+     	v4 = RenderUtils.newV3(maxX, y+0.5, minZ);
         switch(var5){
         case 1:
         case 3:
-        	v5 = RendererUtils.newV3(minX, maxY, z + 0.5);
-        	v6 = RendererUtils.newV3(maxX, maxY, z + 0.5);
-        	v7 = RendererUtils.newV3(maxX, minY, z + 0.5);
-        	v8 = RendererUtils.newV3(minX, minY, z + 0.5);
+        	v5 = RenderUtils.newV3(minX, maxY, z + 0.5);
+        	v6 = RenderUtils.newV3(maxX, maxY, z + 0.5);
+        	v7 = RenderUtils.newV3(maxX, minY, z + 0.5);
+        	v8 = RenderUtils.newV3(minX, minY, z + 0.5);
         	break;
         	
         default:
-        	v5 = RendererUtils.newV3(x+0.5, maxY, minZ);
-        	v6 = RendererUtils.newV3(x+0.5, maxY, maxZ);
-        	v7 = RendererUtils.newV3(x+0.5, minY, maxZ);
-        	v8 = RendererUtils.newV3(x+0.5, minY, minZ);
+        	v5 = RenderUtils.newV3(x+0.5, maxY, minZ);
+        	v6 = RenderUtils.newV3(x+0.5, maxY, maxZ);
+        	v7 = RenderUtils.newV3(x+0.5, minY, maxZ);
+        	v8 = RenderUtils.newV3(x+0.5, minY, minZ);
         	
         	break;
         }

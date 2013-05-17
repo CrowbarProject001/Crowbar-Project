@@ -8,10 +8,8 @@ import cbproject.mob.entities.EntitySnark;
 import cbproject.mob.register.MobRegistry;
 import cbproject.mob.utils.MobSpawnHandler;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -39,7 +37,7 @@ public class Weapon_snark extends Item{
     	if(par2World.isRemote)
     		return par1ItemStack;
     	
-    	MobSpawnHandler.spawnCreature(par2World, MobRegistry.ENTITY_ID_SNARK, par3EntityPlayer);
+    	MobSpawnHandler.spawnCreature(par2World, EntitySnark.class, par3EntityPlayer);
     	if(!(par3EntityPlayer.capabilities.isCreativeMode)){
     		par1ItemStack.splitStack(1);
     		if(par1ItemStack.stackSize <= 0)

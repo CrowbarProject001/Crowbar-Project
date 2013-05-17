@@ -9,7 +9,7 @@
  * or its modifications in any form, binary or source, except if expressively
  * granted by the copyright holder.
  *
- * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开原协议》你允许阅读，修改以及调试运行
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
 package cbproject.core.props;
@@ -74,5 +74,12 @@ public class ClientProps {
 		"/cbproject/gfx/textures/entities/rpg_trail.png",
 		"/cbproject/gfx/textures/entities/rpg_trail_tail.png"
 	};
+	public static final String HORNET_TRAIL_PATH = "/cbproject/gfx/textures/entities/ag_trail.png";
+
+	public static String getRandomMuzzleFlash() {
+		int random = (int) (Math.random() * 7) + 1; 
+		String path = "/cbproject/gfx/textures/muz/muz" + random + ".png";
+		return path;
+	}
 
 }

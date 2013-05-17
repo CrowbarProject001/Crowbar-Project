@@ -141,7 +141,7 @@ public abstract  class WeaponGeneralEnergy extends WeaponGeneral {
 		int mode = getMode(par1ItemStack);
 		
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
-		BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
+		BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
     	information.setLastTick();
 
     	if(par3Entity instanceof EntityPlayer){

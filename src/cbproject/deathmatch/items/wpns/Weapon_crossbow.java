@@ -70,10 +70,12 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		switch(mode){
 		case 0:
-			BulletManager.Shoot(par1ItemStack, par3Entity, par2World, "smoke");
+			if(!par2World.isRemote)
+				BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
 			break;
 		case 1:
-			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World, par3Entity));
+			if(!par2World.isRemote)
+				par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World, par3Entity));
 			break;
 		default:
 			break;

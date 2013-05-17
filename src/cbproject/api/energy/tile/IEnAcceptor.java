@@ -9,21 +9,16 @@
  * or its modifications in any form, binary or source, except if expressively
  * granted by the copyright holder.
  *
- * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开原协议》你允许阅读，修改以及调试运行
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.api.entities;
-
-import net.minecraft.entity.player.EntityPlayer;
-
+package cbproject.api.energy.tile;
 
 /**
- * 在Entity中链接玩家的实用接口。
- * @author WeAthFolD
+ * @author Administrator
+ *
  */
-public interface IPlayerLink {
+public interface IEnAcceptor {
 	
-	EntityPlayer getLinkedPlayer();
-	
-	void setLinkedPlayer(EntityPlayer player);
+	public boolean demandsEnergy(int metadata, int side);
 }

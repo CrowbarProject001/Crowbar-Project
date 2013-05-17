@@ -13,6 +13,7 @@ import cbproject.deathmatch.items.wpns.Weapon_crowbar;
 import cbproject.deathmatch.items.wpns.Weapon_egon;
 import cbproject.deathmatch.items.wpns.Weapon_gauss;
 import cbproject.deathmatch.items.wpns.Weapon_hgrenade;
+import cbproject.deathmatch.items.wpns.Weapon_hornet;
 import cbproject.deathmatch.items.wpns.Weapon_satchel;
 import cbproject.deathmatch.items.wpns.Weapon_shotgun;
 
@@ -28,13 +29,12 @@ public class DMItems {
 	public static Item weapon_9mmAR;
 	public static Item weapon_357;
 	public static Item weapon_shotgun;
+	public static Weapon_hornet weapon_hornet;
 	public static Weapon_RPG weapon_RPG;
 	public static Item weapon_crossbow;
 	
-	public static ArmorHEV armorHEVBoot, armorHEVLeggings;
+	public static ArmorHEV armorHEVBoot, armorHEVLeggings, armorHEVChestplate, armorHEVHelmet;
 	public static ArmorLongjump longjump;
-	//, armorHEVChestplate, armorHEVHelmet, armorHEVLeggings;
-	
 	
 	public static void init(Config conf){
 		
@@ -52,12 +52,13 @@ public class DMItems {
 			
 			weapon_gauss = new Weapon_gauss(conf.GetItemID("weapon_gauss", 7050));
 			weapon_egon = new Weapon_egon(conf.GetItemID("weapon_egon", 7051));
+			weapon_hornet = new Weapon_hornet(conf.GetItemID("weapon_hornet", 7052));
 			
-			//armorHEVHelmet = new ArmorHEV(conf.GetItemID("armorHEVHelmet", 8001), 0);
-			//armorHEVChestplate = new ArmorHEV(conf.GetItemID("armorHEVChestplate", 8002), 1);
-			armorHEVLeggings = new ArmorHEV(conf.GetItemID("armorHEVLeggings", 8003), 2);
-			armorHEVBoot = new ArmorHEV(conf.GetItemID("armorHEVBoot", 8000), 3);
-			longjump = new ArmorLongjump(conf.GetItemID("armorLongjump", 8001), 1);
+			armorHEVHelmet = new ArmorHEV(conf.GetItemID("hevHelmet", 8002), 0);
+			armorHEVChestplate = new ArmorHEV(conf.GetItemID("hevChestplate", 8003), 1);
+			armorHEVLeggings = new ArmorHEV(conf.GetItemID("hevLeggings", 8004), 2);
+			armorHEVBoot = new ArmorHEV(conf.GetItemID("hevBoot", 8005), 3);
+			longjump = new ArmorLongjump(conf.GetItemID("armorLongjump", 8006), 1);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -151,10 +151,12 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ * vel;
 		
 		inf.isShooting = false;
+		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
+		if(par2World.isRemote)
+			return;
+		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
 		par2World.playSoundAtEntity(par3EntityPlayer, SND_SHOOT_PATH,  
 				0.5F, 1.0F);
-		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
-		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
 	
 	}
 	

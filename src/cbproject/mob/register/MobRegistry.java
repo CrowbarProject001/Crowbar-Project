@@ -1,19 +1,18 @@
 package cbproject.mob.register;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cbproject.core.CBCMod;
-import cbproject.core.props.GeneralProps;
-import cbproject.core.register.CBCSoundEvents;
-import cbproject.mob.entities.EntitySnark;
-import cbproject.mob.utils.EntitySelectorLiving;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityList;
-import net.minecraft.src.ModLoader;
+import cbproject.core.props.GeneralProps;
+import cbproject.core.register.CBCSoundEvents;
+import cbproject.mob.CBCMob;
+import cbproject.mob.entities.EntitySnark;
+import cbproject.mob.utils.EntitySelectorLiving;
+import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class MobRegistry {
 	
-	public static int ENTITY_ID_SNARK;
 	public static IEntitySelector selectorLiving;
+	static int startEntityId = 99;
 	
 	public static final String SND_MOBS[] = {
 		"sqk_blast",
@@ -30,10 +29,19 @@ public class MobRegistry {
 		}
 	}
 	
+	public static int getUniqueEntityId() 
+	{
+		do 
+		{
+			startEntityId++;
+		} 
+		while (EntityList.IDtoClassMapping.get(startEntityId) != null);
+
+	return startEntityId;
+	}
+	
 	public static void register(){
-		ENTITY_ID_SNARK = EntityRegistry.findGlobalUniqueEntityId();
 		selectorLiving = new EntitySelectorLiving();
-		EntityRegistry.registerModEntity(EntitySnark.class, "Snark", ENTITY_ID_SNARK, CBCMod.instance, 64, 2, true);
-		EntityList.addMapping(EntitySnark.class, "Snark", ENTITY_ID_SNARK, 0xffffff, 0x000000);
+		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMob.instance, 32, 3, true);
 	}
 }

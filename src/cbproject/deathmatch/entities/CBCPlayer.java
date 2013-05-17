@@ -1,9 +1,12 @@
 package cbproject.deathmatch.entities;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ArmorLongjump;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 
 public class CBCPlayer extends PlayerBase {
@@ -26,5 +29,7 @@ public class CBCPlayer extends PlayerBase {
 			}
 		}
 	}
+	
+
 
 }

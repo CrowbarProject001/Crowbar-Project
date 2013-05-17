@@ -11,7 +11,6 @@ import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.InformationBullet;
 import cbproject.deathmatch.utils.InformationRPG;
 import cbproject.deathmatch.utils.InformationSet;
-import cbproject.deathmatch.utils.InformationWeapon;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +48,8 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 		
 		
 		InformationRPG inf = (InformationRPG) super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+		if(par2World.isRemote)
+			return;
 		if(inf == null){
 			if(!(par3Entity instanceof EntityPlayer))
 				return;
@@ -92,12 +93,12 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		information.setLastTick();
 		int mode = getMode(par1ItemStack);
+		if(par2World.isRemote)
+			return;
 		if(this.canShoot(par3Entity, par1ItemStack)){
-			if(this.canShoot(par3Entity, par1ItemStack)){
-				par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
-				par2World.spawnEntityInWorld(new EntityRocket(par2World, par3Entity, par1ItemStack));
-				AmmoManager.consumeAmmo(par3Entity, this, 1);
-			}
+			par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
+			par2World.spawnEntityInWorld(new EntityRocket(par2World, par3Entity, par1ItemStack));
+			AmmoManager.consumeAmmo(par3Entity, this, 1);
 		}
 	}
 	
