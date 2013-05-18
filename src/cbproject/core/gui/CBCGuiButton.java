@@ -46,6 +46,8 @@ public class CBCGuiButton {
 	 */
 	public ButtonState buttonState;
 	
+	protected IGuiTip tooltip;
+	
 	public CBCGuiButton(String name, int x, int y, int w, int h) {
 		buttonName = name;
 		posX = x;
@@ -53,6 +55,10 @@ public class CBCGuiButton {
 		width = w;
 		height = h;
 		buttonState = ButtonState.IDLE;
+	}
+	
+	public boolean hasToolTip(){
+		return this.tooltip != null;
 	}
 	
 	/**

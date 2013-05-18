@@ -59,6 +59,9 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		}
     }
 	
+	/**
+	 * TODO:在这里添加对于ToolTip显示的判断
+	 */
 	@Override
 	protected void mouseMovedOrUp(int par1, int par2, int par3)
     {
@@ -77,12 +80,17 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	 * @param state 状态
 	 */
 	public void setButtonState(String buttonName, ButtonState state){
-		for(CBCGuiButton b : buttons){
-			if(b.buttonName == buttonName){
-				b.buttonState = state;
-				return;
-			}
-		}
+		getButton(buttonName).buttonState = state;
+	}
+	
+	/**
+	 * TODO:有待完成
+	 * @param buttonName
+	 * @param tip
+	 * @return
+	 */
+	public boolean setButtonTip(String buttonName, IGuiTip tip){
+		return true;
 	}
 	
 	/**
@@ -91,9 +99,13 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	 * @return 对应按钮状态
 	 */
 	public ButtonState getButtonState(String name){
+		return getButton(name).buttonState;
+	}
+	
+	protected CBCGuiButton getButton(String name){
 		for(CBCGuiButton b : buttons){
 			if(b.buttonName == name)
-				return b.buttonState;
+				return b;
 		}
 		return null;
 	}

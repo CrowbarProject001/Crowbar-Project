@@ -48,6 +48,7 @@ public class BlockWeaponCrafter extends BlockContainer {
         return iconSide;
     }
     
+
     @Override
 	public void registerIcons(IconRegister par1IconRegister)
     {
@@ -114,17 +115,6 @@ public class BlockWeaponCrafter extends BlockContainer {
                 par1World.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
             }
         }
-    }
-    
-    @SideOnly(Side.CLIENT)
-    @Override
-    public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
-    {
-    	TileEntityWeaponCrafter te = (TileEntityWeaponCrafter)par1IBlockAccess.getBlockTileEntity(par2, par3, par4);
-    	int brightness = 0;
-    	if(te != null && te.isBurning)
-    		brightness = 5;
-        return par1IBlockAccess.getLightBrightnessForSkyBlocks(par2, par3, par4, brightness);
     }
 
     private void dropItems(World world, int x, int y, int z){

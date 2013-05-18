@@ -19,6 +19,7 @@ import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.CBCDeathmatch;
+import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.entities.EntityBattery;
 import cbproject.deathmatch.entities.EntityBullet;
@@ -32,6 +33,7 @@ import cbproject.deathmatch.entities.EntityRocket;
 import cbproject.deathmatch.entities.EntitySatchel;
 import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cbproject.deathmatch.entities.fx.EntityGaussRay;
+import cbproject.deathmatch.gui.ElementArmorCharger;
 import cbproject.deathmatch.keys.DMMode;
 import cbproject.deathmatch.keys.DMReload;
 import cbproject.deathmatch.network.NetDeathmatch;
@@ -105,6 +107,7 @@ public class DMRegister {
 	
 	public static void register(){
 		CBCPacketHandler.addChannel("CBCWeapons", new NetDeathmatch());
+		CBCGuiHandler.addGuiElement(TileEntityArmorCharger.class, new ElementArmorCharger());
 		
 		EntityRegistry.registerModEntity(EntityGaussRay.class, "gauss", GeneralProps.ENT_ID_GAUSS1, CBCDeathmatch.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityEgonRay.class, "egonray", GeneralProps.ENT_ID_EGON_RAY, CBCDeathmatch.instance, 32, 3, true);

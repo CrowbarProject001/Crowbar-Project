@@ -48,7 +48,8 @@ public class ClientProps {
 			EGON_BEAM_PATH[] = {"/cbproject/gfx/textures/entities/egon_beam.png", "/cbproject/gfx/textures/entities/egon_ray2.png"},
 			CROSSBOW_BOW_PATH = "/cbproject/gfx/textures/entities/steelbow.png";
 
-	public static final String EGON_EQUIPPED_PATH = "/cbproject/gfx/textures/items/weapon_egon0.png";
+	public static final String EGON_EQUIPPED_PATH = "/cbproject/gfx/textures/items/weapon_egon0.png",
+			GUI_ARMORCHARGER_PATH = "/cbproject/gfx/textures/gui/armor_charger.png";
 
 	public static final String GUI_WEAPONCRAFTER_PATH = "/cbproject/gfx/textures/gui/crafter.png";
 
