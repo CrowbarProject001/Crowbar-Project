@@ -127,11 +127,11 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 			BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
 			if(!par3Entity.capabilities.isCreativeMode ){
 				par1ItemStack.damageItem( 1 , par3Entity);
-				par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 	    	}
 			return;
 	    }
-		
+
+		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
     	doUplift(information, par3Entity);	
     }
     

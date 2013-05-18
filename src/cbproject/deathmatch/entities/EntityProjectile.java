@@ -89,6 +89,7 @@ public abstract class EntityProjectile extends Entity {
     @Override
 	public void onUpdate()
     {
+    	super.onUpdate();
     	if(worldObj.isRemote)
     		return;
         this.prevPosX = this.posX;

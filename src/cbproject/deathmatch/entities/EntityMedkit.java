@@ -41,7 +41,7 @@ public class EntityMedkit extends EntityProjectile {
 			return;
 		EntityPlayer player = list.get(0);
 		player.heal(8);
-		this.playSound("cbc.entity.battery", 0.5F, 1.0F);
+		this.playSound("cbc.entity.medkit", 0.5F, 1.0F);
 		this.setDead();
 	}
 

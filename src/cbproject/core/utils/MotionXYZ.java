@@ -155,7 +155,7 @@ public class MotionXYZ {
 	private void getPosByPlayer(EntityLiving par1Player){
 		
 		posX = par1Player.posX;
-		posY = par1Player.posY;
+		posY = par1Player.posY + par1Player.getEyeHeight();
 		posZ = par1Player.posZ;
 		
 		float var3 = 1.0F, var4 = 0.0F;

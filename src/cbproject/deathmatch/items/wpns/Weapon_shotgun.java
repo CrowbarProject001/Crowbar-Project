@@ -101,6 +101,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
     	}
 
 		information.setLastTick();
+		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		if(par2World.isRemote)
 			return;
 		int count = mode == 0 ? 8 : 16;

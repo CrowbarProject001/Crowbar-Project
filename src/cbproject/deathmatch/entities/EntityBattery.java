@@ -34,17 +34,36 @@ import net.minecraft.world.World;
 public class EntityBattery extends EntityProjectile {
 
 	public static final int EU_PER_BATTERY = 50000;
+	private int currentEnergy;
+	
+	public EntityBattery(World world, EntityPlayer player, int energy) {
+		super(world);
+		this.setSize(0.3F, 0.6F);
+		this.posX = player.posX;
+		this.posY = player.posY;
+		this.posZ = player.posZ;
+		this.currentEnergy = energy;
+	}
 	
 	public EntityBattery(World world) {
 		super(world);
 		this.setSize(0.3F, 0.6F);
 	}
 
+	/**
+	 * TODO:BB碰撞的触发有问题（updateTick2之后的代码 没有被调用)
+	 * 出现生成一段时间自动消失的问题
+	 */
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
+		System.out.println("updatetick 1");
+		if(worldObj.isRemote || ticksExisted < 40)
+			return;
+		System.out.println("updatetick 2");
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX-0.15, posY-0.3, posZ - 0.15, posX + 0.15, posY + 0.3, posZ + 0.15);
 		List<EntityPlayer> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, new EntitySelectorPlayer());
+		System.out.println(list);
 		if(list == null)
 			return;
 		EntityPlayer player = list.get(0);
@@ -58,7 +77,7 @@ public class EntityBattery extends EntityProjectile {
 	 * Charges the HEV armor wearing on the player with the amount of 1 battery(50000 EU).
 	 * @param player the player entity
 	 */
-	public static void tryChargeArmor(EntityPlayer player){
+	public void tryChargeArmor(EntityPlayer player){
 		int amount = 0;
 		List<ICustomEnItem> armor = new ArrayList();
 		List<ItemStack> stack = new ArrayList();
@@ -71,7 +90,7 @@ public class EntityBattery extends EntityProjectile {
 			}
 		}
 		for(int i = 0; i < stack.size(); i++){
-			armor.get(i).charge(stack.get(i), EU_PER_BATTERY / amount, 2, true, false);
+			armor.get(i).charge(stack.get(i), currentEnergy / amount, 2, true, false);
 		}
 	}
 	

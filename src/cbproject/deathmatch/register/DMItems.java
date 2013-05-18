@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import cbproject.core.misc.Config;
 import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ArmorLongjump;
+import cbproject.deathmatch.items.ItemBattery;
 import cbproject.deathmatch.items.wpns.Weapon_357;
 import cbproject.deathmatch.items.wpns.Weapon_9mmAR;
 import cbproject.deathmatch.items.wpns.Weapon_9mmhandgun;
@@ -32,6 +33,7 @@ public class DMItems {
 	public static Weapon_hornet weapon_hornet;
 	public static Weapon_RPG weapon_RPG;
 	public static Item weapon_crossbow;
+	public static Item battery, medkit;
 	
 	public static ArmorHEV armorHEVBoot, armorHEVLeggings, armorHEVChestplate, armorHEVHelmet;
 	public static ArmorLongjump longjump;
@@ -59,6 +61,8 @@ public class DMItems {
 			armorHEVLeggings = new ArmorHEV(conf.GetItemID("hevLeggings", 8004), 2);
 			armorHEVBoot = new ArmorHEV(conf.GetItemID("hevBoot", 8005), 3);
 			longjump = new ArmorLongjump(conf.GetItemID("armorLongjump", 8006), 1);
+			
+			battery = new ItemBattery(conf.GetItemID("battery", 8007));
 		}catch(Exception e){
 			e.printStackTrace();
 		}

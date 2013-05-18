@@ -20,11 +20,13 @@ import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.CBCDeathmatch;
 import cbproject.deathmatch.entities.EntityARGrenade;
+import cbproject.deathmatch.entities.EntityBattery;
 import cbproject.deathmatch.entities.EntityBullet;
 import cbproject.deathmatch.entities.EntityBulletSG;
 import cbproject.deathmatch.entities.EntityCrossbowArrow;
 import cbproject.deathmatch.entities.EntityHGrenade;
 import cbproject.deathmatch.entities.EntityHornet;
+import cbproject.deathmatch.entities.EntityMedkit;
 import cbproject.deathmatch.entities.EntityRPGDot;
 import cbproject.deathmatch.entities.EntityRocket;
 import cbproject.deathmatch.entities.EntitySatchel;
@@ -113,6 +115,8 @@ public class DMRegister {
 		EntityRegistry.registerModEntity(EntityRPGDot.class, "dot", GeneralProps.ENT_ID_DOT, CBCDeathmatch.instance, 64, 3, true);
 		EntityRegistry.registerModEntity(EntitySatchel.class, "satchel", GeneralProps.ENT_ID_SATCHEL, CBCDeathmatch.instance, 32, 2, true);
 		EntityRegistry.registerModEntity(EntityCrossbowArrow.class, "arrow", GeneralProps.ENT_ID_ARROW, CBCDeathmatch.instance, 32, 2, true);
+		EntityRegistry.registerModEntity(EntityMedkit.class, "medkit", GeneralProps.ENT_ID_MEDKIT, CBCDeathmatch.instance, 32, 5, true);
+		EntityRegistry.registerModEntity(EntityBattery.class, "battery", GeneralProps.ENT_ID_BATTERY, CBCDeathmatch.instance, 32, 5, true);
 		
 		String description[] = {"crafter.weapon", "crafter.ammo"},
 				advds [] = {"crafter.advweapon", "crafter.armor"};

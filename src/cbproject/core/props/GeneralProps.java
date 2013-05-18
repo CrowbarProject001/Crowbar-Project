@@ -27,9 +27,8 @@ public class GeneralProps {
 	public static final int ENT_ID_GAUSS1 = 0, ENT_ID_EGON_RAY = 1, 
 			ENT_ID_TRAIL = 2, ENT_ID_ARGRENADE = 3, ENT_ID_ARROW = 4,
 			ENT_ID_HGRENADE = 5, ENT_ID_HORNET = 6, ENT_ID_ROCKET = 7,
-			ENT_ID_DOT = 8, ENT_ID_SATCHEL = 9, ENT_ID_SNARK = 10, ENT_ID_BULLET = 11, ENT_ID_BOW = 12;
-
-	public static final int ENT_ID_GAUSS2 = 14;
+			ENT_ID_DOT = 8, ENT_ID_SATCHEL = 9, ENT_ID_SNARK = 10, ENT_ID_BULLET = 11, ENT_ID_BOW = 12,
+			ENT_ID_MEDKIT = 13, ENT_ID_BATTERY = 14, ENT_ID_GAUSS2 = 15;
 	
 	public static void loadProps(Config config){
 		try {

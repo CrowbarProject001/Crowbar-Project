@@ -86,6 +86,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 							getSoundShoot(mode), 0.5F, 1.0F);
 				}
 		}
+		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 
 		information.setLastTick();
 		return;

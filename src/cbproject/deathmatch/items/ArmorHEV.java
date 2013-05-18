@@ -8,22 +8,26 @@ import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.register.DMItems;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.EnumHelper;
+import net.minecraftforge.common.ISpecialArmor;
 
-public class ArmorHEV extends ItemArmor implements ICustomEnItem {
+public class ArmorHEV extends ItemArmor implements ICustomEnItem, ISpecialArmor {
 
-	public static int reductionAmount[] = {8, 15, 10, 5};
+	private static final int ENERGY_PER_DAMAGE = 1000;
+	public static int reductionAmount[] = {0, 0, 0, 0};
 	public static EnumArmorMaterial material = EnumHelper.addArmorMaterial("armorHEV", 1000000, reductionAmount, 0);
 	
 	public ArmorHEV(int par1, int armorType) {
 		super(par1, material, 2, armorType);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("hev" + this.armorType);
-		System.out.println("Registered type :" + armorType + Item.itemsList[par1]);
 	}
 
 	@Override
@@ -94,7 +98,8 @@ public class ArmorHEV extends ItemArmor implements ICustomEnItem {
 	@Override
 	public int discharge(ItemStack itemStack, int amount, int tier,
 			boolean ignoreTransferLimit, boolean simulate) {
-		int en = itemStack.getMaxDamage() - itemStack.getItemDamage();
+		
+		int en = itemStack.getMaxDamage() - itemStack.getItemDamage() - 1;
 		if(en == 0)
 			return 0;
 		if(!ignoreTransferLimit)
@@ -108,17 +113,36 @@ public class ArmorHEV extends ItemArmor implements ICustomEnItem {
 				itemStack.setItemDamage(itemStack.getItemDamage() + en);
 			return en;
 		}
+		
 	}
 
 	@Override
 	public boolean canUse(ItemStack itemStack, int amount) {
-		int en = itemStack.getMaxDamage() - itemStack.getItemDamage();
+		int en = itemStack.getMaxDamage() - itemStack.getItemDamage() - 1;
 		return en > 1000;
 	}
 
 	@Override
 	public boolean canShowChargeToolTip(ItemStack itemStack) {
 		return true;
+	}
+
+	@Override
+	public ArmorProperties getProperties(EntityLiving player, ItemStack armor,
+			DamageSource source, double damage, int slot) {
+		ArmorProperties ap = new ArmorProperties(slot == 2 ? 3:2, 12.0, 250);
+		return ap;
+	}
+
+	@Override
+	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+		return (slot == 2) ? 8 : 4;
+	}
+
+	@Override
+	public void damageArmor(EntityLiving entity, ItemStack stack,
+			DamageSource source, int damage, int slot) {
+		this.discharge(stack, damage * ENERGY_PER_DAMAGE, 2, true, false);
 	}
 
 }

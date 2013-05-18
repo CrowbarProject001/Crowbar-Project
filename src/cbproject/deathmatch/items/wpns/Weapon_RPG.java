@@ -93,6 +93,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
 		information.setLastTick();
 		int mode = getMode(par1ItemStack);
+		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		if(par2World.isRemote)
 			return;
 		if(this.canShoot(par3Entity, par1ItemStack)){

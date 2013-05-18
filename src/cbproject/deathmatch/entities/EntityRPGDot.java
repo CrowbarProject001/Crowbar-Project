@@ -56,8 +56,10 @@ public class EntityRPGDot extends EntityThrowable {
 		if(worldObj.isRemote)
 			return;
 		ItemStack currentItem = getThrower().getCurrentItemOrArmor(0);
-		if(currentItem == null || !Weapon_RPG.class.isInstance(currentItem.getItem()) )
+		if(currentItem == null || !Weapon_RPG.class.isInstance(currentItem.getItem()) ){
 			setDead();
+			return;
+		}
 		else {
 			int mode = DMItems.weapon_RPG.getMode(currentItem);
 			if(mode == 0)
