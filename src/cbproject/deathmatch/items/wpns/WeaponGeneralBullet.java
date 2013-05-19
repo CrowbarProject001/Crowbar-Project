@@ -1,6 +1,10 @@
 package cbproject.deathmatch.items.wpns;
 
 
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
@@ -10,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 /**
@@ -181,6 +186,13 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		InformationBullet inf = getInformation(par1ItemStack, par2World);
 		inf.isShooting = false;
 	}
+	
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    	par3List.add(StatCollector.translateToLocal("ammocap.name") + ": " + 
+    (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamageForDisplay() - 1) + "/" + (par1ItemStack.getMaxDamage() - 1));
+    }
     
 	/**
 	 * Get the shoot sound path corresponding to the mode.

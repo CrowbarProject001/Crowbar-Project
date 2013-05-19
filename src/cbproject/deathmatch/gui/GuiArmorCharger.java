@@ -16,10 +16,12 @@ package cbproject.deathmatch.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.StatCollector;
 import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiContainer;
+import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
@@ -43,6 +45,20 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		this.ySize = 166;
 		te = t;
 	}
+	
+	class TipEnergy implements IGuiTip {
+
+		@Override
+		public String getHeadText() {
+			return "";
+		}
+
+		@Override
+		public String getTip() {
+			return StatCollector.translateToLocal("current.energy.name") + " : " + te.currentEnergy / te.ENERGY_MAX;
+		}
+		
+	}
 
 	@Override
     public void initGui()
@@ -50,6 +66,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
         super.initGui();
         CBCGuiButton behavior = new CBCGuiButton("behavior", 153, 5, 19, 10).setidleCoords(153, 5).setDownCoords(180, 13);
         this.addButton(behavior);
+        this.setButtonTip("behavior", new TipEnergy());
     }
 	
     /**
@@ -73,8 +90,9 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	@Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
+		super.drawGuiContainerForegroundLayer(par1, par2);
     	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	String currentPage = StatCollector.translateToLocal("armorcharger");
+    	String currentPage = StatCollector.translateToLocal("armorcharger.name");
         fontRenderer.drawString(currentPage, 88 - fontRenderer.getStringWidth(currentPage) / 2, 5, 0x969494);
     }
 
@@ -88,8 +106,15 @@ public class GuiArmorCharger extends CBCGuiContainer {
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-        this.drawButtons();
+        this.drawElements();
 
+        int length = te.currentEnergy * 64 / te.ENERGY_MAX;
+        this.drawTexturedModalRect(x + 80, y + 28, 176, 0, length, 10);
+        
+        if(te.isCharging){
+        	int height = (int) (te.worldObj.getWorldTime() % 43);
+        	this.drawTexturedModalRect(x + 29, y + 21, 176, 56, 43, height);
+        }
 	}
 
 }

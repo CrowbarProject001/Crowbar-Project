@@ -46,7 +46,7 @@ public class CBCGuiButton {
 	 */
 	public ButtonState buttonState;
 	
-	protected IGuiTip tooltip;
+	public IGuiTip tooltip;
 	
 	public CBCGuiButton(String name, int x, int y, int w, int h) {
 		buttonName = name;
@@ -101,6 +101,7 @@ public class CBCGuiButton {
 		if(this.buttonState != ButtonState.INVAILD)
 			this.buttonState = a;
 	}
+	
 	
 	/**
 	 * 强制设置按钮状态。

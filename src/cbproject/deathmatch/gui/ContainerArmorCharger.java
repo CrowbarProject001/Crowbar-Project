@@ -75,7 +75,7 @@ public class ContainerArmorCharger extends Container {
 			// inventory
 			if (slot >= 8) {
 				if(stackInSlot != null && stackInSlot.getItem() instanceof ArmorHEV){
-					if (!this.mergeItemStack(stackInSlot, 0, 3, true)) {
+					if (!this.mergeItemStack(stackInSlot, 0, 4, true)) {
 						return null;
 					}
 				} else if (!this.mergeItemStack(stackInSlot, 4, 7, true)) {

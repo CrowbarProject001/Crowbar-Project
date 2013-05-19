@@ -36,6 +36,7 @@ public class ItemBattery extends Item implements ICustomEnItem {
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("hevbattery");
 		this.setMaxDamage(EntityBattery.EU_PER_BATTERY);
+		this.setMaxStackSize(1);
 	}
 	
     @SideOnly(Side.CLIENT)

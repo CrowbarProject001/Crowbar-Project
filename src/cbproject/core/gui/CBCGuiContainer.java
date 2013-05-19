@@ -14,7 +14,12 @@
  */
 package cbproject.core.gui;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
 import cbproject.core.gui.CBCGuiButton.ButtonState;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -66,12 +71,14 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	protected void mouseMovedOrUp(int par1, int par2, int par3)
     {
 		super.mouseMovedOrUp(par1, par2, par3);
+		
 		if(par3 == 0 || par3 == 1){
 			for(CBCGuiButton b : buttons){
 				if(isPointWithin(b, par1, par2))
 					b.setButtonState(ButtonState.IDLE);
 			}
 		}
+		
     }
 	
 	/**
@@ -90,6 +97,7 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	 * @return
 	 */
 	public boolean setButtonTip(String buttonName, IGuiTip tip){
+		getButton(buttonName).tooltip = tip;
 		return true;
 	}
 	
@@ -110,10 +118,30 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		return null;
 	}
 	
+	@Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		IGuiTip currentTip = null;
+		for(CBCGuiButton b : buttons){
+			if(isPointWithin(b, par1, par2) && b.hasToolTip()){
+				currentTip = b.tooltip;
+			}
+		}
+		if(currentTip != null){
+			int x = xSize / 2, y = ySize / 2;
+			GL11.glColor3f(0.0F,0.0F,0.0F);
+			boolean drawHead = currentTip.getHeadText() != "";
+			if(drawHead){
+				fontRenderer.drawString(currentTip.getTip(), par1 - x, par2 - y, 0x000000);
+			} else {
+				fontRenderer.drawString(currentTip.getTip(), par1 - x, par2 - y, 0x000000);
+			}
+		}
+	}
+	
 	/**
 	 * 绘制按钮，在drawGuiBackgroundLayer()中调用。
 	 */
-	public void drawButtons(){
+	public void drawElements(){
 		for(CBCGuiButton b : buttons){
 			int x = (width - xSize) / 2;
 	        int y = (height - ySize) / 2;
@@ -132,6 +160,7 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	        
 	        drawTexturedModalRect(x + b.posX, y + b.posY, texU, texV, b.width, b.height);
 		}
+		
 	}
 	
 	protected boolean isPointWithin(CBCGuiButton button, int x, int y){
