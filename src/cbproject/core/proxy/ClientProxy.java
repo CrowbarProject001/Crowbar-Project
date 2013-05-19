@@ -9,7 +9,7 @@
  * or its modifications in any form, binary or source, except if expressively
  * granted by the copyright holder.
  *
- * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》你允许阅读，修改以及调试运行
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
 package cbproject.core.proxy;

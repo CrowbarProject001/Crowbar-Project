@@ -15,11 +15,18 @@
 package cbproject.core.gui;
 
 /**
- * @author Administrator
- *
+ * 在GUI中显示提示文字，与CBCGuiButton和CBCGuiContainer配合使用。
+ * @author WeAthFolD
  */
 public interface IGuiTip {
+	
+	/**
+	 * 获取头行文字。
+	 */
 	String getHeadText();
 	
+	/**
+	 * 获取说明信息。
+	 */
 	String getTip();
 }

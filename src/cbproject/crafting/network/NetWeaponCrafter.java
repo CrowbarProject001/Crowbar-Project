@@ -5,7 +5,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import cbproject.core.props.GeneralProps;
+import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 
@@ -23,9 +26,18 @@ public class NetWeaponCrafter implements IChannelProcess{
 	
 	public NetWeaponCrafter(){}
 	
+	/**
+	 * Sends the WeaponCrafter information packet.
+	 * @param d dimension
+	 * @param i id(0 = factor, 1 = page)
+	 * @param x 方块X
+	 * @param y 方块Y
+	 * @param z 方块Z
+	 * @param dir 方向（true=下，false=上）
+	 */
 	public static void sendCrafterPacket(short d, short i, int x, int y, int z, boolean dir){
 		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(17);
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_CRAFTER, 17);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		
 		try {
@@ -40,16 +52,15 @@ public class NetWeaponCrafter implements IChannelProcess{
 		}
 		
 		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = "CBCCrafter";
+		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToServer(packet);
 		
 	}
 	
-	public NetWeaponCrafter getCrafterPacket(Packet250CustomPayload packet){
+	public NetWeaponCrafter getCrafterPacket(DataInputStream inputStream){
 		
-		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		try {
 			dimension = inputStream.readShort();
 			id = inputStream.readShort();
@@ -65,7 +76,7 @@ public class NetWeaponCrafter implements IChannelProcess{
 	}
 
 	@Override
-	public void onPacketData(Packet250CustomPayload packet, Player player) {
+	public void onPacketData(DataInputStream packet, Player player) {
 		NetWeaponCrafter c = new NetWeaponCrafter().getCrafterPacket(packet);
 		TileEntity te = MinecraftServer.getServer().worldServerForDimension(c.dimension).getBlockTileEntity(c.blockX, c.blockY, c.blockZ);
 		if(te != null && !te.worldObj.isRemote){

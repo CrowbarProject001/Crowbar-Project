@@ -10,14 +10,17 @@ import cbproject.crafting.blocks.BlockUraniumOre;
 import cbproject.crafting.blocks.BlockWeaponCrafter;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 /**
- * 
+ * 方块注册类，包括了所有crafting包中的方块。
  * @author WeAthFolD
- * @description Block register,which handles all instance of blocks in mod.
  */
 public class CBCBlocks {
 	
 	public static Block blockWeaponCrafter, blockRefined, blockUraniumOre, blockAdvCrafter;
 	
+	/**
+	 * 在这里进行实际的方块加载。请在Init中调用它。
+	 * @param conf Mod内部通用Config
+	 */
 	public static void init(Config conf){
 		
 		try {

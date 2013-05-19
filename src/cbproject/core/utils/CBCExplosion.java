@@ -242,7 +242,7 @@ public class CBCExplosion {
                     this.worldObj.spawnParticle("smoke", d0, d1, d2, d3, d4, d5);
                 }
 
-                if (!GeneralProps.ignoreBlockDestroy && l > 0)
+                if (!GeneralProps.ignoreBlockDestroy && l > 0 && !worldObj.isRemote)
                 {
                     Block block = Block.blocksList[l];
 
@@ -251,7 +251,7 @@ public class CBCExplosion {
                         block.dropBlockAsItemWithChance(this.worldObj, i, j, k, this.worldObj.getBlockMetadata(i, j, k), 1.0F / this.explosionSize, 0);
                     }
 
-                    this.worldObj.setBlock(i, j, k, 0, 0, 3);
+                    this.worldObj.setBlock(i, j, k, 0, 0, 2);
                    
                     block.onBlockDestroyedByExplosion(this.worldObj, i, j, k, explosion);
                 }

@@ -1,7 +1,7 @@
 package cbproject.deathmatch;
 
 import cbproject.core.CBCMod;
-import cbproject.core.register.CBCPacketHandler;
+import cbproject.core.register.CBCNetHandler;
 import cbproject.deathmatch.register.DMBlocks;
 import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.register.DMRegister;
@@ -20,9 +20,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 
 @Mod(modid="lcdm",name="LambdaCraft DM Module",version="0.9.9 pre")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false,
-serverPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCWeapons"}, packetHandler = CBCPacketHandler.class )
-)
+@NetworkMod(clientSideRequired=true,serverSideRequired=false)
 public class CBCDeathmatch
 {
 	

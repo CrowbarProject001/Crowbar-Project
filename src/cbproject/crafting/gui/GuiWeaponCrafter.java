@@ -1,3 +1,17 @@
+/** 
+ * Copyright (c) LambdaCraft Modding Team, 2013
+ * 版权许可：LambdaCraft 制作小组， 2013.
+ * http://lambdacraft.half-life.cn/
+ * 
+ * LambdaCraft is open-source. It is distributed under the terms of the
+ * LambdaCraft Open Source License. It grants rights to read, modify, compile
+ * or run the code. It does *NOT* grant the right to redistribute this software
+ * or its modifications in any form, binary or source, except if expressively
+ * granted by the copyright holder.
+ *
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
+ * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ */
 package cbproject.crafting.gui;
 
 import net.minecraft.client.Minecraft;
@@ -15,6 +29,10 @@ import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.network.NetWeaponCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
 
+/**
+ * 武器合成机和高级武器合成机的Gui类。
+ * @author WeAthFolD
+ */
 public class GuiWeaponCrafter extends CBCGuiContainer {
 
 	public TileEntityWeaponCrafter te;
@@ -29,9 +47,6 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 		this.ySize = 250;
 	}
 	
-    /**
-     * Called when the mouse is clicked.
-     */
 	@Override
     protected void mouseClicked(int par1, int par2, int par3)
     {
@@ -53,9 +68,6 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         this.updateButtonState();
     }
 	
-    /**
-     * Draw the foreground layer for the GuiContainer (everything in front of the items)
-     */
 	@Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
