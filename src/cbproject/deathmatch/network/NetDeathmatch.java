@@ -9,8 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.StatCollector;
-import cbproject.core.props.GeneralProps;
-import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
@@ -20,7 +18,7 @@ import cpw.mods.fml.common.network.Player;
 public class NetDeathmatch implements IChannelProcess{
 	
 	public static void sendModePacket(int stackInSlot,short id, int newMode){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_DM, 10);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(10);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		
 		try {
@@ -32,14 +30,15 @@ public class NetDeathmatch implements IChannelProcess{
 		}
 		
 		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
+		packet.channel = "CBCWeapons";
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToServer(packet);
 	}
 	
-	private static int[] getModePacket(DataInputStream inputStream){
+	private static int[] getModePacket(Packet250CustomPayload packet){
 		int[] arr = new int[3];
+		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		try {
 	        arr[0] = inputStream.readInt();
 	        arr[1] = inputStream.readShort();
@@ -51,7 +50,7 @@ public class NetDeathmatch implements IChannelProcess{
 	}
 
 	@Override
-	public void onPacketData(DataInputStream packet, Player player) {
+	public void onPacketData(Packet250CustomPayload packet, Player player) {
 		EntityPlayer p = (EntityPlayer) player;
 		int[] prop = getModePacket(packet);
 		ItemStack is = p.inventory.mainInventory[prop[0]];

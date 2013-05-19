@@ -4,8 +4,7 @@ import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.src.PlayerAPI;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cbproject.core.props.ClientProps;
-import cbproject.core.props.GeneralProps;
-import cbproject.core.register.CBCNetHandler;
+import cbproject.core.register.CBCPacketHandler;
 import cbproject.core.renderers.RenderEmpty;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.entities.CBCPlayer;
@@ -23,7 +22,7 @@ import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cbproject.deathmatch.entities.fx.EntityGaussRay;
 import cbproject.deathmatch.entities.fx.EntityTrailFX;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
-import cbproject.deathmatch.network.NetExplosion;
+import cbproject.deathmatch.network.NetTripmine;
 import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.renderers.RenderBulletWeapon;
 import cbproject.deathmatch.renderers.RenderCrossbow;
@@ -42,7 +41,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 public class ClientProxy extends Proxy {
 	@Override
 	public void init(){
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
+		CBCPacketHandler.addChannel("CBCExplosion", new NetTripmine());
 		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RenderSnowball(DMItems.weapon_hgrenade));

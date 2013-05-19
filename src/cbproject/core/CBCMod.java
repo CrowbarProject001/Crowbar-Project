@@ -19,12 +19,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
-import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCBlocks;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCItems;
-import cbproject.core.register.CBCNetHandler;
+import cbproject.core.register.CBCPacketHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
@@ -49,8 +48,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="lc",name="LambdaCraft",version="0.9.9 pre")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
-serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class ),
-clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_CLIENT }, packetHandler = CBCNetHandler.class ))
+serverPacketHandlerSpec = @SidedPacketHandler(channels = { "CBCCrafter" }, packetHandler = CBCPacketHandler.class ),
+clientPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCExplosion"}, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
 { 
 	/**

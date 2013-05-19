@@ -29,7 +29,6 @@ import net.minecraft.inventory.Container;
  * @author WeAthFolD
  * LambdaCraft的GUI Container，目前具有：
  * 按钮功能
- * 区域Tip功能
  */
 public abstract class CBCGuiContainer extends GuiContainer {
 	
@@ -50,12 +49,37 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	public void addButton(CBCGuiButton button){
 		buttons.add(button);
 	}
-
+	
+	@Override
+    protected void mouseClicked(int par1, int par2, int par3)
+    {
+		super.mouseClicked(par1, par2, par3);
+		for(CBCGuiButton b : buttons){
+			if(isPointWithin(b, par1, par2)){
+				if(b.buttonState != ButtonState.INVAILD){
+					b.setButtonState(ButtonState.DOWN);
+					onButtonClicked(b);
+				}
+			}
+		}
+    }
+	
 	/**
-	 * 处理每个按钮按下时行为的函数，在子类实现它来做些什么。
-	 * @param button 被按下的按钮
+	 * TODO:在这里添加对于ToolTip显示的判断
 	 */
-	public abstract void onButtonClicked(CBCGuiButton button);
+	@Override
+	protected void mouseMovedOrUp(int par1, int par2, int par3)
+    {
+		super.mouseMovedOrUp(par1, par2, par3);
+		
+		if(par3 == 0 || par3 == 1){
+			for(CBCGuiButton b : buttons){
+				if(isPointWithin(b, par1, par2))
+					b.setButtonState(ButtonState.IDLE);
+			}
+		}
+		
+    }
 	
 	/**
 	 * 设置某一个按钮的状态。
@@ -67,6 +91,7 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	}
 	
 	/**
+	 * TODO:有待完成
 	 * @param buttonName
 	 * @param tip
 	 * @return
@@ -85,8 +110,36 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		return getButton(name).buttonState;
 	}
 	
+	protected CBCGuiButton getButton(String name){
+		for(CBCGuiButton b : buttons){
+			if(b.buttonName == name)
+				return b;
+		}
+		return null;
+	}
+	
+	@Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		IGuiTip currentTip = null;
+		for(CBCGuiButton b : buttons){
+			if(isPointWithin(b, par1, par2) && b.hasToolTip()){
+				currentTip = b.tooltip;
+			}
+		}
+		if(currentTip != null){
+			int x = xSize / 2, y = ySize / 2;
+			GL11.glColor3f(0.0F,0.0F,0.0F);
+			boolean drawHead = currentTip.getHeadText() != "";
+			if(drawHead){
+				fontRenderer.drawString(currentTip.getTip(), par1 - x, par2 - y, 0x000000);
+			} else {
+				fontRenderer.drawString(currentTip.getTip(), par1 - x, par2 - y, 0x000000);
+			}
+		}
+	}
+	
 	/**
-	 * 绘制按钮，请务必在drawGuiBackgroundLayer()中调用。
+	 * 绘制按钮，在drawGuiBackgroundLayer()中调用。
 	 */
 	public void drawElements(){
 		for(CBCGuiButton b : buttons){
@@ -107,72 +160,17 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	        
 	        drawTexturedModalRect(x + b.posX, y + b.posY, texU, texV, b.width, b.height);
 		}
-	}
-	
-	@Override
-	/**
-	 * TODO:未完成
-	 * 绘制GUI上层图像。请务必在子类中调用它以绘制Tip。
-	 */
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		IGuiTip currentTip = null;
-		for(CBCGuiButton b : buttons){
-			if(isPointWithin(b, par1, par2) && b.hasToolTip()){
-				currentTip = b.tooltip;
-			}
-		}
-		if(currentTip != null){
-			int x = xSize / 2, y = ySize / 2;
-			GL11.glColor3f(0.0F,0.0F,0.0F);
-			boolean drawHead = currentTip.getHeadText() != "";
-			if(drawHead){
-				fontRenderer.drawString(currentTip.getTip(), par1 - x, par2 - y, 0x000000);
-			} else {
-				fontRenderer.drawString(currentTip.getTip(), par1 - x, par2 - y, 0x000000);
-			}
-		}
-	}
-	
-	@Override
-    protected void mouseClicked(int par1, int par2, int par3)
-    {
-		super.mouseClicked(par1, par2, par3);
-		for(CBCGuiButton b : buttons){
-			if(isPointWithin(b, par1, par2)){
-				if(b.buttonState != ButtonState.INVAILD){
-					b.setButtonState(ButtonState.DOWN);
-					onButtonClicked(b);
-				}
-			}
-		}
-    }
-	
-	@Override
-	protected void mouseMovedOrUp(int par1, int par2, int par3)
-    {
-		super.mouseMovedOrUp(par1, par2, par3);
 		
-		if(par3 == 0 || par3 == 1){
-			for(CBCGuiButton b : buttons){
-				if(isPointWithin(b, par1, par2))
-					b.setButtonState(ButtonState.IDLE);
-			}
-		}
-		
-    }
-	
-
+	}
 	
 	protected boolean isPointWithin(CBCGuiButton button, int x, int y){
 		return this.isPointInRegion(button.posX, button.posY, button.width, button.height, x, y);
 	}
 	
-	protected CBCGuiButton getButton(String name){
-		for(CBCGuiButton b : buttons){
-			if(b.buttonName == name)
-				return b;
-		}
-		return null;
-	}
+	/**
+	 * 处理每个按钮按下时行为的函数，在子类中覆盖它来做些什么。
+	 * @param button 被按下的按钮
+	 */
+	public abstract void onButtonClicked(CBCGuiButton button);
 
 }

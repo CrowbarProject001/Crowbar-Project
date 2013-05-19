@@ -12,15 +12,13 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.core.props.GeneralProps;
-import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
 import cbproject.deathmatch.utils.BulletManager;
 
-public class NetExplosion implements IChannelProcess {
+public class NetTripmine implements IChannelProcess {
 
 	public static void sendNetPacket(World world, float bx, float by, float bz, float strengh){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_EXPLOSION, 16);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(16);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		
 		int dimension = world.getWorldInfo().getDimension();
@@ -33,7 +31,7 @@ public class NetExplosion implements IChannelProcess {
 	        ex.printStackTrace();
 		}
 		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = GeneralProps.NET_CHANNEL_CLIENT;
+		packet.channel = "CBCExplosion";
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToAllInDimension(packet, dimension);
@@ -41,9 +39,9 @@ public class NetExplosion implements IChannelProcess {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onPacketData(DataInputStream inputStream, Player player) {
+	public void onPacketData(Packet250CustomPayload packet, Player player) {
+		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
 		float bx = 0, by = 0, bz = 0, st = 0;
-		System.out.println("get packet");
 		try {
 	        bx = inputStream.readFloat();
 	        by = inputStream.readFloat();

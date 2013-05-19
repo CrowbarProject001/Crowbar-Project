@@ -9,19 +9,19 @@
  * or its modifications in any form, binary or source, except if expressively
  * granted by the copyright holder.
  *
- * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
 package cbproject.core.gui;
 
 /**
- * GUI按钮类，和CBCGuiContainer配合使用
+ * LambdaCraft GUI Button.
  * @author WeAthFolD
  *
  */
 public class CBCGuiButton {
 	
-	
+
 	public enum ButtonState{
 		INVAILD, IDLE, DOWN;
 	}
@@ -48,14 +48,6 @@ public class CBCGuiButton {
 	
 	public IGuiTip tooltip;
 	
-	/**
-	 * GUI按钮的构造类。
-	 * @param name 按钮名字，用于获取按钮信息。
-	 * @param x 渲染位置X坐标
-	 * @param y 渲染位置Y坐标
-	 * @param w 宽度
-	 * @param h 高度
-	 */
 	public CBCGuiButton(String name, int x, int y, int w, int h) {
 		buttonName = name;
 		posX = x;
@@ -65,10 +57,6 @@ public class CBCGuiButton {
 		buttonState = ButtonState.IDLE;
 	}
 	
-	/**
-	 * 判断是否拥有按钮提示。
-	 * @return
-	 */
 	public boolean hasToolTip(){
 		return this.tooltip != null;
 	}
@@ -109,14 +97,11 @@ public class CBCGuiButton {
 		return this;
 	}
 	
-	/**
-	 * 设置当前的按钮状态。
-	 * @param a
-	 */
 	public void setButtonState(ButtonState a){
 		if(this.buttonState != ButtonState.INVAILD)
 			this.buttonState = a;
 	}
+	
 	
 	/**
 	 * 强制设置按钮状态。
