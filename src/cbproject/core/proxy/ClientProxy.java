@@ -14,6 +14,7 @@
  */
 package cbproject.core.proxy;
 
+import net.minecraft.client.Minecraft;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cbproject.core.register.CBCKeyProcess;
@@ -32,6 +33,33 @@ public class ClientProxy extends Proxy{
 		super.init();
 		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());	
 		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess());
+	}
+	
+	@Override
+	public void profilerStartSection(String section){
+		if (isRendering()){
+			Minecraft.getMinecraft().mcProfiler.startSection(section);
+		}else{
+			super.profilerStartSection(section);
+		}
+	}
+	
+	@Override
+	public void profilerEndSection(){
+		if (isRendering()){
+			Minecraft.getMinecraft().mcProfiler.endSection();
+		}else{
+			super.profilerEndSection();
+		}
+		
+	}
+	
+	@Override
+	public void profilerEndStartSection(String section){
+		if(isRendering()){
+			Minecraft.getMinecraft().mcProfiler.endStartSection(section);
+		}
+		super.profilerEndStartSection(section);
 	}
 	
 }

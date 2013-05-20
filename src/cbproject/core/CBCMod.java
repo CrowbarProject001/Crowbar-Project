@@ -14,6 +14,8 @@
  */
 package cbproject.core;
 
+import java.util.logging.Logger;
+
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +31,7 @@ import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -52,6 +55,10 @@ serverPacketHandlerSpec = @SidedPacketHandler(channels = { "CBCCrafter" }, packe
 clientPacketHandlerSpec = @SidedPacketHandler(channels = {"CBCExplosion"}, packetHandler = CBCPacketHandler.class ))
 public class CBCMod
 { 
+	/**
+	 *  日志
+	 */
+	public static Logger log =FMLLog.getLogger();
 	/**
 	 * 武器制作机的合成表。
 	 */

@@ -14,6 +14,9 @@
  */
 package cbproject.api.energy.tile;
 
+import cbproject.api.LCDirection;
+import net.minecraft.tileentity.TileEntity;
+
 /**
  * @author Administrator
  *
@@ -21,4 +24,5 @@ package cbproject.api.energy.tile;
 public interface IEnAcceptor {
 	
 	public boolean demandsEnergy(int metadata, int side);
+	public abstract boolean acceptsEnergyFrom(TileEntity paramTileEntity, LCDirection paramDirection);
 }

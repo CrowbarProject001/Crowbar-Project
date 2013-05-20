@@ -14,6 +14,7 @@
  */
 package cbproject.core.proxy;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cbproject.core.CBCMod;
 import cbproject.core.props.GeneralProps;
@@ -35,6 +36,25 @@ public class Proxy {
 		else LanguageRegistry.instance().loadLocalization("/cbproject/lang/en_US.properties", "en_US", false);
 		CBCPacketHandler.addChannel("CBCCrafter", new NetWeaponCrafter());
 		GeneralProps.loadProps(CBCMod.config);
+	}
+	
+	public void profilerStartSection(String section){
+		
+	}
+
+	public void profilerEndSection(){
+		
+	}
+	
+	public void profilerEndStartSection(String section){
+		
+	}
+	
+	public boolean isRendering(){
+		return !isSimulating();
+	}
+	private boolean isSimulating() {
+		return !FMLCommonHandler.instance().getEffectiveSide().isClient();
 	}
 	
 }
