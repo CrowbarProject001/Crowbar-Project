@@ -9,68 +9,44 @@
  * or its modifications in any form, binary or source, except if expressively
  * granted by the copyright holder.
  *
- * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》你允许阅读，修改以及调试运行
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
 package cbproject.core.gui;
 
 /**
- * LambdaCraft GUI Button.
+ * GUI按钮类，和CBCGuiContainer配合使用
  * @author WeAthFolD
  *
  */
-public class CBCGuiButton {
+public class CBCGuiButton extends CBCGuiPart{
 	
-
+	
 	public enum ButtonState{
 		INVAILD, IDLE, DOWN;
 	}
 	
 	/**
-	 * 按钮位置。
+	 * 两种状态对应贴图的U、V。
 	 */
-	public int posX, posY;
+	public int downTexU, downTexV, invaildTexU, invaildTexV;
 	
-	/**
-	 * 按钮的大小。
-	 */
-	public int width, height;
-	
-	/*
-	 * 三种状态对应贴图的U、V。
-	 */
-	public int idleTexU, idleTexV, downTexU, downTexV, invaildTexU, invaildTexV;
-	public String buttonName;
 	/*
 	 * 当前的按钮状态。
 	 */
 	public ButtonState buttonState;
 	
-	public IGuiTip tooltip;
-	
-	public CBCGuiButton(String name, int x, int y, int w, int h) {
-		buttonName = name;
-		posX = x;
-		posY = y;
-		width = w;
-		height = h;
-		buttonState = ButtonState.IDLE;
-	}
-	
-	public boolean hasToolTip(){
-		return this.tooltip != null;
-	}
-	
 	/**
-	 * 设置按钮空闲时的U、V位置（像素，左上角）
-	 * @param u
-	 * @param v
-	 * @return 当前按钮
+	 * GUI按钮的构造类。
+	 * @param name 按钮名字，用于获取按钮信息。
+	 * @param x 渲染位置X坐标
+	 * @param y 渲染位置Y坐标
+	 * @param w 宽度
+	 * @param h 高度
 	 */
-	public CBCGuiButton setidleCoords(int u, int v){
-		idleTexU = u;
-		idleTexV = v;
-		return this;
+	public CBCGuiButton(String name, int x, int y, int w, int h) {
+		super(name, x, y, w, h);
+		buttonState = ButtonState.IDLE;
 	}
 	
 	/**
@@ -82,6 +58,7 @@ public class CBCGuiButton {
 	public CBCGuiButton setDownCoords(int u, int v){
 		downTexU = u;
 		downTexV = v;
+		doesDraw = true;
 		return this;
 	}
 	
@@ -94,14 +71,18 @@ public class CBCGuiButton {
 	public CBCGuiButton setInvaildCoords(int u, int v){
 		invaildTexU = u;
 		invaildTexV = v;
+		doesDraw = true;
 		return this;
 	}
 	
+	/**
+	 * 设置当前的按钮状态。
+	 * @param a
+	 */
 	public void setButtonState(ButtonState a){
 		if(this.buttonState != ButtonState.INVAILD)
 			this.buttonState = a;
 	}
-	
 	
 	/**
 	 * 强制设置按钮状态。

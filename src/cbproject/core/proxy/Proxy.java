@@ -18,25 +18,16 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cbproject.core.CBCMod;
 import cbproject.core.props.GeneralProps;
-import cbproject.core.register.CBCPacketHandler;
+import cbproject.core.register.CBCNetHandler;
 import cbproject.crafting.network.NetWeaponCrafter;
 import net.minecraft.util.StringTranslate;
 
 /**
  * 加载代理。
- * @author WeAthFOlD, Mkpoli
+ * @author WeAthFOlD, Mkpoli, HopeAsd
  *
  */
 public class Proxy {
-	
-	public void init() {
-		String currentLang = StringTranslate.getInstance().getCurrentLanguage();
-		if(currentLang != "en_US")
-			LanguageRegistry.instance().loadLocalization("/cbproject/lang/" + currentLang + ".properties", currentLang, false);
-		else LanguageRegistry.instance().loadLocalization("/cbproject/lang/en_US.properties", "en_US", false);
-		CBCPacketHandler.addChannel("CBCCrafter", new NetWeaponCrafter());
-		GeneralProps.loadProps(CBCMod.config);
-	}
 	
 	public void profilerStartSection(String section){
 		
@@ -55,6 +46,15 @@ public class Proxy {
 	}
 	private boolean isSimulating() {
 		return !FMLCommonHandler.instance().getEffectiveSide().isClient();
+	}
+	
+	public void init() {
+		String currentLang = StringTranslate.getInstance().getCurrentLanguage();
+		if(currentLang != "en_US")
+			LanguageRegistry.instance().loadLocalization("/cbproject/lang/" + currentLang + ".properties", currentLang, false);
+		else LanguageRegistry.instance().loadLocalization("/cbproject/lang/en_US.properties", "en_US", false);
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER, new NetWeaponCrafter());
+		GeneralProps.loadProps(CBCMod.config);
 	}
 	
 }

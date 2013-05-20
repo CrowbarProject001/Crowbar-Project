@@ -14,7 +14,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
- * CBC Mod Item Register class.
+ * core和crafting包所有的物品注册。
  * @author WeAthFolD, mkpoli
  *
  */
@@ -38,6 +38,10 @@ public class CBCItems {
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
 	
+	/**
+	 * 实际注册，请在Init中调用。
+	 * @param conf
+	 */
 	public static void init(Config conf){
 		
 		try{
@@ -76,6 +80,9 @@ public class CBCItems {
 		addItemRecipes();
 	}
 	
+	/**
+	 * 添加基础合成表
+	 */
 	public static void addItemRecipes(){
         //Recipes
 

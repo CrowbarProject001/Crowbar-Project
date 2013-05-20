@@ -1,3 +1,17 @@
+/** 
+ * Copyright (c) LambdaCraft Modding Team, 2013
+ * 版权许可：LambdaCraft 制作小组， 2013.
+ * http://lambdacraft.half-life.cn/
+ * 
+ * LambdaCraft is open-source. It is distributed under the terms of the
+ * LambdaCraft Open Source License. It grants rights to read, modify, compile
+ * or run the code. It does *NOT* grant the right to redistribute this software
+ * or its modifications in any form, binary or source, except if expressively
+ * granted by the copyright holder.
+ *
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
+ * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ */
 package cbproject.crafting.blocks;
 
 import java.util.ArrayList;
@@ -15,9 +29,16 @@ import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.utils.AmmoManager;
 
+/**
+ * 武器合成机和高级武器合成机的TileEntity类。
+ * @author WeAthFolD
+ */
 public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 
-	public static int MAX_HEAT = 4000;
+	/**
+	 * 最大存储热量。
+	 */
+	public static int MAX_HEAT;
 	
 	public ItemStack[] inventory;
 	public ItemStack[] craftingStacks;
@@ -29,22 +50,15 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public long lastTime = 0;
 	public boolean redraw, isCrafting, isBurning;
 	public boolean isAdvanced = false;
+	
 	/**
-	 * 1-18 storage Inventory 19 furnace inventory 20 output inventory
+	 * inventory: 1-18：材料存储  19:燃料槽  20:合成结果槽
 	 * 
-	 * craftingStacks:4*3 stacks.
+	 * craftingStacks: 4*3  的合成表显示槽。
 	 */
 	public TileEntityWeaponCrafter() {
 		inventory = new ItemStack[20];
 		craftingStacks = new ItemStack[12];
-	}
-	
-	public TileEntityWeaponCrafter setAdvanced(boolean is){
-		isAdvanced = is;
-		if(is)
-			MAX_HEAT = 8000;
-		else MAX_HEAT = 4000;
-		return this;
 	}
 
 	@Override
@@ -107,7 +121,99 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		return stack;
 	}
 	
+	@Override
+	public ItemStack getStackInSlotOnClosing(int slot) {
+		ItemStack stack = getStackInSlot(slot);
+		if (stack != null) {
+			setInventorySlotContents(slot, null);
+		}
+		return stack;
+	}
+
+	@Override
+	public String getInvName() {
+		return "lambdacraft:weaponcrafter";
+	}
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
+				zCoord + 0.5) <= 64;
+	}
+
+	@Override
+	public void openChest() {
+	}
+
+	@Override
+	public void closeChest() {
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		if (i > 12 && itemstack.getItem() instanceof ItemMaterial)
+			return true;
+		return false;
+	}
+
+	@Override
+	public void setInventorySlotContents(int i, ItemStack itemstack) {
+		if (i < 12)
+			craftingStacks[i] = itemstack;
+		else
+			inventory[i - 12] = itemstack;
+	}
 	
+    /**
+     * Reads a tile entity from NBT.
+     */
+	@Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        for(int i = 0; i < 20; i++){
+        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
+        	byte count = nbt.getByte("count" + i);
+        	if(id == 0)
+        		continue;
+        	ItemStack is = new ItemStack(id, count, damage);
+        	inventory[i] = is;
+        }
+    }
+
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+	public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        for(int i = 0; i < 20; i++){
+        	if(inventory[i] == null)
+        		continue;
+        	nbt.setShort("id"+i, (short) inventory[i].itemID);
+        	nbt.setByte("count"+i, (byte) inventory[i].stackSize);
+        	nbt.setShort("damage"+i, (short)inventory[i].getItemDamage());
+        }
+    }
+    
+	public TileEntityWeaponCrafter setAdvanced(boolean is){
+		isAdvanced = is;
+		if(is)
+			MAX_HEAT = 8000;
+		else MAX_HEAT = 4000;
+		return this;
+	}
 	
 	public void addScrollFactor(boolean isForward) {
 		if(isAdvanced){
@@ -157,7 +263,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
     	}
     }
 	
-	public void doItemCrafting(int slot) {
+	public void attemptItemCrafting(int slot) {
 		RecipeCrafter r = getRecipeBySlotAndScroll(slot, this.scrollFactor);
 
 		if (hasEnoughMaterial(r)) {
@@ -324,91 +430,5 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			return RecipeWeapons.getRecipe(page, factor + i);
 		else return RecipeWeapons.getAdvRecipe(page, factor + i);
 	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
-		ItemStack stack = getStackInSlot(slot);
-		if (stack != null) {
-			setInventorySlotContents(slot, null);
-		}
-		return stack;
-	}
-
-	@Override
-	public String getInvName() {
-		return "lambdacraft:weaponcrafter";
-	}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		return false;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
-				zCoord + 0.5) <= 64;
-	}
-
-	@Override
-	public void openChest() {
-	}
-
-	@Override
-	public void closeChest() {
-	}
-
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		if (i > 12 && itemstack.getItem() instanceof ItemMaterial)
-			return true;
-		return false;
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		if (i < 12)
-			craftingStacks[i] = itemstack;
-		else
-			inventory[i - 12] = itemstack;
-	}
-	
-    /**
-     * Reads a tile entity from NBT.
-     */
-	@Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        for(int i = 0; i < 20; i++){
-        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
-        	byte count = nbt.getByte("count" + i);
-        	if(id == 0)
-        		continue;
-        	ItemStack is = new ItemStack(id, count, damage);
-        	inventory[i] = is;
-        }
-    }
-
-    /**
-     * Writes a tile entity to NBT.
-     */
-    @Override
-	public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        for(int i = 0; i < 20; i++){
-        	if(inventory[i] == null)
-        		continue;
-        	nbt.setShort("id"+i, (short) inventory[i].itemID);
-        	nbt.setByte("count"+i, (byte) inventory[i].stackSize);
-        	nbt.setShort("damage"+i, (short)inventory[i].getItemDamage());
-        }
-    }
 
 }

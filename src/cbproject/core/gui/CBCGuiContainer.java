@@ -22,6 +22,8 @@ import org.lwjgl.opengl.GL11;
 
 import cbproject.core.gui.CBCGuiButton.ButtonState;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 
@@ -29,57 +31,35 @@ import net.minecraft.inventory.Container;
  * @author WeAthFolD
  * LambdaCraft的GUI Container，目前具有：
  * 按钮功能
+ * 区域Tip功能
  */
 public abstract class CBCGuiContainer extends GuiContainer {
 	
 	/**
-	 * GUI按钮列表。
+	 * GUI元素列表。
 	 */
-	private HashSet<CBCGuiButton> buttons;
+	private HashSet<CBCGuiPart> elements;
+	private FontRenderer customFont;
 	
 	public CBCGuiContainer(Container par1Container) {
 		super(par1Container);
-		buttons = new HashSet<CBCGuiButton>();
+		elements = new HashSet<CBCGuiPart>();
+		customFont = new FontRenderer(Minecraft.getMinecraft().gameSettings, "/font/default.png", Minecraft.getMinecraft().renderEngine, false);
 	}
 	
 	/**
 	 * 添加一个按钮。
-	 * @param button
+	 * @param part
 	 */
-	public void addButton(CBCGuiButton button){
-		buttons.add(button);
+	public void addButton(CBCGuiPart part){
+		elements.add(part);
 	}
-	
-	@Override
-    protected void mouseClicked(int par1, int par2, int par3)
-    {
-		super.mouseClicked(par1, par2, par3);
-		for(CBCGuiButton b : buttons){
-			if(isPointWithin(b, par1, par2)){
-				if(b.buttonState != ButtonState.INVAILD){
-					b.setButtonState(ButtonState.DOWN);
-					onButtonClicked(b);
-				}
-			}
-		}
-    }
-	
+
 	/**
-	 * TODO:在这里添加对于ToolTip显示的判断
+	 * 处理每个按钮按下时行为的函数，在子类实现它来做些什么。
+	 * @param button 被按下的按钮
 	 */
-	@Override
-	protected void mouseMovedOrUp(int par1, int par2, int par3)
-    {
-		super.mouseMovedOrUp(par1, par2, par3);
-		
-		if(par3 == 0 || par3 == 1){
-			for(CBCGuiButton b : buttons){
-				if(isPointWithin(b, par1, par2))
-					b.setButtonState(ButtonState.IDLE);
-			}
-		}
-		
-    }
+	public abstract void onButtonClicked(CBCGuiButton button);
 	
 	/**
 	 * 设置某一个按钮的状态。
@@ -91,13 +71,12 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	}
 	
 	/**
-	 * TODO:有待完成
 	 * @param buttonName
 	 * @param tip
 	 * @return
 	 */
-	public boolean setButtonTip(String buttonName, IGuiTip tip){
-		getButton(buttonName).tooltip = tip;
+	public boolean setElementTip(String buttonName, IGuiTip tip){
+		getElement(buttonName).tip = tip;
 		return true;
 	}
 	
@@ -110,67 +89,118 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		return getButton(name).buttonState;
 	}
 	
+	/**
+	 * 绘制按钮，请务必在drawGuiBackgroundLayer()中调用。
+	 */
+	public void drawElements(){
+		for(CBCGuiPart e : elements){
+			if(!e.doesDraw)
+				continue;
+			if(e instanceof CBCGuiButton){
+				CBCGuiButton b = (CBCGuiButton) e;
+				int x = (width - xSize) / 2;
+		        int y = (height - ySize) / 2;
+		        int texU = 0, texV = 0;
+		        
+		        if(b.buttonState == ButtonState.IDLE){
+		        	texU = b.texU;
+		        	texV = b.texV;
+		        } else if (b.buttonState == ButtonState.DOWN){
+		        	texU = b.downTexU;
+		        	texV = b.downTexV;
+		        } else if (b.buttonState == ButtonState.INVAILD){
+		        	texU = b.invaildTexU;
+		        	texV = b.invaildTexV;
+		        }
+		        
+		        drawTexturedModalRect(x + b.posX, y + b.posY, texU, texV, b.width, b.height);
+			} else {
+				int x = (width - xSize) / 2;
+		        int y = (height - ySize) / 2;
+		        int texU = e.texU, texV = e.texV;
+				drawTexturedModalRect(x + e.posX, y + e.posY, texU, texV, e.width, e.height);
+			}
+		}
+	}
+	
+	@Override
+	/**
+	 * TODO:未完成
+	 * 绘制GUI上层图像。请务必在子类中调用它以绘制Tip。
+	 */
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		super.drawGuiContainerForegroundLayer(par1, par2);
+		IGuiTip currentTip = null;
+		for(CBCGuiPart b : elements){
+			if(isPointWithin(b, par1, par2) && b.hasToolTip()){
+				currentTip = b.tip;
+			}
+		}
+		if(currentTip != null){
+			GL11.glColor3f(0.0F,0.0F,0.0F);
+			boolean drawHead = currentTip.getHeadText() != "";
+			List<String> list = new ArrayList();
+			if(drawHead){
+				list.add(currentTip.getHeadText());
+			}
+			int x = (width - xSize)/2, y = (height - ySize)/2;
+			list.add(currentTip.getTip());
+			this.drawHoveringText(list, par1 - x, par2 - y, customFont);
+		}
+	}
+	
+	@Override
+    protected void mouseClicked(int par1, int par2, int par3)
+    {
+		super.mouseClicked(par1, par2, par3);
+		for(CBCGuiPart e : elements){
+			if(!(e instanceof CBCGuiButton))
+				continue;
+			CBCGuiButton b = (CBCGuiButton) e;
+			if(isPointWithin(b, par1, par2)){
+				if(b.buttonState != ButtonState.INVAILD){
+					b.setButtonState(ButtonState.DOWN);
+					onButtonClicked(b);
+				}
+			}
+		}
+    }
+	
+	@Override
+	protected void mouseMovedOrUp(int par1, int par2, int par3)
+    {
+		super.mouseMovedOrUp(par1, par2, par3);
+		
+		if(par3 == 0 || par3 == 1){
+			for(CBCGuiPart b : elements){
+				if(!(b instanceof CBCGuiButton))
+					continue;
+				if(isPointWithin(b, par1, par2))
+					((CBCGuiButton)b).setButtonState(ButtonState.IDLE);
+			}
+		}
+		
+    }
+	
+
+	
+	protected boolean isPointWithin(CBCGuiPart element, int x, int y){
+		return this.isPointInRegion(element.posX, element.posY, element.width, element.height, x, y);
+	}
+	
 	protected CBCGuiButton getButton(String name){
-		for(CBCGuiButton b : buttons){
-			if(b.buttonName == name)
+		CBCGuiPart elem = getElement(name);
+		if(elem != null && elem instanceof CBCGuiButton)
+			return (CBCGuiButton) elem;
+		return null;
+	}
+	
+	protected CBCGuiPart getElement(String name){
+		for(CBCGuiPart b : elements){
+			if(b.name == name)
 				return b;
 		}
 		return null;
 	}
-	
-	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		IGuiTip currentTip = null;
-		for(CBCGuiButton b : buttons){
-			if(isPointWithin(b, par1, par2) && b.hasToolTip()){
-				currentTip = b.tooltip;
-			}
-		}
-		if(currentTip != null){
-			int x = xSize / 2, y = ySize / 2;
-			GL11.glColor3f(0.0F,0.0F,0.0F);
-			boolean drawHead = currentTip.getHeadText() != "";
-			if(drawHead){
-				fontRenderer.drawString(currentTip.getTip(), par1 - x, par2 - y, 0x000000);
-			} else {
-				fontRenderer.drawString(currentTip.getTip(), par1 - x, par2 - y, 0x000000);
-			}
-		}
-	}
-	
-	/**
-	 * 绘制按钮，在drawGuiBackgroundLayer()中调用。
-	 */
-	public void drawElements(){
-		for(CBCGuiButton b : buttons){
-			int x = (width - xSize) / 2;
-	        int y = (height - ySize) / 2;
-	        int texU = 0, texV = 0;
-	        
-	        if(b.buttonState == ButtonState.IDLE){
-	        	texU = b.idleTexU;
-	        	texV = b.idleTexV;
-	        } else if (b.buttonState == ButtonState.DOWN){
-	        	texU = b.downTexU;
-	        	texV = b.downTexV;
-	        } else if (b.buttonState == ButtonState.INVAILD){
-	        	texU = b.invaildTexU;
-	        	texV = b.invaildTexV;
-	        }
-	        
-	        drawTexturedModalRect(x + b.posX, y + b.posY, texU, texV, b.width, b.height);
-		}
-		
-	}
-	
-	protected boolean isPointWithin(CBCGuiButton button, int x, int y){
-		return this.isPointInRegion(button.posX, button.posY, button.width, button.height, x, y);
-	}
-	
-	/**
-	 * 处理每个按钮按下时行为的函数，在子类中覆盖它来做些什么。
-	 * @param button 被按下的按钮
-	 */
-	public abstract void onButtonClicked(CBCGuiButton button);
 
 }

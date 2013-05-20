@@ -14,7 +14,7 @@
  */
 package cbproject.deathmatch.blocks.tileentities;
 
-import cbproject.api.item.ICustomEnItem;
+import cbproject.api.energy.item.ICustomEnItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -80,7 +80,6 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory {
 					continue;
 				ICustomEnItem item = (ICustomEnItem) arm.getItem();
 				int e = item.charge(arm, currentEnergy > 128? 128 : currentEnergy, 2, false, false);
-				System.out.println(arm + " "  + e);
 				currentEnergy -= e;
 				flag = flag || e > 0;
 			}

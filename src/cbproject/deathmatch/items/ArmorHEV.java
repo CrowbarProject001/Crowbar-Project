@@ -4,7 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.api.item.ICustomEnItem;
+import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.register.DMItems;
@@ -92,7 +92,6 @@ public class ArmorHEV extends ItemArmor implements ICustomEnItem, ISpecialArmor 
 		if(en > amount){
 			if(!simulate)
 				itemStack.setItemDamage(itemStack.getItemDamage() - amount);
-			System.out.println("new EU : " + (itemStack.getMaxDamage() - itemStack.getItemDamageForDisplay() - 1));
 			return amount;
 		} else {
 			if(!simulate)

@@ -76,7 +76,7 @@ public final class EnergyNet {
 		}
 
 		if ((addedTileEntity instanceof IEnAcceptor)) {
-			List reverseEnergyPaths = discover(addedTileEntity, true,
+			List<EnergyPath> reverseEnergyPaths = discover(addedTileEntity, true,
 					2147483647);
 
 			for (EnergyPath reverseEnergyPath : reverseEnergyPaths) {

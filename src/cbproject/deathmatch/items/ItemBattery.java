@@ -21,22 +21,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import cbproject.api.item.ICustomEnItem;
+import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.CBCMod;
+import cbproject.core.energy.CBCElectricItem;
 import cbproject.deathmatch.entities.EntityBattery;
 
 /**
  * @author Administrator
  *
  */
-public class ItemBattery extends Item implements ICustomEnItem {
+public class ItemBattery extends CBCElectricItem {
 	
 	public ItemBattery(int par1) {
 		super(par1);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("hevbattery");
 		this.setMaxDamage(EntityBattery.EU_PER_BATTERY);
-		this.setMaxStackSize(1);
 	}
 	
     @SideOnly(Side.CLIENT)
@@ -55,7 +55,6 @@ public class ItemBattery extends Item implements ICustomEnItem {
     {
     	
     	if(!par2World.isRemote){
-    		System.out.println("spawning entity");
     		EntityBattery ent = new EntityBattery(par2World, par3EntityPlayer, EntityBattery.EU_PER_BATTERY - par1ItemStack.getItemDamage());
     		par2World.spawnEntityInWorld(ent);
     		par1ItemStack.splitStack(1);
@@ -89,48 +88,6 @@ public class ItemBattery extends Item implements ICustomEnItem {
 	@Override
 	public int getTransferLimit(ItemStack itemStack) {
 		return 128;
-	}
-
-	/* (non-Javadoc)
-	 * @see cbproject.api.item.ICustomEnItem#charge(net.minecraft.item.ItemStack, int, int, boolean, boolean)
-	 */
-	@Override
-	public int charge(ItemStack itemStack, int amount, int tier,
-			boolean ignoreTransferLimit, boolean simulate) {
-		if(itemStack.getItemDamage() == 0)
-			return 0;
-		int en = itemStack.getMaxDamage() - itemStack.getItemDamage();
-		if(!ignoreTransferLimit)
-			amount = this.getTransferLimit(itemStack);
-		if(en > amount){
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() - amount);
-			return amount;
-		} else {
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() - en);
-			return en;
-		}
-	}
-
-
-	@Override
-	public int discharge(ItemStack itemStack, int amount, int tier,
-			boolean ignoreTransferLimit, boolean simulate) {
-		int en = itemStack.getMaxDamage() - itemStack.getItemDamage() - 1;
-		if(en == 0)
-			return 0;
-		if(!ignoreTransferLimit)
-			amount = this.getTransferLimit(itemStack);
-		if(en > amount){
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() + amount);
-			return amount;
-		} else {
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() + en);
-			return en;
-		}
 	}
 
 	@Override

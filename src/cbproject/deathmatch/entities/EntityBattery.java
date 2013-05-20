@@ -17,7 +17,7 @@ package cbproject.deathmatch.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import cbproject.api.item.ICustomEnItem;
+import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.utils.EntitySelectorPlayer;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;

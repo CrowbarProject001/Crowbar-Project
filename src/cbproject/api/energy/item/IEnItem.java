@@ -1,4 +1,4 @@
-package cbproject.api.item;
+package cbproject.api.energy.item;
 
 import net.minecraft.item.ItemStack;
 

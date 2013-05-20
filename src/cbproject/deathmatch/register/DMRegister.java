@@ -11,7 +11,7 @@ import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCItems;
 import cbproject.core.register.CBCKeyProcess;
-import cbproject.core.register.CBCPacketHandler;
+import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.gui.ElementCrafter;
@@ -106,7 +106,7 @@ public class DMRegister {
 	}
 	
 	public static void register(){
-		CBCPacketHandler.addChannel("CBCWeapons", new NetDeathmatch());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
 		CBCGuiHandler.addGuiElement(TileEntityArmorCharger.class, new ElementArmorCharger());
 		
 		EntityRegistry.registerModEntity(EntityGaussRay.class, "gauss", GeneralProps.ENT_ID_GAUSS1, CBCDeathmatch.instance, 32, 3, true);

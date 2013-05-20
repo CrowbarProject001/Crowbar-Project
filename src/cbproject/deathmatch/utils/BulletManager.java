@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.utils.CBCExplosion;
 import cbproject.deathmatch.entities.EntityBullet;
-import cbproject.deathmatch.network.NetTripmine;
+import cbproject.deathmatch.network.NetExplosion;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;
@@ -70,7 +70,7 @@ public class BulletManager {
 				}
 			}
 		}
-		NetTripmine.sendNetPacket(world, (float)posX, (float)posY, (float)posZ, strengh);
+		NetExplosion.sendNetPacket(world, (float)posX, (float)posY, (float)posZ, strengh);
 	}
 	
 	@SideOnly(Side.CLIENT)
