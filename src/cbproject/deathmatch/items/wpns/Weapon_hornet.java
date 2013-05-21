@@ -71,7 +71,7 @@ public class Weapon_hornet extends WeaponGeneralBullet{
 		int dt = inf.ticksExisted;
 		EntityPlayer player = (EntityPlayer) par3Entity;
 		if(dt % RECOVER_TIME == 0 && !(this.canShoot(player, par1ItemStack) && inf.isShooting)){
-			if(par1ItemStack.getItemDamage() > 0 && !par2World.isRemote)
+			if(par1ItemStack.getItemDamage() > 0)
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
 		}
 	}

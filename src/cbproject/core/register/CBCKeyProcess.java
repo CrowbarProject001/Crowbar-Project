@@ -54,16 +54,16 @@ public class CBCKeyProcess extends KeyHandler{
 			boolean tickEnd, boolean isRepeat) {
 		if(tickEnd)
 			return;
-		if(keyProcesses.containsKey(kb.keyCode))
-			keyProcesses.get(kb.keyCode).onKeyDown();
+		if(keyProcesses.containsKey(kb))
+			keyProcesses.get(kb).onKeyDown();
 	}
 
 	@Override
 	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
 		if(tickEnd)
 			return;
-		if(keyProcesses.containsKey(kb.keyCode))
-			keyProcesses.get(kb.keyCode).onKeyUp();
+		if(keyProcesses.containsKey(kb))
+			keyProcesses.get(kb).onKeyUp();
 	}
 
 	@Override

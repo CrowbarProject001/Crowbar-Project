@@ -112,6 +112,8 @@ public class ContainerWeaponCrafter extends Container {
 		for (int i = 0; i < length && i < 3; i++) {
 			RecipeCrafter r = !tileEntity.isAdvanced ? RecipeWeapons.getRecipe(tileEntity.page, i
 					+ scrollFactor) : RecipeWeapons.getAdvRecipe(tileEntity.page, i + scrollFactor);
+			if(r == null)
+				return;
 			for (int j = 0; j < 3; j++) {
 				if (r.input.length > j)
 					tileEntity.setInventorySlotContents(j + i * 3, r.input[j]);

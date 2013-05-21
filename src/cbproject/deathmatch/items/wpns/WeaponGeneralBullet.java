@@ -6,6 +6,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.utils.CBCWeaponInformation;
+import cbproject.deathmatch.entities.EntityHornet;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
@@ -122,22 +123,15 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		return ( jamTime != 0 && inf.isShooting && !canUse && inf.getDeltaTick() > jamTime );
 	}
 	
-    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
-		
-    	int mode = getMode(par1ItemStack);
-		information.setLastTick();
-		
-		if(!par2World.isRemote){
-	    	par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
-			BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
-			if(!par3Entity.capabilities.isCreativeMode ){
-				par1ItemStack.damageItem( 1 , par3Entity);
-	    	}
-			return;
-	    }
-
-		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-    	doUplift(information, par3Entity);	
+    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationBullet information ){
+		if(!(player.capabilities.isCreativeMode))
+			par1ItemStack.damageItem(1, player);
+		player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+		if(!par2World.isRemote)
+			BulletManager.Shoot(par1ItemStack, player, par2World);
+    	par2World.playSoundAtEntity(player, this.getSoundShoot(this.getMode(par1ItemStack)), 0.5F, 1.0F);
+    	doUplift(information, player);
+    	information.setLastTick();
     }
     
     public void onBulletWpnJam(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){ 	 

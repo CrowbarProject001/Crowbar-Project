@@ -175,7 +175,7 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory {
         	ItemStack is = new ItemStack(id, count, damage);
         	slots[i] = is;
         }
-    	currentEnergy = nbt.getInteger("currentEnergy");
+    	currentEnergy = nbt.getInteger("energy");
     }
 
     /**
@@ -191,7 +191,7 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory {
         	nbt.setByte("count"+i, (byte) slots[i].stackSize);
         	nbt.setShort("damage"+i, (short)slots[i].getItemDamage());
         }
-        nbt.setInteger("currentEnergy", currentEnergy);
+        nbt.setInteger("energy", currentEnergy);
     }
 
 }

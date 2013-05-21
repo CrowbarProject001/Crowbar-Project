@@ -22,10 +22,12 @@ import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
 import cbproject.core.props.GeneralProps;
+import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCBlocks;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCItems;
+import cbproject.core.register.CBCModuleRegister;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
@@ -77,6 +79,11 @@ public class CBCMod
 	 */
 	public static Config config;
 	
+	/**
+	 * 子模块注册。
+	 */
+	public static CBCModuleRegister module;
+	
 	@Instance("lc")
 	public static CBCMod instance;
 	
@@ -88,14 +95,17 @@ public class CBCMod
 	
 	/**
 	 * 预加载（设置、世界生成、注册Event）
-	 * @param Init
+	 * @param event
 	 */
 	@PreInit
-	public void preInit(FMLPreInitializationEvent Init)
+	public void preInit(FMLPreInitializationEvent event)
 	{
-		config=new Config(Init.getSuggestedConfigurationFile());
+		config=new Config(event.getSuggestedConfigurationFile());
 		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
 		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		module = new CBCModuleRegister();
+		module.registerModule("cbproject.intergration.ic2.ModuleIC2");
+		module.preInit(event);
 	} 
 
 	/**
@@ -112,7 +122,10 @@ public class CBCMod
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
 		proxy.init();
-		
+		module.init(Init);
+		if(proxy.isRendering()){
+			module.clientInit();
+		}
 	}
 
 	/**
@@ -122,6 +135,7 @@ public class CBCMod
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 		config.SaveConfig();
+		module.postInit(Init);
 	}
 
 	/**
@@ -131,6 +145,7 @@ public class CBCMod
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
 	    CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();
+	    module.serverStarting(event);
 	}
 	
 }

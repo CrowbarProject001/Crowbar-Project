@@ -216,7 +216,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	}
 	
 	public void addScrollFactor(boolean isForward) {
-		if(isAdvanced){
+		if(!isAdvanced){
 			if (!RecipeWeapons.doesNeedScrollBar(page))
 				return;
 		} else {

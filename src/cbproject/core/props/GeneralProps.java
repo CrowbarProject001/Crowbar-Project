@@ -22,7 +22,8 @@ import cbproject.core.misc.Config;
  */
 public class GeneralProps {
 	
-	public static Boolean ignoreBlockDestroy = false;
+	public static Boolean ignoreBlockDestroy = false,
+			doWeaponUplift = true;
 	
 	public static final int ENT_ID_GAUSS1 = 0, ENT_ID_EGON_RAY = 1, 
 			ENT_ID_TRAIL = 2, ENT_ID_ARGRENADE = 3, ENT_ID_ARROW = 4,
@@ -37,6 +38,7 @@ public class GeneralProps {
 	public static void loadProps(Config config){
 		try {
 			ignoreBlockDestroy = config.getBoolean("ignoreBlockDestroy", false);
+			doWeaponUplift = config.getBoolean("weaponUplift", true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
