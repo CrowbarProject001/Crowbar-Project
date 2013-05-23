@@ -29,15 +29,15 @@ import net.minecraft.util.StringTranslate;
  */
 public class Proxy {
 	
-	public void profilerStartSection(String section){
+	public static void profilerStartSection(String section){
 		
 	}
 
-	public void profilerEndSection(){
+	public static void profilerEndSection(){
 		
 	}
 	
-	public void profilerEndStartSection(String section){
+	public static void profilerEndStartSection(String section){
 		
 	}
 	
