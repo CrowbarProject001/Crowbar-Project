@@ -7,6 +7,7 @@ import net.minecraftforge.event.world.WorldEvent;
 public class EnergyTileEvent extends WorldEvent{
 
 	public final IEnergyTile energyTile;
+
 	public EnergyTileEvent(World world, IEnergyTile energyTile) {
 		super(world);
 		this.energyTile = energyTile;

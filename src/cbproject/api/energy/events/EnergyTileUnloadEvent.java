@@ -4,6 +4,10 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 public class EnergyTileUnloadEvent extends EnergyTileEvent{
+	static World world;
+	public EnergyTileUnloadEvent (IEnergyTile energyTile){
+		super(world, energyTile);
+	}
 
 	public EnergyTileUnloadEvent (World world , IEnergyTile energyTile){
 		super(world, energyTile);

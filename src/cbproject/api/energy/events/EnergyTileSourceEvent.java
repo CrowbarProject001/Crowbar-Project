@@ -4,10 +4,16 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 public class EnergyTileSourceEvent extends EnergyTileEvent{
-	public int amout;
-	public EnergyTileSourceEvent (World world , IEnergyTile energyTile,int amout){
+	public int amount;
+	static World world;
+	
+	public EnergyTileSourceEvent (IEnergyTile energyTile,int amount){
 		super(world, energyTile);
-		this.amout = amout;
+		this.amount = amount;
+	}
+	public EnergyTileSourceEvent (World world , IEnergyTile energyTile,int amount){
+		super(world, energyTile);
+		this.amount = amount;
 	}
 
 }
