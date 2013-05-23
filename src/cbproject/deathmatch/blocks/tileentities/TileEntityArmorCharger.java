@@ -41,8 +41,25 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory {
 	public ItemStack slots[] = new ItemStack[7];
 	public EnumChargerRSBehavior currentBehavior;
 	
-	enum EnumChargerRSBehavior {
-		CHARGEONLY, DECHARGE, NONE
+	public enum EnumChargerRSBehavior {
+		NONE(0), CHARGEONLY(1), RECIVEONLY(2), DISCHARGE(3), EMIT(4);
+		
+		private int id;
+		EnumChargerRSBehavior(int i){
+			id = i;
+		}
+		
+		public void setValue(int i){
+			id = i;
+		}
+		
+		public int value(){
+			return id;
+		}
+		
+		public void next(){
+			id = id == 4? 0 : id+1;
+		}
 	}
 	
 	public TileEntityArmorCharger() {}
@@ -85,6 +102,25 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory {
 			}
 			isCharging = flag;
 		} else isCharging = false;
+	}
+	
+	public String getCurrentBehavior(){
+		if(currentBehavior == null)
+			return "rs.donothing.name";
+		switch(currentBehavior){
+		case NONE:
+			return "rs.donothing.name";
+		case CHARGEONLY:
+			return "rs.chargeonly.name";
+		case RECIVEONLY:
+			return "rs.reciveonly.name";
+		case EMIT:
+			return "rs.emit.name";
+		case DISCHARGE:
+			return "rs.discharge.name";
+		default:
+			return "rs.donothing.name";
+		}
 	}
 
 	@Override
@@ -176,6 +212,7 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory {
         	slots[i] = is;
         }
     	currentEnergy = nbt.getInteger("energy");
+    	
     }
 
     /**

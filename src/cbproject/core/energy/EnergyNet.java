@@ -26,6 +26,7 @@ import cbproject.core.CBCMod;
 import cbproject.core.proxy.Proxy;
 import cbproject.core.world.WorldData;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -113,7 +114,7 @@ public final class EnergyNet {
 
 	    if ((removedTileEntity instanceof IEnAcceptor))
 	    {
-	      List reverseEnergyPaths = discover(removedTileEntity, true, 2147483647);
+	      List<EnergyPath> reverseEnergyPaths = discover(removedTileEntity, true, 2147483647);
 	      Iterator it;
 
 	      for (EnergyPath reverseEnergyPath : reverseEnergyPaths) {
@@ -175,14 +176,14 @@ public final class EnergyNet {
 			totalInvLoss -= 1.0D / removedEnergyPath.loss;
 		}
 
-		Map suppliedEnergyPaths = new HashMap();
+		Map<EnergyPath, Integer> suppliedEnergyPaths = new HashMap();
 		new Vector();
 
 		while ((!activeEnergyPaths.isEmpty()) && (amount > 0)) {
 			int energyConsumed = 0;
 			double newTotalInvLoss = 0.0D;
 
-			List currentActiveEnergyPaths = activeEnergyPaths;
+			List<EnergyPath> currentActiveEnergyPaths = activeEnergyPaths;
 			activeEnergyPaths = new Vector();
 
 			activeEnergyPaths.iterator();
@@ -273,7 +274,7 @@ public final class EnergyNet {
 			energyPath.totalEnergyConducted += energyInjected;
 
 			if (energyInjected > energyPath.minInsulationEnergyAbsorption) {
-				List entitiesNearEnergyPath = ((TileEntity) energySource).worldObj
+				List<EntityLiving> entitiesNearEnergyPath = ((TileEntity) energySource).worldObj
 						.getEntitiesWithinAABB(EntityLiving.class,
 								AxisAlignedBB.getBoundingBox(
 										energyPath.minX - 1,
@@ -347,7 +348,7 @@ public final class EnergyNet {
 
 		if (((tileEntity instanceof IEnConductor))
 				|| ((tileEntity instanceof IEnergySink))) {
-			List reverseEnergyPaths = discover(tileEntity, true, 2147483647);
+			List<EnergyPath> reverseEnergyPaths = discover(tileEntity, true, 2147483647);
 
 			for (EnergyPath reverseEnergyPath : reverseEnergyPaths) {
 				IEnergySource energySource = (IEnergySource) reverseEnergyPath.target;
@@ -384,7 +385,7 @@ public final class EnergyNet {
 		long ret = 0L;
 
 		if ((tileEntity instanceof IEnConductor)) {
-			List reverseEnergyPaths = discover(tileEntity, true, 2147483647);
+			List<EnergyPath> reverseEnergyPaths = discover(tileEntity, true, 2147483647);
 
 			for (EnergyPath reverseEnergyPath : reverseEnergyPaths) {
 				IEnergySource energySource = (IEnergySource) reverseEnergyPath.target;
@@ -421,7 +422,7 @@ public final class EnergyNet {
 
 		if (((tileEntity instanceof IEnConductor))
 				|| ((tileEntity instanceof IEnergySink))) {
-			List reverseEnergyPaths = discover(tileEntity, true, 2147483647);
+			List<EnergyPath> reverseEnergyPaths = discover(tileEntity, true, 2147483647);
 
 			for (EnergyPath reverseEnergyPath : reverseEnergyPaths) {
 				IEnergySource energySource = (IEnergySource) reverseEnergyPath.target;
@@ -447,7 +448,7 @@ public final class EnergyNet {
 
 	private List<EnergyPath> discover(TileEntity emitter, boolean reverse,
 			int lossLimit) {
-		Map reachedTileEntities = new HashMap();
+		Map<TileEntity, EnergyBlockLink> reachedTileEntities = new HashMap();
 	    LinkedList tileEntitiesToCheck = new LinkedList();
 
 	    tileEntitiesToCheck.add(emitter);
@@ -462,7 +463,7 @@ public final class EnergyNet {
 
 	      if (currentTileEntity != emitter) currentLoss = ((EnergyBlockLink)reachedTileEntities.get(currentTileEntity)).loss;
 
-	      List validReceivers = getValidReceivers(currentTileEntity, reverse);
+	      List<EnergyTarget> validReceivers = getValidReceivers(currentTileEntity, reverse);
 
 	      for (EnergyTarget validReceiver : validReceivers) {
 	        if (validReceiver.tileEntity == emitter)
@@ -490,7 +491,7 @@ public final class EnergyNet {
 	      }
 	    }
 
-	    List energyPaths = new LinkedList();
+	    List<EnergyPath> energyPaths = new LinkedList();
 
 	    for (Map.Entry entry : reachedTileEntities.entrySet()) {
 	      TileEntity tileEntity = (TileEntity)entry.getKey();
@@ -555,7 +556,7 @@ public final class EnergyNet {
 
 	public List<TileEntity> discoverTargets(TileEntity emitter,
 			boolean reverse, int lossLimit) {
-		List paths = discover(emitter, reverse, lossLimit);
+		List<EnergyPath> paths = discover(emitter, reverse, lossLimit);
 		List targets = new LinkedList();
 		for (EnergyPath path : paths) {
 			targets.add(path.target);

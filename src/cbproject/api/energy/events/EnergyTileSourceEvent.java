@@ -5,7 +5,7 @@ import cbproject.api.energy.tile.IEnergyTile;
 
 public class EnergyTileSourceEvent extends EnergyTileEvent{
 	public int amount;
-	static World world;
+	public static World world;
 	
 	public EnergyTileSourceEvent (IEnergyTile energyTile,int amount){
 		super(world, energyTile);

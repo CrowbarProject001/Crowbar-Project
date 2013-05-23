@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiContainer;
@@ -28,6 +29,8 @@ import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumChargerRSBehavior;
+import cbproject.deathmatch.network.NetCharger;
 
 /**
  * @author Administrator
@@ -61,14 +64,32 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		}
 
 	}
+	
+	class TipBehavior implements IGuiTip {
+
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "Redstone Behavior: ";
+		}
+
+		@Override
+		public String getTip() {
+			return te.getCurrentBehavior();
+		}
+		
+		
+	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 		CBCGuiPart behavior = new CBCGuiPart("behavior", 80, 28, 64, 10)
-				.setDraw(false);
+				.setDraw(false),
+				redstone = new CBCGuiButton("redstone", 153, 5, 19, 10).setDownCoords(180, 13).setTextureCoords(153, 5);
 		this.addButton(behavior);
+		this.addButton(redstone);
 		this.setElementTip("behavior", new TipEnergy());
+		this.setElementTip("redstone", new TipBehavior());
 	}
 
 	/**
@@ -88,8 +109,12 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	 */
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
-		// TODO Auto-generated method stub
-
+		if(button.name == "redstone"){
+			if(te.currentBehavior == null)
+				te.currentBehavior = EnumChargerRSBehavior.CHARGEONLY;
+			te.currentBehavior.next();
+			NetCharger.sendChargerPacket(te);
+		}
 	}
 
 	@Override

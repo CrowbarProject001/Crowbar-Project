@@ -64,7 +64,8 @@ public class CBCModuleRegister {
 				try {
 					me.invoke(getInstance(m), event);
 				} catch (Exception e){
-					System.err.println("Failed in calling preInit in :" + m);
+					System.err.println("Failed in calling preInit in :" + m + ", reason " + e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -141,9 +142,12 @@ public class CBCModuleRegister {
 				continue;
 			try {
 				Object value = f.get(null);
-				if(value != null)
+				if(value != null){
+					System.out.println(module + " : " + f.get(null));
 					return value;
+				}
 				f.set(null, module.newInstance());
+				System.out.println(module + " : " + f.get(null));
 				return f.get(null);
 			} catch (Exception e1) {
 				System.err.println("Wrongly declared instance " + f);

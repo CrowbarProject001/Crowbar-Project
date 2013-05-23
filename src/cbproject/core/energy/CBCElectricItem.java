@@ -18,78 +18,119 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.CBCMod;
+import cbproject.core.item.CBCGenericItem;
 
 /**
- * @author Administrator
+ * @author WeAthFolD
  *
  */
-public abstract class CBCElectricItem extends Item implements ICustomEnItem {
+public abstract class CBCElectricItem extends CBCGenericItem implements ICustomEnItem {
 
-	public CBCElectricItem(int par1) {
-		super(par1);
+	protected int tier = 1,
+			transferLimit = 100,
+			maxCharge;
+	
+	
+	public CBCElectricItem(int id) {
+		super(id);
 		setMaxStackSize(1);
 		setCreativeTab(CBCMod.cct);
 	}
+	
+    /**
+     * Returns the maximum damage an item can take.
+     */
+	@Override
+    public int getMaxDamage()
+    {
+        return this.maxCharge;
+    }
+	
+	@Override
+	public int getItemMaxDamageFromStack(ItemStack is){
+		return maxCharge;
+	}
+	
+    /**
+     * Return the itemDamage represented by this ItemStack. Defaults to the itemDamage field on ItemStack, but can be overridden here for other sources such as NBT.
+     *
+     * @param stack The itemstack that is damaged
+     * @return the damage value
+     */
+    public int getItemDamageFromStack(ItemStack stack)
+    {
+        return maxCharge - getItemCharge(stack);
+    }
 
+    /**
+     * Return the itemDamage display value represented by this itemstack.
+     * @param stack the stack
+     * @return the damage value
+     */
+    public int getItemDamageFromStackForDisplay(ItemStack stack)
+    {
+        return maxCharge - getItemCharge(stack);
+    }
+	
 	@Override
 	public int getChargedItemId(ItemStack itemStack) {
-		return itemStack.itemID;
+		return this.itemID;
 	}
 
-	/* (non-Javadoc)
-	 * @see cbproject.api.item.IEnItem#getEmptyItemId(net.minecraft.item.ItemStack)
-	 */
 	@Override
 	public int getEmptyItemId(ItemStack itemStack) {
-		return itemStack.itemID;
+		return this.itemID;
 	}
 
 	@Override
 	public int getMaxCharge(ItemStack itemStack) {
-		return this.getMaxDamage();
-	}
-
-	@Override
-	public int charge(ItemStack itemStack, int amount, int tier,
-			boolean ignoreTransferLimit, boolean simulate) {
-		if(itemStack.getItemDamage() == 0)
-			return 0;
-		int en = itemStack.getItemDamage();
-		if(!ignoreTransferLimit)
-			amount = this.getTransferLimit(itemStack);
-		if(en > amount){
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() - amount);
-			return amount;
-		} else {
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() - en);
-			return en;
-		}
+		return this.maxCharge;
 	}
 
 	@Override
 	public int discharge(ItemStack itemStack, int amount, int tier,
 			boolean ignoreTransferLimit, boolean simulate) {
+		if(getItemCharge(itemStack) == 0)
+			return 0;
+		int en = getItemCharge(itemStack);
+		if(!ignoreTransferLimit)
+			amount = this.getTransferLimit(itemStack);
+		if(en > amount){
+			if(!simulate)
+				setItemCharge(itemStack, getItemCharge(itemStack) - amount);
+			return amount;
+		} else {
+			if(!simulate)
+				setItemCharge(itemStack, getItemCharge(itemStack) - en);
+			return en;
+		}
+	}
+
+	@Override
+	public int charge(ItemStack itemStack, int amount, int tier,
+			boolean ignoreTransferLimit, boolean simulate) {
 		
-		int en = itemStack.getMaxDamage() - itemStack.getItemDamage() - 1;
+		int en = this.maxCharge - getItemCharge(itemStack) - 1;
 		if(en == 0)
 			return 0;
 		if(!ignoreTransferLimit)
 			amount = this.getTransferLimit(itemStack);
 		if(en > amount){
 			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() + amount);
+				setItemCharge(itemStack, getItemCharge(itemStack) + amount);
 			return amount;
 		} else {
 			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() + en);
+				setItemCharge(itemStack, getItemCharge(itemStack) + en);
 			return en;
 		}
 	}
@@ -97,17 +138,74 @@ public abstract class CBCElectricItem extends Item implements ICustomEnItem {
     @SideOnly(Side.CLIENT)
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add(StatCollector.translateToLocal("curenergy.name") + " : " + 
-    (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamageForDisplay()) + "/" + par1ItemStack.getMaxDamage() + " EU");
+    	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+    	if(this.canShowChargeToolTip(par1ItemStack))
+    		par3List.add(StatCollector.translateToLocal("curenergy.name") + " : " + 
+    				getItemCharge(par1ItemStack) + "/" + this.maxCharge + " EU");
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        par3List.add(new ItemStack(par1, 1, 0));
+        ItemStack chargedItem = new ItemStack(par1, 1, 0);
+        this.setItemCharge(chargedItem, maxCharge);
+        par3List.add(chargedItem);
     }
 
-	/* (non-Javadoc)
-	 * @see cbproject.api.item.ICustomEnItem#canShowChargeToolTip(net.minecraft.item.ItemStack)
-	 */
 	@Override
 	public boolean canShowChargeToolTip(ItemStack itemStack) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+	}
+	
+	protected void setItemCharge(ItemStack stack, int charge){
+		loadCompound(stack).setInteger("charge", (charge > 0) ? (charge > this.maxCharge ? this.maxCharge : charge) : 0);
+	}
+	
+	protected int getItemCharge(ItemStack stack){
+		return loadCompound(stack).getInteger("charge");
+	}
+	
+	private NBTTagCompound loadCompound(ItemStack stack){
+		if(stack.stackTagCompound == null)
+			stack.stackTagCompound = new NBTTagCompound();
+		return stack.stackTagCompound;
+	}
+	
+    /**
+     * Set the damage for this itemstack. Note, this method is responsible for zero checking.
+     * @param stack the stack
+     * @param damage the new damage value
+     */
+	@Override
+    public void setItemDamageForStack(ItemStack stack, int damage)
+    {
+        setItemCharge(stack, damage);
+    }
+	
+    /**
+     * Return if this itemstack is damaged. Note only called if {@link #isDamageable()} is true.
+     * @param stack the stack
+     * @return if the stack is damaged
+     */
+    public boolean isItemStackDamaged(ItemStack stack)
+    {
+        return getItemCharge(stack) < maxCharge;
+    }
+
+	@Override
+	public int getTier(ItemStack itemStack) {
+		return tier;
+	}
+
+	@Override
+	public int getTransferLimit(ItemStack itemStack) {
+		return this.transferLimit;
+	}
+
+	@Override
+	public boolean canUse(ItemStack itemStack, int amount) {
+		return getItemCharge(itemStack) > 0;
 	}
 
 }

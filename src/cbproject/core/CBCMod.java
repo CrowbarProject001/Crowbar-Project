@@ -34,6 +34,7 @@ import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
+import cbproject.deathmatch.CBCDeathmatch;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -105,6 +106,7 @@ public class CBCMod
 		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
 		module = new CBCModuleRegister();
 		module.registerModule("cbproject.intergration.ic2.ModuleIC2");
+		module.registerModule(CBCDeathmatch.class.getName());
 		module.preInit(event);
 	} 
 

@@ -36,15 +36,11 @@ public class ItemBattery extends CBCElectricItem {
 		super(par1);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("hevbattery");
-		this.setMaxDamage(EntityBattery.EU_PER_BATTERY);
+		this.setIconName("battery");
+		this.tier = 2;
+		this.transferLimit = 128;
+		this.maxCharge = EntityBattery.EU_PER_BATTERY;
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:battery");
-    }
 
 	@Override
 	public boolean canProvideEnergy(ItemStack itemStack) {
@@ -62,34 +58,6 @@ public class ItemBattery extends CBCElectricItem {
         return par1ItemStack;
     }
 	
-	/*
-	 * TODO:其实我不知道怎么用233
-	 */
-	@Override
-	public int getChargedItemId(ItemStack itemStack) {
-		return this.itemID;
-	}
-
-	@Override
-	public int getEmptyItemId(ItemStack itemStack) {
-		return this.itemID;
-	}
-
-	@Override
-	public int getMaxCharge(ItemStack itemStack) {
-		return this.getMaxDamage();
-	}
-
-	@Override
-	public int getTier(ItemStack itemStack) {
-		return 2;
-	}
-
-	@Override
-	public int getTransferLimit(ItemStack itemStack) {
-		return 128;
-	}
-
 	@Override
 	public boolean canUse(ItemStack itemStack, int amount) {
 		return itemStack.getMaxDamage() - itemStack.getItemDamage() > 0;

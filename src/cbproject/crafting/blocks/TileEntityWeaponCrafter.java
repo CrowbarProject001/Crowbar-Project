@@ -181,6 +181,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
+        isAdvanced = nbt.getBoolean("advanced");
         for(int i = 0; i < 20; i++){
         	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
         	byte count = nbt.getByte("count" + i);
@@ -198,6 +199,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
+        nbt.setBoolean("isAdvanced", isAdvanced);
         for(int i = 0; i < 20; i++){
         	if(inventory[i] == null)
         		continue;
