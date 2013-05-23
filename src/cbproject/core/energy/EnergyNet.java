@@ -611,8 +611,8 @@ public final class EnergyNet {
 
 		@ForgeSubscribe
 		public void onEnergyTileSource(EnergyTileSourceEvent event) {
-			event.amout = EnergyNet.getForWorld(event.world).emitEnergyFrom(
-					(IEnergySource) event.energyTile, event.amout);
+			event.amount = EnergyNet.getForWorld(event.world).emitEnergyFrom(
+					(IEnergySource) event.energyTile, event.amount);
 		}
 	}
 }
