@@ -14,11 +14,14 @@
  */
 package cbproject.core;
 
+import java.util.EnumSet;
 import java.util.logging.Logger;
 
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import cbproject.core.energy.EnergyNet;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
 import cbproject.core.props.GeneralProps;
@@ -36,6 +39,7 @@ import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.CBCDeathmatch;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -43,6 +47,7 @@ import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -52,12 +57,14 @@ import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid="lc",name="LambdaCraft",version="0.9.9 pre")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false,
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class ),
 clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_CLIENT }, packetHandler = CBCNetHandler.class ))
-public class CBCMod
+public class CBCMod implements ITickHandler
 { 
 	
 	/**
@@ -104,6 +111,10 @@ public class CBCMod
 		config=new Config(event.getSuggestedConfigurationFile());
 		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
 		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		EnergyNet.initialize();
+		TickRegistry.registerTickHandler(this, Side.CLIENT);
+		TickRegistry.registerTickHandler(this, Side.SERVER);
+		
 		module = new CBCModuleRegister();
 		module.registerModule("cbproject.intergration.ic2.ModuleIC2");
 		module.registerModule(CBCDeathmatch.class.getName());
@@ -148,6 +159,29 @@ public class CBCMod
 	public void serverStarting(FMLServerStartingEvent event) {
 	    CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();
 	    module.serverStarting(event);
+	}
+
+	@Override
+	public void tickStart(EnumSet<TickType> type, Object... tickData) {
+		World world = (World) tickData[0];
+		Proxy.profilerEndStartSection("EnergyNet");
+		EnergyNet.onTick(world);
+		
+	}
+
+	@Override
+	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+		Proxy.profilerEndStartSection("EnergyNet");
+	}
+
+	@Override
+	public EnumSet<TickType> ticks() {
+		return EnumSet.of(TickType.WORLD);
+	}
+
+	@Override
+	public String getLabel() {
+		return "LambdaCraft ticks";
 	}
 	
 }

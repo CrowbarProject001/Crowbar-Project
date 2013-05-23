@@ -18,9 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
@@ -28,55 +26,59 @@ import net.minecraft.world.World;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
-import cbproject.core.register.IGuiElement;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 /**
  * @author Administrator
  *
  */
-public class NetCharger implements IChannelProcess {
+public class NetChargerServer implements IChannelProcess {
 
 	public static void sendChargerPacket(TileEntityArmorCharger te){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_CHARGER, 11);
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_CHARGER_SV, 15);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		
 		try {
 	        outputStream.writeInt(te.xCoord);
 	        outputStream.writeShort(te.yCoord);
 	        outputStream.writeInt(te.zCoord);
-	        if(te.currentBehavior != null)
-	        	outputStream.writeByte(te.currentBehavior.value());
-	        else outputStream.writeByte(0);
+	        outputStream.writeInt(te.currentEnergy);
+	        outputStream.writeBoolean(te.isRSActivated);
 		} catch (Exception ex) {
 	        ex.printStackTrace();
 		}
 		
 		Packet250CustomPayload packet = new Packet250CustomPayload();
-		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
+		packet.channel = GeneralProps.NET_CHANNEL_CLIENT;
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
-		PacketDispatcher.sendPacketToServer(packet);
+		PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 24,
+				te.worldObj.getWorldInfo().getDimension(), packet);
 	}
 	
 	@Override
 	public void onPacketData(DataInputStream stream, Player player) {
-		World world = ((EntityPlayerMP)player).worldObj;
+		World world = ((EntityPlayerSP)player).worldObj;
 		
 		int x, y, z;
-		int value;
+		int energy;
+		boolean rs;
 		
 		try {
 			x=stream.readInt();
 			y=stream.readShort();
 			z=stream.readInt();
-			value=stream.readByte();
+			energy = stream.readInt();
+			rs = stream.readBoolean();
 			TileEntity te = world.getBlockTileEntity(x,y,z);
 			if(te == null || !(te instanceof TileEntityArmorCharger))
-				throw new RuntimeException("Cannot't get the right tileEntity of armor charger.");
+				return;
 			else {
 				TileEntityArmorCharger tt = (TileEntityArmorCharger) te;
-				tt.currentBehavior.setValue(value);
+				tt.currentEnergy = energy;
+				tt.isRSActivated = rs;
 			}
 			
 		} catch (Exception ex) {

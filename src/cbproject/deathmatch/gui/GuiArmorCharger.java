@@ -29,8 +29,7 @@ import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumChargerRSBehavior;
-import cbproject.deathmatch.network.NetCharger;
+import cbproject.deathmatch.network.NetChargerClient;
 
 /**
  * @author Administrator
@@ -74,7 +73,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 
 		@Override
 		public String getTip() {
-			return te.getCurrentBehavior();
+			return te.getCurrentBehavior().toString();
 		}
 		
 		
@@ -110,10 +109,8 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
 		if(button.name == "redstone"){
-			if(te.currentBehavior == null)
-				te.currentBehavior = EnumChargerRSBehavior.CHARGEONLY;
-			te.currentBehavior.next();
-			NetCharger.sendChargerPacket(te);
+			te.nextBehavior();
+			NetChargerClient.sendChargerPacket(te);
 		}
 	}
 
@@ -122,7 +119,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		String currentPage = StatCollector
-				.translateToLocal("armorcharger.name");
+				.translateToLocal(EnumChatFormatting.DARK_GRAY + "armorcharger.name");
 		fontRenderer.drawString(currentPage,
 				88 - fontRenderer.getStringWidth(currentPage) / 2, 5, 0x969494);
 	}

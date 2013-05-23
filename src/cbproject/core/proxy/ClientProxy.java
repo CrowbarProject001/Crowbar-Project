@@ -34,31 +34,28 @@ public class ClientProxy extends Proxy{
 		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess());
 	}
 	
-	@Override
-	public void profilerStartSection(String section){
+	public static void profilerStartSection(String section){
 		if (isRendering()){
 			Minecraft.getMinecraft().mcProfiler.startSection(section);
 		}else{
-			super.profilerStartSection(section);
+			//super.profilerStartSection(section);
 		}
 	}
 	
-	@Override
-	public void profilerEndSection(){
+	public static void profilerEndSection(){
 		if (isRendering()){
 			Minecraft.getMinecraft().mcProfiler.endSection();
 		}else{
-			super.profilerEndSection();
+			//super.profilerEndSection();
 		}
 		
 	}
 	
-	@Override
-	public void profilerEndStartSection(String section){
+	public static void profilerEndStartSection(String section){
 		if(isRendering()){
 			Minecraft.getMinecraft().mcProfiler.endStartSection(section);
 		}
-		super.profilerEndStartSection(section);
+		//super.profilerEndStartSection(section);
 	}
 	
 }

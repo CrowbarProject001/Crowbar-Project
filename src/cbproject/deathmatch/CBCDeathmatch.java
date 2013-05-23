@@ -47,7 +47,8 @@ import cbproject.deathmatch.gui.ElementArmorCharger;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cbproject.deathmatch.keys.DMMode;
 import cbproject.deathmatch.keys.DMReload;
-import cbproject.deathmatch.network.NetCharger;
+import cbproject.deathmatch.network.NetChargerClient;
+import cbproject.deathmatch.network.NetChargerServer;
 import cbproject.deathmatch.network.NetDeathmatch;
 import cbproject.deathmatch.network.NetExplosion;
 import cbproject.deathmatch.register.DMBlocks;
@@ -92,7 +93,8 @@ public class CBCDeathmatch
 		}
 		
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER, new NetCharger());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL, new NetChargerClient());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_SV, new NetChargerServer());
 		CBCGuiHandler.addGuiElement(TileEntityArmorCharger.class, new ElementArmorCharger());
 	
 	}
