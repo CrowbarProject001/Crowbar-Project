@@ -27,7 +27,7 @@ import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.props.ClientProps;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
-import cbproject.crafting.network.NetWeaponCrafter;
+import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.recipes.RecipeWeapons;
 
 /**
@@ -149,14 +149,14 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 		if(button.name == "up" || button.name =="down"){
 			boolean isDown = button.name == "down" ? true: false;
 			te.addScrollFactor(isDown);
-			NetWeaponCrafter.sendCrafterPacket((short)Minecraft.getMinecraft().theWorld.getWorldInfo().getDimension(), (short) 0, te.xCoord, te.yCoord, te.zCoord, isDown);
+			NetCrafterClient.sendCrafterPacket((short)Minecraft.getMinecraft().theWorld.getWorldInfo().getDimension(), (short) 0, te.xCoord, te.yCoord, te.zCoord, isDown);
 			this.updateButtonState();
 			return;
 		}
 		if(button.name == "left" || button.name == "right"){
 			boolean isForward = button.name == "right" ? true: false;
 			te.addPage(isForward);
-			NetWeaponCrafter.sendCrafterPacket((short)Minecraft.getMinecraft().theWorld.getWorldInfo().getDimension(), (short) 1, te.xCoord, te.yCoord, te.zCoord, isForward);
+			NetCrafterClient.sendCrafterPacket((short)Minecraft.getMinecraft().theWorld.getWorldInfo().getDimension(), (short) 1, te.xCoord, te.yCoord, te.zCoord, isForward);
 			this.updateButtonState();
 			return;
 		}

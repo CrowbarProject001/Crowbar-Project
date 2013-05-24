@@ -28,7 +28,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cbproject.api.entities.IEntityLink;
-import cbproject.mob.register.MobRegistry;
+import cbproject.core.utils.GenericUtils;
 
 /**
  * 蛇鲨虫子的生物实体类。
@@ -88,7 +88,7 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
 	@Override
 	protected Entity findPlayerToAttack() {
 		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(posX - 8.0, posY - 8.0, posZ - 8.0, posX +8.0, posY +8.0, posZ +8.0);
-		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox, MobRegistry.selectorLiving);
+		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox, GenericUtils.selectorLiving);
 		EntityLiving entity = null;
 		double distance = 10000.0F;
 		for(EntityLiving s : list){

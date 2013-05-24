@@ -62,6 +62,7 @@ import cbproject.deathmatch.renderers.RenderGaussRay;
 import cbproject.deathmatch.renderers.RenderHornet;
 import cbproject.deathmatch.renderers.RenderItemSatchel;
 import cbproject.deathmatch.renderers.RenderSatchel;
+import cbproject.deathmatch.renderers.RenderTileCharger;
 import cbproject.deathmatch.renderers.RenderTileTripmine;
 import cbproject.deathmatch.renderers.RenderTrail;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -203,6 +204,7 @@ public class CBCDeathmatch
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmAR, 0.10F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun, 0.12F));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripmine.class, new RenderTileTripmine());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmorCharger.class, new RenderTileCharger());
 	}
 	
 	public final static String SOUND_WEAPONS[]={

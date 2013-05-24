@@ -59,17 +59,6 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
 		this.minZ = par5;
 		this.maxZ = par11;
 	}
-
-	public void addCoord(double offX, double offY, double offZ) {
-
-		minX += offX;
-		maxX += offX;
-		minY += offY;
-		maxY += offY;
-		minZ += offZ;
-		maxZ += offZ;
-
-	}
 	
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y,
@@ -82,7 +71,7 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         
         block.setBlockBoundsBasedOnState(tileentity.worldObj, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
         setBound(block);
-        this.addCoord(x, y, z);
+
         Vec3 v1, v2, v3, v4, v5, v6, v7, v8;
         switch(var5){
         case 1:
@@ -113,8 +102,8 @@ public class RenderTileTripmine extends TileEntitySpecialRenderer {
         	break;
         }
         GL11.glPushMatrix();
+        GL11.glTranslated(x, y, z);
         this.bindTextureByName(ClientProps.TRIPMINE_SIDE_PATH);
-
         tessellator.startDrawingQuads();
         if(var5 == 1 || var5 == 3){
         	

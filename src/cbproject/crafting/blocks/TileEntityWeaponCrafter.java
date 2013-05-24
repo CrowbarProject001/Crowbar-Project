@@ -16,6 +16,9 @@ package cbproject.crafting.blocks;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -50,6 +53,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public long lastTime = 0;
 	public boolean redraw, isCrafting, isBurning;
 	public boolean isAdvanced = false;
+	private boolean isLoad = false;
 	
 	/**
 	 * inventory: 1-18：材料存储  19:燃料槽  20:合成结果槽
@@ -63,6 +67,11 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 
 	@Override
 	public void updateEntity() {
+		if(!isLoad){
+			isAdvanced = (blockType instanceof BlockWeaponCrafter) ? false : true;
+			isLoad = true;
+		}
+			
 		if(heat > 0)
 			heat--;
 		

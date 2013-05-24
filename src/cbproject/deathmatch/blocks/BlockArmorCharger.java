@@ -22,6 +22,7 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 import java.util.Random;
 
 import cbproject.core.CBCMod;
+import cbproject.core.props.ClientProps;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cpw.mods.fml.relauncher.Side;
@@ -49,8 +50,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class BlockArmorCharger extends BlockContainer {
 
-	public Icon iconSide, iconTop, iconBottom, iconMain;
-	protected final float WIDTH = 0.3F, HEIGHT = 0.4F, LENGTH = 0.1F;
+	protected final float WIDTH = 0.3F, HEIGHT = 0.4F, LENGTH = 0.08F;
 	
 	/**
 	 * @param par1
@@ -62,26 +62,21 @@ public class BlockArmorCharger extends BlockContainer {
 		setCreativeTab(CBCMod.cct);
 	}
 	
-    @Override
-	public void registerIcons(IconRegister par1IconRegister)
-    {
-        iconSide = par1IconRegister.registerIcon("lambdacraft:ac_side");
-        iconTop = par1IconRegister.registerIcon("lambdacraft:ac_top");
-        iconBottom = par1IconRegister.registerIcon("lambdacraft:ac_bottom");
-        iconMain = par1IconRegister.registerIcon("lambdacraft:ac_main");
-        blockIcon = iconTop;
-    }
-	
+	@Override
     @SideOnly(Side.CLIENT)
-    @Override
-    public Icon getIcon(int par1, int par2)
+    public void registerIcons(IconRegister par1IconRegister)
     {
-        return iconMain;
+        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:charger");
     }
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityArmorCharger();
+	}
+	
+	@Override
+	public int getRenderType() {
+		return ClientProps.RENDER_TYPE_EMPTY;
 	}
 	
     /**
@@ -206,22 +201,22 @@ public class BlockArmorCharger extends BlockContainer {
 
         if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST, true))
         {
-            var10 = 3;
+            var10 = 2;
         }
 
         if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true))
         {
-            var10 = 1;
+            var10 = 0;
         }
 
         if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true))
         {
-            var10 = 0;
+            var10 = 1;
         }
 
         if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true))
         {
-            var10 = 2;
+            var10 = 3;
         }
 		
         return var10;

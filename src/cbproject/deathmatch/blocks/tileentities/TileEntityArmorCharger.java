@@ -97,7 +97,6 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory,
 					currentEnergy += e;
 				}
 			}
-			return;
 		} else // Charge the energy into armor
 		if (currentEnergy > 0
 				&& !(!this.isRSActivated && this.getCurrentBehavior() == EnumBehavior.CHARGEONLY)) {

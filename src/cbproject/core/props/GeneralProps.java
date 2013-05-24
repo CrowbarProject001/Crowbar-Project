@@ -33,8 +33,8 @@ public class GeneralProps {
 	
 	public static final String NET_CHANNEL_CLIENT = "CBCClient", NET_CHANNEL_SERVER = "CBCServer";
 	
-	public static final byte NET_ID_EXPLOSION = 0, NET_ID_DM = 1, NET_ID_CRAFTER = 2, NET_ID_CHARGER_CL = 3,
-			NET_ID_CHARGER_SV = 4;
+	public static final byte NET_ID_EXPLOSION = 0, NET_ID_DM = 1, NET_ID_CRAFTER_CL = 2, NET_ID_CHARGER_CL = 3,
+			NET_ID_CHARGER_SV = 4, NET_ID_CRAFTER_SV = 5;
 	
 	public static void loadProps(Config config){
 		try {
