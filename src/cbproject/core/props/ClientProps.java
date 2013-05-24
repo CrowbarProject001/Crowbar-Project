@@ -21,8 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
 /**
- * 客户端的一些信息。（主要为贴图和渲染器）
- * 
+ * 客户端的一些信息。（贴图和渲染器）
  * @author WeAthFolD
  */
 @SideOnly(Side.CLIENT)
@@ -85,6 +84,10 @@ public class ClientProps {
 			"/cbproject/gfx/textures/entities/rpg_trail_tail.png" };
 	public static final String HORNET_TRAIL_PATH = "/cbproject/gfx/textures/entities/ag_trail.png";
 
+	/**
+	 * 获取随机的一个火光贴图。
+	 * @return 贴图路径
+	 */
 	public static String getRandomMuzzleFlash() {
 		int random = (int) (Math.random() * 7) + 1;
 		String path = "/cbproject/gfx/textures/muz/muz" + random + ".png";

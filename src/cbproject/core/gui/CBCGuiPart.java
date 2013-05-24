@@ -15,20 +15,24 @@
 package cbproject.core.gui;
 
 /**
- * @author Administrator
+ * LambdaCraft GUI元素。
+ * @author WeAthFolD
  *
  */
 public class CBCGuiPart {
 
+	/**
+	 * 该GUI元素的名称。
+	 */
 	public String name;
 	
 	/**
-	 * 按钮位置。
+	 * GUI元素位置。
 	 */
 	public int posX, posY;
 	
 	/**
-	 * 按钮的大小。
+	 * GUI元素的大小。
 	 */
 	public int width, height;
 	
@@ -74,7 +78,7 @@ public class CBCGuiPart {
 	}
 	
 	/**
-	 * 判断是否拥有按钮提示。
+	 * 判断是否拥有鼠标移上去时提示。
 	 * @return
 	 */
 	public boolean hasToolTip(){

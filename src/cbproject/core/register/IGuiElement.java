@@ -22,6 +22,7 @@ import net.minecraft.world.World;
  * @author WeAthFOlD
  */
 public interface IGuiElement {
+	
 	/**
 	 * 获取Server的Container，可能为Null
 	 * @param ID
@@ -32,7 +33,7 @@ public interface IGuiElement {
 	 * @param z
 	 * @return 对应Container
 	 */
-	public Object getServerContainer(int ID, EntityPlayer player, World world,
+	public Object getServerContainer(EntityPlayer player, World world,
 			int x, int y, int z);
 	
 	/**
@@ -45,6 +46,6 @@ public interface IGuiElement {
 	 * @param z
 	 * @return 对应GUI
 	 */
-	public Object getClientGui(int ID, EntityPlayer player, World world,
+	public Object getClientGui(EntityPlayer player, World world,
 			int x, int y, int z);
 }

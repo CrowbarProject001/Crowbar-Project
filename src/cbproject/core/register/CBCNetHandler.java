@@ -30,6 +30,7 @@ import cpw.mods.fml.common.network.Player;
 /**
  * 通用的网络包处理类。
  * 请在任何网络包被发送之前（一般是Init中）注册Channel。
+ * 用一个独立的Byte值注册Channel。
  * @author WeAthFolD
  */
 public class CBCNetHandler implements IPacketHandler {
@@ -59,8 +60,24 @@ public class CBCNetHandler implements IPacketHandler {
 	 * @param channel 频道
 	 * @param process 包处理类
 	 */
-	public static void addChannel(byte channel, IChannelProcess process){
+	public static boolean addChannel(byte channel, IChannelProcess process){
+		if(channels.containsKey(channel)){
+			return false;
+		}
 		channels.put(channel, process);
+		return true;
+	}
+	
+	/**
+	 * 获取一个没有被使用的Channel ID。
+	 * @return ID
+	 */
+	public static byte getUniqueChannelID(){
+		for(byte i = 0; i < Byte.MAX_VALUE; i++){
+			if(!channels.containsKey(i))
+				return i;
+		}
+		return -1;
 	}
 	
 	/**

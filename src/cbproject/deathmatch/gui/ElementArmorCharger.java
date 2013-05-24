@@ -10,13 +10,13 @@ import cbproject.deathmatch.gui.GuiArmorCharger;
 public class ElementArmorCharger implements IGuiElement {
 
 	@Override
-	public Object getServerContainer(int ID, EntityPlayer player, World world,
+	public Object getServerContainer(EntityPlayer player, World world,
 			int x, int y, int z) {
 		return new ContainerArmorCharger((TileEntityArmorCharger) world.getBlockTileEntity(x, y, z), player.inventory);
 	}
 
 	@Override
-	public Object getClientGui(int ID, EntityPlayer player, World world, int x,
+	public Object getClientGui(EntityPlayer player, World world, int x,
 			int y, int z) {
 		return new GuiArmorCharger((TileEntityArmorCharger) world.getBlockTileEntity(x, y, z), new ContainerArmorCharger((TileEntityArmorCharger) world.getBlockTileEntity(x, y, z), player.inventory));
 	}

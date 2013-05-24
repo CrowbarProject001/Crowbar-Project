@@ -259,11 +259,6 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory,
 	}
 
 	@Override
-	public boolean demandsEnergy(int metadata, int side) {
-		return ENERGY_MAX - currentEnergy > 0;
-	}
-
-	@Override
 	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
 		return !(getCurrentBehavior() == EnumBehavior.RECEIVEONLY && !this.isRSActivated);
@@ -312,6 +307,12 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory,
 	@Override
 	public int getMaxSafeInput() {
 		return 128;
+	}
+
+	@Override
+	public boolean isAddToEnergyNet() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

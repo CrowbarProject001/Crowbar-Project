@@ -22,11 +22,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 
 
 @CBCSubModule("mob")
-public class CBCMob
+public class ModuleMob
 {
 	
 	@Instance("cbc.mob")
-	public static CBCMob instance;
+	public static ModuleMob instance;
 	
 	@ModuleInit(EnumInitType.PREINIT)
 	public void preInit(FMLPreInitializationEvent Init)

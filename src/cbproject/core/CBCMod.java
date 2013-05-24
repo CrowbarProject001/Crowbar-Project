@@ -27,17 +27,18 @@ import cbproject.core.misc.Config;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCAchievements;
-import cbproject.core.register.CBCBlocks;
 import cbproject.core.register.CBCGuiHandler;
-import cbproject.core.register.CBCItems;
-import cbproject.core.register.CBCModuleRegister;
+import cbproject.core.register.CBCModuleRegisty;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
-import cbproject.deathmatch.CBCDeathmatch;
+import cbproject.crafting.register.CBCBlocks;
+import cbproject.crafting.register.CBCItems;
+import cbproject.deathmatch.ModuleDM;
+import cbproject.intergration.ic2.ModuleIC2;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -90,7 +91,7 @@ public class CBCMod implements ITickHandler
 	/**
 	 * 子模块注册。
 	 */
-	public static CBCModuleRegister module;
+	public static CBCModuleRegisty module;
 	
 	@Instance("lc")
 	public static CBCMod instance;
@@ -109,15 +110,14 @@ public class CBCMod implements ITickHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		config=new Config(event.getSuggestedConfigurationFile());
-		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
 		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
 		EnergyNet.initialize();
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
 		
-		module = new CBCModuleRegister();
-		module.registerModule("cbproject.intergration.ic2.ModuleIC2");
-		module.registerModule(CBCDeathmatch.class.getName());
+		module = new CBCModuleRegisty();
+		module.registerModule(ModuleIC2.class.getName());
+		module.registerModule(ModuleDM.class.getName());
 		module.preInit(event);
 	} 
 
@@ -128,10 +128,6 @@ public class CBCMod implements ITickHandler
 	@Init
 	public void init(FMLInitializationEvent Init){
 		//Blocks, Items, GUI Handler,Key Process.
-		CBCBlocks.init(config);
-		CBCItems.init(config);
-		CBCAchievements.init(config);
-		CBCGuiHandler.addGuiElement(TileEntityWeaponCrafter.class, new ElementCrafter());
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
 		proxy.init();

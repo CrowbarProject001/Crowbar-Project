@@ -16,6 +16,8 @@ package cbproject.core.register;
 
 import cbproject.core.misc.Config;
 import cbproject.crafting.CraftingHandler;
+import cbproject.crafting.register.CBCBlocks;
+import cbproject.crafting.register.CBCItems;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;

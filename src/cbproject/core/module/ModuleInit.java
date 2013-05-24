@@ -20,15 +20,39 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Use this annotation to register the init function in a proper time.
+ * 使用这个注解为子模块添加加载函数。
+ * @see CBCSubModule
  * @author WeAthFolD
- *
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ModuleInit {
 	public enum EnumInitType{
-		PREINIT, INIT, POSTINIT, SVINIT, CLINIT, NONE
+		
+		/**
+		 * 预加载函数。函数的参数应该为 (FMLPreInitializationEvent event)
+		 */
+		PREINIT,
+		/**
+		 * 正式加载函数。函数的参数应该为 (FMLInitializationEvent event)
+		 */
+		INIT,
+		/**
+		 * 后期加载函数。函数的参数应该为 (FMLPostInitializationEvent event)
+		 */
+		POSTINIT,
+		/**
+		 * 服务端加载函数。函数的参数应该为 (FMLServerStartingEvent event)
+		 */
+		SVINIT,
+		/**
+		 * 客户端加载函数。函数的参数应该为 (void)
+		 */
+		CLINIT,
+		/**
+		 * 无行为。
+		 */
+		NONE
 	}
 	
 	public EnumInitType value() default EnumInitType.NONE;

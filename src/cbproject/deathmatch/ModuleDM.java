@@ -17,7 +17,6 @@ import cbproject.core.module.ModuleInit.EnumInitType;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCGuiHandler;
-import cbproject.core.register.CBCItems;
 import cbproject.core.register.CBCKeyProcess;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
@@ -25,6 +24,7 @@ import cbproject.core.renderers.RenderEmpty;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
+import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.entities.CBCPlayer;
@@ -77,11 +77,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 @CBCSubModule("deathmatch")
-public class CBCDeathmatch
+public class ModuleDM
 {
 	
 	@Instance("cbc.deathmatch")
-	public static CBCDeathmatch instance = new CBCDeathmatch();
+	public static ModuleDM instance = new ModuleDM();
 	
 	@ModuleInit(EnumInitType.PREINIT)
 	public void preInit(FMLPreInitializationEvent Init)
@@ -96,7 +96,7 @@ public class CBCDeathmatch
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL, new NetChargerClient());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_SV, new NetChargerServer());
-		CBCGuiHandler.addGuiElement(TileEntityArmorCharger.class, new ElementArmorCharger());
+		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new ElementArmorCharger());
 	
 	}
 
@@ -203,8 +203,8 @@ public class CBCDeathmatch
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_357, 0.08F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmAR, 0.10F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun, 0.12F));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripmine.class, new RenderTileTripmine());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmorCharger.class, new RenderTileCharger());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripmine.class, new RenderTileTripmine(DMBlocks.blockTripmine));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmorCharger.class, new RenderTileCharger(DMBlocks.armorCharger));
 	}
 	
 	public final static String SOUND_WEAPONS[]={

@@ -2,7 +2,14 @@ package cbproject.api.energy.item;
 
 import net.minecraft.item.ItemStack;
 
+/**
+ * Simple energy item.
+ * 简单的能源物品。
+ * @author WeAthFolD
+ *
+ */
 public interface IEnItem {
+	
 	/**
 	 * Determine if the item can be used in a machine or as an armor part to supply energy.
 	 *

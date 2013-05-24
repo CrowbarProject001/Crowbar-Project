@@ -1,11 +1,11 @@
 package cbproject.crafting;
 
-import cbproject.core.register.CBCItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.ICraftingHandler;
 import cbproject.core.register.CBCAchievements;
+import cbproject.crafting.register.CBCItems;
 
 public class CraftingHandler implements ICraftingHandler {
 

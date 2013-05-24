@@ -23,6 +23,7 @@ import java.util.Random;
 
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
+import cbproject.core.props.GeneralProps;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cpw.mods.fml.relauncher.Side;
@@ -102,7 +103,7 @@ public class BlockArmorCharger extends BlockContainer {
             if (tileEntity == null || player.isSneaking()) {
                     return false;
             }
-            player.openGui(CBCMod.instance, 0, world, x, y, z);
+            player.openGui(CBCMod.instance, GeneralProps.GUI_ID_CHARGER, world, x, y, z);
             return true;
     }
     
@@ -175,15 +176,15 @@ public class BlockArmorCharger extends BlockContainer {
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
         float var6 = HEIGHT;
         float var7 =  WIDTH;
-        if (var5 == 3) //X+
+        if (var5 == 5) //X+
         {
             this.setBlockBounds(0.0F, 0.5F - var6, 0.5F - var7, LENGTH * 2.0F, 0.5F + var6, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2, 0.8)
         }
-        else if (var5 == 1) //X-
+        else if (var5 == 4) //X-
         {
             this.setBlockBounds(1.0F - LENGTH * 2.0F, 0.5F - var6, 0.5F - var7, 1.0F, 0.5F + var6, 0.5F + var7);
         }
-        else if (var5 == 0) //Z+
+        else if (var5 == 3) //Z+
         {
             this.setBlockBounds(0.5F - var7, 0.5F - var6, 0.0F, 0.5F + var7, 0.5F + var6, LENGTH * 2.0F);
         }
@@ -206,17 +207,17 @@ public class BlockArmorCharger extends BlockContainer {
 
         if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true))
         {
-            var10 = 0;
+            var10 = 3;
         }
 
         if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true))
         {
-            var10 = 1;
+            var10 = 4;
         }
 
         if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true))
         {
-            var10 = 3;
+            var10 = 5;
         }
 		
         return var10;

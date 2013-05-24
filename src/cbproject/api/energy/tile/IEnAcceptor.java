@@ -18,11 +18,11 @@ import cbproject.api.LCDirection;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * @author Administrator
+ * 用来指定一个TileEntity是否接受能源。
+ * @author WeAthFolD
  *
  */
-public interface IEnAcceptor {
+public interface IEnAcceptor extends IEnergyTile{
 	
-	public boolean demandsEnergy(int metadata, int side);
 	public abstract boolean acceptsEnergyFrom(TileEntity paramTileEntity, LCDirection paramDirection);
 }

@@ -24,6 +24,11 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+/**
+ * Mod内建的自定义爆炸。
+ * @author WeAthFolD
+ *
+ */
 public class CBCExplosion {
     /** whether or not the explosion sets fire to blocks around it */
     public boolean isFlaming = false;

@@ -14,8 +14,7 @@ import net.minecraft.world.World;
 public class MobSpawnHandler {
 
 	/**
-	 * Spawns the creature specified by the egg's type in the location specified
-	 * by the last three parameters. Parameters: world, entityID, x, y, z.
+	 * 把一个奇怪的生物生成到世界中。
 	 */
 	public static Entity spawnCreature(World par0World,
 			Class <? extends EntityLiving> c, EntityPlayer thrower) {

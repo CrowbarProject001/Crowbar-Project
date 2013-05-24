@@ -1,5 +1,10 @@
 package cbproject.core.utils;
 
+/**
+ * 提供方块位置信息的实用类。
+ * @author WeAthFolD
+ *
+ */
 public class BlockPos {
 
 	public int x, y, z, blockID;

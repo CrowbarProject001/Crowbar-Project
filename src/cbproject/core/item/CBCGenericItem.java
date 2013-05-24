@@ -26,10 +26,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
- * @author Administrator
+ * LambdaCraft通用物品类。
+ * @author WeAthFolD
  *
  */
-public class CBCGenericItem extends Item {
+public abstract class CBCGenericItem extends Item {
 
 	protected String description;
 	protected boolean useDescription = false;;

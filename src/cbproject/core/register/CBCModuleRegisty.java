@@ -34,13 +34,18 @@ import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
 
 /**
- * Submodules register.
+ * 子模块注册。
  * @author WeAthFolD
  */
-public class CBCModuleRegister {
+public class CBCModuleRegisty {
 
 	private static HashSet<Class> modules = new HashSet();
 	
+	/**
+	 * 注册一个子模块。请在LambdaCraft的preInit被调用前使用它。
+	 * @param path 子模块的绝对路径。
+	 * @return 注册成功与否
+	 */
 	public static boolean registerModule(String path){
 		Class module;
 		try {

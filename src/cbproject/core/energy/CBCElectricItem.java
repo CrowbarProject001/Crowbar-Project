@@ -30,6 +30,7 @@ import cbproject.core.CBCMod;
 import cbproject.core.item.CBCGenericItem;
 
 /**
+ * Generic electric item.
  * @author WeAthFolD
  *
  */
