@@ -46,6 +46,17 @@ public class ItemMedkit extends CBCGenericItem {
 	}
 	
 
+	/**
+	 * @param string
+	 * @param string2
+	 * @param string3
+	 */
+	private void setPotions(String string, String string2, String string3) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer) {
 
@@ -56,35 +67,39 @@ public class ItemMedkit extends CBCGenericItem {
 		}
 		return par1ItemStack;
 	}
-
-	
-	@Override
-	public void setIconName(String name) {
-		super.setIconName(name);
-	}
+		
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par1ItemStack.stackTagCompound.setString("potion1name", "potion1.name");
-		par1ItemStack.stackTagCompound.setString("potion1name", "potion1.name");
-		par1ItemStack.stackTagCompound.setString("potion1name", "potion1.name");
-		par3List.add(StatCollector.translateToLocal("potion.name")
-				+ " : "
-				+ (par1ItemStack.getMaxDamage() - par1ItemStack
-						.getItemDamageForDisplay()) + "/"
-				+ par1ItemStack.getMaxDamage() + " EU");
+		par3List.add(StatCollector.translateToLocal("potion1.name")
+				+ " : " + StatCollector.translateToLocal(this.getPotionsName(1, par1ItemStack)));
+		par3List.add(StatCollector.translateToLocal("potion2.name")
+				+ " : " + StatCollector.translateToLocal(this.getPotionsName(2, par1ItemStack)));
+		par3List.add(StatCollector.translateToLocal("potion3.name")
+				+ " : " + StatCollector.translateToLocal(this.getPotionsName(3, par1ItemStack)));
 	}
 	
-	protected int getItemCharge(ItemStack stack){
-		return loadCompound(stack).getInteger("charge");
+	/**
+	 * @return
+	 */
+	private String getPotionsName(int index, ItemStack medkitStack) {
+		loadCompound(medkitStack).getString("potion" + index + "Name");
+		return null;
 	}
-	
-	private NBTTagCompound loadCompound(ItemStack stack){
+
+	private NBTTagCompound loadCompound(ItemStack stack) {
 		if(stack.stackTagCompound == null)
 			stack.stackTagCompound = new NBTTagCompound();
 		return stack.stackTagCompound;
 	}
 	
+	public void setPotions(ItemStack stack, ItemStack potion1Stack, ItemStack potion2Stack, ItemStack potion3Stack) {
+		if (!(potion1Stack.getItem() == Item.potion) || !(potion1Stack.getItem() == Item.potion) || !(potion1Stack.getItem() == Item.potion)) 
+			return;
+		if (potion1Stack.getTagCompound().getBoolean("isBadEffect") == true)
+			return;
+		
+	}
 }
