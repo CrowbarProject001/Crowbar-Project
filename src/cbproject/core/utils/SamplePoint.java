@@ -1,4 +1,4 @@
-package cbproject.deathmatch.utils;
+package cbproject.core.utils;
 
 public class SamplePoint {
 

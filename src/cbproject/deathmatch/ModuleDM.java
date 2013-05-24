@@ -14,12 +14,14 @@ import cbproject.core.CBCMod;
 import cbproject.core.module.CBCSubModule;
 import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
+import cbproject.core.network.NetExplosion;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCKeyProcess;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
+import cbproject.core.renderers.RenderCrossedProjectile;
 import cbproject.core.renderers.RenderEmpty;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
@@ -45,17 +47,15 @@ import cbproject.deathmatch.entities.fx.EntityGaussRay;
 import cbproject.deathmatch.entities.fx.EntityTrailFX;
 import cbproject.deathmatch.gui.ElementArmorCharger;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
-import cbproject.deathmatch.keys.DMMode;
-import cbproject.deathmatch.keys.DMReload;
+import cbproject.deathmatch.keys.KeyMode;
+import cbproject.deathmatch.keys.KeyReload;
 import cbproject.deathmatch.network.NetChargerClient;
 import cbproject.deathmatch.network.NetChargerServer;
 import cbproject.deathmatch.network.NetDeathmatch;
-import cbproject.deathmatch.network.NetExplosion;
 import cbproject.deathmatch.register.DMBlocks;
 import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.renderers.RenderBulletWeapon;
 import cbproject.deathmatch.renderers.RenderCrossbow;
-import cbproject.deathmatch.renderers.RenderCrossedProjectile;
 import cbproject.deathmatch.renderers.RenderEgon;
 import cbproject.deathmatch.renderers.RenderEgonRay;
 import cbproject.deathmatch.renderers.RenderGaussRay;
@@ -89,8 +89,8 @@ public class ModuleDM
 		if(FMLCommonHandler.instance().getSide() == Side.CLIENT){
 			for(String s : SOUND_WEAPONS)
 				CBCSoundEvents.addSoundPath("cbc/weapons/" + s, "/cbproject/gfx/sounds/weapons/" + s);
-			CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R), false, new DMReload());
-			CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V), false, new DMMode());
+			CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R), false, new KeyReload());
+			CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V), false, new KeyMode());
 		}
 		
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());

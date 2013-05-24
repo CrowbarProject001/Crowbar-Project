@@ -30,6 +30,7 @@ import cbproject.crafting.items.ItemMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
+import cbproject.crafting.register.CBCBlocks;
 import cbproject.deathmatch.utils.AmmoManager;
 
 /**
@@ -68,7 +69,9 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	@Override
 	public void updateEntity() {
 		if(!isLoad){
-			isAdvanced = (blockType instanceof BlockWeaponCrafter) ? false : true;
+			if(blockType == null)
+				return;
+			isAdvanced = this.blockType.blockID == CBCBlocks.blockWeaponCrafter.blockID? false : true;
 			isLoad = true;
 		}
 			

@@ -1,4 +1,4 @@
-package cbproject.deathmatch.network;
+package cbproject.core.network;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

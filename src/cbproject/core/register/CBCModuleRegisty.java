@@ -39,7 +39,7 @@ import cbproject.core.module.ModuleInit.EnumInitType;
  */
 public class CBCModuleRegisty {
 
-	private static HashSet<Class> modules = new HashSet();
+	private static ArrayList<Class> modules = new ArrayList();
 	
 	/**
 	 * 注册一个子模块。请在LambdaCraft的preInit被调用前使用它。

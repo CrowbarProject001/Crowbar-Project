@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cbproject.deathmatch.blocks.weapons;
+package cbproject.deathmatch.blocks;
 
 import static net.minecraftforge.common.ForgeDirection.EAST;
 import static net.minecraftforge.common.ForgeDirection.NORTH;

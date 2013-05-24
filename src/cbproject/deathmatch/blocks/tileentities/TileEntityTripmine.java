@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.blocks.weapons.BlockTripmine;
+import cbproject.deathmatch.blocks.BlockTripmine;
 import cbproject.deathmatch.register.DMBlocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;

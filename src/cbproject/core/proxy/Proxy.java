@@ -53,8 +53,6 @@ public class Proxy {
 		if(currentLang != "en_US")
 			LanguageRegistry.instance().loadLocalization("/cbproject/lang/" + currentLang + ".properties", currentLang, false);
 		else LanguageRegistry.instance().loadLocalization("/cbproject/lang/en_US.properties", "en_US", false);
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER_CL, new NetCrafterClient());
-		GeneralProps.loadProps(CBCMod.config);
 	}
 	
 }

@@ -3,8 +3,7 @@ package cbproject.deathmatch.utils;
 import net.minecraft.item.ItemStack;
 
 public class InformationWeapon {
-	
-	
+
 	public ItemStack itemStack;
 	public int ticksExisted, lastTick, recoverTick;
 	public Boolean isRecovering;

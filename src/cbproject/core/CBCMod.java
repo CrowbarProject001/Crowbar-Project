@@ -24,6 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.energy.EnergyNet;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
+import cbproject.core.network.NetExplosion;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCAchievements;
@@ -32,8 +33,10 @@ import cbproject.core.register.CBCModuleRegisty;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
+import cbproject.crafting.ModuleCrafting;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.gui.ElementCrafter;
+import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.crafting.register.CBCBlocks;
 import cbproject.crafting.register.CBCItems;
@@ -116,6 +119,7 @@ public class CBCMod implements ITickHandler
 		TickRegistry.registerTickHandler(this, Side.SERVER);
 		
 		module = new CBCModuleRegisty();
+		module.registerModule(ModuleCrafting.class.getName());
 		module.registerModule(ModuleIC2.class.getName());
 		module.registerModule(ModuleDM.class.getName());
 		module.preInit(event);
@@ -130,6 +134,8 @@ public class CBCMod implements ITickHandler
 		//Blocks, Items, GUI Handler,Key Process.
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
+		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
 		module.init(Init);
 		if(proxy.isRendering()){

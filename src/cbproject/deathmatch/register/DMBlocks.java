@@ -3,9 +3,9 @@ package cbproject.deathmatch.register;
 import net.minecraft.src.ModLoader;
 import cbproject.core.misc.Config;
 import cbproject.deathmatch.blocks.BlockArmorCharger;
+import cbproject.deathmatch.blocks.BlockTripmine;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
-import cbproject.deathmatch.blocks.weapons.BlockTripmine;
 
 public class DMBlocks {
 	

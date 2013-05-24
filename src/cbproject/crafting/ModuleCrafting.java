@@ -24,9 +24,11 @@ import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.ClientProxy;
 import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCGuiHandler;
+import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.gui.ElementCrafter;
+import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.register.CBCBlocks;
 import cbproject.crafting.register.CBCItems;
 import cbproject.mob.ModuleMob;
@@ -63,6 +65,7 @@ public class ModuleCrafting {
 		CBCItems.init(CBCMod.config);
 		CBCAchievements.init(CBCMod.config);
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CRAFTER, new ElementCrafter());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER_CL, new NetCrafterClient());
 	}
 
 	@ModuleInit(EnumInitType.POSTINIT)
