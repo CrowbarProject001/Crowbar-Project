@@ -36,11 +36,7 @@ import cbproject.deathmatch.entities.EntityMedkit;
  */
 public class ItemMedkit extends CBCGenericItem {
 
-<<<<<<< HEAD
 	private int[] potions = {0, 0, 0};
-=======
-	
->>>>>>> origin/weathfold
 	
 	public ItemMedkit(int par1) {
 		super(par1);
@@ -49,7 +45,6 @@ public class ItemMedkit extends CBCGenericItem {
 		this.setIconName("medkit");
 	}
 	
-<<<<<<< HEAD
 	
 
 	@Override
@@ -61,10 +56,6 @@ public class ItemMedkit extends CBCGenericItem {
 		loadCompound(par1ItemStack).setString("potion3Name", "potions.null");
 	}
 	
-
-=======
->>>>>>> origin/weathfold
-
 	/**
 	 * @param string
 	 * @param string2
@@ -92,41 +83,18 @@ public class ItemMedkit extends CBCGenericItem {
 	@Override
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-<<<<<<< HEAD
 		System.out.println(getPotionsName(1, par1ItemStack));
 		par3List.add(StatCollector.translateToLocal(this.getPotionsName(1, par1ItemStack)));
 		par3List.add(StatCollector.translateToLocal(this.getPotionsName(2, par1ItemStack)));
 		par3List.add(StatCollector.translateToLocal(this.getPotionsName(3, par1ItemStack)));
 	}
-	
-	
-=======
-		/*BUGGED
-		par3List.add(StatCollector.translateToLocal("potion1.name")
-				+ " : " + StatCollector.translateToLocal(this.getPotionsName(1, par1ItemStack)));
-		par3List.add(StatCollector.translateToLocal("potion2.name")
-				+ " : " + StatCollector.translateToLocal(this.getPotionsName(2, par1ItemStack)));
-		par3List.add(StatCollector.translateToLocal("potion3.name")
-				+ " : " + StatCollector.translateToLocal(this.getPotionsName(3, par1ItemStack)));
-		*/
-	}
-	
->>>>>>> origin/weathfold
+
 	/**
 	 * @return
 	 */
 	private String getPotionsName(int index, ItemStack medkitStack) {
-<<<<<<< HEAD
 		return loadCompound(medkitStack).getString("potion1Name");
 	}
-
-	
-=======
-		loadCompound(medkitStack).getString("potion" + index + "Name");
-		return null;
-	}
-
->>>>>>> origin/weathfold
 	private NBTTagCompound loadCompound(ItemStack stack) {
 		if(stack.stackTagCompound == null)
 			stack.stackTagCompound = new NBTTagCompound();
@@ -136,17 +104,9 @@ public class ItemMedkit extends CBCGenericItem {
 	public void setPotions(ItemStack stack, ItemStack potion1Stack, ItemStack potion2Stack, ItemStack potion3Stack) {
 		if (!(potion1Stack.getItem() == Item.potion) || !(potion1Stack.getItem() == Item.potion) || !(potion1Stack.getItem() == Item.potion)) 
 			return;
-<<<<<<< HEAD
 	//	if (potion1Stack.getTagCompound().getBoolean("isBadEffect") == true)
 	//		return;
 		
 	}
-	
-	
-=======
-		if (potion1Stack.getTagCompound().getBoolean("isBadEffect") == true)
-			return;
-		
-	}
->>>>>>> origin/weathfold
+
 }
