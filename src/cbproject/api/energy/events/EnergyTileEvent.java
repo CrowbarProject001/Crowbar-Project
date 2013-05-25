@@ -18,11 +18,7 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 import net.minecraftforge.event.world.WorldEvent;
 
-/**
- * TODO:求自己添加注释
- * @author HopeAsd
- *
- */
+
 public class EnergyTileEvent extends WorldEvent{
 
 	public final IEnergyTile energyTile;

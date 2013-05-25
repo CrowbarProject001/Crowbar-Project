@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 /**
- * TODO:求自己添加注释
+ * TODO:宣布一个方块接入能源网络 通过EnergyNet.addTileEntity
  * @author HopeAsd
  *
  */

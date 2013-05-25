@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 /**
- * TODO:求自己添加注释
+ * TODO:把一个方块从能源网络中移除 通过EnergyNet.removeTileEntity
  * @author HopeAsd
  *
  */
