@@ -55,7 +55,7 @@ public class ItemMedkit extends CBCGenericItem {
 		loadCompound(par1ItemStack).setString("potion2Name", "potions.null");
 		loadCompound(par1ItemStack).setString("potion3Name", "potions.null");
 	}
-
+	
 
 
 	/**
