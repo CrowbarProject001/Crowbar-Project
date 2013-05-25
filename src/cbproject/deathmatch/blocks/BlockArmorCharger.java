@@ -76,6 +76,7 @@ public class BlockArmorCharger extends BlockContainer {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 		return ClientProps.RENDER_TYPE_EMPTY;
 	}

@@ -35,6 +35,7 @@ public class NetDeathmatch implements IChannelProcess{
 		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
+		System.out.println("sending packet from client");
 		PacketDispatcher.sendPacketToServer(packet);
 	}
 	

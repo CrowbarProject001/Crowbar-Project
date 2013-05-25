@@ -167,7 +167,8 @@ public abstract class EntityProjectile extends Entity {
 		nbt.setDouble("motionX", motionX);
 		nbt.setDouble("motionY", motionY);
 		nbt.setDouble("motionZ", motionZ);
-		nbt.setString("thrower", getThrower().getEntityName());
+		if(thrower != null)
+			nbt.setString("thrower", getThrower().getEntityName());
 	}
     
 }

@@ -31,7 +31,7 @@ public class GeneralProps {
 			ENT_ID_DOT = 8, ENT_ID_SATCHEL = 9, ENT_ID_SNARK = 10, ENT_ID_BULLET = 11, ENT_ID_BOW = 12,
 			ENT_ID_MEDKIT = 13, ENT_ID_BATTERY = 14, ENT_ID_GAUSS2 = 15;
 	
-	public static final String NET_CHANNEL_CLIENT = "CBCClient", NET_CHANNEL_SERVER = "CBCServer";
+	public static final String NET_CHANNEL_CLIENT = "cbcclient", NET_CHANNEL_SERVER = "cbcserver";
 	
 	public static final byte NET_ID_EXPLOSION = 0, NET_ID_DM = 1, NET_ID_CRAFTER_CL = 2, NET_ID_CHARGER_CL = 3,
 			NET_ID_CHARGER_SV = 4, NET_ID_CRAFTER_SV = 5;

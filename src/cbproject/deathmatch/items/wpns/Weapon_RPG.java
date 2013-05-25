@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 public class Weapon_RPG extends WeaponGeneralBullet {
 
-	private static Icon iconDot;
+	public static Icon iconDot;
 	
 	public Weapon_RPG(int par1) {
 		super(par1,CBCItems.ammo_rpg.itemID, 2);
@@ -39,7 +39,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
     public void registerIcons(IconRegister par1IconRegister)
     {
         this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_rpg");
-        iconDot = par1IconRegister.registerIcon("lambdacraft:rpg_dot");
+        iconDot = par1IconRegister.registerIcon("lambdacraft:reddot");
     }
 	
 	@Override

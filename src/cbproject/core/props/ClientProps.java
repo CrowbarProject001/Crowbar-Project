@@ -55,6 +55,8 @@ public class ClientProps {
 					"/cbproject/gfx/textures/entities/egon_beam.png",
 					"/cbproject/gfx/textures/entities/egon_ray2.png" },
 			CROSSBOW_BOW_PATH = "/cbproject/gfx/textures/entities/steelbow.png";
+	
+	public static final String RED_DOT_PATH = "/cbproject/gfx/textures/entities/reddot.png";
 
 	public static final String EGON_EQUIPPED_PATH = "/cbproject/gfx/textures/items/weapon_egon0.png",
 			GUI_ARMORCHARGER_PATH = "/cbproject/gfx/textures/gui/armor_charger.png";
@@ -83,6 +85,7 @@ public class ClientProps {
 			"/cbproject/gfx/textures/entities/rpg_trail.png",
 			"/cbproject/gfx/textures/entities/rpg_trail_tail.png" };
 	public static final String HORNET_TRAIL_PATH = "/cbproject/gfx/textures/entities/ag_trail.png";
+	public static final String BATTERY_PATH = "/cbproject/gfx/textures/entities/battery.png";
 
 	/**
 	 * 获取随机的一个火光贴图。

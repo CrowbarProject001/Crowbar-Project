@@ -74,7 +74,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			isAdvanced = this.blockType.blockID == CBCBlocks.blockWeaponCrafter.blockID? false : true;
 			isLoad = true;
 		}
-			
+		
 		if(heat > 0)
 			heat--;
 		

@@ -23,6 +23,8 @@ import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.renderers.RenderCrossedProjectile;
 import cbproject.core.renderers.RenderEmpty;
+import cbproject.core.renderers.RenderIcon;
+import cbproject.core.renderers.RenderModel;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
@@ -65,6 +67,7 @@ import cbproject.deathmatch.renderers.RenderSatchel;
 import cbproject.deathmatch.renderers.RenderTileCharger;
 import cbproject.deathmatch.renderers.RenderTileTripmine;
 import cbproject.deathmatch.renderers.RenderTrail;
+import cbproject.deathmatch.renderers.models.ModelBattery;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -75,6 +78,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @CBCSubModule("deathmatch")
 public class ModuleDM
@@ -117,7 +121,7 @@ public class ModuleDM
 		EntityRegistry.registerModEntity(EntityCrossbowArrow.class, "arrow", GeneralProps.ENT_ID_ARROW, CBCMod.instance, 32, 2, true);
 		EntityRegistry.registerModEntity(EntityMedkit.class, "medkit", GeneralProps.ENT_ID_MEDKIT, CBCMod.instance, 32, 5, true);
 		EntityRegistry.registerModEntity(EntityBattery.class, "battery", GeneralProps.ENT_ID_BATTERY, CBCMod.instance, 32, 5, true);
-		
+		EntityRegistry.registerModEntity(EntityBattery.class, "battery", GeneralProps.ENT_ID_BATTERY, CBCMod.instance, 32, 5, true);
 		String description[] = {"crafter.weapon", "crafter.ammo"},
 				advds [] = {"crafter.advweapon", "crafter.armor"};
 		RecipeWeapons.InitializeRecipes(2, description);
@@ -166,7 +170,7 @@ public class ModuleDM
 		RecipeWeapons.addWeaponRecipe(1, ammoRecipes);	
 		RecipeWeapons.addAdvWeaponRecipe(0, advWeapons);
 		RecipeWeapons.addAdvWeaponRecipe(1, armors);
-		
+		RecipeWeapons.close();
 	}
 
 	@ModuleInit(EnumInitType.POSTINIT)
@@ -178,6 +182,7 @@ public class ModuleDM
 	}
 	
 	@ModuleInit(EnumInitType.CLINIT)
+	@SideOnly(Side.CLIENT)
 	public void loadRenderingThings(){
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
 		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
@@ -189,12 +194,13 @@ public class ModuleDM
 		RenderingRegistry.registerEntityRenderingHandler(EntityEgonRay.class, new RenderEgonRay());
 		RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new RenderCrossedProjectile(0.8, 0.27, ClientProps.RPG_ROCKET_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowArrow.class, new RenderCrossedProjectile(0.6, 0.12, ClientProps.CROSSBOW_BOW_PATH));
-		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class, new RenderSnowball(DMItems.weapon_RPG));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class, new RenderIcon(ClientProps.RED_DOT_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGauss.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGaussSec.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityTrailFX.class, new RenderTrail());
 		RenderingRegistry.registerEntityRenderingHandler(EntityHornet.class, new RenderHornet());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBattery.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
 		
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_satchel.itemID, new RenderItemSatchel());
