@@ -5,9 +5,9 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import cbproject.core.network.NetExplosion;
 import cbproject.core.utils.CBCExplosion;
 import cbproject.deathmatch.entities.EntityBullet;
-import cbproject.deathmatch.network.NetExplosion;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;

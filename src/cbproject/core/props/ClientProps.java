@@ -21,12 +21,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
 /**
- * 客户端的一些信息。（主要为贴图和渲染器）
+ * 客户端的一些信息。（贴图和渲染器）
  * @author WeAthFolD
  */
 @SideOnly(Side.CLIENT)
 public class ClientProps {
-	
+
 	public static final int RENDER_TYPE_TRIPMINE = RenderingRegistry
 			.getNextAvailableRenderId();
 	public static final int RENDER_TYPE_EMPTY = RenderingRegistry
@@ -39,6 +39,10 @@ public class ClientProps {
 	public static final String TRIPMINE_TOP_PATH = "/cbproject/gfx/textures/blocks/tripmine_top.png";
 	public static final String TRIPMINE_RAY_PATH = "/cbproject/gfx/textures/blocks/tripmine_beam.png";
 
+	public static final String HEVCHARGER_MAIN = "/cbproject/gfx/textures/blocks/ac_main.png",
+			HEVCHARGER_SIDE = "/cbproject/gfx/textures/blocks/ac_side.png",
+			HEVCHARGER_TD = "/cbproject/gfx/textures/blocks/ac_td.png",
+			HEVCHARGER_BACK = "/cbproject/gfx/textures/blocks/ac_back.png";
 	public static final String SATCHEL_TOP_PATH = "/cbproject/gfx/textures/entities/satchel_top.png",
 			SATCHEL_BOTTOM_PATH = "/cbproject/gfx/textures/entities/satchel_bottom.png",
 			SATCHEL_SIDE_PATH = "/cbproject/gfx/textures/entities/satchel_side.png",
@@ -47,7 +51,9 @@ public class ClientProps {
 	public static final String AR_GRENADE_PATH = "/cbproject/gfx/textures/entities/argrenade.png",
 			RPG_ROCKET_PATH = "/cbproject/gfx/textures/entities/rpg_rocket.png",
 			SHOTGUN_SHELL_PATH = "/cbproject/gfx/textures/entities/shotgun_shell.png",
-			EGON_BEAM_PATH[] = {"/cbproject/gfx/textures/entities/egon_beam.png", "/cbproject/gfx/textures/entities/egon_ray2.png"},
+			EGON_BEAM_PATH[] = {
+					"/cbproject/gfx/textures/entities/egon_beam.png",
+					"/cbproject/gfx/textures/entities/egon_ray2.png" },
 			CROSSBOW_BOW_PATH = "/cbproject/gfx/textures/entities/steelbow.png";
 
 	public static final String EGON_EQUIPPED_PATH = "/cbproject/gfx/textures/items/weapon_egon0.png",
@@ -72,15 +78,18 @@ public class ClientProps {
 	public static final String HEV_ARMOR_PATH[] = {
 			"/cbproject/gfx/textures/armor/hev_1.png",
 			"/cbproject/gfx/textures/armor/hev_2.png" };
-	
+
 	public static final String RPG_TRAIL_PATH[] = {
-		"/cbproject/gfx/textures/entities/rpg_trail.png",
-		"/cbproject/gfx/textures/entities/rpg_trail_tail.png"
-	};
+			"/cbproject/gfx/textures/entities/rpg_trail.png",
+			"/cbproject/gfx/textures/entities/rpg_trail_tail.png" };
 	public static final String HORNET_TRAIL_PATH = "/cbproject/gfx/textures/entities/ag_trail.png";
 
+	/**
+	 * 获取随机的一个火光贴图。
+	 * @return 贴图路径
+	 */
 	public static String getRandomMuzzleFlash() {
-		int random = (int) (Math.random() * 7) + 1; 
+		int random = (int) (Math.random() * 7) + 1;
 		String path = "/cbproject/gfx/textures/muz/muz" + random + ".png";
 		return path;
 	}

@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.renderers.RenderUtils;
+import cbproject.core.utils.SamplePoint;
 import cbproject.deathmatch.entities.fx.EntityTrailFX;
-import cbproject.deathmatch.utils.SamplePoint;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;

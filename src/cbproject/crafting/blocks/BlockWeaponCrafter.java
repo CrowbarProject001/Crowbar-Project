@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.CBCMod;
+import cbproject.core.props.GeneralProps;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -67,7 +68,7 @@ public class BlockWeaponCrafter extends BlockContainer {
             if (tileEntity == null || player.isSneaking()) {
                     return false;
             }
-            player.openGui(CBCMod.instance, 0, world, x, y, z);
+            player.openGui(CBCMod.instance, GeneralProps.GUI_ID_CRAFTER, world, x, y, z);
             return true;
     }
 

@@ -19,7 +19,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cbproject.core.CBCMod;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
-import cbproject.crafting.network.NetWeaponCrafter;
+import cbproject.crafting.network.NetCrafterClient;
 import net.minecraft.util.StringTranslate;
 
 /**
@@ -29,22 +29,22 @@ import net.minecraft.util.StringTranslate;
  */
 public class Proxy {
 	
-	public void profilerStartSection(String section){
+	public static void profilerStartSection(String section){
 		
 	}
 
-	public void profilerEndSection(){
+	public static void profilerEndSection(){
 		
 	}
 	
-	public void profilerEndStartSection(String section){
+	public static void profilerEndStartSection(String section){
 		
 	}
 	
-	public boolean isRendering(){
+	public static boolean isRendering(){
 		return !isSimulating();
 	}
-	private boolean isSimulating() {
+	private static boolean isSimulating() {
 		return !FMLCommonHandler.instance().getEffectiveSide().isClient();
 	}
 	
@@ -53,8 +53,6 @@ public class Proxy {
 		if(currentLang != "en_US")
 			LanguageRegistry.instance().loadLocalization("/cbproject/lang/" + currentLang + ".properties", currentLang, false);
 		else LanguageRegistry.instance().loadLocalization("/cbproject/lang/en_US.properties", "en_US", false);
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER, new NetWeaponCrafter());
-		GeneralProps.loadProps(CBCMod.config);
 	}
 	
 }

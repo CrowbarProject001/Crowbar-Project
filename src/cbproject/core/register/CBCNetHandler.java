@@ -30,20 +30,21 @@ import cpw.mods.fml.common.network.Player;
 /**
  * 通用的网络包处理类。
  * 请在任何网络包被发送之前（一般是Init中）注册Channel。
+ * 用一个独立的Byte值注册Channel。
  * @author WeAthFolD
  */
 public class CBCNetHandler implements IPacketHandler {
 
-	private static HashMap<Short, IChannelProcess> channels = new HashMap();
+	private static HashMap<Byte, IChannelProcess> channels = new HashMap();
 	
 	@Override
 	public void onPacketData(INetworkManager manager,
 			Packet250CustomPayload packet, Player player) {
 		
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
-		short i = -1;
+		byte i = -1;
 		try {
-			i = inputStream.readShort();
+			i = inputStream.readByte();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,8 +60,24 @@ public class CBCNetHandler implements IPacketHandler {
 	 * @param channel 频道
 	 * @param process 包处理类
 	 */
-	public static void addChannel(short channel, IChannelProcess process){
+	public static boolean addChannel(byte channel, IChannelProcess process){
+		if(channels.containsKey(channel)){
+			return false;
+		}
 		channels.put(channel, process);
+		return true;
+	}
+	
+	/**
+	 * 获取一个没有被使用的Channel ID。
+	 * @return ID
+	 */
+	public static byte getUniqueChannelID(){
+		for(byte i = 0; i < Byte.MAX_VALUE; i++){
+			if(!channels.containsKey(i))
+				return i;
+		}
+		return -1;
 	}
 	
 	/**
@@ -70,10 +87,10 @@ public class CBCNetHandler implements IPacketHandler {
 	 * @return 所要求的输出流，频道信息已经预先写入。
 	 */
 	public static ByteArrayOutputStream getStream(short id, int size){
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(size + 2);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(size + 1);
 		DataOutputStream stream = new DataOutputStream(bos);
 		try {
-			stream.writeShort(id);
+			stream.writeByte(id);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

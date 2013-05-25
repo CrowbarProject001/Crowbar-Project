@@ -10,8 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 
 /**
+ * 武器信息的公用存储。
  * @author WeAthFolD
- * @description General weapon information storage class.
  */
 public class CBCWeaponInformation {
 

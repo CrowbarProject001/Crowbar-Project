@@ -1,7 +1,8 @@
 package cbproject.deathmatch.entities.fx;
 
 import java.util.LinkedList;
-import cbproject.deathmatch.utils.SamplePoint;
+
+import cbproject.core.utils.SamplePoint;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;

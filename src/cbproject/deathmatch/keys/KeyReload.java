@@ -8,7 +8,7 @@ import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cbproject.deathmatch.network.NetDeathmatch;
 import cbproject.deathmatch.utils.InformationBullet;
 
-public class DMReload implements IKeyProcess {
+public class KeyReload implements IKeyProcess {
 
 	@Override
 	public void onKeyDown() {

@@ -18,8 +18,8 @@ import net.minecraft.item.ItemStack;
 
 /**
  * 部分参考了工业2的代码，电力物品的兼容类。
- * The interface is referenced to IC2's code.
- * @author WeAthFolD, Alabaka
+ * The interface has referenced the IC2's code.
+ * @author WeAthFolD
  *
  */
 public interface ICustomEnItem extends IEnItem {

@@ -1,4 +1,4 @@
-package cbproject.core.register;
+package cbproject.crafting.register;
 
 import net.minecraft.block.Block;
 import net.minecraft.src.ModLoader;

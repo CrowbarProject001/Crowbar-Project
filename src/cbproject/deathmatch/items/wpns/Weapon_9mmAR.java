@@ -3,7 +3,7 @@ package cbproject.deathmatch.items.wpns;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
-import cbproject.core.register.CBCItems;
+import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.InformationBullet;

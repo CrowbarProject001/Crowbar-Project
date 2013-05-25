@@ -1,4 +1,4 @@
-package cbproject.core.register;
+package cbproject.crafting.register;
 
 import cbproject.core.misc.Config;
 import cbproject.crafting.items.*;
@@ -14,9 +14,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
- * core和crafting包所有的物品注册。
+ * core和crafting模块中所有的物品注册。
  * @author WeAthFolD, mkpoli
- *
  */
 public class CBCItems {
 	

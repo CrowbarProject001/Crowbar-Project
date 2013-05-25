@@ -18,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiContainer;
@@ -28,6 +29,7 @@ import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cbproject.deathmatch.network.NetChargerClient;
 
 /**
  * @author Administrator
@@ -61,14 +63,32 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		}
 
 	}
+	
+	class TipBehavior implements IGuiTip {
+
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "Redstone Behavior: ";
+		}
+
+		@Override
+		public String getTip() {
+			return te.getCurrentBehavior().toString();
+		}
+		
+		
+	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 		CBCGuiPart behavior = new CBCGuiPart("behavior", 80, 28, 64, 10)
-				.setDraw(false);
+				.setDraw(false),
+				redstone = new CBCGuiButton("redstone", 153, 5, 19, 10).setDownCoords(180, 13).setTextureCoords(153, 5);
 		this.addButton(behavior);
+		this.addButton(redstone);
 		this.setElementTip("behavior", new TipEnergy());
+		this.setElementTip("redstone", new TipBehavior());
 	}
 
 	/**
@@ -88,8 +108,10 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	 */
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
-		// TODO Auto-generated method stub
-
+		if(button.name == "redstone"){
+			te.nextBehavior();
+			NetChargerClient.sendChargerPacket(te);
+		}
 	}
 
 	@Override
@@ -97,7 +119,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		String currentPage = StatCollector
-				.translateToLocal("armorcharger.name");
+				.translateToLocal(EnumChatFormatting.DARK_GRAY + "armorcharger.name");
 		fontRenderer.drawString(currentPage,
 				88 - fontRenderer.getStringWidth(currentPage) / 2, 5, 0x969494);
 	}

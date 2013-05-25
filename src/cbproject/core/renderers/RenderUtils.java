@@ -7,72 +7,58 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.client.FMLClientHandler;
 
+/**
+ * 一些有用的渲染器功能。
+ * @author WeAthFolD
+ *
+ */
 public class RenderUtils{
 
-	/** The minimum X value for rendering (default 0.0). */
-	public double minX;
-
-	/** The maximum X value for rendering (default 1.0). */
-	public double maxX;
-
-	/** The minimum Y value for rendering (default 0.0). */
-	public double minY;
-
-	/** The maximum Y value for rendering (default 1.0). */
-	public double maxY;
-
-	/** The minimum Z value for rendering (default 0.0). */
-	public double minZ;
-
-	/** The maximum Z value for rendering (default 1.0). */
-	public double maxZ;
-
+	/**
+	 * 添加带UV的三维顶点。
+	 * @param vec3
+	 * @param texU
+	 * @param texV
+	 */
 	public static void addVertex(Vec3 vec3, double texU, double texV) {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord,
 				texU, texV);
 	}
 	
+	/**
+	 * 添加不带UV的三维顶点。
+	 * @param vec3
+	 */
 	public static void addVertex(Vec3 vec3) {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.addVertex(vec3.xCoord, vec3.yCoord, vec3.zCoord);
 	}
 
-	protected void setBound(Block block) {
-		minX = block.getBlockBoundsMinX();
-		minY = block.getBlockBoundsMinY();
-		minZ = block.getBlockBoundsMinZ();
-		maxX = block.getBlockBoundsMaxX();
-		maxY = block.getBlockBoundsMaxY();
-		maxZ = block.getBlockBoundsMaxZ();
-	}
-
+	/**
+	 * 获取某个贴图的ID。
+	 * @param path 贴图路径
+	 * @return
+	 */
 	public static int getTexture(String path) {
 		return FMLClientHandler.instance().getClient().renderEngine
 				.getTexture(path);
 	}
-
-	public void setBlockBounds(double par1, double par3, double par5,
-			double par7, double par9, double par11) {
-		this.minX = par1;
-		this.maxX = par7;
-		this.minY = par3;
-		this.maxY = par9;
-		this.minZ = par5;
-		this.maxZ = par11;
+	
+	/**
+	 * 获取并加载一个贴图。
+	 * @param path 贴图路径
+	 */
+	public static void loadTexture(String path) {
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexture(path));
 	}
 
-	public void addCoord(double offX, double offY, double offZ) {
-
-		minX += offX;
-		maxX += offX;
-		minY += offY;
-		maxY += offY;
-		minZ += offZ;
-		maxZ += offZ;
-
-	}
-
+	
+	/**
+	 * 将Item渲染成一个有厚度的薄片。
+	 * @param t
+	 * @param w 宽度
+	 */
 	public static void renderItemIn2d(Tessellator t, double w) {
 
 		Vec3 a1 = newV3(0, 0, w), a2 = newV3(1, 0, w), a3 = newV3(1, 1, w), a4 = newV3(0, 1, w),
@@ -227,6 +213,13 @@ public class RenderUtils{
         par0Tessellator.draw();
     }
 
+    /**
+     * 创建一个新的Vec3顶点。
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
 	public static Vec3 newV3(double x, double y, double z) {
 		return Vec3.createVectorHelper(x, y, z);
 	}

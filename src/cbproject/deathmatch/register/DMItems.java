@@ -5,6 +5,7 @@ import cbproject.core.misc.Config;
 import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ArmorLongjump;
 import cbproject.deathmatch.items.ItemBattery;
+import cbproject.deathmatch.items.ItemMedkit;
 import cbproject.deathmatch.items.wpns.Weapon_357;
 import cbproject.deathmatch.items.wpns.Weapon_9mmAR;
 import cbproject.deathmatch.items.wpns.Weapon_9mmhandgun;
@@ -39,7 +40,6 @@ public class DMItems {
 	public static ArmorLongjump longjump;
 	
 	public static void init(Config conf){
-		
 		try{
 			weapon_crowbar = new Weapon_crowbar(conf.GetItemID("weapon_crowbar", 7000));
 			
@@ -63,12 +63,9 @@ public class DMItems {
 			longjump = new ArmorLongjump(conf.GetItemID("armorLongjump", 8006), 1);
 			
 			battery = new ItemBattery(conf.GetItemID("battery", 8007));
-		}catch(Exception e){
+			medkit = new ItemMedkit(conf.GetItemID("medkit", 8008));
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
-        
 	}
-	
-	
-	
 }

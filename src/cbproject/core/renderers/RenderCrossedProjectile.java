@@ -1,4 +1,4 @@
-package cbproject.deathmatch.renderers;
+package cbproject.core.renderers;
 
 import org.lwjgl.opengl.GL11;
 

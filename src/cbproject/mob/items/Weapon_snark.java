@@ -1,17 +1,15 @@
 package cbproject.mob.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.core.CBCMod;
-import cbproject.core.props.GeneralProps;
-import cbproject.mob.entities.EntitySnark;
-import cbproject.mob.register.MobRegistry;
-import cbproject.mob.utils.MobSpawnHandler;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import cbproject.core.CBCMod;
+import cbproject.mob.entities.EntitySnark;
+import cbproject.mob.utils.MobSpawnHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Weapon_snark extends Item{
 

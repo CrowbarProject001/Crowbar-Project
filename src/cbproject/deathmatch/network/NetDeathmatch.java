@@ -20,7 +20,7 @@ import cpw.mods.fml.common.network.Player;
 public class NetDeathmatch implements IChannelProcess{
 	
 	public static void sendModePacket(int stackInSlot,short id, int newMode){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_DM, 10);
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_DM, 11);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		
 		try {

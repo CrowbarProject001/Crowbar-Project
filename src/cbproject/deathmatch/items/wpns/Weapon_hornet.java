@@ -14,26 +14,16 @@
  */
 package cbproject.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cbproject.core.CBCMod;
-import cbproject.core.props.GeneralProps;
-import cbproject.core.register.CBCItems;
-import cbproject.core.utils.CBCWeaponInformation;
-import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.entities.EntityHornet;
-import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.InformationBullet;
-import cbproject.deathmatch.utils.InformationSet;
-import cbproject.deathmatch.utils.InformationWeapon;
-import cbproject.mob.register.MobRegistry;
-import cbproject.mob.utils.MobSpawnHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD.

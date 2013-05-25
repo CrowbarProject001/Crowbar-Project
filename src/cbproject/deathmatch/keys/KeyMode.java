@@ -8,7 +8,7 @@ import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.network.NetDeathmatch;
 import cbproject.deathmatch.utils.InformationWeapon;
 
-public class DMMode implements IKeyProcess {
+public class KeyMode implements IKeyProcess {
 
 	@Override
 	public void onKeyDown() {

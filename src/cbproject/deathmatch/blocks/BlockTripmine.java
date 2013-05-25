@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cbproject.deathmatch.blocks.weapons;
+package cbproject.deathmatch.blocks;
 
 import static net.minecraftforge.common.ForgeDirection.EAST;
 import static net.minecraftforge.common.ForgeDirection.NORTH;
@@ -72,11 +72,11 @@ public class BlockTripmine extends BlockContainer {
 		TileEntityTripmine tileEntity = (TileEntityTripmine) par1World.getBlockTileEntity(par2, par3, par4);
 		if(tileEntity == null)
 			return;
-		if(meta == 3)
+		if(meta == 5)
 			begin.motionX = 1.0;
-		else if (meta == 1)
+		else if (meta == 4)
 			begin.motionX = -1.0;
-		else if(meta == 0)
+		else if(meta == 3)
 			begin.motionZ = 1.0;
 		else 
 			begin.motionZ = -1.0;
@@ -103,11 +103,11 @@ public class BlockTripmine extends BlockContainer {
     	 int var7 = par1World.getBlockMetadata(par2, par3, par4);
     	 Boolean var8 = false;
     	 //Check if the block still could exist
-         if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH) && var7 == 3)
+         if (!par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH) && var7 == 5)
              var8 = true;
-         if (!par1World.isBlockSolidOnSide(par2 + 1, par3, par4, NORTH) && var7 == 1)
+         if (!par1World.isBlockSolidOnSide(par2 + 1, par3, par4, NORTH) && var7 == 4)
              var8 = true;
-         if (!par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST) && var7 == 0)
+         if (!par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST) && var7 == 3)
              var8 = true;
          if (!par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST) && var7 == 2)
              var8 = true;
@@ -158,15 +158,15 @@ public class BlockTripmine extends BlockContainer {
         int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
         float var6 = HEIGHT;
         float var7 =  WIDTH;
-        if (var5 == 3) //X+
+        if (var5 == 5) //X+
         {
             this.setBlockBounds(0.0F, 0.5F - var6, 0.5F - var7, var6 * 2.0F, 0.5F + var6, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2, 0.8)
         }
-        else if (var5 == 1) //X-
+        else if (var5 == 4) //X-
         {
             this.setBlockBounds(1.0F - var6 * 2.0F, 0.5F - var6, 0.5F - var7, 1.0F, 0.5F + var6, 0.5F + var7);
         }
-        else if (var5 == 0) //Z+
+        else if (var5 == 3) //Z+
         {
             this.setBlockBounds(0.5F - var7, 0.5F - var6, 0.0F, 0.5F + var7, 0.5F + var6, var6 * 2.0F);
         }
@@ -189,17 +189,17 @@ public class BlockTripmine extends BlockContainer {
 
         if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true))
         {
-            var10 = 0;
+            var10 = 3;
         }
 
         if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true))
         {
-            var10 = 1;
+            var10 = 4;
         }
 
         if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true))
         {
-            var10 = 3;
+            var10 = 5;
         }
 		
         return var10;

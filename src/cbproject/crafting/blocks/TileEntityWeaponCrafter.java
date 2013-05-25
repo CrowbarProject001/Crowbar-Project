@@ -16,6 +16,9 @@ package cbproject.crafting.blocks;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -27,6 +30,7 @@ import cbproject.crafting.items.ItemMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeaponSpecial;
 import cbproject.crafting.recipes.RecipeWeapons;
+import cbproject.crafting.register.CBCBlocks;
 import cbproject.deathmatch.utils.AmmoManager;
 
 /**
@@ -50,6 +54,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public long lastTime = 0;
 	public boolean redraw, isCrafting, isBurning;
 	public boolean isAdvanced = false;
+	private boolean isLoad = false;
 	
 	/**
 	 * inventory: 1-18：材料存储  19:燃料槽  20:合成结果槽
@@ -63,6 +68,13 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 
 	@Override
 	public void updateEntity() {
+		if(!isLoad){
+			if(blockType == null)
+				return;
+			isAdvanced = this.blockType.blockID == CBCBlocks.blockWeaponCrafter.blockID? false : true;
+			isLoad = true;
+		}
+			
 		if(heat > 0)
 			heat--;
 		
@@ -181,6 +193,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
+        isAdvanced = nbt.getBoolean("advanced");
         for(int i = 0; i < 20; i++){
         	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
         	byte count = nbt.getByte("count" + i);
@@ -198,6 +211,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
+        nbt.setBoolean("isAdvanced", isAdvanced);
         for(int i = 0; i < 20; i++){
         	if(inventory[i] == null)
         		continue;

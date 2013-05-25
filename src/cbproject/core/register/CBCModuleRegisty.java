@@ -34,13 +34,18 @@ import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
 
 /**
- * Submodules register.
+ * 子模块注册。
  * @author WeAthFolD
  */
-public class CBCModuleRegister {
+public class CBCModuleRegisty {
 
-	private static HashSet<Class> modules = new HashSet();
+	private static ArrayList<Class> modules = new ArrayList();
 	
+	/**
+	 * 注册一个子模块。请在LambdaCraft的preInit被调用前使用它。
+	 * @param path 子模块的绝对路径。
+	 * @return 注册成功与否
+	 */
 	public static boolean registerModule(String path){
 		Class module;
 		try {
@@ -64,7 +69,8 @@ public class CBCModuleRegister {
 				try {
 					me.invoke(getInstance(m), event);
 				} catch (Exception e){
-					System.err.println("Failed in calling preInit in :" + m);
+					System.err.println("Failed in calling preInit in :" + m + ", reason " + e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -141,9 +147,12 @@ public class CBCModuleRegister {
 				continue;
 			try {
 				Object value = f.get(null);
-				if(value != null)
+				if(value != null){
+					System.out.println(module + " : " + f.get(null));
 					return value;
+				}
 				f.set(null, module.newInstance());
+				System.out.println(module + " : " + f.get(null));
 				return f.get(null);
 			} catch (Exception e1) {
 				System.err.println("Wrongly declared instance " + f);

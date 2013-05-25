@@ -18,6 +18,13 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.*;
 
 /**
+ * 用来指定一个类为LambdaCraft的子模块。
+ * 在模块类中用@Instance来指定类实例（static）
+ * 在模块中使用@ModuleInit来制定对应的加载函数。
+ * 如果想在别的Mod中使用这个方法，请使用required-before
+ * 并在preInit中注册。
+ * @see ModuleInit
+ * @see cpw.mods.fml.common.Mod.Instance
  * @author WeAthFolD
  *
  */

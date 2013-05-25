@@ -14,7 +14,10 @@
  */
 package cbproject.deathmatch.blocks.tileentities;
 
+import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
+import cbproject.api.energy.tile.IEnergySink;
+import cbproject.deathmatch.network.NetChargerServer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -23,47 +26,119 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * 盔甲充能机方块。
- * TODO:添加对工业2的支持。
+ * 盔甲充能机方块。 TODO:添加对工业2的支持。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
-public class TileEntityArmorCharger extends TileEntity implements IInventory {
+public class TileEntityArmorCharger extends TileEntity implements IInventory,
+		IEnergySink {
 
-	public static int ENERGY_MAX = 400000; //10 BatBox, 4HEV Armor
+	public static int ENERGY_MAX = 400000; // 10 BatBox, 4HEV Armor
 	public boolean isCharging = false;
 	public int currentEnergy = 0;
-	
+
 	/**
-	 * slot 0-3: HEV Armor slot, accept ICustomEnItem(LC) or ICustomElectricItem(IC2) only.
-	 * slot 4-6: Battery slot. 
+	 * slot 0-3: HEV Armor slot, accept ICustomEnItem(LC) or
+	 * ICustomElectricItem(IC2) only. slot 4-6: Battery slot.
 	 */
 	public ItemStack slots[] = new ItemStack[7];
-	public EnumChargerRSBehavior currentBehavior;
-	
-	enum EnumChargerRSBehavior {
-		CHARGEONLY, DECHARGE, NONE
+	public int currentBehavior;
+	public boolean isRSActivated;
+
+	public enum EnumBehavior {
+		NONE, CHARGEONLY, RECEIVEONLY, DISCHARGE, EMIT;
+
+		@Override
+		public String toString() {
+			switch (this) {
+			case NONE:
+				return "rs.donothing.name";
+			case CHARGEONLY:
+				return "rs.chargeonly.name";
+			case RECEIVEONLY:
+				return "rs.reciveonly.name";
+			case EMIT:
+				return "rs.emit.name";
+			case DISCHARGE:
+				return "rs.discharge.name";
+			default:
+				return "rs.donothing.name";
+			}
+		}
 	}
-	
-	public TileEntityArmorCharger() {}
-	
+
+	public void nextBehavior() {
+		currentBehavior = currentBehavior == 4 ? 0 : currentBehavior + 1;
+	}
+
+	public TileEntityArmorCharger() {
+	}
+
 	@Override
 	public void updateEntity() {
-		//this.onInventoryChanged();
 		int energyReq = ENERGY_MAX - currentEnergy;
-		if(currentEnergy < ENERGY_MAX){
-			for(int i = 4; i < 7; i++){
-				ItemStack sl = slots[i];
-				if(sl == null)
+
+		if(!worldObj.isRemote && worldObj.getWorldTime() % 5 == 0){
+			NetChargerServer.sendChargerPacket(this);
+		}
+		
+		// discharge
+		if (this.isRSActivated
+				&& this.getCurrentBehavior() == EnumBehavior.DISCHARGE) {
+			if (!worldObj.isRemote){
+				for (int i = 0; i < 4; i++) {
+					ItemStack arm = slots[i];
+					if (arm == null)
+						continue;
+					ICustomEnItem item = (ICustomEnItem) arm.getItem();
+					int e = item.discharge(arm, ENERGY_MAX - currentEnergy, 2,
+							false, false);
+					currentEnergy += e;
+				}
+			}
+		} else // Charge the energy into armor
+		if (currentEnergy > 0
+				&& !(!this.isRSActivated && this.getCurrentBehavior() == EnumBehavior.CHARGEONLY)) {
+			boolean flag = false;
+			for (int i = 0; i < 4; i++) {
+				ItemStack arm = slots[i];
+				if (arm == null)
 					continue;
-				if(sl.itemID == Item.redstone.itemID){
-					if(energyReq > 500){
+				ICustomEnItem item = (ICustomEnItem) arm.getItem();
+				int e = item.charge(arm, currentEnergy > 128 ? 128
+						: currentEnergy, 2, false, worldObj.isRemote);
+				currentEnergy -= e;
+				flag = flag || e > 0;
+			}
+			isCharging = flag;
+		} else
+			isCharging = false;
+
+		if(worldObj.isRemote)
+			return;
+		
+		if(currentEnergy < 0)
+			currentEnergy = 0;
+		
+		/**
+		 * 
+		 * Charge the energy into tileentity
+		 */
+		if (currentEnergy < ENERGY_MAX
+				&& !(!this.isRSActivated && this.getCurrentBehavior() == EnumBehavior.RECEIVEONLY)) {
+			for (int i = 4; i < 7; i++) {
+				ItemStack sl = slots[i];
+				if (sl == null)
+					continue;
+				if (sl.itemID == Item.redstone.itemID) {
+					if (energyReq > 500) {
 						this.decrStackSize(i, 1);
 					}
 					currentEnergy += 500;
-				} else if(sl.getItem() instanceof ICustomEnItem){
-					ICustomEnItem item =  (ICustomEnItem)sl.getItem();
-					if(!item.canProvideEnergy(sl))
+				} else if (sl.getItem() instanceof ICustomEnItem) {
+					ICustomEnItem item = (ICustomEnItem) sl.getItem();
+					if (!item.canProvideEnergy(sl))
 						continue;
 					int cn = energyReq < 128 ? energyReq : 128;
 					cn = item.discharge(sl, cn, 2, false, false);
@@ -71,20 +146,7 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory {
 				}
 			}
 		}
-		
-		if(currentEnergy > 0){
-			boolean flag = false;
-			for(int i = 0; i < 4; i++){
-				ItemStack arm = slots[i];
-				if(arm == null)
-					continue;
-				ICustomEnItem item = (ICustomEnItem) arm.getItem();
-				int e = item.charge(arm, currentEnergy > 128? 128 : currentEnergy, 2, false, false);
-				currentEnergy -= e;
-				flag = flag || e > 0;
-			}
-			isCharging = flag;
-		} else isCharging = false;
+
 	}
 
 	@Override
@@ -149,49 +211,108 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory {
 	}
 
 	@Override
-	public void openChest() { }
+	public void openChest() {
+	}
 
 	@Override
-	public void closeChest() { }
+	public void closeChest() {
+	}
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		if(i <= 3 && !(itemstack.getItem() instanceof ICustomEnItem))
+		if (i <= 3 && !(itemstack.getItem() instanceof ICustomEnItem))
 			return false;
 		return true;
 	}
-	
-    /**
-     * Reads a tile entity from NBT.
-     */
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-    	super.readFromNBT(nbt);
-    	for(int i = 0; i < 7; i++){
-        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
-        	byte count = nbt.getByte("count" + i);
-        	if(id == 0)
-        		continue;
-        	ItemStack is = new ItemStack(id, count, damage);
-        	slots[i] = is;
-        }
-    	currentEnergy = nbt.getInteger("energy");
-    }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        for(int i = 0; i < 7; i++){
-        	if(slots[i] == null)
-        		continue;
-        	nbt.setShort("id"+i, (short) slots[i].itemID);
-        	nbt.setByte("count"+i, (byte) slots[i].stackSize);
-        	nbt.setShort("damage"+i, (short)slots[i].getItemDamage());
-        }
-        nbt.setInteger("energy", currentEnergy);
-    }
+	/**
+	 * Reads a tile entity from NBT.
+	 */
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		for (int i = 0; i < 7; i++) {
+			short id = nbt.getShort("id" + i), damage = nbt.getShort("damage"
+					+ i);
+			byte count = nbt.getByte("count" + i);
+			if (id == 0)
+				continue;
+			ItemStack is = new ItemStack(id, count, damage);
+			slots[i] = is;
+		}
+		currentEnergy = nbt.getInteger("energy");
+
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	public void writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+		for (int i = 0; i < 7; i++) {
+			if (slots[i] == null)
+				continue;
+			nbt.setShort("id" + i, (short) slots[i].itemID);
+			nbt.setByte("count" + i, (byte) slots[i].stackSize);
+			nbt.setShort("damage" + i, (short) slots[i].getItemDamage());
+		}
+		nbt.setInteger("energy", currentEnergy);
+	}
+
+	@Override
+	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
+			LCDirection paramDirection) {
+		return !(getCurrentBehavior() == EnumBehavior.RECEIVEONLY && !this.isRSActivated);
+	}
+
+	@Override
+	public int demandsEnergy() {
+		return ENERGY_MAX - currentEnergy;
+	}
+
+	@Override
+	public int injectEnergy(LCDirection paramDirection, int paramInt) {
+		if (getCurrentBehavior() == EnumBehavior.RECEIVEONLY
+				&& this.isRSActivated)
+			return 0;
+		int en = ENERGY_MAX - currentEnergy;
+		if (paramInt < en) {
+			currentEnergy += en;
+			return paramInt;
+		} else {
+			currentEnergy = ENERGY_MAX;
+			return en;
+		}
+	}
+
+	public EnumBehavior getCurrentBehavior() {
+		return getBehavior(currentBehavior);
+	}
+
+	private EnumBehavior getBehavior(int i) {
+		switch (i) {
+		case 0:
+			return EnumBehavior.NONE;
+		case 1:
+			return EnumBehavior.CHARGEONLY;
+		case 2:
+			return EnumBehavior.RECEIVEONLY;
+		case 3:
+			return EnumBehavior.DISCHARGE;
+		case 4:
+			return EnumBehavior.EMIT;
+		}
+		return EnumBehavior.NONE;
+	}
+
+	@Override
+	public int getMaxSafeInput() {
+		return 128;
+	}
+
+	@Override
+	public boolean isAddToEnergyNet() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
