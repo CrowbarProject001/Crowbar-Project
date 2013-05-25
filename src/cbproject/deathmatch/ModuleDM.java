@@ -93,6 +93,8 @@ public class ModuleDM
 		if(FMLCommonHandler.instance().getSide() == Side.CLIENT){
 			for(String s : SOUND_WEAPONS)
 				CBCSoundEvents.addSoundPath("cbc/weapons/" + s, "/cbproject/gfx/sounds/weapons/" + s);
+			for(String s : SND_ENTITIES)
+				CBCSoundEvents.addSoundPath("cbc/entities/" + s, "/cbproject/gfx/sounds/entities/" + s);
 			CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R), false, new KeyReload());
 			CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V), false, new KeyMode());
 		}
@@ -120,7 +122,6 @@ public class ModuleDM
 		EntityRegistry.registerModEntity(EntitySatchel.class, "satchel", GeneralProps.ENT_ID_SATCHEL, CBCMod.instance, 32, 2, true);
 		EntityRegistry.registerModEntity(EntityCrossbowArrow.class, "arrow", GeneralProps.ENT_ID_ARROW, CBCMod.instance, 32, 2, true);
 		EntityRegistry.registerModEntity(EntityMedkit.class, "medkit", GeneralProps.ENT_ID_MEDKIT, CBCMod.instance, 32, 5, true);
-		EntityRegistry.registerModEntity(EntityBattery.class, "battery", GeneralProps.ENT_ID_BATTERY, CBCMod.instance, 32, 5, true);
 		EntityRegistry.registerModEntity(EntityBattery.class, "battery", GeneralProps.ENT_ID_BATTERY, CBCMod.instance, 32, 5, true);
 		String description[] = {"crafter.weapon", "crafter.ammo"},
 				advds [] = {"crafter.advweapon", "crafter.armor"};
@@ -201,6 +202,7 @@ public class ModuleDM
 		RenderingRegistry.registerEntityRenderingHandler(EntityTrailFX.class, new RenderTrail());
 		RenderingRegistry.registerEntityRenderingHandler(EntityHornet.class, new RenderHornet());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBattery.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityMedkit.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
 		
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_satchel.itemID, new RenderItemSatchel());
@@ -264,6 +266,11 @@ public class ModuleDM
 		"ag_fireb",
 		"ag_firec"
 		
+	};
+	
+	public static final String SND_ENTITIES[] = {
+		"medkit",
+		"battery"
 	};
 	
 }

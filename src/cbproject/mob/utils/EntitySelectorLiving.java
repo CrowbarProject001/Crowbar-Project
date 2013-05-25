@@ -8,7 +8,7 @@ public class EntitySelectorLiving implements IEntitySelector {
 
 	@Override
 	public boolean isEntityApplicable(Entity entity) {
-		return this.selectAnything.isEntityApplicable(entity) && entity instanceof EntityLiving;
+		return IEntitySelector.selectAnything.isEntityApplicable(entity) && entity instanceof EntityLiving;
 	}
 
 }

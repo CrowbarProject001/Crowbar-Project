@@ -34,7 +34,8 @@ public class DMItems {
 	public static Weapon_hornet weapon_hornet;
 	public static Weapon_RPG weapon_RPG;
 	public static Item weapon_crossbow;
-	public static Item battery, medkit;
+	public static ItemBattery battery;
+	public static ItemMedkit medkit;
 	
 	public static ArmorHEV armorHEVBoot, armorHEVLeggings, armorHEVChestplate, armorHEVHelmet;
 	public static ArmorLongjump longjump;

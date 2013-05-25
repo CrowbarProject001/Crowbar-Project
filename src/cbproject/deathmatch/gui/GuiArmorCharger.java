@@ -16,7 +16,6 @@ package cbproject.deathmatch.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -25,9 +24,6 @@ import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
-import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
-import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.network.NetChargerClient;
 
@@ -59,7 +55,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		@Override
 		public String getTip() {
 			return StatCollector.translateToLocal("curenergy.name") + ": "
-					+ te.currentEnergy + "/" + te.ENERGY_MAX + " EU";
+					+ te.currentEnergy + "/" + TileEntityArmorCharger.ENERGY_MAX + " EU";
 		}
 
 	}
@@ -139,7 +135,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 		this.drawElements();
 
-		int length = te.currentEnergy * 64 / te.ENERGY_MAX;
+		int length = te.currentEnergy * 64 / TileEntityArmorCharger.ENERGY_MAX;
 		this.drawTexturedModalRect(x + 80, y + 28, 176, 0, length, 10);
 
 		if (te.isCharging) {

@@ -24,7 +24,6 @@ import cbproject.mob.utils.EntitySelectorLiving;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityEnderCrystal;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.AxisAlignedBB;
@@ -91,6 +90,7 @@ public class EntityHornet extends EntityThrowable {
 		searchForPlayer = b;
 	}
 	
+	@Override
 	public void onUpdate(){
 		super.onUpdate();
 		if(this.ticksExisted > 120)

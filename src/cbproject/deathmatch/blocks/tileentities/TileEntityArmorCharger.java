@@ -228,6 +228,7 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory,
 	/**
 	 * Reads a tile entity from NBT.
 	 */
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		for (int i = 0; i < 7; i++) {
@@ -246,6 +247,7 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory,
 	/**
 	 * Writes a tile entity to NBT.
 	 */
+	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		for (int i = 0; i < 7; i++) {

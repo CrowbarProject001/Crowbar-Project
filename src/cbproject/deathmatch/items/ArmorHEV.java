@@ -1,27 +1,16 @@
 package cbproject.deathmatch.items;
 
-import java.util.List;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.api.energy.item.ICustomEnItem;
-import cbproject.core.CBCMod;
 import cbproject.core.item.ElectricArmor;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.register.DMItems;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumHelper;
-import net.minecraftforge.common.ISpecialArmor;
 
 public class ArmorHEV extends ElectricArmor {
 
@@ -37,7 +26,7 @@ public class ArmorHEV extends ElectricArmor {
 		super(par1, material, 2, armorType);
 		setUnlocalizedName("hev" + this.armorType);
 		this.setIconName("hev" + armorType);
-		this.setMaxCharge(100000);
+		this.setMaxCharge(200000);
 		this.setTier(2);
 		this.setTransferLimit(128);
 		this.setEnergyPerDamage(1000);

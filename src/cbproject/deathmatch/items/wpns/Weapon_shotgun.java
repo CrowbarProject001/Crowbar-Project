@@ -7,7 +7,6 @@ import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.entities.BulletSG;
 import cbproject.deathmatch.entities.EntityBulletSG;
 import cbproject.deathmatch.utils.AmmoManager;
-import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;

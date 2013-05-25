@@ -20,7 +20,6 @@ import java.io.DataOutputStream;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
@@ -28,7 +27,6 @@ import net.minecraft.world.World;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
-import cbproject.core.register.IGuiElement;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 
 /**

@@ -3,12 +3,6 @@ package cbproject.core.renderers;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntityPotion;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPotion;
-import net.minecraft.potion.PotionHelper;
-import net.minecraft.util.Icon;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -45,7 +39,8 @@ public class RenderIcon extends Render
      * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    @Override
+	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
     {
 
         if (icon != null)
@@ -71,10 +66,10 @@ public class RenderIcon extends Render
         GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
         par1Tessellator.startDrawingQuads();
         par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        par1Tessellator.addVertexWithUV((double)(0.0F - f5), (double)(0.0F - f6), 0.0D, (double)0, (double)0);
-        par1Tessellator.addVertexWithUV((double)(f4 - f5), (double)(0.0F - f6), 0.0D, (double)0, (double)1);
-        par1Tessellator.addVertexWithUV((double)(f4 - f5), (double)(f4 - f6), 0.0D, (double)1, (double)1);
-        par1Tessellator.addVertexWithUV((double)(0.0F - f5), (double)(f4 - f6), 0.0D, (double)1, (double)0);
+        par1Tessellator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, 0, 0);
+        par1Tessellator.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, 0, 1);
+        par1Tessellator.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, 1, 1);
+        par1Tessellator.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, 1, 0);
         par1Tessellator.draw();
     }
 }

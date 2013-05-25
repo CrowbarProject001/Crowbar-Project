@@ -19,7 +19,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cbproject.core.CBCMod;
 import cbproject.core.module.CBCSubModule;
 import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;

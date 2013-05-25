@@ -15,16 +15,10 @@
 package cbproject.deathmatch.entities;
 
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
-import cbproject.deathmatch.register.DMItems;
-import cbproject.deathmatch.utils.BulletManager;
-import cbproject.deathmatch.utils.EntitySelectorShotgun;
-import cbproject.deathmatch.utils.InformationWeapon;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 

@@ -1,12 +1,6 @@
 package cbproject.core.world;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
 import java.util.WeakHashMap;
 
 import cbproject.core.energy.EnergyNet;
@@ -32,7 +26,7 @@ public class WorldData {
 	public static WorldData get(World world){
 		if (world == null) throw new IllegalArgumentException("world is null");
 		
-		WorldData rew = (WorldData)mapping.get(world);
+		WorldData rew = mapping.get(world);
 		
 		if (rew == null) {
 			rew = new WorldData();

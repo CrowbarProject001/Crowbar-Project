@@ -14,33 +14,24 @@
  */
 package cbproject.crafting;
 
-import net.minecraft.client.model.ModelSlime;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import cbproject.core.CBCMod;
 import cbproject.core.module.CBCSubModule;
 import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
 import cbproject.core.props.GeneralProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCNetHandler;
-import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.register.CBCBlocks;
 import cbproject.crafting.register.CBCItems;
-import cbproject.mob.ModuleMob;
-import cbproject.mob.entities.EntitySnark;
-import cbproject.mob.register.CBCMobItems;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**

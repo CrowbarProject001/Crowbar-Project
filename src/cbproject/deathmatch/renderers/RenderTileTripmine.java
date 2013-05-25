@@ -11,7 +11,6 @@ import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.register.DMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 

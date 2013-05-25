@@ -14,21 +14,10 @@
  */
 package cbproject.deathmatch.renderers;
 
-import org.lwjgl.opengl.GL11;
-
 import cbproject.core.props.ClientProps;
-import cbproject.core.renderers.RenderUtils;
 import cbproject.core.renderers.RendererSidedCube;
-import cbproject.deathmatch.blocks.BlockArmorCharger;
-import cbproject.deathmatch.blocks.BlockTripmine;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
-import cbproject.deathmatch.register.DMBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3;
 
 /**
  * @author Administrator

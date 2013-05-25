@@ -27,19 +27,12 @@ import cbproject.core.misc.Config;
 import cbproject.core.network.NetExplosion;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
-import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCModuleRegisty;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
-import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.ModuleCrafting;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
-import cbproject.crafting.gui.ElementCrafter;
-import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.recipes.RecipeWeapons;
-import cbproject.crafting.register.CBCBlocks;
-import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.ModuleDM;
 import cbproject.intergration.ic2.ModuleIC2;
 import cpw.mods.fml.common.FMLLog;
@@ -57,9 +50,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -117,9 +108,9 @@ public class CBCMod implements ITickHandler
 		TickRegistry.registerTickHandler(this, Side.SERVER);
 		
 		module = new CBCModuleRegisty();
-		module.registerModule(ModuleCrafting.class.getName());
-		module.registerModule(ModuleIC2.class.getName());
-		module.registerModule(ModuleDM.class.getName());
+		CBCModuleRegisty.registerModule(ModuleCrafting.class.getName());
+		CBCModuleRegisty.registerModule(ModuleIC2.class.getName());
+		CBCModuleRegisty.registerModule(ModuleDM.class.getName());
 		module.preInit(event);
 	} 
 
@@ -136,7 +127,7 @@ public class CBCMod implements ITickHandler
 		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
 		module.init(Init);
-		if(proxy.isRendering()){
+		if(Proxy.isRendering()){
 			module.clientInit();
 		}
 	}

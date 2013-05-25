@@ -8,6 +8,7 @@ import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.ClientProxy;
+import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.mob.entities.EntitySnark;
 import cbproject.mob.register.CBCMobItems;
@@ -31,7 +32,7 @@ public class ModuleMob
 	@ModuleInit(EnumInitType.PREINIT)
 	public void preInit(FMLPreInitializationEvent Init)
 	{
-		if(ClientProxy.isRendering())
+		if(Proxy.isRendering())
 			for(String s : SND_MOBS){
 				CBCSoundEvents.addSoundPath("cbc/mobs/" + s, "/cbproject/gfx/sounds/mobs/" + s);
 			}

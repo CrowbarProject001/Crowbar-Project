@@ -18,14 +18,15 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.CBCMod;
 import cbproject.core.item.CBCGenericItem;
 import cbproject.deathmatch.entities.EntityBattery;
@@ -36,36 +37,142 @@ import cbproject.deathmatch.entities.EntityMedkit;
  */
 public class ItemMedkit extends CBCGenericItem {
 
+	public static final int MAX_STORE = 3;
 	
+	public enum EnumAddingType {
+		EFFECT, DURATION, NONE;
+	}
 	
 	public ItemMedkit(int par1) {
 		super(par1);
 		setCreativeTab(CBCMod.cct);
-		setUnlocalizedName("hevbattery");
+		setUnlocalizedName("medkit");
 		this.setIconName("medkit");
+		this.setMaxStackSize(1);
 	}
 	
 
-	/**
-	 * @param string
-	 * @param string2
-	 * @param string3
-	 */
-	private void setPotions(String string, String string2, String string3) {
-		// TODO Auto-generated method stub
+	public static boolean isMedkitFull(ItemStack medkit){
+		boolean b = false;
+		for(int i=0; i < MAX_STORE; i++){
+			b = b || isSlotAvailable(medkit, i);
+		}
+		return !b;
+	}
+	
+	public static int getAvailableSlot(ItemStack medkit) {
+		for(int i=0; i < MAX_STORE; i++){
+			if(isSlotAvailable(medkit, i))
+				return i;
+		}
+		return -1;
+	}
+	
+	public static int tryAddEffectTo(ItemStack medkit, ItemStack potion, EnumAddingType type){
+		List<PotionEffect> list = Item.potion.getEffects(potion.getItemDamage());
+		NBTTagCompound nbt = loadCompound(potion);
+		int addCount = 0;
+		for(int i = 0; i < 3; i++){
+			System.out.println(getEffect(medkit, i));
+		}
 		
+		for(PotionEffect e : list) {
+			for(int i = 0; i < 3; i++) {
+				if(isSlotAvailable(medkit, i)) {
+					addEffect(medkit, e, i);
+					System.out.println("added potion id " + e.getPotionID() + " into slot " + i);
+				}
+			}
+		}
+		return 0;
 	}
 
 
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
-
-		if (!par2World.isRemote) {
-			EntityMedkit ent = new EntityMedkit(par2World);
-			par2World.spawnEntityInWorld(ent);
+	@Override
+	public ItemStack onItemRightClick(ItemStack medkit, World par2World,
+			EntityPlayer pl) {
+		
+		//DEBUG ONLY : ADD ONE POTION IN PLAYER's INV TO THE MEDKIT
+		for(ItemStack is : pl.inventory.mainInventory) {
+			if(is == null)
+				continue;
+			if(isMedkitFull(medkit))
+				break;
+			if(is.getItem() instanceof ItemPotion) {
+				List<PotionEffect> list = Item.potion.getEffects(is.getItemDamage());
+				for(PotionEffect p : list) {
+					System.out.println("Found potion : " + p + "in is : " + is);
+					tryAddEffectTo(medkit, is, EnumAddingType.NONE);
+				}
+			}
+		}
+        
+		return medkit;
+		
+	}
+	
+	@Override
+	public boolean onItemUse(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
+			int par6, int par7, float par8, float par9, float par10) {
+		if(!par3World.isRemote)
+			this.spawnMedkitAt(par1ItemStack, par3World, par4, par5, par6, par7);
+		if(!par2EntityPlayer.capabilities.isCreativeMode){
 			par1ItemStack.splitStack(1);
 		}
-		return par1ItemStack;
+		return true;
+	}
+	
+	public static void spawnMedkitAt(ItemStack itemStack, World par0World,
+			int par1, int par2, int par3, int side) {
+		Entity entity = null;
+		double x = par1 + 0.5, y = par2 + 0.5, z = par3 + 0.5;
+		if(side == 0) {
+			return;
+		} else if(side == 1) {
+			y += 0.8;
+		} else if(side == 2) {
+			z -= 0.8;
+		} else if(side == 3) {
+			z += 0.8;
+		} else if(side == 4) {
+			x -= 0.8;
+		} else if(side == 5) {
+			x += 0.8;
+		}
+		entity = new EntityMedkit(par0World, x, y, z, itemStack);
+		par0World.spawnEntityInWorld(entity);
+	}
+	
+	private static PotionEffect getEffect(ItemStack item, int slot) {
+		NBTTagCompound nbt = loadCompound(item);
+		int id = nbt.getInteger("id" + slot);
+		if(id == 0)
+			return null;
+		int duration = nbt.getInteger("duration" + id);
+		int amplifier = nbt.getInteger("amplifier" + id);
+		
+		return new PotionEffect(id, duration, amplifier);
+	}
+	
+	private static void addEffect(ItemStack medkit, PotionEffect eff, int slot) {
+		NBTTagCompound nbt = loadCompound(medkit);
+		nbt.setInteger("id" + slot, eff.getPotionID());
+		nbt.setInteger("duration" + slot, eff.getDuration());
+		nbt.setInteger("amplifier" + slot, eff.getAmplifier());
+	}
+	
+	private static boolean isSlotAvailable(ItemStack medkit, int slot) {
+		return getEffect(medkit, slot) == null;
+	}
+	
+	public static void clearEffects(ItemStack medkit){
+		NBTTagCompound nbt = loadCompound(medkit);
+		for(int i = 0; i < MAX_STORE; i++) {
+			nbt.setInteger("id" + i, 0);
+			nbt.setInteger("duration" + i, 0);
+			nbt.setInteger("amplifier" + i, 0);
+		}
 	}
 		
 
@@ -73,25 +180,20 @@ public class ItemMedkit extends CBCGenericItem {
 	@Override
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		/*BUGGED
-		par3List.add(StatCollector.translateToLocal("potion1.name")
-				+ " : " + StatCollector.translateToLocal(this.getPotionsName(1, par1ItemStack)));
-		par3List.add(StatCollector.translateToLocal("potion2.name")
-				+ " : " + StatCollector.translateToLocal(this.getPotionsName(2, par1ItemStack)));
-		par3List.add(StatCollector.translateToLocal("potion3.name")
-				+ " : " + StatCollector.translateToLocal(this.getPotionsName(3, par1ItemStack)));
-		*/
+		for(int i = 0; i < MAX_STORE; i++){
+			String potionName = getPotionName(par1ItemStack, i);
+			if(potionName.equals(""))
+				continue;
+			par3List.add(StatCollector.translateToLocal(potionName));
+		}
 	}
 	
-	/**
-	 * @return
-	 */
-	private String getPotionsName(int index, ItemStack medkitStack) {
-		loadCompound(medkitStack).getString("potion" + index + "Name");
-		return null;
+	private String getPotionName(ItemStack itemStack, int slot){
+		PotionEffect eff = getEffect(itemStack, slot);
+		return eff == null ? "" : eff.getEffectName();
 	}
 
-	private NBTTagCompound loadCompound(ItemStack stack) {
+	private static NBTTagCompound loadCompound(ItemStack stack) {
 		if(stack.stackTagCompound == null)
 			stack.stackTagCompound = new NBTTagCompound();
 		return stack.stackTagCompound;

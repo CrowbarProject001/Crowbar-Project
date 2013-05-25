@@ -1,11 +1,8 @@
 package cbproject.mob.utils;
 
-import java.lang.reflect.InvocationTargetException;
-
 import cbproject.api.entities.IEntityLink;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;

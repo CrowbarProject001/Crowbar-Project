@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -30,6 +29,7 @@ public class BulletSG extends EntityThrowable {
 		item = is;
 	}
 	
+	@Override
 	public void onUpdate(){
 		super.onUpdate();
 		if(!entityReady)
