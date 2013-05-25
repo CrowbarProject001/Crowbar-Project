@@ -17,6 +17,8 @@ package cbproject.deathmatch.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import scala.collection.parallel.mutable.ParTrieMap.Size;
+
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.utils.EntitySelectorPlayer;
 import net.minecraft.entity.EntityLiving;
@@ -37,17 +39,23 @@ public class EntityBattery extends EntityProjectile {
 	private int currentEnergy;
 	
 	public EntityBattery(World world, EntityPlayer player, int energy) {
-		super(world);
-		this.setSize(0.3F, 0.6F);
+		super(world, player);
+		this.setSize(0.25f, 0.4f);
 		this.posX = player.posX;
 		this.posY = player.posY;
 		this.posZ = player.posZ;
 		this.currentEnergy = energy;
 	}
 	
+	public EntityBattery(World world, int energy) {
+		super(world);
+		this.setSize(0.25f, 0.4f);
+		this.currentEnergy = energy;
+	}
+	
 	public EntityBattery(World world) {
 		super(world);
-		this.setSize(0.3F, 0.6F);
+		this.setSize(0.25f, 0.4f);
 	}
 
 	/**
@@ -64,7 +72,7 @@ public class EntityBattery extends EntityProjectile {
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX-0.15, posY-0.3, posZ - 0.15, posX + 0.15, posY + 0.3, posZ + 0.15);
 		List<EntityPlayer> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, new EntitySelectorPlayer());
 		System.out.println(list);
-		if(list == null)
+		if(list == null || list.size() == 0)
 			return;
 		EntityPlayer player = list.get(0);
 		tryChargeArmor(player);
