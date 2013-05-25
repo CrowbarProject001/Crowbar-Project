@@ -27,27 +27,16 @@ import net.minecraft.item.ItemStack;
 
 /**
  * LambdaCraft通用物品类。
-<<<<<<< HEAD
  * 
  * @author WeAthFolD
  * 
-=======
- * @author WeAthFolD
- *
->>>>>>> origin/weathfold
  */
 public abstract class CBCGenericItem extends Item {
 
 	protected String description;
-<<<<<<< HEAD
 	protected boolean useDescription = false;
 	private String iconName = "";
-
-=======
-	protected boolean useDescription = false;;
-	private String iconName = "";
 	
->>>>>>> origin/weathfold
 	/**
 	 * @param par1
 	 */
@@ -55,18 +44,13 @@ public abstract class CBCGenericItem extends Item {
 		super(par1);
 		setCreativeTab(CBCMod.cct);
 	}
-<<<<<<< HEAD
-
-	public CBCGenericItem setDescription(String d) {
-=======
 	
 	public CBCGenericItem setDescription(String d){
->>>>>>> origin/weathfold
 		this.description = d;
 		useDescription = true;
 		return this;
 	}
-<<<<<<< HEAD
+
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -86,25 +70,4 @@ public abstract class CBCGenericItem extends Item {
 		this.itemIcon = par1IconRegister
 				.registerIcon("lambdacraft:" + iconName);
 	}
-=======
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		if(useDescription)
-			par3List.add(description);
-	}
-	
-	public void setIconName(String name){
-		this.iconName = name;
-	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
-    }
->>>>>>> origin/weathfold
-
 }
