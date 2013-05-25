@@ -23,18 +23,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.CBCMod;
-import cbproject.core.energy.CBCElectricItem;
+import cbproject.core.item.ElectricItem;
 import cbproject.deathmatch.entities.EntityBattery;
 
 /**
  * @author Administrator
  *
  */
-public class ItemBattery extends CBCElectricItem {
+public class ItemBattery extends ElectricItem {
 	
 	public ItemBattery(int par1) {
 		super(par1);
-		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("hevbattery");
 		this.setIconName("battery");
 		this.tier = 2;

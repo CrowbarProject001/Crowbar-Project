@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.CBCMod;
+import cbproject.core.item.ElectricArmor;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.register.DMItems;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -22,17 +23,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.ISpecialArmor;
 
-public class ArmorHEV extends ItemArmor implements ICustomEnItem, ISpecialArmor {
+public class ArmorHEV extends ElectricArmor {
 
-	private static final int ENERGY_PER_DAMAGE = 1000;
 	public static int reductionAmount[] = {0, 0, 0, 0};
-	public static EnumArmorMaterial material = EnumHelper.addArmorMaterial("armorHEV", 100000, reductionAmount, 0);
+	protected static EnumArmorMaterial material = EnumHelper.addArmorMaterial("armorHEV", 100000, reductionAmount, 0);
+	private static ArmorProperties propChest = new ArmorProperties(3, 100.0, 325),
+			propDefault = new ArmorProperties(2, 100.0, 250), 
+			propNone = new ArmorProperties(2, 0.0, 0),
+			propShoe = new ArmorProperties(2, 100.0, 125),
+			propShoeFalling = new ArmorProperties(3, 100.0, 2500);
 	
 	public ArmorHEV(int par1, int armorType) {
 		super(par1, material, 2, armorType);
-		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("hev" + this.armorType);
-		this.setMaxDamage(100000);
+		this.setIconName("hev" + armorType);
+		this.setMaxCharge(100000);
+		this.setTier(2);
+		this.setTransferLimit(128);
+		this.setEnergyPerDamage(1000);
 	}
 
 	@Override
@@ -43,13 +51,6 @@ public class ArmorHEV extends ItemArmor implements ICustomEnItem, ISpecialArmor 
 			return ClientProps.HEV_ARMOR_PATH[0];
 		}
 	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:hev" + this.armorType);
-    }
 
 	@Override
 	public boolean canProvideEnergy(ItemStack itemStack) {
@@ -57,94 +58,17 @@ public class ArmorHEV extends ItemArmor implements ICustomEnItem, ISpecialArmor 
 	}
 
 	@Override
-	public int getChargedItemId(ItemStack itemStack) {
-		return itemStack.getItem().itemID;
-	}
-
-	@Override
-	public int getEmptyItemId(ItemStack itemStack) {
-		return itemStack.getItem().itemID;
-	}
-
-	@Override
-	public int getMaxCharge(ItemStack itemStack) {
-		return this.getMaxDamage();
-	}
-
-	@Override
-	public int getTier(ItemStack itemStack) {
-		return 2;
-	}
-
-	@Override
-	public int getTransferLimit(ItemStack itemStack) {
-		return 128;
-	}
-
-	@Override
-	public int charge(ItemStack itemStack, int amount, int tier,
-			boolean ignoreTransferLimit, boolean simulate) {
-		if(itemStack.getItemDamage() == 0)
-			return 0;
-		int en = itemStack.getItemDamage();
-		if(!ignoreTransferLimit)
-			amount = this.getTransferLimit(itemStack);
-		if(en > amount){
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() - amount);
-			return amount;
-		} else {
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() - en);
-			return en;
-		}
-	}
-
-	@Override
-	public int discharge(ItemStack itemStack, int amount, int tier,
-			boolean ignoreTransferLimit, boolean simulate) {
-		
-		int en = itemStack.getMaxDamage() - itemStack.getItemDamage() - 1;
-		if(en == 0)
-			return 0;
-		if(!ignoreTransferLimit)
-			amount = this.getTransferLimit(itemStack);
-		if(en > amount){
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() + amount);
-			return amount;
-		} else {
-			if(!simulate)
-				itemStack.setItemDamage(itemStack.getItemDamage() + en);
-			return en;
-		}
-	}
-
-	@Override
-	public boolean canUse(ItemStack itemStack, int amount) {
-		int en = itemStack.getMaxDamage() - itemStack.getItemDamage() - 1;
-		return en > 1000;
-	}
-
-	@Override
-	public boolean canShowChargeToolTip(ItemStack itemStack) {
-		return true;
-	}
-
-	@Override
 	public ArmorProperties getProperties(EntityLiving player, ItemStack armor,
 			DamageSource source, double damage, int slot) {
-		ArmorProperties ap = new ArmorProperties(slot == 2 ? 3:2, 12.0, 250);
-		return ap;
+		if(getItemCharge(armor) <= this.energyPerDamage)
+			return propNone;
+		if(source == DamageSource.fall){
+			if(slot == 0)
+				return propShoeFalling;
+			else return propNone;
+		}
+		return slot == 2? propChest : (slot == 0 ? propShoe : propDefault);
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-    	par3List.add(StatCollector.translateToLocal("curenergy.name") + " : " + 
-    (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamageForDisplay()) + "/" + par1ItemStack.getMaxDamage() + " EU");
-    }
-
 	
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
@@ -162,12 +86,6 @@ public class ArmorHEV extends ItemArmor implements ICustomEnItem, ISpecialArmor 
 				par6, par7, par8, par9, par10);
 		par1ItemStack.setItemDamage(par1ItemStack.getMaxDamage() - 1);
 		return true;
-	}
-
-	@Override
-	public void damageArmor(EntityLiving entity, ItemStack stack,
-			DamageSource source, int damage, int slot) {
-		this.discharge(stack, damage * ENERGY_PER_DAMAGE, 2, true, false);
 	}
 
 }
