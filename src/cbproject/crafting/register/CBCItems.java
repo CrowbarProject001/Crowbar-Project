@@ -36,6 +36,7 @@ public class CBCItems {
 	public static LambdaChipset lambdaChip;
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
+	public static LCRecord halfLife01, halfLife02, halfLife03;
 	
 	/**
 	 * 实际注册，请在Init中调用。
@@ -71,6 +72,10 @@ public class CBCItems {
 			lambdaChip = new LambdaChipset(conf.GetItemID("lambdachip", 8060));
 			ingotUranium = new IngotUranium(conf.GetItemID("ingotUranium", 8061));
 			ingotSteel = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
+			
+			halfLife01 = new LCRecord(conf.GetItemID("halfLife01", 8997), "01");
+			halfLife02 = new LCRecord(conf.GetItemID("halfLife02", 8998), "02");
+			halfLife03 = new LCRecord(conf.GetItemID("halfLife03", 8999), "03");
 			
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );
