@@ -29,7 +29,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 		setUnlocalizedName("weapon_rpg");
 		setCreativeTab(CBCMod.cct);
 		setMaxDamage(2);
-		
+		setMaxStackSize(1);
 		setJamTime(20);
 		setLiftProps(20, 2);
 	}

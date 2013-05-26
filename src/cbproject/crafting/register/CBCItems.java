@@ -42,6 +42,8 @@ public class CBCItems {
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
+	public static IngotTin ingotTin;
+	public static IngotCopper ingotCopper;
 	
 	/**
 	 * 实际注册，请在Init中调用。
@@ -77,6 +79,8 @@ public class CBCItems {
 			lambdaChip = new LambdaChipset(conf.GetItemID("lambdachip", 8060));
 			ingotUranium = new IngotUranium(conf.GetItemID("ingotUranium", 8061));
 			ingotSteel = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
+			ingotCopper = new IngotCopper(conf.GetItemID("ingotCopper", 8062));
+			ingotTin = new IngotTin(conf.GetItemID("ingotTin", 8063));
 			
 			halfLife01 = new LCRecord(conf.GetItemID("halfLife01", 8997), "Half-Life01", 0);
 			halfLife02 = new LCRecord(conf.GetItemID("halfLife02", 8998), "Half-Life02", 1);
@@ -85,6 +89,7 @@ public class CBCItems {
 			LanguageRegistry.addName("Half-Life01", "record");
 			LanguageRegistry.addName("Half-Life02", "record");
 			LanguageRegistry.addName("Half-Life03", "record");
+			
 			
 			
 		} catch(Exception e){

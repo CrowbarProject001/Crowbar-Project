@@ -5,7 +5,9 @@ import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.Config;
 import cbproject.crafting.blocks.BlockAdvWeaponCrafter;
+import cbproject.crafting.blocks.BlockCopperOre;
 import cbproject.crafting.blocks.BlockRefined;
+import cbproject.crafting.blocks.BlockTinOre;
 import cbproject.crafting.blocks.BlockUraniumOre;
 import cbproject.crafting.blocks.BlockWeaponCrafter;
 import cbproject.crafting.blocks.TileEntityWeaponCrafter;
@@ -15,7 +17,7 @@ import cbproject.crafting.blocks.TileEntityWeaponCrafter;
  */
 public class CBCBlocks {
 	
-	public static Block blockWeaponCrafter, blockRefined, blockUraniumOre, blockAdvCrafter;
+	public static Block blockWeaponCrafter, blockRefined, blockUraniumOre, blockAdvCrafter, blockCopperOre, blockTinOre;
 	
 	/**
 	 * 在这里进行实际的方块加载。请在Init中调用它。
@@ -29,6 +31,8 @@ public class CBCBlocks {
 			blockRefined = new BlockRefined(conf.GetBlockID("blockRefined", 403));
 			blockUraniumOre = new BlockUraniumOre(conf.GetBlockID("oreuranium", 404));
 			blockAdvCrafter = new BlockAdvWeaponCrafter(conf.GetBlockID("advcrafter", 405));
+			blockCopperOre = new BlockCopperOre(conf.GetBlockID("orecopper", 406));
+			blockTinOre = new BlockTinOre(conf.GetBlockID("oretin", 406));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -38,8 +42,12 @@ public class CBCBlocks {
 		ModLoader.registerBlock(blockRefined);
 		ModLoader.registerBlock(blockUraniumOre);
 		ModLoader.registerBlock(blockAdvCrafter);
+		ModLoader.registerBlock(blockCopperOre);
+		ModLoader.registerBlock(blockTinOre);
 		MinecraftForge.setBlockHarvestLevel(blockUraniumOre, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(blockRefined, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(blockCopperOre, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(blockTinOre, "pickaxe", 1);
 		ModLoader.registerTileEntity(TileEntityWeaponCrafter.class, "tile_entity_weapon_crafter");
 		
 		return;

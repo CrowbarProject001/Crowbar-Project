@@ -9,19 +9,19 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class BlockUraniumOre extends BlockOre {
+public class BlockTinOre extends BlockOre {
 
-	public BlockUraniumOre(int par1) {
+	public BlockTinOre(int par1) {
 		super(par1);
 		setCreativeTab(CBCMod.cct);
 		setResistance(5.0F);
-		setHardness(2.5F);
-		setUnlocalizedName("uranium");
+		setHardness(1.5F);
+		setUnlocalizedName("tin");
 	}
 
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		blockIcon = par1IconRegister.registerIcon("lambdacraft:uranium");
+		blockIcon = par1IconRegister.registerIcon("lambdacraft:tin");
 	}
 
 	@Override
@@ -33,12 +33,6 @@ public class BlockUraniumOre extends BlockOre {
 	public int quantityDropped(Random par1Random) {
 		return 1;
 	}
-
-	@Override
-	public void onBlockHarvested(World par1World, int par2, int par3, int par4,
-			int par5, EntityPlayer par6EntityPlayer) {
-		CBCAchievements.getAchievement(par6EntityPlayer, CBCAchievements.nuclearRawMaterial);
-	}
-
+	
 	
 }
