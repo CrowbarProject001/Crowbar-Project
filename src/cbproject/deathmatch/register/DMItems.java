@@ -6,6 +6,7 @@ import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ArmorLongjump;
 import cbproject.deathmatch.items.ItemBattery;
 import cbproject.deathmatch.items.ItemMedkit;
+import cbproject.deathmatch.items.ArmorHEV.EnumAttachment;
 import cbproject.deathmatch.items.wpns.Weapon_357;
 import cbproject.deathmatch.items.wpns.Weapon_9mmAR;
 import cbproject.deathmatch.items.wpns.Weapon_9mmhandgun;
@@ -38,6 +39,7 @@ public class DMItems {
 	public static ItemMedkit medkit;
 	
 	public static ArmorHEV armorHEVBoot, armorHEVLeggings, armorHEVChestplate, armorHEVHelmet;
+	public static ArmorHEV hevLongjump;
 	public static ArmorLongjump longjump;
 	
 	public static void init(Config conf){
@@ -62,9 +64,10 @@ public class DMItems {
 			armorHEVLeggings = new ArmorHEV(conf.GetItemID("hevLeggings", 8004), 2);
 			armorHEVBoot = new ArmorHEV(conf.GetItemID("hevBoot", 8005), 3);
 			longjump = new ArmorLongjump(conf.GetItemID("armorLongjump", 8006), 1);
+			hevLongjump = new ArmorHEV(conf.GetItemID("armorLongjump", 8007), EnumAttachment.LONGJUMP);
 			
-			battery = new ItemBattery(conf.GetItemID("battery", 8007));
-			medkit = new ItemMedkit(conf.GetItemID("medkit", 8008));
+			battery = new ItemBattery(conf.GetItemID("battery", 8057));
+			medkit = new ItemMedkit(conf.GetItemID("medkit", 8058));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

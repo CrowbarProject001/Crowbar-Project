@@ -2,9 +2,12 @@ package cbproject.deathmatch.entities;
 
 import cbproject.api.tile.IUseable;
 import cbproject.core.utils.BlockPos;
+import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ArmorLongjump;
+import cbproject.deathmatch.items.ArmorHEV.EnumAttachment;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.src.PlayerAPI;
@@ -24,9 +27,17 @@ public class CBCPlayer extends PlayerBase {
 	public void jump() {
 		player.localJump();
 		ItemStack slotChestplate = player.inventory.armorInventory[2];
-		if (slotChestplate != null
-				&& slotChestplate.getItem() instanceof ArmorLongjump) {
-			if (player.isSneaking()) {
+		if (slotChestplate != null) {
+			Boolean b = false;
+			Item item = slotChestplate.getItem();
+			if(item instanceof ArmorLongjump)
+				b = true;
+			else if(item instanceof ArmorHEV){
+				ArmorHEV hev = (ArmorHEV) item;
+				if(hev.getAttachment(slotChestplate) == EnumAttachment.LONGJUMP)
+					b = true;
+			}
+			if (b && player.isSneaking()) {
 				double motionX = -MathHelper.sin(player.rotationYaw / 180.0F
 						* (float) Math.PI)
 						* MathHelper.cos(player.rotationPitch / 180.0F

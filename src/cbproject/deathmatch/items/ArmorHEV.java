@@ -15,18 +15,13 @@ import net.minecraftforge.common.EnumHelper;
 public class ArmorHEV extends ElectricArmor {
 
 	public enum EnumAttachment {
-		LONGJUMP(2, "lj");
+		LONGJUMP(1);
 		private int slot;
-		private String internalName;
-		private EnumAttachment(int x, String name) {
+		private EnumAttachment(int x) {
 			this.slot = x;
-			this.internalName = name;
 		}
 		public int getSlot(){
 			return slot;
-		}
-		public String getName(){
-			return internalName;
 		}
 	}
 	
@@ -50,16 +45,19 @@ public class ArmorHEV extends ElectricArmor {
 	
 	public ArmorHEV(int par1, EnumAttachment attach) {
 		super(par1, material, 2, attach.getSlot());
-		setUnlocalizedName("hev_" + attach.getName());
-		this.setIconName("hev_" + attach.getName());
+		setUnlocalizedName("hev_" + attach.name().toLowerCase());
+		this.setIconName("hev_" + attach.name().toLowerCase());
 		this.setMaxCharge(200000);
 		this.setTier(2);
 		this.setTransferLimit(128);
 		this.setEnergyPerDamage(1000);
 	}
 	
-	public static EnumAttachment getAttachment() {
-		return null;
+	public EnumAttachment getAttachment(ItemStack is) {
+		String name = is.getItemName().substring(9);
+		System.out.println(name);
+		EnumAttachment e = EnumAttachment.valueOf(name.toUpperCase());
+		return e;
 	}
 
 	@Override
