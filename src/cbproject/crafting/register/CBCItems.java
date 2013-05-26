@@ -1,10 +1,14 @@
 package cbproject.crafting.register;
 
+import java.io.File;
+
 import cbproject.core.misc.Config;
 import cbproject.crafting.items.*;
 import cbproject.deathmatch.items.ammos.*;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
@@ -12,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * core和crafting模块中所有的物品注册。
@@ -76,6 +81,11 @@ public class CBCItems {
 			halfLife01 = new LCRecord(conf.GetItemID("halfLife01", 8997), "01");
 			halfLife02 = new LCRecord(conf.GetItemID("halfLife02", 8998), "02");
 			halfLife03 = new LCRecord(conf.GetItemID("halfLife03", 8999), "03");
+
+			LanguageRegistry.addName("halfLife01", "record");
+			LanguageRegistry.addName("halfLife02", "record");
+			LanguageRegistry.addName("halfLife03", "record");
+			
 			
 		} catch(Exception e){
 			System.err.println("Error when loading itemIDs from config . " + e );

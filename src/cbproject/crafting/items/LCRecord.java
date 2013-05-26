@@ -14,7 +14,9 @@
  */
 package cbproject.crafting.items;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cbproject.core.CBCMod;
@@ -25,6 +27,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukeBox;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -40,6 +43,7 @@ public class LCRecord extends ItemRecord {
 
 	public final String recordName;
 	
+	
 	private static final Map records = new HashMap();
 	/**
 	 * @param par1
@@ -48,17 +52,37 @@ public class LCRecord extends ItemRecord {
 	public LCRecord(int par1, String par2Str) {
 		super(par1, par2Str);
 		this.recordName = par2Str;
+		this.maxStackSize = 1;
 		setCreativeTab(CBCMod.cct);
 		records.put(par2Str, this);
 	}
-
+	
+    @SideOnly(Side.CLIENT)
+    public static ItemRecord getRecord(String par0Str)
+    {
+        return (ItemRecord)records.get(par0Str);
+    }
+    
+	@SideOnly(Side.CLIENT)
     public Icon getIconFromDamage(int par1)
     {
         return this.itemIcon;
     }
+    
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+    	return EnumRarity.rare;
+    }
+    
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		// TODO Auto-generated method stub
+		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+	}
 
-    
-    
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
@@ -87,6 +111,8 @@ public class LCRecord extends ItemRecord {
 		return "Half-Life - " + this.recordName;
 	}
     
+	
+	
 	@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
