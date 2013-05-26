@@ -57,5 +57,16 @@ public class CBCSoundEvents {
 		String[] s = {name + ".wav", absPath + ".wav"};
 		pathSounds.add(s);
 	}
+	
+	/**
+	 * 请在preInit中使用这个函数 ||
+	 * 两个参数的末尾都自动被加上了 .ogg 后缀。
+	 * @param name : 声音名字. i.e. "cbc/weapons/rocket"
+	 * @param absPath : 声音的绝对路径。  i.e."/cbproject/gfx/weapons/glauncherb"
+	 */
+	public static void addOggSoundPath(String name, String absPath){
+		String[] s = {name + ".ogg", absPath + ".ogg"};
+		pathSounds.add(s);
+	}
 
 }

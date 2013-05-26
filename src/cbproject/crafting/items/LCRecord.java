@@ -26,8 +26,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockJukeBox;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -42,19 +44,18 @@ import net.minecraft.world.World;
 public class LCRecord extends ItemRecord {
 
 	public final String recordName;
-	
+	private String texName;
 	
 	private static final Map records = new HashMap();
 	/**
 	 * @param par1
 	 * @param par2Str
 	 */
-	public LCRecord(int par1, String par2Str) {
+	public LCRecord(int par1, String par2Str, String txName) {
 		super(par1, par2Str);
 		this.recordName = par2Str;
-		this.maxStackSize = 1;
+		this.texName = txName;
 		setCreativeTab(CBCMod.cct);
-		records.put(par2Str, this);
 	}
 	
     @SideOnly(Side.CLIENT)
@@ -79,44 +80,63 @@ public class LCRecord extends ItemRecord {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		// TODO Auto-generated method stub
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-	}
-
-	@Override
-	public boolean onItemUse(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
-			int par6, int par7, float par8, float par9, float par10) {
-		if (par3World.getBlockId(par4, par5, par6) == Block.jukebox.blockID
-				&& par3World.getBlockMetadata(par4, par5, par6) == 0) {
-			if (par3World.isRemote) {
-				return true;
-			} else {
-				((BlockJukeBox) Block.jukebox).insertRecord(par3World, par4,
-						par5, par6, par1ItemStack);
-				par3World.playAuxSFXAtEntity((EntityPlayer) null, 1005, par4,
-						par5, par6, this.itemID);
-				--par1ItemStack.stackSize;
-				return true;
-			}
-		} else {
-			return false;
-		}
+		par3List.add(this.recordName);
+		par3List.add("By Valve");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getRecordTitle() {
 		// TODO Auto-generated method stub
-		return "Half-Life - " + this.recordName;
+		return "Valve - " + this.recordName;
 	}
-    
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs,
+			List par3List) {
+		// TODO Auto-generated method stub
+		super.getSubItems(par1, par2CreativeTabs, par3List);
+	}
+
 	
 	
+	@Override
+	public boolean onItemUse(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
+			int par6, int par7, float par8, float par9, float par10) {
+        
+
+		if (par3World.getBlockId(par4, par5, par6) == Block.jukebox.blockID && par3World.getBlockMetadata(par4, par5, par6) == 0)
+        {
+            if (par3World.isRemote)
+                return true;
+    			System.out.println("USING  recordName:" + this.recordName);
+                ((BlockJukeBox)Block.jukebox).insertRecord(par3World, par4, par5, par6, par1ItemStack);
+                par3World.playAuxSFXAtEntity((EntityPlayer)null, 1005, par4, par5, par6, this.itemID);
+                System.out.println("Inserted JuiceBox");
+                --par1ItemStack.stackSize;
+                return true;
+        }
+        else
+        {
+            return false;
+        }
+	}
+
 	@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.itemIcon = par1IconRegister.registerIcon("record_half_life_" + this.recordName);
+        //this.itemIcon = par1IconRegister.registerIcon("record_" + this.recordName);
+		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:record");
     }
+
+	@Override
+	public String getLocalizedName(ItemStack par1ItemStack) {
+		// TODO Auto-generated method stub
+		return super.getLocalizedName(par1ItemStack);
+	}
+	
+	
 }

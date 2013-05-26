@@ -22,6 +22,7 @@ import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCNetHandler;
+import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.network.NetCrafterClient;
@@ -48,6 +49,10 @@ public class ModuleCrafting {
 	public void preInit(FMLPreInitializationEvent Init)
 	{
 		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
+		for (int i = 1; i <= 3; i++) {
+			CBCSoundEvents.addOggSoundPath("streaming/Half-Life0" + i,
+					"/cbproject/gfx/sounds/Half-Life0" +i);
+		}
 	}
 	
 	@ModuleInit(EnumInitType.INIT)
