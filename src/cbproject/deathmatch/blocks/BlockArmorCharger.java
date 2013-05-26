@@ -21,7 +21,9 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Random;
 
+import cbproject.api.tile.IUseable;
 import cbproject.core.CBCMod;
+import cbproject.core.keys.KeyUse;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
@@ -44,7 +46,7 @@ import net.minecraftforge.common.ForgeDirection;
  * @author Administrator
  *
  */
-public class BlockArmorCharger extends BlockContainer {
+public class BlockArmorCharger extends BlockContainer implements IUseable {
 
 	protected final float WIDTH = 0.3F, HEIGHT = 0.4F, LENGTH = 0.08F;
 	
@@ -218,5 +220,18 @@ public class BlockArmorCharger extends BlockContainer {
 		
         return var10;
     }
+
+	@Override
+	public void onBlockUse(World world, EntityPlayer player, int bx,
+			int by, int bz) {
+		System.out.println("Using charger");
+		KeyUse.setBlockInUse(player, bx, by, bz);
+	}
+
+	@Override
+	public void onBlockStopUsing(World world, EntityPlayer player, int bx,
+			int by, int bz) {
+		System.out.println("Stopped using charger");
+	}
 
 }

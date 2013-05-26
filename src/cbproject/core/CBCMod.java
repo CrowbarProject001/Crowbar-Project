@@ -17,17 +17,23 @@ package cbproject.core;
 import java.util.EnumSet;
 import java.util.logging.Logger;
 
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.energy.EnergyNet;
+import cbproject.core.keys.KeyUse;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
 import cbproject.core.network.NetExplosion;
+import cbproject.core.network.NetKeyUsing;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCGuiHandler;
+import cbproject.core.register.CBCKeyProcess;
 import cbproject.core.register.CBCModuleRegisty;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
@@ -106,7 +112,7 @@ public class CBCMod implements ITickHandler
 		EnergyNet.initialize();
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
-		
+		CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
 		module = new CBCModuleRegisty();
 		CBCModuleRegisty.registerModule(ModuleCrafting.class.getName());
 		CBCModuleRegisty.registerModule(ModuleIC2.class.getName());
@@ -124,6 +130,7 @@ public class CBCMod implements ITickHandler
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
 		module.init(Init);

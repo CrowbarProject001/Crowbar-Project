@@ -17,6 +17,8 @@ public class BlockPos {
 	}
 	
 	public Boolean equals(BlockPos b){
+		if(b == null)
+			return false;
 		return (x == b.x && y == b.y && z == b.z) && blockID == b.blockID;
 	}
 	
