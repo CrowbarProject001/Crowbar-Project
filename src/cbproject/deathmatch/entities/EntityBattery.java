@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cbproject.api.energy.item.ICustomEnItem;
+import cbproject.core.utils.EnergyUtils;
 import cbproject.core.utils.EntitySelectorPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -79,32 +80,12 @@ public class EntityBattery extends Entity {
 		if(list == null || list.size() == 0)
 			return;
 		EntityPlayer player = list.get(0);
-		tryChargeArmor(player);
+		EnergyUtils.tryChargeArmor(player, currentEnergy, 2, true);
 		this.playSound("cbc.entities.battery", 0.5F, 1.0F);
 		this.setDead();
 	}
 	
-	/**
-	 * TODO:NEEDS INTERGRATION.
-	 * Charges the HEV armor wearing on the player with the amount of 1 battery(50000 EU).
-	 * @param player the player entity
-	 */
-	public void tryChargeArmor(EntityPlayer player){
-		int amount = 0;
-		List<ICustomEnItem> armor = new ArrayList();
-		List<ItemStack> stack = new ArrayList();
-		for(ItemStack s : player.inventory.armorInventory){
-			if(s != null && (s.getItem() instanceof ICustomEnItem)){
-				amount++;
-				ICustomEnItem i = (ICustomEnItem)s.getItem();
-				armor.add(i);
-				stack.add(s);
-			}
-		}
-		for(int i = 0; i < stack.size(); i++){
-			armor.get(i).charge(stack.get(i), currentEnergy / amount, 2, true, false);
-		}
-	}
+
 
 	@Override
 	protected void entityInit() {

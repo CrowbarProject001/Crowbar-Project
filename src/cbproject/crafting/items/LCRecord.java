@@ -43,26 +43,18 @@ import net.minecraft.world.World;
  */
 public class LCRecord extends ItemRecord {
 
-	public final String recordName;
-	private String texName;
 	
-	private static final Map records = new HashMap();
+	int recID;
+	
 	/**
 	 * @param par1
 	 * @param par2Str
 	 */
-	public LCRecord(int par1, String par2Str, String txName) {
+	public LCRecord(int par1, String par2Str, int subID) {
 		super(par1, par2Str);
-		this.recordName = par2Str;
-		this.texName = txName;
 		setCreativeTab(CBCMod.cct);
+		recID = subID;
 	}
-	
-    @SideOnly(Side.CLIENT)
-    public static ItemRecord getRecord(String par0Str)
-    {
-        return (ItemRecord)records.get(par0Str);
-    }
     
 	@SideOnly(Side.CLIENT)
     public Icon getIconFromDamage(int par1)
@@ -80,8 +72,7 @@ public class LCRecord extends ItemRecord {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.add(this.recordName);
-		par3List.add("By Valve");
+		par3List.add(this.recordName + " by Valve");
 	}
 
 	@Override
@@ -99,44 +90,12 @@ public class LCRecord extends ItemRecord {
 		super.getSubItems(par1, par2CreativeTabs, par3List);
 	}
 
-	
-	
-	@Override
-	public boolean onItemUse(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
-			int par6, int par7, float par8, float par9, float par10) {
-        
-
-		if (par3World.getBlockId(par4, par5, par6) == Block.jukebox.blockID && par3World.getBlockMetadata(par4, par5, par6) == 0)
-        {
-            if (par3World.isRemote)
-                return true;
-    			System.out.println("USING  recordName:" + this.recordName);
-                ((BlockJukeBox)Block.jukebox).insertRecord(par3World, par4, par5, par6, par1ItemStack);
-                par3World.playAuxSFXAtEntity((EntityPlayer)null, 1005, par4, par5, par6, this.itemID);
-                System.out.println("Inserted JuiceBox");
-                --par1ItemStack.stackSize;
-                return true;
-        }
-        else
-        {
-            return false;
-        }
-	}
-
 	@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        //this.itemIcon = par1IconRegister.registerIcon("record_" + this.recordName);
-		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:record");
+		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:record" + recID);
     }
-
-	@Override
-	public String getLocalizedName(ItemStack par1ItemStack) {
-		// TODO Auto-generated method stub
-		return super.getLocalizedName(par1ItemStack);
-	}
 	
 	
 }

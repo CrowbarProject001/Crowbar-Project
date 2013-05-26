@@ -28,13 +28,6 @@ import net.minecraft.world.World;
  */
 public class EntityGaussRay extends Entity {
 	
-	public EntityGaussRay(World par1World,EntityLiving ent, EntityBulletGauss gauss){
-		super(par1World);
-		this.setLocationAndAngles(gauss.posX, gauss.posY, gauss.posZ, ent.rotationYawHead, gauss.rotationPitch);
-		this.setRayHeading(motionX, motionY, motionZ, 1.0F, 1.0F);
-		ignoreFrustumCheck = true;
-		
-	}
 	
 	public EntityGaussRay(MotionXYZ begin, World par1World){
 		
@@ -47,7 +40,6 @@ public class EntityGaussRay extends Entity {
 		this.motionZ = begin.motionZ;
 		this.setRayHeading(motionX, motionY, motionZ, 1.0F, 1.0F);
 		ignoreFrustumCheck = true;
-		
 	}
 
 	public EntityGaussRay(World world){
@@ -78,7 +70,7 @@ public class EntityGaussRay extends Entity {
     }
 	@Override
 	public void onUpdate(){
-		if(this.ticksExisted > 4)
+		if(this.ticksExisted > 2)
 			this.setDead();
 	}
 	
@@ -88,15 +80,9 @@ public class EntityGaussRay extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {}
 
 }

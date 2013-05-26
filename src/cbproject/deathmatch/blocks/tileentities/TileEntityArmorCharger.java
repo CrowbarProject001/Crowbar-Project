@@ -14,9 +14,12 @@
  */
 package cbproject.deathmatch.blocks.tileentities;
 
+import java.util.HashSet;
+
 import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.tile.IEnergySink;
+import cbproject.core.utils.EnergyUtils;
 import cbproject.deathmatch.network.NetChargerServer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -36,6 +39,8 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory,
 
 	public static int ENERGY_MAX = 400000; // 10 BatBox, 4HEV Armor
 	public boolean isCharging = false;
+	public boolean isUsing = false;
+	public HashSet<EntityPlayer> chargers = new HashSet();
 	public int currentEnergy = 0;
 
 	/**
@@ -45,6 +50,17 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory,
 	public ItemStack slots[] = new ItemStack[7];
 	public int currentBehavior;
 	public boolean isRSActivated;
+	
+	public void startUsing(EntityPlayer player) {
+		chargers.add(player);
+		isUsing = true;
+	}
+	
+	public void stopUsing(EntityPlayer player) {
+		chargers.remove(player);
+		if(chargers.size() == 0)
+			isUsing = false;
+	}
 
 	public enum EnumBehavior {
 		NONE, CHARGEONLY, RECEIVEONLY, DISCHARGE, EMIT;
@@ -120,6 +136,27 @@ public class TileEntityArmorCharger extends TileEntity implements IInventory,
 		
 		if(currentEnergy < 0)
 			currentEnergy = 0;
+		
+		if(this.isUsing) {
+			for(EntityPlayer charger : chargers) {
+				int received = EnergyUtils.tryChargeArmor(charger, this.currentEnergy, 2, false);
+				currentEnergy -= received;
+				if(received <= 0) {
+					worldObj.playSoundAtEntity(charger, "cbc.entities.suitchargeno", 0.5F, 1.0F);
+					this.stopUsing(charger);
+				}
+				if(worldObj.getWorldTime() % 40 == 0) {
+					worldObj.playSoundAtEntity(charger, "cbc.entities.suitcharge", 0.3F, 1.0F);
+				}
+				if(currentEnergy <= 0) {
+					currentEnergy = 0;
+					this.chargers.clear();
+					this.isUsing = false;
+					worldObj.playSoundAtEntity(charger, "cbc.entities.suitchargeno", 0.5F, 1.0F);
+				}
+			}
+			
+		}
 		
 		/**
 		 * 

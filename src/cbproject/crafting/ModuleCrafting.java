@@ -49,10 +49,7 @@ public class ModuleCrafting {
 	public void preInit(FMLPreInitializationEvent Init)
 	{
 		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
-		for (int i = 1; i <= 3; i++) {
-			CBCSoundEvents.addOggSoundPath("streaming/Half-Life0" + i,
-					"/cbproject/gfx/sounds/Half-Life0" +i);
-		}
+		
 	}
 	
 	@ModuleInit(EnumInitType.INIT)
@@ -62,6 +59,10 @@ public class ModuleCrafting {
 		CBCAchievements.init(CBCMod.config);
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CRAFTER, new ElementCrafter());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER_CL, new NetCrafterClient());
+		for (int i = 1; i <= 3; i++) {
+			CBCSoundEvents.addStreaming("Half-Life0" + i,
+					"cbproject/gfx/sounds/Half-Life0" + i + ".ogg");
+		}
 	}
 
 	@ModuleInit(EnumInitType.POSTINIT)

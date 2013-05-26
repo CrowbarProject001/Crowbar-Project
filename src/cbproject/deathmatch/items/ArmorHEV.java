@@ -14,6 +14,22 @@ import net.minecraftforge.common.EnumHelper;
 
 public class ArmorHEV extends ElectricArmor {
 
+	public enum EnumAttachment {
+		LONGJUMP(2, "lj");
+		private int slot;
+		private String internalName;
+		private EnumAttachment(int x, String name) {
+			this.slot = x;
+			this.internalName = name;
+		}
+		public int getSlot(){
+			return slot;
+		}
+		public String getName(){
+			return internalName;
+		}
+	}
+	
 	public static int reductionAmount[] = {0, 0, 0, 0};
 	protected static EnumArmorMaterial material = EnumHelper.addArmorMaterial("armorHEV", 100000, reductionAmount, 0);
 	private static ArmorProperties propChest = new ArmorProperties(3, 100.0, 325),
@@ -30,6 +46,20 @@ public class ArmorHEV extends ElectricArmor {
 		this.setTier(2);
 		this.setTransferLimit(128);
 		this.setEnergyPerDamage(1000);
+	}
+	
+	public ArmorHEV(int par1, EnumAttachment attach) {
+		super(par1, material, 2, attach.getSlot());
+		setUnlocalizedName("hev_" + attach.getName());
+		this.setIconName("hev_" + attach.getName());
+		this.setMaxCharge(200000);
+		this.setTier(2);
+		this.setTransferLimit(128);
+		this.setEnergyPerDamage(1000);
+	}
+	
+	public static EnumAttachment getAttachment() {
+		return null;
 	}
 
 	@Override
@@ -62,19 +92,6 @@ public class ArmorHEV extends ElectricArmor {
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
 		return (slot == 2) ? 8 : 4;
-	}
-
-	/**
-	 * DEBUG ONLY.
-	 */
-	@Override
-	public boolean onItemUse(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
-			int par6, int par7, float par8, float par9, float par10) {
-		super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5,
-				par6, par7, par8, par9, par10);
-		par1ItemStack.setItemDamage(par1ItemStack.getMaxDamage() - 1);
-		return true;
 	}
 
 }

@@ -46,6 +46,7 @@ import cbproject.deathmatch.entities.EntityRocket;
 import cbproject.deathmatch.entities.EntitySatchel;
 import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cbproject.deathmatch.entities.fx.EntityGaussRay;
+import cbproject.deathmatch.entities.fx.EntityGaussRayColored;
 import cbproject.deathmatch.entities.fx.EntityTrailFX;
 import cbproject.deathmatch.gui.ElementArmorCharger;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
@@ -112,7 +113,8 @@ public class ModuleDM
 		DMItems.init(CBCMod.config);
 		DMBlocks.init(CBCMod.config);
 		
-		EntityRegistry.registerModEntity(EntityGaussRay.class, "gauss", GeneralProps.ENT_ID_GAUSS1, CBCMod.instance, 32, 3, true);
+		EntityRegistry.registerModEntity(EntityGaussRay.class, "gauss", GeneralProps.ENT_ID_GAUSS1, CBCMod.instance, 32, 1, true);
+		EntityRegistry.registerModEntity(EntityGaussRayColored.class, "gauss2", GeneralProps.ENT_ID_GAUSS2, CBCMod.instance, 32, 1, true);
 		EntityRegistry.registerModEntity(EntityEgonRay.class, "egonray", GeneralProps.ENT_ID_EGON_RAY, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityARGrenade.class, "argrenade", GeneralProps.ENT_ID_ARGRENADE, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityHGrenade.class, "hgrenade", GeneralProps.ENT_ID_HGRENADE, CBCMod.instance, 32, 3, true);
@@ -189,7 +191,8 @@ public class ModuleDM
 		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RenderSnowball(DMItems.weapon_hgrenade));
-		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay());
+		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay(false));
+		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRayColored.class, new RenderGaussRay(true));
 		RenderingRegistry.registerEntityRenderingHandler(EntitySatchel.class, new RenderSatchel());
 		RenderingRegistry.registerEntityRenderingHandler(EntityARGrenade.class, new RenderCrossedProjectile(0.4, 0.1235, ClientProps.AR_GRENADE_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityEgonRay.class, new RenderEgonRay());
@@ -270,7 +273,10 @@ public class ModuleDM
 	
 	public static final String SND_ENTITIES[] = {
 		"medkit",
-		"battery"
+		"battery",
+		"suitcharge",
+		"suitchargeno",
+		"suitchargeok"
 	};
 	
 }

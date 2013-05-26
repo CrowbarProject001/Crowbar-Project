@@ -78,9 +78,9 @@ public class CBCItems {
 			ingotUranium = new IngotUranium(conf.GetItemID("ingotUranium", 8061));
 			ingotSteel = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
 			
-			halfLife01 = new LCRecord(conf.GetItemID("halfLife01", 8997), "Half-Life01", "halflife01");
-			halfLife02 = new LCRecord(conf.GetItemID("halfLife02", 8998), "Half-Life02", "halflife02");
-			halfLife03 = new LCRecord(conf.GetItemID("halfLife03", 8999), "Half-Life03", "halflife03");
+			halfLife01 = new LCRecord(conf.GetItemID("halfLife01", 8997), "Half-Life01", 0);
+			halfLife02 = new LCRecord(conf.GetItemID("halfLife02", 8998), "Half-Life02", 1);
+			halfLife03 = new LCRecord(conf.GetItemID("halfLife03", 8999), "Half-Life03", 2);
 
 			LanguageRegistry.addName("Half-Life01", "record");
 			LanguageRegistry.addName("Half-Life02", "record");

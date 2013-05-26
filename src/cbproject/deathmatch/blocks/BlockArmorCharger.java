@@ -26,6 +26,7 @@ import cbproject.core.CBCMod;
 import cbproject.core.keys.KeyUse;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
+import cbproject.core.utils.EnergyUtils;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -224,14 +225,27 @@ public class BlockArmorCharger extends BlockContainer implements IUseable {
 	@Override
 	public void onBlockUse(World world, EntityPlayer player, int bx,
 			int by, int bz) {
-		System.out.println("Using charger");
+		
+		TileEntity te =  world.getBlockTileEntity(bx, by, bz);
+		if(te == null)
+			return;
+		TileEntityArmorCharger te2 = (TileEntityArmorCharger) te;
+		String path = te2.currentEnergy > 0 ? "cbc.entities.suitchargeok" : "cbc.entities.suitchargeno";
+		world.playSoundAtEntity(player, path, 0.5F, 1.0F);
 		KeyUse.setBlockInUse(player, bx, by, bz);
+		if(te2.currentEnergy > 0)
+			te2.startUsing(player);
+		
 	}
 
 	@Override
 	public void onBlockStopUsing(World world, EntityPlayer player, int bx,
 			int by, int bz) {
-		System.out.println("Stopped using charger");
+		TileEntity te =  world.getBlockTileEntity(bx, by, bz);
+		if(te == null)
+			return;
+		TileEntityArmorCharger te2 = (TileEntityArmorCharger) te;
+		te2.stopUsing(player);
 	}
 
 }

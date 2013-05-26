@@ -14,11 +14,13 @@
  */
 package cbproject.core;
 
+import java.io.File;
 import java.util.EnumSet;
 import java.util.logging.Logger;
 
 import org.lwjgl.input.Keyboard;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
@@ -65,6 +67,8 @@ import cpw.mods.fml.relauncher.Side;
 @NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {GeneralProps.NET_CHANNEL_CLIENT, GeneralProps.NET_CHANNEL_SERVER}, packetHandler = CBCNetHandler.class)
 public class CBCMod implements ITickHandler
 { 
+	
+	private Minecraft mc;
 	
 	/**
 	 *  日志

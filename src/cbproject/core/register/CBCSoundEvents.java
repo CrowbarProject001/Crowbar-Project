@@ -14,8 +14,10 @@
  */
 package cbproject.core.register;
 
+import java.io.File;
 import java.util.HashSet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -59,14 +61,14 @@ public class CBCSoundEvents {
 	}
 	
 	/**
-	 * 请在preInit中使用这个函数 ||
-	 * 两个参数的末尾都自动被加上了 .ogg 后缀。
-	 * @param name : 声音名字. i.e. "cbc/weapons/rocket"
-	 * @param absPath : 声音的绝对路径。  i.e."/cbproject/gfx/weapons/glauncherb"
+	 * 请在Init中使用这个函数 ||
+	 * @param name : 声音流名字。 i.e. "cbc/Half-Life01"
+	 * @param absPath : 声音的绝对路径。  i.e."cbproject/gfx/sounds/Half-Life01.ogg"
 	 */
-	public static void addOggSoundPath(String name, String absPath){
-		String[] s = {name + ".ogg", absPath + ".ogg"};
-		pathSounds.add(s);
+	public static void addStreaming(String name, String absPath){
+		File file =  new File(absPath);
+		System.out.println("registered " + "streaming/" + name + ".ogg" + " , path = " + file);
+		Minecraft.getMinecraft().installResource("streaming/" + name + ".ogg", file);
 	}
 
 }

@@ -24,6 +24,11 @@ public class RenderGaussRay extends RenderEntity {
 
 	public static double WIDTH = 0.05F;
 	private static Tessellator tessellator = Tessellator.instance;
+	protected  boolean renderColor;
+	
+	public RenderGaussRay(boolean hasColor) {
+		this.renderColor = hasColor;
+	}
 	
 	@Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
@@ -58,8 +63,11 @@ public class RenderGaussRay extends RenderEntity {
         GL11.glDepthMask(true);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LIGHTING);
-        
-        loadTexture(ClientProps.GAUSS_BEAM_PATH);
+        if(renderColor)
+        	loadTexture(ClientProps.GAUSS_BEAM_PATH);
+        else {
+        	GL11.glDisable(GL11.GL_TEXTURE_2D);
+        }
         GL11.glRotatef(90.0F - gauss.rotationYaw, 0.0F, -1.0F, 0.0F); //左右旋转
         GL11.glRotatef(gauss.rotationPitch, 0.0F, 0.0F, 1.0F); //上下旋转
         GL11.glTranslatef(0, 0.4F, 0);
@@ -91,6 +99,7 @@ public class RenderGaussRay extends RenderEntity {
         tessellator.draw();
         
         GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glPopMatrix();
     }
 	
