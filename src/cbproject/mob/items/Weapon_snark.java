@@ -6,25 +6,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import cbproject.core.CBCMod;
+import cbproject.core.item.CBCGenericItem;
 import cbproject.mob.entities.EntitySnark;
 import cbproject.mob.utils.MobSpawnHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class Weapon_snark extends Item{
+public class Weapon_snark extends CBCGenericItem{
 
 	public Weapon_snark(int par1) {
 		super(par1);
 		this.setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("snark");
+		setIconName("snark");
 	}
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:snark");
-    }
     
     /**
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer

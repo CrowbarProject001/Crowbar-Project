@@ -40,5 +40,4 @@ public class BlockUraniumOre extends BlockOre {
 		CBCAchievements.getAchievement(par6EntityPlayer, CBCAchievements.nuclearRawMaterial);
 	}
 
-	
 }

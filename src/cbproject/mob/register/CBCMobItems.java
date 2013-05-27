@@ -11,7 +11,7 @@ public class CBCMobItems {
 	
 	public static void init(Config conf){
 		try {
-			weapon_snark = new Weapon_snark(conf.GetItemID("weapon_snark", 7010));
+			weapon_snark = new Weapon_snark(conf.GetItemID("weapon_snark", 5030));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

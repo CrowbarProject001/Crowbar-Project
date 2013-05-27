@@ -40,20 +40,6 @@ public class CBCOreGenerator  implements IWorldGenerator {
 			
 			(new WorldGenMinable(CBCBlocks.blockUraniumOre.blockID, 3)).generate(world, random, uraniumOreXCoord, uraniumOreYCoord, uraniumOreZCoord);
 		}
-		for(int k = 0; k < 10; k++) {
-			int uraniumOreXCoord = i + random.nextInt(16);
-			int uraniumOreYCoord = random.nextInt(64);
-			int uraniumOreZCoord = j + random.nextInt(16);
-			
-			(new WorldGenMinable(CBCBlocks.blockCopperOre.blockID, 3)).generate(world, random, uraniumOreXCoord, uraniumOreYCoord, uraniumOreZCoord);
-		}
-		for(int k = 0; k < 10; k++) {
-			int uraniumOreXCoord = i + random.nextInt(16);
-			int uraniumOreYCoord = random.nextInt(64);
-			int uraniumOreZCoord = j + random.nextInt(16);
-			
-			(new WorldGenMinable(CBCBlocks.blockTinOre.blockID, 3)).generate(world, random, uraniumOreXCoord, uraniumOreYCoord, uraniumOreZCoord);
-		}
 	}
 
 	private void generateNether(World world, Random random, int i, int j) {

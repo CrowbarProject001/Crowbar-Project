@@ -28,6 +28,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cbproject.api.entities.IEntityLink;
+import cbproject.core.props.ClientProps;
 import cbproject.core.utils.GenericUtils;
 
 /**
@@ -42,7 +43,7 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
 	
 	public EntitySnark(World par1World) {
 		super(par1World);
-		this.texture = "/mob/spider.png";
+		this.texture = ClientProps.GAUSS_BEAM_PATH;
 		this.setSize(0.4F, 0.3F);
 		this.moveSpeed = MOVE_SPEED;
 		this.experienceValue = 0;

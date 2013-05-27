@@ -14,31 +14,32 @@
  */
 package cbproject.deathmatch.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
 import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
 import cbproject.deathmatch.network.NetChargerClient;
 
 /**
- * @author Administrator
- * 
+ * @author WeAthFolD
+ *
  */
-public class GuiArmorCharger extends CBCGuiContainer {
+public class GuiHealthCharger extends CBCGuiContainer {
 
-	TileEntityArmorCharger te;
+	TileEntityHealthCharger te;
 
 	/**
 	 * @param par1Container
 	 */
-	public GuiArmorCharger(TileEntityArmorCharger t, Container par1Container) {
+	public GuiHealthCharger(TileEntityHealthCharger t, Container par1Container) {
 		super(par1Container);
 		this.xSize = 176;
 		this.ySize = 166;
@@ -55,7 +56,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		@Override
 		public String getTip() {
 			return StatCollector.translateToLocal("curenergy.name") + ": "
-					+ te.currentEnergy + "/" + TileEntityArmorCharger.ENERGY_MAX + " EU";
+					+ te.currentEnergy + "/" + TileEntityHealthCharger.ENERGY_MAX + " EU";
 		}
 
 	}
@@ -106,7 +107,6 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	public void onButtonClicked(CBCGuiButton button) {
 		if(button.name == "redstone"){
 			te.nextBehavior();
-			NetChargerClient.sendChargerPacket(te);
 		}
 	}
 
@@ -115,9 +115,9 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		String currentPage = StatCollector
-				.translateToLocal(EnumChatFormatting.DARK_GRAY + "armorcharger.name");
-		fontRenderer.drawString(currentPage,
-				88 - fontRenderer.getStringWidth(currentPage) / 2, 5, 0x969494);
+				.translateToLocal("healthcharger.name");
+		fontRenderer.drawString(EnumChatFormatting.DARK_GRAY + currentPage,
+				88 - fontRenderer.getStringWidth(currentPage) / 2, 5, 0xffffff);
 	}
 
 	/*
@@ -129,6 +129,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		/*
 		mc.renderEngine.bindTexture(ClientProps.GUI_ARMORCHARGER_PATH);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
@@ -142,6 +143,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 			int height = (int) (te.worldObj.getWorldTime() % 43);
 			this.drawTexturedModalRect(x + 29, y + 21, 176, 56, 43, height);
 		}
+		*/
 	}
 
 }

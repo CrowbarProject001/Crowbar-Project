@@ -43,6 +43,7 @@ import cbproject.crafting.ModuleCrafting;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.deathmatch.ModuleDM;
 import cbproject.intergration.ic2.ModuleIC2;
+import cbproject.mob.ModuleMob;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -121,6 +122,7 @@ public class CBCMod implements ITickHandler
 		CBCModuleRegisty.registerModule(ModuleCrafting.class.getName());
 		CBCModuleRegisty.registerModule(ModuleIC2.class.getName());
 		CBCModuleRegisty.registerModule(ModuleDM.class.getName());
+		CBCModuleRegisty.registerModule(ModuleMob.class.getName());
 		module.preInit(event);
 	} 
 

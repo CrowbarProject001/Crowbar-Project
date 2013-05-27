@@ -63,8 +63,8 @@ public class DMItems {
 			armorHEVChestplate = new ArmorHEV(conf.GetItemID("hevChestplate", 8003), 1);
 			armorHEVLeggings = new ArmorHEV(conf.GetItemID("hevLeggings", 8004), 2);
 			armorHEVBoot = new ArmorHEV(conf.GetItemID("hevBoot", 8005), 3);
-			longjump = new ArmorLongjump(conf.GetItemID("armorLongjump", 8006), 1);
-			hevLongjump = new ArmorHEV(conf.GetItemID("armorLongjump", 8007), EnumAttachment.LONGJUMP);
+			longjump = new ArmorLongjump(conf.GetItemID("armorLongjump", 4006), 1);
+			hevLongjump = new ArmorHEV(conf.GetItemID("hevLongjump", 8007), EnumAttachment.LONGJUMP);
 			
 			battery = new ItemBattery(conf.GetItemID("battery", 8057));
 			medkit = new ItemMedkit(conf.GetItemID("medkit", 8058));

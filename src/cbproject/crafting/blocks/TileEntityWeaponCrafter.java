@@ -51,7 +51,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public long lastTime = 0;
 	public boolean redraw, isCrafting, isBurning;
 	public boolean isAdvanced = false;
-	private boolean isLoad = false;
+	public boolean isLoad = false;
 	
 	/**
 	 * inventory: 1-18：材料存储  19:燃料槽  20:合成结果槽
@@ -69,6 +69,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			if(blockType == null)
 				return;
 			isAdvanced = this.blockType.blockID == CBCBlocks.blockWeaponCrafter.blockID? false : true;
+			this.MAX_HEAT = isAdvanced ? 7000 : 4000;
 			isLoad = true;
 		}
 		
