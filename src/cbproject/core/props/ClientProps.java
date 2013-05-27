@@ -84,6 +84,7 @@ public class ClientProps {
 			"/cbproject/gfx/textures/entities/rpg_trail_tail.png" };
 	public static final String HORNET_TRAIL_PATH = "/cbproject/gfx/textures/entities/ag_trail.png";
 	public static final String BATTERY_PATH = "/cbproject/gfx/textures/entities/battery.png";
+	public static final String SQUEAK_MOB_PATH = "/cbproject/gfx/textures/entities/squeak.png";
 
 	/**
 	 * 获取随机的一个火光贴图。

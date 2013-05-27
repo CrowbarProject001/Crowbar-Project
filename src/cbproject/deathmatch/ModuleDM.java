@@ -276,7 +276,10 @@ public class ModuleDM
 		"battery",
 		"suitcharge",
 		"suitchargeno",
-		"suitchargeok"
+		"suitchargeok",
+		"medshot",
+		"medshotno",
+		"medcharge"
 	};
 	
 }

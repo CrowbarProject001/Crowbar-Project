@@ -19,6 +19,7 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
@@ -43,7 +44,7 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
 	
 	public EntitySnark(World par1World) {
 		super(par1World);
-		this.texture = ClientProps.GAUSS_BEAM_PATH;
+		this.texture = ClientProps.SQUEAK_MOB_PATH;
 		this.setSize(0.4F, 0.3F);
 		this.moveSpeed = MOVE_SPEED;
 		this.experienceValue = 0;
@@ -52,6 +53,14 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
 	@Override
 	public int getMaxHealth() {
 		return 1;
+	}
+	
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+		if(this.ticksExisted > 400) {
+			this.attackEntityFrom(DamageSource.lava, 1);
+		}
 	}
 	
 	@Override
@@ -153,6 +162,14 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
 		}
 	}
 
+	@Override
+    protected void onDeathUpdate()
+    {
+        super.onDeathUpdate();
+        if(this.ticksExisted == 20)
+        	this.playSound("cbc.mobs.sqk_blast", 0.5F, 1.0F);
+    }
+	
 	/**
 	 * Returns the item ID for the item the mob drops on death.
 	 */
