@@ -3,6 +3,7 @@ package cbproject.crafting.register;
 import java.io.File;
 
 import cbproject.core.misc.Config;
+import cbproject.core.props.GeneralProps;
 import cbproject.core.register.GeneralRegistry;
 import cbproject.crafting.items.*;
 import cbproject.crafting.items.ItemMaterial.EnumMaterial;
@@ -64,14 +65,14 @@ public class CBCItems {
 
 		materials = new ItemMaterial(GeneralRegistry.getItemId("mat_a", 0));
 		
-		ironBar = new SteelBar(GeneralRegistry.getItemId("ironBar", 8059));
-		lambdaChip = new LambdaChipset(GeneralRegistry.getItemId("lambdachip", 8060));
-		ingotUranium = new IngotUranium(GeneralRegistry.getItemId("ingotUranium", 8061));
-		ingotSteel = new IngotSteel(GeneralRegistry.getItemId("itemRefinedIronIngot",7100));
+		ironBar = new SteelBar(GeneralRegistry.getItemId("ironBar", 0));
+		lambdaChip = new LambdaChipset(GeneralRegistry.getItemId("lambdachip", 0));
+		ingotUranium = new IngotUranium(GeneralRegistry.getItemId("ingotUranium", 0));
+		ingotSteel = new IngotSteel(GeneralRegistry.getItemId("itemRefinedIronIngot",0));
 		
-		halfLife01 = new LCRecord(GeneralRegistry.getItemId("halfLife01", 8997), "Half-Life01", 0);
-		halfLife02 = new LCRecord(GeneralRegistry.getItemId("halfLife02", 8998), "Half-Life02", 1);
-		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03", 8999), "Half-Life03", 2);
+		halfLife01 = new LCRecord(GeneralRegistry.getItemId("halfLife01", GeneralProps.CAT_MISC), "Half-Life01", 0);
+		halfLife02 = new LCRecord(GeneralRegistry.getItemId("halfLife02", GeneralProps.CAT_MISC), "Half-Life02", 1);
+		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03", GeneralProps.CAT_MISC), "Half-Life03", 2);
 
 		LanguageRegistry.addName("Half-Life01", "record");
 		LanguageRegistry.addName("Half-Life02", "record");

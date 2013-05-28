@@ -37,6 +37,13 @@ public class GeneralRegistry {
 	private static final int BLOCK_BEGIN = 400;
 	private static Config config;
 	
+	/**
+	 * 获得一个空的物品ID。（调用Config配置）
+	 * @param name 物品名字
+	 * @param cat 物品分类
+	 * @see cbproject.core.props.GeneralProps
+	 * @return 获取的ID
+	 */
 	public static int getItemId(String name, int cat) {
 		config = CBCMod.config;
 		try {
@@ -47,6 +54,14 @@ public class GeneralRegistry {
 		return -1;
 	}
 	
+	
+	/**
+	 * 获得一个空的方块ID。（调用Config配置）
+	 * @param name 方块名字
+	 * @param cat 方块分类
+	 * @see cbproject.core.props.GeneralProps
+	 * @return 获取的ID
+	 */
 	public static int getBlockId(String name, int cat) {
 		config = CBCMod.config;
 		try {

@@ -38,7 +38,13 @@ public class GeneralProps {
 	
 	public static final int GUI_ID_CRAFTER = 0, GUI_ID_CHARGER = 1, GUI_ID_HEALTH = 2;
 	
+	/**
+	 * 方块和物品分类。
+	 */
 	public static final int CAT_MATERIAL = 0, CAT_WEAPON = 1, CAT_ELECTRIC = 2, CAT_EQUIPMENT = 3, CAT_MISC = 4;
+	/**
+	 * 方块分类。
+	 */
 	public static final int CAT_GENERIC = 0;
 	
 	public static void loadProps(Config config){
