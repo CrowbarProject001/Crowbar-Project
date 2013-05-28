@@ -74,9 +74,9 @@ public class CBCItems {
 		halfLife02 = new LCRecord(GeneralRegistry.getItemId("halfLife02", GeneralProps.CAT_MISC), "Half-Life02", 1);
 		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03", GeneralProps.CAT_MISC), "Half-Life03", 2);
 
-		LanguageRegistry.addName("Half-Life01", "record");
-		LanguageRegistry.addName("Half-Life02", "record");
-		LanguageRegistry.addName("Half-Life03", "record");
+		LanguageRegistry.addName(halfLife01, "record");
+		LanguageRegistry.addName(halfLife01, "record");
+		LanguageRegistry.addName(halfLife01, "record");
 		
 		addItemRecipes();
 	}
@@ -95,7 +95,7 @@ public class CBCItems {
         		new ItemStack(lambdaChip)
         };
         
-        OreDictionary.registerOre("oreUranium", CBCBlocks.blockUraniumOre);
+        OreDictionary.registerOre("oreUranium", CBCBlocks.uraniumOre);
         OreDictionary.registerOre("ingotUranium", CBCItems.ingotUranium);
         OreDictionary.registerOre("ingotSteel", CBCItems.ingotSteel);
         OreDictionary.registerOre("blockSteel", CBCBlocks.blockRefined);
@@ -137,7 +137,7 @@ public class CBCItems {
         //Smeltings
         GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ingotSteel, 9), "blockSteel"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.blockRefined), "AAA", "AAA", "AAA", 'A', "ingotSteel"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.blockWeaponCrafter), "AAA", "BCB", "EDE", 'A', sglass, 'B', sbredstone, 'C', slambdachip, 'D', schest, 'E', "blockSteel"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.weaponCrafter), "AAA", "BCB", "EDE", 'A', sglass, 'B', sbredstone, 'C', slambdachip, 'D', schest, 'E', "blockSteel"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ironBar, 3), "A  ", "A  ", 'A', "ingotSteel"));
         GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(5, EnumMaterial.BOX), "A A", "AAA", 'A', "ingotSteel"));
         GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.PISTOL), "ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', "ingotSteel", 'D', sredstone, 'E', sglass));
@@ -145,7 +145,7 @@ public class CBCItems {
         GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.HEAVY), "ADA", "CCC", "EBE", 'A', sblazep, 'B', sbox, 'C', "ingotSteel", 'D', sblap, 'E', sglass));
         GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.EXPLOSIVE), "ACA", "DCD", "EBE", 'A', "ingotSteel", 'B', sbox, 'C', stnt, 'D', sgunpowder, 'E', sglass));
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(ingotSteel.itemID,1,0) );
-        ModLoader.addSmelting(CBCBlocks.blockUraniumOre.blockID, new ItemStack(ingotUranium), 2);
+        ModLoader.addSmelting(CBCBlocks.uraniumOre.blockID, new ItemStack(ingotUranium), 2);
 	}
 	
 	private static void addRecipes(ItemStack[] output, Object[][] input){

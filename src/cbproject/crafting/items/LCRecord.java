@@ -78,7 +78,6 @@ public class LCRecord extends ItemRecord {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getRecordTitle() {
-		// TODO Auto-generated method stub
 		return "Valve - " + this.recordName;
 	}
 	
@@ -86,7 +85,6 @@ public class LCRecord extends ItemRecord {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs,
 			List par3List) {
-		// TODO Auto-generated method stub
 		super.getSubItems(par1, par2CreativeTabs, par3List);
 	}
 

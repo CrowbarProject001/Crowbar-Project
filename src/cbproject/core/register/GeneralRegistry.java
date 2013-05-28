@@ -47,7 +47,7 @@ public class GeneralRegistry {
 	public static int getItemId(String name, int cat) {
 		config = CBCMod.config;
 		try {
-			return config.GetItemID(name, getEmptyItemId(cat));
+			return config.GetItemID(name, getEmptyItemId(cat)) - 256;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,7 +73,7 @@ public class GeneralRegistry {
 	}
 	
 	private static int getEmptyItemId(int cat) {
-		int begin = 3200;
+		int begin = 3840;
 		begin += cat * 50;
 		int theId = 0;
 		for(int i = 0; i < 50; i++) {

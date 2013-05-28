@@ -27,7 +27,7 @@ public class TileEntityTripmine extends TileEntity {
 	@Override
 	public void updateEntity() {
 		
-		BlockTripmine blockType = DMBlocks.blockTripmine;
+		BlockTripmine blockType = (BlockTripmine) DMBlocks.blockTripmine;
 		MotionXYZ begin = new MotionXYZ(xCoord, yCoord, zCoord, 0, 0, 0);
 		int meta = this.blockMetadata;
 		MotionXYZ end = new MotionXYZ(endX, endY, endZ, 0, 0, 0);

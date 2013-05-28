@@ -68,7 +68,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		if(!isLoad){
 			if(blockType == null)
 				return;
-			isAdvanced = this.blockType.blockID == CBCBlocks.blockWeaponCrafter.blockID? false : true;
+			isAdvanced = this.blockType.blockID == CBCBlocks.weaponCrafter.blockID? false : true;
 			this.MAX_HEAT = isAdvanced ? 7000 : 4000;
 			isLoad = true;
 		}

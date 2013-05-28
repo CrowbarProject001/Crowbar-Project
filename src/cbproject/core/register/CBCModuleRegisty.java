@@ -79,7 +79,8 @@ public class CBCModuleRegisty {
 				try {
 					me.invoke(getInstance(m), event);
 				} catch (Exception e){
-					System.err.println("Failed in calling Init in :" + m);
+					System.err.println("Failed in calling Init in :" + m + ", reason " + e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -104,6 +105,7 @@ public class CBCModuleRegisty {
 					me.invoke(getInstance(m), event);
 				} catch (Exception e){
 					System.err.println("Failed in calling serverStarting in :" + m);
+					e.printStackTrace();
 				}
 			}
 		}

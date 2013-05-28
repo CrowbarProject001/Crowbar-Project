@@ -2,6 +2,7 @@ package cbproject.deathmatch.register;
 
 import net.minecraft.item.Item;
 import cbproject.core.misc.Config;
+import cbproject.core.props.GeneralProps;
 import cbproject.core.register.GeneralRegistry;
 import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ArmorLongjump;
@@ -60,11 +61,11 @@ public class DMItems {
 		weapon_egon = new Weapon_egon(GeneralRegistry.getItemId("weapon_egon", 1));
 		weapon_hornet = new Weapon_hornet(GeneralRegistry.getItemId("weapon_hornet", 1));
 		
-		armorHEVHelmet = new ArmorHEV(GeneralRegistry.getItemId("hevHelmet", 8002), 3);
-		armorHEVChestplate = new ArmorHEV(GeneralRegistry.getItemId("hevChestplate", 8003), 3);
-		armorHEVLeggings = new ArmorHEV(GeneralRegistry.getItemId("hevLeggings", 8004), 3);
-		armorHEVBoot = new ArmorHEV(GeneralRegistry.getItemId("hevBoot", 8005), 3);
-		longjump = new ArmorLongjump(GeneralRegistry.getItemId("armorLongjump", 4006), 3);
+		armorHEVHelmet = new ArmorHEV(GeneralRegistry.getItemId("hevHelmet", GeneralProps.CAT_EQUIPMENT), 0);
+		armorHEVChestplate = new ArmorHEV(GeneralRegistry.getItemId("hevChestplate", 3), 1);
+		armorHEVLeggings = new ArmorHEV(GeneralRegistry.getItemId("hevLeggings", 3), 2);
+		armorHEVBoot = new ArmorHEV(GeneralRegistry.getItemId("hevBoot", 3), 3);
+		longjump = new ArmorLongjump(GeneralRegistry.getItemId("armorLongjump", 3), 3);
 		hevLongjump = new ArmorHEV(GeneralRegistry.getItemId("hevLongjump", 3), EnumAttachment.LONGJUMP);
 		
 		battery = new ItemBattery(GeneralRegistry.getItemId("battery", 3));
