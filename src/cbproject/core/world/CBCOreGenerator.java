@@ -38,7 +38,7 @@ public class CBCOreGenerator  implements IWorldGenerator {
 			int uraniumOreYCoord = random.nextInt(35);
 			int uraniumOreZCoord = j + random.nextInt(16);
 			
-			(new WorldGenMinable(CBCBlocks.uraniumOre.blockID, 3)).generate(world, random, uraniumOreXCoord, uraniumOreYCoord, uraniumOreZCoord);
+			(new WorldGenMinable(CBCBlocks.blockUraniumOre.blockID, 3)).generate(world, random, uraniumOreXCoord, uraniumOreYCoord, uraniumOreZCoord);
 		}
 	}
 
