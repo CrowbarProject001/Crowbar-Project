@@ -25,7 +25,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.items.ItemMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
-import cbproject.crafting.recipes.RecipeWeaponSpecial;
+import cbproject.crafting.recipes.RecipeRepair;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.crafting.register.CBCBlocks;
 import cbproject.deathmatch.utils.AmmoManager;
@@ -299,7 +299,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		}
 		if(!hasEnoughMaterial(currentRecipe))
 			return;
-		if(!(currentRecipe instanceof RecipeWeaponSpecial)){
+		if(!(currentRecipe instanceof RecipeRepair)){
 			if (inventory[0] != null) {
 				if (!(inventory[0].itemID == currentRecipe.output.itemID && inventory[0].isStackable()))
 					return;
@@ -319,7 +319,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 				lastTime = worldObj.getWorldTime();
 				return;
 			}
-			RecipeWeaponSpecial rs = (RecipeWeaponSpecial) currentRecipe;
+			RecipeRepair rs = (RecipeRepair) currentRecipe;
 			int bulletCount = 0;
 			int slotWeapon = 0;
 			for(int i = 2; i < 20; i++){
@@ -354,8 +354,8 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public boolean hasEnoughMaterial(RecipeCrafter r) {
 		ItemStack is;
 
-		if(r instanceof RecipeWeaponSpecial){
-			RecipeWeaponSpecial rs = (RecipeWeaponSpecial) r;
+		if(r instanceof RecipeRepair){
+			RecipeRepair rs = (RecipeRepair) r;
 			boolean flag1 = false, flag2 = false;
 			for(int i = 2; i < 20; i++){
 				is = inventory[i];

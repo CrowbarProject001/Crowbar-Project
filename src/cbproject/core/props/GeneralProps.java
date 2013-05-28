@@ -37,6 +37,10 @@ public class GeneralProps {
 			NET_ID_CHARGER_SV = 4, NET_ID_CRAFTER_SV = 5, NET_ID_USE = 6;
 	
 	public static final int GUI_ID_CRAFTER = 0, GUI_ID_CHARGER = 1, GUI_ID_HEALTH = 2;
+	
+	public static final int CAT_MATERIAL = 0, CAT_WEAPON = 1, CAT_ELECTRIC = 2, CAT_EQUIPMENT = 3, CAT_MISC = 4;
+	public static final int CAT_GENERIC = 0;
+	
 	public static void loadProps(Config config){
 		try {
 			ignoreBlockDestroy = config.getBoolean("ignoreBlockDestroy", false);

@@ -3,6 +3,7 @@ package cbproject.crafting.register;
 import java.io.File;
 
 import cbproject.core.misc.Config;
+import cbproject.core.register.GeneralRegistry;
 import cbproject.crafting.items.*;
 import cbproject.crafting.items.ItemMaterial.EnumMaterial;
 import cbproject.deathmatch.items.ammos.*;
@@ -37,8 +38,7 @@ public class CBCItems {
 
 	public static IngotSteel ingotSteel;
 	
-	public static ItemMaterial mat_accessories, mat_ammunition, mat_bio,
-		mat_heavy, mat_light, mat_pistol, mat_tech, mat_explosive, mat_box;
+	public static ItemMaterial materials;
 	public static LambdaChipset lambdaChip;
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
@@ -50,47 +50,32 @@ public class CBCItems {
 	 */
 	public static void init(Config conf){
 		
-		try{
+		ammo_uranium = new Ammo_uranium(GeneralRegistry.getItemId("itemAmmo_uranium", 0));
+		ammo_9mm = new Ammo_9mm(GeneralRegistry.getItemId("itemAmmo_9mm", 0));
+		ammo_9mm2 = new Ammo_9mm2(GeneralRegistry.getItemId("itemAmmo_9mm2", 0));
+		ammo_357 = new Ammo_357(GeneralRegistry.getItemId("itemAmmo_357", 0));
+		ammo_bow = new Ammo_bow(GeneralRegistry.getItemId("itemAmmo_bow", 0));
+		ammo_rpg = new Ammo_rpg(GeneralRegistry.getItemId("itemAmmo_RPG", 0));
+		ammo_argrenade = new Ammo_argrenade(GeneralRegistry.getItemId("itemAmmo_ARGrenade", 0));
+		
+		ammo_shotgun = new Ammo_shotgun(GeneralRegistry.getItemId("itemBullet_Shotgun", 0));
+		bullet_9mm = new Bullet_9mm(GeneralRegistry.getItemId("itemBullet_9mm", 0));
+		bullet_steelbow = new Bullet_steelbow(GeneralRegistry.getItemId("steelbow", 0));
 
-			ammo_uranium = new Ammo_uranium(conf.GetItemID("itemAmmo_uranium", 7300));
-			ammo_9mm = new Ammo_9mm(conf.GetItemID("itemAmmo_9mm", 7301));
-			ammo_9mm2 = new Ammo_9mm2(conf.GetItemID("itemAmmo_9mm2", 7302));
-			ammo_357 = new Ammo_357(conf.GetItemID("itemAmmo_357", 7303));
-			ammo_bow = new Ammo_bow(conf.GetItemID("itemAmmo_bow", 7304));
-			ammo_rpg = new Ammo_rpg(conf.GetItemID("itemAmmo_RPG", 7305));
-			ammo_argrenade = new Ammo_argrenade(conf.GetItemID("itemAmmo_ARGrenade", 7306));
-			
-			ammo_shotgun = new Ammo_shotgun(conf.GetItemID("itemBullet_Shotgun", 7350));
-			bullet_9mm = new Bullet_9mm(conf.GetItemID("itemBullet_9mm", 7351));
-			bullet_steelbow = new Bullet_steelbow(conf.GetItemID("steelbow", 8062));
-	
-			mat_accessories = new ItemMaterial(conf.GetItemID("mat_a", 8050), EnumMaterial.ACCESSORIES);
-			mat_ammunition = new ItemMaterial(conf.GetItemID("mat_b", 8051), EnumMaterial.AMMUNITION);
-			mat_bio = new ItemMaterial(conf.GetItemID("mat_c", 8052), EnumMaterial.BIO);
-			mat_heavy = new ItemMaterial(conf.GetItemID("mat_d", 8053), EnumMaterial.HEAVY);
-			mat_light = new ItemMaterial(conf.GetItemID("mat_e", 8054), EnumMaterial.LIGHT);
-			mat_pistol = new ItemMaterial(conf.GetItemID("mat_f", 8055), EnumMaterial.PISTOL);
-			mat_tech = new ItemMaterial(conf.GetItemID("mat_g", 8056), EnumMaterial.TECH);
-			mat_explosive = new ItemMaterial(conf.GetItemID("mat_h", 8057), EnumMaterial.EXPLOSIVE);
-			mat_box = new ItemMaterial(conf.GetItemID("mat_0", 8058), EnumMaterial.BOX);
-			
-			ironBar = new SteelBar(conf.GetItemID("ironBar", 8059));
-			lambdaChip = new LambdaChipset(conf.GetItemID("lambdachip", 8060));
-			ingotUranium = new IngotUranium(conf.GetItemID("ingotUranium", 8061));
-			ingotSteel = new IngotSteel(conf.GetItemID("itemRefinedIronIngot",7100));
-			
-			halfLife01 = new LCRecord(conf.GetItemID("halfLife01", 8997), "Half-Life01", 0);
-			halfLife02 = new LCRecord(conf.GetItemID("halfLife02", 8998), "Half-Life02", 1);
-			halfLife03 = new LCRecord(conf.GetItemID("halfLife03", 8999), "Half-Life03", 2);
+		materials = new ItemMaterial(GeneralRegistry.getItemId("mat_a", 0));
+		
+		ironBar = new SteelBar(GeneralRegistry.getItemId("ironBar", 8059));
+		lambdaChip = new LambdaChipset(GeneralRegistry.getItemId("lambdachip", 8060));
+		ingotUranium = new IngotUranium(GeneralRegistry.getItemId("ingotUranium", 8061));
+		ingotSteel = new IngotSteel(GeneralRegistry.getItemId("itemRefinedIronIngot",7100));
+		
+		halfLife01 = new LCRecord(GeneralRegistry.getItemId("halfLife01", 8997), "Half-Life01", 0);
+		halfLife02 = new LCRecord(GeneralRegistry.getItemId("halfLife02", 8998), "Half-Life02", 1);
+		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03", 8999), "Half-Life03", 2);
 
-			LanguageRegistry.addName("Half-Life01", "record");
-			LanguageRegistry.addName("Half-Life02", "record");
-			LanguageRegistry.addName("Half-Life03", "record");
-			
-			
-		} catch(Exception e){
-			System.err.println("Error when loading itemIDs from config . " + e );
-		}
+		LanguageRegistry.addName("Half-Life01", "record");
+		LanguageRegistry.addName("Half-Life02", "record");
+		LanguageRegistry.addName("Half-Life03", "record");
 		
 		addItemRecipes();
 	}
@@ -102,10 +87,10 @@ public class CBCItems {
         //Recipes
 
         ItemStack output[] = {
-        		mat_accessories.newStack(1),
-        		mat_bio.newStack(1),
-        		mat_ammunition.newStack(1),
-        		mat_tech.newStack(1),
+        		materials.newStack(1, EnumMaterial.ACCESSORIES),
+        		materials.newStack(1, EnumMaterial.BIO),
+        		materials.newStack(1, EnumMaterial.AMMUNITION),
+        		materials.newStack(1, EnumMaterial.TECH),
         		new ItemStack(lambdaChip)
         };
         
@@ -131,7 +116,7 @@ public class CBCItems {
         		sfspieye = new ItemStack(Item.fermentedSpiderEye),
         		srotten = new ItemStack(Item.rottenFlesh),
         		smagma = new ItemStack(Item.magmaCream),
-        		sbox = mat_box.newStack(1),
+        		sbox = materials.newStack(1, EnumMaterial.BOX),
         		stnt = new ItemStack(Block.tnt),
         		sendereye = new ItemStack(Item.eyeOfEnder),
         		slambdachip = new ItemStack(lambdaChip),
@@ -153,11 +138,11 @@ public class CBCItems {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.blockRefined), "AAA", "AAA", "AAA", 'A', "ingotSteel"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.blockWeaponCrafter), "AAA", "BCB", "EDE", 'A', sglass, 'B', sbredstone, 'C', slambdachip, 'D', schest, 'E', "blockSteel"));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ironBar, 3), "A  ", "A  ", 'A', "ingotSteel"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(mat_box.newStack(5), "A A", "AAA", 'A', "ingotSteel"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(mat_pistol.newStack(1), "ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', "ingotSteel", 'D', sredstone, 'E', sglass));
-        GameRegistry.addRecipe(new ShapedOreRecipe(mat_light.newStack(1), "ADA", "CCC", "EBE", 'A', sgold, 'B', sbox, 'C', "ingotSteel", 'D', sglow, 'E', sglass));
-        GameRegistry.addRecipe(new ShapedOreRecipe(mat_heavy.newStack(1), "ADA", "CCC", "EBE", 'A', sblazep, 'B', sbox, 'C', "ingotSteel", 'D', sblap, 'E', sglass));
-        GameRegistry.addRecipe(new ShapedOreRecipe(mat_explosive.newStack(1), "ACA", "DCD", "EBE", 'A', "ingotSteel", 'B', sbox, 'C', stnt, 'D', sgunpowder, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(5, EnumMaterial.BOX), "A A", "AAA", 'A', "ingotSteel"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.PISTOL), "ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', "ingotSteel", 'D', sredstone, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.LIGHT), "ADA", "CCC", "EBE", 'A', sgold, 'B', sbox, 'C', "ingotSteel", 'D', sglow, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.HEAVY), "ADA", "CCC", "EBE", 'A', sblazep, 'B', sbox, 'C', "ingotSteel", 'D', sblap, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.EXPLOSIVE), "ACA", "DCD", "EBE", 'A', "ingotSteel", 'B', sbox, 'C', stnt, 'D', sgunpowder, 'E', sglass));
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(ingotSteel.itemID,1,0) );
         ModLoader.addSmelting(CBCBlocks.blockUraniumOre.blockID, new ItemStack(ingotUranium), 2);
 	}

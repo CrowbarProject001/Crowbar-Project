@@ -25,8 +25,9 @@ import cbproject.core.renderers.RenderCrossedProjectile;
 import cbproject.core.renderers.RenderEmpty;
 import cbproject.core.renderers.RenderIcon;
 import cbproject.core.renderers.RenderModel;
+import cbproject.crafting.items.ItemMaterial.EnumMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
-import cbproject.crafting.recipes.RecipeWeaponSpecial;
+import cbproject.crafting.recipes.RecipeRepair;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
@@ -131,42 +132,42 @@ public class ModuleDM
 		RecipeWeapons.InitializeAdvRecipes(2, advds);
 		
 		RecipeCrafter wpnRecipes[] = {
-				new RecipeCrafter(new ItemStack(DMItems.weapon_crowbar),800, new ItemStack(CBCItems.ironBar, 2), CBCItems.mat_accessories.newStack(1), new ItemStack(Item.dyePowder, 1, 1)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmhandgun),1000, CBCItems.mat_pistol.newStack(2)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_357),1000 ,CBCItems.mat_pistol.newStack(3), CBCItems.mat_accessories.newStack(2)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmAR) ,1700, CBCItems.mat_light.newStack(3), CBCItems.mat_accessories.newStack(1)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_shotgun) ,1700 , CBCItems.mat_light.newStack(5), CBCItems.mat_accessories.newStack(3)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_crossbow), 1800, CBCItems.mat_light.newStack(6) ,CBCItems.mat_accessories.newStack(3), new ItemStack(CBCItems.ironBar, 2)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_hgrenade, 10), 1600, CBCItems.mat_light.newStack(2), CBCItems.mat_explosive.newStack(4)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_crowbar),800, new ItemStack(CBCItems.ironBar, 2), CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES), new ItemStack(Item.dyePowder, 1, 1)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmhandgun),1000, CBCItems.materials.newStack(2, EnumMaterial.PISTOL)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_357),1000 ,CBCItems.materials.newStack(3, EnumMaterial.PISTOL), CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmAR) ,1700, CBCItems.materials.newStack(3, EnumMaterial.LIGHT), CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_shotgun) ,1700 , CBCItems.materials.newStack(5, EnumMaterial.LIGHT), CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_crossbow), 1800, CBCItems.materials.newStack(6, EnumMaterial.LIGHT) ,CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES), new ItemStack(CBCItems.ironBar, 2)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_hgrenade, 10), 1600, CBCItems.materials.newStack(2, EnumMaterial.LIGHT), CBCItems.materials.newStack(4, EnumMaterial.EXPLOSIVE)),
 				
 		};
 		
 		RecipeCrafter ammoRecipes[] = {
-				new RecipeCrafter(new ItemStack(CBCItems.bullet_9mm, 18), 600, CBCItems.mat_ammunition.newStack(3)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_357, 12), 650, CBCItems.mat_accessories.newStack(2), CBCItems.mat_ammunition.newStack(3)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_shotgun, 8), 850, CBCItems.mat_ammunition.newStack(4), CBCItems.mat_accessories.newStack(1)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_9mm2, 1), 600, CBCItems.mat_ammunition.newStack(5), CBCItems.mat_light.newStack(1)),
-				new RecipeCrafter(new ItemStack(CBCItems.bullet_steelbow, 10), 650, new ItemStack(CBCItems.ironBar, 10), CBCItems.mat_explosive.newStack(1)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_bow, 1), 950, CBCItems.mat_ammunition.newStack(3)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_argrenade, 5), 600, CBCItems.mat_light.newStack(1), CBCItems.mat_explosive.newStack(2)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_rpg, 6), 1500, CBCItems.mat_heavy.newStack(1), CBCItems.mat_explosive.newStack(3)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_uranium, 1), 1500, CBCItems.mat_box.newStack(1), new ItemStack(CBCItems.ingotUranium, 3)),
-				new RecipeWeaponSpecial(CBCItems.ammo_9mm, CBCItems.bullet_9mm),
-				new RecipeWeaponSpecial(CBCItems.ammo_9mm2, CBCItems.bullet_9mm),
-				new RecipeWeaponSpecial(CBCItems.ammo_bow, CBCItems.bullet_steelbow)
+				new RecipeCrafter(new ItemStack(CBCItems.bullet_9mm, 18), 600, CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_357, 12), 650, CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES), CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_shotgun, 8), 850, CBCItems.materials.newStack(4, EnumMaterial.AMMUNITION), CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_9mm2, 1), 600, CBCItems.materials.newStack(5, EnumMaterial.AMMUNITION), CBCItems.materials.newStack(1, EnumMaterial.LIGHT)),
+				new RecipeCrafter(new ItemStack(CBCItems.bullet_steelbow, 10), 650, new ItemStack(CBCItems.ironBar, 10), CBCItems.materials.newStack(1, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_bow, 1), 950, CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_argrenade, 5), 600, CBCItems.materials.newStack(1, EnumMaterial.LIGHT), CBCItems.materials.newStack(2, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_rpg, 6), 1500, CBCItems.materials.newStack(1, EnumMaterial.HEAVY), CBCItems.materials.newStack(3, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_uranium, 1), 1500, CBCItems.materials.newStack(1, EnumMaterial.BOX), new ItemStack(CBCItems.ingotUranium, 3)),
+				new RecipeRepair(CBCItems.ammo_9mm, CBCItems.bullet_9mm),
+				new RecipeRepair(CBCItems.ammo_9mm2, CBCItems.bullet_9mm),
+				new RecipeRepair(CBCItems.ammo_bow, CBCItems.bullet_steelbow)
 		};
 		
 		RecipeCrafter advWeapons[] = {
-				new RecipeCrafter(new ItemStack(DMBlocks.blockTripmine, 15), 2000, CBCItems.mat_light.newStack(3), CBCItems.mat_tech.newStack(1), CBCItems.mat_explosive.newStack(6)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_satchel, 15), 2000, CBCItems.mat_light.newStack(3), CBCItems.mat_tech.newStack(1), CBCItems.mat_explosive.newStack(6)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_gauss), 2300, CBCItems.mat_light.newStack(8), CBCItems.mat_tech.newStack(3), new ItemStack(Block.glass, 5)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_egon), 2300, CBCItems.mat_heavy.newStack(5), CBCItems.mat_accessories.newStack(3), CBCItems.mat_tech.newStack(4))
+				new RecipeCrafter(new ItemStack(DMBlocks.blockTripmine, 15), 2000, CBCItems.materials.newStack(3, EnumMaterial.LIGHT), CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(6, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_satchel, 15), 2000, CBCItems.materials.newStack(3, EnumMaterial.LIGHT), CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(6, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_gauss), 2300, CBCItems.materials.newStack(8, EnumMaterial.LIGHT), CBCItems.materials.newStack(3, EnumMaterial.TECH), new ItemStack(Block.glass, 5)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_egon), 2300, CBCItems.materials.newStack(5, EnumMaterial.HEAVY), CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES), CBCItems.materials.newStack(4, EnumMaterial.TECH))
 		},
 		armors[] = {
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVBoot), 3000, CBCItems.mat_tech.newStack(3), CBCItems.mat_light.newStack(6), CBCItems.mat_accessories.newStack(3)),
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVLeggings), 3000, CBCItems.mat_tech.newStack(3), CBCItems.mat_light.newStack(6), CBCItems.mat_accessories.newStack(3)),
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVChestplate), 3000, CBCItems.mat_tech.newStack(4), CBCItems.mat_light.newStack(7), CBCItems.mat_accessories.newStack(4)),
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVHelmet), 3000, CBCItems.mat_tech.newStack(2), CBCItems.mat_light.newStack(4), CBCItems.mat_accessories.newStack(2))
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVBoot), 3000, CBCItems.materials.newStack(3, EnumMaterial.TECH), CBCItems.materials.newStack(6, EnumMaterial.LIGHT), CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVLeggings), 3000, CBCItems.materials.newStack(3, EnumMaterial.TECH), CBCItems.materials.newStack(6, EnumMaterial.LIGHT), CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVChestplate), 3000, CBCItems.materials.newStack(4, EnumMaterial.TECH), CBCItems.materials.newStack(7, EnumMaterial.LIGHT), CBCItems.materials.newStack(4, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVHelmet), 3000, CBCItems.materials.newStack(2, EnumMaterial.TECH), CBCItems.materials.newStack(4, EnumMaterial.LIGHT), CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES))
 		};
 		
 		RecipeWeapons.addWeaponRecipe(0, wpnRecipes);
