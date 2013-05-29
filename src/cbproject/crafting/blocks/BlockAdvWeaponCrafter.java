@@ -1,4 +1,4 @@
-﻿/** 
+/** 
  * Copyright (c) LambdaCraft Modding Team, 2013
  * 版权许可：LambdaCraft 制作小组， 2013.
  * http://lambdacraft.half-life.cn/
@@ -30,7 +30,7 @@ public class BlockAdvWeaponCrafter extends BlockWeaponCrafter {
 
 	public BlockAdvWeaponCrafter(int par1) {
 		super(par1);
-		setUnlocalizedName("advcrafter");
+		setUnlocalizedName("advCrafter");
 	}
 
     @Override

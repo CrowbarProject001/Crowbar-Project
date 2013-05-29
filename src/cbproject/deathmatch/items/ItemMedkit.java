@@ -196,7 +196,7 @@ public class ItemMedkit extends CBCGenericItem {
 		if(eff == null)
 			return "";
 		String name = EnumChatFormatting.RED + StatCollector.translateToLocal(eff.getEffectName());
-		name += " " + StatCollector.translateToLocal("potion.potency." + eff.getAmplifier()).trim();
+		//name += " " + StatCollector.translateToLocal("potion.potency." + eff.getAmplifier()).trim();
 		if (eff.getDuration() > 20)
         {
              name += EnumChatFormatting.GRAY +  " (" + Potion.getDurationString(eff) + ")";

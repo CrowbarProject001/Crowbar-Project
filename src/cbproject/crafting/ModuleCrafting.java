@@ -24,7 +24,6 @@ import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.world.CBCOreGenerator;
-import cbproject.crafting.entities.EntityArt;
 import cbproject.crafting.gui.ElementCrafter;
 import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.register.CBCBlocks;
@@ -34,7 +33,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -58,8 +56,6 @@ public class ModuleCrafting {
 	public void init(FMLInitializationEvent Init){
 		CBCBlocks.init(CBCMod.config);
 		CBCItems.init(CBCMod.config);
-		EntityRegistry.registerGlobalEntityID(EntityArt.class, "EntityArt", EntityRegistry.findGlobalUniqueEntityId());
-		EntityRegistry.registerModEntity(EntityArt.class, "EntityArt", 1, this, 250, 5, true);
 		CBCAchievements.init(CBCMod.config);
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CRAFTER, new ElementCrafter());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER_CL, new NetCrafterClient());

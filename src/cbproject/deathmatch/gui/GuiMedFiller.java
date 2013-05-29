@@ -119,7 +119,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 		//String blockName = DMBlocks.medkitFiller.getLocalizedName();
 		String blockName = "医疗加强机";
 		fontRenderer.drawString(EnumChatFormatting.RED + blockName,
-				88 - fontRenderer.getStringWidth(blockName) / 2, 1, 0xffffff);
+				100 - fontRenderer.getStringWidth(blockName) / 2, 1, 0xffffff);
 	}
 
 	/*
