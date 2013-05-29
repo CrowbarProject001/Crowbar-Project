@@ -27,7 +27,7 @@ public class CBCPlayer extends PlayerBase {
 	public void jump() {
 		player.localJump();
 		ItemStack slotChestplate = player.inventory.armorInventory[2];
-		if (slotChestplate != null) {
+		if (slotChestplate != null && player.isSneaking()) {
 			Boolean b = false;
 			Item item = slotChestplate.getItem();
 			if(item instanceof ArmorLongjump)
@@ -37,7 +37,7 @@ public class CBCPlayer extends PlayerBase {
 				if(hev.getAttachment(slotChestplate) == EnumAttachment.LONGJUMP)
 					b = true;
 			}
-			if (b && player.isSneaking()) {
+			if (b) {
 				double motionX = -MathHelper.sin(player.rotationYaw / 180.0F
 						* (float) Math.PI)
 						* MathHelper.cos(player.rotationPitch / 180.0F

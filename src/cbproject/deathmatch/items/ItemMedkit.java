@@ -24,7 +24,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cbproject.core.CBCMod;
@@ -80,7 +82,7 @@ public class ItemMedkit extends CBCGenericItem {
 			for(int i = 0; i < 3; i++) {
 				if(isSlotAvailable(medkit, i)) {
 					addEffect(medkit, e, i);
-					System.out.println("added potion id " + e.getPotionID() + " into slot " + i);
+					break;
 				}
 			}
 		}
@@ -149,8 +151,8 @@ public class ItemMedkit extends CBCGenericItem {
 		int id = nbt.getInteger("id" + slot);
 		if(id == 0)
 			return null;
-		int duration = nbt.getInteger("duration" + id);
-		int amplifier = nbt.getInteger("amplifier" + id);
+		int duration = nbt.getInteger("duration" + slot);
+		int amplifier = nbt.getInteger("amplifier" + slot);
 		
 		return new PotionEffect(id, duration, amplifier);
 	}
@@ -184,13 +186,22 @@ public class ItemMedkit extends CBCGenericItem {
 			String potionName = getPotionName(par1ItemStack, i);
 			if(potionName.equals(""))
 				continue;
+			
 			par3List.add(StatCollector.translateToLocal(potionName));
 		}
 	}
 	
 	private String getPotionName(ItemStack itemStack, int slot){
 		PotionEffect eff = getEffect(itemStack, slot);
-		return eff == null ? "" : eff.getEffectName();
+		if(eff == null)
+			return "";
+		String name = EnumChatFormatting.RED + StatCollector.translateToLocal(eff.getEffectName());
+		name += " " + StatCollector.translateToLocal("potion.potency." + eff.getAmplifier()).trim();
+		if (eff.getDuration() > 20)
+        {
+             name += EnumChatFormatting.GRAY +  " (" + Potion.getDurationString(eff) + ")";
+        }
+		return name;
 	}
 
 	private static NBTTagCompound loadCompound(ItemStack stack) {

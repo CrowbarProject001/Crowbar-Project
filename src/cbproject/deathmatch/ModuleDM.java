@@ -56,6 +56,7 @@ import cbproject.deathmatch.keys.KeyReload;
 import cbproject.deathmatch.network.NetChargerClient;
 import cbproject.deathmatch.network.NetChargerServer;
 import cbproject.deathmatch.network.NetDeathmatch;
+import cbproject.deathmatch.network.NetMedFillerClient;
 import cbproject.deathmatch.register.DMBlocks;
 import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.renderers.RenderBulletWeapon;
@@ -104,8 +105,10 @@ public class ModuleDM
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL, new NetChargerClient());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_SV, new NetChargerServer());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_MEDFILLER_CL, new NetMedFillerClient());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new DMGuiElements.ElementArmorCharger());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_HEALTH, new DMGuiElements.ElementHealthCharger());
+		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_MEDFILLER, new DMGuiElements.ElementMedFiller());
 	}
 
 	

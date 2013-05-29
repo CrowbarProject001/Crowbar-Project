@@ -94,6 +94,10 @@ public class EntitySatchel extends EntityProjectile {
 		super.onUpdate();
 		if(worldObj.isRemote)
 			return;
+		if(getThrower() == null){
+			this.setDead();
+			return;
+		}
 		boolean doesExplode = getThrower().getEntityData().getBoolean("doesExplode");
 		if(doesExplode || isBurning())
 			Explode();

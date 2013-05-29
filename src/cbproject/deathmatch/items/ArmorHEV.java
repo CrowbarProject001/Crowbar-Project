@@ -14,7 +14,7 @@ import net.minecraftforge.common.EnumHelper;
 
 public class ArmorHEV extends ElectricArmor {
 
-	public enum EnumAttachment {
+	public static enum EnumAttachment {
 		LONGJUMP(1);
 		private int slot;
 		private EnumAttachment(int x) {
@@ -55,7 +55,8 @@ public class ArmorHEV extends ElectricArmor {
 	
 	public EnumAttachment getAttachment(ItemStack is) {
 		String name = is.getItemName().substring(9);
-		System.out.println(name);
+		if(name == null)
+			return null;
 		EnumAttachment e = EnumAttachment.valueOf(name.toUpperCase());
 		return e;
 	}

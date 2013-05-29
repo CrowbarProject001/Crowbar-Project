@@ -11,6 +11,7 @@ import cbproject.deathmatch.blocks.BlockTripmine;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
+import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
 
 public class DMBlocks {
 	
@@ -37,5 +38,6 @@ public class DMBlocks {
 		ModLoader.registerTileEntity(TileEntityTripmine.class, "tile_entity_tripmine");
 		ModLoader.registerTileEntity(TileEntityArmorCharger.class, "tile_entity_charger");
 		ModLoader.registerTileEntity(TileEntityHealthCharger.class, "tile_entity_hcharger");
+		ModLoader.registerTileEntity(TileMedkitFiller.class, "tile_entity_medfiller");
 	}
 }

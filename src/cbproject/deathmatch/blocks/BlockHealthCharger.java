@@ -156,7 +156,7 @@ public class BlockHealthCharger extends BlockContainer implements IUseable {
                         item.stackSize = 0;
                 }
         }
-}
+    }
 
     @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)

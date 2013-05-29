@@ -27,14 +27,27 @@ import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger.EnumBeha
  */
 public abstract class TileElectric extends TileEntity implements IEnergySink{
 
-	protected int maxEnergy, currentEnergy;
+	public int maxEnergy;
+	public int currentEnergy;
 	protected int tier;
+	protected int lastTick;
+	private int updateFreq = 3;
 	
 	/**
 	 * 
 	 */
 	public TileElectric(int tier, int max) {
-		this.maxEnergy = max;
+		this.setMaxEnergy(max);
+	}
+	
+	protected void setUpdateFreq(int freq) {
+		updateFreq = freq;
+	}
+	
+	@Override
+	public void updateEntity() {
+		if(++this.lastTick > updateFreq)
+			this.onInventoryChanged();
 	}
 
 	@Override
@@ -51,7 +64,7 @@ public abstract class TileElectric extends TileEntity implements IEnergySink{
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		currentEnergy = nbt.getInteger("energy");
+		this.currentEnergy = nbt.getInteger("energy");
 	}
 
 	/**
@@ -60,12 +73,12 @@ public abstract class TileElectric extends TileEntity implements IEnergySink{
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		nbt.setInteger("energy", currentEnergy);
+		nbt.setInteger("energy", getCurrentEnergy());
 	}
 	
 	@Override
 	public int demandsEnergy() {
-		return maxEnergy - currentEnergy;
+		return getMaxEnergy() - getCurrentEnergy();
 	}
 
 	@Override
@@ -74,6 +87,27 @@ public abstract class TileElectric extends TileEntity implements IEnergySink{
 	 */
 	public int injectEnergy(LCDirection paramDirection, int paramInt) {
 		return 0;
+	}
+
+	/**
+	 * @return the currentEnergy
+	 */
+	public int getCurrentEnergy() {
+		return currentEnergy;
+	}
+
+	/**
+	 * @return the maxEnergy
+	 */
+	public int getMaxEnergy() {
+		return maxEnergy;
+	}
+
+	/**
+	 * @param maxEnergy the maxEnergy to set
+	 */
+	public void setMaxEnergy(int maxEnergy) {
+		this.maxEnergy = maxEnergy;
 	}
 
 }

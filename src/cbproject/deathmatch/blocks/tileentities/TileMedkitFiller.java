@@ -19,6 +19,7 @@ import java.util.HashSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -27,6 +28,9 @@ import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.tile.IEnergySink;
 import cbproject.core.block.TileElectric;
 import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger.EnumBehavior;
+import cbproject.deathmatch.items.ItemMedkit;
+import cbproject.deathmatch.items.ItemMedkit.EnumAddingType;
+import cbproject.deathmatch.register.DMItems;
 
 /**
  * @author WeAthFolD
@@ -38,17 +42,19 @@ public class TileMedkitFiller extends TileElectric implements IInventory {
 		super(1, 40000);
 	}
 	
-	public static final int EFFECT_MAX = 240; // 1.25  batbox, 4-6 potions
-	private int sideEffectId = 0;
+	public static final int CRAFT_LIMIT = 120;
+	public int progresses[] = new int[3];
 
 	/**
-	 * Slot 0:主药水槽。
-	 * Slot 1:副药水槽。
-	 * Slot 2:放电池槽。
+	 * Slot 0, 1, 2:药水槽。
+	 * Slot 3: Medkit槽
+	 * Slot 4: 副材料槽。
+	 * Slot 5： 电池槽。
 	 */
-	public ItemStack slots[] = new ItemStack[3];
+	public ItemStack slots[] = new ItemStack[6];
+	public EnumMedFillerBehavior currentBehavior = EnumMedFillerBehavior.NONE;
 	
-	public enum EnumBehavior {
+	public enum EnumMedFillerBehavior {
 		NONE, RECEIVEONLY, EMIT;
 
 		@Override
@@ -66,17 +72,63 @@ public class TileMedkitFiller extends TileElectric implements IInventory {
 		}
 	}
 
-
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		if (i == 5 && itemstack.getItem() instanceof ICustomEnItem)
+			return true;
+		return false;
+	}
+	
 
 	@Override
 	public void updateEntity() {
-		int energyReq = maxEnergy - currentEnergy;
+		super.updateEntity();
+		int energyReq = getMaxEnergy() - getCurrentEnergy();
 
 		if(worldObj.isRemote)
 			return;
 		
-		if(currentEnergy < 0)
-			currentEnergy = 0;
+		if(getCurrentEnergy() < 0)
+			this.currentEnergy = 0;
+		
+		if(energyReq > 0 && slots[5] != null && slots[5].getItem() instanceof ICustomEnItem) {
+			ICustomEnItem item = (ICustomEnItem) slots[5].getItem();
+			this.currentEnergy += item.discharge(slots[5], energyReq, 2, false, false);
+		}
+		
+		for(int i = 0; i < 3; i++) {
+			if(isCrafting(i)) {
+				if(currentEnergy > 3) {
+					progresses[i] ++;
+					currentEnergy -= 3;
+				}
+				if(progresses[i] >= getCraftingTimeLimit(i))
+					this.addEffect(i);
+			} else {
+				progresses[i] = 0;
+			}
+		}
+		
+	}
+	
+	private int getCraftingTimeLimit(int slot){
+		if(slots[slot] == null || !(slots[slot].getItem() instanceof ItemPotion))
+			return -1;
+		return this.CRAFT_LIMIT;
+	}
+	
+	private void addEffect(int slot) {
+		ItemMedkit.tryAddEffectTo(slots[3], slots[slot], EnumAddingType.NONE);
+		slots[slot] = null;
+		progresses[slot] = 0;
+	}
+	
+	private boolean isCrafting(int slot){
+		return slots[slot] != null && isMedkitAvailable();
+	}
+	
+	private boolean isMedkitAvailable() {
+		return slots[3] != null && !ItemMedkit.isMedkitFull(slots[3]);
 	}
 
 	@Override
@@ -147,15 +199,7 @@ public class TileMedkitFiller extends TileElectric implements IInventory {
 	@Override
 	public void closeChest() {
 	}
-
-	@Override
-	/**
-	 * TODO: NEEDS REWRITE.
-	 */
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		return true;
-	}
-
+	
 	/**
 	 * Reads a tile entity from NBT.
 	 */
@@ -186,13 +230,13 @@ public class TileMedkitFiller extends TileElectric implements IInventory {
 			nbt.setByte("count" + i, (byte) slots[i].stackSize);
 			nbt.setShort("damage" + i, (short) slots[i].getItemDamage());
 		}
-		nbt.setInteger("energy", currentEnergy);
+		nbt.setInteger("energy", getCurrentEnergy());
 	}
 
 	@Override
 	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
-		return true;
+		return this.currentEnergy < maxEnergy;
 	}
 
 	@Override

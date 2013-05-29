@@ -14,34 +14,39 @@
  */
 package cbproject.deathmatch.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
 import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
+import cbproject.deathmatch.gui.GuiHealthCharger.TipBehavior;
+import cbproject.deathmatch.gui.GuiHealthCharger.TipEnergy;
 import cbproject.deathmatch.network.NetChargerClient;
+import cbproject.deathmatch.network.NetMedFillerClient;
+import cbproject.deathmatch.register.DMBlocks;
 
 /**
- * @author Administrator
- * 
+ * @author WeAthFolD
+ *
  */
-public class GuiArmorCharger extends CBCGuiContainer {
+public class GuiMedFiller extends CBCGuiContainer {
 
-	TileEntityArmorCharger te;
+	TileMedkitFiller te;
 
 	/**
 	 * @param par1Container
 	 */
-	public GuiArmorCharger(TileEntityArmorCharger t, Container par1Container) {
+	public GuiMedFiller(TileMedkitFiller t, Container par1Container) {
 		super(par1Container);
-		this.xSize = 176;
-		this.ySize = 166;
+		this.xSize = 200;
+		this.ySize = 207;
 		te = t;
 	}
 
@@ -55,7 +60,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		@Override
 		public String getTip() {
 			return StatCollector.translateToLocal("curenergy.name") + ": "
-					+ te.currentEnergy + "/" + TileEntityArmorCharger.ENERGY_MAX + " EU";
+					+ te.getCurrentEnergy() + "/" + te.getMaxEnergy() + " EU";
 		}
 
 	}
@@ -64,27 +69,25 @@ public class GuiArmorCharger extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "gui.rsbehavior.name";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.rsbehavior.name");
 		}
 
 		@Override
 		public String getTip() {
-			return te.getCurrentBehavior().toString();
+			return te.currentBehavior.toString();
 		}
-		
 		
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart behavior = new CBCGuiPart("behavior", 80, 28, 64, 10)
-				.setDraw(false),
-				redstone = new CBCGuiButton("redstone", 153, 5, 19, 10).setDownCoords(180, 13).setTextureCoords(153, 5);
+		CBCGuiPart energy = new CBCGuiPart("energy", 112, 22, 7, 51),
+				behavior = new CBCGuiButton("behavior", 171, 15, 23, 10).setDownCoords(223, 57).setTextureCoords(200, 57);
+		this.addElement(energy);
 		this.addElement(behavior);
-		this.addElement(redstone);
-		this.setElementTip("behavior", new TipEnergy());
-		this.setElementTip("redstone", new TipBehavior());
+		this.setElementTip("energy", new TipEnergy());
+		this.setElementTip("behavior", new TipBehavior());
 	}
 
 	/**
@@ -104,9 +107,8 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	 */
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
-		if(button.name == "redstone"){
-			te.nextBehavior();
-			NetChargerClient.sendChargerPacket(te);
+		if(button.name == "behavior") {
+			NetMedFillerClient.sendPacket(te);
 		}
 	}
 
@@ -114,10 +116,10 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		String currentPage = StatCollector
-				.translateToLocal(EnumChatFormatting.DARK_GRAY + "armorcharger.name");
-		fontRenderer.drawString(currentPage,
-				88 - fontRenderer.getStringWidth(currentPage) / 2, 5, 0x969494);
+		//String blockName = DMBlocks.medkitFiller.getLocalizedName();
+		String blockName = "医疗加强机";
+		fontRenderer.drawString(EnumChatFormatting.RED + blockName,
+				88 - fontRenderer.getStringWidth(blockName) / 2, 1, 0xffffff);
 	}
 
 	/*
@@ -127,21 +129,21 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	 * drawGuiContainerBackgroundLayer(float, int, int)
 	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(float f, int a, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(ClientProps.GUI_ARMORCHARGER_PATH);
+		
+		mc.renderEngine.bindTexture(ClientProps.GUI_MEDFILLER_PATH);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-		this.drawElements();
-
-		int length = te.currentEnergy * 64 / TileEntityArmorCharger.ENERGY_MAX;
-		this.drawTexturedModalRect(x + 80, y + 28, 176, 0, length, 10);
-
-		if (te.isCharging) {
-			int height = (int) (te.worldObj.getWorldTime() % 43);
-			this.drawTexturedModalRect(x + 29, y + 21, 176, 56, 43, height);
+		
+		int height = te.currentEnergy * 51 / te.maxEnergy;
+		this.drawTexturedModalRect(x + 112, y + 73 - height, 200, 57 - height, 7, height);
+		
+		for(int i = 0; i < 3; i++) {
+			int length = te.progresses[i] * 17 / te.CRAFT_LIMIT;
+			this.drawTexturedModalRect(x + 29 * (i + 1), y + 77, 200, 3, length, 3);
 		}
+		this.drawElements();
 	}
-
 }
