@@ -12,24 +12,42 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.deathmatch.entities.fx;
+package cbproject.core.register;
 
-import net.minecraft.world.World;
-import cbproject.core.utils.MotionXYZ;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * 用来标记高斯光束用色彩渲染的空类。
+ * **Inspired by HyperX，将一个变量标记为可以Config设置。
+ * 需要在GeneralRegistry中加载标记过的类。
+ * 当前只支持static域。
+ * @see GeneralRegistry
  * @author WeAthFolD
- *
  */
-public class EntityGaussRayColored extends EntityGaussRay {
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Configurable {
+	
+	/**
+	 * 配置的分类。
+	 */
+	String category() default "general";
+	
+	/**
+	 * 该配置在Config中显示名称。
+	 */
+	String key();
+	
+	/**
+	 * 为该配置规定一个默认值。
+	 */
+	String defValue();
+	
+	/**
+	 * 该comment的注释。
+	 */
+	String comment() default "";
+} 
 
-	public EntityGaussRayColored(MotionXYZ begin, World par1World) {
-		super(begin, par1World);
-	}
-
-	public EntityGaussRayColored(World world) {
-		super(world);
-	}
-
-}

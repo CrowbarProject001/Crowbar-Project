@@ -24,10 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
-import cbproject.api.energy.tile.IEnergySink;
-import cbproject.core.utils.EnergyUtils;
-import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger.EnumBehavior;
-import cbproject.deathmatch.network.NetChargerServer;
+import cbproject.core.block.TileElectric;
 
 /**
  * 盔甲充能机方块。 TODO:添加对工业2的支持。
@@ -35,14 +32,12 @@ import cbproject.deathmatch.network.NetChargerServer;
  * @author WeAthFolD
  * 
  */
-public class TileEntityHealthCharger extends TileEntity implements IInventory,
-		IEnergySink {
+public class TileEntityHealthCharger extends TileElectric implements IInventory {
 
 	public static final int ENERGY_MAX = 50000, EFFECT_MAX = 240; // 1.25  batbox, 4-6 potions
 	public boolean isCharging = false;
 	public boolean isUsing = false;
 	public HashSet<EntityPlayer> chargers = new HashSet();
-	public int currentEnergy = 0;
 	public int mainEff = 0, sideEff = 0;
 	private int sideEffectId = 0;
 
@@ -89,14 +84,12 @@ public class TileEntityHealthCharger extends TileEntity implements IInventory,
 	}
 
 	public TileEntityHealthCharger() {
+		super(2, ENERGY_MAX);
 	}
 
 	@Override
 	public void updateEntity() {
 		int energyReq = ENERGY_MAX - currentEnergy;
-
-		if(worldObj.isRemote)
-			return;
 		
 		if(currentEnergy < 0)
 			currentEnergy = 0;
@@ -266,26 +259,6 @@ public class TileEntityHealthCharger extends TileEntity implements IInventory,
 		return !(getCurrentBehavior() == EnumBehavior.RECEIVEONLY && !this.isRSActivated);
 	}
 
-	@Override
-	public int demandsEnergy() {
-		return ENERGY_MAX - currentEnergy;
-	}
-
-	@Override
-	public int injectEnergy(LCDirection paramDirection, int paramInt) {
-		if (getCurrentBehavior() == EnumBehavior.RECEIVEONLY
-				&& this.isRSActivated)
-			return 0;
-		int en = ENERGY_MAX - currentEnergy;
-		if (paramInt < en) {
-			currentEnergy += en;
-			return paramInt;
-		} else {
-			currentEnergy = ENERGY_MAX;
-			return en;
-		}
-	}
-
 	public EnumBehavior getCurrentBehavior() {
 		return getBehavior(currentBehavior);
 	}
@@ -306,13 +279,4 @@ public class TileEntityHealthCharger extends TileEntity implements IInventory,
 	public int getMaxSafeInput() {
 		return 32;
 	}
-
-	@Override
-	/**
-	 * TODO:添加能源网络支持。
-	 */
-	public boolean isAddToEnergyNet() {
-		return false;
-	}
-
 }

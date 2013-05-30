@@ -12,14 +12,15 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.deathmatch.blocks;
+package cbproject.core.block;
 
 import java.util.Random;
 
 import cbproject.core.CBCMod;
-import cbproject.core.block.CBCBlockContainer;
-import cbproject.core.props.GeneralProps;
-import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
+import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
@@ -27,69 +28,72 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD
  *
  */
-public class BlockMedkitFiller extends CBCBlockContainer{
+public abstract class CBCBlockContainer extends BlockContainer {
 
-	private Icon iconTop, iconBottom;
-	 /**
+	private String iconName;
+	protected int guiId = -1;
+	
+	/**
 	 * @param par1
 	 * @param par2Material
 	 */
-	public BlockMedkitFiller(int par1) {
-		super(par1, Material.rock);
-		this.setUnlocalizedName("medkitfiller");
+	public CBCBlockContainer(int par1, Material mat) {
+		super(par1, mat);
 		setCreativeTab(CBCMod.cct);
+	}
+	
+	public void setIconName(String name) {
+		this.iconName = name;
+	}
+	
+	public void setGuiId(int id) {
+		this.guiId = id;
 	}
 	
 	@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:medfiller_side");
-        this.iconTop = par1IconRegister.registerIcon("lambdacraft:medfiller_top");
-        this.iconBottom = par1IconRegister.registerIcon("lambdacraft:crafter_bottom");
+        this.blockIcon = par1IconRegister.registerIcon("lambdacraft" + iconName);
     }
 	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Icon getIcon(int par1, int par2)
-    {
-        if(par1 < 1)
-        	return iconBottom;
-        if(par1 < 2)
-        	return iconTop;
-        return this.blockIcon;
-    }
-
+    /**
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor blockID
+     */
 	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TileMedkitFiller();
-	}
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    {
+		TileEntityArmorCharger te = (TileEntityArmorCharger) par1World.getBlockTileEntity(par2, par3, par4);
+        if (par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
+        {
+            te.isRSActivated = true;
+        } else {
+        	te.isRSActivated = false;
+        }
+    }
 	
     @Override
-    public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-            dropItems(world, x, y, z);
-            super.breakBlock(world, x, y, z, par5, par6);
+    public boolean onBlockActivated(World world, int x, int y, int z,
+                    EntityPlayer player, int idk, float what, float these, float are) {
+            TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+            if (guiId == -1 || tileEntity == null || player.isSneaking()) {
+                    return false;
+            }
+            player.openGui(CBCMod.instance, guiId, world, x, y, z);
+            return true;
     }
     
-    private void dropItems(World world, int x, int y, int z){
+    protected void dropItems(World world, int x, int y, int z, ItemStack[] inventory){
         Random rand = new Random();
-
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        if (!(tileEntity instanceof TileMedkitFiller)) {
-                return;
-        }
-        TileMedkitFiller inventory = (TileMedkitFiller) tileEntity;
-
-        for (ItemStack item : inventory.slots) {
+        
+        for (ItemStack item : inventory) {
 
                 if (item != null && item.stackSize > 0) {
                         float rx = rand.nextFloat() * 0.8F + 0.1F;
@@ -113,17 +117,4 @@ public class BlockMedkitFiller extends CBCBlockContainer{
                 }
         }
     }
-	
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z,
-                    EntityPlayer player, int idk, float what, float these, float are) {
-            TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-            if (tileEntity == null || player.isSneaking()) {
-                    return false;
-            }
-            player.openGui(CBCMod.instance, GeneralProps.GUI_ID_MEDFILLER, world, x, y, z);
-            return true;
-    }
-
-
 }

@@ -14,7 +14,6 @@
  */
 package cbproject.core;
 
-import java.io.File;
 import java.util.EnumSet;
 import java.util.logging.Logger;
 
@@ -113,17 +112,23 @@ public class CBCMod implements ITickHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		config=new Config(event.getSuggestedConfigurationFile());
-		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
 		EnergyNet.initialize();
+		
+		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
+		
 		CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
+		
+		//模块的加载
 		module = new CBCModuleRegisty();
 		CBCModuleRegisty.registerModule(ModuleCrafting.class.getName());
 		CBCModuleRegisty.registerModule(ModuleIC2.class.getName());
 		CBCModuleRegisty.registerModule(ModuleDM.class.getName());
 		CBCModuleRegisty.registerModule(ModuleMob.class.getName());
 		module.preInit(event);
+		
 	} 
 
 	/**
@@ -139,10 +144,12 @@ public class CBCMod implements ITickHandler
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
+		
 		module.init(Init);
 		if(Proxy.isRendering()){
 			module.clientInit();
 		}
+		
 	}
 
 	/**
@@ -152,6 +159,7 @@ public class CBCMod implements ITickHandler
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 		config.SaveConfig();
+		
 		module.postInit(Init);
 	}
 
@@ -162,6 +170,7 @@ public class CBCMod implements ITickHandler
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
 	    CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();
+	    
 	    module.serverStarting(event);
 	}
 
@@ -170,7 +179,6 @@ public class CBCMod implements ITickHandler
 		World world = (World) tickData[0];
 		Proxy.profilerEndStartSection("EnergyNet");
 		EnergyNet.onTick(world);
-		
 	}
 
 	@Override

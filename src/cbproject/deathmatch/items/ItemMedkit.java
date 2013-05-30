@@ -31,7 +31,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cbproject.core.CBCMod;
 import cbproject.core.item.CBCGenericItem;
-import cbproject.deathmatch.entities.EntityBattery;
 import cbproject.deathmatch.entities.EntityMedkit;
 
 /**
@@ -118,7 +117,7 @@ public class ItemMedkit extends CBCGenericItem {
 			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
 			int par6, int par7, float par8, float par9, float par10) {
 		if(!par3World.isRemote)
-			this.spawnMedkitAt(par1ItemStack, par3World, par4, par5, par6, par7);
+			ItemMedkit.spawnMedkitAt(par1ItemStack, par3World, par4, par5, par6, par7);
 		if(!par2EntityPlayer.capabilities.isCreativeMode){
 			par1ItemStack.splitStack(1);
 		}

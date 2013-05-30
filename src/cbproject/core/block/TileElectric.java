@@ -14,24 +14,20 @@
  */
 package cbproject.core.block;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.tile.IEnergySink;
-import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger.EnumBehavior;
 
 /**
  * @author WeAthFolD
  *
  */
-public abstract class TileElectric extends TileEntity implements IEnergySink{
+public abstract class TileElectric extends CBCTileEntity implements IEnergySink{
 
 	public int maxEnergy;
 	public int currentEnergy;
 	protected int tier;
 	protected int lastTick;
-	private int updateFreq = 3;
 	
 	/**
 	 * 
@@ -40,15 +36,11 @@ public abstract class TileElectric extends TileEntity implements IEnergySink{
 		this.setMaxEnergy(max);
 	}
 	
-	protected void setUpdateFreq(int freq) {
-		updateFreq = freq;
-	}
-	
 	@Override
-	public void updateEntity() {
-		if(++this.lastTick > updateFreq)
-			this.onInventoryChanged();
-	}
+    public boolean canUpdate()
+    {
+		return true;
+    }
 
 	@Override
 	/**

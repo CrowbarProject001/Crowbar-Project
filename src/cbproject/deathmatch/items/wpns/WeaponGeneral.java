@@ -1,11 +1,12 @@
 package cbproject.deathmatch.items.wpns;
 
+import cbproject.core.item.CBCGenericItem;
+import cbproject.core.props.GeneralProps;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.utils.InformationWeapon;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public abstract class WeaponGeneral extends Item {
+public abstract class WeaponGeneral extends CBCGenericItem {
 
 	public int maxModes, type;
 	public int ammoID;
@@ -33,11 +34,19 @@ public abstract class WeaponGeneral extends Item {
 		ammoID = par2AmmoID;
 	}
 	
+	/**
+	 * 设置武器上抬的参数。
+	 * @param uplift 每次射击上抬的角度。
+	 * @param recover 每tick回复角度。
+	 */
 	public void setLiftProps(double uplift, double recover){
 		upLiftRadius = uplift;
 		recoverRadius = recover;
 	}
 	
+	/**
+	 * 进行武器的Tick相关计算和主要功能，请在子类的onUpdate(...)中调用它。
+	 */
 	public InformationWeapon onWpnUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5){
 		
 		if(!(par3Entity instanceof EntityPlayer))
@@ -64,45 +73,59 @@ public abstract class WeaponGeneral extends Item {
 	}
 	
 	/**
-	 * Do the screen uplift when shoot or stuffs.>)
-	 * 
+	 * 进行射击时枪口上抬。
 	 */
 	public void doUplift(InformationWeapon information, EntityPlayer entityPlayer){
+		if(!GeneralProps.doWeaponUplift)
+			return;
 		
 		if(!information.isRecovering)
 			information.originPitch = entityPlayer.rotationPitch;
 		entityPlayer.rotationPitch -= upLiftRadius;
 		information.isRecovering = true;
 		information.recoverTick = 0;
+		
 	}
 	
 	/**
-	 * Get the description for the mode.
-	 * @param mode
-	 * @return mode description.
+	 * 获取武器模式说明。(Unlocalized)
+	 * @param mode 武器模式
+	 * @return mode 说明
 	 */
 	public abstract String getModeDescription(int mode);
 	
 	/**
-	 * get and load the WeaponInformation for the itemStack.
-	 * @return required InformationWeapon
+	 * 加载武器信息。
+	 * @return 需要的武器信息，可能为null
 	 */
 	public abstract InformationWeapon loadInformation(ItemStack par1Itack, EntityPlayer entityPlayer);
 	
 	/**
-	 * get the WeaponInformation for the itemStack.
-	 * @return required InformationSet, could be null
+	 * 获取武器信息。
+	 * @return 需要的武器信息，可能为null
 	 */
 	public InformationWeapon getInformation(ItemStack itemStack, World world){
 	    return CBCWeaponInformation.getInformation(itemStack).getProperInf(world);
 	}
 	
+	/**
+	 * 获得武器对生物的附加推动力。
+	 * @param mode 当前武器模式
+	 */
 	public abstract double getPushForce(int mode);
+	/**
+	 * 获得武器对生物的伤害。
+	 * @param mode 当前武器模式
+	 */
 	public abstract int getDamage(int mode);
+	/**
+	 * 获得武器射击的位置偏移。
+	 * @param mode 当前武器模式
+	 */
 	public abstract int getOffset(int mode);
 	
 	/**
-	 * Set the mode to required on client's will.
+	 * 在切换模式时调用这个函数。
 	 */
 	public void onModeChange(ItemStack item, EntityPlayer player, int newMode){
 		if(item.stackTagCompound == null)
@@ -110,6 +133,11 @@ public abstract class WeaponGeneral extends Item {
 		item.getTagCompound().setInteger("mode", newMode);
 	}
 	
+	/**
+	 * 获取武器的模式。
+	 * @param item
+	 * @return
+	 */
 	public int getMode(ItemStack item){
 		if(item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();

@@ -65,7 +65,7 @@ public class DMItems {
 		armorHEVChestplate = new ArmorHEV(GeneralRegistry.getItemId("hevChestplate", 3), 1);
 		armorHEVLeggings = new ArmorHEV(GeneralRegistry.getItemId("hevLeggings", 3), 2);
 		armorHEVBoot = new ArmorHEV(GeneralRegistry.getItemId("hevBoot", 3), 3);
-		longjump = new ArmorLongjump(GeneralRegistry.getItemId("armorLongjump", 3), 3);
+		longjump = new ArmorLongjump(GeneralRegistry.getItemId("armorLongjump", 3), 1);
 		hevLongjump = new ArmorHEV(GeneralRegistry.getItemId("hevLongjump", 3), EnumAttachment.LONGJUMP);
 		
 		battery = new ItemBattery(GeneralRegistry.getItemId("battery", 3));

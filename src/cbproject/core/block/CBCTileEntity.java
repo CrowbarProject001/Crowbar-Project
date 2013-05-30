@@ -14,14 +14,32 @@
  */
 package cbproject.core.block;
 
+import net.minecraft.tileentity.TileEntity;
+
 /**
- * 一般电力机器的红石行为。
  * @author WeAthFolD
  *
  */
-public enum TileElectricBehavior {
-	/**
-	 * 不执行任何动作
-	 */
-	NONE;
+public class CBCTileEntity extends TileEntity {
+	
+	protected int lastTick;
+	private int updateFreq = 3;
+	
+	@Override
+    public boolean canUpdate()
+    {
+        return !worldObj.isRemote;
+    }
+	
+	protected void setUpdateFreq(int freq) {
+		updateFreq = freq;
+	}
+	
+	@Override
+	public void updateEntity() {
+		if(++this.lastTick > updateFreq) {
+			lastTick = 0;
+			this.onInventoryChanged();
+		}
+	}
 }

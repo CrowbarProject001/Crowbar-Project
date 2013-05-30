@@ -26,11 +26,7 @@ import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
-import cbproject.deathmatch.gui.GuiHealthCharger.TipBehavior;
-import cbproject.deathmatch.gui.GuiHealthCharger.TipEnergy;
-import cbproject.deathmatch.network.NetChargerClient;
 import cbproject.deathmatch.network.NetMedFillerClient;
-import cbproject.deathmatch.register.DMBlocks;
 
 /**
  * @author WeAthFolD
@@ -141,7 +137,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 		this.drawTexturedModalRect(x + 112, y + 73 - height, 200, 57 - height, 7, height);
 		
 		for(int i = 0; i < 3; i++) {
-			int length = te.progresses[i] * 17 / te.CRAFT_LIMIT;
+			int length = te.progresses[i] * 17 / TileMedkitFiller.CRAFT_LIMIT;
 			this.drawTexturedModalRect(x + 29 * (i + 1), y + 77, 200, 3, length, 3);
 		}
 		this.drawElements();

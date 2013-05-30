@@ -69,7 +69,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 			if(blockType == null)
 				return;
 			isAdvanced = this.blockType.blockID == CBCBlocks.weaponCrafter.blockID? false : true;
-			this.MAX_HEAT = isAdvanced ? 7000 : 4000;
+			TileEntityWeaponCrafter.MAX_HEAT = isAdvanced ? 7000 : 4000;
 			isLoad = true;
 		}
 		
@@ -270,6 +270,8 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
     		this.burnTimeLeft = TileEntityFurnace.getItemBurnTime(inventory[1]) / 2;
     		this.maxBurnTime = this.burnTimeLeft;
     		inventory[1].splitStack(1);
+    		if(inventory[1].stackSize <= 1)
+    			inventory[1] = null;
     		isBurning = true;
     		blockType.setLightValue(0.4F);
     	}

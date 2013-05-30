@@ -20,7 +20,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
-import cbproject.deathmatch.items.ArmorHEV;
 
 /**
  * @author WeAthFolD

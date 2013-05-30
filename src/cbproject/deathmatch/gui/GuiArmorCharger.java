@@ -69,7 +69,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 
 		@Override
 		public String getTip() {
-			return te.getCurrentBehavior().toString();
+			return te.currentBehavior.toString();
 		}
 		
 		

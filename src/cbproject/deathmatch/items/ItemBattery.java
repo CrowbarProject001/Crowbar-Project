@@ -46,7 +46,7 @@ public class ItemBattery extends ElectricItem {
 			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
 			int par6, int par7, float par8, float par9, float par10) {
 		if(!par3World.isRemote)
-			this.spawnBatteryAt(par1ItemStack, par3World, par4, par5, par6, par7);
+			ItemBattery.spawnBatteryAt(par1ItemStack, par3World, par4, par5, par6, par7);
 		if(!par2EntityPlayer.capabilities.isCreativeMode){
 			par1ItemStack.splitStack(1);
 		}

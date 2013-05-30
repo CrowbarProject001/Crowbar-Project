@@ -19,25 +19,17 @@ import static net.minecraftforge.common.ForgeDirection.NORTH;
 import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
-import java.util.Random;
-
 import cbproject.api.tile.IUseable;
 import cbproject.core.CBCMod;
+import cbproject.core.block.CBCBlockContainer;
 import cbproject.core.keys.KeyUse;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -47,7 +39,7 @@ import net.minecraftforge.common.ForgeDirection;
  * @author Administrator
  *
  */
-public class BlockHealthCharger extends BlockContainer implements IUseable {
+public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 
 	protected final float WIDTH = 0.3F, HEIGHT = 0.4F, LENGTH = 0.08F;
 	
@@ -58,15 +50,9 @@ public class BlockHealthCharger extends BlockContainer implements IUseable {
 	public BlockHealthCharger(int par1) {
 		super(par1, Material.rock);
 		this.setUnlocalizedName("healthcharger");
-		setCreativeTab(CBCMod.cct);
+		this.setIconName("health");
+		this.setGuiId(GeneralProps.GUI_ID_HEALTH);
 	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:health");
-    }
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
@@ -108,8 +94,14 @@ public class BlockHealthCharger extends BlockContainer implements IUseable {
     
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-            dropItems(world, x, y, z);
-            super.breakBlock(world, x, y, z, par5, par6);
+        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        if (!(tileEntity instanceof TileEntityHealthCharger)) {
+        	super.breakBlock(world, x, y, z, par5, par6);
+                return;
+        }
+        TileEntityHealthCharger inventory = (TileEntityHealthCharger) tileEntity;
+        dropItems(world, x, y, z, inventory.slots);
+        super.breakBlock(world, x, y, z, par5, par6);
     }
     
 	@Override
@@ -123,40 +115,6 @@ public class BlockHealthCharger extends BlockContainer implements IUseable {
 	 {
 	     return false;
 	 }
-    
-    private void dropItems(World world, int x, int y, int z){
-        Random rand = new Random();
-
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        if (!(tileEntity instanceof TileEntityHealthCharger)) {
-                return;
-        }
-        TileEntityHealthCharger inventory = (TileEntityHealthCharger) tileEntity;
-
-        for (ItemStack item : inventory.slots) {
-
-                if (item != null && item.stackSize > 0) {
-                        float rx = rand.nextFloat() * 0.8F + 0.1F;
-                        float ry = rand.nextFloat() * 0.8F + 0.1F;
-                        float rz = rand.nextFloat() * 0.8F + 0.1F;
-
-                        EntityItem entityItem = new EntityItem(world,
-                                        x + rx, y + ry, z + rz,
-                                        new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
-
-                        if (item.hasTagCompound()) {
-                                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
-                        }
-
-                        float factor = 0.05F;
-                        entityItem.motionX = rand.nextGaussian() * factor;
-                        entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
-                        entityItem.motionZ = rand.nextGaussian() * factor;
-                        world.spawnEntityInWorld(entityItem);
-                        item.stackSize = 0;
-                }
-        }
-    }
 
     @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)

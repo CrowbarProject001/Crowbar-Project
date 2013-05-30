@@ -14,11 +14,15 @@
  */
 package cbproject.deathmatch.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumBehavior;
 import cbproject.deathmatch.items.ArmorHEV;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -43,6 +47,27 @@ public class ContainerArmorCharger extends Container {
 		}
 		bindPlayerInventory(playerinv);
 				
+	}
+	
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+		for (int i = 0; i < this.crafters.size(); ++i) {
+			ICrafting icrafting = (ICrafting) this.crafters.get(i);
+			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy);
+			icrafting.sendProgressBarUpdate(this, 1, te.currentBehavior.ordinal() * (te.isCharging ? 1 : -1));
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void updateProgressBar(int par1, int par2) {
+		if (par1 == 0) {
+			te.currentEnergy = par2;
+		} else {
+			te.currentBehavior = EnumBehavior.values()[Math.abs(par2)];
+			te.isCharging = par2 > 0 ? true : false;
+		}
 	}
 	
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {

@@ -1,19 +1,13 @@
-package cbproject.deathmatch.entities;
+package cbproject.core;
 
-import cbproject.api.tile.IUseable;
-import cbproject.core.utils.BlockPos;
 import cbproject.deathmatch.items.ArmorHEV;
 import cbproject.deathmatch.items.ArmorLongjump;
 import cbproject.deathmatch.items.ArmorHEV.EnumAttachment;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 
 public class CBCPlayer extends PlayerBase {
 

@@ -3,15 +3,12 @@
  */
 package cbproject.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.entities.EntitySatchel;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.InformationWeapon;
 import cbproject.deathmatch.utils.InformationSet;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,6 +29,7 @@ public class Weapon_satchel extends WeaponGeneral {
 		
 		super(par1, 0, 2);
 		setUnlocalizedName("weapon_satchel");
+		setIconName("weapon_satchel");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(64);
 
@@ -42,13 +40,6 @@ public class Weapon_satchel extends WeaponGeneral {
 		int dam[] = {0, 0}, offset[] = {0, 0};
 		
 	}
-	
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_satchel");
-    }
 	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {

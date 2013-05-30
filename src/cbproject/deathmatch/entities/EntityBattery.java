@@ -14,17 +14,13 @@
  */
 package cbproject.deathmatch.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.utils.EnergyUtils;
 import cbproject.core.utils.EntitySelectorPlayer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.entity.Entity;
 
@@ -89,7 +85,6 @@ public class EntityBattery extends Entity {
 
 	@Override
 	protected void entityInit() {
-		// TODO Auto-generated method stub
 
 	}
 

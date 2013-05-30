@@ -14,10 +14,7 @@
  */
 package cbproject.mob.client;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelQuadruped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -91,6 +88,7 @@ public class ModelSnark extends ModelBase {
 	      setRotation(leg4, 0F, 0F, -1.117011F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3,
 			float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -111,6 +109,7 @@ public class ModelSnark extends ModelBase {
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity ent) {
 		super.setRotationAngles(par1, par2, par3, par4, par5, par6, ent);
         this.head.rotateAngleY = par4 / (180F / (float)Math.PI);

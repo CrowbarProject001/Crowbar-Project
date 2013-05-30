@@ -1,7 +1,5 @@
 package cbproject.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.crafting.register.CBCItems;
@@ -9,7 +7,6 @@ import cbproject.deathmatch.entities.EntityCrossbowArrow;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
 import cbproject.deathmatch.utils.InformationSet;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -31,18 +28,12 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		setMaxStackSize(1);
 		setMaxDamage(6);
 		setNoRepair();
+		setIconName("weapon_crossbow");
 		
 		setLiftProps(10, 5);
 		setReloadTime(40);
 		
 	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_crossbow");
-    }
 
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,

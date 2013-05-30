@@ -14,23 +14,17 @@
  */
 package cbproject.deathmatch.blocks.tileentities;
 
-import java.util.HashSet;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
-import cbproject.api.energy.tile.IEnergySink;
 import cbproject.core.block.TileElectric;
-import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger.EnumBehavior;
 import cbproject.deathmatch.items.ItemMedkit;
 import cbproject.deathmatch.items.ItemMedkit.EnumAddingType;
-import cbproject.deathmatch.register.DMItems;
 
 /**
  * @author WeAthFolD
@@ -114,7 +108,7 @@ public class TileMedkitFiller extends TileElectric implements IInventory {
 	private int getCraftingTimeLimit(int slot){
 		if(slots[slot] == null || !(slots[slot].getItem() instanceof ItemPotion))
 			return -1;
-		return this.CRAFT_LIMIT;
+		return TileMedkitFiller.CRAFT_LIMIT;
 	}
 	
 	private void addEffect(int slot) {

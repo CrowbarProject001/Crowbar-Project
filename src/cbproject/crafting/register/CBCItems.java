@@ -1,7 +1,5 @@
 package cbproject.crafting.register;
 
-import java.io.File;
-
 import cbproject.core.misc.Config;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.GeneralRegistry;
@@ -9,9 +7,7 @@ import cbproject.crafting.items.*;
 import cbproject.crafting.items.ItemMaterial.EnumMaterial;
 import cbproject.deathmatch.items.ammos.*;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.crash.CrashReport;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;

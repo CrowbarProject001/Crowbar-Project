@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class EntityMedkit extends Entity {
@@ -31,7 +30,8 @@ public class EntityMedkit extends Entity {
     /**
      * Called to update the entity's position/logic.
      */
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;

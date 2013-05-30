@@ -7,24 +7,24 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 
-public class CBCGenericBlock extends Block{
+public class CBCBlock extends Block{
 
-	private String texturePath;
+	private String iconName;
 	
-	public CBCGenericBlock(int par1, Material par2Material) {
+	public CBCBlock(int par1, Material par2Material) {
 		super(par1, par2Material);
 		setCreativeTab(CBCMod.cct);
 	}
 	
-	public void setTexturePath(String path){
-		texturePath = path;
+	public void setIconName(String path){
+		iconName = path;
 	}
 	
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:" + texturePath);
+        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
     }
 
 }

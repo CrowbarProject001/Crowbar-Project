@@ -8,6 +8,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+/**
+ * Entity尾迹渲染类。
+ * @author WeAthFolD
+ *
+ */
 public class EntityTrailFX extends Entity {
 
 	private LinkedList<SamplePoint> samples = new LinkedList();
@@ -30,7 +35,6 @@ public class EntityTrailFX extends Entity {
 		this.width = 0.5;
 		this.ignoreFrustumCheck  = true;
 	}
-	
 	
 	public EntityTrailFX setTrailWidth(double w){
 		width = w;

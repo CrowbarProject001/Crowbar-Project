@@ -79,9 +79,8 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	public  void onChargeModeUpdate(InformationEnergy inf, ItemStack par1ItemStack, World par2World, 
 			EntityPlayer player, int par4, boolean par5){
 		
-		final int var1 = 12;
-		final int var2 = 160;
-		final int var3 = 41;
+		final int OVER_CHARGE_LIMIT = 160;
+		final int CHARGE_TIME_LIMIT = 41;
 		
 		if(inf.isShooting){
 			int ticksChange = inf.getDeltaTick();
@@ -90,17 +89,17 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			Boolean canUse = this.canShoot(player, par1ItemStack);
 			Boolean ignoreAmmo = player.capabilities.isCreativeMode;
 			
-			if(canUse && inf.chargeTime < var3)
+			if(canUse && inf.chargeTime < CHARGE_TIME_LIMIT)
 				inf.charge++;
 
 			if(!canUse)
 				player.stopUsingItem();
 			
-			if(!ignoreAmmo && inf.ticksExisted <= var3 && inf.chargeTime %4 == 0)
+			if(!ignoreAmmo && inf.ticksExisted <= CHARGE_TIME_LIMIT && inf.chargeTime %4 == 0)
 				AmmoManager.consumeAmmo(player, this, 1);
 
 			//OverCharge!
-			if(inf.chargeTime > var2){ 
+			if(inf.chargeTime > OVER_CHARGE_LIMIT){ 
 				inf.isShooting = false;
 				inf.resetState();
 				player.attackEntityFrom(DamageSource.causeMobDamage(player), 15);
@@ -144,19 +143,19 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			inf.isShooting = false;
 			return;
 		}
-		int damage = charge * 2/3; //鏈�ぇ涓�0
-		double vel = charge / 13; //鏈�ぇ涓�
+		int damage = charge * 2/3;
+		double vel = charge / 13;
 
 		MotionXYZ var0 = MotionXYZ.getPosByPlayer2(par3EntityPlayer);
 		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ * vel;
 		
 		inf.isShooting = false;
 		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
-		if(par2World.isRemote)
-			return;
-		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
-		par2World.playSoundAtEntity(par3EntityPlayer, SND_SHOOT_PATH,  
+		if(!par2World.isRemote) {
+			GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
+			par2World.playSoundAtEntity(par3EntityPlayer, SND_SHOOT_PATH,  
 				0.5F, 1.0F);
+		}
 	
 	}
 	

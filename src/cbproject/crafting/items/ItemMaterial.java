@@ -9,10 +9,8 @@ import cbproject.core.CBCMod;
 import cbproject.core.item.CBCGenericItem;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 
 public class ItemMaterial extends CBCGenericItem {
 	
@@ -59,9 +57,10 @@ public class ItemMaterial extends CBCGenericItem {
      * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
      * different names based on their damage or NBT.
      */
-    public String getUnlocalizedName(ItemStack par1ItemStack)
+    @Override
+	public String getUnlocalizedName(ItemStack par1ItemStack)
     {
-        return "item.mat_" + mat.map.get(par1ItemStack.getItemDamage());
+        return "item.mat_" + EnumMaterial.map.get(par1ItemStack.getItemDamage());
     }
 	
 	
@@ -69,7 +68,8 @@ public class ItemMaterial extends CBCGenericItem {
 		return new ItemStack(this.itemID, stackSize, mat.id);
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public Icon getIconFromDamage(int par1)
     {
         return this.icons[par1];

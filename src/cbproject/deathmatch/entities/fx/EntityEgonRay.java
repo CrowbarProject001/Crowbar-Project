@@ -54,6 +54,9 @@ public class EntityEgonRay extends Entity {
 	
 	@Override
 	public void onUpdate(){
+		if(item == null || worldObj.isRemote)
+			return;
+		
 		InformationEnergy inf = ((Weapon_egon)item.getItem()).getInformation(item, worldObj);
 		if(inf == null || !(inf.isShooting && ((Weapon_egon)item.getItem()).canShoot((EntityPlayer)thrower, item))){
 			this.setDead();

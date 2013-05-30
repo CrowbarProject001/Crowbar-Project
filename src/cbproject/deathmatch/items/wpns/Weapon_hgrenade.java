@@ -14,13 +14,10 @@
  */
 package cbproject.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
+import cbproject.core.item.CBCGenericItem;
 import cbproject.deathmatch.entities.EntityHGrenade;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -29,22 +26,15 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public class Weapon_hgrenade extends Item {
+public class Weapon_hgrenade extends CBCGenericItem {
 
 	public Weapon_hgrenade(int par1ID) {
 		super(par1ID);
 		setUnlocalizedName("weapon_hgrenade");
 		setCreativeTab( CBCMod.cct );
-		setMaxStackSize(4);
-		this.maxStackSize = 8;
+		setIconName("weapon_hgrenade");
+		setMaxStackSize(8);
 	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_hgrenade");
-    }
 	
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)

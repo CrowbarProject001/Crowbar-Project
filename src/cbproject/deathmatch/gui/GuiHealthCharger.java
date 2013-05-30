@@ -24,9 +24,7 @@ import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
-import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
-import cbproject.deathmatch.network.NetChargerClient;
 
 /**
  * @author WeAthFolD

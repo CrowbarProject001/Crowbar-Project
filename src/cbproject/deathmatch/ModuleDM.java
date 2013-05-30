@@ -11,6 +11,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.input.Keyboard;
 
 import cbproject.core.CBCMod;
+import cbproject.core.CBCPlayer;
 import cbproject.core.module.CBCSubModule;
 import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
@@ -32,7 +33,6 @@ import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
-import cbproject.deathmatch.entities.CBCPlayer;
 import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.entities.EntityBattery;
 import cbproject.deathmatch.entities.EntityBullet;
@@ -54,7 +54,6 @@ import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cbproject.deathmatch.keys.KeyMode;
 import cbproject.deathmatch.keys.KeyReload;
 import cbproject.deathmatch.network.NetChargerClient;
-import cbproject.deathmatch.network.NetChargerServer;
 import cbproject.deathmatch.network.NetDeathmatch;
 import cbproject.deathmatch.network.NetMedFillerClient;
 import cbproject.deathmatch.register.DMBlocks;
@@ -104,7 +103,6 @@ public class ModuleDM
 		
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL, new NetChargerClient());
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_SV, new NetChargerServer());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_MEDFILLER_CL, new NetMedFillerClient());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new DMGuiElements.ElementArmorCharger());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_HEALTH, new DMGuiElements.ElementHealthCharger());

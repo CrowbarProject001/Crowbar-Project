@@ -14,7 +14,6 @@
  */
 package cbproject.deathmatch.items.wpns;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,8 +21,6 @@ import net.minecraft.world.World;
 import cbproject.core.CBCMod;
 import cbproject.deathmatch.entities.EntityHornet;
 import cbproject.deathmatch.utils.InformationBullet;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD.
@@ -37,20 +34,13 @@ public class Weapon_hornet extends WeaponGeneralBullet{
 		super(par1, 0, 2);
 		setMaxDamage(9);
 		setCreativeTab(CBCMod.cct);
+		setIconName("weapon_hornet");
 	}
 
 	@Override
 	public String getModeDescription(int mode) {
 		return mode == 0 ? "mode.hornet1" : "mode.hornet2";
 	}
-	
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_hornet");
-    }
 	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,

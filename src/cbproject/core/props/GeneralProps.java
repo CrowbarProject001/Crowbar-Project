@@ -14,7 +14,10 @@
  */
 package cbproject.core.props;
 
+import cbproject.core.CBCMod;
 import cbproject.core.misc.Config;
+import cbproject.core.register.Configurable;
+import cbproject.core.register.GeneralRegistry;
 
 /**
  * Mod的一些固定信息。
@@ -22,8 +25,11 @@ import cbproject.core.misc.Config;
  */
 public class GeneralProps {
 	
-	public static Boolean ignoreBlockDestroy = false,
-			doWeaponUplift = true;
+	@Configurable(key = "ignoreBlockDestroy", defValue = "false", comment = "Ignore all block destruction within the mod.")
+	public static boolean ignoreBlockDestroy;
+	
+	@Configurable(key = "doWeaponuplift", defValue = "true" , comment = "Enable weapon uplifting when shoot.")
+	public static boolean doWeaponUplift;
 	
 	public static final int ENT_ID_GAUSS1 = 0, ENT_ID_EGON_RAY = 1, 
 			ENT_ID_TRAIL = 2, ENT_ID_ARGRENADE = 3, ENT_ID_ARROW = 4,
@@ -33,8 +39,7 @@ public class GeneralProps {
 	
 	public static final String NET_CHANNEL_CLIENT = "cbcclient", NET_CHANNEL_SERVER = "cbcserver";
 	
-	public static final byte NET_ID_EXPLOSION = 0, NET_ID_DM = 1, NET_ID_CRAFTER_CL = 2, NET_ID_CHARGER_CL = 3,
-			NET_ID_CHARGER_SV = 4, NET_ID_CRAFTER_SV = 5, NET_ID_USE = 6, NET_ID_MEDFILLER_CL = 7;
+	public static final byte NET_ID_EXPLOSION = 0, NET_ID_DM = 1, NET_ID_CRAFTER_CL = 2, NET_ID_CHARGER_CL = 3, NET_ID_USE = 6, NET_ID_MEDFILLER_CL = 7;
 	
 	public static final int GUI_ID_CRAFTER = 0, GUI_ID_CHARGER = 1, GUI_ID_HEALTH = 2, GUI_ID_MEDFILLER = 3;
 	
@@ -48,12 +53,7 @@ public class GeneralProps {
 	public static final int CAT_GENERIC = 0;
 	
 	public static void loadProps(Config config){
-		try {
-			ignoreBlockDestroy = config.getBoolean("ignoreBlockDestroy", false);
-			doWeaponUplift = config.getBoolean("weaponUplift", true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		GeneralRegistry.loadConfigurableClass(CBCMod.config, GeneralProps.class);
 	}
 	
 }

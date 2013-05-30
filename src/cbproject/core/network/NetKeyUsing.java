@@ -18,7 +18,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MovingObjectPosition;
@@ -34,7 +33,6 @@ import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
 import cbproject.core.utils.BlockPos;
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.utils.BulletManager;
 
 /**
  * 用来处理使用键网络包收发的类。

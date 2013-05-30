@@ -45,6 +45,6 @@ public class KeyReload implements IKeyProcess {
 			return;
 		
 		if(wpn.onSetReload(is, player))
-			NetDeathmatch.sendModePacket(stackInSlot, (short) 1, 0);
+			NetDeathmatch.sendModePacket((byte)stackInSlot, (byte)1, (byte)0);
 	}
 }

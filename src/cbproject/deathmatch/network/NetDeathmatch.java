@@ -18,14 +18,14 @@ import cpw.mods.fml.common.network.Player;
 
 public class NetDeathmatch implements IChannelProcess{
 	
-	public static void sendModePacket(int stackInSlot,short id, int newMode){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_DM, 11);
+	public static void sendModePacket(byte stackInSlot,byte id, byte newMode){
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_DM, 3);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		
 		try {
-	        outputStream.writeInt(stackInSlot);
-	        outputStream.writeShort(id);
-	        outputStream.writeInt(newMode);
+	        outputStream.writeByte(stackInSlot);
+	        outputStream.writeByte(id);
+	        outputStream.writeByte(newMode);
 		} catch (Exception ex) {
 	        ex.printStackTrace();
 		}
@@ -34,16 +34,15 @@ public class NetDeathmatch implements IChannelProcess{
 		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
-		System.out.println("sending packet from client");
 		PacketDispatcher.sendPacketToServer(packet);
 	}
 	
 	private static int[] getModePacket(DataInputStream inputStream){
 		int[] arr = new int[3];
 		try {
-	        arr[0] = inputStream.readInt();
-	        arr[1] = inputStream.readShort();
-	        arr[2] = inputStream.readInt();
+	        arr[0] = inputStream.readByte();
+	        arr[1] = inputStream.readByte();
+	        arr[2] = inputStream.readByte();
 		} catch (Exception ex) {
 	        ex.printStackTrace();
 		}

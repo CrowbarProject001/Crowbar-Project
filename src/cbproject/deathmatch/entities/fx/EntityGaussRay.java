@@ -15,9 +15,7 @@
 package cbproject.deathmatch.entities.fx;
 
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.entities.EntityBulletGauss;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -39,7 +37,6 @@ public class EntityGaussRay extends Entity {
 		this.motionY = begin.motionY;
 		this.motionZ = begin.motionZ;
 		this.setRayHeading(motionX, motionY, motionZ, 1.0F, 1.0F);
-		ignoreFrustumCheck = true;
 	}
 
 	public EntityGaussRay(World world){

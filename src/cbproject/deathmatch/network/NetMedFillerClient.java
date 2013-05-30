@@ -25,7 +25,6 @@ import net.minecraft.world.World;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
 import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller.EnumMedFillerBehavior;
 import cpw.mods.fml.common.network.PacketDispatcher;
@@ -77,7 +76,6 @@ public class NetMedFillerClient implements IChannelProcess {
 					value = 0;
 				else value++;
 				tt.currentBehavior = EnumMedFillerBehavior.values()[value];
-				System.out.println("changed behavior to " + tt.currentBehavior);
 			}
 			
 		} catch (Exception ex) {

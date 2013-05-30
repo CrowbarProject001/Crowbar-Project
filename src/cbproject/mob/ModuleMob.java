@@ -1,13 +1,11 @@
 package cbproject.mob;
 
-import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import cbproject.core.CBCMod;
 import cbproject.core.module.CBCSubModule;
 import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
 import cbproject.core.props.GeneralProps;
-import cbproject.core.proxy.ClientProxy;
 import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.mob.client.ModelSnark;

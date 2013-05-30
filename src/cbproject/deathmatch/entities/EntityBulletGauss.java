@@ -33,7 +33,7 @@ public class EntityBulletGauss extends EntityBullet {
 
 	private Weapon_gauss item;
 	private InformationEnergy inf;
-	
+
 	public enum EnumSubPlain{
 		PLAIN_X, PLAIN_Y, PLAIN_Z;
 	}
@@ -256,7 +256,7 @@ public class EntityBulletGauss extends EntityBullet {
 	/**
 	 * get the tangent value of the motion in a specific subplain.
 	 * @param sideHit HitVec sidehit
-	 * @param subPlain with sideHit determines a single plain,such as XoZ
+	 * @param subPlain judging with sideHit determines a single plain,such as XoZ
 	 * @return tangent value, could be lower than 0
 	 */
 	private double getTanBySideAndMotion(int sideHit, EnumSubPlain subPlain){
