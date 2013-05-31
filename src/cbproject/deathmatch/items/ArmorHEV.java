@@ -1,30 +1,29 @@
 package cbproject.deathmatch.items;
 
-import java.util.List;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.api.energy.item.ICustomEnItem;
-import cbproject.core.CBCMod;
 import cbproject.core.item.ElectricArmor;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.register.DMItems;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.EnumHelper;
-import net.minecraftforge.common.ISpecialArmor;
 
 public class ArmorHEV extends ElectricArmor {
 
+	public static enum EnumAttachment {
+		LONGJUMP(1);
+		private int slot;
+		private EnumAttachment(int x) {
+			this.slot = x;
+		}
+		public int getSlot(){
+			return slot;
+		}
+	}
+	
 	public static int reductionAmount[] = {0, 0, 0, 0};
 	protected static EnumArmorMaterial material = EnumHelper.addArmorMaterial("armorHEV", 100000, reductionAmount, 0);
 	private static ArmorProperties propChest = new ArmorProperties(3, 100.0, 325),
@@ -37,10 +36,28 @@ public class ArmorHEV extends ElectricArmor {
 		super(par1, material, 2, armorType);
 		setUnlocalizedName("hev" + this.armorType);
 		this.setIconName("hev" + armorType);
-		this.setMaxCharge(100000);
+		this.setMaxCharge(200000);
 		this.setTier(2);
 		this.setTransferLimit(128);
 		this.setEnergyPerDamage(1000);
+	}
+	
+	public ArmorHEV(int par1, EnumAttachment attach) {
+		super(par1, material, 2, attach.getSlot());
+		setUnlocalizedName("hev_" + attach.name().toLowerCase());
+		this.setIconName("hev_" + attach.name().toLowerCase());
+		this.setMaxCharge(200000);
+		this.setTier(2);
+		this.setTransferLimit(128);
+		this.setEnergyPerDamage(1000);
+	}
+	
+	public EnumAttachment getAttachment(ItemStack is) {
+		String name = is.getItemName().substring(9);
+		if(name == null)
+			return null;
+		EnumAttachment e = EnumAttachment.valueOf(name.toUpperCase());
+		return e;
 	}
 
 	@Override
@@ -73,19 +90,6 @@ public class ArmorHEV extends ElectricArmor {
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
 		return (slot == 2) ? 8 : 4;
-	}
-
-	/**
-	 * DEBUG ONLY.
-	 */
-	@Override
-	public boolean onItemUse(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
-			int par6, int par7, float par8, float par9, float par10) {
-		super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5,
-				par6, par7, par8, par9, par10);
-		par1ItemStack.setItemDamage(par1ItemStack.getMaxDamage() - 1);
-		return true;
 	}
 
 }

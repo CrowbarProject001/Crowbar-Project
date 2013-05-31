@@ -1,13 +1,10 @@
 package cbproject.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.InformationBullet;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,6 +22,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 
 		super(par1, CBCItems.ammo_9mm2.itemID, 2);
 		setUnlocalizedName("weapon_9mmar");
+		setIconName("weapon_9mmar");
 		setCreativeTab(CBCMod.cct);
 		setMaxStackSize(1);
 		setMaxDamage(51);
@@ -43,14 +41,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		return mode == 0 ? super.canShoot(player, is) : AmmoManager.hasAmmo(
 				CBCItems.ammo_argrenade.itemID, player);
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister
-				.registerIcon("lambdacraft:weapon_9mmar");
-	}
-
+	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
@@ -71,14 +62,11 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 
 		int mode = getMode(par1ItemStack);
 		if (mode == 0) {
-
 			super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity,
 					information);
-
 		} else {
 			if (!par2World.isRemote)
-				if (par3Entity.capabilities.isCreativeMode
-						|| AmmoManager.tryConsume(par3Entity,
+				if (par3Entity.capabilities.isCreativeMode || AmmoManager.tryConsume(par3Entity,
 								CBCItems.ammo_argrenade.itemID, 1) == 0) {
 					par2World.spawnEntityInWorld(new EntityARGrenade(par2World,
 							par3Entity));

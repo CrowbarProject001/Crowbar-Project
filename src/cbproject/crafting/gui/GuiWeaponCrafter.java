@@ -62,10 +62,10 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         		down = new CBCGuiButton("down", 111, 74, 7, 6).setDownCoords(220, 43).setInvaildCoords(208, 6).setTextureCoords(208, 43),
         		left = new CBCGuiButton("left", 5, 2, 5, 6).setDownCoords(220, 53).setInvaildCoords(245, 53).setTextureCoords(210, 53),
         		right = new CBCGuiButton("right", 190, 2, 5, 6).setDownCoords(220, 63).setInvaildCoords(245, 63).setTextureCoords(210, 63);
-        this.addButton(up);
-        this.addButton(down);
-        addButton(left);
-        addButton(right);
+        this.addElement(up);
+        this.addElement(down);
+        addElement(left);
+        addElement(right);
         this.updateButtonState();
     }
 	
@@ -104,6 +104,8 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+		if(!this.te.isLoad)
+			return;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(ClientProps.GUI_WEAPONCRAFTER_PATH);
         int x = (width - xSize) / 2;

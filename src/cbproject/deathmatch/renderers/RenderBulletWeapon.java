@@ -1,8 +1,6 @@
 package cbproject.deathmatch.renderers;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import cbproject.core.props.ClientProps;
 import cbproject.core.renderers.RenderUtils;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
@@ -10,16 +8,12 @@ import cbproject.deathmatch.utils.InformationBullet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
 public class RenderBulletWeapon implements IItemRenderer {
 

@@ -53,7 +53,7 @@ public class EntityRPGDot extends EntityThrowable {
 	
 	@Override
 	public void onUpdate(){
-		if(worldObj.isRemote)
+		if(worldObj.isRemote || getThrower() == null)
 			return;
 		ItemStack currentItem = getThrower().getCurrentItemOrArmor(0);
 		if(currentItem == null || !Weapon_RPG.class.isInstance(currentItem.getItem()) ){
@@ -69,8 +69,6 @@ public class EntityRPGDot extends EntityThrowable {
 	}
 	
 	private void updateDotPosition(){
-		if(shooter == null)
-			return;
 		MotionXYZ begin = new MotionXYZ(shooter);
 		MotionXYZ end = new MotionXYZ(begin).updateMotion(DOT_MAX_RANGE);
 		MovingObjectPosition result = worldObj.rayTraceBlocks(begin.asVec3(worldObj), end.asVec3(worldObj));

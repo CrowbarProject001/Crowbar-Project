@@ -42,6 +42,7 @@ public class CBCNetHandler implements IPacketHandler {
 			Packet250CustomPayload packet, Player player) {
 		
 		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
+		
 		byte i = -1;
 		try {
 			i = inputStream.readByte();
@@ -49,7 +50,7 @@ public class CBCNetHandler implements IPacketHandler {
 			e.printStackTrace();
 		}
 		IChannelProcess p = channels.get(i);
-		if(packet.channel == GeneralProps.NET_CHANNEL_CLIENT || packet.channel == GeneralProps.NET_CHANNEL_SERVER){
+		if(packet.channel.equals(GeneralProps.NET_CHANNEL_CLIENT) || packet.channel.equals(GeneralProps.NET_CHANNEL_SERVER)){
 			if(p != null)
 				p.onPacketData(inputStream, player);
 		}

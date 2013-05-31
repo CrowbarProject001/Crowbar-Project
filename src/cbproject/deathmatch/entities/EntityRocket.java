@@ -83,6 +83,9 @@ public class EntityRocket extends EntityThrowable {
         double dx = par1 - motionX, dy = par3 - motionY, dz = par5 - motionZ;
         float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
         
+        if(Math.sqrt(dx * dx + dy * dy + dz * dz) > 8 *TURNING_SPEED)
+        	return;
+        
         if(Math.abs(dx) < TURNING_SPEED)
         	this.motionX = par1;
         else this.motionX += (dx > 0) ? TURNING_SPEED : -TURNING_SPEED;

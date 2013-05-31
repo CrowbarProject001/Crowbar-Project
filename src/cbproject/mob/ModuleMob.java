@@ -1,14 +1,14 @@
 package cbproject.mob;
 
-import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import cbproject.core.CBCMod;
 import cbproject.core.module.CBCSubModule;
 import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
 import cbproject.core.props.GeneralProps;
-import cbproject.core.proxy.ClientProxy;
+import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCSoundEvents;
+import cbproject.mob.client.ModelSnark;
 import cbproject.mob.entities.EntitySnark;
 import cbproject.mob.register.CBCMobItems;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -31,7 +31,7 @@ public class ModuleMob
 	@ModuleInit(EnumInitType.PREINIT)
 	public void preInit(FMLPreInitializationEvent Init)
 	{
-		if(ClientProxy.isRendering())
+		if(Proxy.isRendering())
 			for(String s : SND_MOBS){
 				CBCSoundEvents.addSoundPath("cbc/mobs/" + s, "/cbproject/gfx/sounds/mobs/" + s);
 			}
@@ -54,7 +54,7 @@ public class ModuleMob
 	
 	@ModuleInit(EnumInitType.CLINIT)
 	public void registerRenderingThings(){
-		RenderingRegistry.registerEntityRenderingHandler(EntitySnark.class, new RenderLiving(new ModelSlime(1), 0.2F));
+		RenderingRegistry.registerEntityRenderingHandler(EntitySnark.class, new RenderLiving(new ModelSnark(), 0.2F));
 	}
 	
 	public static final String SND_MOBS[] = {

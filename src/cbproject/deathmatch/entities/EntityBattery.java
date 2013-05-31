@@ -14,40 +14,36 @@
  */
 package cbproject.deathmatch.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import cbproject.api.energy.item.ICustomEnItem;
+import cbproject.core.utils.EnergyUtils;
 import cbproject.core.utils.EntitySelectorPlayer;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraft.entity.Entity;
 
 /**
  * 触碰会自动给HEV充能的电池实体。
  * @author WeAthFolD
  *
  */
-public class EntityBattery extends EntityProjectile {
+public class EntityBattery extends Entity {
 
 	public static final int EU_PER_BATTERY = 50000;
 	private int currentEnergy;
 	
-	public EntityBattery(World world, EntityPlayer player, int energy) {
+	public EntityBattery(World world, double x, double y, double z, int energy) {
 		super(world);
-		this.setSize(0.3F, 0.6F);
-		this.posX = player.posX;
-		this.posY = player.posY;
-		this.posZ = player.posZ;
+		this.setPosition(x, y, z);
+		this.setSize(0.25f, 0.4f);
 		this.currentEnergy = energy;
 	}
 	
 	public EntityBattery(World world) {
 		super(world);
-		this.setSize(0.3F, 0.6F);
+		this.setSize(0.25f, 0.4f);
 	}
 
 	/**
@@ -56,68 +52,56 @@ public class EntityBattery extends EntityProjectile {
 	 */
 	@Override
 	public void onUpdate(){
-		super.onUpdate();
-		System.out.println("updatetick 1");
-		if(worldObj.isRemote || ticksExisted < 40)
-			return;
-		System.out.println("updatetick 2");
+		this.prevPosX = this.posX;
+        this.prevPosY = this.posY;
+        this.prevPosZ = this.posZ;
+        this.motionY -= 0.03999999910593033D;
+        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.motionX *= 0.9800000190734863D;
+        this.motionY *= 0.9800000190734863D;
+        this.motionZ *= 0.9800000190734863D;
+
+        if (this.onGround)
+        {
+            this.motionX *= 0.699999988079071D;
+            this.motionZ *= 0.699999988079071D;
+            this.motionY *= -0.5D;
+        }
+        
+        if(++this.ticksExisted < 20 || worldObj.isRemote)
+        	return;
+		
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX-0.15, posY-0.3, posZ - 0.15, posX + 0.15, posY + 0.3, posZ + 0.15);
 		List<EntityPlayer> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, new EntitySelectorPlayer());
-		System.out.println(list);
-		if(list == null)
+		if(list == null || list.size() == 0)
 			return;
 		EntityPlayer player = list.get(0);
-		tryChargeArmor(player);
-		this.playSound("cbc.entity.battery", 0.5F, 1.0F);
+		EnergyUtils.tryChargeArmor(player, currentEnergy, 2, true);
+		this.playSound("cbc.entities.battery", 0.5F, 1.0F);
 		this.setDead();
 	}
 	
-	/**
-	 * TODO:NEEDS INTERGRATION.
-	 * Charges the HEV armor wearing on the player with the amount of 1 battery(50000 EU).
-	 * @param player the player entity
-	 */
-	public void tryChargeArmor(EntityPlayer player){
-		int amount = 0;
-		List<ICustomEnItem> armor = new ArrayList();
-		List<ItemStack> stack = new ArrayList();
-		for(ItemStack s : player.inventory.armorInventory){
-			if(s != null && (s.getItem() instanceof ICustomEnItem)){
-				amount++;
-				ICustomEnItem i = (ICustomEnItem)s.getItem();
-				armor.add(i);
-				stack.add(s);
-			}
-		}
-		for(int i = 0; i < stack.size(); i++){
-			armor.get(i).charge(stack.get(i), currentEnergy / amount, 2, true, false);
-		}
-	}
-	
-	@Override
-	protected float getHeadingVelocity() {
-		return 0;
-	}
 
-	@Override
-	protected float getMotionYOffset() {
-		return 0;
-	}
-
-	@Override
-	protected float getGravityVelocity() {
-		return (float) 0.4;
-	}
-
-	@Override
-	protected void onCollide(MovingObjectPosition result) {
-
-	}
 
 	@Override
 	protected void entityInit() {
-		// TODO Auto-generated method stub
 
 	}
 
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound nbt) {
+		posX = nbt.getDouble("posX");
+		posY = nbt.getDouble("posY");
+		posZ = nbt.getDouble("posZ");
+		currentEnergy = nbt.getInteger("currentEnergy");
+	}
+
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound nbt) {
+		nbt.setDouble("posX", posX);
+		nbt.setDouble("posY", posY);
+		nbt.setDouble("posZ", posZ);
+		nbt.setInteger("currentEnergy", currentEnergy);
+	}
+	
 }

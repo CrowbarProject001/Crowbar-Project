@@ -14,7 +14,10 @@
  */
 package cbproject.core.props;
 
+import cbproject.core.CBCMod;
 import cbproject.core.misc.Config;
+import cbproject.core.register.Configurable;
+import cbproject.core.register.GeneralRegistry;
 
 /**
  * Mod的一些固定信息。
@@ -22,8 +25,11 @@ import cbproject.core.misc.Config;
  */
 public class GeneralProps {
 	
-	public static Boolean ignoreBlockDestroy = false,
-			doWeaponUplift = true;
+	@Configurable(key = "ignoreBlockDestroy", defValue = "false", comment = "Ignore all block destruction within the mod.")
+	public static boolean ignoreBlockDestroy;
+	
+	@Configurable(key = "doWeaponuplift", defValue = "true" , comment = "Enable weapon uplifting when shoot.")
+	public static boolean doWeaponUplift;
 	
 	public static final int ENT_ID_GAUSS1 = 0, ENT_ID_EGON_RAY = 1, 
 			ENT_ID_TRAIL = 2, ENT_ID_ARGRENADE = 3, ENT_ID_ARROW = 4,
@@ -31,19 +37,23 @@ public class GeneralProps {
 			ENT_ID_DOT = 8, ENT_ID_SATCHEL = 9, ENT_ID_SNARK = 10, ENT_ID_BULLET = 11, ENT_ID_BOW = 12,
 			ENT_ID_MEDKIT = 13, ENT_ID_BATTERY = 14, ENT_ID_GAUSS2 = 15;
 	
-	public static final String NET_CHANNEL_CLIENT = "CBCClient", NET_CHANNEL_SERVER = "CBCServer";
+	public static final String NET_CHANNEL_CLIENT = "cbcclient", NET_CHANNEL_SERVER = "cbcserver";
 	
-	public static final byte NET_ID_EXPLOSION = 0, NET_ID_DM = 1, NET_ID_CRAFTER_CL = 2, NET_ID_CHARGER_CL = 3,
-			NET_ID_CHARGER_SV = 4, NET_ID_CRAFTER_SV = 5;
+	public static final byte NET_ID_EXPLOSION = 0, NET_ID_DM = 1, NET_ID_CRAFTER_CL = 2, NET_ID_CHARGER_CL = 3, NET_ID_USE = 6, NET_ID_MEDFILLER_CL = 7;
 	
-	public static final int GUI_ID_CRAFTER = 0, GUI_ID_CHARGER = 1;
+	public static final int GUI_ID_CRAFTER = 0, GUI_ID_CHARGER = 1, GUI_ID_HEALTH = 2, GUI_ID_MEDFILLER = 3;
+	
+	/**
+	 * 方块和物品分类。
+	 */
+	public static final int CAT_MATERIAL = 0, CAT_WEAPON = 1, CAT_ELECTRIC = 2, CAT_EQUIPMENT = 3, CAT_MISC = 4;
+	/**
+	 * 方块分类。
+	 */
+	public static final int CAT_GENERIC = 0;
+	
 	public static void loadProps(Config config){
-		try {
-			ignoreBlockDestroy = config.getBoolean("ignoreBlockDestroy", false);
-			doWeaponUplift = config.getBoolean("weaponUplift", true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		GeneralRegistry.loadConfigurableClass(CBCMod.config, GeneralProps.class);
 	}
 	
 }

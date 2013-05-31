@@ -16,10 +16,6 @@ package cbproject.core.renderers;
 
 import org.lwjgl.opengl.GL11;
 
-import cbproject.deathmatch.blocks.BlockArmorCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
-import cbproject.deathmatch.register.DMBlocks;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;

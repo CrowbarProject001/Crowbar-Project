@@ -17,6 +17,7 @@ package cbproject.core.misc;
 import java.io.File;
 import java.io.IOException;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 
 /**
  * 公用的设置读取类。
@@ -44,7 +45,7 @@ public class Config {
 	    config.load();
 	}
 	
-	public  void InitliazeConfig(File ConfigFile)
+	public void initliazeConfig(File ConfigFile)
 	{
 	    if(this != null)
 	    {
@@ -53,13 +54,22 @@ public class Config {
 	    config = new Configuration(ConfigFile);
 	}
 	
-	public String GetGeneralProperties(String PropertyName, String DefaultValue) throws Exception
+	public String getGeneralProperties(String PropertyName, String DefaultValue) throws Exception
 	{
 	    if(this == null)
 	    {
 	        throw new NullPointerException();
 	    }
 	    return config.get("general", PropertyName, DefaultValue).getString();
+	}
+	
+	public Property getProperty(String category, String propertyName, String defaultValue) throws Exception
+	{
+	    if(this == null)
+	    {
+	        throw new NullPointerException();
+	    }
+	    return config.get(category, propertyName, defaultValue);
 	}
 	
 	public Boolean getBoolean(String name, Boolean defaultValue)throws Exception{
@@ -76,22 +86,22 @@ public class Config {
 		return config.get("general", name, defaultValue).getInt();
 	}
 	
-	public int GetItemID(String ItemName, int DefaultValue) throws Exception
+	public int getItemID(String itemName, int defaultValue) throws Exception
 	{
 	    if(this == null)
 	    {
 	        throw new NullPointerException();
 	    }
-	    return config.getItem("item", "ID." + ItemName, DefaultValue).getInt();
+	    return config.getItem("item", "ID." + itemName, defaultValue).getInt();
 	}
 	
-	public int GetBlockID(String BlockName, int DefaultID) throws Exception
+	public int GetBlockID(String blockName, int defaultID) throws Exception
 	{
 	    if( this  == null)
 	    {
 	        throw new NullPointerException();
 	    }
-	    return config.getBlock("ID." + BlockName, DefaultID).getInt();
+	    return config.getBlock("ID." + blockName, defaultID).getInt();
 	}
 	
 	public int GetKeyCode(String keyName, int defaultKey) throws Exception{

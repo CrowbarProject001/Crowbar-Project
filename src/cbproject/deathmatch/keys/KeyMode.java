@@ -30,8 +30,6 @@ public class KeyMode implements IKeyProcess {
 
 	private void onModeChange(ItemStack itemStack, InformationWeapon inf,
 			EntityPlayer player, int maxModes) {
-		if (!player.worldObj.isRemote)
-			return;
 
 		WeaponGeneral wpn = (WeaponGeneral) itemStack.getItem();
 		int stackInSlot = -1;
@@ -48,7 +46,7 @@ public class KeyMode implements IKeyProcess {
 			return;
 		int mode = wpn.getMode(itemStack);
 		mode = (maxModes - 1 <= mode) ? 0 : mode + 1;
-		NetDeathmatch.sendModePacket(stackInSlot, (short) 0, mode);
+		NetDeathmatch.sendModePacket((byte)stackInSlot, (byte)0, (byte)mode);
 
 	}
 

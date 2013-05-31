@@ -17,31 +17,32 @@ package cbproject.core;
 import java.util.EnumSet;
 import java.util.logging.Logger;
 
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.energy.EnergyNet;
+import cbproject.core.keys.KeyUse;
 import cbproject.core.misc.CBCCreativeTab;
 import cbproject.core.misc.Config;
 import cbproject.core.network.NetExplosion;
+import cbproject.core.network.NetKeyUsing;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
-import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCGuiHandler;
+import cbproject.core.register.CBCKeyProcess;
 import cbproject.core.register.CBCModuleRegisty;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
-import cbproject.core.world.CBCOreGenerator;
 import cbproject.crafting.ModuleCrafting;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
-import cbproject.crafting.gui.ElementCrafter;
-import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.recipes.RecipeWeapons;
-import cbproject.crafting.register.CBCBlocks;
-import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.ModuleDM;
 import cbproject.intergration.ic2.ModuleIC2;
+import cbproject.mob.ModuleMob;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -57,19 +58,17 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid="lc",name="LambdaCraft",version="0.9.9 pre")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false,
-serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class ),
-clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_CLIENT }, packetHandler = CBCNetHandler.class ))
+@NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {GeneralProps.NET_CHANNEL_CLIENT, GeneralProps.NET_CHANNEL_SERVER}, packetHandler = CBCNetHandler.class)
 public class CBCMod implements ITickHandler
 { 
+	
+	private Minecraft mc;
 	
 	/**
 	 *  日志
@@ -113,16 +112,23 @@ public class CBCMod implements ITickHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		config=new Config(event.getSuggestedConfigurationFile());
-		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
 		EnergyNet.initialize();
+		
+		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
 		
+		CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
+		
+		//模块的加载
 		module = new CBCModuleRegisty();
-		module.registerModule(ModuleCrafting.class.getName());
-		module.registerModule(ModuleIC2.class.getName());
-		module.registerModule(ModuleDM.class.getName());
+		CBCModuleRegisty.registerModule(ModuleCrafting.class.getName());
+		CBCModuleRegisty.registerModule(ModuleIC2.class.getName());
+		CBCModuleRegisty.registerModule(ModuleDM.class.getName());
+		CBCModuleRegisty.registerModule(ModuleMob.class.getName());
 		module.preInit(event);
+		
 	} 
 
 	/**
@@ -135,12 +141,15 @@ public class CBCMod implements ITickHandler
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
+		
 		module.init(Init);
-		if(proxy.isRendering()){
+		if(Proxy.isRendering()){
 			module.clientInit();
 		}
+		
 	}
 
 	/**
@@ -150,6 +159,7 @@ public class CBCMod implements ITickHandler
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 		config.SaveConfig();
+		
 		module.postInit(Init);
 	}
 
@@ -160,6 +170,7 @@ public class CBCMod implements ITickHandler
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
 	    CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();
+	    
 	    module.serverStarting(event);
 	}
 
@@ -168,7 +179,6 @@ public class CBCMod implements ITickHandler
 		World world = (World) tickData[0];
 		Proxy.profilerEndStartSection("EnergyNet");
 		EnergyNet.onTick(world);
-		
 	}
 
 	@Override

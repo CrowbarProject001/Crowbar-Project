@@ -18,18 +18,18 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 /**
- * TODO:把一个方块从能源网络中移除 通过EnergyNet.removeTileEntity
+ * TODO:求自己添加注释
  * @author HopeAsd
  *
  */
 public class EnergyTileUnloadEvent extends EnergyTileEvent{
-	public static World world;
-	public EnergyTileUnloadEvent (IEnergyTile energyTile){
-		super(world, energyTile);
-	}
+	
+	public World world;
 
-	public EnergyTileUnloadEvent (World world , IEnergyTile energyTile){
-		super(world, energyTile);
+	public EnergyTileUnloadEvent (World theWorld , IEnergyTile energyTile){
+		super(theWorld, energyTile);
+		this.world = theWorld;
+		
 	}
 
 }

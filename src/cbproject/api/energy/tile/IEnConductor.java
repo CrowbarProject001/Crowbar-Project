@@ -1,11 +1,6 @@
 package cbproject.api.energy.tile;
 
-/**
- * 能源导线的能源属性
- * @author WeAthFolD，HopeAsd
- *
- */
-public interface IEnConductor {
+public interface IEnConductor extends IEnAcceptor, IEnEmitter {
 	 public abstract double getConductionLoss();
 
 	 public abstract int getInsulationEnergyAbsorption();

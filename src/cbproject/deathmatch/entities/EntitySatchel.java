@@ -17,7 +17,6 @@ package cbproject.deathmatch.entities;
 import cbproject.deathmatch.utils.BulletManager;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -95,6 +94,10 @@ public class EntitySatchel extends EntityProjectile {
 		super.onUpdate();
 		if(worldObj.isRemote)
 			return;
+		if(getThrower() == null){
+			this.setDead();
+			return;
+		}
 		boolean doesExplode = getThrower().getEntityData().getBoolean("doesExplode");
 		if(doesExplode || isBurning())
 			Explode();

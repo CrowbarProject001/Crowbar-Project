@@ -16,10 +16,6 @@ package cbproject.core.proxy;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cbproject.core.CBCMod;
-import cbproject.core.props.GeneralProps;
-import cbproject.core.register.CBCNetHandler;
-import cbproject.crafting.network.NetCrafterClient;
 import net.minecraft.util.StringTranslate;
 
 /**

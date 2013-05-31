@@ -16,9 +16,6 @@ package cbproject.crafting.blocks;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -28,7 +25,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.items.ItemMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
-import cbproject.crafting.recipes.RecipeWeaponSpecial;
+import cbproject.crafting.recipes.RecipeRepair;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.crafting.register.CBCBlocks;
 import cbproject.deathmatch.utils.AmmoManager;
@@ -54,7 +51,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	public long lastTime = 0;
 	public boolean redraw, isCrafting, isBurning;
 	public boolean isAdvanced = false;
-	private boolean isLoad = false;
+	public boolean isLoad = false;
 	
 	/**
 	 * inventory: 1-18：材料存储  19:燃料槽  20:合成结果槽
@@ -71,10 +68,11 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		if(!isLoad){
 			if(blockType == null)
 				return;
-			isAdvanced = this.blockType.blockID == CBCBlocks.blockWeaponCrafter.blockID? false : true;
+			isAdvanced = this.blockType.blockID == CBCBlocks.weaponCrafter.blockID? false : true;
+			TileEntityWeaponCrafter.MAX_HEAT = isAdvanced ? 7000 : 4000;
 			isLoad = true;
 		}
-			
+		
 		if(heat > 0)
 			heat--;
 		
@@ -272,6 +270,8 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
     		this.burnTimeLeft = TileEntityFurnace.getItemBurnTime(inventory[1]) / 2;
     		this.maxBurnTime = this.burnTimeLeft;
     		inventory[1].splitStack(1);
+    		if(inventory[1].stackSize <= 1)
+    			inventory[1] = null;
     		isBurning = true;
     		blockType.setLightValue(0.4F);
     	}
@@ -301,7 +301,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		}
 		if(!hasEnoughMaterial(currentRecipe))
 			return;
-		if(!(currentRecipe instanceof RecipeWeaponSpecial)){
+		if(!(currentRecipe instanceof RecipeRepair)){
 			if (inventory[0] != null) {
 				if (!(inventory[0].itemID == currentRecipe.output.itemID && inventory[0].isStackable()))
 					return;
@@ -321,7 +321,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 				lastTime = worldObj.getWorldTime();
 				return;
 			}
-			RecipeWeaponSpecial rs = (RecipeWeaponSpecial) currentRecipe;
+			RecipeRepair rs = (RecipeRepair) currentRecipe;
 			int bulletCount = 0;
 			int slotWeapon = 0;
 			for(int i = 2; i < 20; i++){
@@ -352,12 +352,13 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		currentRecipe = null;
 		iconType = CrafterIconType.NONE;
 	}
+	
 
 	public boolean hasEnoughMaterial(RecipeCrafter r) {
 		ItemStack is;
 
-		if(r instanceof RecipeWeaponSpecial){
-			RecipeWeaponSpecial rs = (RecipeWeaponSpecial) r;
+		if(r instanceof RecipeRepair){
+			RecipeRepair rs = (RecipeRepair) r;
 			boolean flag1 = false, flag2 = false;
 			for(int i = 2; i < 20; i++){
 				is = inventory[i];

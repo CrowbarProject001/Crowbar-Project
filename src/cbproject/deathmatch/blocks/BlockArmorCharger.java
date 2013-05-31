@@ -19,28 +19,18 @@ import static net.minecraftforge.common.ForgeDirection.NORTH;
 import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
-import java.util.Random;
-
+import cbproject.api.tile.IUseable;
 import cbproject.core.CBCMod;
+import cbproject.core.block.CBCBlockContainer;
+import cbproject.core.keys.KeyUse;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -49,7 +39,7 @@ import net.minecraftforge.common.ForgeDirection;
  * @author Administrator
  *
  */
-public class BlockArmorCharger extends BlockContainer {
+public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 
 	protected final float WIDTH = 0.3F, HEIGHT = 0.4F, LENGTH = 0.08F;
 	
@@ -60,24 +50,8 @@ public class BlockArmorCharger extends BlockContainer {
 	public BlockArmorCharger(int par1) {
 		super(par1, Material.rock);
 		this.setUnlocalizedName("armorcharger");
-		setCreativeTab(CBCMod.cct);
-	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:charger");
-    }
-
-	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityArmorCharger();
-	}
-	
-	@Override
-	public int getRenderType() {
-		return ClientProps.RENDER_TYPE_EMPTY;
+		this.setIconName("charger");
+		this.setGuiId(GeneralProps.GUI_ID_CHARGER);
 	}
 	
     /**
@@ -109,10 +83,20 @@ public class BlockArmorCharger extends BlockContainer {
     
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-            dropItems(world, x, y, z);
-            super.breakBlock(world, x, y, z, par5, par6);
+    	TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        if (tileEntity == null || !(tileEntity instanceof TileEntityArmorCharger)) {
+                return;
+        }
+        TileEntityArmorCharger inventory = (TileEntityArmorCharger) tileEntity;
+        dropItems(world, x, y, z, inventory.slots);
+        super.breakBlock(world, x, y, z, par5, par6);
     }
     
+	@Override
+	public int getRenderType() {
+		return ClientProps.RENDER_TYPE_EMPTY;
+	}
+
 	@Override
 	public boolean isOpaqueCube()
 	 {
@@ -124,40 +108,6 @@ public class BlockArmorCharger extends BlockContainer {
 	 {
 	     return false;
 	 }
-    
-    private void dropItems(World world, int x, int y, int z){
-        Random rand = new Random();
-
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        if (!(tileEntity instanceof IInventory)) {
-                return;
-        }
-        TileEntityArmorCharger inventory = (TileEntityArmorCharger) tileEntity;
-
-        for (ItemStack item : inventory.slots) {
-
-                if (item != null && item.stackSize > 0) {
-                        float rx = rand.nextFloat() * 0.8F + 0.1F;
-                        float ry = rand.nextFloat() * 0.8F + 0.1F;
-                        float rz = rand.nextFloat() * 0.8F + 0.1F;
-
-                        EntityItem entityItem = new EntityItem(world,
-                                        x + rx, y + ry, z + rz,
-                                        new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
-
-                        if (item.hasTagCompound()) {
-                                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
-                        }
-
-                        float factor = 0.05F;
-                        entityItem.motionX = rand.nextGaussian() * factor;
-                        entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
-                        entityItem.motionZ = rand.nextGaussian() * factor;
-                        world.spawnEntityInWorld(entityItem);
-                        item.stackSize = 0;
-                }
-        }
-}
 
     @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
@@ -222,5 +172,36 @@ public class BlockArmorCharger extends BlockContainer {
 		
         return var10;
     }
+
+	@Override
+	public void onBlockUse(World world, EntityPlayer player, int bx,
+			int by, int bz) {
+		
+		TileEntity te =  world.getBlockTileEntity(bx, by, bz);
+		if(te == null)
+			return;
+		TileEntityArmorCharger te2 = (TileEntityArmorCharger) te;
+		String path = te2.currentEnergy > 0 ? "cbc.entities.suitchargeok" : "cbc.entities.suitchargeno";
+		world.playSoundAtEntity(player, path, 0.5F, 1.0F);
+		KeyUse.setBlockInUse(player, bx, by, bz);
+		if(te2.currentEnergy > 0)
+			te2.startUsing(player);
+		
+	}
+
+	@Override
+	public void onBlockStopUsing(World world, EntityPlayer player, int bx,
+			int by, int bz) {
+		TileEntity te =  world.getBlockTileEntity(bx, by, bz);
+		if(te == null)
+			return;
+		TileEntityArmorCharger te2 = (TileEntityArmorCharger) te;
+		te2.stopUsing(player);
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new TileEntityArmorCharger();
+	}
 
 }

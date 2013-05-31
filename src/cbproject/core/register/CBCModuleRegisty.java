@@ -15,11 +15,9 @@
 package cbproject.core.register;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import cpw.mods.fml.common.Mod.Instance;
@@ -28,7 +26,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-import cbproject.core.CBCMod;
 import cbproject.core.module.CBCSubModule;
 import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
@@ -82,7 +79,8 @@ public class CBCModuleRegisty {
 				try {
 					me.invoke(getInstance(m), event);
 				} catch (Exception e){
-					System.err.println("Failed in calling Init in :" + m);
+					System.err.println("Failed in calling Init in :" + m + ", reason " + e);
+					e.printStackTrace();
 				}
 			}
 		}
@@ -107,6 +105,7 @@ public class CBCModuleRegisty {
 					me.invoke(getInstance(m), event);
 				} catch (Exception e){
 					System.err.println("Failed in calling serverStarting in :" + m);
+					e.printStackTrace();
 				}
 			}
 		}

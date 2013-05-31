@@ -11,7 +11,6 @@ import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.register.DMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 
@@ -48,7 +47,7 @@ public class RenderTileTripmine extends RendererSidedCube {
 		
 		Tessellator tessellator = Tessellator.instance;
         int var5 = tileentity.getBlockMetadata();
-        BlockTripmine block = DMBlocks.blockTripmine;
+        BlockTripmine block = (BlockTripmine) DMBlocks.blockTripmine;
         TileEntityTripmine tileEntity = (TileEntityTripmine) tileentity;
 
         Vec3 v1, v2, v3, v4, v5, v6, v7, v8;
@@ -85,7 +84,7 @@ public class RenderTileTripmine extends RendererSidedCube {
 			break;
 		}
 		
-        this.bindTextureByName(ClientProps.TRIPMINE_RAY_PATH);
+       
         v1 = RenderUtils.newV3(minX, y+0.5, minZ);
      	v2 = RenderUtils.newV3(minX, y+0.5, maxZ);
      	v3 = RenderUtils.newV3(maxX, y+0.5, maxZ);
@@ -110,6 +109,7 @@ public class RenderTileTripmine extends RendererSidedCube {
         
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
+        RenderUtils.loadTexture(ClientProps.TRIPMINE_RAY_PATH);
         GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(1, 1, 1, 0.7F);

@@ -1,15 +1,11 @@
 package cbproject.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.entities.BulletSG;
 import cbproject.deathmatch.entities.EntityBulletSG;
 import cbproject.deathmatch.utils.AmmoManager;
-import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,6 +20,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		super(par1 , CBCItems.ammo_shotgun.itemID, 2);
 		
 		setUnlocalizedName("weapon_shotgun");
+		setIconName("weapon_shotgun");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
 		setMaxDamage(9); 
@@ -34,13 +31,6 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		setLiftProps(30, 5);
 		
 	}
-
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_shotgun");
-    }
 	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,

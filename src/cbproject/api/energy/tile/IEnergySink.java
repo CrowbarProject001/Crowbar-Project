@@ -16,11 +16,6 @@ package cbproject.api.energy.tile;
 
 import cbproject.api.LCDirection;
 
-/**
- * 能源的输出量，最大安全能源输出 能源需求方向
- * @author WeAthFolD，HopeAsd
- *
- */
 public abstract interface IEnergySink extends IEnAcceptor
 {
   public abstract int demandsEnergy();

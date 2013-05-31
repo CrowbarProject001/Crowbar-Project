@@ -16,6 +16,7 @@ package cbproject.deathmatch.entities;
 
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.entities.fx.EntityGaussRay;
+import cbproject.deathmatch.entities.fx.EntityGaussRayColored;
 import cbproject.deathmatch.utils.BulletManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;
@@ -46,6 +47,8 @@ public class EntityBulletGaussSec extends EntityBullet {
 		super(worldObj, entityPlayer, itemStack);
 		if(typeOfRay == EnumGaussRayType.NORMAL){
 			damage = dmg;
+			if(!worldObj.isRemote)
+				worldObj.spawnEntityInWorld(new EntityGaussRayColored(new MotionXYZ(this), worldObj));	
 			return;
 		}
 		

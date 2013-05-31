@@ -14,11 +14,7 @@
  */
 package cbproject.core.register;
 
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.InputStream;
-
-import net.minecraft.network.packet.Packet250CustomPayload;
 import cpw.mods.fml.common.network.Player;
 
 /**

@@ -10,8 +10,6 @@ import cbproject.core.utils.CBCExplosion;
 import cbproject.deathmatch.entities.EntityBullet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -27,15 +25,8 @@ public class BulletManager {
 	}
 	
 	public static void doEntityAttack(Entity ent, DamageSource ds, int damage, double dx, double dy, double dz){
-		if(ent instanceof EntityLiving){
-			((EntityLiving)ent).attackEntityFrom(ds, damage);
-		}
-		if(ent instanceof EntityDragonPart){
-			((EntityDragonPart)ent).attackEntityFrom(ds, damage);
-		}
-		if(ent instanceof EntityEnderCrystal)
-			((EntityEnderCrystal)ent).attackEntityFrom(ds, damage);
-		ent.addVelocity(dx, dy, dz);
+		ent.attackEntityFrom(ds, damage);
+		//ent.addVelocity(dx, dy, dz);
 	}
 	
 	public static void doEntityAttack(Entity ent, DamageSource ds, int damage){

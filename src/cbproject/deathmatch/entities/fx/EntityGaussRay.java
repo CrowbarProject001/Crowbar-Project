@@ -15,13 +15,9 @@
 package cbproject.deathmatch.entities.fx;
 
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.entities.EntityBulletGauss;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 /**
@@ -30,13 +26,6 @@ import net.minecraft.world.World;
  */
 public class EntityGaussRay extends Entity {
 	
-	public EntityGaussRay(World par1World,EntityLiving ent, EntityBulletGauss gauss){
-		super(par1World);
-		this.setLocationAndAngles(gauss.posX, gauss.posY, gauss.posZ, ent.rotationYawHead, gauss.rotationPitch);
-		this.setRayHeading(motionX, motionY, motionZ, 1.0F, 1.0F);
-		ignoreFrustumCheck = true;
-		
-	}
 	
 	public EntityGaussRay(MotionXYZ begin, World par1World){
 		
@@ -48,8 +37,6 @@ public class EntityGaussRay extends Entity {
 		this.motionY = begin.motionY;
 		this.motionZ = begin.motionZ;
 		this.setRayHeading(motionX, motionY, motionZ, 1.0F, 1.0F);
-		ignoreFrustumCheck = true;
-		
 	}
 
 	public EntityGaussRay(World world){
@@ -62,25 +49,25 @@ public class EntityGaussRay extends Entity {
     public void setRayHeading(double par1, double par3, double par5, float par7, float par8)
     {
         float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
-        par1 /= (double)f2;
-        par3 /= (double)f2;
-        par5 /= (double)f2;
-        par1 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
-        par3 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
-        par5 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
-        par1 *= (double)par7;
-        par3 *= (double)par7;
-        par5 *= (double)par7;
+        par1 /= f2;
+        par3 /= f2;
+        par5 /= f2;
+        par1 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
+        par3 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
+        par5 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
+        par1 *= par7;
+        par3 *= par7;
+        par5 *= par7;
         this.motionX = par1;
         this.motionY = par3;
         this.motionZ = par5;
         float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)f3) * 180.0D / Math.PI);
+        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, f3) * 180.0D / Math.PI);
     }
 	@Override
 	public void onUpdate(){
-		if(this.ticksExisted > 4)
+		if(this.ticksExisted > 2)
 			this.setDead();
 	}
 	
@@ -90,15 +77,9 @@ public class EntityGaussRay extends Entity {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		// TODO Auto-generated method stub
-		
-	}
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {}
 
 }

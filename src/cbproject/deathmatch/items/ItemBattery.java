@@ -14,24 +14,19 @@
  */
 package cbproject.deathmatch.items;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import cbproject.api.energy.item.ICustomEnItem;
-import cbproject.core.CBCMod;
 import cbproject.core.item.ElectricItem;
 import cbproject.deathmatch.entities.EntityBattery;
 
 /**
  * @author Administrator
- *
+ * 
  */
 public class ItemBattery extends ElectricItem {
-	
+
 	public ItemBattery(int par1) {
 		super(par1);
 		setUnlocalizedName("hevbattery");
@@ -46,17 +41,39 @@ public class ItemBattery extends ElectricItem {
 		return true;
 	}
 
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-    	
-    	if(!par2World.isRemote){
-    		EntityBattery ent = new EntityBattery(par2World, par3EntityPlayer, EntityBattery.EU_PER_BATTERY - par1ItemStack.getItemDamage());
-    		par2World.spawnEntityInWorld(ent);
-    		par1ItemStack.splitStack(1);
-    	}
-        return par1ItemStack;
-    }
-	
+	@Override
+	public boolean onItemUse(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
+			int par6, int par7, float par8, float par9, float par10) {
+		if(!par3World.isRemote)
+			ItemBattery.spawnBatteryAt(par1ItemStack, par3World, par4, par5, par6, par7);
+		if(!par2EntityPlayer.capabilities.isCreativeMode){
+			par1ItemStack.splitStack(1);
+		}
+		return true;
+	}
+
+	public static void spawnBatteryAt(ItemStack itemStack, World par0World,
+			int par1, int par2, int par3, int side) {
+		Entity entity = null;
+		double x = par1 + 0.5, y = par2 + 0.5, z = par3 + 0.5;
+		if(side == 0) {
+			return;
+		} else if(side == 1) {
+			y += 0.8;
+		} else if(side == 2) {
+			z -= 0.8;
+		} else if(side == 3) {
+			z += 0.8;
+		} else if(side == 4) {
+			x -= 0.8;
+		} else if(side == 5) {
+			x += 0.8;
+		}
+		entity = new EntityBattery(par0World, x, y, z, EntityBattery.EU_PER_BATTERY - itemStack.getItemDamage());
+		par0World.spawnEntityInWorld(entity);
+	}
+
 	@Override
 	public boolean canUse(ItemStack itemStack, int amount) {
 		return itemStack.getMaxDamage() - itemStack.getItemDamage() > 0;

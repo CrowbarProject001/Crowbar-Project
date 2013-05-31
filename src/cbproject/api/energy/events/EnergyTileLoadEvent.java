@@ -18,14 +18,15 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 /**
- * TODO:宣布一个方块接入能源网络 通过EnergyNet.addTileEntity
+ * TODO:求自己添加注释
  * @author HopeAsd
  *
  */
 public class EnergyTileLoadEvent extends EnergyTileEvent{
-	public static World world;
+	public static World theWorld;
+	
 	public EnergyTileLoadEvent (IEnergyTile energyTile){
-		super(world, energyTile);
+		super(theWorld, energyTile);
 	}
 
 	public EnergyTileLoadEvent (World world , IEnergyTile energyTile){

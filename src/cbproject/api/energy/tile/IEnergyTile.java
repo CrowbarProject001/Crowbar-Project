@@ -14,11 +14,6 @@
  */
 package cbproject.api.energy.tile;
 
-/**
- * 指定一个TileEntity是否被加入EnergyNet
- * @author WeAthFolD，HopeAsd
- *
- */
 public abstract interface IEnergyTile {
 	
 	public abstract boolean isAddToEnergyNet();

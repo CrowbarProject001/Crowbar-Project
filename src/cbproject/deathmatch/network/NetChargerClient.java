@@ -20,7 +20,6 @@ import java.io.DataOutputStream;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
@@ -28,7 +27,6 @@ import net.minecraft.world.World;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
-import cbproject.core.register.IGuiElement;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 
 /**
@@ -38,14 +36,13 @@ import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 public class NetChargerClient implements IChannelProcess {
 
 	public static void sendChargerPacket(TileEntityArmorCharger te){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_CHARGER_CL, 11);
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_CHARGER_CL, 10);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		
 		try {
 	        outputStream.writeInt(te.xCoord);
 	        outputStream.writeShort(te.yCoord);
 	        outputStream.writeInt(te.zCoord);
-	        outputStream.writeByte(te.currentBehavior);
 		} catch (Exception ex) {
 	        ex.printStackTrace();
 		}
@@ -62,19 +59,17 @@ public class NetChargerClient implements IChannelProcess {
 		World world = ((EntityPlayerMP)player).worldObj;
 		
 		int x, y, z;
-		int value;
 		
 		try {
 			x=stream.readInt();
 			y=stream.readShort();
 			z=stream.readInt();
-			value=stream.readByte();
 			TileEntity te = world.getBlockTileEntity(x,y,z);
 			if(te == null || !(te instanceof TileEntityArmorCharger))
 				throw new RuntimeException("Cannot't get the right tileEntity of armor charger.");
 			else {
 				TileEntityArmorCharger tt = (TileEntityArmorCharger) te;
-				tt.currentBehavior = value;
+				tt.nextBehavior();
 			}
 			
 		} catch (Exception ex) {

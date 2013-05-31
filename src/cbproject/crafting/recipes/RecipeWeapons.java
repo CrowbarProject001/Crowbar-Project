@@ -11,6 +11,7 @@ public class RecipeWeapons {
 	public static ArrayList<RecipeCrafter> advancedRecipes[];
 	public static String pageDescriptions[];
 	public static String advPageDescriptions[];
+	private static boolean finished = true;
 	
 	public static void InitializeRecipes(int pages, String[] ds){
 		if(getRecipePages() > 0)
@@ -23,6 +24,7 @@ public class RecipeWeapons {
 		for(int i = 0; i < pages; i++){
 			recipes[i] = new ArrayList<RecipeCrafter>();
 		}
+		open();
 	}
 	
 	public static void InitializeAdvRecipes(int pages, String[] ds){
@@ -36,6 +38,15 @@ public class RecipeWeapons {
 		for(int i = 0; i < pages; i++){
 			advancedRecipes[i] = new ArrayList<RecipeCrafter>();
 		}
+		open();
+	}
+	
+	private static void open(){
+		finished = false;
+	}
+	
+	public static void close(){
+		finished = true;
 	}
 	
 	private static int getAdvRecipePages() {
@@ -43,12 +54,16 @@ public class RecipeWeapons {
 	}
 
 	public static void addWeaponRecipe(int page, RecipeCrafter... entry){
+		if(finished)
+			throw new RuntimeException("Trying to add a weapon recipe while finished initializing");
 		for(RecipeCrafter e: entry){
 			recipes[page].add(e);
 		}
 	}
 	
 	public static void addAdvWeaponRecipe(int page, RecipeCrafter... entry){
+		if(finished)
+			throw new RuntimeException("Trying to add a weapon recipe while finished initializing");
 		for(RecipeCrafter e: entry){
 			advancedRecipes[page].add(e);
 		}

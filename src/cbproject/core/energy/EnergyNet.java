@@ -2,13 +2,10 @@ package cbproject.core.energy;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.Vector;
 import java.util.WeakHashMap;
 
@@ -26,13 +23,10 @@ import cbproject.core.CBCMod;
 import cbproject.core.proxy.Proxy;
 import cbproject.core.world.WorldData;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraftforge.event.EventBus;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 
@@ -56,7 +50,7 @@ public final class EnergyNet {
 	}
 
 	public static void onTick(World world) {
-		Proxy.profilerStartSection("LC2");
+		Proxy.profilerStartSection("LC");
 
 		EnergyNet energyNet = getForWorld(world);
 
@@ -249,8 +243,8 @@ public final class EnergyNet {
 						suppliedEnergyPaths.put(
 								energyPath,
 								Integer.valueOf(energyInjected
-										+ ((Integer) suppliedEnergyPaths
-												.get(energyPath)).intValue()));
+										+ suppliedEnergyPaths
+												.get(energyPath).intValue()));
 				} else {
 					activeEnergyPaths.add(energyPath);
 					newTotalInvLoss += 1.0D / energyPath.loss;
@@ -309,8 +303,8 @@ public final class EnergyNet {
 							.containsKey(entityLiving))
 						this.entityLivingToShockEnergyMap
 								.put(entityLiving,
-										Integer.valueOf(((Integer) this.entityLivingToShockEnergyMap
-												.get(entityLiving)).intValue()
+										Integer.valueOf(this.entityLivingToShockEnergyMap
+												.get(entityLiving).intValue()
 												+ maxShockEnergy));
 					else {
 						this.entityLivingToShockEnergyMap.put(entityLiving,
@@ -461,7 +455,7 @@ public final class EnergyNet {
 	      }
 	      currentLoss = 0.0D;
 
-	      if (currentTileEntity != emitter) currentLoss = ((EnergyBlockLink)reachedTileEntities.get(currentTileEntity)).loss;
+	      if (currentTileEntity != emitter) currentLoss = reachedTileEntities.get(currentTileEntity).loss;
 
 	      List<EnergyTarget> validReceivers = getValidReceivers(currentTileEntity, reverse);
 
@@ -480,7 +474,7 @@ public final class EnergyNet {
 	            continue;
 	          }
 	        }
-	        if ((!reachedTileEntities.containsKey(validReceiver.tileEntity)) || (((EnergyBlockLink)reachedTileEntities.get(validReceiver.tileEntity)).loss > currentLoss + additionalLoss)) {
+	        if ((!reachedTileEntities.containsKey(validReceiver.tileEntity)) || (reachedTileEntities.get(validReceiver.tileEntity).loss > currentLoss + additionalLoss)) {
 	          reachedTileEntities.put(validReceiver.tileEntity, new EnergyBlockLink(validReceiver.direction, currentLoss + additionalLoss));
 
 	          if ((validReceiver.tileEntity instanceof IEnConductor)) {
@@ -532,7 +526,7 @@ public final class EnergyNet {
 	                if (energyConductor.getInsulationBreakdownEnergy() < energyPath.minInsulationBreakdownEnergy) energyPath.minInsulationBreakdownEnergy = energyConductor.getInsulationBreakdownEnergy();
 	                if (energyConductor.getConductorBreakdownEnergy() < energyPath.minConductorBreakdownEnergy) energyPath.minConductorBreakdownEnergy = energyConductor.getConductorBreakdownEnergy();
 
-	                energyBlockLink = (EnergyBlockLink)reachedTileEntities.get(tileEntity);
+	                energyBlockLink = reachedTileEntities.get(tileEntity);
 	                if (energyBlockLink == null) {
 	                  System.out.println(new StringBuilder().append("An energy network pathfinding entry is corrupted.\nThis could happen due to incorrect Minecraft behavior or a bug.\n\n(Technical information: energyBlockLink, tile entities below)\nE: ").append(emitter).append(" (").append(emitter.xCoord).append(",").append(emitter.yCoord).append(",").append(emitter.zCoord).append(")\n").append("C: ").append(tileEntity).append(" (").append(tileEntity.xCoord).append(",").append(tileEntity.yCoord).append(",").append(tileEntity.zCoord).append(")\n").append("R: ").append(energyPath.target).append(" (").append(energyPath.target.xCoord).append(",").append(energyPath.target.yCoord).append(",").append(energyPath.target.zCoord).append(")").toString());
 	                }
@@ -576,7 +570,7 @@ public final class EnergyNet {
 			LCDirection inverseDirection = lcdirection.getInverse();
 
 			if (((reverse) || (!(emitter instanceof IEnEmitter)) || (!((IEnEmitter) emitter)
-					.emitterEnergyTo(target, lcdirection)))
+					.emitEnergyTo(target, lcdirection)))
 					&& ((!reverse) || (!(emitter instanceof IEnAcceptor)) || (!((IEnAcceptor) emitter)
 							.acceptsEnergyFrom(target, lcdirection)))) {
 				continue;
@@ -584,7 +578,7 @@ public final class EnergyNet {
 			if (((reverse) || (!(target instanceof IEnAcceptor)) || (!((IEnAcceptor) target)
 					.acceptsEnergyFrom(emitter, inverseDirection)))
 					&& ((!reverse) || (!(target instanceof IEnEmitter)) || (!((IEnEmitter) target)
-							.emitterEnergyTo(emitter, inverseDirection)))) {
+							.emitEnergyTo(emitter, inverseDirection)))) {
 				continue;
 			}
 			validReceivers.add(new EnergyTarget(target, inverseDirection));

@@ -50,7 +50,7 @@ public class CBCAchievements {
 		try {
 
 			nuclearRawMaterial = (new Achievement(conf.getInteger("nuclearRawMaterial",99), "nuclearRawMaterial", 0,
-					0, CBCBlocks.blockUraniumOre, (Achievement) null))
+					0, CBCBlocks.uraniumOre, (Achievement) null))
 					.registerAchievement();
 			radioactiveBeryl = (new Achievement(conf.getInteger("radioactiveBeryl",100), "radioactiveBeryl", 0, 1,
 					CBCItems.ingotUranium, nuclearRawMaterial))

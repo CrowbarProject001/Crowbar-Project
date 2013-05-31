@@ -17,14 +17,7 @@ package cbproject.api.energy.tile;
 import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 
-
-/**
- * 在能源网络中的TileEntity的能源传输方向
- * @author WeAthFolD，HopeAsd
- *
- */
-
 public abstract interface IEnEmitter extends IEnergyTile{
-	public abstract boolean emitterEnergyTo(TileEntity emTileEntity,LCDirection emDirection);
+	public abstract boolean emitEnergyTo(TileEntity emTileEntity,LCDirection emDirection);
 
 }

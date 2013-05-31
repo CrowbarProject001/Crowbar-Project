@@ -1,11 +1,7 @@
 package cbproject.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import cbproject.core.CBCMod;
 import cbproject.crafting.register.CBCItems;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,8 +23,9 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		setUnlocalizedName("weapon_9mmhandgun");
 		setCreativeTab( CBCMod.cct );
 		setMaxStackSize(1);
-		setMaxDamage(18); // 鏈�珮浼ゅ涓�8 0a0
-		setNoRepair(); //涓嶅彲淇ˉ
+		setMaxDamage(18);
+		setIconName("weapon_9mmhandgun");
+		setNoRepair();
 		
 		int shootTime[] = {10, 5}, dmg[] = { 3, 3}, off[] = { 2, 8};
 		double push[] = {0.5, 0.5};
@@ -37,13 +34,6 @@ public class Weapon_9mmhandgun extends WeaponGeneralBullet {
 		setJamTime(10);
 		
 	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_9mmhandgun");
-    }
 
 	@Override
     public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {

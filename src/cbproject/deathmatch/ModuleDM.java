@@ -11,6 +11,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.input.Keyboard;
 
 import cbproject.core.CBCMod;
+import cbproject.core.CBCPlayer;
 import cbproject.core.module.CBCSubModule;
 import cbproject.core.module.ModuleInit;
 import cbproject.core.module.ModuleInit.EnumInitType;
@@ -23,13 +24,15 @@ import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.core.renderers.RenderCrossedProjectile;
 import cbproject.core.renderers.RenderEmpty;
+import cbproject.core.renderers.RenderIcon;
+import cbproject.core.renderers.RenderModel;
+import cbproject.crafting.items.ItemMaterial.EnumMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
-import cbproject.crafting.recipes.RecipeWeaponSpecial;
+import cbproject.crafting.recipes.RecipeRepair;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
-import cbproject.deathmatch.entities.CBCPlayer;
 import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.entities.EntityBattery;
 import cbproject.deathmatch.entities.EntityBullet;
@@ -44,14 +47,15 @@ import cbproject.deathmatch.entities.EntityRocket;
 import cbproject.deathmatch.entities.EntitySatchel;
 import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cbproject.deathmatch.entities.fx.EntityGaussRay;
+import cbproject.deathmatch.entities.fx.EntityGaussRayColored;
 import cbproject.deathmatch.entities.fx.EntityTrailFX;
-import cbproject.deathmatch.gui.ElementArmorCharger;
+import cbproject.deathmatch.gui.DMGuiElements;
 import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cbproject.deathmatch.keys.KeyMode;
 import cbproject.deathmatch.keys.KeyReload;
 import cbproject.deathmatch.network.NetChargerClient;
-import cbproject.deathmatch.network.NetChargerServer;
 import cbproject.deathmatch.network.NetDeathmatch;
+import cbproject.deathmatch.network.NetMedFillerClient;
 import cbproject.deathmatch.register.DMBlocks;
 import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.renderers.RenderBulletWeapon;
@@ -65,6 +69,7 @@ import cbproject.deathmatch.renderers.RenderSatchel;
 import cbproject.deathmatch.renderers.RenderTileCharger;
 import cbproject.deathmatch.renderers.RenderTileTripmine;
 import cbproject.deathmatch.renderers.RenderTrail;
+import cbproject.deathmatch.renderers.models.ModelBattery;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -75,6 +80,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @CBCSubModule("deathmatch")
 public class ModuleDM
@@ -89,15 +95,18 @@ public class ModuleDM
 		if(FMLCommonHandler.instance().getSide() == Side.CLIENT){
 			for(String s : SOUND_WEAPONS)
 				CBCSoundEvents.addSoundPath("cbc/weapons/" + s, "/cbproject/gfx/sounds/weapons/" + s);
+			for(String s : SND_ENTITIES)
+				CBCSoundEvents.addSoundPath("cbc/entities/" + s, "/cbproject/gfx/sounds/entities/" + s);
 			CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R), false, new KeyReload());
 			CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V), false, new KeyMode());
 		}
 		
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL, new NetChargerClient());
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_SV, new NetChargerServer());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new ElementArmorCharger());
-	
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_MEDFILLER_CL, new NetMedFillerClient());
+		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new DMGuiElements.ElementArmorCharger());
+		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_HEALTH, new DMGuiElements.ElementHealthCharger());
+		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_MEDFILLER, new DMGuiElements.ElementMedFiller());
 	}
 
 	
@@ -106,7 +115,8 @@ public class ModuleDM
 		DMItems.init(CBCMod.config);
 		DMBlocks.init(CBCMod.config);
 		
-		EntityRegistry.registerModEntity(EntityGaussRay.class, "gauss", GeneralProps.ENT_ID_GAUSS1, CBCMod.instance, 32, 3, true);
+		EntityRegistry.registerModEntity(EntityGaussRay.class, "gauss", GeneralProps.ENT_ID_GAUSS1, CBCMod.instance, 32, 1, true);
+		EntityRegistry.registerModEntity(EntityGaussRayColored.class, "gauss2", GeneralProps.ENT_ID_GAUSS2, CBCMod.instance, 32, 1, true);
 		EntityRegistry.registerModEntity(EntityEgonRay.class, "egonray", GeneralProps.ENT_ID_EGON_RAY, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityARGrenade.class, "argrenade", GeneralProps.ENT_ID_ARGRENADE, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityHGrenade.class, "hgrenade", GeneralProps.ENT_ID_HGRENADE, CBCMod.instance, 32, 3, true);
@@ -117,56 +127,55 @@ public class ModuleDM
 		EntityRegistry.registerModEntity(EntityCrossbowArrow.class, "arrow", GeneralProps.ENT_ID_ARROW, CBCMod.instance, 32, 2, true);
 		EntityRegistry.registerModEntity(EntityMedkit.class, "medkit", GeneralProps.ENT_ID_MEDKIT, CBCMod.instance, 32, 5, true);
 		EntityRegistry.registerModEntity(EntityBattery.class, "battery", GeneralProps.ENT_ID_BATTERY, CBCMod.instance, 32, 5, true);
-		
 		String description[] = {"crafter.weapon", "crafter.ammo"},
 				advds [] = {"crafter.advweapon", "crafter.armor"};
 		RecipeWeapons.InitializeRecipes(2, description);
 		RecipeWeapons.InitializeAdvRecipes(2, advds);
 		
 		RecipeCrafter wpnRecipes[] = {
-				new RecipeCrafter(new ItemStack(DMItems.weapon_crowbar),800, new ItemStack(CBCItems.ironBar, 2), new ItemStack(CBCItems.mat_accessories, 1), new ItemStack(Item.dyePowder, 1, 1)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmhandgun),1000, new ItemStack(CBCItems.mat_pistol, 2)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_357),1000 ,new ItemStack(CBCItems.mat_pistol, 3), new ItemStack(CBCItems.mat_accessories, 2)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmAR) ,1700, new ItemStack(CBCItems.mat_light, 3), new ItemStack(CBCItems.mat_accessories, 1)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_shotgun) ,1700 , new ItemStack(CBCItems.mat_light, 5), new ItemStack(CBCItems.mat_accessories, 3)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_crossbow), 1800, new ItemStack(CBCItems.mat_light, 6) ,new ItemStack(CBCItems.mat_accessories, 3), new ItemStack(CBCItems.ironBar, 2)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_hgrenade, 10), 1600, new ItemStack(CBCItems.mat_light, 2), new ItemStack(CBCItems.mat_explosive, 4)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_crowbar),800, new ItemStack(CBCItems.ironBar, 2), CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES), new ItemStack(Item.dyePowder, 1, 1)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmhandgun),1000, CBCItems.materials.newStack(2, EnumMaterial.PISTOL)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_357),1000 ,CBCItems.materials.newStack(3, EnumMaterial.PISTOL), CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmAR) ,1700, CBCItems.materials.newStack(3, EnumMaterial.LIGHT), CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_shotgun) ,1700 , CBCItems.materials.newStack(5, EnumMaterial.LIGHT), CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_crossbow), 1800, CBCItems.materials.newStack(6, EnumMaterial.LIGHT) ,CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES), new ItemStack(CBCItems.ironBar, 2)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_hgrenade, 10), 1600, CBCItems.materials.newStack(2, EnumMaterial.LIGHT), CBCItems.materials.newStack(4, EnumMaterial.EXPLOSIVE)),
 				
 		};
 		
 		RecipeCrafter ammoRecipes[] = {
-				new RecipeCrafter(new ItemStack(CBCItems.bullet_9mm, 18), 600, new ItemStack(CBCItems.mat_ammunition, 3)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_357, 12), 650, new ItemStack(CBCItems.mat_accessories, 2), new ItemStack(CBCItems.mat_ammunition, 3)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_shotgun, 8), 850, new ItemStack(CBCItems.mat_ammunition, 4), new ItemStack(CBCItems.mat_accessories, 1)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_9mm2, 1), 600, new ItemStack(CBCItems.mat_ammunition, 5), new ItemStack(CBCItems.mat_light, 1)),
-				new RecipeCrafter(new ItemStack(CBCItems.bullet_steelbow, 10), 650, new ItemStack(CBCItems.ironBar, 10), new ItemStack(CBCItems.mat_explosive, 1)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_bow, 1), 950, new ItemStack(CBCItems.mat_ammunition, 3)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_argrenade, 5), 600, new ItemStack(CBCItems.mat_light, 1), new ItemStack(CBCItems.mat_explosive, 2)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_rpg, 6), 1500, new ItemStack(CBCItems.mat_heavy, 1), new ItemStack(CBCItems.mat_explosive, 3)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_uranium, 1), 1500, new ItemStack(CBCItems.mat_box, 1), new ItemStack(CBCItems.ingotUranium, 3)),
-				new RecipeWeaponSpecial(CBCItems.ammo_9mm, CBCItems.bullet_9mm),
-				new RecipeWeaponSpecial(CBCItems.ammo_9mm2, CBCItems.bullet_9mm),
-				new RecipeWeaponSpecial(CBCItems.ammo_bow, CBCItems.bullet_steelbow)
+				new RecipeCrafter(new ItemStack(CBCItems.bullet_9mm, 18), 600, CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_357, 12), 650, CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES), CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_shotgun, 8), 850, CBCItems.materials.newStack(4, EnumMaterial.AMMUNITION), CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_9mm2, 1), 600, CBCItems.materials.newStack(5, EnumMaterial.AMMUNITION), CBCItems.materials.newStack(1, EnumMaterial.LIGHT)),
+				new RecipeCrafter(new ItemStack(CBCItems.bullet_steelbow, 10), 650, new ItemStack(CBCItems.ironBar, 10), CBCItems.materials.newStack(1, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_bow, 1), 950, CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_argrenade, 5), 600, CBCItems.materials.newStack(1, EnumMaterial.LIGHT), CBCItems.materials.newStack(2, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_rpg, 6), 1500, CBCItems.materials.newStack(1, EnumMaterial.HEAVY), CBCItems.materials.newStack(3, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_uranium, 1), 1500, CBCItems.materials.newStack(1, EnumMaterial.BOX), new ItemStack(CBCItems.ingotUranium, 3)),
+				new RecipeRepair(CBCItems.ammo_9mm, CBCItems.bullet_9mm),
+				new RecipeRepair(CBCItems.ammo_9mm2, CBCItems.bullet_9mm),
+				new RecipeRepair(CBCItems.ammo_bow, CBCItems.bullet_steelbow)
 		};
 		
 		RecipeCrafter advWeapons[] = {
-				new RecipeCrafter(new ItemStack(DMBlocks.blockTripmine, 15), 2000, new ItemStack(CBCItems.mat_light, 3), new ItemStack(CBCItems.mat_tech, 1), new ItemStack(CBCItems.mat_explosive, 6)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_satchel, 15), 2000, new ItemStack(CBCItems.mat_light, 3), new ItemStack(CBCItems.mat_tech, 1), new ItemStack(CBCItems.mat_explosive, 6)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_gauss), 2300, new ItemStack(CBCItems.mat_light, 8), new ItemStack(CBCItems.mat_tech, 3), new ItemStack(Block.glass, 5)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_egon), 2300, new ItemStack(CBCItems.mat_heavy, 5), new ItemStack(CBCItems.mat_accessories, 3), new ItemStack(CBCItems.mat_tech, 4))
+				new RecipeCrafter(new ItemStack(DMBlocks.blockTripmine, 15), 2000, CBCItems.materials.newStack(3, EnumMaterial.LIGHT), CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(6, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_satchel, 15), 2000, CBCItems.materials.newStack(3, EnumMaterial.LIGHT), CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(6, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_gauss), 2300, CBCItems.materials.newStack(8, EnumMaterial.LIGHT), CBCItems.materials.newStack(3, EnumMaterial.TECH), new ItemStack(Block.glass, 5)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_egon), 2300, CBCItems.materials.newStack(5, EnumMaterial.HEAVY), CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES), CBCItems.materials.newStack(4, EnumMaterial.TECH))
 		},
 		armors[] = {
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVBoot), 3000, new ItemStack(CBCItems.mat_tech, 3), new ItemStack(CBCItems.mat_light, 6), new ItemStack(CBCItems.mat_accessories, 3)),
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVLeggings), 3000, new ItemStack(CBCItems.mat_tech, 3), new ItemStack(CBCItems.mat_light, 6), new ItemStack(CBCItems.mat_accessories, 3)),
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVChestplate), 3000, new ItemStack(CBCItems.mat_tech, 4), new ItemStack(CBCItems.mat_light, 7), new ItemStack(CBCItems.mat_accessories, 4)),
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVHelmet), 3000, new ItemStack(CBCItems.mat_tech, 2), new ItemStack(CBCItems.mat_light, 4), new ItemStack(CBCItems.mat_accessories, 2))
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVBoot), 3000, CBCItems.materials.newStack(3, EnumMaterial.TECH), CBCItems.materials.newStack(6, EnumMaterial.LIGHT), CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVLeggings), 3000, CBCItems.materials.newStack(3, EnumMaterial.TECH), CBCItems.materials.newStack(6, EnumMaterial.LIGHT), CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVChestplate), 3000, CBCItems.materials.newStack(4, EnumMaterial.TECH), CBCItems.materials.newStack(7, EnumMaterial.LIGHT), CBCItems.materials.newStack(4, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVHelmet), 3000, CBCItems.materials.newStack(2, EnumMaterial.TECH), CBCItems.materials.newStack(4, EnumMaterial.LIGHT), CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES))
 		};
 		
 		RecipeWeapons.addWeaponRecipe(0, wpnRecipes);
 		RecipeWeapons.addWeaponRecipe(1, ammoRecipes);	
 		RecipeWeapons.addAdvWeaponRecipe(0, advWeapons);
 		RecipeWeapons.addAdvWeaponRecipe(1, armors);
-		
+		RecipeWeapons.close();
 	}
 
 	@ModuleInit(EnumInitType.POSTINIT)
@@ -178,23 +187,27 @@ public class ModuleDM
 	}
 	
 	@ModuleInit(EnumInitType.CLINIT)
+	@SideOnly(Side.CLIENT)
 	public void loadRenderingThings(){
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
 		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RenderSnowball(DMItems.weapon_hgrenade));
-		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay());
+		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay(false));
+		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRayColored.class, new RenderGaussRay(true));
 		RenderingRegistry.registerEntityRenderingHandler(EntitySatchel.class, new RenderSatchel());
 		RenderingRegistry.registerEntityRenderingHandler(EntityARGrenade.class, new RenderCrossedProjectile(0.4, 0.1235, ClientProps.AR_GRENADE_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityEgonRay.class, new RenderEgonRay());
 		RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new RenderCrossedProjectile(0.8, 0.27, ClientProps.RPG_ROCKET_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowArrow.class, new RenderCrossedProjectile(0.6, 0.12, ClientProps.CROSSBOW_BOW_PATH));
-		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class, new RenderSnowball(DMItems.weapon_RPG));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class, new RenderIcon(ClientProps.RED_DOT_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGauss.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGaussSec.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityTrailFX.class, new RenderTrail());
 		RenderingRegistry.registerEntityRenderingHandler(EntityHornet.class, new RenderHornet());
+		RenderingRegistry.registerEntityRenderingHandler(EntityBattery.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityMedkit.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
 		
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_satchel.itemID, new RenderItemSatchel());
@@ -258,6 +271,17 @@ public class ModuleDM
 		"ag_fireb",
 		"ag_firec"
 		
+	};
+	
+	public static final String SND_ENTITIES[] = {
+		"medkit",
+		"battery",
+		"suitcharge",
+		"suitchargeno",
+		"suitchargeok",
+		"medshot",
+		"medshotno",
+		"medcharge"
 	};
 	
 }

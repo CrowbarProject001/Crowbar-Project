@@ -51,7 +51,7 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	 * 添加一个按钮。
 	 * @param part
 	 */
-	public void addButton(CBCGuiPart part){
+	public void addElement(CBCGuiPart part){
 		elements.add(part);
 	}
 

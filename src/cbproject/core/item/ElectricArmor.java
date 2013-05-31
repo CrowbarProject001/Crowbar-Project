@@ -88,7 +88,8 @@ public abstract class ElectricArmor extends CBCGenericArmor implements ICustomEn
      * @param stack The itemstack that is damaged
      * @return the damage value
      */
-    public int getItemDamageFromStack(ItemStack stack)
+    @Override
+	public int getItemDamageFromStack(ItemStack stack)
     {
         return maxCharge - getItemCharge(stack);
     }
@@ -98,7 +99,8 @@ public abstract class ElectricArmor extends CBCGenericArmor implements ICustomEn
      * @param stack the stack
      * @return the damage value
      */
-    public int getItemDamageFromStackForDisplay(ItemStack stack)
+    @Override
+	public int getItemDamageFromStackForDisplay(ItemStack stack)
     {
         return maxCharge - getItemCharge(stack);
     }
@@ -166,7 +168,8 @@ public abstract class ElectricArmor extends CBCGenericArmor implements ICustomEn
     				getItemCharge(par1ItemStack) + "/" + this.maxCharge + " EU");
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
@@ -210,7 +213,8 @@ public abstract class ElectricArmor extends CBCGenericArmor implements ICustomEn
      * @param stack the stack
      * @return if the stack is damaged
      */
-    public boolean isItemStackDamaged(ItemStack stack)
+    @Override
+	public boolean isItemStackDamaged(ItemStack stack)
     {
         return getItemCharge(stack) < maxCharge;
     }

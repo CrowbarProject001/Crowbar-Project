@@ -27,14 +27,13 @@ import net.minecraft.item.ItemStack;
 
 /**
  * LambdaCraft通用物品类。
- * 
  * @author WeAthFolD
- * 
+ *
  */
 public abstract class CBCGenericItem extends Item {
 
 	protected String description;
-	protected boolean useDescription = false;
+	protected boolean useDescription = false;;
 	private String iconName = "";
 	
 	/**
@@ -50,24 +49,23 @@ public abstract class CBCGenericItem extends Item {
 		useDescription = true;
 		return this;
 	}
-
-
+	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		if (useDescription)
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		if(useDescription)
 			par3List.add(description);
 	}
-
-	public void setIconName(String name) {
+	
+	public void setIconName(String name){
 		this.iconName = name;
 	}
+	
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister
-				.registerIcon("lambdacraft:" + iconName);
-	}
 }
