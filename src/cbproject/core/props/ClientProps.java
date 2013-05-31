@@ -56,6 +56,11 @@ public class ClientProps {
 			HORNET_TRAIL_PATH = "/cbproject/gfx/textures/entities/ag_trail.png",
 			BATTERY_PATH = "/cbproject/gfx/textures/entities/battery.png",
 			SQUEAK_MOB_PATH = "/cbproject/gfx/textures/entities/squeak.png",
+			WIRE_SIDE_PATH = "/cbproject/gfx/textures/blocks/tripmine_beam.png",
+			WIRE_MAIN_PATH = "/cbproject/gfx/textures/blocks/tripmine_beam.png",
+			SPRY_PATH[] = {
+					"/cbproject/gfx/textures/sprays/spry0.png",
+					"/cbproject/gfx/textures/sprays/spry1.png"},
 			ITEM_SATCHEL_PATH[] = {
 					"/cbproject/gfx/textures/items/weapon_satchel1.png",
 					"/cbproject/gfx/textures/items/weapon_satchel2.png" },

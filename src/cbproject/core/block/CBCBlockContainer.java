@@ -52,31 +52,16 @@ public abstract class CBCBlockContainer extends BlockContainer {
 		this.iconName = name;
 	}
 	
-	public void setGuiId(int id) {
+	public CBCBlockContainer setGuiId(int id) {
 		this.guiId = id;
+		return this;
 	}
 	
 	@Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon("lambdacraft" + iconName);
-    }
-	
-    /**
-     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-     * their own) Args: x, y, z, neighbor blockID
-     */
-	@Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
-    {
-		TileEntityArmorCharger te = (TileEntityArmorCharger) par1World.getBlockTileEntity(par2, par3, par4);
-        if (par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
-        {
-            te.isRSActivated = true;
-        } else {
-        	te.isRSActivated = false;
-        }
+        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
     }
 	
     @Override

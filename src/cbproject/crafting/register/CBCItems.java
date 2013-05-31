@@ -40,6 +40,7 @@ public class CBCItems {
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
+	public static ItemSpray spray1, spray2;
 	
 	/**
 	 * 实际注册，请在Init中调用。
@@ -69,7 +70,10 @@ public class CBCItems {
 		halfLife01 = new LCRecord(GeneralRegistry.getItemId("halfLife01", GeneralProps.CAT_MISC), "Half-Life01", 0);
 		halfLife02 = new LCRecord(GeneralRegistry.getItemId("halfLife02", GeneralProps.CAT_MISC), "Half-Life02", 1);
 		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03", GeneralProps.CAT_MISC), "Half-Life03", 2);
-
+		
+		spray1 = new ItemSpray(GeneralRegistry.getItemId("spray1", GeneralProps.CAT_MISC), 0);
+		spray2 = new ItemSpray(GeneralRegistry.getItemId("spray2", GeneralProps.CAT_MISC), 1);
+		
 		LanguageRegistry.addName(halfLife01, "record");
 		LanguageRegistry.addName(halfLife01, "record");
 		LanguageRegistry.addName(halfLife01, "record");

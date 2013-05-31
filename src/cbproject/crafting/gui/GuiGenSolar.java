@@ -12,24 +12,19 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.api.energy.events;
-
-import net.minecraft.world.World;
-import cbproject.api.energy.tile.IEnergyTile;
+package cbproject.crafting.gui;
 
 /**
- * TODO:求自己添加注释
- * @author HopeAsd
+ * @author WeAthFolD
  *
  */
-public class EnergyTileUnloadEvent extends EnergyTileEvent{
-	
-	public World world;
+public class GuiGenSolar {
 
-	public EnergyTileUnloadEvent (World theWorld , IEnergyTile energyTile){
-		super(theWorld, energyTile);
-		this.world = theWorld;
-		
+	/**
+	 * 
+	 */
+	public GuiGenSolar() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

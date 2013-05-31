@@ -24,7 +24,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
-import cbproject.core.block.TileElectric;
+import cbproject.core.block.TileElectricStorage;
 
 /**
  * 盔甲充能机方块。 TODO:添加对工业2的支持。
@@ -32,7 +32,7 @@ import cbproject.core.block.TileElectric;
  * @author WeAthFolD
  * 
  */
-public class TileEntityHealthCharger extends TileElectric implements IInventory {
+public class TileEntityHealthCharger extends TileElectricStorage implements IInventory {
 
 	public static final int ENERGY_MAX = 50000, EFFECT_MAX = 240; // 1.25  batbox, 4-6 potions
 	public boolean isCharging = false;
@@ -278,5 +278,13 @@ public class TileEntityHealthCharger extends TileElectric implements IInventory 
 	@Override
 	public int getMaxSafeInput() {
 		return 32;
+	}
+
+	@Override
+	/**
+	 * TODO
+	 */
+	public int injectEnergy(LCDirection paramDirection, int paramInt) {
+		return 0;
 	}
 }

@@ -14,53 +14,53 @@
  */
 package cbproject.core.block;
 
-import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
+import cbproject.api.energy.events.EnergyTileLoadEvent;
+import cbproject.api.energy.events.EnergyTileUnloadEvent;
+import cbproject.api.energy.tile.IEnergyTile;
 
 /**
  * @author WeAthFolD
  *
  */
-public abstract class CBCTileEntity extends TileEntity {
+public abstract class TileElectrical extends CBCTileEntity implements IEnergyTile {
+
+	public boolean addedToNet = false;
 	
-	protected int lastTick;
-	private int updateFreq = 3;
+	/**
+	 * 
+	 */
+	public TileElectrical() {
+		
+	}
 	
 	@Override
-    public boolean canUpdate()
-    {
-        return true;
-    }
-	
-	protected void setUpdateFreq(int freq) {
-		updateFreq = freq;
+	public void onTileLoad() {
+		super.onTileLoad();
+		
 	}
 	
 	@Override
 	public void updateEntity() {
-		if(++this.lastTick > updateFreq) {
-			lastTick = 0;
-			this.onInventoryChanged();
+		super.updateEntity();
+		if(!this.addedToNet) {
+			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(worldObj, this));
+			System.out.println("Adding " + this + " to Net");
+			this.addedToNet = true;
 		}
 	}
+
+	@Override
+	public void onTileUnload() {
+		super.onTileUnload();
+		MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(worldObj, this));
+		this.addedToNet = false;
+	}
 	
-    /**
-     * validates a tile entity
-     */
 	@Override
-    public void validate()
-    {
-        super.validate();
-        onTileLoad();
-    }
-    
-	@Override
-    public void invalidate()
-    {
-    	super.invalidate();
-    	onTileUnload();
-    }
-    
-    public void onTileLoad(){};
-    
-    public void onTileUnload(){};
+	public boolean isAddToEnergyNet() {
+		return addedToNet;
+	}
+	
+
 }

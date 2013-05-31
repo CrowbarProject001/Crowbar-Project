@@ -50,7 +50,7 @@ public final class EnergyNet {
 	}
 
 	public static void onTick(World world) {
-		Proxy.profilerStartSection("LC2");
+		Proxy.profilerStartSection("LC");
 
 		EnergyNet energyNet = getForWorld(world);
 
@@ -570,7 +570,7 @@ public final class EnergyNet {
 			LCDirection inverseDirection = lcdirection.getInverse();
 
 			if (((reverse) || (!(emitter instanceof IEnEmitter)) || (!((IEnEmitter) emitter)
-					.emitterEnergyTo(target, lcdirection)))
+					.emitEnergyTo(target, lcdirection)))
 					&& ((!reverse) || (!(emitter instanceof IEnAcceptor)) || (!((IEnAcceptor) emitter)
 							.acceptsEnergyFrom(target, lcdirection)))) {
 				continue;
@@ -578,7 +578,7 @@ public final class EnergyNet {
 			if (((reverse) || (!(target instanceof IEnAcceptor)) || (!((IEnAcceptor) target)
 					.acceptsEnergyFrom(emitter, inverseDirection)))
 					&& ((!reverse) || (!(target instanceof IEnEmitter)) || (!((IEnEmitter) target)
-							.emitterEnergyTo(emitter, inverseDirection)))) {
+							.emitEnergyTo(emitter, inverseDirection)))) {
 				continue;
 			}
 			validReceivers.add(new EnergyTarget(target, inverseDirection));
@@ -594,19 +594,19 @@ public final class EnergyNet {
 
 		@ForgeSubscribe
 		public void onEnergyTileLoad(EnergyTileLoadEvent event) {
-			EnergyNet.getForWorld(EnergyTileLoadEvent.world).addTileEntity(
+			EnergyNet.getForWorld(event.world).addTileEntity(
 					(TileEntity) event.energyTile);
 		}
 
 		@ForgeSubscribe
 		public void onEnergyTileUnload(EnergyTileUnloadEvent event) {
-			EnergyNet.getForWorld(EnergyTileUnloadEvent.world).removeTileEntity(
+			EnergyNet.getForWorld(event.world).removeTileEntity(
 					(TileEntity) event.energyTile);
 		}
 
 		@ForgeSubscribe
 		public void onEnergyTileSource(EnergyTileSourceEvent event) {
-			event.amount = EnergyNet.getForWorld(EnergyTileSourceEvent.world).emitEnergyFrom(
+			event.amount = EnergyNet.getForWorld(event.world).emitEnergyFrom(
 					(IEnergySource) event.energyTile, event.amount);
 		}
 	}

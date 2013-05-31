@@ -12,55 +12,43 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.core.block;
+package cbproject.crafting.blocks;
 
-import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import cbproject.core.props.ClientProps;
+import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import net.minecraft.block.material.Material;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
-public abstract class CBCTileEntity extends TileEntity {
-	
-	protected int lastTick;
-	private int updateFreq = 3;
-	
-	@Override
-    public boolean canUpdate()
-    {
-        return true;
-    }
-	
-	protected void setUpdateFreq(int freq) {
-		updateFreq = freq;
+public class BlockWire extends BlockElectricalBase {
+
+	public BlockWire(int par1) {
+		super(par1, Material.rock);
+		this.setIconName("wire");
+		this.setUnlocalizedName("wire");
+		this.setGuiId(-1);
+		this.setGeneratorType(TileWire.class);
 	}
-	
+
 	@Override
-	public void updateEntity() {
-		if(++this.lastTick > updateFreq) {
-			lastTick = 0;
-			this.onInventoryChanged();
-		}
+	public int getRenderType() {
+		return ClientProps.RENDER_TYPE_EMPTY;
 	}
-	
-    /**
-     * validates a tile entity
-     */
+
 	@Override
-    public void validate()
-    {
-        super.validate();
-        onTileLoad();
-    }
-    
+	public boolean isOpaqueCube() {
+		return false;
+	}
+
 	@Override
-    public void invalidate()
-    {
-    	super.invalidate();
-    	onTileUnload();
-    }
-    
-    public void onTileLoad(){};
-    
-    public void onTileUnload(){};
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+
 }

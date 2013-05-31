@@ -1,6 +1,6 @@
 package cbproject.api.energy.tile;
 
-public interface IEnConductor {
+public interface IEnConductor extends IEnAcceptor, IEnEmitter {
 	 public abstract double getConductionLoss();
 
 	 public abstract int getInsulationEnergyAbsorption();

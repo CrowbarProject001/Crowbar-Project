@@ -352,6 +352,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 		currentRecipe = null;
 		iconType = CrafterIconType.NONE;
 	}
+	
 
 	public boolean hasEnoughMaterial(RecipeCrafter r) {
 		ItemStack is;

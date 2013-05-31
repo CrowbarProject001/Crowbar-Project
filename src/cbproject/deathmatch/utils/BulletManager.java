@@ -26,7 +26,7 @@ public class BulletManager {
 	
 	public static void doEntityAttack(Entity ent, DamageSource ds, int damage, double dx, double dy, double dz){
 		ent.attackEntityFrom(ds, damage);
-		ent.addVelocity(dx, dy, dz);
+		//ent.addVelocity(dx, dy, dz);
 	}
 	
 	public static void doEntityAttack(Entity ent, DamageSource ds, int damage){

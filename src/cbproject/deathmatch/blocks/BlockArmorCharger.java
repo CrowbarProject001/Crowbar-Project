@@ -54,12 +54,6 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 		this.setGuiId(GeneralProps.GUI_ID_CHARGER);
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderType() {
-		return ClientProps.RENDER_TYPE_EMPTY;
-	}
-	
     /**
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor blockID
@@ -99,16 +93,21 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
     }
     
 	@Override
+	public int getRenderType() {
+		return ClientProps.RENDER_TYPE_EMPTY;
+	}
+
+	@Override
 	public boolean isOpaqueCube()
-	{
-		return false;
-    }
+	 {
+		 return false;
+     }
 
 	@Override
 	public boolean renderAsNormalBlock()
-	{
+	 {
 	     return false;
-	}
+	 }
 
     @Override
     public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)

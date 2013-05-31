@@ -22,7 +22,7 @@ import cbproject.api.energy.tile.IEnergySink;
  * @author WeAthFolD
  *
  */
-public abstract class TileElectric extends CBCTileEntity implements IEnergySink{
+public abstract class TileElectricStorage extends TileElectrical implements IEnergySink{
 
 	public int maxEnergy;
 	public int currentEnergy;
@@ -32,7 +32,7 @@ public abstract class TileElectric extends CBCTileEntity implements IEnergySink{
 	/**
 	 * 
 	 */
-	public TileElectric(int tier, int max) {
+	public TileElectricStorage(int tier, int max) {
 		this.setMaxEnergy(max);
 	}
 	
@@ -41,14 +41,6 @@ public abstract class TileElectric extends CBCTileEntity implements IEnergySink{
     {
 		return true;
     }
-
-	@Override
-	/**
-	 * TODO:添加能源网络支持。
-	 */
-	public boolean isAddToEnergyNet() {
-		return false;
-	}
 	
 	/**
 	 * Reads a tile entity from NBT.
@@ -73,14 +65,6 @@ public abstract class TileElectric extends CBCTileEntity implements IEnergySink{
 		return getMaxEnergy() - getCurrentEnergy();
 	}
 
-	@Override
-	/**
-	 * TODO:NEEDS WRITING.
-	 */
-	public int injectEnergy(LCDirection paramDirection, int paramInt) {
-		return 0;
-	}
-
 	/**
 	 * @return the currentEnergy
 	 */
@@ -100,6 +84,16 @@ public abstract class TileElectric extends CBCTileEntity implements IEnergySink{
 	 */
 	public void setMaxEnergy(int maxEnergy) {
 		this.maxEnergy = maxEnergy;
+	}
+	
+	@Override
+	public int injectEnergy(LCDirection paramDirection, int paramInt) {
+		this.currentEnergy += paramInt;
+		if(currentEnergy > maxEnergy) {
+			currentEnergy = maxEnergy;
+			return currentEnergy - maxEnergy;
+		}
+		return 0;
 	}
 
 }

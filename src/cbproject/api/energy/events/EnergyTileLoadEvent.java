@@ -23,9 +23,10 @@ import cbproject.api.energy.tile.IEnergyTile;
  *
  */
 public class EnergyTileLoadEvent extends EnergyTileEvent{
-	public static World world;
+	public static World theWorld;
+	
 	public EnergyTileLoadEvent (IEnergyTile energyTile){
-		super(world, energyTile);
+		super(theWorld, energyTile);
 	}
 
 	public EnergyTileLoadEvent (World world , IEnergyTile energyTile){

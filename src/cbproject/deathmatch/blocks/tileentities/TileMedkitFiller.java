@@ -22,7 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
-import cbproject.core.block.TileElectric;
+import cbproject.core.block.TileElectricStorage;
 import cbproject.deathmatch.items.ItemMedkit;
 import cbproject.deathmatch.items.ItemMedkit.EnumAddingType;
 
@@ -30,7 +30,7 @@ import cbproject.deathmatch.items.ItemMedkit.EnumAddingType;
  * @author WeAthFolD
  * 
  */
-public class TileMedkitFiller extends TileElectric implements IInventory {
+public class TileMedkitFiller extends TileElectricStorage implements IInventory {
 
 	public TileMedkitFiller() {
 		super(1, 40000);
@@ -238,4 +238,14 @@ public class TileMedkitFiller extends TileElectric implements IInventory {
 		return 32;
 	}
 
+
+	@Override
+	public int injectEnergy(LCDirection paramDirection, int paramInt) {
+		this.currentEnergy += paramInt;
+		if(currentEnergy > maxEnergy) {
+			currentEnergy = maxEnergy;
+			return currentEnergy - maxEnergy;
+		}
+		return 0;
+	}
 }

@@ -25,7 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.tile.IEnergySink;
-import cbproject.core.block.TileElectric;
+import cbproject.core.block.TileElectricStorage;
 import cbproject.core.utils.EnergyUtils;
 
 /**
@@ -34,8 +34,7 @@ import cbproject.core.utils.EnergyUtils;
  * @author WeAthFolD
  * 
  */
-public class TileEntityArmorCharger extends TileElectric implements IInventory,
-		IEnergySink {
+public class TileEntityArmorCharger extends TileElectricStorage implements IInventory {
 
 	public static int ENERGY_MAX = 400000; // 10 BatBox, 4HEV Armor
 	public boolean isCharging = false;
@@ -75,7 +74,7 @@ public class TileEntityArmorCharger extends TileElectric implements IInventory,
 	
 	public void nextBehavior() {
 		int cur = currentBehavior.ordinal();
-		currentBehavior = EnumBehavior.values()[cur == EnumBehavior.values().length ? 0 : cur + 1];
+		currentBehavior = EnumBehavior.values()[cur == EnumBehavior.values().length - 1 ? 0 : cur + 1];
 	}
 	
 	public TileEntityArmorCharger() {
@@ -308,9 +307,13 @@ public class TileEntityArmorCharger extends TileElectric implements IInventory,
 	}
 
 	@Override
-	public boolean isAddToEnergyNet() {
-		// TODO Auto-generated method stub
-		return false;
+	public int injectEnergy(LCDirection paramDirection, int paramInt) {
+		this.currentEnergy += paramInt;
+		if(currentEnergy > maxEnergy) {
+			currentEnergy = maxEnergy;
+			return currentEnergy - maxEnergy;
+		}
+		return 0;
 	}
 
 }
