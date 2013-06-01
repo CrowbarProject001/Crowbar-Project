@@ -30,7 +30,7 @@ public class BlockAdvWeaponCrafter extends BlockWeaponCrafter {
 
 	public BlockAdvWeaponCrafter(int par1) {
 		super(par1);
-		setUnlocalizedName("advCrafter");
+		setUnlocalizedName("advcrafter");
 	}
 
     @Override
@@ -56,7 +56,6 @@ public class BlockAdvWeaponCrafter extends BlockWeaponCrafter {
         return iconSide;
     }
     
-	
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityWeaponCrafter().setAdvanced(true);
