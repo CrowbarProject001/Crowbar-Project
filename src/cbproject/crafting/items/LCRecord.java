@@ -45,6 +45,7 @@ public class LCRecord extends ItemRecord {
 	public LCRecord(int par1, String par2Str, int subID) {
 		super(par1, par2Str);
 		setCreativeTab(CBCMod.cct);
+		setUnlocalizedName("lcrecord");
 		recID = subID;
 	}
     
