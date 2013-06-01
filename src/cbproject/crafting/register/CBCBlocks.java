@@ -8,8 +8,10 @@ import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.Config;
 import cbproject.core.register.GeneralRegistry;
 import cbproject.crafting.blocks.BlockAdvWeaponCrafter;
+import cbproject.crafting.blocks.BlockCopperOre;
 import cbproject.crafting.blocks.BlockElectricalBase;
 import cbproject.crafting.blocks.BlockRefined;
+import cbproject.crafting.blocks.BlockTinOre;
 import cbproject.crafting.blocks.BlockUraniumOre;
 import cbproject.crafting.blocks.BlockWeaponCrafter;
 import cbproject.crafting.blocks.BlockWire;
@@ -27,6 +29,7 @@ import cbproject.crafting.blocks.TileWire;
 public class CBCBlocks {
 	
 	public static Block weaponCrafter, blockRefined, uraniumOre, advCrafter,genFire, genLava, genSolar, genMugen, wire, storageS, storageL;
+	public static Block oreTin, oreCooper;
 	
 	/**
 	 * 在这里进行实际的方块加载。请在Init中调用它。
@@ -47,7 +50,9 @@ public class CBCBlocks {
 		genSolar = new BlockElectricalBase(GeneralRegistry.getBlockId("genSolar", 0), Material.rock).setGeneratorType(TileGeneratorSolar.class).setGuiId(-1).setUnlocalizedName("genSolar");
 		genLava = new BlockElectricalBase(GeneralRegistry.getBlockId("genLava", 0), Material.rock).setGeneratorType(TileGeneratorLava.class).setGuiId(-1).setUnlocalizedName("genLava");
 		genFire = new BlockElectricalBase(GeneralRegistry.getBlockId("genFire", 0), Material.rock).setGeneratorType(TileGeneratorFire.class).setGuiId(-1).setUnlocalizedName("genFire");
-			
+		oreTin = new BlockTinOre(GeneralRegistry.getBlockId("tinOre", 0));
+		oreCooper = new BlockCopperOre(GeneralRegistry.getBlockId("cooperOre", 0));
+		
 		LanguageRegistry.addName(genMugen, "Mugen Generator");
 		LanguageRegistry.addName(wire, "Conductive wire");
 		LanguageRegistry.addName(storageS, "Small Battery Box");
@@ -67,9 +72,13 @@ public class CBCBlocks {
 		ModLoader.registerBlock(genLava);
 		ModLoader.registerBlock(genSolar);
 		ModLoader.registerBlock(genFire);
+		ModLoader.registerBlock(oreTin);
+		ModLoader.registerBlock(oreCooper);
 		
 		MinecraftForge.setBlockHarvestLevel(uraniumOre, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(blockRefined, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(oreTin, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(oreCooper, "pickaxe", 1);
 		ModLoader.registerTileEntity(TileEntityWeaponCrafter.class, "tile_entity_weapon_crafter");
 		ModLoader.registerTileEntity(TileGeneratorMugen.class, "tile_entity_mugen");
 		ModLoader.registerTileEntity(TileWire.class, "tile_entity_wire");

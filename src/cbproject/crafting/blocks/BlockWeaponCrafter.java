@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.CBCMod;
+import cbproject.core.block.CBCBlockContainer;
 import cbproject.core.props.GeneralProps;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -22,16 +23,16 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class BlockWeaponCrafter extends BlockContainer {
+public class BlockWeaponCrafter extends CBCBlockContainer {
 
 	public Icon iconSide, iconTop, iconBottom, iconMain;
 	public enum CrafterIconType{
+		
 		CRAFTING, NOMATERIAL, NONE;
 	}
 	
 	public BlockWeaponCrafter(int par1) {
 		super(par1, Material.iron);
-		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("crafter");
 	}
 	

@@ -53,8 +53,10 @@ public class ArmorHEV extends ElectricArmor {
 	}
 	
 	public EnumAttachment getAttachment(ItemStack is) {
+		if(is == null || !(is.getItem() instanceof ArmorHEV))
+			return null;
 		String name = is.getItemName().substring(9);
-		if(name == null)
+		if(name == null || name == "")
 			return null;
 		EnumAttachment e = EnumAttachment.valueOf(name.toUpperCase());
 		return e;

@@ -29,7 +29,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 /**
- * @author Administrator
+ * @author Mkpoli
  * 
  */
 public class EntitySpray extends Entity {
@@ -223,9 +223,9 @@ public class EntitySpray extends Entity {
 							this.block_pos_x + 1, y + j, z + i);
 				} else {
 					material = this.worldObj.getBlockMaterial(x + i, y + j,
-							this.block_pos_z + 1);
+							this.block_pos_z);
 					material2 = this.worldObj.getBlockMaterial(x + i,
-							y + j, this.block_pos_z);
+							y + j, this.block_pos_z + 1);
 				}
 				if (!material.isSolid()) {
 					clientPrintLn("放置面面积不够，不允许放置。");

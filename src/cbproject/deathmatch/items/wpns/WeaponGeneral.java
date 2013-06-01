@@ -30,6 +30,7 @@ public abstract class WeaponGeneral extends CBCGenericItem {
 	 */
 	public WeaponGeneral(int par1, int par2AmmoID,int par3MaxModes) {
 		super(par1);
+		setMaxStackSize(1);
 		maxModes = par3MaxModes;
 		ammoID = par2AmmoID;
 	}

@@ -28,7 +28,6 @@ public class CBCOreGenerator  implements IWorldGenerator {
 	}
 
 	private void generateEnd(World world, Random random, int i, int j) {
-		
 	}
 
 	private void generateSurface(World world, Random random, int i, int j) {
@@ -37,14 +36,23 @@ public class CBCOreGenerator  implements IWorldGenerator {
 			int uraniumOreXCoord = i + random.nextInt(16);
 			int uraniumOreYCoord = random.nextInt(35);
 			int uraniumOreZCoord = j + random.nextInt(16);
-			
 			(new WorldGenMinable(CBCBlocks.uraniumOre.blockID, 3)).generate(world, random, uraniumOreXCoord, uraniumOreYCoord, uraniumOreZCoord);
+		}
+		for(int k = 0; k < 10; k++) {
+			int tinOreXCoord = i + random.nextInt(16);
+			int tinOreYCoord = random.nextInt(64);
+			int tinOreZCoord = j + random.nextInt(16);
+			(new WorldGenMinable(CBCBlocks.uraniumOre.blockID, 3)).generate(world, random, tinOreXCoord, tinOreYCoord, tinOreZCoord);
+		}
+		for(int k = 0; k < 10; k++) {
+			int copperOreXCoord = i + random.nextInt(16);
+			int copperOreYCoord = random.nextInt(64);
+			int copperOreZCoord = j + random.nextInt(16);
+			(new WorldGenMinable(CBCBlocks.uraniumOre.blockID, 3)).generate(world, random, copperOreXCoord, copperOreYCoord, copperOreZCoord);
 		}
 	}
 
 	private void generateNether(World world, Random random, int i, int j) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

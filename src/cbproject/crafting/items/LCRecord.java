@@ -27,24 +27,28 @@ import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
-/*喜闻乐见的彩蛋*/
+
 
 /**
- * @author Administrator
+ * 
+ * 喜闻乐见的彩蛋
+ * @author mkpoli & Weathfold
  *
  */
 public class LCRecord extends ItemRecord {
-
 	
-	int recID;
+	int recID; //Record的ID
 	
 	/**
-	 * @param par1
-	 * @param par2Str
+	 * 
+	 * @param par1 ItemID
+	 * @param par2Str RecordName
+	 * @param subID Record的ID
 	 */
 	public LCRecord(int par1, String par2Str, int subID) {
 		super(par1, par2Str);
 		setCreativeTab(CBCMod.cct);
+		setUnlocalizedName("lcrecord");
 		recID = subID;
 	}
     
@@ -88,6 +92,4 @@ public class LCRecord extends ItemRecord {
     {
 		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:record" + recID);
     }
-	
-	
 }
