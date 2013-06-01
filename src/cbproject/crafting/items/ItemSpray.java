@@ -28,21 +28,21 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 /**
- * @author Administrator
+ * 
+ * 喷漆的物品
+ * @author mkpoli
  * 
  */
 public class ItemSpray extends CBCGenericItem {
 
-	private int title_id;
+	private int title_id; //喷漆的ID
 
 	public ItemSpray(int par1, int title_id) {
 		super(par1);
 		this.title_id = title_id;
-		setCreativeTab(CBCMod.cct);
-		setIconName("spray0" + (this.title_id + 1));
+		setIAndU("spray" + this.title_id);
 		setMaxStackSize(1);
 		setMaxDamage(10);
-		setUnlocalizedName("spray" + this.title_id);
 	}
 
 	@Override

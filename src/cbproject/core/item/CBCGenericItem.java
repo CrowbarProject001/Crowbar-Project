@@ -61,6 +61,16 @@ public abstract class CBCGenericItem extends Item {
 		this.iconName = name;
 	}
 	
+	/**
+	 * 推荐，有助于名字统一
+	 * 同时设置UnlocalizedName和IconName
+	 * @param names 名字
+	 */
+	public void setIAndU(String names) {
+		this.setUnlocalizedName(names);
+		this.setIconName(names);
+	}
+	
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IconRegister par1IconRegister)
