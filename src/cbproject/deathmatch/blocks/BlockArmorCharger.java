@@ -52,6 +52,7 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 		this.setUnlocalizedName("armorcharger");
 		this.setIconName("charger");
 		this.setGuiId(GeneralProps.GUI_ID_CHARGER);
+		setCreativeTab(CBCMod.cct);
 	}
 	
     /**

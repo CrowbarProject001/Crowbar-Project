@@ -11,6 +11,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -73,10 +74,6 @@ public class CBCItems {
 		
 		spray1 = new ItemSpray(GeneralRegistry.getItemId("spray1", GeneralProps.CAT_MISC), 0);
 		spray2 = new ItemSpray(GeneralRegistry.getItemId("spray2", GeneralProps.CAT_MISC), 1);
-		
-		LanguageRegistry.addName(halfLife01, "record");
-		LanguageRegistry.addName(halfLife01, "record");
-		LanguageRegistry.addName(halfLife01, "record");
 		
 		addItemRecipes();
 	}

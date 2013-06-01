@@ -1,5 +1,6 @@
 package cbproject.deathmatch.items.wpns;
 
+import cbproject.core.CBCMod;
 import cbproject.core.item.CBCGenericItem;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.utils.CBCWeaponInformation;
@@ -32,6 +33,7 @@ public abstract class WeaponGeneral extends CBCGenericItem {
 		super(par1);
 		maxModes = par3MaxModes;
 		ammoID = par2AmmoID;
+		setMaxStackSize(1);
 	}
 	
 	/**

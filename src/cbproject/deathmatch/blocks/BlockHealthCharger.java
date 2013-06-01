@@ -52,6 +52,7 @@ public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 		this.setUnlocalizedName("healthcharger");
 		this.setIconName("health");
 		this.setGuiId(GeneralProps.GUI_ID_HEALTH);
+		setCreativeTab(CBCMod.cct);
 	}
 
 	@Override
