@@ -14,35 +14,34 @@
  */
 package cbproject.crafting.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.api.energy.item.IEnItem;
-import cbproject.crafting.blocks.TileGeneratorBase;
-import cbproject.crafting.blocks.TileGeneratorFire;
-import cbproject.deathmatch.gui.SlotElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import cbproject.api.energy.item.IEnItem;
+import cbproject.crafting.blocks.TileGeneratorFire;
+import cbproject.crafting.blocks.TileGeneratorLava;
+import cbproject.deathmatch.gui.SlotElectricItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD
  *
  */
-public class ContainerGenerator extends Container {
+public class ContainerGeneratorLava extends Container {
 
 	//0:fuel 1:charge
-	TileGeneratorFire te;
+	TileGeneratorLava te;
 	
-	public ContainerGenerator(TileGeneratorFire ent, InventoryPlayer player) {
+	public ContainerGeneratorLava(TileGeneratorLava ent, InventoryPlayer player) {
 		te = ent;
 		//燃料槽
-		addSlotToContainer(new Slot(ent, 0, 108, 34));
+		addSlotToContainer(new Slot(ent, 0, 71, 50));
 		//充电槽
-		addSlotToContainer(new SlotElectricItem(ent, 1, 133, 34));
+		addSlotToContainer(new SlotElectricItem(ent, 1, 71, 17));
 		bindPlayerInventory(player);
 	}
 	
@@ -63,9 +62,8 @@ public class ContainerGenerator extends Container {
 		super.detectAndSendChanges();
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
-			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy);
-			icrafting.sendProgressBarUpdate(this, 1, te.tickLeft);
-			icrafting.sendProgressBarUpdate(this, 2, te.maxBurnTime);
+			icrafting.sendProgressBarUpdate(this, 0, te.bucketCnt);
+			icrafting.sendProgressBarUpdate(this, 1, te.curEnergyLeft);
 		}
 	}
 
@@ -74,11 +72,10 @@ public class ContainerGenerator extends Container {
 	public void updateProgressBar(int par1, int par2) {
 		super.updateProgressBar(par1, par2);
 		if (par1 == 0) {
-			te.currentEnergy = par2;
+			te.bucketCnt = par2;
 		} else if(par1 == 1) {
-			te.tickLeft = par2;
-		} else
-			te.maxBurnTime = par2;
+			te.curEnergyLeft = par2;
+		}
 	}
 	
 	@Override
@@ -124,4 +121,5 @@ public class ContainerGenerator extends Container {
 		}
 		return stack;
 	}
+
 }

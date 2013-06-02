@@ -124,8 +124,7 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	}
 	
 	@Override
-	/**
-	 * TODO:未完成
+	/*
 	 * 绘制GUI上层图像。请务必在子类中调用它以绘制Tip。
 	 */
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {

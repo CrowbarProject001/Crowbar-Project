@@ -28,6 +28,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.keys.KeyUse;
+import cbproject.core.keys.UsingUtils;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
@@ -57,7 +58,6 @@ public class NetKeyUsing implements IChannelProcess {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void onPacketData(DataInputStream inputStream, Player player) {
 		boolean isUsing = false;
 		EntityPlayer thePlayer = (EntityPlayer) player;
@@ -74,10 +74,10 @@ public class NetKeyUsing implements IChannelProcess {
 			if(mop == null || mop.sideHit == -1) 
 				return;
 			int id = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
-			KeyUse.useBlock(new BlockPos(mop.blockX, mop.blockY, mop.blockZ, id), world, thePlayer);
+			UsingUtils.useBlock(new BlockPos(mop.blockX, mop.blockY, mop.blockZ, id), world, thePlayer);
 			
 		} else {
-			KeyUse.stopUsingBlock(world, thePlayer);
+			UsingUtils.stopUsingBlock(world, thePlayer);
 		}
 		
 	}

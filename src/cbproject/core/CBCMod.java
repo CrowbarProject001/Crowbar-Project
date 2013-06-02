@@ -17,14 +17,15 @@ package cbproject.core;
 import java.util.EnumSet;
 import java.util.logging.Logger;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+
+import org.lwjgl.input.Keyboard;
+
 import cbproject.core.energy.EnergyNet;
 import cbproject.core.keys.KeyUse;
 import cbproject.core.misc.CBCCreativeTab;
@@ -35,14 +36,10 @@ import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCKeyProcess;
-import cbproject.core.register.CBCModuleRegisty;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
-import cbproject.crafting.ModuleCrafting;
 import cbproject.crafting.recipes.RecipeWeapons;
-import cbproject.deathmatch.ModuleDM;
-import cbproject.intergration.ic2.ModuleIC2;
-import cbproject.mob.ModuleMob;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -62,12 +59,13 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(modid="lc",name="LambdaCraft",version="0.9.9 pre")
+@Mod(modid="lc",name="LambdaCraft",version="1.0.0pre1")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {GeneralProps.NET_CHANNEL_CLIENT, GeneralProps.NET_CHANNEL_SERVER}, packetHandler = CBCNetHandler.class)
 public class CBCMod implements ITickHandler
 { 
-	
+	@SideOnly(Side.CLIENT)
 	private Minecraft mc;
 	
 	/**
@@ -90,10 +88,6 @@ public class CBCMod implements ITickHandler
 	 */
 	public static Config config;
 	
-	/**
-	 * 子模块注册。
-	 */
-	public static CBCModuleRegisty module;
 	
 	@Instance("lc")
 	public static CBCMod instance;
@@ -113,21 +107,14 @@ public class CBCMod implements ITickHandler
 	{
 		config=new Config(event.getSuggestedConfigurationFile());
 		EnergyNet.initialize();
-		
-		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
-		
+
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
 		
-		CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
-		
-		//模块的加载
-		module = new CBCModuleRegisty();
-		CBCModuleRegisty.registerModule(ModuleCrafting.class.getName());
-		CBCModuleRegisty.registerModule(ModuleIC2.class.getName());
-		CBCModuleRegisty.registerModule(ModuleDM.class.getName());
-		CBCModuleRegisty.registerModule(ModuleMob.class.getName());
-		module.preInit(event);
+		if(FMLCommonHandler.instance().getSide().isClient()){
+			MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+			CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
+		}
 		
 	} 
 
@@ -145,10 +132,6 @@ public class CBCMod implements ITickHandler
 		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
 		
-		module.init(Init);
-		if(Proxy.isRendering()){
-			module.clientInit();
-		}
 		
 	}
 
@@ -159,8 +142,6 @@ public class CBCMod implements ITickHandler
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 		config.SaveConfig();
-		
-		module.postInit(Init);
 	}
 
 	/**
@@ -170,8 +151,7 @@ public class CBCMod implements ITickHandler
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
 	    CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();
-	    
-	    module.serverStarting(event);
+	 
 	}
 
 	@Override

@@ -26,43 +26,52 @@ import cbproject.api.energy.item.IEnItem;
  */
 public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 
+	public static final int ENERGY_PER_BUCKET = 20000;
 	public ItemStack[] slots = new ItemStack[2];
-	public int currentEnergy = 0;
+	public int bucketCnt = 0, curEnergyLeft;;
 	
 	/**
 	 * @param tier
 	 * @param store
 	 */
 	public TileGeneratorLava() {
-		super(1, 400000);
+		super(1, 20);
 	}
 	
 
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
+		if(worldObj.isRemote)
+			return;
 		tryBurn();
-		if(currentEnergy > 0) {
-			int toSend = (currentEnergy > 10 ? 10 : currentEnergy);
-			int left = this.sendEnergy(toSend);
-			currentEnergy -= (toSend - left);
+		if(curEnergyLeft > 0) {
+			int toConsume = 10 - sendEnergy(curEnergyLeft > 10 ? 10 : curEnergyLeft);
+			curEnergyLeft -= toConsume;
+		} else {
+			if(bucketCnt-- > 0)
+				curEnergyLeft += ENERGY_PER_BUCKET;
+			else {
+				bucketCnt = 0;
+				curEnergyLeft = 0;
+			}
 		}
 	}
 	
 	private void tryBurn() {
-		int energyReq = maxStorage - currentEnergy;
+		int energyReq = maxStorage - bucketCnt;
 		
-		if(energyReq > 20000 && slots[0] != null) {
+		if(energyReq >= 1 && slots[0] != null) {
 			if(slots[0].itemID == Item.bucketLava.itemID) {
-				slots[0] = new ItemStack(Item.bucketEmpty);
-				currentEnergy += 20000;
+				this.setInventorySlotContents(0, new ItemStack(Item.bucketEmpty, 1, 0));
+				bucketCnt += 1;
 			}
 		}
 	}
 	
 	@Override
 	public int getMaxEnergyOutput() {
-		return 5;
+		return 10;
 	}
 
 
@@ -79,11 +88,21 @@ public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 
 
 	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if(--slots[i].stackSize <= 0)
-			return null;
-		return slots[i];
+	public ItemStack decrStackSize(int slot, int amt) {
+		ItemStack stack = getStackInSlot(slot);
+		if (stack != null) {
+			if (stack.stackSize <= amt) {
+				setInventorySlotContents(slot, null);
+			} else {
+				stack = stack.splitStack(amt);
+				if (stack.stackSize == 0) {
+					setInventorySlotContents(slot, null);
+				}
+			}
+		}
+		return stack;
 	}
+
 
 
 	@Override
@@ -112,7 +131,7 @@ public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 2;
+		return 64;
 	}
 
 

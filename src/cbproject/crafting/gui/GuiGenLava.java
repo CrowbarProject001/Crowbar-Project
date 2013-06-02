@@ -14,17 +14,83 @@
  */
 package cbproject.crafting.gui;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
+import cbproject.core.gui.CBCGuiButton;
+import cbproject.core.gui.CBCGuiContainer;
+import cbproject.core.gui.CBCGuiPart;
+import cbproject.core.gui.IGuiTip;
+import cbproject.core.props.ClientProps;
+import cbproject.crafting.blocks.TileGeneratorFire;
+import cbproject.crafting.blocks.TileGeneratorLava;
+import cbproject.crafting.register.CBCBlocks;
+
 /**
  * @author WeAthFolD
  *
  */
-public class GuiGenLava {
+public class GuiGenLava  extends CBCGuiContainer{
 
-	/**
-	 * 
-	 */
-	public GuiGenLava() {
-		// TODO Auto-generated constructor stub
+	TileGeneratorLava te;
+
+	private class TipEnergy implements IGuiTip {
+
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "curenergy.name";
+		}
+
+		@Override
+		public String getTip() {
+			return te.bucketCnt * te.ENERGY_PER_BUCKET + te.curEnergyLeft + "/420000 EU";
+		}
+		
+	}
+	
+	public GuiGenLava(TileGeneratorLava gen, InventoryPlayer inv) {
+		super(new ContainerGeneratorLava(gen, inv));
+		te = gen;
+		this.xSize = 173;
+		this.ySize = 178;
+	}
+	
+	@Override
+    public void initGui()
+    {
+		super.initGui();
+		CBCGuiPart energy = new CBCGuiPart("energy", 91, 18, 6, 47);
+		this.addElement(energy);
+		this.setElementTip("energy", new TipEnergy());
+    }
+
+	@Override
+    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    {
+		super.drawGuiContainerForegroundLayer(par1, par2);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    	String guiName = StatCollector.translateToLocal(CBCBlocks.genLava.getUnlocalizedName());
+    	this.fontRenderer.drawString(guiName, 7, 7, 0xdadada);
+    }
+	
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        mc.renderEngine.bindTexture(ClientProps.GUI_GENLAVA_PATH);
+        int x = (width - xSize) / 2;
+        int y = (height - ySize) / 2;
+        this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        int len = 0;
+        len = te.bucketCnt * 47 / te.maxStorage;
+        len += Math.round(2.35F * te.curEnergyLeft / te.ENERGY_PER_BUCKET);
+        this.drawTexturedModalRect(x + 91, y + 64 - len, 173, 59 - len, 6, len);
+        this.drawElements();
 	}
 
+	@Override
+	public void onButtonClicked(CBCGuiButton button) {
+	}
 }

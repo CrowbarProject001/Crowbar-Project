@@ -14,6 +14,7 @@
  */
 package cbproject.crafting.blocks;
 
+import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.item.IEnItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -28,9 +29,10 @@ import net.minecraft.tileentity.TileEntityFurnace;
 public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 
 	public ItemStack[] slots = new ItemStack[2];
-	public boolean isBurning;
+	public boolean isBurning = false;
 	public int tickLeft = 0, maxBurnTime = 0;
 	public int currentEnergy = 0;
+	private int tickSinceNextUpdate = 0;
 	
 	/**
 	 * @param tier
@@ -45,8 +47,12 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
+		if(worldObj.isRemote)
+			return;
 		if(isBurning) {
 			tickLeft--;
+			currentEnergy += this.sendEnergy(5);
+			System.out.println(currentEnergy);
 			if(currentEnergy > maxStorage)
 				currentEnergy = maxStorage;
 			if(tickLeft <= 0)
@@ -59,6 +65,9 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 			int all = currentEnergy > 5 ?  5 : currentEnergy;
 			int rev = sendEnergy(all);
 			currentEnergy -= (all - rev);
+			if(slots[1] != null) {
+				((ICustomEnItem)slots[1].getItem()).charge(slots[1], currentEnergy, 2, false, false);
+			}
 		}
 	}
 	
@@ -92,10 +101,19 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 
 
 	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if(--slots[i].stackSize <= 0)
-			return null;
-		return slots[i];
+	public ItemStack decrStackSize(int slot, int amt) {
+		ItemStack stack = getStackInSlot(slot);
+		if (stack != null) {
+			if (stack.stackSize <= amt) {
+				setInventorySlotContents(slot, null);
+			} else {
+				stack = stack.splitStack(amt);
+				if (stack.stackSize == 0) {
+					setInventorySlotContents(slot, null);
+				}
+			}
+		}
+		return stack;
 	}
 
 
@@ -125,7 +143,7 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 2;
+		return 64;
 	}
 
 
@@ -139,9 +157,7 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		if(i == 0)
-			return true;
-		else return(itemstack.getItem() instanceof IEnItem);
+		return true;
 	}
 
 }

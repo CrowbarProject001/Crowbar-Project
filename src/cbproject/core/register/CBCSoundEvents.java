@@ -34,7 +34,6 @@ public class CBCSoundEvents {
 	private static HashSet<String[]> pathSounds = new HashSet();
 	
 	@ForgeSubscribe
-	@SideOnly(Side.CLIENT)
 	public void onSound(SoundLoadEvent event)
 	{
 		System.out.println("Attempting to load CBC sound files...");

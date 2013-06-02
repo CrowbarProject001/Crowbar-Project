@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.Config;
+import cbproject.core.props.GeneralProps;
 import cbproject.core.register.GeneralRegistry;
 import cbproject.crafting.blocks.BlockAdvWeaponCrafter;
 import cbproject.crafting.blocks.BlockCopperOre;
@@ -47,9 +48,9 @@ public class CBCBlocks {
 		wire = new BlockWire(GeneralRegistry.getBlockId("wire", 0));
 		storageS = new BlockElectricalBase(GeneralRegistry.getBlockId("storagesmall", 0), Material.rock).setGeneratorType(TileStorage.TileStorageSmall.class).setGuiId(-1).setUnlocalizedName("storages");
 		storageL = new BlockElectricalBase(GeneralRegistry.getBlockId("storagelarge", 0), Material.rock).setGeneratorType(TileStorage.TileStorageLarge.class).setGuiId(-1).setUnlocalizedName("storagel");
-		genSolar = new BlockElectricalBase(GeneralRegistry.getBlockId("genSolar", 0), Material.rock).setGeneratorType(TileGeneratorSolar.class).setGuiId(-1).setUnlocalizedName("genSolar");
-		genLava = new BlockElectricalBase(GeneralRegistry.getBlockId("genLava", 0), Material.rock).setGeneratorType(TileGeneratorLava.class).setGuiId(-1).setUnlocalizedName("genLava");
-		genFire = new BlockElectricalBase(GeneralRegistry.getBlockId("genFire", 0), Material.rock).setGeneratorType(TileGeneratorFire.class).setGuiId(-1).setUnlocalizedName("genFire");
+		genSolar = new BlockElectricalBase(GeneralRegistry.getBlockId("genSolar", 0), Material.rock).setGeneratorType(TileGeneratorSolar.class).setGuiId(GeneralProps.GUI_ID_GENSOLAR).setUnlocalizedName("genSolar");
+		genLava = new BlockElectricalBase(GeneralRegistry.getBlockId("genLava", 0), Material.rock).setGeneratorType(TileGeneratorLava.class).setGuiId(GeneralProps.GUI_ID_GENLAVA).setUnlocalizedName("genLava");
+		genFire = new BlockElectricalBase(GeneralRegistry.getBlockId("genFire", 0), Material.rock).setGeneratorType(TileGeneratorFire.class).setGuiId(GeneralProps.GUI_ID_GENFIRE).setUnlocalizedName("genFire");
 		oreTin = new BlockTinOre(GeneralRegistry.getBlockId("tinOre", 0));
 		oreCooper = new BlockCopperOre(GeneralRegistry.getBlockId("cooperOre", 0));
 		

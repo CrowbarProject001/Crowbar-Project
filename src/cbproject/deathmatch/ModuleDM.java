@@ -1,43 +1,25 @@
 package cbproject.deathmatch;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.PlayerAPI;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.input.Keyboard;
 
 import cbproject.core.CBCMod;
-import cbproject.core.CBCPlayer;
-import cbproject.core.module.CBCSubModule;
-import cbproject.core.module.ModuleInit;
-import cbproject.core.module.ModuleInit.EnumInitType;
-import cbproject.core.network.NetExplosion;
-import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCKeyProcess;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.CBCSoundEvents;
-import cbproject.core.renderers.RenderCrossedProjectile;
-import cbproject.core.renderers.RenderEmpty;
-import cbproject.core.renderers.RenderIcon;
-import cbproject.core.renderers.RenderModel;
 import cbproject.crafting.items.ItemMaterial.EnumMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeRepair;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cbproject.crafting.register.CBCItems;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.entities.EntityBattery;
-import cbproject.deathmatch.entities.EntityBullet;
-import cbproject.deathmatch.entities.EntityBulletGauss;
-import cbproject.deathmatch.entities.EntityBulletGaussSec;
 import cbproject.deathmatch.entities.EntityCrossbowArrow;
 import cbproject.deathmatch.entities.EntityHGrenade;
 import cbproject.deathmatch.entities.EntityHornet;
@@ -48,9 +30,7 @@ import cbproject.deathmatch.entities.EntitySatchel;
 import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cbproject.deathmatch.entities.fx.EntityGaussRay;
 import cbproject.deathmatch.entities.fx.EntityGaussRayColored;
-import cbproject.deathmatch.entities.fx.EntityTrailFX;
 import cbproject.deathmatch.gui.DMGuiElements;
-import cbproject.deathmatch.items.wpns.WeaponGeneralBullet;
 import cbproject.deathmatch.keys.KeyMode;
 import cbproject.deathmatch.keys.KeyReload;
 import cbproject.deathmatch.network.NetChargerClient;
@@ -58,38 +38,34 @@ import cbproject.deathmatch.network.NetDeathmatch;
 import cbproject.deathmatch.network.NetMedFillerClient;
 import cbproject.deathmatch.register.DMBlocks;
 import cbproject.deathmatch.register.DMItems;
-import cbproject.deathmatch.renderers.RenderBulletWeapon;
-import cbproject.deathmatch.renderers.RenderCrossbow;
-import cbproject.deathmatch.renderers.RenderEgon;
-import cbproject.deathmatch.renderers.RenderEgonRay;
-import cbproject.deathmatch.renderers.RenderGaussRay;
-import cbproject.deathmatch.renderers.RenderHornet;
-import cbproject.deathmatch.renderers.RenderItemSatchel;
-import cbproject.deathmatch.renderers.RenderSatchel;
-import cbproject.deathmatch.renderers.RenderTileCharger;
-import cbproject.deathmatch.renderers.RenderTileTripmine;
-import cbproject.deathmatch.renderers.RenderTrail;
-import cbproject.deathmatch.renderers.models.ModelBattery;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
+import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.ServerStarting;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-@CBCSubModule("deathmatch")
+@Mod(modid="lcdm",name="LambdaCraft|DeathMatch",version="1.0.0pre1")
+@NetworkMod(clientSideRequired=true,serverSideRequired=false)
 public class ModuleDM
 {
 	
-	@Instance("cbc.deathmatch")
-	public static ModuleDM instance = new ModuleDM();
+	@Instance("lcdm")
+	public static ModuleDM instance;
 	
-	@ModuleInit(EnumInitType.PREINIT)
+	@SidedProxy(clientSide="cbproject.deathmatch.proxy.ClientProxy",serverSide="cbproject.deathmatch.proxy.Proxy")
+	public static cbproject.deathmatch.proxy.Proxy proxy;
+	
+	@PreInit
 	public void preInit(FMLPreInitializationEvent Init)
 	{
 		if(FMLCommonHandler.instance().getSide() == Side.CLIENT){
@@ -110,7 +86,7 @@ public class ModuleDM
 	}
 
 	
-	@ModuleInit(EnumInitType.INIT)
+	@Init
 	public void init(FMLInitializationEvent Init){
 		DMItems.init(CBCMod.config);
 		DMBlocks.init(CBCMod.config);
@@ -176,49 +152,18 @@ public class ModuleDM
 		RecipeWeapons.addAdvWeaponRecipe(0, advWeapons);
 		RecipeWeapons.addAdvWeaponRecipe(1, armors);
 		RecipeWeapons.close();
+		
+		proxy.init();
 	}
 
-	@ModuleInit(EnumInitType.POSTINIT)
+	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 	}
 
-	@ModuleInit(EnumInitType.SVINIT)
+	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
 	}
 	
-	@ModuleInit(EnumInitType.CLINIT)
-	@SideOnly(Side.CLIENT)
-	public void loadRenderingThings(){
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
-		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
-
-		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RenderSnowball(DMItems.weapon_hgrenade));
-		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay(false));
-		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRayColored.class, new RenderGaussRay(true));
-		RenderingRegistry.registerEntityRenderingHandler(EntitySatchel.class, new RenderSatchel());
-		RenderingRegistry.registerEntityRenderingHandler(EntityARGrenade.class, new RenderCrossedProjectile(0.4, 0.1235, ClientProps.AR_GRENADE_PATH));
-		RenderingRegistry.registerEntityRenderingHandler(EntityEgonRay.class, new RenderEgonRay());
-		RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new RenderCrossedProjectile(0.8, 0.27, ClientProps.RPG_ROCKET_PATH));
-		RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowArrow.class, new RenderCrossedProjectile(0.6, 0.12, ClientProps.CROSSBOW_BOW_PATH));
-		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class, new RenderIcon(ClientProps.RED_DOT_PATH));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderEmpty());
-		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGauss.class, new RenderEmpty());
-		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGaussSec.class, new RenderEmpty());
-		RenderingRegistry.registerEntityRenderingHandler(EntityTrailFX.class, new RenderTrail());
-		RenderingRegistry.registerEntityRenderingHandler(EntityHornet.class, new RenderHornet());
-		RenderingRegistry.registerEntityRenderingHandler(EntityBattery.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityMedkit.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
-		
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_satchel.itemID, new RenderItemSatchel());
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_egon.itemID, new RenderEgon());
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmhandgun.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmhandgun, 0.08F));
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_357, 0.08F));
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmAR, 0.10F));
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun, 0.12F));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripmine.class, new RenderTileTripmine(DMBlocks.blockTripmine));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmorCharger.class, new RenderTileCharger(DMBlocks.armorCharger));
-	}
 	
 	public final static String SOUND_WEAPONS[]={
 		

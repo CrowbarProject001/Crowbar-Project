@@ -23,6 +23,7 @@ import cbproject.api.tile.IUseable;
 import cbproject.core.CBCMod;
 import cbproject.core.block.CBCBlockContainer;
 import cbproject.core.keys.KeyUse;
+import cbproject.core.keys.UsingUtils;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
 import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
@@ -93,6 +94,7 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
     }
     
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 		return ClientProps.RENDER_TYPE_EMPTY;
 	}
@@ -104,6 +106,7 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
      }
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean renderAsNormalBlock()
 	 {
 	     return false;
@@ -183,7 +186,7 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 		TileEntityArmorCharger te2 = (TileEntityArmorCharger) te;
 		String path = te2.currentEnergy > 0 ? "cbc.entities.suitchargeok" : "cbc.entities.suitchargeno";
 		world.playSoundAtEntity(player, path, 0.5F, 1.0F);
-		KeyUse.setBlockInUse(player, bx, by, bz);
+		UsingUtils.setBlockInUse(player, bx, by, bz);
 		if(te2.currentEnergy > 0)
 			te2.startUsing(player);
 		

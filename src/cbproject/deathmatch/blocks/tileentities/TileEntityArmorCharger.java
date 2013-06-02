@@ -100,7 +100,6 @@ public class TileEntityArmorCharger extends TileElectricStorage implements IInve
 			return;
 		
 		int energyReq = ENERGY_MAX - currentEnergy;
-		
 		// discharge
 		if (this.isRSActivated
 				&& currentBehavior == EnumBehavior.DISCHARGE) {

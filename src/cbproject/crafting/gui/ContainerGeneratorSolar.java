@@ -14,13 +14,18 @@
  */
 package cbproject.crafting.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.crafting.blocks.TileGeneratorBase;
 import cbproject.crafting.blocks.TileGeneratorSolar;
+import cbproject.deathmatch.gui.SlotElectricItem;
 
 /**
  * @author WeAthFolD
@@ -32,6 +37,7 @@ public class ContainerGeneratorSolar extends Container {
 	
 	public ContainerGeneratorSolar(TileGeneratorSolar ent, InventoryPlayer player) {
 		te = ent;
+		addSlotToContainer(new SlotElectricItem(ent, 0, 130, 48));
 	}
 	
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
@@ -46,7 +52,29 @@ public class ContainerGeneratorSolar extends Container {
 		}
 	}
 	
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+		for (int i = 0; i < this.crafters.size(); ++i) {
+			ICrafting icrafting = (ICrafting) this.crafters.get(i);
+			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy * (te.isEmitting ? 1 : -1));
+		}
+	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int par1, int par2) {
+		super.updateProgressBar(par1, par2);
+		if (par1 == 0) {
+			te.currentEnergy = Math.abs(par2);
+			if(par2 > 0)
+				te.isEmitting = true;
+			else te.isEmitting = false;
+				
+		}
+	}
+	
+	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return te.isUseableByPlayer(player);
@@ -63,6 +91,8 @@ public class ContainerGeneratorSolar extends Container {
 
 			// 将玩家物品栏中的物品放到TileEntity中
 			if (slot >= 1) {
+				if(!(stackInSlot.getItem() instanceof ICustomEnItem))
+					return null;
 				if (!this.mergeItemStack(stackInSlot, 0, 1, true)) {
 					return null;
 				}

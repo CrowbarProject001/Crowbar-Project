@@ -18,7 +18,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 import cbproject.api.energy.item.IEnItem;
-
+ 
 /**
  * @author WeAthFolD
  *
@@ -26,22 +26,34 @@ import cbproject.api.energy.item.IEnItem;
 public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 
 	public ItemStack[] slots = new ItemStack[1];
+	public int currentEnergy = 0;
+	public boolean isEmitting;
 	
 	/**
 	 * @param tier
 	 * @param store
 	 */
 	public TileGeneratorSolar() {
-		super(1, 0);
+		super(1, 10000);
 	}
 	
 
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(this.worldObj.isDaytime() && worldObj.isBlockSolidOnSide(xCoord, yCoord, zCoord, ForgeDirection.UP)) {
-			this.sendEnergy(4);
+		if(worldObj.isRemote)
+			return;
+		
+		if(this.worldObj.isDaytime() && worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord)) {
+				currentEnergy += 4;
+				int amt = currentEnergy > 16 ? 16 : currentEnergy;
+				amt -= this.sendEnergy(amt);
+				currentEnergy -= amt;
+				if(currentEnergy > maxStorage)
+					currentEnergy = maxStorage;
+				isEmitting = true;
 		}
+		isEmitting = false;
 	}
 	
 	@Override
@@ -63,10 +75,19 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 
 
 	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if(--slots[i].stackSize <= 0)
-			return null;
-		return slots[i];
+	public ItemStack decrStackSize(int slot, int amt) {
+		ItemStack stack = getStackInSlot(slot);
+		if (stack != null) {
+			if (stack.stackSize <= amt) {
+				setInventorySlotContents(slot, null);
+			} else {
+				stack = stack.splitStack(amt);
+				if (stack.stackSize == 0) {
+					setInventorySlotContents(slot, null);
+				}
+			}
+		}
+		return stack;
 	}
 
 

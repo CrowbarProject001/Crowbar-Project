@@ -12,25 +12,27 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.crafting;
+package cbproject.crafting.proxy;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cbproject.core.register.CBCSoundEvents;
 import cbproject.crafting.blocks.TileWire;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.event.ForgeSubscribe;
+import cbproject.crafting.entities.EntitySpray;
+import cbproject.crafting.render.RenderWire;
+import cbproject.crafting.renderer.RenderSpray;
 
 /**
  * @author WeAthFolD
  *
  */
-public class CREventHandler {
-
-	@ForgeSubscribe
-	public void onDrawWireframe(DrawBlockHighlightEvent event) {
-		World world = event.player.worldObj;
-		TileEntity te = world.getBlockTileEntity(event.target.blockX, event.target.blockY, event.target.blockZ);
-		if(te instanceof TileWire)
-			event.setCanceled(true);
+public class ClientProxy extends Proxy {
+	@Override public void init() {
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWire.class, new RenderWire());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpray.class, new RenderSpray());
+		for (int i = 1; i <= 3; i++) {
+			CBCSoundEvents.addStreaming("Half-Life0" + i,
+					"cbproject/gfx/sounds/Half-Life0" + i + ".ogg");
+		}
 	}
 }

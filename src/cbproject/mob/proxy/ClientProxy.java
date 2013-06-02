@@ -12,29 +12,20 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.crafting.gui;
+package cbproject.mob.proxy;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import cbproject.core.register.IGuiElement;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
+import net.minecraft.client.renderer.entity.RenderLiving;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cbproject.mob.client.ModelSnark;
+import cbproject.mob.entities.EntitySnark;
 
 /**
- * 武器合成机的GUI注册。
  * @author WeAthFolD
+ *
  */
-public class ElementCrafter implements IGuiElement {
-
-	@Override
-	public Object getServerContainer(EntityPlayer player, World world,
-			int x, int y, int z) {
-		return new ContainerWeaponCrafter(player.inventory, (TileEntityWeaponCrafter) world.getBlockTileEntity(x, y, z));
+public class ClientProxy extends Proxy {
+	
+	@Override public void init() {
+		RenderingRegistry.registerEntityRenderingHandler(EntitySnark.class, new RenderLiving(new ModelSnark(), 0.2F));
 	}
-
-	@Override
-	public Object getClientGui(EntityPlayer player, World world, int x,
-			int y, int z) {
-		return new GuiWeaponCrafter(player.inventory, (TileEntityWeaponCrafter) world.getBlockTileEntity(x, y, z));
-	}
-
 }

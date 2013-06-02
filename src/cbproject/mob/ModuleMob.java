@@ -1,34 +1,39 @@
 package cbproject.mob;
 
-import net.minecraft.client.renderer.entity.RenderLiving;
 import cbproject.core.CBCMod;
-import cbproject.core.module.CBCSubModule;
-import cbproject.core.module.ModuleInit;
-import cbproject.core.module.ModuleInit.EnumInitType;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
 import cbproject.core.register.CBCSoundEvents;
-import cbproject.mob.client.ModelSnark;
 import cbproject.mob.entities.EntitySnark;
 import cbproject.mob.register.CBCMobItems;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
+import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.ServerStarting;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 
 
-@CBCSubModule("mob")
+@Mod(modid="lcmob",name="LambdaCraft|Living",version="1.0.0pre1")
+@NetworkMod(clientSideRequired=true,serverSideRequired=false)
 public class ModuleMob
 {
 	
-	@Instance("cbc.mob")
+	@SidedProxy(clientSide="cbproject.mob.proxy.ClientProxy",serverSide="cbproject.mob.proxy.Proxy")
+	public static cbproject.mob.proxy.Proxy proxy;
+	
+	@Instance("lcmob")
 	public static ModuleMob instance;
 	
-	@ModuleInit(EnumInitType.PREINIT)
+	@PreInit
 	public void preInit(FMLPreInitializationEvent Init)
 	{
 		if(Proxy.isRendering())
@@ -37,24 +42,18 @@ public class ModuleMob
 			}
 	}
 
-	
-	@ModuleInit(EnumInitType.INIT)
+	@Init
 	public void init(FMLInitializationEvent Init){
 		CBCMobItems.init(CBCMod.config);
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
 	}
 
-	@ModuleInit(EnumInitType.POSTINIT)
+	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 	}
 
-	@ModuleInit(EnumInitType.SVINIT)
+	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
-	}
-	
-	@ModuleInit(EnumInitType.CLINIT)
-	public void registerRenderingThings(){
-		RenderingRegistry.registerEntityRenderingHandler(EntitySnark.class, new RenderLiving(new ModelSnark(), 0.2F));
 	}
 	
 	public static final String SND_MOBS[] = {
