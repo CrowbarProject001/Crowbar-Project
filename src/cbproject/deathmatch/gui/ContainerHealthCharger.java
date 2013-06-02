@@ -14,12 +14,17 @@
  */
 package cbproject.deathmatch.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import cbproject.api.energy.item.IEnItem;
 import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
+import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumBehavior;
 
 /**
  * @author WeAthFolD
@@ -34,15 +39,9 @@ public class ContainerHealthCharger extends Container{
 	 */
 	public ContainerHealthCharger(TileEntityHealthCharger t, InventoryPlayer playerinv) {
 		te  = t;
-		//TODO:根据GUI绑定Slot位置
-		/*
-		for(int i = 0; i < 4; i++){
-			addSlotToContainer(new SlotElectricItem(te, i, 8, 8 + 18 * i));
-		}
-		for(int i = 0; i < 3; i++){
-			addSlotToContainer(new Slot(te, i + 4, 81 + 23 * i, 60));
-		}
-		*/
+		addSlotToContainer(new Slot(t, 0, 19, 60));
+		addSlotToContainer(new Slot(t, 1, 41, 60));
+		addSlotToContainer(new Slot(t, 2, 149, 60));
 		bindPlayerInventory(playerinv);
 				
 	}
@@ -57,6 +56,27 @@ public class ContainerHealthCharger extends Container{
 		for (int i = 0; i < 9; i++) {
 			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
 		}
+	}
+	
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+		for (int i = 0; i < this.crafters.size(); ++i) {
+			ICrafting icrafting = (ICrafting) this.crafters.get(i);
+			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy);
+			icrafting.sendProgressBarUpdate(this, 1, te.mainEff);
+			icrafting.sendProgressBarUpdate(this, 2, te.sideEff);
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void updateProgressBar(int par1, int par2) {
+		if (par1 == 0) {
+			te.currentEnergy = par2;
+		} else if(par1 == 1)
+			te.mainEff = par2;
+		else te.sideEff = par2;
 	}
 
 	@Override
@@ -76,9 +96,13 @@ public class ContainerHealthCharger extends Container{
 			// places it into the tileEntity is possible since its in the player
 			// inventory
 			if (slot >= 3) {
-					if (!this.mergeItemStack(stackInSlot, 0, 3, true)) {
+				if(stackInSlot.getItem() instanceof IEnItem){
+					if (!this.mergeItemStack(stackInSlot, 2, 3, true)) {
 						return null;
 					}
+				} else if(!this.mergeItemStack(stackInSlot, 0, 2, true)) {
+					return null;
+				}
 			}
 			// merges the item into player inventory since its in the tileEntity
 			else{

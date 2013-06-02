@@ -15,12 +15,16 @@
 package cbproject.deathmatch.blocks.tileentities;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
@@ -34,12 +38,25 @@ import cbproject.core.block.TileElectricStorage;
  */
 public class TileEntityHealthCharger extends TileElectricStorage implements IInventory {
 
-	public static final int ENERGY_MAX = 50000, EFFECT_MAX = 240; // 1.25  batbox, 4-6 potions
-	public boolean isCharging = false;
+	public static final int ENERGY_MAX = 30000, EFFECT_MAX = 14400, PROGRESS_TIME = 100, HEALTH_MAX = 60; // 1.25  batbox, 4-6 potions
 	public boolean isUsing = false;
 	public HashSet<EntityPlayer> chargers = new HashSet();
 	public int mainEff = 0, sideEff = 0;
+	public int prgAddMain = 0, prgAddSide = 0;
 	private int sideEffectId = 0;
+	
+	public static Set<Integer> availableIds = new HashSet();
+	static {
+		availableIds.add(Potion.digSpeed.id);
+		availableIds.add(Potion.damageBoost.id);
+		availableIds.add(Potion.fireResistance.id);
+		availableIds.add(Potion.invisibility.id);
+		availableIds.add(Potion.jump.id);
+		availableIds.add(Potion.moveSpeed.id);
+		availableIds.add(Potion.nightVision.id);
+		availableIds.add(Potion.resistance.id);
+		availableIds.add(Potion.waterBreathing.id);
+	}
 
 	/**
 	 * Slot 0:主药水槽。
@@ -89,6 +106,7 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 
 	@Override
 	public void updateEntity() {
+		super.updateEntity();
 		int energyReq = ENERGY_MAX - currentEnergy;
 		
 		if(currentEnergy < 0)
@@ -131,7 +149,74 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 					worldObj.playSoundAtEntity(charger, "cbc.entities.medshotno", 0.5F, 1.0F);
 				}
 			}
+			
 		}
+		
+		if(slots[0] != null && slots[0].itemID == Item.potion.itemID) {
+			int dmg = slots[0].getItemDamage();
+			List<PotionEffect> list = Item.potion.getEffects(dmg);
+			PotionEffect effect = list.get(0);
+			if(mainEff < HEALTH_MAX){
+				if(effect.getPotionID() == Potion.heal.getId()) {
+					
+					if(currentEnergy > 5){
+						currentEnergy -= 5;
+						prgAddMain++;
+					}
+					else currentEnergy = 0;
+					if(prgAddMain >= PROGRESS_TIME){
+						this.setInventorySlotContents(0, null);
+						mainEff += (effect.getAmplifier() == 0 ? 12 : 18);
+						prgAddMain = 0;
+					}
+					
+				} else if(effect.getPotionID() == Potion.regeneration.getId()) {
+					
+					if(currentEnergy > 5){
+						currentEnergy -= 5;
+						prgAddMain++;
+					}
+					else currentEnergy = 0;
+					if(prgAddMain >= PROGRESS_TIME){
+						this.setInventorySlotContents(0, null);
+						if(dmg == 8193)
+							mainEff += 36;
+						else if(dmg == 8257)
+							mainEff += 96;
+						else if(dmg == 8225)
+							mainEff += 38;
+						prgAddMain = 0;
+					}
+					
+				} else prgAddMain = 0;
+			}
+			if(mainEff > this.HEALTH_MAX)
+				mainEff = HEALTH_MAX;
+		} 
+		
+		if(slots[1] != null && slots[1].itemID == Item.potion.itemID) {
+			
+			int dmg = slots[1].getItemDamage();
+			List<PotionEffect> list = Item.potion.getEffects(dmg);
+			PotionEffect effect = list.get(0);
+			if(this.availableIds.contains(effect.getPotionID()) && sideEff < EFFECT_MAX){
+				if(this.sideEffectId == 0 || effect.getPotionID() == sideEffectId || this.sideEff == 0) {
+					this.sideEffectId = effect.getPotionID();
+					if(currentEnergy > 5){
+						currentEnergy -= 5;
+						prgAddSide++;
+					}
+					if(prgAddSide >= PROGRESS_TIME){
+						this.setInventorySlotContents(1, null);
+						sideEff += effect.getDuration();
+						prgAddSide = 0;
+					}
+				} else prgAddSide = 0;
+			}
+			if(sideEff > this.EFFECT_MAX)
+				sideEff = EFFECT_MAX;
+			
+		} 
 	}
 	
 	/**
@@ -139,7 +224,21 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 	 * @param charger
 	 */
 	public void doHealing(EntityPlayer charger) {
-	
+		if(mainEff > 0 && charger.getHealth() < 20) {
+			if(worldObj.getWorldTime() % 10 == 0){
+				charger.heal(1);
+				this.mainEff -= 1;
+			}
+		}
+		if(sideEff > 0 && sideEffectId != 0) {
+			int amt = sideEff > 6 ? 6 : sideEff;
+			this.sideEff -= amt;
+			PotionEffect eff = charger.getActivePotionEffect(Potion.potionTypes[sideEffectId]);
+			if(eff != null) {
+				eff.duration += amt;
+				charger.addPotionEffect(eff);
+			} else charger.addPotionEffect(new PotionEffect(sideEffectId, amt, 0));
+		}
 	}
 
 	@Override
@@ -278,13 +377,5 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 	@Override
 	public int getMaxSafeInput() {
 		return 32;
-	}
-
-	@Override
-	/**
-	 * TODO
-	 */
-	public int injectEnergy(LCDirection paramDirection, int paramInt) {
-		return 0;
 	}
 }

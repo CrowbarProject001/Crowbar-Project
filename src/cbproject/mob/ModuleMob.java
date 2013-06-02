@@ -46,6 +46,7 @@ public class ModuleMob
 	public void init(FMLInitializationEvent Init){
 		CBCMobItems.init(CBCMod.config);
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
+		proxy.init();
 	}
 
 	@PostInit

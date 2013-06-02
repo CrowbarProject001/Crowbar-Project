@@ -82,11 +82,11 @@ public class ContainerMedFiller extends Container{
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
-						8 + j * 21, 114 + i * 22));
+						8 + j * 21, 103 + i * 22));
 			}
 		}
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 21, 185));
+			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 21, 174));
 		}
 	}
 

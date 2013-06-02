@@ -38,6 +38,7 @@ public class ContainerGeneratorSolar extends Container {
 	public ContainerGeneratorSolar(TileGeneratorSolar ent, InventoryPlayer player) {
 		te = ent;
 		addSlotToContainer(new SlotElectricItem(ent, 0, 130, 48));
+		bindPlayerInventory(player);
 	}
 	
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {

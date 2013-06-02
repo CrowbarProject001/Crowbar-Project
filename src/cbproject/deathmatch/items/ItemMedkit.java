@@ -102,7 +102,6 @@ public class ItemMedkit extends CBCGenericItem {
 			if(is.getItem() instanceof ItemPotion) {
 				List<PotionEffect> list = Item.potion.getEffects(is.getItemDamage());
 				for(PotionEffect p : list) {
-					System.out.println("Found potion : " + p + "in is : " + is);
 					tryAddEffectTo(medkit, is, EnumAddingType.NONE);
 				}
 			}

@@ -24,7 +24,9 @@ import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
+import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
+import cbproject.deathmatch.register.DMBlocks;
 
 /**
  * @author WeAthFolD
@@ -59,31 +61,42 @@ public class GuiHealthCharger extends CBCGuiContainer {
 
 	}
 	
-	class TipBehavior implements IGuiTip {
-
+	class TipMain implements IGuiTip {
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "Redstone Behavior: ";
+			return EnumChatFormatting.RED + "hemain.name";
 		}
 
 		@Override
 		public String getTip() {
-			return te.getCurrentBehavior().toString();
+			return te.mainEff + "/" + TileEntityHealthCharger.HEALTH_MAX + " HP";
 		}
-		
-		
+	}
+	
+	class TipSide implements IGuiTip {
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "heside.name";
+		}
+
+		@Override
+		public String getTip() {
+			return te.sideEff/20.0F + "/" + TileEntityHealthCharger.EFFECT_MAX/20.0F + " sec";
+		}
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart behavior = new CBCGuiPart("behavior", 80, 28, 64, 10)
-				.setDraw(false),
-				redstone = new CBCGuiButton("redstone", 153, 5, 19, 10).setDownCoords(180, 13).setTextureCoords(153, 5);
-		this.addElement(behavior);
-		this.addElement(redstone);
+		CBCGuiPart behavior = new CBCGuiPart("behavior", 154, 8, 5, 48),
+				main = new CBCGuiPart("main", 20, 8, 14, 46),
+				side = new CBCGuiPart("side", 42, 8, 14, 46);
+		this.addElement(behavior); 
+		this.addElement(main); 
+		this.addElement(side); 
 		this.setElementTip("behavior", new TipEnergy());
-		this.setElementTip("redstone", new TipBehavior());
+		this.setElementTip("main", new TipMain());
+		this.setElementTip("side", new TipSide());
 	}
 
 	/**
@@ -103,19 +116,15 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	 */
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
-		if(button.name == "redstone"){
-			te.nextBehavior();
-		}
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+		mc.renderEngine.bindTexture(ClientProps.GUI_HECHARGER_PATH);
+		if(te.currentEnergy == 0) {
+			this.drawTexturedModalRect(9, 7, 190, 0, 60, 72);
+		}
 		super.drawGuiContainerForegroundLayer(par1, par2);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		String currentPage = StatCollector
-				.translateToLocal("healthcharger.name");
-		fontRenderer.drawString(EnumChatFormatting.DARK_GRAY + currentPage,
-				88 - fontRenderer.getStringWidth(currentPage) / 2, 5, 0xffffff);
 	}
 
 	/*
@@ -127,21 +136,32 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		/*
-		mc.renderEngine.bindTexture(ClientProps.GUI_ARMORCHARGER_PATH);
+		mc.renderEngine.bindTexture(ClientProps.GUI_HECHARGER_PATH);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 		this.drawElements();
-
-		int length = te.currentEnergy * 64 / TileEntityArmorCharger.ENERGY_MAX;
-		this.drawTexturedModalRect(x + 80, y + 28, 176, 0, length, 10);
-
-		if (te.isCharging) {
-			int height = (int) (te.worldObj.getWorldTime() % 43);
-			this.drawTexturedModalRect(x + 29, y + 21, 176, 56, 43, height);
+ 
+		if(te.currentEnergy > 0) {
+			int len = te.currentEnergy * 48 / TileEntityHealthCharger.ENERGY_MAX;
+			this.drawTexturedModalRect(x + 154, y + 55 - len, 176, 93 - len, 5, len);
+		} 
+		if(te.mainEff > 0) {
+			int len = te.mainEff * 46 / te.HEALTH_MAX;
+			this.drawTexturedModalRect(x + 20, y + 54 - len, 176, 46 - len, 14, len);
 		}
-		*/
+		if(te.sideEff > 0) {
+			int len = te.sideEff * 46 / te.EFFECT_MAX;
+			this.drawTexturedModalRect(x + 42, y + 54 - len, 176, 140 - len, 14, len);
+		}
+		if(te.prgAddMain > 0) {
+			int len = te.prgAddMain * 17 / te.PROGRESS_TIME;
+			this.drawTexturedModalRect(x + 36, y + 77 - len, 176, 157 - len, 14, len);
+		}
+		if(te.prgAddSide > 0) {
+			int len = te.prgAddSide * 17 / te.PROGRESS_TIME;
+			this.drawTexturedModalRect(x + 58, y + 77 - len, 176, 157 - len, 14, len);
+		}
 	}
 
 }

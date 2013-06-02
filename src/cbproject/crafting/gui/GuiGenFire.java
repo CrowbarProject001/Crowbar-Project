@@ -91,7 +91,7 @@ public class GuiGenFire extends CBCGuiContainer{
         }
         len = te.currentEnergy * 50 / te.maxStorage;
         if(len > 0)
-        	this.drawTexturedModalRect(x + 75, y + 64 - len, 173, 54 - len, 15, len);
+        	this.drawTexturedModalRect(x + 75, y + 64 - len, 173, 55 - len, 14, len);
         this.drawElements();
 	}
 

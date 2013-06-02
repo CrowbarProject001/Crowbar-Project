@@ -28,9 +28,7 @@ public class Weapon_snark extends CBCGenericItem{
     	
     	MobSpawnHandler.spawnCreature(par2World, EntitySnark.class, par3EntityPlayer);
     	if(!(par3EntityPlayer.capabilities.isCreativeMode)){
-    		par1ItemStack.splitStack(1);
-    		if(par1ItemStack.stackSize <= 0)
-    			par1ItemStack = null;
+    		par1ItemStack.stackSize--;
     	}
     	par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
         return par1ItemStack;

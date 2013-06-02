@@ -73,7 +73,7 @@ public class GuiGenSolar extends CBCGuiContainer{
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     	String guiName = StatCollector.translateToLocal(CBCBlocks.genFire.getUnlocalizedName());
-    	this.fontRenderer.drawString(guiName, 7, 7, 0xdadada);
+    	this.fontRenderer.drawString(EnumChatFormatting.GRAY + guiName, 7, 7, 0xdadada);
     }
 	
 	@Override
