@@ -25,7 +25,7 @@ import cbproject.core.gui.CBCGuiButton.ButtonState;
 import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.props.ClientProps;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
+import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.recipes.RecipeWeapons;
@@ -36,11 +36,11 @@ import cbproject.crafting.recipes.RecipeWeapons;
  */
 public class GuiWeaponCrafter extends CBCGuiContainer {
 
-	public TileEntityWeaponCrafter te;
+	public TileWeaponCrafter te;
 	public InventoryPlayer inv;
 	
 	public GuiWeaponCrafter(InventoryPlayer inventoryPlayer,
-            TileEntityWeaponCrafter tileEntity) {
+            TileWeaponCrafter tileEntity) {
 		super(new ContainerWeaponCrafter(inventoryPlayer, tileEntity));
 		te = tileEntity;
 		inv = inventoryPlayer;
@@ -120,13 +120,13 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         else dy = 38;
         drawTexturedModalRect(x + 160, y + 16, 232, dy, 8, 18);
         
-        int height = te.heat * 64 / TileEntityWeaponCrafter.MAX_HEAT;
+        int height = te.heat * 64 / TileWeaponCrafter.MAX_HEAT;
         if(height > 0){
         	drawTexturedModalRect(x + 174, y + 78 - height, 232, 150 - height, 8, height);
         }
         if(te.isCrafting){
         	if(te.currentRecipe != null){
-        		height = te.currentRecipe.heatRequired * 64 / TileEntityWeaponCrafter.MAX_HEAT;
+        		height = te.currentRecipe.heatRequired * 64 / TileWeaponCrafter.MAX_HEAT;
         		drawTexturedModalRect(x + 173, y + 77 - height, 201, 1, 6, 3);
         	}
         }

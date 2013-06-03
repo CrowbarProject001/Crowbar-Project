@@ -52,6 +52,11 @@ public abstract class CBCBlockContainer extends BlockContainer {
 		this.iconName = name;
 	}
 	
+	public void setIandU(String name) {
+		this.setIconName(name);
+		this.setUnlocalizedName(name);
+	}
+	
 	public CBCBlockContainer setGuiId(int id) {
 		this.guiId = id;
 		return this;

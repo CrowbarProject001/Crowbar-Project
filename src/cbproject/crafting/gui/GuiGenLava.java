@@ -78,6 +78,9 @@ public class GuiGenLava  extends CBCGuiContainer{
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(ClientProps.GUI_GENLAVA_PATH);
         int x = (width - xSize) / 2;
@@ -86,8 +89,10 @@ public class GuiGenLava  extends CBCGuiContainer{
         int len = 0;
         len = te.bucketCnt * 47 / te.maxStorage;
         len += Math.round(2.35F * te.curEnergyLeft / te.ENERGY_PER_BUCKET);
-        this.drawTexturedModalRect(x + 91, y + 64 - len, 173, 59 - len, 6, len);
+        this.drawTexturedModalRect(x + 91, y + 65 - len, 173, 59 - len, 6, len);
         this.drawElements();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
 	}
 
 	@Override

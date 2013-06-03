@@ -34,7 +34,8 @@ import cbproject.core.utils.EnergyUtils;
  * @author WeAthFolD
  * 
  */
-public class TileEntityArmorCharger extends TileElectricStorage implements IInventory {
+public class TileEntityArmorCharger extends TileElectricStorage implements
+		IInventory {
 
 	public static int ENERGY_MAX = 400000; // 10 BatBox, 4HEV Armor
 	public boolean isCharging = false;
@@ -48,7 +49,7 @@ public class TileEntityArmorCharger extends TileElectricStorage implements IInve
 	public ItemStack slots[] = new ItemStack[7];
 	public EnumBehavior currentBehavior = EnumBehavior.NONE;
 	public boolean isRSActivated;
-	
+
 	public enum EnumBehavior {
 		NONE, CHARGEONLY, RECEIVEONLY, DISCHARGE, EMIT;
 
@@ -69,50 +70,47 @@ public class TileEntityArmorCharger extends TileElectricStorage implements IInve
 				return "rs.donothing.name";
 			}
 		}
-		
+
 	}
-	
+
 	public void nextBehavior() {
 		int cur = currentBehavior.ordinal();
-		currentBehavior = EnumBehavior.values()[cur == EnumBehavior.values().length - 1 ? 0 : cur + 1];
+		currentBehavior = EnumBehavior.values()[cur == EnumBehavior.values().length - 1 ? 0
+				: cur + 1];
 	}
-	
+
 	public TileEntityArmorCharger() {
 		super(2, ENERGY_MAX);
 	}
-	
+
 	public void startUsing(EntityPlayer player) {
 		chargers.add(player);
 		isUsing = true;
 	}
-	
+
 	public void stopUsing(EntityPlayer player) {
 		chargers.remove(player);
-		if(chargers.size() == 0)
+		if (chargers.size() == 0)
 			isUsing = false;
 	}
-	
 
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(worldObj.isRemote)
+		if (worldObj.isRemote)
 			return;
-		
+
 		int energyReq = ENERGY_MAX - currentEnergy;
 		// discharge
-		if (this.isRSActivated
-				&& currentBehavior == EnumBehavior.DISCHARGE) {
-			if (!worldObj.isRemote){
-				for (int i = 0; i < 4; i++) {
-					ItemStack arm = slots[i];
-					if (arm == null)
-						continue;
-					ICustomEnItem item = (ICustomEnItem) arm.getItem();
-					int e = item.discharge(arm, ENERGY_MAX - currentEnergy, 2,
-							false, false);
-					currentEnergy += e;
-				}
+		if (this.isRSActivated && currentBehavior == EnumBehavior.DISCHARGE) {
+			for (int i = 0; i < 4; i++) {
+				ItemStack arm = slots[i];
+				if (arm == null)
+					continue;
+				ICustomEnItem item = (ICustomEnItem) arm.getItem();
+				int e = item.discharge(arm, ENERGY_MAX - currentEnergy, 2,
+						false, false);
+				currentEnergy += e;
 			}
 		} else // Charge the energy into armor
 		if (currentEnergy > 0
@@ -131,30 +129,34 @@ public class TileEntityArmorCharger extends TileElectricStorage implements IInve
 			isCharging = flag;
 		} else
 			isCharging = false;
-		
-		if(currentEnergy < 0)
+
+		if (currentEnergy < 0)
 			currentEnergy = 0;
-		
-		if(this.isUsing) {
-			for(EntityPlayer charger : chargers) {
-				int received = EnergyUtils.tryChargeArmor(charger, this.currentEnergy, 2, false);
+
+		if (this.isUsing) {
+			for (EntityPlayer charger : chargers) {
+				int received = EnergyUtils.tryChargeArmor(charger,
+						this.currentEnergy, 2, false);
 				currentEnergy -= received;
-				if(received <= 0) {
-					worldObj.playSoundAtEntity(charger, "cbc.entities.suitchargeno", 0.5F, 1.0F);
+				if (received <= 0) {
+					worldObj.playSoundAtEntity(charger,
+							"cbc.entities.suitchargeno", 0.5F, 1.0F);
 					this.stopUsing(charger);
 				}
-				if(worldObj.getWorldTime() % 40 == 0) {
-					worldObj.playSoundAtEntity(charger, "cbc.entities.suitcharge", 0.3F, 1.0F);
+				if (worldObj.getWorldTime() % 40 == 0) {
+					worldObj.playSoundAtEntity(charger,
+							"cbc.entities.suitcharge", 0.3F, 1.0F);
 				}
-				if(currentEnergy <= 0) {
+				if (currentEnergy <= 0) {
 					this.chargers.clear();
 					this.isUsing = false;
-					worldObj.playSoundAtEntity(charger, "cbc.entities.suitchargeno", 0.5F, 1.0F);
+					worldObj.playSoundAtEntity(charger,
+							"cbc.entities.suitchargeno", 0.5F, 1.0F);
 				}
 			}
-			
+
 		}
-		
+
 		/**
 		 * 
 		 * Charge the energy into tileentity
@@ -308,7 +310,7 @@ public class TileEntityArmorCharger extends TileElectricStorage implements IInve
 	@Override
 	public int injectEnergy(LCDirection paramDirection, int paramInt) {
 		this.currentEnergy += paramInt;
-		if(currentEnergy > maxEnergy) {
+		if (currentEnergy > maxEnergy) {
 			currentEnergy = maxEnergy;
 			return currentEnergy - maxEnergy;
 		}

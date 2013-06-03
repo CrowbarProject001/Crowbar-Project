@@ -17,7 +17,8 @@ package cbproject.crafting.gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cbproject.core.register.IGuiElement;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
+import cbproject.crafting.blocks.TileBatBox;
+import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.blocks.TileGeneratorFire;
 import cbproject.crafting.blocks.TileGeneratorLava;
 import cbproject.crafting.blocks.TileGeneratorSolar;
@@ -32,13 +33,13 @@ public class CRGuiElements {
 		@Override
 		public Object getServerContainer(EntityPlayer player, World world,
 				int x, int y, int z) {
-			return new ContainerWeaponCrafter(player.inventory, (TileEntityWeaponCrafter) world.getBlockTileEntity(x, y, z));
+			return new ContainerWeaponCrafter(player.inventory, (TileWeaponCrafter) world.getBlockTileEntity(x, y, z));
 		}
 
 		@Override
 		public Object getClientGui(EntityPlayer player, World world, int x,
 				int y, int z) {
-			return new GuiWeaponCrafter(player.inventory, (TileEntityWeaponCrafter) world.getBlockTileEntity(x, y, z));
+			return new GuiWeaponCrafter(player.inventory, (TileWeaponCrafter) world.getBlockTileEntity(x, y, z));
 		}
 	}
 	
@@ -85,6 +86,22 @@ public class CRGuiElements {
 				int y, int z) {
 			return new GuiGenSolar((TileGeneratorSolar)world.getBlockTileEntity(x, y, z), player.inventory);
 		}
+	}
+	
+	public static class ElementBatbox implements IGuiElement {
+
+		@Override
+		public Object getServerContainer(EntityPlayer player, World world,
+				int x, int y, int z) {
+			return new ContainerBatBox((TileBatBox) world.getBlockTileEntity(x, y, z), player.inventory);
+		}
+
+		@Override
+		public Object getClientGui(EntityPlayer player, World world, int x,
+				int y, int z) {
+			return new GuiBatBox((TileBatBox)world.getBlockTileEntity(x, y, z), player.inventory);
+		}
+		
 	}
 
 }

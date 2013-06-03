@@ -31,8 +31,6 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 	public ItemStack[] slots = new ItemStack[2];
 	public boolean isBurning = false;
 	public int tickLeft = 0, maxBurnTime = 0;
-	public int currentEnergy = 0;
-	private int tickSinceNextUpdate = 0;
 	
 	/**
 	 * @param tier
@@ -49,6 +47,7 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 		super.updateEntity();
 		if(worldObj.isRemote)
 			return;
+		
 		if(isBurning) {
 			tickLeft--;
 			currentEnergy += this.sendEnergy(5);
@@ -61,14 +60,16 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 			if(currentEnergy < maxStorage)
 				tryBurn();
 		}
+		
 		if(currentEnergy > 0){
 			int all = currentEnergy > 5 ?  5 : currentEnergy;
 			int rev = sendEnergy(all);
 			currentEnergy -= (all - rev);
 			if(slots[1] != null) {
-				((ICustomEnItem)slots[1].getItem()).charge(slots[1], currentEnergy, 2, false, false);
+				currentEnergy -= ((ICustomEnItem)slots[1].getItem()).charge(slots[1], currentEnergy, 2, false, false);
 			}
 		}
+		
 	}
 	
 	private void tryBurn() {

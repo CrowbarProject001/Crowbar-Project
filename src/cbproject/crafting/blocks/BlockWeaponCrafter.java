@@ -86,7 +86,7 @@ public class BlockWeaponCrafter extends CBCBlockContainer {
     @Override
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
     {
-        TileEntityWeaponCrafter te = (TileEntityWeaponCrafter) par1World.getBlockTileEntity(par2, par3, par4);
+        TileWeaponCrafter te = (TileWeaponCrafter) par1World.getBlockTileEntity(par2, par3, par4);
         if(te.isBurning){
         	int l = par1World.getBlockMetadata(par2, par3, par4);
             float f = par2 + 0.5F;
@@ -125,7 +125,7 @@ public class BlockWeaponCrafter extends CBCBlockContainer {
             if (!(tileEntity instanceof IInventory)) {
                     return;
             }
-            TileEntityWeaponCrafter inventory = (TileEntityWeaponCrafter) tileEntity;
+            TileWeaponCrafter inventory = (TileWeaponCrafter) tileEntity;
 
             for (ItemStack item : inventory.inventory) {
 
@@ -188,7 +188,7 @@ public class BlockWeaponCrafter extends CBCBlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityWeaponCrafter();
+		return new TileWeaponCrafter();
 	}
 
 }

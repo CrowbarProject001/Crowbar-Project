@@ -38,7 +38,7 @@ import cbproject.core.block.TileElectricStorage;
  */
 public class TileEntityHealthCharger extends TileElectricStorage implements IInventory {
 
-	public static final int ENERGY_MAX = 30000, EFFECT_MAX = 14400, PROGRESS_TIME = 100, HEALTH_MAX = 60; // 1.25  batbox, 4-6 potions
+	public static final int ENERGY_MAX = 30000, EFFECT_MAX = 14400, PROGRESS_TIME = 100, HEALTH_MAX = 100; // 1.25  batbox, 4-6 potions
 	public boolean isUsing = false;
 	public HashSet<EntityPlayer> chargers = new HashSet();
 	public int mainEff = 0, sideEff = 0;
@@ -107,6 +107,8 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
+		if(worldObj.isRemote)
+			return;
 		int energyReq = ENERGY_MAX - currentEnergy;
 		
 		if(currentEnergy < 0)
@@ -231,7 +233,7 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 			}
 		}
 		if(sideEff > 0 && sideEffectId != 0) {
-			int amt = sideEff > 6 ? 6 : sideEff;
+			int amt = sideEff > 10 ? 10 : sideEff;
 			this.sideEff -= amt;
 			PotionEffect eff = charger.getActivePotionEffect(Potion.potionTypes[sideEffectId]);
 			if(eff != null) {

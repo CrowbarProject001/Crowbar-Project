@@ -78,6 +78,9 @@ public class GuiGenSolar extends CBCGuiContainer{
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(ClientProps.GUI_GENSOLAR_PATH);
         int x = (width - xSize) / 2;
@@ -88,13 +91,15 @@ public class GuiGenSolar extends CBCGuiContainer{
         if(len > 0)
         	this.drawTexturedModalRect(x + 25, y + 52, 173, 75, len, 7);
         if(te.worldObj.isDaytime()) {
-        	this.drawTexturedModalRect(x + 14, y + 19, 173, 0, 60, 30);
+        	this.drawTexturedModalRect(x + 13, y + 19, 173, 0, 60, 30);
         	this.drawTexturedModalRect(x + 87, y + 44, 178, 68, 5, 5);
         } else {
-        	this.drawTexturedModalRect(x + 14, y + 19, 173, 34, 60, 30);
+        	this.drawTexturedModalRect(x + 13, y + 19, 173, 34, 60, 30);
         	this.drawTexturedModalRect(x + 87, y + 44, 173, 68, 5, 5);
         }
         this.drawElements();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
 	}
 
 	@Override

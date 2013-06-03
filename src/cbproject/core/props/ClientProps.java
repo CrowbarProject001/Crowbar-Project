@@ -57,6 +57,7 @@ public class ClientProps {
 			GUI_GENSOLAR_PATH = "/cbproject/gfx/textures/gui/gensolar.png",
 			GUI_GENLAVA_PATH = "/cbproject/gfx/textures/gui/genlava.png",
 			GUI_HECHARGER_PATH = "/cbproject/gfx/textures/gui/hecharger.png",
+			GUI_BATBOX_PATH = "/cbproject/gfx/textures/gui/batbox.png",
 			HORNET_TRAIL_PATH = "/cbproject/gfx/textures/entities/ag_trail.png",
 			BATTERY_PATH = "/cbproject/gfx/textures/entities/battery.png",
 			SQUEAK_MOB_PATH = "/cbproject/gfx/textures/entities/squeak.png",

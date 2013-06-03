@@ -58,7 +58,7 @@ public class BlockAdvWeaponCrafter extends BlockWeaponCrafter {
     
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityWeaponCrafter().setAdvanced(true);
+		return new TileWeaponCrafter().setAdvanced(true);
 	}
 
 }

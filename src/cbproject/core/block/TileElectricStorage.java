@@ -36,12 +36,6 @@ public abstract class TileElectricStorage extends TileElectrical implements IEne
 		this.setMaxEnergy(max);
 	}
 	
-	@Override
-    public boolean canUpdate()
-    {
-		return true;
-    }
-	
 	/**
 	 * Reads a tile entity from NBT.
 	 */

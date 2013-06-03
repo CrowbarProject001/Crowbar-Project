@@ -7,7 +7,7 @@ import java.io.IOException;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
+import cbproject.crafting.blocks.TileWeaponCrafter;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
@@ -78,8 +78,8 @@ public class NetCrafterClient implements IChannelProcess{
 		TileEntity te = MinecraftServer.getServer().worldServerForDimension(c.dimension).getBlockTileEntity(c.blockX, c.blockY, c.blockZ);
 		if(te != null && !te.worldObj.isRemote){
 			if(c.id == 0)
-				((TileEntityWeaponCrafter)te).addScrollFactor(c.direction);
-			else ((TileEntityWeaponCrafter)te).addPage(c.direction);
+				((TileWeaponCrafter)te).addScrollFactor(c.direction);
+			else ((TileWeaponCrafter)te).addPage(c.direction);
 		}
 		return;
 	}

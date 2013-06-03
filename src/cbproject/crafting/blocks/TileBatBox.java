@@ -14,71 +14,31 @@
  */
 package cbproject.crafting.blocks;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
 import cbproject.api.LCDirection;
-import cbproject.api.energy.events.EnergyTileSourceEvent;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.tile.IEnergySink;
-import cbproject.api.energy.tile.IEnergySource;
-import cbproject.core.block.TileElectricStorage;
-import cbproject.core.block.TileElectrical;
 import cbproject.core.utils.EnergyUtils;
 import cbproject.crafting.register.CBCBlocks;
+import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumBehavior;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author WeAthFolD
  *
  */
-public abstract class TileStorage extends TileElectricStorage implements IEnergySource, IInventory {
+public class TileBatBox extends TileGeneratorBase implements IInventory, IEnergySink {
 
 	public ItemStack[] slots = new ItemStack[2];
+	public final int type;
 	
-	public class TileStorageSmall extends TileStorage {
-
-		public TileStorageSmall() {
-			super(1, 40000);
-		}
-
-		@Override
-		public int getMaxEnergyOutput() {
-			return 32;
-		}
-
-		@Override
-		public int getMaxSafeInput() {
-			return 32;
-		}
-		
+	public TileBatBox(int t) {
+		super(t == 0 ? 1 : 2, t == 0 ? 40000 : 200000);
+		type = t;
 	}
 	
-	public class TileStorageLarge extends TileStorage {
-
-		public TileStorageLarge() {
-			super(2, 200000);
-		}
-
-		@Override
-		public int getMaxEnergyOutput() {
-			return 128;
-		}
-
-		@Override
-		public int getMaxSafeInput() {
-			return 128;
-		}
-		
-	}
-	
-	public int currentEnergy = 0;
-
-	public TileStorage(int t, int max) {
-		super(t, max);
-	}
-
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
@@ -92,8 +52,8 @@ public abstract class TileStorage extends TileElectricStorage implements IEnergy
 		currentEnergy -= amt;
 		
 		//charge from slot0
-		if(currentEnergy < this.maxEnergy){
-			int energyReq = maxEnergy - currentEnergy;
+		if(currentEnergy < maxStorage){
+			int energyReq = maxStorage - currentEnergy;
 			ItemStack sl = slots[0];
 			if (sl != null){
 				EnergyUtils.tryChargeFromStack(sl, energyReq);
@@ -107,30 +67,48 @@ public abstract class TileStorage extends TileElectricStorage implements IEnergy
 			ItemStack sl = slots[1];
 			if(sl != null && sl.getItem() instanceof ICustomEnItem) {
 				ICustomEnItem item = (ICustomEnItem) sl.getItem();
-				currentEnergy -= item.charge(sl, currentEnergy, tier, false, false);
+				currentEnergy -= item.charge(sl, currentEnergy, type, false, false);
 			}
 		}
 		
 	}
 	
-	public int sendEnergy(int amm) {
-		EnergyTileSourceEvent event = new EnergyTileSourceEvent(worldObj, this, amm);
-		MinecraftForge.EVENT_BUS.post(event);
-		return event.amount;
-	}
-
 	@Override
-	public boolean emitEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
-		return true;
+	public int injectEnergy(LCDirection paramDirection, int paramInt) {
+		this.currentEnergy += paramInt;
+		if(currentEnergy > maxStorage) {
+			int amt = currentEnergy - maxStorage;
+			currentEnergy = maxStorage;
+			return amt;
+		}
+		return 0;
 	}
-
-
+	
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
-			LCDirection paramDirection) {
-		return true;
+	public int demandsEnergy() {
+		return getMaxEnergy() - getCurrentEnergy();
+	}
+	
+	/**
+	 * @return the currentEnergy
+	 */
+	public int getCurrentEnergy() {
+		return currentEnergy;
 	}
 
+	/**
+	 * @return the maxEnergy
+	 */
+	public int getMaxEnergy() {
+		return maxStorage;
+	}
+	
+	@Override
+	public int getMaxEnergyOutput() {
+		return type == 0 ? 32 : 128;
+	}
+
+	
 	@Override
 	public int getSizeInventory() {
 		return 2;
@@ -174,7 +152,7 @@ public abstract class TileStorage extends TileElectricStorage implements IEnergy
 
 	@Override
 	public String getInvName() {
-		return blockType.getUnlocalizedName();
+		return this.type == 0 ? CBCBlocks.storageS.getUnlocalizedName() : CBCBlocks.storageL.getUnlocalizedName();
 	}
 
 
@@ -203,10 +181,14 @@ public abstract class TileStorage extends TileElectricStorage implements IEnergy
 		return true;
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
-				zCoord + 0.5) <= 64;
+	@Override
+	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
+			LCDirection paramDirection) {
+		return currentEnergy < maxStorage;
 	}
 
-	
+	@Override
+	public int getMaxSafeInput() {
+		return type == 0 ? 32 : 128;
+	}
 }

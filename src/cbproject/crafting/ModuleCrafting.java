@@ -76,6 +76,7 @@ public class ModuleCrafting {
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_GENFIRE, new CRGuiElements.ElementGenFire());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_GENLAVA, new CRGuiElements.ElementGenLava());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_GENSOLAR, new CRGuiElements.ElementGenSolar());
+		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_BATBOX, new CRGuiElements.ElementBatbox());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER_CL, new NetCrafterClient());
 		EntityRegistry.registerModEntity(EntitySpray.class, "entityart", 16, CBCMod.instance, 250, 5, true);
 		proxy.init();

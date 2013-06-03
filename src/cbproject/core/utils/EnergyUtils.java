@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cbproject.api.energy.item.ICustomEnItem;
 
@@ -50,5 +51,29 @@ public class EnergyUtils {
 			received += armor.get(i).charge(stack.get(i), energy / amount, tier, ignoreTransferLimit, false);
 		}
 		return received;
+	}
+	
+	/**
+	 * 请在调用这个函数之后进行恰当的stackSize检查。
+	 * @param sl
+	 * @param energyReq
+	 * @return
+	 */
+	public static int tryChargeFromStack(ItemStack sl, int energyReq) {
+		int energyReceived = 0;
+		if (sl.itemID == Item.redstone.itemID) {
+			if (energyReq > 500) {
+				sl.stackSize--;
+			}
+			energyReceived += 500;
+		} else if (sl.getItem() instanceof ICustomEnItem) {
+			ICustomEnItem item = (ICustomEnItem) sl.getItem();
+			if (item.canProvideEnergy(sl)){
+				int cn = energyReq < 128 ? energyReq : 128;
+				cn = item.discharge(sl, cn, 2, false, false);
+				energyReceived += cn;
+			}
+		}
+		return energyReceived;
 	}
 }

@@ -14,36 +14,36 @@
  */
 package cbproject.crafting.blocks;
 
+import cbproject.core.props.GeneralProps;
+import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
-import cbproject.api.LCDirection;
-import cbproject.api.energy.tile.IEnergySource;
-import cbproject.core.block.CBCTileEntity;
+import net.minecraft.world.World;
 
 /**
  * @author WeAthFolD
  *
  */
-public class TileGeneratorMugen extends TileGeneratorBase {
+public class BlockBatBox extends BlockElectricalBase {
 
-	public TileGeneratorMugen() {
-		super(3, 50000);
-	}
-
-	@Override
-	public void updateEntity() {
-		super.updateEntity();
-		if(this.addedToNet)
-			this.sendEnergy(32);
+	private final int type;
+	
+	/**
+	 * @param par1
+	 * @param mat
+	 */
+	public BlockBatBox(int par1, int typ) {
+		super(par1, Material.rock);
+		this.setUnlocalizedName("batbox" + typ);
+		type = typ;
+		this.setGuiId(GeneralProps.GUI_ID_BATBOX);
+		if(type != 0 && type != 1)
+			throw new RuntimeException();
+		
 	}
 	
 	@Override
-	public boolean emitEnergyTo(TileEntity emTileEntity,
-			LCDirection emDirection) {
-		return true;
-	}
-	@Override
-	public int getMaxEnergyOutput() {
-		return 128;
+	public TileEntity createNewTileEntity(World world) {
+		return new TileBatBox(type);
 	}
 
 }

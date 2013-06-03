@@ -32,6 +32,7 @@ import cbproject.core.block.TileElectrical;
 public abstract class TileGeneratorBase extends TileElectrical implements IEnergySource {
 
 	public final int maxStorage, tier;
+	public int currentEnergy;
 	
 	/**
 	 * The generator production in this tick

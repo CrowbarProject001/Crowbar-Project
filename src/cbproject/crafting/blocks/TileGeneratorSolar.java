@@ -17,6 +17,7 @@ package cbproject.crafting.blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
+import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.item.IEnItem;
  
 /**
@@ -54,6 +55,11 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 				isEmitting = true;
 		}
 		isEmitting = false;
+		
+		if(this.slots[0] != null && slots[0].getItem() instanceof ICustomEnItem) {
+			currentEnergy -= ((ICustomEnItem)slots[0].getItem()).charge(slots[0], currentEnergy, 1, false, false);
+		}
+		
 	}
 	
 	@Override

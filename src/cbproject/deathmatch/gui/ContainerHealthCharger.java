@@ -66,17 +66,23 @@ public class ContainerHealthCharger extends Container{
 			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy);
 			icrafting.sendProgressBarUpdate(this, 1, te.mainEff);
 			icrafting.sendProgressBarUpdate(this, 2, te.sideEff);
+			icrafting.sendProgressBarUpdate(this, 3, te.prgAddMain);
+			icrafting.sendProgressBarUpdate(this, 4, te.prgAddSide);
 		}
 	}
 	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void updateProgressBar(int par1, int par2) {
-		if (par1 == 0) {
+		if (par1 == 0) 
 			te.currentEnergy = par2;
-		} else if(par1 == 1)
+		else if(par1 == 1)
 			te.mainEff = par2;
-		else te.sideEff = par2;
+		else if(par1 == 2)
+			te.sideEff = par2;
+		else if(par1 == 3)
+			te.prgAddMain = par2;
+		else te.prgAddSide = par2;
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
+import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
 import cpw.mods.fml.relauncher.Side;
@@ -32,11 +32,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class ContainerWeaponCrafter extends Container {
 
-	public TileEntityWeaponCrafter tileEntity;
+	public TileWeaponCrafter tileEntity;
 	public int scrollFactor;
 
 	public ContainerWeaponCrafter(InventoryPlayer inventoryPlayer,
-			TileEntityWeaponCrafter te) {
+			TileWeaponCrafter te) {
 		tileEntity = te;
 
 		// Crafting recipe slot

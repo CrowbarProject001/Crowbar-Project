@@ -18,6 +18,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.item.IEnItem;
 
 /**
@@ -28,7 +29,7 @@ public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 
 	public static final int ENERGY_PER_BUCKET = 20000;
 	public ItemStack[] slots = new ItemStack[2];
-	public int bucketCnt = 0, curEnergyLeft;;
+	public int bucketCnt = 0, curEnergyLeft;
 	
 	/**
 	 * @param tier
@@ -46,6 +47,9 @@ public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 			return;
 		tryBurn();
 		if(curEnergyLeft > 0) {
+			if(this.slots[1] != null && slots[1].getItem() instanceof ICustomEnItem) {
+				curEnergyLeft -= ((ICustomEnItem)slots[1].getItem()).charge(slots[1], curEnergyLeft, 1, false, false);
+			}
 			int toConsume = 10 - sendEnergy(curEnergyLeft > 10 ? 10 : curEnergyLeft);
 			curEnergyLeft -= toConsume;
 		} else {

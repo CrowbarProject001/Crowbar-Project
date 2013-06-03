@@ -14,30 +14,34 @@
  */
 package cbproject.crafting.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cbproject.api.energy.item.ICustomEnItem;
-import cbproject.crafting.blocks.TileGeneratorBase;
-import cbproject.crafting.blocks.TileGeneratorSolar;
+import cbproject.api.energy.item.IEnItem;
+import cbproject.crafting.blocks.TileBatBox;
+import cbproject.crafting.blocks.TileGeneratorFire;
 import cbproject.deathmatch.gui.SlotElectricItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD
  *
  */
-public class ContainerGeneratorSolar extends Container {
+public class ContainerBatBox extends Container {
 
-	TileGeneratorSolar te;
+	//0:fuel 1:charge
+	TileBatBox te;
 	
-	public ContainerGeneratorSolar(TileGeneratorSolar ent, InventoryPlayer player) {
+	public ContainerBatBox(TileBatBox ent, InventoryPlayer player) {
 		te = ent;
-		addSlotToContainer(new SlotElectricItem(ent, 0, 130, 48));
+		//燃料槽
+		addSlotToContainer(new SlotElectricItem(ent, 0, 80, 53));
+		//充电槽
+		addSlotToContainer(new SlotElectricItem(ent, 1, 132, 30));
 		bindPlayerInventory(player);
 	}
 	
@@ -58,7 +62,7 @@ public class ContainerGeneratorSolar extends Container {
 		super.detectAndSendChanges();
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
-			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy * (te.isEmitting ? 1 : -1));
+			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy);
 		}
 	}
 
@@ -66,15 +70,9 @@ public class ContainerGeneratorSolar extends Container {
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int par1, int par2) {
 		super.updateProgressBar(par1, par2);
-		if (par1 == 0) {
-			te.currentEnergy = Math.abs(par2);
-			if(par2 > 0)
-				te.isEmitting = true;
-			else te.isEmitting = false;
-				
-		}
+		if (par1 == 0)
+			te.currentEnergy = par2;
 	}
-	
 	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
@@ -91,16 +89,16 @@ public class ContainerGeneratorSolar extends Container {
 			stack = stackInSlot.copy();
 
 			// 将玩家物品栏中的物品放到TileEntity中
-			if (slot >= 1) {
-				if(!(stackInSlot.getItem() instanceof ICustomEnItem))
-					return null;
-				if (!this.mergeItemStack(stackInSlot, 0, 1, true)) {
-					return null;
-				}
+			if (slot >= 2) {
+				if(stackInSlot.getItem() instanceof IEnItem){
+					if (!this.mergeItemStack(stackInSlot, 0, 2, true)) {
+						return null;
+					}
+				} else return null;
 			}
 			// 将TileEntity中的物品放到玩家物品栏中
-			else  {
-				if (!this.mergeItemStack(stackInSlot, 1, 32, false))
+			else {
+				if (!this.mergeItemStack(stackInSlot, 2, 37, false))
 					return null;
 			}
 

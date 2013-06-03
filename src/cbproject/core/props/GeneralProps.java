@@ -41,7 +41,7 @@ public class GeneralProps {
 	
 	public static final byte NET_ID_EXPLOSION = 0, NET_ID_DM = 1, NET_ID_CRAFTER_CL = 2, NET_ID_CHARGER_CL = 3, NET_ID_USE = 4, NET_ID_MEDFILLER_CL = 5;
 	
-	public static final int GUI_ID_CRAFTER = 0, GUI_ID_CHARGER = 1, GUI_ID_HEALTH = 2, GUI_ID_MEDFILLER = 3, GUI_ID_GENFIRE = 4, GUI_ID_GENLAVA = 5, GUI_ID_GENSOLAR = 6;
+	public static final int GUI_ID_CRAFTER = 0, GUI_ID_CHARGER = 1, GUI_ID_HEALTH = 2, GUI_ID_MEDFILLER = 3, GUI_ID_GENFIRE = 4, GUI_ID_GENLAVA = 5, GUI_ID_GENSOLAR = 6, GUI_ID_BATBOX = 7;
 	
 	/**
 	 * 方块和物品分类。
@@ -51,6 +51,7 @@ public class GeneralProps {
 	 * 方块分类。
 	 */
 	public static final int CAT_GENERIC = 0;
+
 	
 	public static void loadProps(Config config){
 		GeneralRegistry.loadConfigurableClass(CBCMod.config, GeneralProps.class);

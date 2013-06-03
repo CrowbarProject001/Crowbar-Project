@@ -17,7 +17,7 @@ package cbproject.crafting.gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cbproject.crafting.blocks.TileEntityWeaponCrafter;
+import cbproject.crafting.blocks.TileWeaponCrafter;
 
 /**
  * 合成机中的合成表结果Item槽，能被点击，不能被取出。
@@ -25,13 +25,13 @@ import cbproject.crafting.blocks.TileEntityWeaponCrafter;
  */
 public class SlotOutput extends Slot {
 
-	public SlotOutput(TileEntityWeaponCrafter par1iInventory, int par2, int par3, int par4) {
+	public SlotOutput(TileWeaponCrafter par1iInventory, int par2, int par3, int par4) {
 		super(par1iInventory, par2, par3, par4);
 	}
 	
 	@Override
     public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)   {
-		((TileEntityWeaponCrafter)inventory).attemptItemCrafting(this.slotNumber);
+		((TileWeaponCrafter)inventory).attemptItemCrafting(this.slotNumber);
     }
 
     @Override

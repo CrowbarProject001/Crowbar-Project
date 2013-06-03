@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import cbproject.core.block.CBCTileEntity;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.items.ItemMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
@@ -34,7 +35,7 @@ import cbproject.deathmatch.utils.AmmoManager;
  * 武器合成机和高级武器合成机的TileEntity类。
  * @author WeAthFolD
  */
-public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
+public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 
 	/**
 	 * 最大存储热量。
@@ -58,20 +59,24 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
 	 * 
 	 * craftingStacks: 4*3  的合成表显示槽。
 	 */
-	public TileEntityWeaponCrafter() {
+	public TileWeaponCrafter() {
 		inventory = new ItemStack[20];
 		craftingStacks = new ItemStack[12];
 	}
 
 	@Override
 	public void updateEntity() {
+		
 		if(!isLoad){
 			if(blockType == null)
 				return;
 			isAdvanced = this.blockType.blockID == CBCBlocks.weaponCrafter.blockID? false : true;
-			TileEntityWeaponCrafter.MAX_HEAT = isAdvanced ? 7000 : 4000;
+			TileWeaponCrafter.MAX_HEAT = isAdvanced ? 7000 : 4000;
 			isLoad = true;
 		}
+		
+		if(worldObj.isRemote)
+			return;
 		
 		if(heat > 0)
 			heat--;
@@ -91,16 +96,16 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
         		isCrafting = false;
         	}
         }
+		
 		if(isBurning){
 			burnTimeLeft--;
 			if(heat < MAX_HEAT)
 				heat+=3;
 			if(burnTimeLeft <= 0){
 				isBurning = false;
-				blockType.setLightValue(0.0F);
 			}
 		}
-		this.onInventoryChanged();
+		
 	}
 	
 	@Override
@@ -219,7 +224,7 @@ public class TileEntityWeaponCrafter extends TileEntity implements IInventory {
         }
     }
     
-	public TileEntityWeaponCrafter setAdvanced(boolean is){
+	public TileWeaponCrafter setAdvanced(boolean is){
 		isAdvanced = is;
 		if(is)
 			MAX_HEAT = 8000;

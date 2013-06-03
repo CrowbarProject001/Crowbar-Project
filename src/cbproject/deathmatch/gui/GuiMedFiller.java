@@ -27,6 +27,7 @@ import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
 import cbproject.deathmatch.network.NetMedFillerClient;
+import cbproject.deathmatch.register.DMBlocks;
 
 /**
  * @author WeAthFolD
@@ -113,9 +114,12 @@ public class GuiMedFiller extends CBCGuiContainer {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		//String blockName = DMBlocks.medkitFiller.getLocalizedName();
-		String blockName = "医疗加强机";
+		String blockName = DMBlocks.medkitFiller.getLocalizedName();
 		fontRenderer.drawString(EnumChatFormatting.RED + blockName,
 				100 - fontRenderer.getStringWidth(blockName) / 2, 1, 0xffffff);
+		blockName = StatCollector.translateToLocal("container.inventory");
+		fontRenderer.drawString(EnumChatFormatting.DARK_GRAY + blockName,
+				12, 84, 0xffffff);
 	}
 
 	/*
