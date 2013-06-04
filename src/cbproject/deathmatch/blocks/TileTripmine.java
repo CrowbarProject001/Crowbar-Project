@@ -1,4 +1,4 @@
-package cbproject.deathmatch.blocks.tileentities;
+package cbproject.deathmatch.blocks;
 
 import java.util.List;
 
@@ -6,16 +6,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.blocks.BlockTripmine;
 import cbproject.deathmatch.register.DMBlocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
-public class TileEntityTripmine extends TileEntity {
+public class TileTripmine extends TileEntity {
 	
 	public int endX, endY, endZ;
 	
-	public TileEntityTripmine() {
+	public TileTripmine() {
 	}
 	
 	public void setEndCoords(int x, int y, int z){
@@ -33,36 +32,36 @@ public class TileEntityTripmine extends TileEntity {
 		MotionXYZ end = new MotionXYZ(endX, endY, endZ, 0, 0, 0);
 		double minX, minY, minZ, maxX, maxY, maxZ;
 		if(end.posX > begin.posX){
-			minX = begin.posX;
-			maxX = end.posX;
+			minX = begin.posX + 0.5;
+			maxX = end.posX+ 0.5;
 		} else {
-			minX = end.posX;
-			maxX = begin.posX;
+			minX = end.posX+ 0.5;
+			maxX = begin.posX+ 0.5;
 		}
 		if(end.posY > begin.posY){
-			minY = begin.posY;
-			maxY = end.posY;
+			minY = begin.posY+ 0.5;
+			maxY = end.posY+ 0.5;
 		} else {
-			minY = end.posY;
-			maxY = begin.posY;
+			minY = end.posY+ 0.5;
+			maxY = begin.posY+ 0.5;
 		}
 		if(end.posZ > begin.posZ){
-			minZ = begin.posZ;
-			maxZ = end.posZ;
+			minZ = begin.posZ+ 0.5;
+			maxZ = end.posZ+ 0.5;
 		} else {
-			minZ = end.posZ;
-			maxZ = begin.posZ;
+			minZ = end.posZ+ 0.5;
+			maxZ = begin.posZ+ 0.5;
 		}
 		
 		float RAY_RAD = BlockTripmine.RAY_RAD;
-		minY = minY + 0.5 - RAY_RAD;
-		maxY = maxY + 0.5 + RAY_RAD;
-		if(meta == 3 || meta == 1){ //X
-			minZ = minZ + 0.5 - RAY_RAD;
-			maxZ = maxZ + 0.5 + RAY_RAD;
+		minY = minY - RAY_RAD;
+		maxY = maxY + RAY_RAD;
+		if(meta == 5 || meta == 4){ //X
+			minZ = minZ - RAY_RAD;
+			maxZ = maxZ + RAY_RAD;
 		} else {
-			minX = minX + 0.5 - RAY_RAD;
-			maxX = maxX + 0.5 + RAY_RAD;
+			minX = minX - RAY_RAD;
+			maxX = maxX + RAY_RAD;
 		}
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 		List list = worldObj.getEntitiesWithinAABBExcludingEntity(null, box);

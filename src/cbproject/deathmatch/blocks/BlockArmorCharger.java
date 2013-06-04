@@ -26,7 +26,6 @@ import cbproject.core.keys.KeyUse;
 import cbproject.core.keys.UsingUtils;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -62,7 +61,7 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 	@Override
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
-		TileEntityArmorCharger te = (TileEntityArmorCharger) par1World.getBlockTileEntity(par2, par3, par4);
+		TileArmorCharger te = (TileArmorCharger) par1World.getBlockTileEntity(par2, par3, par4);
         if (par1World.isBlockIndirectlyGettingPowered(par2, par3, par4))
         {
             te.isRSActivated = true;
@@ -85,10 +84,10 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
     	TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        if (tileEntity == null || !(tileEntity instanceof TileEntityArmorCharger)) {
+        if (tileEntity == null || !(tileEntity instanceof TileArmorCharger)) {
                 return;
         }
-        TileEntityArmorCharger inventory = (TileEntityArmorCharger) tileEntity;
+        TileArmorCharger inventory = (TileArmorCharger) tileEntity;
         dropItems(world, x, y, z, inventory.slots);
         super.breakBlock(world, x, y, z, par5, par6);
     }
@@ -183,7 +182,7 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 		TileEntity te =  world.getBlockTileEntity(bx, by, bz);
 		if(te == null)
 			return;
-		TileEntityArmorCharger te2 = (TileEntityArmorCharger) te;
+		TileArmorCharger te2 = (TileArmorCharger) te;
 		String path = te2.currentEnergy > 0 ? "cbc.entities.suitchargeok" : "cbc.entities.suitchargeno";
 		world.playSoundAtEntity(player, path, 0.5F, 1.0F);
 		UsingUtils.setBlockInUse(player, bx, by, bz);
@@ -198,13 +197,13 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 		TileEntity te =  world.getBlockTileEntity(bx, by, bz);
 		if(te == null)
 			return;
-		TileEntityArmorCharger te2 = (TileEntityArmorCharger) te;
+		TileArmorCharger te2 = (TileArmorCharger) te;
 		te2.stopUsing(player);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityArmorCharger();
+		return new TileArmorCharger();
 	}
 
 }

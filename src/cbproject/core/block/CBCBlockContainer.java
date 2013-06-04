@@ -17,7 +17,7 @@ package cbproject.core.block;
 import java.util.Random;
 
 import cbproject.core.CBCMod;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cbproject.deathmatch.blocks.TileArmorCharger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;

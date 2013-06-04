@@ -18,49 +18,47 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public abstract class CBCTileEntity extends TileEntity {
-	
+
 	protected int lastTick;
 	private int updateFreq = 3;
-	
+
 	@Override
-    public boolean canUpdate()
-    {
-        return true;
-    }
-	
+	public boolean canUpdate() {
+		return true;
+	}
+
 	protected void setUpdateFreq(int freq) {
 		updateFreq = freq;
 	}
-	
+
 	@Override
 	public void updateEntity() {
-		if(++this.lastTick > updateFreq) {
+		if (++this.lastTick > updateFreq) {
 			lastTick = 0;
+			this.frequentUpdate();
 			this.onInventoryChanged();
 		}
 	}
 	
-    /**
-     * validates a tile entity
-     */
+	public void frequentUpdate() {
+		
+	}
+
 	@Override
-    public void validate()
-    {
-        super.validate();
-        onTileLoad();
-    }
-    
+	public void onChunkUnload() {
+		this.onTileUnload();
+		super.onChunkUnload();
+	}
+
 	@Override
-    public void invalidate()
-    {
-    	super.invalidate();
-    	onTileUnload();
-    }
-    
-    public void onTileLoad(){};
-    
-    public void onTileUnload(){};
+	public void invalidate() {
+		super.invalidate();
+		onTileUnload();
+	}
+
+	public void onTileUnload() {
+	};
 }

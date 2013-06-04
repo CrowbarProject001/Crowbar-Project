@@ -19,7 +19,6 @@ import java.util.Random;
 import cbproject.core.CBCMod;
 import cbproject.core.block.CBCBlockContainer;
 import cbproject.core.props.GeneralProps;
-import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
@@ -39,6 +38,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockMedkitFiller extends CBCBlockContainer{
 
 	private Icon iconTop, iconBottom;
+	
 	 /**
 	 * @param par1
 	 * @param par2Material

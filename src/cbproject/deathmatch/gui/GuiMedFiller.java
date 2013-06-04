@@ -25,7 +25,7 @@ import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
-import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
+import cbproject.deathmatch.blocks.TileMedkitFiller;
 import cbproject.deathmatch.network.NetMedFillerClient;
 import cbproject.deathmatch.register.DMBlocks;
 

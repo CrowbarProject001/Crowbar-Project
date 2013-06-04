@@ -15,6 +15,8 @@
 package cbproject.crafting.blocks;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.api.LCDirection;
@@ -49,12 +51,6 @@ public abstract class TileGeneratorBase extends TileElectrical implements IEnerg
 		super.updateEntity();
 		
 	}
-	
-	public int sendEnergy(int amm) {
-		EnergyTileSourceEvent event = new EnergyTileSourceEvent(worldObj, this, amm);
-		MinecraftForge.EVENT_BUS.post(event);
-		return event.amount;
-	}
 
 	@Override
 	public boolean emitEnergyTo(TileEntity emTileEntity,
@@ -66,5 +62,25 @@ public abstract class TileGeneratorBase extends TileElectrical implements IEnerg
 		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
 				zCoord + 0.5) <= 64;
 	}
+	
+    /**
+     * Reads a tile entity from NBT.
+     */
+	@Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.currentEnergy = nbt.getInteger("energy");
+    }
+
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+	public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setInteger("energy", currentEnergy);
+    }
 
 }

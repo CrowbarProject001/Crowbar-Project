@@ -7,7 +7,7 @@ import cbproject.core.renderers.RenderUtils;
 import cbproject.core.renderers.RendererSidedCube;
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.blocks.BlockTripmine;
-import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
+import cbproject.deathmatch.blocks.TileTripmine;
 import cbproject.deathmatch.register.DMBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
@@ -48,7 +48,7 @@ public class RenderTileTripmine extends RendererSidedCube {
 		Tessellator tessellator = Tessellator.instance;
         int var5 = tileentity.getBlockMetadata();
         BlockTripmine block = (BlockTripmine) DMBlocks.blockTripmine;
-        TileEntityTripmine tileEntity = (TileEntityTripmine) tileentity;
+        TileTripmine tileEntity = (TileTripmine) tileentity;
 
         Vec3 v1, v2, v3, v4, v5, v6, v7, v8;
         //Tripmine ray drawing

@@ -16,8 +16,8 @@ package cbproject.deathmatch.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumBehavior;
+import cbproject.deathmatch.blocks.TileArmorCharger;
+import cbproject.deathmatch.blocks.TileArmorCharger.EnumBehavior;
 import cbproject.deathmatch.items.ArmorHEV;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -32,12 +32,12 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerArmorCharger extends Container {
 
-	protected TileEntityArmorCharger te;
+	protected TileArmorCharger te;
 	
 	/**
 	 * 
 	 */
-	public ContainerArmorCharger(TileEntityArmorCharger t, InventoryPlayer playerinv) {
+	public ContainerArmorCharger(TileArmorCharger t, InventoryPlayer playerinv) {
 		te  = t;
 		for(int i = 0; i < 4; i++){
 			addSlotToContainer(new SlotElectricItem(te, i, 8, 8 + 18 * i));

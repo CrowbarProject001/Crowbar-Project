@@ -12,7 +12,7 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.deathmatch.blocks.tileentities;
+package cbproject.deathmatch.blocks;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +36,7 @@ import cbproject.core.block.TileElectricStorage;
  * @author WeAthFolD
  * 
  */
-public class TileEntityHealthCharger extends TileElectricStorage implements IInventory {
+public class TileHealthCharger extends TileElectricStorage implements IInventory {
 
 	public static final int ENERGY_MAX = 30000, EFFECT_MAX = 14400, PROGRESS_TIME = 100, HEALTH_MAX = 100; // 1.25  batbox, 4-6 potions
 	public boolean isUsing = false;
@@ -100,7 +100,7 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 		currentBehavior = currentBehavior == 4 ? 0 : currentBehavior + 1;
 	}
 
-	public TileEntityHealthCharger() {
+	public TileHealthCharger() {
 		super(2, ENERGY_MAX);
 	}
 
@@ -325,7 +325,7 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < slots.length; i++) {
 			short id = nbt.getShort("id" + i), damage = nbt.getShort("damage"
 					+ i);
 			byte count = nbt.getByte("count" + i);
@@ -335,7 +335,11 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 			slots[i] = is;
 		}
 		currentEnergy = nbt.getInteger("energy");
-
+		mainEff = nbt.getShort("mainEff");
+		sideEff = nbt.getShort("sideEff");
+		prgAddMain = nbt.getShort("prgAddMain");
+		prgAddSide = nbt.getShort("prgAddSide");
+		sideEffectId = nbt.getByte("sideEfeectId");
 	}
 
 	/**
@@ -344,7 +348,7 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < slots.length; i++) {
 			if (slots[i] == null)
 				continue;
 			nbt.setShort("id" + i, (short) slots[i].itemID);
@@ -352,6 +356,11 @@ public class TileEntityHealthCharger extends TileElectricStorage implements IInv
 			nbt.setShort("damage" + i, (short) slots[i].getItemDamage());
 		}
 		nbt.setInteger("energy", currentEnergy);
+		nbt.setShort("mainEff", (short) mainEff);
+		nbt.setShort("sideEff", (short) sideEff);
+		nbt.setShort("prgAddMain", (short) prgAddMain);
+		nbt.setShort("prgAddSide", (short) prgAddSide);
+		nbt.setByte("sideEffectId", (byte) sideEffectId);
 	}
 
 	@Override

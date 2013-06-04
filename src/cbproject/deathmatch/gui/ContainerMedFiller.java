@@ -16,8 +16,8 @@ package cbproject.deathmatch.gui;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
-import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller.EnumMedFillerBehavior;
+import cbproject.deathmatch.blocks.TileMedkitFiller;
+import cbproject.deathmatch.blocks.TileMedkitFiller.EnumMedFillerBehavior;
 import cbproject.deathmatch.items.ItemMedkit;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

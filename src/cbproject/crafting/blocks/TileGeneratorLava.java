@@ -17,6 +17,7 @@ package cbproject.crafting.blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.item.IEnItem;
@@ -29,7 +30,7 @@ public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 
 	public static final int ENERGY_PER_BUCKET = 20000;
 	public ItemStack[] slots = new ItemStack[2];
-	public int bucketCnt = 0, curEnergyLeft;
+	public int bucketCnt = 0;
 	
 	/**
 	 * @param tier
@@ -46,18 +47,18 @@ public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 		if(worldObj.isRemote)
 			return;
 		tryBurn();
-		if(curEnergyLeft > 0) {
+		if(currentEnergy > 0) {
 			if(this.slots[1] != null && slots[1].getItem() instanceof ICustomEnItem) {
-				curEnergyLeft -= ((ICustomEnItem)slots[1].getItem()).charge(slots[1], curEnergyLeft, 1, false, false);
+				currentEnergy -= ((ICustomEnItem)slots[1].getItem()).charge(slots[1], currentEnergy, 1, false, false);
 			}
-			int toConsume = 10 - sendEnergy(curEnergyLeft > 10 ? 10 : curEnergyLeft);
-			curEnergyLeft -= toConsume;
+			int toConsume = 10 - sendEnergy(currentEnergy > 10 ? 10 : currentEnergy);
+			currentEnergy -= toConsume;
 		} else {
 			if(bucketCnt-- > 0)
-				curEnergyLeft += ENERGY_PER_BUCKET;
+				currentEnergy += ENERGY_PER_BUCKET;
 			else {
 				bucketCnt = 0;
-				curEnergyLeft = 0;
+				currentEnergy = 0;
 			}
 		}
 	}
@@ -106,8 +107,41 @@ public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 		}
 		return stack;
 	}
+	
+    /**
+     * Reads a tile entity from NBT.
+     */
+	@Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        for(int i = 0; i < slots.length; i++){
+        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
+        	byte count = nbt.getByte("count" + i);
+        	if(id == 0)
+        		continue;
+        	ItemStack is = new ItemStack(id, count, damage);
+        	slots[i] = is;
+        }
+        bucketCnt = nbt.getShort("bucket");
+    }
 
-
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+	public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        for(int i = 0; i < slots.length; i++){
+        	if(slots[i] == null)
+        		continue;
+        	nbt.setShort("id"+i, (short) slots[i].itemID);
+        	nbt.setByte("count"+i, (byte) slots[i].stackSize);
+        	nbt.setShort("damage"+i, (short)slots[i].getItemDamage());
+        }
+        nbt.setShort("bucket", (short) bucketCnt);
+    }
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {

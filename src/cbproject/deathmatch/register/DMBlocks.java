@@ -8,10 +8,10 @@ import cbproject.deathmatch.blocks.BlockArmorCharger;
 import cbproject.deathmatch.blocks.BlockHealthCharger;
 import cbproject.deathmatch.blocks.BlockMedkitFiller;
 import cbproject.deathmatch.blocks.BlockTripmine;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
-import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
+import cbproject.deathmatch.blocks.TileArmorCharger;
+import cbproject.deathmatch.blocks.TileHealthCharger;
+import cbproject.deathmatch.blocks.TileTripmine;
+import cbproject.deathmatch.blocks.TileMedkitFiller;
 
 public class DMBlocks {
 	
@@ -35,9 +35,9 @@ public class DMBlocks {
 		ModLoader.registerBlock(healthCharger);
 		ModLoader.registerBlock(medkitFiller);
 		
-		ModLoader.registerTileEntity(TileEntityTripmine.class, "tile_entity_tripmine");
-		ModLoader.registerTileEntity(TileEntityArmorCharger.class, "tile_entity_charger");
-		ModLoader.registerTileEntity(TileEntityHealthCharger.class, "tile_entity_hcharger");
+		ModLoader.registerTileEntity(TileTripmine.class, "tile_entity_tripmine");
+		ModLoader.registerTileEntity(TileArmorCharger.class, "tile_entity_charger");
+		ModLoader.registerTileEntity(TileHealthCharger.class, "tile_entity_hcharger");
 		ModLoader.registerTileEntity(TileMedkitFiller.class, "tile_entity_medfiller");
 	}
 }

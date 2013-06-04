@@ -30,25 +30,22 @@ import cbproject.core.block.TileElectrical;
 public class TileWire extends TileElectrical implements IEnConductor {
 
 	public boolean[] renderSides = new boolean[6];
-	public int tickSinceLastUpdate = 0;
 	
-	public TileWire() {
-	}
+	public TileWire() {}
 	
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		
-		if(++tickSinceLastUpdate > 5) {
-			tickSinceLastUpdate = 0;
-			updateSides();
-		}
+	}
+	
+	@Override
+	public void frequentUpdate() {
+		updateSides();
 	}
 
 	public void updateSides() {
 		if(!worldObj.isRemote)
 			return;
-		
 		ForgeDirection[] dirs = ForgeDirection.values();
 		for(int i = 0; i < 6; i++) {
 			TileEntity ent = worldObj.getBlockTileEntity(xCoord + dirs[i].offsetX, yCoord + dirs[i].offsetY, zCoord + dirs[i].offsetZ);
@@ -56,7 +53,6 @@ public class TileWire extends TileElectrical implements IEnConductor {
 				renderSides[i] = true;
 			} else renderSides[i] = false;
 		}
-		
 	}
 
 	@Override

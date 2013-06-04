@@ -12,10 +12,11 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.deathmatch.blocks.tileentities;
+package cbproject.deathmatch.blocks;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.block.TileElectricStorage;
+import cbproject.core.utils.EnergyUtils;
 import cbproject.deathmatch.items.ItemMedkit;
 import cbproject.deathmatch.items.ItemMedkit.EnumAddingType;
 
@@ -85,10 +87,16 @@ public class TileMedkitFiller extends TileElectricStorage implements IInventory 
 		if(getCurrentEnergy() < 0)
 			this.currentEnergy = 0;
 		
-		if(energyReq > 0 && slots[5] != null && slots[5].getItem() instanceof ICustomEnItem) {
-			ICustomEnItem item = (ICustomEnItem) slots[5].getItem();
-			this.currentEnergy += item.discharge(slots[5], energyReq, 2, false, false);
+		//charge from slot0
+		if(energyReq > 0){
+			ItemStack sl = slots[5];
+			if (sl != null){
+				EnergyUtils.tryChargeFromStack(sl, energyReq);
+				if(sl.stackSize <= 0)
+					this.setInventorySlotContents(5, null);
+			}
 		}
+		
 		
 		for(int i = 0; i < 3; i++) {
 			if(isCrafting(i)) {
@@ -200,7 +208,7 @@ public class TileMedkitFiller extends TileElectricStorage implements IInventory 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < slots.length; i++) {
 			short id = nbt.getShort("id" + i), damage = nbt.getShort("damage"
 					+ i);
 			byte count = nbt.getByte("count" + i);
@@ -217,7 +225,7 @@ public class TileMedkitFiller extends TileElectricStorage implements IInventory 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < slots.length; i++) {
 			if (slots[i] == null)
 				continue;
 			nbt.setShort("id" + i, (short) slots[i].itemID);
@@ -236,16 +244,5 @@ public class TileMedkitFiller extends TileElectricStorage implements IInventory 
 	@Override
 	public int getMaxSafeInput() {
 		return 32;
-	}
-
-
-	@Override
-	public int injectEnergy(LCDirection paramDirection, int paramInt) {
-		this.currentEnergy += paramInt;
-		if(currentEnergy > maxEnergy) {
-			currentEnergy = maxEnergy;
-			return currentEnergy - maxEnergy;
-		}
-		return 0;
 	}
 }

@@ -16,6 +16,7 @@ package cbproject.core.block;
 
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.api.energy.events.EnergyTileLoadEvent;
+import cbproject.api.energy.events.EnergyTileSourceEvent;
 import cbproject.api.energy.events.EnergyTileUnloadEvent;
 import cbproject.api.energy.tile.IEnergyTile;
 
@@ -31,12 +32,6 @@ public abstract class TileElectrical extends CBCTileEntity implements IEnergyTil
 	 * 
 	 */
 	public TileElectrical() {
-		
-	}
-	
-	@Override
-	public void onTileLoad() {
-		super.onTileLoad();
 		
 	}
 	
@@ -62,5 +57,10 @@ public abstract class TileElectrical extends CBCTileEntity implements IEnergyTil
 		return addedToNet;
 	}
 	
+	public int sendEnergy(int amm) {
+		EnergyTileSourceEvent event = new EnergyTileSourceEvent(worldObj, this, amm);
+		MinecraftForge.EVENT_BUS.post(event);
+		return event.amount;
+	}
 
 }

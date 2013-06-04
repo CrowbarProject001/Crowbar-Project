@@ -16,6 +16,7 @@ package cbproject.crafting.blocks;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.item.IEnItem;
@@ -61,6 +62,39 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 		}
 		
 	}
+	
+    /**
+     * Reads a tile entity from NBT.
+     */
+	@Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        for(int i = 0; i < slots.length; i++){
+        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
+        	byte count = nbt.getByte("count" + i);
+        	if(id == 0)
+        		continue;
+        	ItemStack is = new ItemStack(id, count, damage);
+        	slots[i] = is;
+        }
+    }
+
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+	public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        for(int i = 0; i < slots.length; i++){
+        	if(slots[i] == null)
+        		continue;
+        	nbt.setShort("id"+i, (short) slots[i].itemID);
+        	nbt.setByte("count"+i, (byte) slots[i].stackSize);
+        	nbt.setShort("damage"+i, (short)slots[i].getItemDamage());
+        }
+    }
 	
 	@Override
 	public int getMaxEnergyOutput() {

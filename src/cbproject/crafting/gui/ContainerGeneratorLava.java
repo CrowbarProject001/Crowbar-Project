@@ -63,7 +63,7 @@ public class ContainerGeneratorLava extends Container {
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
 			icrafting.sendProgressBarUpdate(this, 0, te.bucketCnt);
-			icrafting.sendProgressBarUpdate(this, 1, te.curEnergyLeft);
+			icrafting.sendProgressBarUpdate(this, 1, te.currentEnergy);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class ContainerGeneratorLava extends Container {
 		if (par1 == 0) {
 			te.bucketCnt = par2;
 		} else if(par1 == 1) {
-			te.curEnergyLeft = par2;
+			te.currentEnergy = par2;
 		}
 	}
 	

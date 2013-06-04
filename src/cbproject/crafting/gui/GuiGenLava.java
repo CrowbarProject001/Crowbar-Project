@@ -46,7 +46,7 @@ public class GuiGenLava  extends CBCGuiContainer{
 
 		@Override
 		public String getTip() {
-			return te.bucketCnt * te.ENERGY_PER_BUCKET + te.curEnergyLeft + "/420000 EU";
+			return te.bucketCnt * te.ENERGY_PER_BUCKET + te.currentEnergy + "/420000 EU";
 		}
 		
 	}
@@ -88,7 +88,7 @@ public class GuiGenLava  extends CBCGuiContainer{
         this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
         int len = 0;
         len = te.bucketCnt * 47 / te.maxStorage;
-        len += Math.round(2.35F * te.curEnergyLeft / te.ENERGY_PER_BUCKET);
+        len += Math.round(2.35F * te.currentEnergy / te.ENERGY_PER_BUCKET);
         this.drawTexturedModalRect(x + 91, y + 65 - len, 173, 59 - len, 6, len);
         this.drawElements();
         GL11.glDisable(GL11.GL_BLEND);

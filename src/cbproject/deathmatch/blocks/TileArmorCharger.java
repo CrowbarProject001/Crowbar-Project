@@ -12,7 +12,7 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cbproject.deathmatch.blocks.tileentities;
+package cbproject.deathmatch.blocks;
 
 import java.util.HashSet;
 
@@ -34,7 +34,7 @@ import cbproject.core.utils.EnergyUtils;
  * @author WeAthFolD
  * 
  */
-public class TileEntityArmorCharger extends TileElectricStorage implements
+public class TileArmorCharger extends TileElectricStorage implements
 		IInventory {
 
 	public static int ENERGY_MAX = 400000; // 10 BatBox, 4HEV Armor
@@ -79,7 +79,7 @@ public class TileEntityArmorCharger extends TileElectricStorage implements
 				: cur + 1];
 	}
 
-	public TileEntityArmorCharger() {
+	public TileArmorCharger() {
 		super(2, ENERGY_MAX);
 	}
 

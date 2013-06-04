@@ -24,9 +24,9 @@ import cbproject.core.renderers.RenderCrossedProjectile;
 import cbproject.core.renderers.RenderEmpty;
 import cbproject.core.renderers.RenderIcon;
 import cbproject.core.renderers.RenderModel;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
+import cbproject.deathmatch.blocks.TileArmorCharger;
+import cbproject.deathmatch.blocks.TileHealthCharger;
+import cbproject.deathmatch.blocks.TileTripmine;
 import cbproject.deathmatch.entities.EntityARGrenade;
 import cbproject.deathmatch.entities.EntityBattery;
 import cbproject.deathmatch.entities.EntityBullet;
@@ -96,9 +96,9 @@ public class ClientProxy extends Proxy {
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_357, 0.08F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmAR, 0.10F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun, 0.12F));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripmine.class, new RenderTileTripmine(DMBlocks.blockTripmine));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmorCharger.class, new RenderTileCharger(DMBlocks.armorCharger));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityHealthCharger.class, new RenderTileHeCharger(DMBlocks.healthCharger));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileTripmine.class, new RenderTileTripmine(DMBlocks.blockTripmine));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileArmorCharger.class, new RenderTileCharger(DMBlocks.armorCharger));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileHealthCharger.class, new RenderTileHeCharger(DMBlocks.healthCharger));
 		
 	}
 }

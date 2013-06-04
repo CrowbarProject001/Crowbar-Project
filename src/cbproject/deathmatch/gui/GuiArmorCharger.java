@@ -24,7 +24,7 @@ import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cbproject.deathmatch.blocks.TileArmorCharger;
 import cbproject.deathmatch.network.NetChargerClient;
 
 /**
@@ -33,12 +33,12 @@ import cbproject.deathmatch.network.NetChargerClient;
  */
 public class GuiArmorCharger extends CBCGuiContainer {
 
-	TileEntityArmorCharger te;
+	TileArmorCharger te;
 
 	/**
 	 * @param par1Container
 	 */
-	public GuiArmorCharger(TileEntityArmorCharger t, Container par1Container) {
+	public GuiArmorCharger(TileArmorCharger t, Container par1Container) {
 		super(par1Container);
 		this.xSize = 176;
 		this.ySize = 166;
@@ -55,7 +55,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		@Override
 		public String getTip() {
 			return StatCollector.translateToLocal("curenergy.name") + ": "
-					+ te.currentEnergy + "/" + TileEntityArmorCharger.ENERGY_MAX + " EU";
+					+ te.currentEnergy + "/" + TileArmorCharger.ENERGY_MAX + " EU";
 		}
 
 	}
@@ -135,7 +135,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 		this.drawElements();
 
-		int length = te.currentEnergy * 64 / TileEntityArmorCharger.ENERGY_MAX;
+		int length = te.currentEnergy * 64 / TileArmorCharger.ENERGY_MAX;
 		this.drawTexturedModalRect(x + 80, y + 28, 176, 0, length, 10);
 
 		if (te.isCharging) {

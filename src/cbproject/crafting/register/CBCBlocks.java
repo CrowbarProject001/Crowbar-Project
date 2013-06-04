@@ -1,6 +1,5 @@
 package cbproject.crafting.register;
 
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.src.ModLoader;
@@ -17,13 +16,14 @@ import cbproject.crafting.blocks.BlockTinOre;
 import cbproject.crafting.blocks.BlockUraniumOre;
 import cbproject.crafting.blocks.BlockWeaponCrafter;
 import cbproject.crafting.blocks.BlockWire;
-import cbproject.crafting.blocks.TileWeaponCrafter;
+import cbproject.crafting.blocks.TileBatBox;
 import cbproject.crafting.blocks.TileGeneratorFire;
 import cbproject.crafting.blocks.TileGeneratorLava;
 import cbproject.crafting.blocks.TileGeneratorMugen;
 import cbproject.crafting.blocks.TileGeneratorSolar;
-import cbproject.crafting.blocks.TileStorage;
+import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.blocks.TileWire;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 /**
  * 方块注册类，包括了所有crafting包中的方块。
  * @author WeAthFolD
@@ -38,8 +38,6 @@ public class CBCBlocks {
 	 * @param conf Mod内部通用Config
 	 */
 	public static void init(Config conf){
-
-		
 
 		weaponCrafter = new BlockWeaponCrafter(GeneralRegistry.getBlockId("crafter", 0));
 		blockRefined = new BlockRefined(GeneralRegistry.getBlockId("refined", 0));
@@ -83,7 +81,12 @@ public class CBCBlocks {
 		MinecraftForge.setBlockHarvestLevel(oreCooper, "pickaxe", 1);
 		ModLoader.registerTileEntity(TileWeaponCrafter.class, "tile_entity_weapon_crafter");
 		ModLoader.registerTileEntity(TileGeneratorMugen.class, "tile_entity_mugen");
+		ModLoader.registerTileEntity(TileGeneratorSolar.class, "tile_entity_solar");
+		ModLoader.registerTileEntity(TileGeneratorFire.class, "tile_entity_genfire");
+		ModLoader.registerTileEntity(TileGeneratorLava.class, "tile_entity_genlava");
+		ModLoader.registerTileEntity(TileBatBox.class, "tile_entity_batbox");
 		ModLoader.registerTileEntity(TileWire.class, "tile_entity_wire");
+		
 		return;
 		
 	}

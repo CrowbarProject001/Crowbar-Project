@@ -23,7 +23,6 @@ import net.minecraftforge.common.ForgeDirection;
 import cbproject.core.CBCMod;
 import cbproject.core.props.ClientProps;
 import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.blocks.tileentities.TileEntityTripmine;
 import cbproject.deathmatch.utils.BulletManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -69,7 +68,7 @@ public class BlockTripmine extends BlockContainer {
 	public void updateRayRange(World par1World, int par2, int par3, int par4){
 		MotionXYZ begin = new MotionXYZ(par2, par3, par4, 0, 0, 0);
 		int meta = par1World.getBlockMetadata(par2, par3, par4);
-		TileEntityTripmine tileEntity = (TileEntityTripmine) par1World.getBlockTileEntity(par2, par3, par4);
+		TileTripmine tileEntity = (TileTripmine) par1World.getBlockTileEntity(par2, par3, par4);
 		if(tileEntity == null)
 			return;
 		if(meta == 5)
@@ -230,7 +229,7 @@ public class BlockTripmine extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityTripmine();
+		return new TileTripmine();
 	}
 
 

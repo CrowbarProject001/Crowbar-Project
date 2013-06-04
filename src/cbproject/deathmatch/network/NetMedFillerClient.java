@@ -25,8 +25,8 @@ import net.minecraft.world.World;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
-import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller;
-import cbproject.deathmatch.blocks.tileentities.TileMedkitFiller.EnumMedFillerBehavior;
+import cbproject.deathmatch.blocks.TileMedkitFiller;
+import cbproject.deathmatch.blocks.TileMedkitFiller.EnumMedFillerBehavior;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 

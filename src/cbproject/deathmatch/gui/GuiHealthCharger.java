@@ -25,7 +25,7 @@ import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
-import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
+import cbproject.deathmatch.blocks.TileHealthCharger;
 import cbproject.deathmatch.register.DMBlocks;
 
 /**
@@ -34,12 +34,12 @@ import cbproject.deathmatch.register.DMBlocks;
  */
 public class GuiHealthCharger extends CBCGuiContainer {
 
-	TileEntityHealthCharger te;
+	TileHealthCharger te;
 
 	/**
 	 * @param par1Container
 	 */
-	public GuiHealthCharger(TileEntityHealthCharger t, Container par1Container) {
+	public GuiHealthCharger(TileHealthCharger t, Container par1Container) {
 		super(par1Container);
 		this.xSize = 176;
 		this.ySize = 166;
@@ -56,7 +56,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 		@Override
 		public String getTip() {
 			return StatCollector.translateToLocal("curenergy.name") + ": "
-					+ te.currentEnergy + "/" + TileEntityHealthCharger.ENERGY_MAX + " EU";
+					+ te.currentEnergy + "/" + TileHealthCharger.ENERGY_MAX + " EU";
 		}
 
 	}
@@ -69,7 +69,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 
 		@Override
 		public String getTip() {
-			return te.mainEff + "/" + TileEntityHealthCharger.HEALTH_MAX + " HP";
+			return te.mainEff + "/" + TileHealthCharger.HEALTH_MAX + " HP";
 		}
 	}
 	
@@ -81,7 +81,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 
 		@Override
 		public String getTip() {
-			return te.sideEff/20.0F + "/" + TileEntityHealthCharger.EFFECT_MAX/20.0F + " sec";
+			return te.sideEff/20.0F + "/" + TileHealthCharger.EFFECT_MAX/20.0F + " sec";
 		}
 	}
 
@@ -143,7 +143,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 		this.drawElements();
  
 		if(te.currentEnergy > 0) {
-			int len = te.currentEnergy * 48 / TileEntityHealthCharger.ENERGY_MAX;
+			int len = te.currentEnergy * 48 / TileHealthCharger.ENERGY_MAX;
 			this.drawTexturedModalRect(x + 154, y + 55 - len, 176, 93 - len, 5, len);
 		} 
 		if(te.mainEff > 0) {

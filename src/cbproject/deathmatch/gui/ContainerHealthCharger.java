@@ -23,8 +23,8 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cbproject.api.energy.item.IEnItem;
-import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumBehavior;
+import cbproject.deathmatch.blocks.TileHealthCharger;
+import cbproject.deathmatch.blocks.TileArmorCharger.EnumBehavior;
 
 /**
  * @author WeAthFolD
@@ -32,12 +32,12 @@ import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumBehav
  */
 public class ContainerHealthCharger extends Container{
 	
-	protected TileEntityHealthCharger te;
+	protected TileHealthCharger te;
 	
 	/**
 	 * 
 	 */
-	public ContainerHealthCharger(TileEntityHealthCharger t, InventoryPlayer playerinv) {
+	public ContainerHealthCharger(TileHealthCharger t, InventoryPlayer playerinv) {
 		te  = t;
 		addSlotToContainer(new Slot(t, 0, 19, 60));
 		addSlotToContainer(new Slot(t, 1, 41, 60));

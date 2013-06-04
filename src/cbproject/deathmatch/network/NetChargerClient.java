@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
 import cbproject.core.register.IChannelProcess;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
+import cbproject.deathmatch.blocks.TileArmorCharger;
 
 /**
  * @author Administrator
@@ -35,7 +35,7 @@ import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger;
  */
 public class NetChargerClient implements IChannelProcess {
 
-	public static void sendChargerPacket(TileEntityArmorCharger te){
+	public static void sendChargerPacket(TileArmorCharger te){
 		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_CHARGER_CL, 10);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		
@@ -65,10 +65,10 @@ public class NetChargerClient implements IChannelProcess {
 			y=stream.readShort();
 			z=stream.readInt();
 			TileEntity te = world.getBlockTileEntity(x,y,z);
-			if(te == null || !(te instanceof TileEntityArmorCharger))
+			if(te == null || !(te instanceof TileArmorCharger))
 				throw new RuntimeException("Cannot't get the right tileEntity of armor charger.");
 			else {
-				TileEntityArmorCharger tt = (TileEntityArmorCharger) te;
+				TileArmorCharger tt = (TileArmorCharger) te;
 				tt.nextBehavior();
 			}
 			

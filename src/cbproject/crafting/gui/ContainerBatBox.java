@@ -39,7 +39,7 @@ public class ContainerBatBox extends Container {
 	public ContainerBatBox(TileBatBox ent, InventoryPlayer player) {
 		te = ent;
 		//燃料槽
-		addSlotToContainer(new SlotElectricItem(ent, 0, 80, 53));
+		addSlotToContainer(new Slot(ent, 0, 80, 53));
 		//充电槽
 		addSlotToContainer(new SlotElectricItem(ent, 1, 132, 30));
 		bindPlayerInventory(player);
@@ -94,7 +94,9 @@ public class ContainerBatBox extends Container {
 					if (!this.mergeItemStack(stackInSlot, 0, 2, true)) {
 						return null;
 					}
-				} else return null;
+				} else if (!this.mergeItemStack(stackInSlot, 0, 1, true)) {
+					return null;
+				}
 			}
 			// 将TileEntity中的物品放到玩家物品栏中
 			else {

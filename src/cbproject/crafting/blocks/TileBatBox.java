@@ -19,10 +19,11 @@ import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.tile.IEnergySink;
 import cbproject.core.utils.EnergyUtils;
 import cbproject.crafting.register.CBCBlocks;
-import cbproject.deathmatch.blocks.tileentities.TileEntityArmorCharger.EnumBehavior;
+import cbproject.deathmatch.blocks.TileArmorCharger.EnumBehavior;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -56,7 +57,7 @@ public class TileBatBox extends TileGeneratorBase implements IInventory, IEnergy
 			int energyReq = maxStorage - currentEnergy;
 			ItemStack sl = slots[0];
 			if (sl != null){
-				EnergyUtils.tryChargeFromStack(sl, energyReq);
+				currentEnergy += EnergyUtils.tryChargeFromStack(sl, energyReq);
 				if(sl.stackSize <= 0)
 					this.setInventorySlotContents(0, null);
 			}
@@ -72,6 +73,39 @@ public class TileBatBox extends TileGeneratorBase implements IInventory, IEnergy
 		}
 		
 	}
+	
+    /**
+     * Reads a tile entity from NBT.
+     */
+	@Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        for(int i = 0; i < slots.length; i++){
+        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
+        	byte count = nbt.getByte("count" + i);
+        	if(id == 0)
+        		continue;
+        	ItemStack is = new ItemStack(id, count, damage);
+        	slots[i] = is;
+        }
+    }
+
+    /**
+     * Writes a tile entity to NBT.
+     */
+    @Override
+	public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        for(int i = 0; i < slots.length; i++){
+        	if(slots[i] == null)
+        		continue;
+        	nbt.setShort("id"+i, (short) slots[i].itemID);
+        	nbt.setByte("count"+i, (byte) slots[i].stackSize);
+        	nbt.setShort("damage"+i, (short)slots[i].getItemDamage());
+        }
+    }
 	
 	@Override
 	public int injectEnergy(LCDirection paramDirection, int paramInt) {

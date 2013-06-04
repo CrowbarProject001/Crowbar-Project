@@ -26,7 +26,6 @@ import cbproject.core.keys.KeyUse;
 import cbproject.core.keys.UsingUtils;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
-import cbproject.deathmatch.blocks.tileentities.TileEntityHealthCharger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -57,7 +56,7 @@ public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityHealthCharger();
+		return new TileHealthCharger();
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3,
 			int par4, int par5) {
-		TileEntityHealthCharger te = (TileEntityHealthCharger) par1World
+		TileHealthCharger te = (TileHealthCharger) par1World
 				.getBlockTileEntity(par2, par3, par4);
 		if (par1World.isBlockIndirectlyGettingPowered(par2, par3, par4)) {
 			te.isRSActivated = true;
@@ -98,11 +97,11 @@ public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-		if (!(tileEntity instanceof TileEntityHealthCharger)) {
+		if (!(tileEntity instanceof TileHealthCharger)) {
 			super.breakBlock(world, x, y, z, par5, par6);
 			return;
 		}
-		TileEntityHealthCharger inventory = (TileEntityHealthCharger) tileEntity;
+		TileHealthCharger inventory = (TileHealthCharger) tileEntity;
 		dropItems(world, x, y, z, inventory.slots);
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
@@ -198,7 +197,7 @@ public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 		TileEntity te = world.getBlockTileEntity(bx, by, bz);
 		if (te == null)
 			return;
-		TileEntityHealthCharger te2 = (TileEntityHealthCharger) te;
+		TileHealthCharger te2 = (TileHealthCharger) te;
 		String path = te2.currentEnergy > 0 ? "cbc.entities.medshot"
 				: "cbc.entities.medshotno";
 		world.playSoundAtEntity(player, path, 0.5F, 1.0F);
@@ -214,7 +213,7 @@ public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 		TileEntity te = world.getBlockTileEntity(bx, by, bz);
 		if (te == null)
 			return;
-		TileEntityHealthCharger te2 = (TileEntityHealthCharger) te;
+		TileHealthCharger te2 = (TileHealthCharger) te;
 		te2.stopUsing(player);
 	}
 
