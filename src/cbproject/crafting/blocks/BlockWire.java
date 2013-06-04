@@ -14,6 +14,10 @@
  */
 package cbproject.crafting.blocks;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.props.ClientProps;
@@ -29,7 +33,7 @@ import net.minecraft.world.World;
 public class BlockWire extends BlockElectricalBase {
 
 	public BlockWire(int par1) {
-		super(par1, Material.rock);
+		super(par1, Material.cloth);
 		this.setIconName("wire");
 		this.setUnlocalizedName("wire");
 		this.setGuiId(-1);

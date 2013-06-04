@@ -62,6 +62,7 @@ public class RenderWire extends TileEntitySpecialRenderer {
 	}
 
 	private void renderWireBox(Tessellator t, int side, boolean[] theArray) {
+		ForgeDirection[] dirs = ForgeDirection.values();
 		Vec3 v1 = RenderUtils.newV3(-WIDTH, -WIDTH, -WIDTH),
 				v2 = RenderUtils.newV3(WIDTH, -WIDTH, -WIDTH),
 				v3 = RenderUtils.newV3(WIDTH, -WIDTH, WIDTH),
@@ -93,6 +94,10 @@ public class RenderWire extends TileEntitySpecialRenderer {
 			break;
 		}
 		GL11.glTranslatef(dx, dy, dz);
+		int a = 0;
+		for(int i = 0; i < theArray.length; i++)
+			if(theArray[i])
+				a++;
 		for(int i = 0; i < 6; i++) {
 			if(!doesRenderSide(side, i, theArray))
 				continue;
@@ -144,10 +149,10 @@ public class RenderWire extends TileEntitySpecialRenderer {
 				dz = WIDTH;
 				break;
 			}
-			if(side == i) {
-				RenderUtils.loadTexture(ClientProps.WIRE_SIDE_PATH);
-			} else {
+			if(a == 1 && side == -1 && theArray[dirs[i].getOpposite().ordinal()]) {
 				RenderUtils.loadTexture(ClientProps.WIRE_MAIN_PATH);
+			} else {
+				RenderUtils.loadTexture(ClientProps.WIRE_SIDE_PATH);
 			}
 			GL11.glPushMatrix();
 			t.startDrawingQuads();

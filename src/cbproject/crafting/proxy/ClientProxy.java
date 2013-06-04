@@ -19,8 +19,8 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cbproject.core.register.CBCSoundEvents;
 import cbproject.crafting.blocks.TileWire;
 import cbproject.crafting.entities.EntitySpray;
+import cbproject.crafting.render.RenderSpray;
 import cbproject.crafting.render.RenderWire;
-import cbproject.crafting.renderer.RenderSpray;
 
 /**
  * @author WeAthFolD

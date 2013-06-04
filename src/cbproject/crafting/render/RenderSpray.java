@@ -1,4 +1,4 @@
-package cbproject.crafting.renderer;
+package cbproject.crafting.render;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
