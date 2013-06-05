@@ -24,6 +24,7 @@ import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.TileArmorCharger;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -55,4 +56,14 @@ public class BlockWire extends BlockElectricalBase {
 		return false;
 	}
 
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * Returns the bounding box of the wired rectangular prism to render.
+     */
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    {
+        return AxisAlignedBB.getAABBPool().getAABB((double)par2 + 0.3, (double)par3 + 0.3, (double)par4 + 0.3, (double)par2 + 0.7, (double)par3 + 0.7, (double)par4 + 0.7);
+    }
+	
 }

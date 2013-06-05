@@ -31,9 +31,7 @@ public class SlotLocked extends Slot {
 	}
 	
 	@Override
-    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)   {
-		((TileWeaponCrafter)inventory).redraw = true;
-    }
+    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)   {}
 	
 	
     @Override

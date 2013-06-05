@@ -30,7 +30,7 @@ import net.minecraft.item.ItemStack;
  * @author WeAthFolD
  *
  */
-public abstract class CBCGenericItem extends Item {
+public class CBCGenericItem extends Item {
 
 	protected String description;
 	protected boolean useDescription = false;;
@@ -57,8 +57,9 @@ public abstract class CBCGenericItem extends Item {
 			par3List.add(description);
 	}
 	
-	public void setIconName(String name){
+	public CBCGenericItem setIconName(String name){
 		this.iconName = name;
+		return this;
 	}
 	
 	/**
@@ -66,9 +67,10 @@ public abstract class CBCGenericItem extends Item {
 	 * 同时设置UnlocalizedName和IconName
 	 * @param names 名字
 	 */
-	public void setIAndU(String names) {
+	public CBCGenericItem setIAndU(String names) {
 		this.setUnlocalizedName(names);
 		this.setIconName(names);
+		return this;
 	}
 	
     @SideOnly(Side.CLIENT)

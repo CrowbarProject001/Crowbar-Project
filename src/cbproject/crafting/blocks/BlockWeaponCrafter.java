@@ -179,11 +179,6 @@ public class BlockWeaponCrafter extends CBCBlockContainer {
         {
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
         }
-
-        if (par6ItemStack.hasDisplayName())
-        {
-            ((TileEntityFurnace)par1World.getBlockTileEntity(par2, par3, par4)).func_94129_a(par6ItemStack.getDisplayName());
-        }
     }
 
 	@Override

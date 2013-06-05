@@ -63,6 +63,7 @@ public class ClientProps {
 			SQUEAK_MOB_PATH = "/cbproject/gfx/textures/entities/squeak.png",
 			WIRE_SIDE_PATH = "/mods/lambdacraft/textures/blocks/wire_side.png",
 			WIRE_MAIN_PATH = "/mods/lambdacraft/textures/blocks/wire_main.png",
+			WIRE_SIDE_PATH2 = "/mods/lambdacraft/textures/blocks/wire_side2.png",
 			HECHARGER_MAIN_PATH = "/cbproject/gfx/textures/blocks/hecharger_main.png",
 			HECHARGER_SIDE_PATH = "/cbproject/gfx/textures/blocks/hecharger_side.png",
 			HECHARGER_TD_PATH = "/cbproject/gfx/textures/blocks/hecharger_td.png",

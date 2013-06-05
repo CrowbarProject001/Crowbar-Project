@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) LambdaCraft Modding Team, 2013
+  * Copyright (c) LambdaCraft Modding Team, 2013
  * 版权许可：LambdaCraft 制作小组， 2013.
  * http://lambdacraft.half-life.cn/
  * 
@@ -15,6 +15,7 @@
 package cbproject.crafting.blocks;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -48,9 +49,9 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 	public int page = 0;
 	public int heat, burnTimeLeft, maxBurnTime;
 	public RecipeCrafter currentRecipe;
-	public CrafterIconType iconType;
+	public CrafterIconType iconType = CrafterIconType.NONE;
 	public long lastTime = 0;
-	public boolean redraw, isCrafting, isBurning;
+	public boolean isCrafting, isBurning;
 	public boolean isAdvanced = false;
 	public boolean isLoad = false;
 	
@@ -176,9 +177,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		if (i > 12 && itemstack.getItem() instanceof ItemMaterial)
-			return true;
-		return false;
+		return true;
 	}
 
 	@Override
@@ -242,7 +241,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			if (!RecipeWeapons.doesAdvNeedScrollBar(page))
 				return;
 		}
-		ArrayList<RecipeCrafter> recipes[] = (!isAdvanced? RecipeWeapons.recipes : RecipeWeapons.advancedRecipes);
+		List<RecipeCrafter> recipes[] = (!isAdvanced? RecipeWeapons.recipes : RecipeWeapons.advancedRecipes);
 		if (isForward) {
 			if (scrollFactor < recipes[page].size() - 3) {
 				scrollFactor++;
@@ -252,12 +251,11 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 				scrollFactor--;
 			}
 		}
-		redraw = true;
 		this.onInventoryChanged();
 	}
 	
 	public void addPage(boolean isForward) {
-		ArrayList<RecipeCrafter> recipes[] = (!isAdvanced? RecipeWeapons.recipes : RecipeWeapons.advancedRecipes);
+		List<RecipeCrafter> recipes[] = (!isAdvanced? RecipeWeapons.recipes : RecipeWeapons.advancedRecipes);
 		if (isForward) {
 			if (page < recipes.length - 1) {
 				page++;
@@ -268,7 +266,6 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			}
 		}
 		scrollFactor = 0;
-		redraw = true;
 		this.onInventoryChanged();
 	}
 
@@ -286,7 +283,8 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 	
 	public void attemptItemCrafting(int slot) {
 		RecipeCrafter r = getRecipeBySlotAndScroll(slot, this.scrollFactor);
-
+		if(r == null)
+			return;
 		if (hasEnoughMaterial(r)) {
 			resetCraftingState();
 			iconType = CrafterIconType.CRAFTING;
@@ -296,7 +294,6 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			iconType = CrafterIconType.NOMATERIAL;
 		}
 		lastTime = worldObj.getWorldTime();
-		this.redraw = true;
 		this.onInventoryChanged();
 	    
 	}

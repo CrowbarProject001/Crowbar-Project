@@ -103,10 +103,10 @@ public class ModuleDM
 		EntityRegistry.registerModEntity(EntityCrossbowArrow.class, "arrow", GeneralProps.ENT_ID_ARROW, CBCMod.instance, 32, 2, true);
 		EntityRegistry.registerModEntity(EntityMedkit.class, "medkit", GeneralProps.ENT_ID_MEDKIT, CBCMod.instance, 32, 5, true);
 		EntityRegistry.registerModEntity(EntityBattery.class, "battery", GeneralProps.ENT_ID_BATTERY, CBCMod.instance, 32, 5, true);
-		String description[] = {"crafter.weapon", "crafter.ammo"},
-				advds [] = {"crafter.advweapon", "crafter.armor"};
+		String description[] = {"crafter.weapon", "crafter.ammo"};
+		String ecDescription[] = { "Equipments" };
 		RecipeWeapons.InitializeRecipes(2, description);
-		RecipeWeapons.InitializeAdvRecipes(2, advds);
+		RecipeWeapons.initliazeECRecipes(1, ecDescription);
 		
 		RecipeCrafter wpnRecipes[] = {
 				new RecipeCrafter(new ItemStack(DMItems.weapon_crowbar),800, new ItemStack(CBCItems.ironBar, 2), CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES), new ItemStack(Item.dyePowder, 1, 1)),
@@ -147,10 +147,10 @@ public class ModuleDM
 				new RecipeCrafter(new ItemStack(DMItems.armorHEVHelmet), 3000, CBCItems.materials.newStack(2, EnumMaterial.TECH), CBCItems.materials.newStack(4, EnumMaterial.LIGHT), CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES))
 		};
 		
-		RecipeWeapons.addWeaponRecipe(0, wpnRecipes);
-		RecipeWeapons.addWeaponRecipe(1, ammoRecipes);	
-		RecipeWeapons.addAdvWeaponRecipe(0, advWeapons);
-		RecipeWeapons.addAdvWeaponRecipe(1, armors);
+		RecipeWeapons.addNormalRecipe(0, wpnRecipes);
+		RecipeWeapons.addNormalRecipe(1, ammoRecipes);	
+		RecipeWeapons.addAdvancedRecipe(0, advWeapons);
+		RecipeWeapons.addECSpecificRecipe(2, armors);
 		RecipeWeapons.close();
 		
 		proxy.init();

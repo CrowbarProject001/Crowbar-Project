@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cbproject.core.register.IGuiElement;
 import cbproject.crafting.blocks.TileBatBox;
+import cbproject.crafting.blocks.TileElCrafter;
 import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.blocks.TileGeneratorFire;
 import cbproject.crafting.blocks.TileGeneratorLava;
@@ -40,6 +41,21 @@ public class CRGuiElements {
 		public Object getClientGui(EntityPlayer player, World world, int x,
 				int y, int z) {
 			return new GuiWeaponCrafter(player.inventory, (TileWeaponCrafter) world.getBlockTileEntity(x, y, z));
+		}
+	}
+	
+	public static class ElementElCrafter implements IGuiElement {
+
+		@Override
+		public Object getServerContainer(EntityPlayer player, World world,
+				int x, int y, int z) {
+			return new ContainerElCrafter(player.inventory, (TileElCrafter) world.getBlockTileEntity(x, y, z));
+		}
+
+		@Override
+		public Object getClientGui(EntityPlayer player, World world, int x,
+				int y, int z) {
+			return new GuiElectricCrafter(player.inventory, (TileElCrafter) world.getBlockTileEntity(x, y, z));
 		}
 	}
 	

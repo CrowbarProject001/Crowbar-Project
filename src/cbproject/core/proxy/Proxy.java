@@ -48,7 +48,7 @@ public class Proxy {
 		String currentLang = StringTranslate.getInstance().getCurrentLanguage();
 		if(currentLang != "en_US")
 			LanguageRegistry.instance().loadLocalization("/cbproject/lang/" + currentLang + ".properties", currentLang, false);
-		else LanguageRegistry.instance().loadLocalization("/cbproject/lang/en_US.properties", "en_US", false);
+		LanguageRegistry.instance().loadLocalization("/cbproject/lang/en_US.properties", "en_US", false);
 	}
 	
 }

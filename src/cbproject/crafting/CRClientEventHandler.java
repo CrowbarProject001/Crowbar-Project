@@ -26,6 +26,7 @@ import net.minecraftforge.event.ForgeSubscribe;
  */
 public class CRClientEventHandler {
 
+	/*
 	@ForgeSubscribe
 	public void onDrawWireframe(DrawBlockHighlightEvent event) {
 		World world = event.player.worldObj;
@@ -33,4 +34,5 @@ public class CRClientEventHandler {
 		if(te instanceof TileWire)
 			event.setCanceled(true);
 	}
+	*/
 }

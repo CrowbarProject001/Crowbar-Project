@@ -15,6 +15,7 @@
 package cbproject.crafting.render;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import cbproject.core.props.ClientProps;
 import cbproject.core.renderers.RenderUtils;
@@ -31,7 +32,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class RenderWire extends TileEntitySpecialRenderer {
 
-	public static float WIDTH = 0.16666F;
+	public static float WIDTH = 0.10F;
 	/**
 	 * 
 	 */
@@ -72,28 +73,34 @@ public class RenderWire extends TileEntitySpecialRenderer {
 				v7 = RenderUtils.newV3(WIDTH, WIDTH, WIDTH),
 				v8 = RenderUtils.newV3(-WIDTH, WIDTH, WIDTH);
 		GL11.glPushMatrix();
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		float dx = 0.0F, dy = 0.0F, dz = 0.0F;
 		switch(side) {
 		case 0:
-			dy = -2 * WIDTH;
+			dy = -1;
 			break;
 		case 1:
-			dy = 2 *WIDTH;
+			dy = 1;
 			break;
 		case 4:
-			dx = -2 *WIDTH;
+			dx = -1;
 			break;
 		case 5:
-			dx = 2 *WIDTH;
+			dx = 1;
 			break;
 		case 2:
-			dz = -2 *WIDTH;
+			dz = -1;
 			break;
 		case 3:
-			dz = 2 *WIDTH;
+			dz = 1;
 			break;
 		}
-		GL11.glTranslatef(dx, dy, dz);
+		float offset = (0.5F + WIDTH) / 2F;
+		GL11.glTranslatef(dx * offset, dy * offset, dz * offset);
+		if(side != -1) {
+			float scale = 2F;
+			GL11.glScalef(Math.abs(dx == 0.0F ? 1 : dx * scale), Math.abs(dy == 0.0F ? 1 : dy * scale), Math.abs(dz == 0.0F ? 1 : dz * scale));
+		}
 		int a = 0;
 		for(int i = 0; i < theArray.length; i++)
 			if(theArray[i])
@@ -111,52 +118,55 @@ public class RenderWire extends TileEntitySpecialRenderer {
 				vec2 = v3;
 				vec3 = v2;
 				vec4 = v1;
-				dy = -WIDTH;
+				dy = -1.0F;
 				break;
 			case 1:
 				vec1 = v5;
 				vec2 = v6;
 				vec3 = v7;
 				vec4 = v8;
-				dy = WIDTH;
+				dy = 1.0F;
 				break;
 			case 4:
 				vec1 = v1;
 				vec2 = v5;
 				vec3 = v8;
 				vec4 = v4;
-				dx = -WIDTH;
+				dx = -1.0F;
 				break;
 			case 5:
 				vec1 = v2;
 				vec2 = v3;
 				vec3 = v7;
 				vec4 = v6;
-				dx = WIDTH;
+				dx = 1.0F;
 				break;
 			case 2:
 				vec1 = v1;
 				vec2 = v2;
 				vec3 = v6;
 				vec4 = v5;
-				dz = -WIDTH;
+				dz = -1.0F;
 				break;
 			case 3:
 				vec1 = v4;
 				vec2 = v8;
 				vec3 = v7;
 				vec4 = v3;
-				dz = WIDTH;
+				dz = 1.0F;
 				break;
 			}
-			if(a == 1 && side == -1 && theArray[dirs[i].getOpposite().ordinal()]) {
-				RenderUtils.loadTexture(ClientProps.WIRE_MAIN_PATH);
-			} else {
-				RenderUtils.loadTexture(ClientProps.WIRE_SIDE_PATH);
-			}
 			GL11.glPushMatrix();
+			if(side == -1){
+				if(a == 1  && theArray[dirs[i].getOpposite().ordinal()]) 
+					RenderUtils.loadTexture(ClientProps.WIRE_MAIN_PATH);
+				else RenderUtils.loadTexture(ClientProps.WIRE_SIDE_PATH);
+			} else {
+				RenderUtils.loadTexture(ClientProps.WIRE_SIDE_PATH2);
+			}
+			
 			t.startDrawingQuads();
-			t.setNormal(2*dx, 2*dy, 2*dz);
+			t.setNormal(dx, dy, dz);
 			RenderUtils.addVertex(vec4, 0.0, 1.0);
 			RenderUtils.addVertex(vec3, 1.0, 1.0);
 			RenderUtils.addVertex(vec2, 1.0, 0.0);
@@ -164,6 +174,7 @@ public class RenderWire extends TileEntitySpecialRenderer {
 			t.draw();
 			GL11.glPopMatrix();
 		}
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 	}
 	
@@ -174,7 +185,7 @@ public class RenderWire extends TileEntitySpecialRenderer {
 				return false;
 			return true;
 		}
-		if(dirs[blockSide].getOpposite().ordinal() == subSide)
+		if(dirs[blockSide].getOpposite().ordinal() == subSide || (blockSide == subSide && theArray[subSide]))
 			return false;
 		return true;
 	}

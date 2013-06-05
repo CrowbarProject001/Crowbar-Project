@@ -74,7 +74,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
     {
     	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     	String storage = StatCollector.translateToLocal("crafter.storage");
-    	String currentPage = StatCollector.translateToLocal(!te.isAdvanced ? RecipeWeapons.pageDescriptions[te.page] : RecipeWeapons.advPageDescriptions[te.page]);
+    	String currentPage = StatCollector.translateToLocal(RecipeWeapons.getDescription(te.page));
         this.fontRenderer.drawString(storage, 8, 88, 4210752);
         fontRenderer.drawString(currentPage, 100 - fontRenderer.getStringWidth(currentPage) / 2, 1, 4210752);
     }

@@ -20,6 +20,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeWeapons;
@@ -86,8 +87,7 @@ public class ContainerWeaponCrafter extends Container {
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
 			icrafting.sendProgressBarUpdate(this, 0, tileEntity.scrollFactor);
-			if (tileEntity.redraw)
-				tileEntity.redraw = false;
+			icrafting.sendProgressBarUpdate(this, 1, tileEntity.iconType.ordinal());
 		}
 	}
 
@@ -96,9 +96,9 @@ public class ContainerWeaponCrafter extends Container {
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
 			scrollFactor = Math.abs(par2);
-			if (par2 >= 0) {
-				writeRecipeInfoToSlot();
-			}
+			writeRecipeInfoToSlot();
+		} else if(par1 == 1) {
+			tileEntity.iconType = CrafterIconType.values()[par2];
 		}
 	}
 

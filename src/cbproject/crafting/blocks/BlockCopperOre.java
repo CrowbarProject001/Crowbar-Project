@@ -16,12 +16,12 @@ public class BlockCopperOre extends BlockOre {
 		setCreativeTab(CBCMod.cct);
 		setResistance(5.0F);
 		setHardness(1.5F);
-		setUnlocalizedName("copper");
+		setUnlocalizedName("cooper");
 	}
 
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		blockIcon = par1IconRegister.registerIcon("lambdacraft:copper");
+		blockIcon = par1IconRegister.registerIcon("lambdacraft:cooper");
 	}
 
 	@Override

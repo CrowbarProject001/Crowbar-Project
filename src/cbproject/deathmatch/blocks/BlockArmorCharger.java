@@ -29,8 +29,12 @@ import cbproject.core.props.GeneralProps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -110,16 +114,6 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 	 {
 	     return false;
 	 }
-
-    @Override
-    public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
-    {
-        ForgeDirection dir = ForgeDirection.getOrientation(par5);
-        return (dir == NORTH && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, NORTH)) ||
-               (dir == SOUTH && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, SOUTH)) ||
-               (dir == WEST  && par1World.isBlockSolidOnSide(par2 + 1, par3, par4, WEST )) ||
-               (dir == EAST  && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, EAST ));
-    }
     
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
@@ -147,32 +141,33 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
         
     }
 	
+    /**
+     * Called when the block is placed in the world.
+     */
     @Override
-	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
-        byte var10 = 0;
+        int l = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-        if (par5 == 2 && par1World.isBlockSolidOnSide(par2, par3, par4 + 1, WEST, true))
+        if (l == 0)
         {
-            var10 = 2;
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
         }
 
-        if (par5 == 3 && par1World.isBlockSolidOnSide(par2, par3, par4 - 1, EAST, true))
+        if (l == 1)
         {
-            var10 = 3;
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
         }
 
-        if (par5 == 4 && par1World.isBlockSolidOnSide(par2 + 1, par3,  par4, NORTH, true))
+        if (l == 2)
         {
-            var10 = 4;
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
         }
 
-        if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH, true))
+        if (l == 3)
         {
-            var10 = 5;
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
         }
-		
-        return var10;
     }
 
 	@Override

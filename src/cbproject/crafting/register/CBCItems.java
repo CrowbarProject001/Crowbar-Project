@@ -1,5 +1,6 @@
 package cbproject.crafting.register;
 
+import cbproject.core.item.CBCGenericItem;
 import cbproject.core.misc.Config;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.GeneralRegistry;
@@ -41,6 +42,7 @@ public class CBCItems {
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
 	public static ItemSpray spray1, spray2;
+	public static Item tin, cooper;
 	
 	/**
 	 * 实际注册，请在Init中调用。
@@ -74,6 +76,9 @@ public class CBCItems {
 		spray1 = new ItemSpray(GeneralRegistry.getItemId("spray1", GeneralProps.CAT_MISC), 0);
 		spray2 = new ItemSpray(GeneralRegistry.getItemId("spray2", GeneralProps.CAT_MISC), 1);
 		
+		tin = new CBCGenericItem(GeneralRegistry.getItemId("tin", GeneralProps.CAT_MISC)).setIAndU("tin");
+		cooper = new CBCGenericItem(GeneralRegistry.getItemId("cooper", GeneralProps.CAT_MISC)).setIAndU("cooper");
+		
 		LanguageRegistry.addName(halfLife01, "record");
 		LanguageRegistry.addName(halfLife01, "record");
 		LanguageRegistry.addName(halfLife01, "record");
@@ -97,8 +102,8 @@ public class CBCItems {
         
         OreDictionary.registerOre("oreUranium", CBCBlocks.uraniumOre);
         OreDictionary.registerOre("ingotUranium", CBCItems.ingotUranium);
-        OreDictionary.registerOre("ingotSteel", CBCItems.ingotSteel);
-        OreDictionary.registerOre("blockSteel", CBCBlocks.blockRefined);
+        OreDictionary.registerOre("ingotRefinedIron", CBCItems.ingotSteel);
+        OreDictionary.registerOre("blockRefinedIron", CBCBlocks.blockRefined);
         
         ItemStack sredstone = new ItemStack(Item.redstone),
         		swood = new ItemStack(Block.wood),
@@ -135,15 +140,15 @@ public class CBCItems {
         addRecipes(output, input);
        // GameRegistry.addShapelessRecipe(new ItemStack(ingotSteel, 9), sbrefined);
         //Smeltings
-        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ingotSteel, 9), "blockSteel"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.blockRefined), "AAA", "AAA", "AAA", 'A', "ingotSteel"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.weaponCrafter), "AAA", "BCB", "EDE", 'A', sglass, 'B', sbredstone, 'C', slambdachip, 'D', schest, 'E', "blockSteel"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ironBar, 3), "A  ", "A  ", 'A', "ingotSteel"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(5, EnumMaterial.BOX), "A A", "AAA", 'A', "ingotSteel"));
-        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.PISTOL), "ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', "ingotSteel", 'D', sredstone, 'E', sglass));
-        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.LIGHT), "ADA", "CCC", "EBE", 'A', sgold, 'B', sbox, 'C', "ingotSteel", 'D', sglow, 'E', sglass));
-        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.HEAVY), "ADA", "CCC", "EBE", 'A', sblazep, 'B', sbox, 'C', "ingotSteel", 'D', sblap, 'E', sglass));
-        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.EXPLOSIVE), "ACA", "DCD", "EBE", 'A', "ingotSteel", 'B', sbox, 'C', stnt, 'D', sgunpowder, 'E', sglass));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(ingotSteel, 9), "blockRefinedIron"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.blockRefined), "AAA", "AAA", "AAA", 'A', "ingotRefinedIron"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(CBCBlocks.weaponCrafter), "AAA", "BCB", "EDE", 'A', sglass, 'B', sbredstone, 'C', slambdachip, 'D', schest, 'E', "blockRefinedIron"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ironBar, 3), "A  ", "A  ", 'A', "ingotRefinedIron"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(5, EnumMaterial.BOX), "A A", "AAA", 'A', "ingotRefinedIron"));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.PISTOL), "ADA", "CCC", "EBE", 'A', sstick,'B', sbox, 'C', "ingotRefinedIron", 'D', sredstone, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.LIGHT), "ADA", "CCC", "EBE", 'A', sgold, 'B', sbox, 'C', "ingotRefinedIron", 'D', sglow, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.HEAVY), "ADA", "CCC", "EBE", 'A', sblazep, 'B', sbox, 'C', "ingotRefinedIron", 'D', sblap, 'E', sglass));
+        GameRegistry.addRecipe(new ShapedOreRecipe(materials.newStack(1, EnumMaterial.EXPLOSIVE), "ACA", "DCD", "EBE", 'A', "ingotRefinedIron", 'B', sbox, 'C', stnt, 'D', sgunpowder, 'E', sglass));
         ModLoader.addSmelting(Item.ingotIron.itemID,new ItemStack(ingotSteel.itemID,1,0) );
         ModLoader.addSmelting(CBCBlocks.uraniumOre.blockID, new ItemStack(ingotUranium), 2);
 	}
