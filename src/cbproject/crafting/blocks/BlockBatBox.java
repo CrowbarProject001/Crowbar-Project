@@ -43,7 +43,7 @@ public class BlockBatBox extends BlockElectricalBase {
 	
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		return new TileBatBox(type);
+		return (type == 1 ? new TileBatBox.TileBoxLarge() : new TileBatBox.TileBoxSmall());
 	}
 
 }

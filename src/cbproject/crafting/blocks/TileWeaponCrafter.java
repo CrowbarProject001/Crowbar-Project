@@ -41,7 +41,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 	/**
 	 * 最大存储热量。
 	 */
-	public static int MAX_HEAT;
+	public int maxHeat;
 	
 	public ItemStack[] inventory;
 	public ItemStack[] craftingStacks;
@@ -72,7 +72,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			if(blockType == null)
 				return;
 			isAdvanced = this.blockType.blockID == CBCBlocks.weaponCrafter.blockID? false : true;
-			TileWeaponCrafter.MAX_HEAT = isAdvanced ? 7000 : 4000;
+			this.maxHeat = isAdvanced ? 7000 : 4000;
 			isLoad = true;
 		}
 		
@@ -100,7 +100,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 		
 		if(isBurning){
 			burnTimeLeft--;
-			if(heat < MAX_HEAT)
+			if(heat < maxHeat)
 				heat+=3;
 			if(burnTimeLeft <= 0){
 				isBurning = false;
@@ -228,8 +228,8 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 	public TileWeaponCrafter setAdvanced(boolean is){
 		isAdvanced = is;
 		if(is)
-			MAX_HEAT = 8000;
-		else MAX_HEAT = 4000;
+			maxHeat = 8000;
+		else maxHeat = 4000;
 		return this;
 	}
 	

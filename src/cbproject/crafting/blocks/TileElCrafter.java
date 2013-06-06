@@ -44,14 +44,14 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 	/**
 	 * 最大存储热量。
 	 */
-	public static int MAX_HEAT = 10000, MAX_STORAGE = 80000;
+	public static int MAX_STORAGE = 80000;
 	
 	public int currentEnergy;
-	public CrafterIconType iconType;
 	public boolean isLoad = false;
 	
 	public TileElCrafter(){
 		super();
+		this.maxHeat = 10000;
 	}
 	
 	@Override

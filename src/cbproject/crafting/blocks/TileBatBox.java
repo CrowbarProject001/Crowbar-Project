@@ -35,6 +35,18 @@ public class TileBatBox extends TileGeneratorBase implements IInventory, IEnergy
 	public ItemStack[] slots = new ItemStack[2];
 	public final int type;
 	
+	public static class TileBoxSmall extends TileBatBox {
+		public TileBoxSmall() {
+			super(0);
+		}
+	}
+	
+	public static class TileBoxLarge extends TileBatBox {
+		public TileBoxLarge() {
+			super(1);
+		}
+	}
+	
 	public TileBatBox(int t) {
 		super(t == 0 ? 1 : 2, t == 0 ? 40000 : 200000);
 		type = t;

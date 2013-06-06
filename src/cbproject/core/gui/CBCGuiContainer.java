@@ -54,6 +54,11 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	public void addElement(CBCGuiPart part){
 		elements.add(part);
 	}
+	
+	public void addElements(CBCGuiPart... parts){
+		for(CBCGuiPart p : parts)
+			addElement(p);
+	}
 
 	/**
 	 * 处理每个按钮按下时行为的函数，在子类实现它来做些什么。

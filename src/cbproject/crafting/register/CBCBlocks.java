@@ -81,6 +81,8 @@ public class CBCBlocks {
 		
 		MinecraftForge.setBlockHarvestLevel(uraniumOre, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(blockRefined, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(weaponCrafter, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(advCrafter, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(oreTin, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(oreCooper, "pickaxe", 1);
 		ModLoader.registerTileEntity(TileWeaponCrafter.class, "tile_entity_weapon_crafter");

@@ -43,12 +43,12 @@ public class ContainerWeaponCrafter extends Container {
 		// Crafting recipe slot
 		for (int i = 0; i < 3; i++) {
 			// output:0 4 8
-			Slot s = addSlotToContainer(new SlotOutput(te, 9 + i, 88,
-					19 + 22 * i));
+			Slot s = addSlotToContainer(new SlotOutput(te, 9 + i, 63,
+					14 + 18 * i));
 			// input :123 567 9.10.11
 			for (int j = 0; j < 3; j++) {
-				addSlotToContainer(new SlotLocked(te, j + i * 3, 12 + 22 * j,
-						19 + 22 * i));
+				addSlotToContainer(new SlotLocked(te, j + i * 3, 6 + 18 * j,
+						14 + 18 * i));
 			}
 
 		}
@@ -66,18 +66,17 @@ public class ContainerWeaponCrafter extends Container {
 		bindPlayerInventory(inventoryPlayer);
 
 		scrollFactor = te.scrollFactor;
-		writeRecipeInfoToSlot();
 	}
 
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
-						8 + j * 21, 156 + i * 22));
+						6 + j * 18, 112 + i * 18));
 			}
 		}
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 21, 229));
+			addSlotToContainer(new Slot(inventoryPlayer, i, 6 + i * 18, 170));
 		}
 	}
 

@@ -34,6 +34,7 @@ public class BlockWeaponCrafter extends CBCBlockContainer {
 	public BlockWeaponCrafter(int par1) {
 		super(par1, Material.iron);
 		setUnlocalizedName("crafter");
+		setHardness(2.0F);
 	}
 	
     @SideOnly(Side.CLIENT)

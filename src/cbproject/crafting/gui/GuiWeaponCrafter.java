@@ -16,6 +16,7 @@ package cbproject.crafting.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -24,6 +25,7 @@ import cbproject.core.gui.CBCGuiButton;
 import cbproject.core.gui.CBCGuiButton.ButtonState;
 import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
+import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
 import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
@@ -38,6 +40,20 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 
 	public TileWeaponCrafter te;
 	public InventoryPlayer inv;
+	
+	public class TipHeat implements IGuiTip {
+
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "Current Heat";
+		}
+
+		@Override
+		public String getTip() {
+			return te.heat + "/" + te.maxHeat + " Heat";
+		}
+		
+	}
 	
 	public GuiWeaponCrafter(InventoryPlayer inventoryPlayer,
             TileWeaponCrafter tileEntity) {
@@ -62,10 +78,8 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         		down = new CBCGuiButton("down", 111, 74, 7, 6).setDownCoords(220, 43).setInvaildCoords(208, 6).setTextureCoords(208, 43),
         		left = new CBCGuiButton("left", 5, 2, 5, 6).setDownCoords(220, 53).setInvaildCoords(245, 53).setTextureCoords(210, 53),
         		right = new CBCGuiButton("right", 190, 2, 5, 6).setDownCoords(220, 63).setInvaildCoords(245, 63).setTextureCoords(210, 63);
-        this.addElement(up);
-        this.addElement(down);
-        addElement(left);
-        addElement(right);
+        addElements(up, down, left, right);
+       // this.setElementTip("heat", new TipHeat());
         this.updateButtonState();
     }
 	
@@ -120,13 +134,13 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         else dy = 38;
         drawTexturedModalRect(x + 160, y + 16, 232, dy, 8, 18);
         
-        int height = te.heat * 64 / TileWeaponCrafter.MAX_HEAT;
+        int height = te.heat * 64 / te.maxHeat;
         if(height > 0){
         	drawTexturedModalRect(x + 174, y + 78 - height, 232, 150 - height, 8, height);
         }
         if(te.isCrafting){
         	if(te.currentRecipe != null){
-        		height = te.currentRecipe.heatRequired * 64 / TileWeaponCrafter.MAX_HEAT;
+        		height = te.currentRecipe.heatRequired * 64 / te.maxHeat;
         		drawTexturedModalRect(x + 173, y + 77 - height, 201, 1, 6, 3);
         	}
         }
@@ -151,14 +165,14 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 		if(button.name == "up" || button.name =="down"){
 			boolean isDown = button.name == "down" ? true: false;
 			te.addScrollFactor(isDown);
-			NetCrafterClient.sendCrafterPacket((short)Minecraft.getMinecraft().theWorld.getWorldInfo().getDimension(), (short) 0, te.xCoord, te.yCoord, te.zCoord, isDown);
+			NetCrafterClient.sendCrafterPacket(te, 0, isDown);
 			this.updateButtonState();
 			return;
 		}
 		if(button.name == "left" || button.name == "right"){
 			boolean isForward = button.name == "right" ? true: false;
 			te.addPage(isForward);
-			NetCrafterClient.sendCrafterPacket((short)Minecraft.getMinecraft().theWorld.getWorldInfo().getDimension(), (short) 1, te.xCoord, te.yCoord, te.zCoord, isForward);
+			NetCrafterClient.sendCrafterPacket(te, 1, isForward);
 			this.updateButtonState();
 			return;
 		}

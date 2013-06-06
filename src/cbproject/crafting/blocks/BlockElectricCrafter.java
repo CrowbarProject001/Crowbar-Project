@@ -14,7 +14,10 @@
  */
 package cbproject.crafting.blocks;
 
+import cbproject.core.CBCMod;
+import cbproject.core.props.GeneralProps;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -53,6 +56,17 @@ public class BlockElectricCrafter extends BlockWeaponCrafter {
         if(par1 == par2)
         	return iconMain;
         return iconSide;
+    }
+    
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z,
+                    EntityPlayer player, int idk, float what, float these, float are) {
+            TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+            if (tileEntity == null || player.isSneaking()) {
+                    return false;
+            }
+            player.openGui(CBCMod.instance, GeneralProps.GUI_ID_EL_CRAFTER, world, x, y, z);
+            return true;
     }
     
 	@Override

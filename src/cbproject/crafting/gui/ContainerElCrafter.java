@@ -21,6 +21,8 @@ import net.minecraft.inventory.ICrafting;
 import cbproject.crafting.blocks.TileElCrafter;
 import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
+import cbproject.crafting.recipes.RecipeCrafter;
+import cbproject.crafting.recipes.RecipeWeapons;
 
 /**
  * @author WeAthFolD
@@ -37,6 +39,7 @@ public class ContainerElCrafter extends ContainerWeaponCrafter {
 	public ContainerElCrafter(InventoryPlayer inventoryPlayer,
 			TileElCrafter te) {
 		super(inventoryPlayer, te);
+		this.tileEntity = te;
 	}
 	
 	@Override
@@ -62,5 +65,24 @@ public class ContainerElCrafter extends ContainerWeaponCrafter {
 			tileEntity.currentEnergy = (int) (par2 * ((long)tileEntity.MAX_STORAGE) / Short.MAX_VALUE);
 		}
 	}
+	
+	@Override
+	protected void writeRecipeInfoToSlot() {
+		clearRecipeInfo();
+		int length;
+		length = RecipeWeapons.getECRecipeLength(tileEntity.page);
+		
+		for (int i = 0; i < length && i < 3; i++) {
+			RecipeCrafter r = RecipeWeapons.getECRecipe(tileEntity.page, i+ scrollFactor);
+			if(r == null)
+				return;
+			for (int j = 0; j < 3; j++) {
+				if (r.input.length > j)
+					tileEntity.setInventorySlotContents(j + i * 3, r.input[j]);
+			}
+			tileEntity.setInventorySlotContents(9 + i, r.output);
+		}
+	}
+
 
 }

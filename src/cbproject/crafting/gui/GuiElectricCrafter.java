@@ -16,34 +16,124 @@ package cbproject.crafting.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import cbproject.core.gui.CBCGuiButton;
+import cbproject.core.gui.CBCGuiContainer;
+import cbproject.core.gui.CBCGuiPart;
+import cbproject.core.gui.IGuiTip;
+import cbproject.core.props.ClientProps;
 import cbproject.crafting.blocks.TileElCrafter;
 import cbproject.crafting.blocks.TileWeaponCrafter;
+import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
+import cbproject.crafting.network.NetCrafterClient;
 import cbproject.crafting.recipes.RecipeWeapons;
 
 /**
  * @author WeAthFolD
  *
  */
-public class GuiElectricCrafter extends GuiWeaponCrafter{
+public class GuiElectricCrafter extends CBCGuiContainer {
 
 	public TileElCrafter tileEntity;
 	
 	public GuiElectricCrafter(InventoryPlayer inventoryPlayer,
 			TileElCrafter tile) {
-		super(inventoryPlayer, tile);
+		super(new ContainerElCrafter(inventoryPlayer, tile));
 		this.tileEntity = tile;
+		xSize = 173;
+		ySize = 192;
 	}
+	
+	protected class TipEnergy implements IGuiTip {
 
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "Current Energy";
+		}
+
+		@Override
+		public String getTip() {
+			return tileEntity.currentEnergy + "/" + tileEntity.maxHeat + " EU";
+		}
+		
+	}
+	
+	public class TipHeat implements IGuiTip {
+
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "Current Heat";
+		}
+
+		@Override
+		public String getTip() {
+			return tileEntity.heat + "/" + tileEntity.maxHeat + " Heat";
+		}
+		
+	}
+	
+	@Override
+    public void initGui()
+    {
+        super.initGui();
+        CBCGuiPart up = new CBCGuiButton("up", 85, 16, 4, 3),
+        		down = new CBCGuiButton("down", 85, 61, 4, 3),
+        		left = new CBCGuiButton("left", 6, 6, 3, 4),
+        		right = new CBCGuiButton("right", 158, 6, 3, 4),
+        		heat = new CBCGuiPart("heat", 138, 17, 6, 46),
+        		energy = new CBCGuiPart("energy", 116, 17, 6, 46);
+        addElements(up, down, left, right, heat, energy);
+        this.setElementTip("heat", new TipHeat());
+        this.setElementTip("energy", new TipEnergy());
+    }
+
+	
 	@Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
+		super.drawGuiContainerForegroundLayer(par1, par2);
     	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	String storage = StatCollector.translateToLocal("crafter.storage");
-    	String currentPage = StatCollector.translateToLocal(RecipeWeapons.getDescription(te.page));
-        this.fontRenderer.drawString(storage, 8, 88, 4210752);
-        fontRenderer.drawString(currentPage, 100 - fontRenderer.getStringWidth(currentPage) / 2, 1, 4210752);
+    	String currentPage = StatCollector.translateToLocal(RecipeWeapons.getDescription(tileEntity.page));
+        fontRenderer.drawString(currentPage, 100 - fontRenderer.getStringWidth(currentPage) / 2, 5, 4210752);
     }
+	
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        System.out.println("calling");
+        mc.renderEngine.bindTexture(ClientProps.GUI_ELCRAFTER_PATH);
+        int x = (width - xSize) / 2;
+        int y = (height - ySize) / 2;
+        this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        int height = tileEntity.heat * 46 / tileEntity.maxHeat;
+        if(height > 0){
+        	drawTexturedModalRect(x + 138, y + 63 - height, 181, 0, 6, height);
+        }
+        if(tileEntity.isCrafting){
+        	if(tileEntity.currentRecipe != null){
+        		height = tileEntity.currentRecipe.heatRequired * 46 / tileEntity.maxHeat;
+        		drawTexturedModalRect(x + 138, y + 63 - height, 201, 1, 6, 3);
+        	}
+        }
+	}
+	
+	@Override
+	public void onButtonClicked(CBCGuiButton button) {
+		if(button.name == "up" || button.name =="down"){
+			boolean isDown = button.name == "down" ? true: false;
+			tileEntity.addScrollFactor(isDown);
+			NetCrafterClient.sendCrafterPacket(tileEntity, 0, isDown);
+			return;
+		}
+		if(button.name == "left" || button.name == "right"){
+			boolean isForward = button.name == "right" ? true: false;
+			tileEntity.addPage(isForward);
+			NetCrafterClient.sendCrafterPacket(tileEntity, 1, isForward);
+			return;
+		}
+	}
 	
 }
