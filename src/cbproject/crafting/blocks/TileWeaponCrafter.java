@@ -21,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import cbproject.core.block.CBCTileEntity;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
@@ -54,6 +53,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 	public boolean isCrafting, isBurning;
 	public boolean isAdvanced = false;
 	public boolean isLoad = false;
+	public int tickUpdate = 0;
 	
 	/**
 	 * inventory: 1-18：材料存储  19:燃料槽  20:合成结果槽
@@ -73,6 +73,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 				return;
 			isAdvanced = this.blockType.blockID == CBCBlocks.weaponCrafter.blockID? false : true;
 			this.maxHeat = isAdvanced ? 7000 : 4000;
+			this.writeRecipeInfoToSlot();
 			isLoad = true;
 		}
 		
@@ -107,6 +108,34 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			}
 		}
 		
+		if(++tickUpdate > 3)
+			this.onInventoryChanged();
+	}
+	
+	protected void writeRecipeInfoToSlot() {
+		clearRecipeInfo();
+		int length;
+		if(!this.isAdvanced)
+			length = RecipeWeapons.getRecipeLength(this.page);
+		else length = RecipeWeapons.getAdvRecipeLength(this.page);
+		
+		for (int i = 0; i < length && i < 3; i++) {
+			RecipeCrafter r = !this.isAdvanced ? RecipeWeapons.getRecipe(this.page, i
+					+ scrollFactor) : RecipeWeapons.getAdvRecipe(this.page, i + scrollFactor);
+			if(r == null)
+				return;
+			for (int j = 0; j < 3; j++) {
+				if (r.input.length > j)
+					this.setInventorySlotContents(j + i * 3, r.input[j]);
+			}
+			this.setInventorySlotContents(9 + i, r.output);
+		}
+	}
+	
+	protected void clearRecipeInfo() {
+		for (int i = 0; i < 12; i++) {
+			this.setInventorySlotContents(i, null);
+		}
 	}
 	
 	@Override
@@ -251,7 +280,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 				scrollFactor--;
 			}
 		}
-		this.onInventoryChanged();
+		this.writeRecipeInfoToSlot();
 	}
 	
 	public void addPage(boolean isForward) {
@@ -266,7 +295,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			}
 		}
 		scrollFactor = 0;
-		this.onInventoryChanged();
+		this.writeRecipeInfoToSlot();
 	}
 
     public void tryBurn(){
@@ -294,8 +323,6 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			iconType = CrafterIconType.NOMATERIAL;
 		}
 		lastTime = worldObj.getWorldTime();
-		this.onInventoryChanged();
-	    
 	}
 	
 	public void craftItem(){

@@ -30,6 +30,8 @@ public class RenderEgonRay extends RenderEntity {
     {
 		
 		EntityEgonRay egon = (EntityEgonRay) par1Entity;
+		if(!egon.draw)
+			return;
 		MotionXYZ motion = new MotionXYZ(egon);
 		MovingObjectPosition trace = egon.worldObj.rayTraceBlocks(motion.asVec3(egon.worldObj), motion.updateMotion(100.0F).asVec3(egon.worldObj));
 		Vec3 end = (trace == null)? motion.asVec3(egon.worldObj) : trace.hitVec;
@@ -44,7 +46,8 @@ public class RenderEgonRay extends RenderEntity {
         float angle = egon.ticksExisted;
         float du =  -egon.ticksExisted * 0.05F;
         double tx = 0.1, tz = 0.2;
-        double ty = Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && egon.getThrower() == Minecraft.getMinecraft().thePlayer? -0.07 : -0.5;
+        
+        double ty = egon.isClient && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 ? -0.15 : -0.63;
         Vec3 v1 = newV3(0, 0, -WIDTH).addVector(tx, ty, tz), 
         		v2 = newV3(0, 0, WIDTH).addVector(tx, ty, tz), 
         		v3 = newV3(d, 0, -WIDTH),
@@ -131,5 +134,8 @@ public class RenderEgonRay extends RenderEntity {
     	return Vec3.createVectorHelper(x, y, z);
     }
     
+    protected double getYOffset() {
+    	return -0.07;
+    }
     
 }

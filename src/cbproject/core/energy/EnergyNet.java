@@ -164,6 +164,9 @@ public final class EnergyNet {
 
 		Collections.shuffle(activeEnergyPaths);
 
+		//TODO:这里取巧的用了个size检查，求排错
+		if(activeEnergyPaths.size() <= 0)
+			return amount;
 		for (int i = activeEnergyPaths.size() - amount; i > 0; i--) {
 			EnergyPath removedEnergyPath = (EnergyPath) activeEnergyPaths
 					.remove(activeEnergyPaths.size() - 1);

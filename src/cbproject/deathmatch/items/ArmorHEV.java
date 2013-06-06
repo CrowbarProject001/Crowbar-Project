@@ -1,5 +1,7 @@
 package cbproject.deathmatch.items;
 
+import java.util.EnumSet;
+
 import cbproject.core.item.ElectricArmor;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.register.DMItems;
@@ -13,8 +15,10 @@ import net.minecraftforge.common.EnumHelper;
 
 public class ArmorHEV extends ElectricArmor {
 
+	private EnumSet<EnumAttachment> attatches = EnumSet.of(EnumAttachment.NONE);
+	
 	public static enum EnumAttachment {
-		LONGJUMP(1);
+		LONGJUMP(1), NONE(-1);
 		private int slot;
 		private EnumAttachment(int x) {
 			this.slot = x;
@@ -36,7 +40,7 @@ public class ArmorHEV extends ElectricArmor {
 		super(par1, material, 2, armorType);
 		setUnlocalizedName("hev" + this.armorType);
 		this.setIconName("hev" + armorType);
-		this.setMaxCharge(200000);
+		this.setMaxCharge(100000);
 		this.setTier(2);
 		this.setTransferLimit(128);
 		this.setEnergyPerDamage(1000);
@@ -44,22 +48,19 @@ public class ArmorHEV extends ElectricArmor {
 	
 	public ArmorHEV(int par1, EnumAttachment attach) {
 		super(par1, material, 2, attach.getSlot());
-		setUnlocalizedName("hev_" + attach.name().toLowerCase());
-		this.setIconName("hev_" + attach.name().toLowerCase());
-		this.setMaxCharge(200000);
-		this.setTier(2);
-		this.setTransferLimit(128);
-		this.setEnergyPerDamage(1000);
+		this.attatches = EnumSet.of(attach);
 	}
 	
-	public EnumAttachment getAttachment(ItemStack is) {
-		if(is == null || !(is.getItem() instanceof ArmorHEV))
-			return null;
-		String name = is.getItemName().substring(9);
-		if(name == null || name == "")
-			return null;
-		EnumAttachment e = EnumAttachment.valueOf(name.toUpperCase());
-		return e;
+	/**
+	 * 获取HEV装甲的附件，目前半完成，硬编码。
+	 * @param is
+	 * @param attach
+	 * @return
+	 */
+	public boolean getAttachment(ItemStack is, EnumAttachment attach) {
+		if(is != null && !(is.getItem() instanceof ArmorHEV))
+			return false;
+		return attatches.contains(attach);
 	}
 
 	@Override

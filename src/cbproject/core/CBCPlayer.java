@@ -28,7 +28,7 @@ public class CBCPlayer extends PlayerBase {
 				b = true;
 			else if(item instanceof ArmorHEV){
 				ArmorHEV hev = (ArmorHEV) item;
-				if(hev.getAttachment(slotChestplate) == EnumAttachment.LONGJUMP)
+				if(hev.getAttachment(slotChestplate, EnumAttachment.LONGJUMP))
 					b = true;
 			}
 			if (b) {

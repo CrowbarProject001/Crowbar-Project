@@ -90,7 +90,8 @@ public class CBCBlocks {
 		ModLoader.registerTileEntity(TileGeneratorSolar.class, "tile_entity_solar");
 		ModLoader.registerTileEntity(TileGeneratorFire.class, "tile_entity_genfire");
 		ModLoader.registerTileEntity(TileGeneratorLava.class, "tile_entity_genlava");
-		ModLoader.registerTileEntity(TileBatBox.class, "tile_entity_batbox");
+		ModLoader.registerTileEntity(TileBatBox.TileBoxSmall.class, "tile_entity_batbox1");
+		ModLoader.registerTileEntity(TileBatBox.TileBoxLarge.class, "tile_entity_batbox2");
 		ModLoader.registerTileEntity(TileWire.class, "tile_entity_wire");
 		ModLoader.registerTileEntity(TileElCrafter.class, "tile_entity_elcrafter");
 		return;

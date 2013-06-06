@@ -93,7 +93,7 @@ public class ModuleDM
 		
 		EntityRegistry.registerModEntity(EntityGaussRay.class, "gauss", GeneralProps.ENT_ID_GAUSS1, CBCMod.instance, 32, 1, true);
 		EntityRegistry.registerModEntity(EntityGaussRayColored.class, "gauss2", GeneralProps.ENT_ID_GAUSS2, CBCMod.instance, 32, 1, true);
-		EntityRegistry.registerModEntity(EntityEgonRay.class, "egonray", GeneralProps.ENT_ID_EGON_RAY, CBCMod.instance, 32, 3, true);
+		EntityRegistry.registerModEntity(EntityEgonRay.class, "egonray", GeneralProps.ENT_ID_EGON_RAY, CBCMod.instance, 32, 1, true);
 		EntityRegistry.registerModEntity(EntityARGrenade.class, "argrenade", GeneralProps.ENT_ID_ARGRENADE, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityHGrenade.class, "hgrenade", GeneralProps.ENT_ID_HGRENADE, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityHornet.class, "hornet", GeneralProps.ENT_ID_HORNET, CBCMod.instance, 32, 3, true);

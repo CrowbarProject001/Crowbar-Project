@@ -49,7 +49,7 @@ public class NetCrafterClient implements IChannelProcess{
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToServer(packet);
-		
+		System.out.println("Sended a packet");
 	}
 	
 	public NetCrafterClient getCrafterPacket(DataInputStream inputStream){
@@ -69,6 +69,7 @@ public class NetCrafterClient implements IChannelProcess{
 
 	@Override
 	public void onPacketData(DataInputStream packet, Player player) {
+		System.out.println("Getted a packet");
 		NetCrafterClient c = new NetCrafterClient().getCrafterPacket(packet);
 		EntityPlayer p = (EntityPlayer) player;
 		TileEntity te = p.worldObj.getBlockTileEntity(c.blockX, c.blockY, c.blockZ);

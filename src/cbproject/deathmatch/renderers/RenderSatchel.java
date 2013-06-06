@@ -21,7 +21,7 @@ public class RenderSatchel extends RenderEntity {
 		
         GL11.glPushMatrix();
         
-        GL11.glTranslated(par2, par4 + EntitySatchel.HEIGHT , par6);
+        GL11.glTranslated(par2, par4 , par6);
         GL11.glRotatef(((EntitySatchel)par1Entity).rotationFactor, 0, 1, 0);
 
         

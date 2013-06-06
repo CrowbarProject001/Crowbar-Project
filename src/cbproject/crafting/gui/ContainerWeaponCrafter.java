@@ -40,15 +40,25 @@ public class ContainerWeaponCrafter extends Container {
 			TileWeaponCrafter te) {
 		tileEntity = te;
 
+		addSlots(te);
+		bindPlayerInventory(inventoryPlayer);
+		scrollFactor = te.scrollFactor;
+	}
+	
+	public ContainerWeaponCrafter(TileWeaponCrafter te){
+		this.tileEntity = te;
+	}
+	
+	protected void addSlots(TileWeaponCrafter te) {
 		// Crafting recipe slot
 		for (int i = 0; i < 3; i++) {
 			// output:0 4 8
-			Slot s = addSlotToContainer(new SlotOutput(te, 9 + i, 63,
-					14 + 18 * i));
+			Slot s = addSlotToContainer(new SlotOutput(te, 9 + i, 88,
+					19 + 22 * i));
 			// input :123 567 9.10.11
 			for (int j = 0; j < 3; j++) {
-				addSlotToContainer(new SlotLocked(te, j + i * 3, 6 + 18 * j,
-						14 + 18 * i));
+				addSlotToContainer(new SlotLocked(te, j + i * 3, 12 + 22 * j,
+						19 + 22 * i));
 			}
 
 		}
@@ -62,21 +72,17 @@ public class ContainerWeaponCrafter extends Container {
 						100 + 22 * i));
 			}
 		}
-
-		bindPlayerInventory(inventoryPlayer);
-
-		scrollFactor = te.scrollFactor;
 	}
 
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
-						6 + j * 18, 112 + i * 18));
+						8 + j * 21, 156 + i * 22));
 			}
 		}
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventoryPlayer, i, 6 + i * 18, 170));
+			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 21, 229));
 		}
 	}
 
@@ -95,35 +101,8 @@ public class ContainerWeaponCrafter extends Container {
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
 			scrollFactor = Math.abs(par2);
-			writeRecipeInfoToSlot();
 		} else if(par1 == 1) {
 			tileEntity.iconType = CrafterIconType.values()[par2];
-		}
-	}
-
-	protected void writeRecipeInfoToSlot() {
-		clearRecipeInfo();
-		int length;
-		if(!tileEntity.isAdvanced)
-			length = RecipeWeapons.getRecipeLength(tileEntity.page);
-		else length = RecipeWeapons.getAdvRecipeLength(tileEntity.page);
-		
-		for (int i = 0; i < length && i < 3; i++) {
-			RecipeCrafter r = !tileEntity.isAdvanced ? RecipeWeapons.getRecipe(tileEntity.page, i
-					+ scrollFactor) : RecipeWeapons.getAdvRecipe(tileEntity.page, i + scrollFactor);
-			if(r == null)
-				return;
-			for (int j = 0; j < 3; j++) {
-				if (r.input.length > j)
-					tileEntity.setInventorySlotContents(j + i * 3, r.input[j]);
-			}
-			tileEntity.setInventorySlotContents(9 + i, r.output);
-		}
-	}
-
-	protected void clearRecipeInfo() {
-		for (int i = 0; i < 12; i++) {
-			tileEntity.setInventorySlotContents(i, null);
 		}
 	}
 

@@ -57,7 +57,6 @@ public class EntitySatchel extends EntityProjectile {
 	public void Explode(){
 		
 		BulletManager.Explode(worldObj, this, 3.0F, 4.0F, posX, posY, posZ, 35);
-		getThrower().getEntityData().setInteger("satchelCount", getThrower().getEntityData().getInteger("satchelCount") - 1);
 		this.setDead();
 		
 	}
@@ -111,6 +110,9 @@ public class EntitySatchel extends EntityProjectile {
 	@Override
 	protected void onCollide(MovingObjectPosition result) {
 		switch(result.sideHit){
+		case 1:
+			motionY = -0.5*motionY;
+			return;
 		case 2:
 		case 3:
 			motionZ = -0.6 * motionZ;
@@ -120,6 +122,9 @@ public class EntitySatchel extends EntityProjectile {
 			motionX = -0.6*motionX;
 			return;
 		default:
+			this.onGround = true;
+			posY = result.hitVec.yCoord + 1.0;
+			motionY = 0.0;
 			return;
 		}
 	}

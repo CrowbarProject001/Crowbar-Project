@@ -95,7 +95,8 @@ public abstract class EntityProjectile extends Entity {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        this.motionY -= getGravityVelocity();
+        if(!this.onGround)
+        	this.motionY -= getGravityVelocity();
         Vec3 pre = Vec3.createVectorHelper(posX, posY, posZ), after;
         this.moveEntity(this.motionX, this.motionY, this.motionZ);
         after = Vec3.createVectorHelper(posX, posY, posZ);

@@ -71,7 +71,7 @@ public class Weapon_satchel extends WeaponGeneral {
 		
 		NBTTagCompound nbt = par3EntityPlayer.getEntityData();
 		int count = nbt.getInteger("satchelCount");
-		
+		System.out.println(count);
 		//Max 6 satchel
 		if(mode == 0){ //Setting mode
 			if(count > 5)

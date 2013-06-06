@@ -52,7 +52,6 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 		if(isBurning) {
 			tickLeft--;
 			currentEnergy += this.sendEnergy(5);
-			System.out.println(currentEnergy);
 			if(currentEnergy > maxStorage)
 				currentEnergy = maxStorage;
 			if(tickLeft <= 0)

@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.Slot;
 import cbproject.crafting.blocks.TileElCrafter;
 import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
@@ -43,6 +44,45 @@ public class ContainerElCrafter extends ContainerWeaponCrafter {
 	}
 	
 	@Override
+	protected void addSlots(TileWeaponCrafter te) {
+		// Crafting recipe slot
+		for (int i = 0; i < 3; i++) {
+			// output:0 4 8
+			Slot s = addSlotToContainer(new SlotOutput(te, 9 + i, 63,
+					14 + 18 * i));
+			// input :123 567 9.10.11
+			for (int j = 0; j < 3; j++) {
+				addSlotToContainer(new SlotLocked(te, j + i * 3, 6 + 18 * j,
+						14 + 18 * i));
+			}
+
+		}
+
+		addSlotToContainer(new Slot(te, 13, 95, 50));
+		addSlotToContainer(new SlotResult(te, 12, 95, 14));
+		// Block Storage
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(te, 14 + 9 * i + j, 6 + 18 * j,
+						72 + 18 * i));
+			}
+		}
+	}
+
+	@Override
+	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
+						6 + j * 18, 112 + i * 18));
+			}
+		}
+		for (int i = 0; i < 9; i++) {
+			addSlotToContainer(new Slot(inventoryPlayer, i, 6 + i * 18, 170));
+		}
+	}
+	
+	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		for (int i = 0; i < this.crafters.size(); ++i) {
@@ -50,6 +90,7 @@ public class ContainerElCrafter extends ContainerWeaponCrafter {
 			icrafting.sendProgressBarUpdate(this, 0, tileEntity.scrollFactor);
 			icrafting.sendProgressBarUpdate(this, 1, tileEntity.iconType.ordinal());
 			icrafting.sendProgressBarUpdate(this, 2, tileEntity.currentEnergy * Short.MAX_VALUE / tileEntity.MAX_STORAGE);
+			icrafting.sendProgressBarUpdate(this, 3, tileEntity.heat);
 		}
 	}
 	
@@ -58,31 +99,13 @@ public class ContainerElCrafter extends ContainerWeaponCrafter {
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
 			scrollFactor = Math.abs(par2);
-			writeRecipeInfoToSlot();
 		} else if(par1 == 1) {
 			tileEntity.iconType = CrafterIconType.values()[par2];
 		} else if(par1 == 2) {
 			tileEntity.currentEnergy = (int) (par2 * ((long)tileEntity.MAX_STORAGE) / Short.MAX_VALUE);
+		} else if(par1 == 3) {
+			tileEntity.heat = par2;
 		}
 	}
-	
-	@Override
-	protected void writeRecipeInfoToSlot() {
-		clearRecipeInfo();
-		int length;
-		length = RecipeWeapons.getECRecipeLength(tileEntity.page);
-		
-		for (int i = 0; i < length && i < 3; i++) {
-			RecipeCrafter r = RecipeWeapons.getECRecipe(tileEntity.page, i+ scrollFactor);
-			if(r == null)
-				return;
-			for (int j = 0; j < 3; j++) {
-				if (r.input.length > j)
-					tileEntity.setInventorySlotContents(j + i * 3, r.input[j]);
-			}
-			tileEntity.setInventorySlotContents(9 + i, r.output);
-		}
-	}
-
 
 }

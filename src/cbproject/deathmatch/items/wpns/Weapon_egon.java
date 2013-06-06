@@ -70,8 +70,7 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
 		
 		if(inf.isShooting && canShoot(par3EntityPlayer, par1ItemStack)){
-			if(!par2World.isRemote)
-				par2World.spawnEntityInWorld(new EntityEgonRay(par2World, par3EntityPlayer, par1ItemStack));
+			par2World.spawnEntityInWorld(new EntityEgonRay(par2World, par3EntityPlayer, par1ItemStack));
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_WINDUP, 0.5F, 1.0F);
 		}
 		
@@ -86,7 +85,7 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		
 		BulletManager.Shoot(par1ItemStack, player, par2World);	
     	doUplift(information, player);
-    	
+    	player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		return;
 	}
 	

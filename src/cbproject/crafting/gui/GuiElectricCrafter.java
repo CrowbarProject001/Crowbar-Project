@@ -97,13 +97,15 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 		super.drawGuiContainerForegroundLayer(par1, par2);
     	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     	String currentPage = StatCollector.translateToLocal(RecipeWeapons.getDescription(tileEntity.page));
-        fontRenderer.drawString(currentPage, 100 - fontRenderer.getStringWidth(currentPage) / 2, 5, 4210752);
+        fontRenderer.drawString(currentPage, 85 - fontRenderer.getStringWidth(currentPage) / 2, 3, 0xff9843);
     }
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        System.out.println("calling");
         mc.renderEngine.bindTexture(ClientProps.GUI_ELCRAFTER_PATH);
         int x = (width - xSize) / 2;
         int y = (height - ySize) / 2;
@@ -112,16 +114,23 @@ public class GuiElectricCrafter extends CBCGuiContainer {
         if(height > 0){
         	drawTexturedModalRect(x + 138, y + 63 - height, 181, 0, 6, height);
         }
+        height = tileEntity.currentEnergy * 46 / tileEntity.MAX_STORAGE;
+        if(height > 0) {
+        	drawTexturedModalRect(x + 116, y + 63 - height, 174, 0, 6, height);
+        }
         if(tileEntity.isCrafting){
         	if(tileEntity.currentRecipe != null){
         		height = tileEntity.currentRecipe.heatRequired * 46 / tileEntity.maxHeat;
-        		drawTexturedModalRect(x + 138, y + 63 - height, 201, 1, 6, 3);
+        		drawTexturedModalRect(x + 136, y + 63 - height, 207, 1, 6, 3);
         	}
         }
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
 	}
 	
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
+		System.out.println("clicked " + button.name);
 		if(button.name == "up" || button.name =="down"){
 			boolean isDown = button.name == "down" ? true: false;
 			tileEntity.addScrollFactor(isDown);

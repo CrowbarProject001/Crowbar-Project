@@ -39,7 +39,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements ICustomEn
 			transferLimit = 100,
 			maxCharge;
 	
-	protected int energyPerDamage = 1000;
+	protected int energyPerDamage = 500;
 	
 	/**
 	 * @param id

@@ -16,6 +16,7 @@ package cbproject.deathmatch.entities.fx;
 
 import cbproject.deathmatch.items.wpns.Weapon_egon;
 import cbproject.deathmatch.utils.InformationEnergy;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,6 +33,9 @@ import net.minecraft.world.World;
 public class EntityEgonRay extends Entity {
 
 	public ItemStack item;
+	public boolean renderThirdPerson;
+	public boolean draw = true;
+	public boolean isClient = false;
 	private EntityLiving thrower;
 	
 	public EntityEgonRay(World par1World,EntityLiving ent, ItemStack itemStack){
@@ -42,10 +46,14 @@ public class EntityEgonRay extends Entity {
 		ignoreFrustumCheck = true;
 		thrower = ent;
 		item = itemStack;
+		renderThirdPerson = true;
+		isClient = true;
 	}
 	
 	public EntityEgonRay(World world){
 		super(world);
+		thrower = Minecraft.getMinecraft().thePlayer;
+		isClient = false;
 	}
 	
 	public EntityLiving getThrower(){
@@ -54,7 +62,15 @@ public class EntityEgonRay extends Entity {
 	
 	@Override
 	public void onUpdate(){
-		if(item == null || worldObj.isRemote)
+		
+		if(worldObj.isRemote && !isClient){
+			System.out.println(this.getDistanceSqToEntity(thrower));
+			if(this.getDistanceSqToEntity(thrower) < 4.5)
+				draw = false;
+			return;
+		}
+		
+		if(item == null)
 			return;
 		
 		InformationEnergy inf = ((Weapon_egon)item.getItem()).getInformation(item, worldObj);
@@ -64,11 +80,9 @@ public class EntityEgonRay extends Entity {
 		}
 		
 		EntityLiving ent = thrower;
-		this.setLocationAndAngles(ent.posX, ent.posY, ent.posZ, ent.rotationYawHead, ent.rotationPitch);
+		this.setLocationAndAngles(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ, ent.rotationYawHead, ent.rotationPitch);
 		
 		float var3 = 0.4F;
-		if(ticksExisted > 10)
-			return;
 		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3;
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3;
         this.motionY = -MathHelper.sin((this.rotationPitch) / 180.0F * (float)Math.PI) * var3;

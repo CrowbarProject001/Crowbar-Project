@@ -59,6 +59,7 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 		if(!isLoad) {
 			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(worldObj, this));
 			isLoad = true;
+			this.writeRecipeInfoToSlot();
 		}
 		
 		if(worldObj.isRemote)
@@ -71,15 +72,16 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 			iconType = isCrafting? CrafterIconType.CRAFTING : CrafterIconType.NONE;
 		}
 		
-		if(isCrafting){
+		if(isCrafting && currentRecipe != null){
+			System.out.println("Crafting, recipe :" + currentRecipe.toString());
 			if(currentRecipe.heatRequired <= this.heat && hasEnoughMaterial(currentRecipe)){
 				craftItem();
 			}
         	if(currentEnergy >= 7) {
         		currentEnergy -= 7;
-        		this.heat += 3;
+        		heat += 3;
         	}
-        	if(worldObj.getWorldTime() - lastTime > 1000){
+        	if(worldObj.getWorldTime() - lastTime > 1000L){
         		isCrafting = false;
         	}
         }
@@ -91,6 +93,26 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 				inventory[1] = null;
 		}
 		
+		if(++this.tickUpdate > 3)
+			this.onInventoryChanged();
+	}
+	
+	@Override
+	protected void writeRecipeInfoToSlot() {
+		clearRecipeInfo();
+		int length;
+		length = RecipeWeapons.getECRecipeLength(this.page);
+		
+		for (int i = 0; i < length && i < 3; i++) {
+			RecipeCrafter r = RecipeWeapons.getECRecipe(this.page, i+ scrollFactor);
+			if(r == null)
+				return;
+			for (int j = 0; j < 3; j++) {
+				if (r.input.length > j)
+					this.setInventorySlotContents(j + i * 3, r.input[j]);
+			}
+			this.setInventorySlotContents(9 + i, r.output);
+		}
 	}
 
 	@Override
@@ -138,7 +160,7 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 				scrollFactor--;
 			}
 		}
-		this.onInventoryChanged();
+		this.writeRecipeInfoToSlot();
 	}
 	
 	public void addPage(boolean isForward) {
@@ -153,7 +175,7 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 			}
 		}
 		scrollFactor = 0;
-		this.onInventoryChanged();
+		this.writeRecipeInfoToSlot();
 	}
 
 	public RecipeCrafter getRecipeBySlotAndScroll(int slot, int factor) {
