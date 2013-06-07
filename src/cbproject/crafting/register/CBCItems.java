@@ -42,7 +42,7 @@ public class CBCItems {
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
 	public static ItemSpray spray1, spray2;
-	public static Item tin, cooper;
+	public static Item tin, cooper, chip;
 	
 	/**
 	 * 实际注册，请在Init中调用。
@@ -78,6 +78,7 @@ public class CBCItems {
 		
 		tin = new CBCGenericItem(GeneralRegistry.getItemId("tin", GeneralProps.CAT_MISC)).setIAndU("tin");
 		cooper = new CBCGenericItem(GeneralRegistry.getItemId("cooper", GeneralProps.CAT_MISC)).setIAndU("cooper");
+		chip = new CBCGenericItem(GeneralRegistry.getItemId("chip", GeneralProps.CAT_MISC)).setIAndU("chip");
 		
 		LanguageRegistry.addName(halfLife01, "record");
 		LanguageRegistry.addName(halfLife01, "record");

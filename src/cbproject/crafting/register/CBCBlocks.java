@@ -12,6 +12,7 @@ import cbproject.crafting.blocks.BlockBatBox;
 import cbproject.crafting.blocks.BlockCopperOre;
 import cbproject.crafting.blocks.BlockElectricCrafter;
 import cbproject.crafting.blocks.BlockElectricalBase;
+import cbproject.crafting.blocks.BlockGeneratorFire;
 import cbproject.crafting.blocks.BlockRefined;
 import cbproject.crafting.blocks.BlockTinOre;
 import cbproject.crafting.blocks.BlockUraniumOre;
@@ -51,7 +52,7 @@ public class CBCBlocks {
 		storageL = new BlockBatBox(GeneralRegistry.getBlockId("storagelarge", 0), 1);
 		genSolar = new BlockElectricalBase(GeneralRegistry.getBlockId("genSolar", 0), Material.rock).setGeneratorType(TileGeneratorSolar.class).setGuiId(GeneralProps.GUI_ID_GENSOLAR).setUnlocalizedName("genSolar");
 		genLava = new BlockElectricalBase(GeneralRegistry.getBlockId("genLava", 0), Material.rock).setGeneratorType(TileGeneratorLava.class).setGuiId(GeneralProps.GUI_ID_GENLAVA).setUnlocalizedName("genLava");
-		genFire = new BlockElectricalBase(GeneralRegistry.getBlockId("genFire", 0), Material.rock).setGeneratorType(TileGeneratorFire.class).setGuiId(GeneralProps.GUI_ID_GENFIRE).setUnlocalizedName("genFire");
+		genFire = new BlockGeneratorFire(GeneralRegistry.getBlockId("genFire", 0));
 		oreTin = new BlockTinOre(GeneralRegistry.getBlockId("tinOre", 0));
 		oreCooper = new BlockCopperOre(GeneralRegistry.getBlockId("cooperOre", 0));
 		elCrafter = new BlockElectricCrafter(GeneralRegistry.getBlockId("elCrafter", 0));

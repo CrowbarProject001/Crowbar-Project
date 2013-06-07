@@ -221,10 +221,6 @@ public class TileHealthCharger extends TileElectricStorage implements IInventory
 		} 
 	}
 	
-	/**
-	 * TODO:补全
-	 * @param charger
-	 */
 	public void doHealing(EntityPlayer charger) {
 		if(mainEff > 0 && charger.getHealth() < 20) {
 			if(worldObj.getWorldTime() % 10 == 0){

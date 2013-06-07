@@ -142,7 +142,7 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		}
 		GL11.glPushMatrix();
 		if(currentTip != null){
-			GL11.glColor3f(0.0F,0.0F,0.0F);
+			GL11.glColor3f(1.0F,1.0F,1.0F);
 			boolean drawHead = currentTip.getHeadText() != "";
 			List<String> list = new ArrayList();
 			if(drawHead){
