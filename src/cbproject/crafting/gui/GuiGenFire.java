@@ -73,7 +73,7 @@ public class GuiGenFire extends CBCGuiContainer{
     {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	String guiName = StatCollector.translateToLocal(CBCBlocks.genFire.getUnlocalizedName());
+    	String guiName = CBCBlocks.genFire.getLocalizedName();
     	this.fontRenderer.drawString(guiName, 7, 7, 0xdadada);
     }
 	

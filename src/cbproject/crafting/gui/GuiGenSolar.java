@@ -72,8 +72,8 @@ public class GuiGenSolar extends CBCGuiContainer{
     {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	String guiName = StatCollector.translateToLocal(CBCBlocks.genFire.getUnlocalizedName());
-    	this.fontRenderer.drawString(EnumChatFormatting.GRAY + guiName, 7, 7, 0xdadada);
+    	String guiName = CBCBlocks.genSolar.getLocalizedName();
+    	this.fontRenderer.drawString(EnumChatFormatting.GRAY + guiName, 7, 7, 0xffffff);
     }
 	
 	@Override
@@ -89,13 +89,13 @@ public class GuiGenSolar extends CBCGuiContainer{
         int len = 0;
         len = te.currentEnergy * 48 / te.maxStorage;
         if(len > 0)
-        	this.drawTexturedModalRect(x + 25, y + 52, 173, 75, len, 7);
+        	this.drawTexturedModalRect(x + 24, y + 52, 174, 70, len, 7);
         if(te.worldObj.isDaytime()) {
         	this.drawTexturedModalRect(x + 13, y + 19, 173, 0, 60, 30);
-        	this.drawTexturedModalRect(x + 87, y + 44, 178, 68, 5, 5);
+        	this.drawTexturedModalRect(x + 86, y + 44, 186, 9, 5, 5);
         } else {
         	this.drawTexturedModalRect(x + 13, y + 19, 173, 34, 60, 30);
-        	this.drawTexturedModalRect(x + 87, y + 44, 173, 68, 5, 5);
+        	this.drawTexturedModalRect(x + 86, y + 44, 186, 44, 5, 5);
         }
         this.drawElements();
         GL11.glDisable(GL11.GL_BLEND);

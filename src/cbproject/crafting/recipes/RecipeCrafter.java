@@ -35,11 +35,8 @@ public class RecipeCrafter {
 
 	@Override
 	public String toString(){
-		StringBuilder out = new StringBuilder("[recipe:");
-		for(ItemStack s : input)
-			if(s != null)
-				out.append(" " + s.getDisplayName());
-		out.append(" -> " + output.getDisplayName() + "]");
+		StringBuilder out = new StringBuilder("[");
+		out.append(output.getDisplayName()).append("]");
 		return out.toString();
 	}
 }

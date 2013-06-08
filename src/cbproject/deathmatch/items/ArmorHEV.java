@@ -43,11 +43,12 @@ public class ArmorHEV extends ElectricArmor {
 		this.setMaxCharge(100000);
 		this.setTier(2);
 		this.setTransferLimit(128);
-		this.setEnergyPerDamage(1000);
+		this.setEnergyPerDamage(500);
 	}
 	
 	public ArmorHEV(int par1, EnumAttachment attach) {
-		super(par1, material, 2, attach.getSlot());
+		this(par1, attach.getSlot());
+		this.setIconName("hev_" + attach.name().toLowerCase());
 		this.attatches = EnumSet.of(attach);
 	}
 	

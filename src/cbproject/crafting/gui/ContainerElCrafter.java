@@ -89,7 +89,7 @@ public class ContainerElCrafter extends ContainerWeaponCrafter {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
 			icrafting.sendProgressBarUpdate(this, 0, tileEntity.scrollFactor);
 			icrafting.sendProgressBarUpdate(this, 1, tileEntity.iconType.ordinal());
-			icrafting.sendProgressBarUpdate(this, 2, tileEntity.currentEnergy * Short.MAX_VALUE / tileEntity.MAX_STORAGE);
+			icrafting.sendProgressBarUpdate(this, 2, tileEntity.currentEnergy / 2);
 			icrafting.sendProgressBarUpdate(this, 3, tileEntity.heat);
 		}
 	}
@@ -102,7 +102,7 @@ public class ContainerElCrafter extends ContainerWeaponCrafter {
 		} else if(par1 == 1) {
 			tileEntity.iconType = CrafterIconType.values()[par2];
 		} else if(par1 == 2) {
-			tileEntity.currentEnergy = (int) (par2 * ((long)tileEntity.MAX_STORAGE) / Short.MAX_VALUE);
+			tileEntity.currentEnergy = (int) (par2 * 2);
 		} else if(par1 == 3) {
 			tileEntity.heat = par2;
 		}

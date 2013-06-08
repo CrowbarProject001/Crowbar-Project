@@ -46,7 +46,8 @@ public class EntityBullet extends EntityThrowable {
 		itemStack = par3itemStack;
 		if( itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral) )
 			this.setDead();
-		motion = new MotionXYZ(this);
+		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
+		motion = new MotionXYZ(this).setMotionOffset(item.getOffset(item.getMode(par3itemStack)));
 	}
 	
 	@Override

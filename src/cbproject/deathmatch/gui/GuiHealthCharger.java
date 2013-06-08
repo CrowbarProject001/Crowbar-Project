@@ -55,7 +55,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 
 		@Override
 		public String getTip() {
-			return StatCollector.translateToLocal("curenergy.name") + ": "
+			return StatCollector.translateToLocal("gui.curenergy.name") + ": "
 					+ te.currentEnergy + "/" + TileHealthCharger.ENERGY_MAX + " EU";
 		}
 
@@ -64,7 +64,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	class TipMain implements IGuiTip {
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "hemain.name";
+			return EnumChatFormatting.RED + "gui.hemain.name";
 		}
 
 		@Override
@@ -76,7 +76,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	class TipSide implements IGuiTip {
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "heside.name";
+			return EnumChatFormatting.RED + "gui.heside.name";
 		}
 
 		@Override

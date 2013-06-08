@@ -39,12 +39,10 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	 * GUI元素列表。
 	 */
 	private HashSet<CBCGuiPart> elements;
-	private FontRenderer customFont;
 	
 	public CBCGuiContainer(Container par1Container) {
 		super(par1Container);
 		elements = new HashSet<CBCGuiPart>();
-		customFont = new FontRenderer(Minecraft.getMinecraft().gameSettings, "/font/default.png", Minecraft.getMinecraft().renderEngine, false);
 	}
 	
 	/**
@@ -142,7 +140,6 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		}
 		GL11.glPushMatrix();
 		if(currentTip != null){
-			GL11.glColor3f(1.0F,1.0F,1.0F);
 			boolean drawHead = currentTip.getHeadText() != "";
 			List<String> list = new ArrayList();
 			if(drawHead){
@@ -150,7 +147,8 @@ public abstract class CBCGuiContainer extends GuiContainer {
 			}
 			int x = (width - xSize)/2, y = (height - ySize)/2;
 			list.add(currentTip.getTip());
-			this.drawHoveringText(list, par1 - x, par2 - y, customFont);
+			this.drawHoveringText(list, par1 - x, par2 - y, fontRenderer);
+			GL11.glColor3f(1.0F,1.0F,1.0F);
 		}
 		GL11.glPopMatrix();
 	}

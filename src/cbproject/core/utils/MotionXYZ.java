@@ -70,7 +70,7 @@ public class MotionXYZ {
 			
 		}
 		
-		setOffset(par2);
+		setMotionOffset(par2);
 	
 	}
 	
@@ -85,11 +85,12 @@ public class MotionXYZ {
 		
 	}
 	
-	public void setOffset(double par1){
+	public MotionXYZ setMotionOffset(double par1){
 		
 		this.motionX += (Math.random() - 1) * 2 * par1 * SCALE;
 		this.motionY += (Math.random() - 1) * 2 * par1 * SCALE;
 		this.motionZ += (Math.random() - 1) * 2 * par1 * SCALE;
+		return this;
 		
 	}
 	

@@ -15,11 +15,14 @@
 package cbproject.deathmatch.entities;
 
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
+import cbproject.deathmatch.utils.BulletManager;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
@@ -29,17 +32,20 @@ import net.minecraft.world.World;
  */
 public class EntityBulletSG extends EntityBullet {
 
-	private final BulletSG shotgun;
+	double startX, startY, startZ;
 	
-	public EntityBulletSG(World par1World, EntityLiving par2EntityLiving,
-			ItemStack par3itemStack, BulletSG sg) {
+	public EntityBulletSG(World par1World, EntityLiving par2EntityLiving, ItemStack par3itemStack) {
 		super(par1World, par2EntityLiving, par3itemStack);
-		shotgun = sg;
+		startX = par2EntityLiving.posX;
+		startY = par2EntityLiving.posY;
+		startZ = par2EntityLiving.posZ;
+		this.motionX = motion.motionX;
+		this.motionY = motion.motionY;
+		this.motionZ = motion.motionZ;
 	}
 
 	public EntityBulletSG(World world) {
 		super(world);
-		shotgun = null;
 	}
 	
 	@Override
@@ -54,15 +60,20 @@ public class EntityBulletSG extends EntityBullet {
 	@Override
 	public void doEntityCollision(MovingObjectPosition result){
 		
-		
-		System.out.println("hit!" + result.entityHit);
 		if( result.entityHit == null)
 			return;
 		if(!(result.entityHit instanceof EntityLiving || result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
 			return;
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		int damage = item.getDamage(0);
-		shotgun.onBulletHit(result.entityHit, damage);
+		//Distance related, max 22/44 in 0 distance, min 1 in distance 30, 0.1 chance of a critical hit( 100% damage)
+		int damage = item.getDamage(item.getMode(itemStack));
+		double critical = Math.random();
+		if(critical > 0.1) {
+			double distance = result.hitVec.distanceTo(Vec3.createVectorHelper(startX, startY, startZ));
+			if(distance > 3.0D)
+				damage *= 1/Math.sqrt(distance);
+		}
+		BulletManager.doEntityAttack(result.entityHit, DamageSource.causeMobDamage(getThrower()), damage);
 		
 	}
 	

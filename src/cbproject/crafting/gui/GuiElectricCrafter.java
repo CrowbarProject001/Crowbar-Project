@@ -51,12 +51,35 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "Current Energy";
+			return EnumChatFormatting.RED + "gui.curenergy.name";
 		}
 
 		@Override
 		public String getTip() {
-			return tileEntity.currentEnergy + "/" + tileEntity.maxHeat + " EU";
+			return tileEntity.currentEnergy + "/" + tileEntity.MAX_STORAGE + " EU";
+		}
+		
+	}
+	
+	public  class TipBehavior implements IGuiTip {
+
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "gui.curtask.name";
+		}
+
+		@Override
+		public String getTip() {
+			switch(tileEntity.iconType) {
+			case CRAFTING:
+				return StatCollector.translateToLocal("gui.crafting.name") + tileEntity.currentRecipe.toString();
+			case NOMATERIAL:
+				return StatCollector.translateToLocal("gui.nomaterial.name");
+			case NONE:
+				return StatCollector.translateToLocal("gui.idle.name");
+			default:
+				return "";
+			}
 		}
 		
 	}
@@ -65,12 +88,12 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "Current Heat";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.curheat.name");
 		}
 
 		@Override
 		public String getTip() {
-			return tileEntity.heat + "/" + tileEntity.maxHeat + " Heat";
+			return tileEntity.heat + "/" + tileEntity.maxHeat + " " + StatCollector.translateToLocal("gui.heat.name");
 		}
 		
 	}
@@ -84,10 +107,12 @@ public class GuiElectricCrafter extends CBCGuiContainer {
         		left = new CBCGuiButton("left", 6, 6, 3, 4),
         		right = new CBCGuiButton("right", 158, 6, 3, 4),
         		heat = new CBCGuiPart("heat", 138, 17, 6, 46),
-        		energy = new CBCGuiPart("energy", 116, 17, 6, 46);
-        addElements(up, down, left, right, heat, energy);
+        		energy = new CBCGuiPart("energy", 116, 17, 6, 46),
+        		behavior = new CBCGuiPart("behavior", 124, 16, 6, 8);
+        addElements(up, down, left, right, heat, energy, behavior);
         this.setElementTip("heat", new TipHeat());
         this.setElementTip("energy", new TipEnergy());
+        this.setElementTip("behavior", new TipBehavior());
     }
 
 	
@@ -130,7 +155,6 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 	
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
-		System.out.println("clicked " + button.name);
 		if(button.name == "up" || button.name =="down"){
 			boolean isDown = button.name == "down" ? true: false;
 			tileEntity.addScrollFactor(isDown);

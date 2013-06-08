@@ -70,7 +70,9 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		processRightClick( inf, par1ItemStack, par2World, par3EntityPlayer);
 		
 		if(inf.isShooting && canShoot(par3EntityPlayer, par1ItemStack)){
-			par2World.spawnEntityInWorld(new EntityEgonRay(par2World, par3EntityPlayer, par1ItemStack));
+			//TODO:发现奇怪的错误，在Server端生成会导致崩溃，求修复
+			if(par2World.isRemote)
+				par2World.spawnEntityInWorld(new EntityEgonRay(par2World, par3EntityPlayer, par1ItemStack));
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_WINDUP, 0.5F, 1.0F);
 		}
 		

@@ -1,15 +1,14 @@
 package cbproject.deathmatch.items.wpns;
 
-import cbproject.core.CBCMod;
-import cbproject.crafting.register.CBCItems;
-import cbproject.deathmatch.entities.BulletSG;
-import cbproject.deathmatch.entities.EntityBulletSG;
-import cbproject.deathmatch.utils.AmmoManager;
-import cbproject.deathmatch.utils.InformationBullet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import cbproject.core.CBCMod;
+import cbproject.crafting.register.CBCItems;
+import cbproject.deathmatch.entities.EntityBulletSG;
+import cbproject.deathmatch.utils.AmmoManager;
+import cbproject.deathmatch.utils.InformationBullet;
 
 public class Weapon_shotgun extends WeaponGeneralBullet {
 
@@ -95,10 +94,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 		if(par2World.isRemote)
 			return;
 		int count = mode == 0 ? 8 : 16;
-		BulletSG sg = new BulletSG(par2World, par3Entity, par1ItemStack, mode);
-		for(int i = 0; i < count ; i++)
-			par2World.spawnEntityInWorld(new EntityBulletSG(par2World, par3Entity, par1ItemStack,sg));
-		sg.postInit();
+		EntityBulletSG sg = new EntityBulletSG(par2World, par3Entity, par1ItemStack);
 		par2World.spawnEntityInWorld(sg);
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		

@@ -93,6 +93,7 @@ public class ContainerWeaponCrafter extends Container {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
 			icrafting.sendProgressBarUpdate(this, 0, tileEntity.scrollFactor);
 			icrafting.sendProgressBarUpdate(this, 1, tileEntity.iconType.ordinal());
+			icrafting.sendProgressBarUpdate(this, 2, tileEntity.heat);
 		}
 	}
 
@@ -103,6 +104,8 @@ public class ContainerWeaponCrafter extends Container {
 			scrollFactor = Math.abs(par2);
 		} else if(par1 == 1) {
 			tileEntity.iconType = CrafterIconType.values()[par2];
+		} else if(par1 == 2) {
+			tileEntity.heat = par2;
 		}
 	}
 

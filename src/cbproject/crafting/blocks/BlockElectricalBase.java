@@ -38,7 +38,7 @@ public class BlockElectricalBase extends CBCBlockContainer {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public BlockElectricalBase setGeneratorType(Class<? extends TileEntity> type) {
+	public BlockElectricalBase setTileType(Class<? extends TileEntity> type) {
 		this.generatorType = type;
 		return this;
 	}

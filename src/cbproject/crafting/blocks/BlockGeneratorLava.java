@@ -14,9 +14,9 @@
  */
 package cbproject.crafting.blocks;
 
+import cbproject.core.props.GeneralProps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.core.props.GeneralProps;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
@@ -30,20 +30,18 @@ import net.minecraftforge.common.ForgeDirection;
  * @author WeAthFolD
  *
  */
-public class BlockGeneratorFire extends BlockElectricalBase {
+public class BlockGeneratorLava extends BlockElectricalBase {
 
 	public Icon iconSide, iconTop, iconBottom, iconMain, iconBack;;
 	private ForgeDirection[] dirs = ForgeDirection.values();
-	/**
-	 * @param par1
-	 * @param mat
-	 */
-	public BlockGeneratorFire(int par1) {
+	
+
+	public BlockGeneratorLava(int par1) {
 		super(par1, Material.rock);
 		setHardness(2.0F);
-		setTileType(TileGeneratorFire.class);
-		setGuiId(GeneralProps.GUI_ID_GENFIRE);
-		setUnlocalizedName("genFire");
+		setTileType(TileGeneratorLava.class);
+		setGuiId(GeneralProps.GUI_ID_GENLAVA);
+		setUnlocalizedName("genLava");
 	}
 	
     /**
@@ -81,7 +79,7 @@ public class BlockGeneratorFire extends BlockElectricalBase {
         iconSide = par1IconRegister.registerIcon("lambdacraft:genfire_side");
         iconTop = par1IconRegister.registerIcon("lambdacraft:genfire_top");
         iconBottom = par1IconRegister.registerIcon("lambdacraft:crafter_bottom");
-        iconMain = par1IconRegister.registerIcon("lambdacraft:genfire_main");
+        iconMain = par1IconRegister.registerIcon("lambdacraft:genlava_main");
         iconBack = par1IconRegister.registerIcon("lambdacraft:genfire_back");
         blockIcon = iconTop;
     }

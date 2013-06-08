@@ -38,10 +38,11 @@ public class BlockWire extends BlockElectricalBase {
 		this.setIconName("wire");
 		this.setUnlocalizedName("wire");
 		this.setGuiId(-1);
-		this.setGeneratorType(TileWire.class);
+		this.setTileType(TileWire.class);
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 		return ClientProps.RENDER_TYPE_EMPTY;
 	}

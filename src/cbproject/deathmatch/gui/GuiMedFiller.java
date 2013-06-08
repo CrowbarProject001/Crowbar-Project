@@ -56,7 +56,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 
 		@Override
 		public String getTip() {
-			return StatCollector.translateToLocal("curenergy.name") + ": "
+			return StatCollector.translateToLocal("gui.curenergy.name") + ": "
 					+ te.getCurrentEnergy() + "/" + te.getMaxEnergy() + " EU";
 		}
 

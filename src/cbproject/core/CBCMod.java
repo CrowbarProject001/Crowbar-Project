@@ -56,13 +56,16 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(modid="lc",name="LambdaCraft|Core",version="1.0.0pre1")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false, channels = {GeneralProps.NET_CHANNEL_CLIENT, GeneralProps.NET_CHANNEL_SERVER}, packetHandler = CBCNetHandler.class)
+@NetworkMod(clientSideRequired=true,serverSideRequired=false, 
+clientPacketHandlerSpec = @SidedPacketHandler(channels = {GeneralProps.NET_CHANNEL_CLIENT}, packetHandler = CBCNetHandler.class),
+serverPacketHandlerSpec = @SidedPacketHandler(channels = {GeneralProps.NET_CHANNEL_SERVER}, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler
 { 
 	@SideOnly(Side.CLIENT)

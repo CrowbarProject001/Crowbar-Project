@@ -26,6 +26,7 @@ import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.TileArmorCharger;
 import cbproject.deathmatch.network.NetChargerClient;
+import cbproject.deathmatch.register.DMBlocks;
 
 /**
  * @author Administrator
@@ -114,10 +115,10 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		String currentPage = StatCollector
-				.translateToLocal(EnumChatFormatting.DARK_GRAY + "armorcharger.name");
-		fontRenderer.drawString(currentPage,
-				88 - fontRenderer.getStringWidth(currentPage) / 2, 5, 0x969494);
+		String blockName = EnumChatFormatting.DARK_GRAY + StatCollector
+				.translateToLocal(DMBlocks.armorCharger.getLocalizedName());
+		fontRenderer.drawString(blockName,
+				88 - fontRenderer.getStringWidth(blockName) / 2, 5, 0x969494);
 	}
 
 	/*

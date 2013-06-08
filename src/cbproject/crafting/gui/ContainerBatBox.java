@@ -62,7 +62,7 @@ public class ContainerBatBox extends Container {
 		super.detectAndSendChanges();
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
-			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy);
+			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy / 6);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class ContainerBatBox extends Container {
 	public void updateProgressBar(int par1, int par2) {
 		super.updateProgressBar(par1, par2);
 		if (par1 == 0)
-			te.currentEnergy = par2;
+			te.currentEnergy = par2 * 6;
 	}
 	
 	@Override

@@ -45,12 +45,35 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "Current Heat";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.curheat.name");
 		}
 
 		@Override
 		public String getTip() {
-			return te.heat + "/" + te.maxHeat + " Heat";
+			return te.heat + "/" + te.maxHeat + " " + StatCollector.translateToLocal("gui.heat.name");
+		}
+		
+	}
+	
+	public  class TipBehavior implements IGuiTip {
+
+		@Override
+		public String getHeadText() {
+			return EnumChatFormatting.RED + "gui.curtask.name";
+		}
+
+		@Override
+		public String getTip() {
+			switch(te.iconType) {
+			case CRAFTING:
+				return StatCollector.translateToLocal("gui.crafting.name") + te.currentRecipe.toString();
+			case NOMATERIAL:
+				return StatCollector.translateToLocal("gui.nomaterial.name");
+			case NONE:
+				return StatCollector.translateToLocal("gui.idle.name");
+			default:
+				return "";
+			}
 		}
 		
 	}
@@ -77,17 +100,21 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         CBCGuiPart up = new CBCGuiButton("up", 111, 19, 7, 6).setDownCoords(220, 13).setInvaildCoords(220, 6).setTextureCoords(208, 13),
         		down = new CBCGuiButton("down", 111, 74, 7, 6).setDownCoords(220, 43).setInvaildCoords(208, 6).setTextureCoords(208, 43),
         		left = new CBCGuiButton("left", 5, 2, 5, 6).setDownCoords(220, 53).setInvaildCoords(245, 53).setTextureCoords(210, 53),
-        		right = new CBCGuiButton("right", 190, 2, 5, 6).setDownCoords(220, 63).setInvaildCoords(245, 63).setTextureCoords(210, 63);
-        addElements(up, down, left, right);
-       // this.setElementTip("heat", new TipHeat());
+        		right = new CBCGuiButton("right", 190, 2, 5, 6).setDownCoords(220, 63).setInvaildCoords(245, 63).setTextureCoords(210, 63),
+        		heat = new CBCGuiPart("heat", 175, 15, 6, 63),
+        		behavior = new CBCGuiPart("behavior", 160, 16, 8, 18);
+        addElements(up, down, left, right, heat, behavior);
+        this.setElementTip("heat", new TipHeat());
+        this.setElementTip("behavior", new TipBehavior());
         this.updateButtonState();
     }
 	
 	@Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-    	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	String storage = StatCollector.translateToLocal("crafter.storage");
+		super.drawGuiContainerForegroundLayer(par1, par2);
+    	GL11.glColor3f(1.0F, 1.0F, 1.0F);
+    	String storage = StatCollector.translateToLocal("gui.crafter_storage.name");
     	String currentPage = StatCollector.translateToLocal(RecipeWeapons.getDescription(te.page));
         this.fontRenderer.drawString(storage, 8, 88, 4210752);
         fontRenderer.drawString(currentPage, 100 - fontRenderer.getStringWidth(currentPage) / 2, 1, 4210752);

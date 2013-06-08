@@ -198,7 +198,7 @@ public class TileBatBox extends TileGeneratorBase implements IInventory, IEnergy
 
 	@Override
 	public String getInvName() {
-		return this.type == 0 ? CBCBlocks.storageS.getUnlocalizedName() : CBCBlocks.storageL.getUnlocalizedName();
+		return (this.type == 0 ? CBCBlocks.storageS.getUnlocalizedName() : CBCBlocks.storageL.getUnlocalizedName()) + ".name";
 	}
 
 
