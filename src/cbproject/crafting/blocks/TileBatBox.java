@@ -230,7 +230,13 @@ public class TileBatBox extends TileGeneratorBase implements IInventory, IEnergy
 	@Override
 	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
-		return currentEnergy < maxStorage;
+		return currentEnergy < maxStorage && paramDirection.toForgeDirection().ordinal() != this.blockMetadata;
+	}
+	
+	@Override
+	public boolean emitEnergyTo(TileEntity emTileEntity,
+			LCDirection emDirection) {
+		return emDirection.toForgeDirection().ordinal() == this.blockMetadata;
 	}
 
 	@Override

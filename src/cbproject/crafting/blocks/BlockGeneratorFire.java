@@ -32,7 +32,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class BlockGeneratorFire extends BlockElectricalBase {
 
-	public Icon iconSide, iconTop, iconBottom, iconMain, iconBack;;
+	public Icon iconSide, iconTop, iconBottom, iconMain, iconBack;
 	private ForgeDirection[] dirs = ForgeDirection.values();
 	/**
 	 * @param par1
@@ -53,7 +53,7 @@ public class BlockGeneratorFire extends BlockElectricalBase {
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
     {
         int l = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-
+        
         if (l == 0)
         {
             par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);

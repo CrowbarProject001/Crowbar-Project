@@ -80,7 +80,7 @@ public class BlockTripmine extends BlockContainer {
 		else 
 			begin.motionZ = -1.0;
 		MotionXYZ end = new MotionXYZ(begin).updateMotion(20.0);
-		Vec3 vec1 = begin.asVec3(par1World), vec2 = end.asVec3(par1World);
+		Vec3 vec1 = begin.asVec3(par1World).addVector(0.0, 0.5, 0.0), vec2 = end.asVec3(par1World).addVector(0.0, 0.5, 0.0);
 		MovingObjectPosition result = par1World.rayTraceBlocks(vec1, vec2);
 		if(result == null){
 			tileEntity.setEndCoords((int)end.posX, (int)end.posY, (int)end.posZ);

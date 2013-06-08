@@ -14,6 +14,7 @@ import cbproject.crafting.blocks.BlockElectricCrafter;
 import cbproject.crafting.blocks.BlockElectricalBase;
 import cbproject.crafting.blocks.BlockGeneratorFire;
 import cbproject.crafting.blocks.BlockGeneratorLava;
+import cbproject.crafting.blocks.BlockGeneratorSolar;
 import cbproject.crafting.blocks.BlockRefined;
 import cbproject.crafting.blocks.BlockTinOre;
 import cbproject.crafting.blocks.BlockUraniumOre;
@@ -51,7 +52,7 @@ public class CBCBlocks {
 		wire = new BlockWire(GeneralRegistry.getBlockId("wire", 0));
 		storageS = new BlockBatBox(GeneralRegistry.getBlockId("storagesmall", 0), 0);
 		storageL = new BlockBatBox(GeneralRegistry.getBlockId("storagelarge", 0), 1);
-		genSolar = new BlockElectricalBase(GeneralRegistry.getBlockId("genSolar", 0), Material.rock).setTileType(TileGeneratorSolar.class).setGuiId(GeneralProps.GUI_ID_GENSOLAR).setUnlocalizedName("genSolar");
+		genSolar = new BlockGeneratorSolar(GeneralRegistry.getBlockId("genSolar", 0));
 		genLava = new BlockGeneratorLava(GeneralRegistry.getBlockId("genLava", 0));
 		genFire = new BlockGeneratorFire(GeneralRegistry.getBlockId("genFire", 0));
 		oreTin = new BlockTinOre(GeneralRegistry.getBlockId("tinOre", 0));
@@ -81,6 +82,7 @@ public class CBCBlocks {
 		ModLoader.registerBlock(oreCooper);
 		ModLoader.registerBlock(elCrafter);
 		
+		//TODO:添加其他房客的Harvest Level
 		MinecraftForge.setBlockHarvestLevel(uraniumOre, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(blockRefined, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(weaponCrafter, "pickaxe", 1);
