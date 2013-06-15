@@ -54,6 +54,7 @@ public class EnergyUtils {
 	}
 	
 	/**
+	 * 从一个ItemStack中获取能量。
 	 * 请在调用这个函数之后进行恰当的stackSize检查。
 	 * @param sl
 	 * @param energyReq
@@ -76,4 +77,5 @@ public class EnergyUtils {
 		}
 		return energyReceived;
 	}
+	
 }

@@ -34,7 +34,6 @@ public class GeneralProps {
 	@Configurable(key = "doPlayerDamage", defValue = "true", comment = "Enable weapons' damage on player.")
 	public static boolean doPlayerDamage;
 	
-	//暂时未使用，待定
 	@Configurable(key = "updateRate", defValue = "4", comment = "Update rate of tile entities & entities tracking. Make this value higher if you server runs slow.")
 	public static int updateRate;
 	

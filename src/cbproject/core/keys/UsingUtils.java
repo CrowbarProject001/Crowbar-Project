@@ -22,6 +22,7 @@ import cbproject.api.tile.IUseable;
 import cbproject.core.utils.BlockPos;
 
 /**
+ * 和使用方块按键相关的各种功能。
  * @author WeAthFolD
  *
  */
@@ -90,7 +91,6 @@ public class UsingUtils {
 				.getInteger("usingZ");
 		int id = world.getBlockId(x, y, z);
 		if(!(Block.blocksList[id] instanceof IUseable)) {
-			//stopUsingBlock(world, player);
 			return null;
 		} else {
 			return new BlockPos(x, y, z, id);

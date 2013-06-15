@@ -138,7 +138,6 @@ public abstract class CBCGuiContainer extends GuiContainer {
 				currentTip = b.tip;
 			}
 		}
-		GL11.glPushMatrix();
 		if(currentTip != null){
 			boolean drawHead = currentTip.getHeadText() != "";
 			List<String> list = new ArrayList();
@@ -147,10 +146,8 @@ public abstract class CBCGuiContainer extends GuiContainer {
 			}
 			int x = (width - xSize)/2, y = (height - ySize)/2;
 			list.add(currentTip.getTip());
-			this.drawHoveringText(list, par1 - x, par2 - y, fontRenderer);
-			GL11.glColor3f(1.0F,1.0F,1.0F);
+			super.func_102021_a(list, par1 - x, par2 - y);
 		}
-		GL11.glPopMatrix();
 	}
 	
 	@Override

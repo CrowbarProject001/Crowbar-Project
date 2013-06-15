@@ -19,7 +19,7 @@ import cbproject.api.energy.tile.IEnergyTile;
 import net.minecraftforge.event.world.WorldEvent;
 
 /**
- * TODO:求自己添加注释
+ * 能量TileEntity的事件。
  * @author HopeAsd
  *
  */

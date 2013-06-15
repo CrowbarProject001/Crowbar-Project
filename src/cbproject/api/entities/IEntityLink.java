@@ -23,6 +23,7 @@ import net.minecraft.entity.Entity;
  * @param <T> Entity类型
  */
 public interface IEntityLink<T extends Entity> {
+	
 	/**
 	 * 获取链接的Entity。
 	 * @return
@@ -34,4 +35,5 @@ public interface IEntityLink<T extends Entity> {
 	 * @param entity
 	 */
 	public void setLinkedEntity(T entity);
+	
 }

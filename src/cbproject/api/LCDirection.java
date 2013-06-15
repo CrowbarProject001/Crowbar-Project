@@ -3,7 +3,13 @@ package cbproject.api;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
+/**
+ * 自定义的方向Enum。
+ * @author WeAthFolD
+ *
+ */
 public enum LCDirection {
+	
 	XN(0),
 	
 	XP(1),
@@ -52,15 +58,18 @@ public enum LCDirection {
 		}
 		return this;
 	}
+	
 	private int toSideValue(){
 		
 		return (this.dir + 4) % 6;
 	}
+	
 	private int getSign() {
 		
 		return this.dir % 2 *2 - 1;
 		
 	}
+	
 	public ForgeDirection toForgeDirection(){
 		return ForgeDirection.getOrientation(toSideValue());
 	}

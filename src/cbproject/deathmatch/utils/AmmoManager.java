@@ -34,7 +34,7 @@ public class AmmoManager {
 						return 0;
 					} else {
 						left -= is.stackSize;
-						player.inventory.setInventorySlotContents(i, null);
+						player.inventory.decrStackSize(i, is.stackSize);
 					}
 				}
 			}

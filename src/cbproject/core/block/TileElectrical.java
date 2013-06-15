@@ -21,16 +21,13 @@ import cbproject.api.energy.events.EnergyTileUnloadEvent;
 import cbproject.api.energy.tile.IEnergyTile;
 
 /**
- * @author WeAthFolD
+ * 通用电力TileEntity。
  *
  */
 public abstract class TileElectrical extends CBCTileEntity implements IEnergyTile {
 
 	public boolean addedToNet = false;
-	
-	/**
-	 * 
-	 */
+
 	public TileElectrical() {
 		
 	}
@@ -40,7 +37,6 @@ public abstract class TileElectrical extends CBCTileEntity implements IEnergyTil
 		super.updateEntity();
 		if(!this.addedToNet) {
 			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(worldObj, this));
-			System.out.println("Adding " + this + " to Net");
 			this.addedToNet = true;
 		}
 	}

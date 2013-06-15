@@ -18,8 +18,7 @@ import cbproject.core.props.GeneralProps;
 import net.minecraft.tileentity.TileEntity;
 
 /**
- * @author WeAthFolD
- * 
+ * 基本TileEntity.
  */
 public abstract class CBCTileEntity extends TileEntity {
 

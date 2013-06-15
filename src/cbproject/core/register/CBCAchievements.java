@@ -31,6 +31,12 @@ import net.minecraftforge.common.AchievementPage;
  */
 public class CBCAchievements {
 
+	/* The Page of Achs */
+	public static AchievementPage achpage;
+	
+	/* Activer */
+	public static CraftingHandler craftHandler;
+	
 	/* Nuclear Raw Material */
 	public static Achievement nuclearRawMaterial;
 
@@ -39,12 +45,6 @@ public class CBCAchievements {
 
 	/* Oh my teeth! */
 	public static Achievement ohMyTeeth;
-
-	/* The Page of Achs */
-	public static AchievementPage achpage;
-	
-	/* Activer */
-	public static CraftingHandler craftHandler;
 
 	public static void init(Config conf) {
 		try {
@@ -63,6 +63,7 @@ public class CBCAchievements {
 			AchievementPage.registerAchievementPage(achpage);
 			craftHandler = new CraftingHandler();
 			GameRegistry.registerCraftingHandler(craftHandler);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

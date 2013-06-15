@@ -40,22 +40,22 @@ public class ClientProxy extends Proxy{
 	public static void profilerStartSection(String section){
 		if (isRendering()){
 			Minecraft.getMinecraft().mcProfiler.startSection(section);
-		}else{
+		} else {
 			Proxy.profilerStartSection(section);
 		}
 	}
 	
 	public static void profilerEndSection(){
-		if (isRendering()){
+		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.endSection();
-		}else{
+		} else {
 			Proxy.profilerEndSection();
 		}
 		
 	}
 	
 	public static void profilerEndStartSection(String section){
-		if(isRendering()){
+		if(isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.endStartSection(section);
 		}
 		Proxy.profilerEndStartSection(section);

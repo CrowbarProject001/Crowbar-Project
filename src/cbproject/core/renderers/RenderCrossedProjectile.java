@@ -9,6 +9,10 @@ import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 
+/**
+ * 交叉投射物渲染（枪榴弹，RPG火箭使用）
+ *
+ */
 public class RenderCrossedProjectile extends RenderEntity {
 
 	protected double LENGTH;

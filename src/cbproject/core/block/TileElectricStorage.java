@@ -19,19 +19,15 @@ import cbproject.api.LCDirection;
 import cbproject.api.energy.tile.IEnergySink;
 
 /**
- * @author WeAthFolD
- *
+ * 通用电力存储TileEntity.
  */
-public abstract class TileElectricStorage extends TileElectrical implements IEnergySink{
+public abstract class TileElectricStorage extends TileElectrical implements IEnergySink {
 
 	public int maxEnergy;
 	public int currentEnergy;
 	protected int tier;
 	protected int lastTick;
 	
-	/**
-	 * 
-	 */
 	public TileElectricStorage(int tier, int max) {
 		this.setMaxEnergy(max);
 	}

@@ -34,8 +34,7 @@ import cbproject.core.utils.EnergyUtils;
  * @author WeAthFolD
  * 
  */
-public class TileArmorCharger extends TileElectricStorage implements
-		IInventory {
+public class TileArmorCharger extends TileElectricStorage implements IInventory {
 
 	public static int ENERGY_MAX = 400000; // 10 BatBox, 4HEV Armor
 	public boolean isCharging = false;

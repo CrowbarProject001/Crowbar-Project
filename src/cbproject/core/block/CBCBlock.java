@@ -7,6 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 
+/**
+ * LambdaCraft基本Block类。
+ */
 public class CBCBlock extends Block{
 
 	private String iconName;

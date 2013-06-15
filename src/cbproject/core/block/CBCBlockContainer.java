@@ -31,8 +31,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
- * @author WeAthFolD
- *
+ * 基本BlockContainer类。
  */
 public abstract class CBCBlockContainer extends BlockContainer {
 

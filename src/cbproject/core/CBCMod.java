@@ -127,6 +127,7 @@ public class CBCMod implements ITickHandler
 	 */
 	@Init
 	public void init(FMLInitializationEvent Init){
+		
 		//Blocks, Items, GUI Handler,Key Process.
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");

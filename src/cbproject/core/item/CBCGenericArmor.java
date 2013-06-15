@@ -26,8 +26,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 /**
- * @author WeAthFolD
- *
+ * 通用盔甲类。
  */
 public class CBCGenericArmor extends ItemArmor{
 
