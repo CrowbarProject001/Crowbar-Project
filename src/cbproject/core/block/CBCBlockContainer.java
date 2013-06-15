@@ -31,7 +31,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
- * 基本BlockContainer类。
+ * @author WeAthFolD
+ *
  */
 public abstract class CBCBlockContainer extends BlockContainer {
 
@@ -49,12 +50,6 @@ public abstract class CBCBlockContainer extends BlockContainer {
 	
 	public CBCBlockContainer setIconName(String name) {
 		this.iconName = name;
-		return this;
-	}
-	
-	public CBCBlockContainer setIandU(String name) {
-		this.setIconName(name);
-		this.setUnlocalizedName(name);
 		return this;
 	}
 	

@@ -21,49 +21,67 @@ import cbproject.crafting.register.CBCItems;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 
 /**
  * Mod的成就类。
+ * 
  * @author Mkpoli
- *
+ * 
  */
 public class CBCAchievements {
 
-	/* The Page of Achs */
-	public static AchievementPage achpage;
-	
-	/* Activer */
-	public static CraftingHandler craftHandler;
-	
-	/* Nuclear Raw Material */
-	public static Achievement nuclearRawMaterial;
+	public static Achievement[] oreAchievements = new Achievement[3];
 
 	/* Radioactive Beryl */
 	public static Achievement radioactiveBeryl;
 
 	/* Oh my teeth! */
 	public static Achievement ohMyTeeth;
+	
+	/* Let's Moe! */
+	public static Achievement letsMoe;
+
+	/* The Page of Achs */
+	public static AchievementPage achpage;
+
+	/* Activer */
+	public static CraftingHandler craftHandler;
 
 	public static void init(Config conf) {
 		try {
 
-			nuclearRawMaterial = (new Achievement(conf.getInteger("nuclearRawMaterial",99), "nuclearRawMaterial", 0,
-					0, CBCBlocks.uraniumOre, (Achievement) null))
+			oreAchievements[0] = (new Achievement(conf.getInteger(
+					"nuclearRawMaterial", 99), "nuclearRawMaterial", 0, 0,
+					CBCBlocks.uraniumOre, (Achievement) null))
 					.registerAchievement();
-			radioactiveBeryl = (new Achievement(conf.getInteger("radioactiveBeryl",100), "radioactiveBeryl", 0, 1,
-					CBCItems.ingotUranium, nuclearRawMaterial))
+			oreAchievements[1] = (new Achievement(conf.getInteger(
+					"newTinOre", 100), "newTinOre", 2, 0,
+					CBCBlocks.oreTin, (Achievement) null))
 					.registerAchievement();
-			ohMyTeeth = (new Achievement(conf.getInteger("ohMyTeeth",101), "ohMyTeeth", 1, 0,
-					CBCItems.ingotSteel, (Achievement) null))
+			oreAchievements[2] = (new Achievement(conf.getInteger(
+					"newCopperOre", 101), "newCopperOre", 4, 0,
+					CBCBlocks.oreCopper, (Achievement) null))
 					.registerAchievement();
-			achpage = new AchievementPage("LambdaCraft", nuclearRawMaterial,
-					radioactiveBeryl, ohMyTeeth);
+			radioactiveBeryl = (new Achievement(conf.getInteger(
+					"radioactiveBeryl", 102), "radioactiveBeryl", 1, 2,
+					CBCItems.ingotUranium, oreAchievements[0]))
+					.registerAchievement();
+			ohMyTeeth = (new Achievement(conf.getInteger("ohMyTeeth", 103),
+					"ohMyTeeth", 3, 0, CBCItems.ingotSteel, (Achievement) null))
+					.registerAchievement();
+			letsMoe = (new Achievement(conf.getInteger("letsMoe", 104), "letsMoe", 12, 12, CBCItems.halfLife01, (Achievement)null)).registerAchievement();
+			System.out.println("finish achievements");
+			achpage = new AchievementPage("LambdaCraft", oreAchievements[0],
+
+					oreAchievements[1], oreAchievements[2], radioactiveBeryl,
+					ohMyTeeth, letsMoe);
+			
 			AchievementPage.registerAchievementPage(achpage);
 			craftHandler = new CraftingHandler();
 			GameRegistry.registerCraftingHandler(craftHandler);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

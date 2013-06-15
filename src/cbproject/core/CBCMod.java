@@ -21,6 +21,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.src.ModLoader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -34,6 +35,7 @@ import cbproject.core.network.NetExplosion;
 import cbproject.core.network.NetKeyUsing;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
+import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCKeyProcess;
 import cbproject.core.register.CBCNetHandler;
@@ -100,6 +102,8 @@ public class CBCMod implements ITickHandler
 	 */
 	@SidedProxy(clientSide="cbproject.core.proxy.ClientProxy",serverSide="cbproject.core.proxy.Proxy")
 	public static cbproject.core.proxy.Proxy proxy;
+
+	public static boolean ic2Installed;
 	
 	/**
 	 * 预加载（设置、世界生成、注册Event）
@@ -127,7 +131,7 @@ public class CBCMod implements ITickHandler
 	 */
 	@Init
 	public void init(FMLInitializationEvent Init){
-		
+		ic2Installed = ModLoader.isModLoaded("ic2");
 		//Blocks, Items, GUI Handler,Key Process.
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
@@ -136,8 +140,6 @@ public class CBCMod implements ITickHandler
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
-		
-		
 	}
 
 	/**
@@ -147,6 +149,7 @@ public class CBCMod implements ITickHandler
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init){
 		config.SaveConfig();
+		
 	}
 
 	/**

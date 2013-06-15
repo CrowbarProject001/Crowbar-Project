@@ -14,29 +14,30 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class MotionXYZ {
-	
 	public double motionX,motionY,motionZ;
 	public double posX, posY, posZ;
 	public static final double SCALE = 0.5D;
 	
-	public MotionXYZ(double pX,double pY,double pZ, double moX, double moY, double moZ) {
-		posX = pX;
-		posY = pY;
-		posZ = pZ;
+	public MotionXYZ(double par1,double par2,double par3, double par4, double par5, double par6) {
+		// TODO Auto-generated constructor stub
+		posX = par1;
+		posY = par2;
+		posZ = par3;
 		
-		motionX = moX;
-		motionY = moY;
-		motionZ = moZ;
+		motionX = par4;
+		motionY = par5;
+		motionZ = par6;
 	}
 	
-	public MotionXYZ(Vec3 par0, double moX, double moY, double moZ) {
+	public MotionXYZ(Vec3 par0, double par4, double par5, double par6) {
+		// TODO Auto-generated constructor stub
 		posX = par0.xCoord;
 		posY = par0.yCoord;
 		posZ = par0.zCoord;
 		
-		motionX = moX;
-		motionY = moY;
-		motionZ = moZ;
+		motionX = par4;
+		motionY = par5;
+		motionZ = par6;
 	}
 	
 	public MotionXYZ(MotionXYZ a){
@@ -119,11 +120,6 @@ public class MotionXYZ {
 		
 	}
 	
-	/**
-	 * 获取以本身和另外一个MotionXYZ为顶点的碰撞箱。
-	 * @param another
-	 * @return
-	 */
 	public final AxisAlignedBB getBoundingBox(MotionXYZ another){
 		double minX, minY, minZ, maxX, maxY, maxZ;
 		if(another.posX > this.posX){
@@ -165,6 +161,11 @@ public class MotionXYZ {
 	
 	public static final MotionXYZ getPosByPlayer2(EntityLiving par1Player){
 		return new MotionXYZ(par1Player,0);
+	}
+	
+	public static final double calculateDistance(double x1, double y1, double z1, double x2, double y2, double z2){
+		double dx = x2 - x1, dy = y2 - y1, dz = z2 - z1;
+		return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 	
 	@Override

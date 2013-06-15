@@ -33,20 +33,21 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CBCSoundEvents {
 
 	private static HashSet<String[]> pathSounds = new HashSet();
+	public static HashMap<String, SoundPoolEntry> pathStreamings = new HashMap();
 	
 	@ForgeSubscribe
 	public void onSound(SoundLoadEvent event)
 	{
+		System.out.println("Attempting to load CBC sound files...");
 		try{
 			SoundPoolEntry snd;
 			for(String[] path:pathSounds){
 				snd = event.manager.soundPoolSounds.addSound(path[0], CBCMod.class.getResource(path[1]));
-				//System.out.println("AddSound : " + snd.soundName + " URL: " + snd.soundUrl);
+				System.out.println("AddSound : " + snd.soundName + " URL: " + snd.soundUrl);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		CBCMod.log.fine("LambdaCraft successfully loaded " + pathSounds.size() + " sound files");
 	}
 	
 	/**

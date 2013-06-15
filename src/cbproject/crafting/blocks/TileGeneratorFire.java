@@ -1,6 +1,6 @@
 /** 
  * Copyright (c) LambdaCraft Modding Team, 2013
- * 版权许可：LambdaCraft 制作小组， 2013.
+ * 鐗堟潈璁稿彲锛歀ambdaCraft 鍒朵綔灏忕粍锛�2013.
  * http://lambdacraft.half-life.cn/
  * 
  * LambdaCraft is open-source. It is distributed under the terms of the
@@ -9,11 +9,12 @@
  * or its modifications in any form, binary or source, except if expressively
  * granted by the copyright holder.
  *
- * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
- * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ * LambdaCraft鏄畬鍏ㄥ紑婧愮殑銆傚畠鐨勫彂甯冮伒浠庛�LambdaCraft寮�簮鍗忚銆嬨�浣犲厑璁搁槄璇伙紝淇敼浠ュ強璋冭瘯杩愯
+ * 婧愪唬鐮侊紝 鐒惰�浣犱笉鍏佽灏嗘簮浠ｇ爜浠ュ彟澶栦换浣曠殑鏂瑰紡鍙戝竷锛岄櫎闈炰綘寰楀埌浜嗙増鏉冩墍鏈夎�鐨勮鍙�
  */
 package cbproject.crafting.blocks;
 
+import ic2.api.Direction;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.item.IEnItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 /**
@@ -206,5 +208,4 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
 		return true;
 	}
-
 }

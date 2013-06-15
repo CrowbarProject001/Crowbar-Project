@@ -14,6 +14,7 @@
  */
 package cbproject.core.utils;
 
+import cbproject.mob.utils.EntitySelectorLiving;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 

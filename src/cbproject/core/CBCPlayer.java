@@ -9,10 +9,6 @@ import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
 import net.minecraft.util.MathHelper;
 
-/**
- * Well,传说中的玩家类
- * @author WeAthFolD
- */
 public class CBCPlayer extends PlayerBase {
 
 	public static final float LJ_VEL_RADIUS = 1.5F;
@@ -23,7 +19,6 @@ public class CBCPlayer extends PlayerBase {
 
 	@Override
 	public void jump() {
-		
 		player.localJump();
 		ItemStack slotChestplate = player.inventory.armorInventory[2];
 		if (slotChestplate != null && player.isSneaking()) {
@@ -36,22 +31,18 @@ public class CBCPlayer extends PlayerBase {
 				if(hev.getAttachment(slotChestplate, EnumAttachment.LONGJUMP))
 					b = true;
 			}
-			if (b) 
-				doLongjump();
+			if (b) {
+				double motionX = -MathHelper.sin(player.rotationYaw / 180.0F
+						* (float) Math.PI)
+						* MathHelper.cos(player.rotationPitch / 180.0F
+								* (float) Math.PI) * LJ_VEL_RADIUS;
+				double motionZ = MathHelper.cos(player.rotationYaw / 180.0F
+						* (float) Math.PI)
+						* MathHelper.cos(player.rotationPitch / 180.0F
+								* (float) Math.PI) * LJ_VEL_RADIUS;
+				player.addVelocity(motionX, 0.1F, motionZ);
+			}
 		}
-		
-	}
-	
-	private void doLongjump() {
-		double motionX = -MathHelper.sin(player.rotationYaw / 180.0F
-				* (float) Math.PI)
-				* MathHelper.cos(player.rotationPitch / 180.0F
-						* (float) Math.PI) * LJ_VEL_RADIUS;
-		double motionZ = MathHelper.cos(player.rotationYaw / 180.0F
-				* (float) Math.PI)
-				* MathHelper.cos(player.rotationPitch / 180.0F
-						* (float) Math.PI) * LJ_VEL_RADIUS;
-		player.addVelocity(motionX, 0.1F, motionZ);
 	}
 	
 

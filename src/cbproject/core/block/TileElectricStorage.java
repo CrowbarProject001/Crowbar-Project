@@ -1,6 +1,6 @@
 /** 
  * Copyright (c) LambdaCraft Modding Team, 2013
- * 版权许可：LambdaCraft 制作小组， 2013.
+ * 鐗堟潈璁稿彲锛歀ambdaCraft 鍒朵綔灏忕粍锛�2013.
  * http://lambdacraft.half-life.cn/
  * 
  * LambdaCraft is open-source. It is distributed under the terms of the
@@ -9,25 +9,31 @@
  * or its modifications in any form, binary or source, except if expressively
  * granted by the copyright holder.
  *
- * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
- * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
+ * LambdaCraft鏄畬鍏ㄥ紑婧愮殑銆傚畠鐨勫彂甯冮伒浠庛�LambdaCraft寮�簮鍗忚銆嬨�浣犲厑璁搁槄璇伙紝淇敼浠ュ強璋冭瘯杩愯
+ * 婧愪唬鐮侊紝 鐒惰�浣犱笉鍏佽灏嗘簮浠ｇ爜浠ュ彟澶栦换浣曠殑鏂瑰紡鍙戝竷锛岄櫎闈炰綘寰楀埌浜嗙増鏉冩墍鏈夎�鐨勮鍙�
  */
 package cbproject.core.block;
 
+
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 import cbproject.api.energy.tile.IEnergySink;
 
 /**
- * 通用电力存储TileEntity.
+ * @author WeAthFolD
+ *
  */
-public abstract class TileElectricStorage extends TileElectrical implements IEnergySink {
+public abstract class TileElectricStorage extends TileElectrical implements IEnergySink,ic2.api.energy.tile.IEnergySink{
 
 	public int maxEnergy;
 	public int currentEnergy;
 	protected int tier;
 	protected int lastTick;
 	
+	/**
+	 * 
+	 */
 	public TileElectricStorage(int tier, int max) {
 		this.setMaxEnergy(max);
 	}
@@ -85,5 +91,27 @@ public abstract class TileElectricStorage extends TileElectrical implements IEne
 		}
 		return 0;
 	}
-
+	
+	
+	//IC2
+	@Override
+	public int injectEnergy(ic2.api.Direction directionFrom, int amount) {
+        //if (amount > this.maxStorage)
+        //{
+        	//this.worldObj.createExplosion(null, this.xCoord,  this.yCoord,  this.zCoord, 2F, true);
+        	//invalidate();
+            //return 0;
+        //}
+        //else
+        {
+            this.currentEnergy += amount;
+            int var3 = 0;
+            if (this.currentEnergy > this.maxEnergy)
+            {
+                var3 = this.currentEnergy - this.maxEnergy;
+                this.currentEnergy = this.maxEnergy;
+            }
+            return var3;
+        }
+	}
 }

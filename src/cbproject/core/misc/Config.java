@@ -104,6 +104,12 @@ public class Config {
 	    return config.getBlock("ID." + blockName, defaultID).getInt();
 	}
 	
+	public int GetKeyCode(String keyName, int defaultKey) throws Exception{
+		if(this == null)
+			 throw new NullPointerException();
+		return config.get("key", "KB." + keyName, defaultKey).getInt();
+	}
+	
 	public void SaveConfig()
 	{
 	    config.save();

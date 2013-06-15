@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 /**
- * 注册能量TileEntity的事件。
+ * TODO:求自己添加注释
  * @author HopeAsd
  *
  */

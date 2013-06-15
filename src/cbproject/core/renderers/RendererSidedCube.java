@@ -25,7 +25,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 
 /**
- * 特殊的Block渲染类，如果你需要贴图比例不是1:1的多面贴图渲染，请使用它。(TileEntity version)
+ * 特殊的Block渲染类，如果你需要贴图比例不是1:1的多面贴图渲染，请使用它。
  * @author WeAthFolD
  */
 public abstract class RendererSidedCube extends TileEntitySpecialRenderer {

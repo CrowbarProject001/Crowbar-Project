@@ -1,3 +1,14 @@
+package cbproject.core.renderers;
+
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /** 
  * Copyright (c) LambdaCraft Modding Team, 2013
  * 版权许可：LambdaCraft 制作小组， 2013.
@@ -11,20 +22,6 @@
  *
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
- */
-package cbproject.core.renderers;
-
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-/**
- * 渲染单个Icon为一个实体的实用类。
  */
 @SideOnly(Side.CLIENT)
 public class RenderIcon extends Render

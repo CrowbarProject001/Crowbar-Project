@@ -106,7 +106,7 @@ public class Weapon_satchel extends WeaponGeneral {
 			}
 			nbt.setInteger("satchelCount", ++count);
 			if( !par3EntityPlayer.capabilities.isCreativeMode)
-				--par1ItemStack.stackSize;
+				AmmoManager.tryConsume(par3EntityPlayer,this.itemID , 1);
 			
 		} else { //Detonating mode
 			nbt.setBoolean("doesExplode", true);

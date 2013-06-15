@@ -83,7 +83,6 @@ public class ModuleDM
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new DMGuiElements.ElementArmorCharger());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_HEALTH, new DMGuiElements.ElementHealthCharger());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_MEDFILLER, new DMGuiElements.ElementMedFiller());
-		
 	}
 
 	
@@ -180,9 +179,5 @@ public class ModuleDM
 		"medshotno",
 		"medcharge"
 	};
-	
-	static {
-		
-	}
 	
 }

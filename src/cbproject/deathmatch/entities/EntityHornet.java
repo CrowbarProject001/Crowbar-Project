@@ -17,10 +17,10 @@ package cbproject.deathmatch.entities;
 import java.util.List;
 
 import cbproject.core.props.ClientProps;
-import cbproject.core.utils.EntitySelectorLiving;
 import cbproject.deathmatch.entities.fx.EntityTrailFX;
 import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.utils.BulletManager;
+import cbproject.mob.utils.EntitySelectorLiving;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityEnderCrystal;

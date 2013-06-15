@@ -3,7 +3,6 @@ package cbproject.core.energy;
 import cbproject.api.LCDirection;
 
 public class EnergyBlockLink {
-	
 	LCDirection lcdirection;
 	double loss;
 
