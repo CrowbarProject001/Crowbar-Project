@@ -14,6 +14,7 @@
  */
 package cbproject.crafting.items;
 
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
@@ -59,7 +60,7 @@ public class ItemSpray extends CBCGenericItem {
 		int direction = Direction.facingToDirection[side];
 		// 创建EntityArt实例
 		EntitySpray entity = new EntitySpray(world, x, y, z, direction,
-				title_id);
+				title_id , player);
 		// 判断是否被放置在了可用的表面
 		if (entity.onValidSurface()) {
 			if (!world.isRemote) {

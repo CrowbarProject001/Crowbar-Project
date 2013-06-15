@@ -10,15 +10,13 @@ import cbproject.core.props.GeneralProps;
 import cbproject.core.register.GeneralRegistry;
 import cbproject.crafting.blocks.BlockAdvWeaponCrafter;
 import cbproject.crafting.blocks.BlockBatBox;
-import cbproject.crafting.blocks.BlockCopperOre;
+import cbproject.crafting.blocks.BlockCBCOres;
 import cbproject.crafting.blocks.BlockElectricCrafter;
 import cbproject.crafting.blocks.BlockElectricalBase;
 import cbproject.crafting.blocks.BlockGeneratorFire;
 import cbproject.crafting.blocks.BlockGeneratorLava;
 import cbproject.crafting.blocks.BlockGeneratorSolar;
 import cbproject.crafting.blocks.BlockRefined;
-import cbproject.crafting.blocks.BlockTinOre;
-import cbproject.crafting.blocks.BlockUraniumOre;
 import cbproject.crafting.blocks.BlockWeaponCrafter;
 import cbproject.crafting.blocks.BlockWire;
 import cbproject.crafting.blocks.TileBatBox;
@@ -47,7 +45,7 @@ public class CBCBlocks {
 
 		weaponCrafter = new BlockWeaponCrafter(GeneralRegistry.getBlockId("crafter", 0));
 		blockRefined = new BlockRefined(GeneralRegistry.getBlockId("refined", 0));
-		uraniumOre = new BlockUraniumOre(GeneralRegistry.getBlockId("oreUranium", 0));
+		uraniumOre = new BlockCBCOres(GeneralRegistry.getBlockId("oreUranium", 0), 0);
 		advCrafter = new BlockAdvWeaponCrafter(GeneralRegistry.getBlockId("advCrafter", 0));
 		genMugen = new BlockElectricalBase(GeneralRegistry.getBlockId("mugen", 0), Material.rock).setTileType(TileGeneratorMugen.class).setIconName("genfire_side").setUnlocalizedName("mugen");
 		wire = new BlockWire(GeneralRegistry.getBlockId("wire", 0));
@@ -56,8 +54,8 @@ public class CBCBlocks {
 		genSolar = new BlockGeneratorSolar(GeneralRegistry.getBlockId("genSolar", 0));
 		genLava = new BlockGeneratorLava(GeneralRegistry.getBlockId("genLava", 0));
 		genFire = new BlockGeneratorFire(GeneralRegistry.getBlockId("genFire", 0));
-		oreTin = new BlockTinOre(GeneralRegistry.getBlockId("tinOre", 0));
-		oreCopper = new BlockCopperOre(GeneralRegistry.getBlockId("cooperOre", 0));
+		oreTin = new BlockCBCOres(GeneralRegistry.getBlockId("tinOre", 0), 1);
+		oreCopper = new BlockCBCOres(GeneralRegistry.getBlockId("cooperOre", 0), 2);
 		elCrafter = new BlockElectricCrafter(GeneralRegistry.getBlockId("elCrafter", 0));
 		
 		ModLoader.registerBlock(weaponCrafter);

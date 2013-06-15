@@ -16,16 +16,20 @@ package cbproject.crafting.entities;
 
 import java.util.List;
 
+import cpw.mods.fml.common.network.Player;
+
 import cbproject.crafting.register.CBCItems;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 /**
@@ -42,6 +46,8 @@ public class EntitySpray extends Entity {
 	public int block_pos_y;
 	public int block_pos_z;
 	public int title_id;
+	
+	private EntityPlayer player;
 
 	// 被框架自动调用
 	public EntitySpray(World world) {
@@ -51,7 +57,7 @@ public class EntitySpray extends Entity {
 
 	// 被 Item 调用
 	public EntitySpray(World world, int x, int y, int z, int direction,
-			int title_id) {
+			int title_id , EntityPlayer thePlayer) {
 		this(world);
 
 		this.block_pos_x = x;
@@ -60,8 +66,11 @@ public class EntitySpray extends Entity {
 		this.hanging_direction = direction;
 		this.title_id = title_id;
 
+		
 		this.save_params();
 		this.init_params();
+		
+		this.player = thePlayer;
 	}
 
 	@Override
@@ -228,11 +237,11 @@ public class EntitySpray extends Entity {
 							y + j, this.block_pos_z + 1);
 				}
 				if (!material.isSolid()) {
-					clientPrintLn("放置面面积不够，不允许放置。");
+					sendMessage(StatCollector.translateToLocal("spary.nospace"));
 					return false;
 				}
 				if (material2.isLiquid()) {
-					clientPrintLn("放置面上有液体，不允许放置。");
+					sendMessage(StatCollector.translateToLocal("spary.haswater"));
 					return false;
 				}
 			}
@@ -246,7 +255,7 @@ public class EntitySpray extends Entity {
 		for (Object entity : list) {
 			if (!(entity instanceof EntitySpray))
 				continue;
-			clientPrintLn("被 " + entity + " 阻挡，不允许放置。");
+			sendMessage(StatCollector.translateToLocal("spary.beenblocked"), entity.toString());
 			return false;
 		}
 
@@ -273,9 +282,9 @@ public class EntitySpray extends Entity {
 		return true;
 	}
 	
-	private void clientPrintLn(String str) {
-		if(!this.worldObj.isRemote) {
-			System.out.println(str);
+	private void sendMessage(String... str) {
+		for (String s : str) {
+			player.sendChatToPlayer(s);
 		}
 	}
 

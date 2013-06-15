@@ -24,6 +24,9 @@ public class CraftingHandler implements ICraftingHandler {
 			} else if (item.itemID == CBCItems.ingotUranium.itemID) {
 				CBCAchievements.getAchievement(player,
 						CBCAchievements.radioactiveBeryl);
+			} else if (item.itemID == CBCItems.halfLife01.itemID || item.itemID == CBCItems.halfLife02.itemID ||  item.itemID == CBCItems.halfLife03.itemID ) {
+				CBCAchievements.getAchievement(player,
+						CBCAchievements.letsMoe);
 			}
 		}
 	}
