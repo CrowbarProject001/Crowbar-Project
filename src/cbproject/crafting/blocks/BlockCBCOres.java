@@ -40,7 +40,7 @@ public class BlockCBCOres  extends BlockOre {
 	
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		blockIcon = par1IconRegister.registerIcon("lambdacraft:" + this.getUnlocalizedName());
+		blockIcon = par1IconRegister.registerIcon("lambdacraft:" + (type == 0 ? "uranium" : type == 1 ? "tin" : "copper"));
 	}
 	
 	@Override
