@@ -31,6 +31,13 @@ public class GeneralProps {
 	@Configurable(key = "doWeaponuplift", defValue = "true" , comment = "Enable weapon uplifting when shoot.")
 	public static boolean doWeaponUplift;
 	
+	@Configurable(key = "doPlayerDamage", defValue = "true", comment = "Enable weapons' damage on player.")
+	public static boolean doPlayerDamage;
+	
+	//暂时未使用，待定
+	@Configurable(key = "updateRate", defValue = "4", comment = "Update rate of tile entities & entities tracking. Make this value higher if you server runs slow.")
+	public static int updateRate;
+	
 	public static final int ENT_ID_GAUSS1 = 0, ENT_ID_EGON_RAY = 1, 
 			ENT_ID_TRAIL = 2, ENT_ID_ARGRENADE = 3, ENT_ID_ARROW = 4,
 			ENT_ID_HGRENADE = 5, ENT_ID_HORNET = 6, ENT_ID_ROCKET = 7,

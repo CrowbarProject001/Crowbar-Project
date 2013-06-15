@@ -11,7 +11,7 @@ public class IngotSteel extends Item{
 	public IngotSteel(int par1) {
 		super(par1);
 		setUnlocalizedName("ingotSteel");
-		setCreativeTab( CBCMod.cct );
+		setCreativeTab( CBCMod.cctMisc );
 		setMaxStackSize(64);
 	}
 

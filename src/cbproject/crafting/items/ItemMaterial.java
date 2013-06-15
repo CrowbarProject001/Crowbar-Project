@@ -49,6 +49,7 @@ public class ItemMaterial extends CBCGenericItem {
 	
 	public ItemMaterial(int par1) {
 		super(par1);
+		this.hasSubtypes = true;
 		this.setUnlocalizedName("material"); //默认UnlocalizedName
 	}
 	
@@ -78,6 +79,12 @@ public class ItemMaterial extends CBCGenericItem {
         return "item.mat_" + EnumMaterial.values()[par1ItemStack.getItemDamage()].toString();
     }
 	
+    /**
+     * 用来获取一个特定metadata的stack的方便函数。
+     * @param stackSize
+     * @param mat
+     * @return
+     */
 	public ItemStack newStack(int stackSize, EnumMaterial mat) {
 		return new ItemStack(this.itemID, stackSize, mat.id);
 	}

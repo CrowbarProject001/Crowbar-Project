@@ -8,7 +8,7 @@ public class BlockRefined extends BlockOre {
 
 	public BlockRefined(int par1) {
 		super(par1);
-		setCreativeTab(CBCMod.cct);
+		setCreativeTab(CBCMod.cctMisc);
 		setHardness(2.0F);
 		setUnlocalizedName("refined");
 	}

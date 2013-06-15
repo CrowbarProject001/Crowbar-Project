@@ -16,9 +16,11 @@ package cbproject.crafting.blocks;
 
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.item.IEnItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -74,11 +76,16 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 	
 	private void tryBurn() {
 		if(slots[0] != null) {
-			this.tickLeft = TileEntityFurnace.getItemBurnTime(slots[0]) / 2;
+			this.tickLeft = TileEntityFurnace.getItemBurnTime(slots[0]) / 4;
     		this.maxBurnTime = this.tickLeft;
-    		slots[0].splitStack(1);
-    		if(slots[0].stackSize <= 1)
-    			slots[0] = null;
+    		if(maxBurnTime == 0)
+    			return;
+    		if(slots[0].itemID == Item.bucketLava.itemID) {
+    			slots[0].itemID = Item.bucketEmpty.itemID;
+    		} else {
+    			if(--slots[0].stackSize <= 1)
+    				slots[0] = null;
+    		}
     		isBurning = true;
 		}
 	}
@@ -148,6 +155,12 @@ public class TileGeneratorFire extends TileGeneratorBase implements IInventory{
 			}
 		}
 		return stack;
+	}
+	
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
+				zCoord + 0.5) <= 64;
 	}
 
 

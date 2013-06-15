@@ -9,7 +9,7 @@ public class Bullet_9mm extends ItemBullet {
 
 	public Bullet_9mm(int par1) {
 		super(par1);
-		setCreativeTab( CBCMod.cct );
+		setCreativeTab( CBCMod.cctMisc );
 		setIAndU("bullet_9mm");
 		setMaxStackSize(64);
 	}

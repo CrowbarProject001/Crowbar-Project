@@ -116,7 +116,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 			if(i>0)
 				par2World.playSoundAtEntity(player, SND_CHARGEA_PATH[i], 0.5F, 1.0F);
 			
-			if(inf.chargeTime >= 39 && inf.chargeTime%15 == 0){
+			if(inf.chargeTime >= 30 && inf.chargeTime %15 == 0){
 				inf.setLastTick();
 				par2World.playSoundAtEntity(player, SND_CHARGE_PATH, 0.5F, 1.0F);
 			}
@@ -151,8 +151,8 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 		
 		inf.isShooting = false;
 		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
+		GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
 		if(!par2World.isRemote) {
-			GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_SHOOT_PATH,  
 				0.5F, 1.0F);
 		}
@@ -162,8 +162,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 	@Override
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationEnergy information ){	
 		int mode = getMode(par1ItemStack);
-		GaussBulletManager.Shoot2(EnumGaussRayType.NORMAL, 
-				par2World, player, par1ItemStack, null, null, getDamage(mode));
+		GaussBulletManager.Shoot2(EnumGaussRayType.NORMAL, par2World, player, par1ItemStack, null, null, getDamage(mode));
 		par2World.playSoundAtEntity(player, getSoundShoot(mode), 0.5F, 1.0F);
 		AmmoManager.consumeAmmo(player, this, 2);
 		information.setLastTick();

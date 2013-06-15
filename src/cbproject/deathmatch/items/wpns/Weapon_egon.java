@@ -1,14 +1,18 @@
 package cbproject.deathmatch.items.wpns;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.crafting.register.CBCItems;
 import cbproject.deathmatch.entities.fx.EntityEgonRay;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationEnergy;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 /**
@@ -22,6 +26,8 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 			SND_RUN = "cbc.weapons.egon_run",
 			SND_OFF = "cbc.weapons.egon_off";
 	
+	public Icon iconEquipped;
+	
 	public Weapon_egon(int par1) {
 		super(par1, CBCItems.ammo_uranium.itemID, 1);
 		setCreativeTab(CBCMod.cct);
@@ -30,6 +36,14 @@ public class Weapon_egon extends WeaponGeneralEnergy {
 		setJamTime(20);
 		setLiftProps(1, 0);
 	}
+	
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IconRegister reg)
+    {
+        super.registerIcons(reg);
+        iconEquipped = reg.registerIcon("lambdacraft:weapon_egon0");
+    }
 
 	@Override
     public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 

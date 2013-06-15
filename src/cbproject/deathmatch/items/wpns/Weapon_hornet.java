@@ -34,7 +34,7 @@ public class Weapon_hornet extends WeaponGeneralBullet{
 		super(par1, 0, 2);
 		setMaxDamage(9);
 		setCreativeTab(CBCMod.cct);
-		setIconName("weapon_hornet");
+		setIAndU("weapon_hornet");
 	}
 
 	@Override

@@ -48,13 +48,15 @@ public abstract class CBCBlockContainer extends BlockContainer {
 		setCreativeTab(CBCMod.cct);
 	}
 	
-	public void setIconName(String name) {
+	public CBCBlockContainer setIconName(String name) {
 		this.iconName = name;
+		return this;
 	}
 	
-	public void setIandU(String name) {
+	public CBCBlockContainer setIandU(String name) {
 		this.setIconName(name);
 		this.setUnlocalizedName(name);
+		return this;
 	}
 	
 	public CBCBlockContainer setGuiId(int id) {

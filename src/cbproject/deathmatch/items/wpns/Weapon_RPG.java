@@ -163,7 +163,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 
 	@Override
 	public String getModeDescription(int mode) {
-		return (mode == 0)? "mode.rpg" : "mode.rpg2";
+		return (mode == 0)? "mode.rpg" : "mode.rpg1";
 	}
 	
 	@Override

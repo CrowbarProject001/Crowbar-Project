@@ -48,8 +48,9 @@ public class EntityBulletGauss extends EntityBullet {
 		motion = new MotionXYZ(par2EntityLiving);
 		item = (Weapon_gauss) itemStack.getItem();
 		inf = item.getInformation(itemStack, worldObj);
-		if(!worldObj.isRemote)
-			worldObj.spawnEntityInWorld(new EntityGaussRay(new MotionXYZ(this), worldObj));	
+		worldObj.spawnEntityInWorld(new EntityGaussRay(new MotionXYZ(this), worldObj));	
+		if(par1World.isRemote)
+			this.setDead();
 	}
 	
 	@Override
@@ -112,7 +113,6 @@ public class EntityBulletGauss extends EntityBullet {
 	    if(box == null)
 	    	return;
 	    
-	    System.out.println(box);
 	    List var1 = worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 	    Entity var2;
 

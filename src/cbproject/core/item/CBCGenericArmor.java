@@ -14,12 +14,16 @@
  */
 package cbproject.core.item;
 
+import java.util.List;
+
 import cbproject.core.CBCMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 
 /**
  * @author WeAthFolD
@@ -28,6 +32,8 @@ import net.minecraft.item.ItemArmor;
 public class CBCGenericArmor extends ItemArmor{
 
 	private String iconName = "";
+	protected String description;
+	protected boolean useDescription = false;
 	
 	/**
 	 * @param id
@@ -51,5 +57,18 @@ public class CBCGenericArmor extends ItemArmor{
     {
         this.itemIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
     }
+    
+	public CBCGenericArmor setDescription(String d){
+		this.description = d;
+		useDescription = true;
+		return this;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		if(useDescription)
+			par3List.add(description);
+	}
 	
 }

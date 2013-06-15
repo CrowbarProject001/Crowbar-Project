@@ -16,7 +16,6 @@ public class CBCMobItems {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		LanguageRegistry.addName(weapon_snark, "Snark");
 	}
 	
 }

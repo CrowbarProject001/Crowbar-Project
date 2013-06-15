@@ -1,7 +1,10 @@
 package cbproject.deathmatch.items;
 
 import cbproject.core.item.CBCGenericArmor;
+import cbproject.core.props.ClientProps;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.EnumHelper;
 
 public class ArmorLongjump extends CBCGenericArmor {
@@ -15,4 +18,8 @@ public class ArmorLongjump extends CBCGenericArmor {
 		this.setIconName("longjump");
 	}
 
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, int layer) {
+		return ClientProps.LONGJUMP_ARMOR_PATH;
+	}
 }

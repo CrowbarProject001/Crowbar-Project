@@ -1,5 +1,6 @@
 package cbproject.deathmatch.renderers;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
@@ -18,6 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.props.ClientProps;
 import cbproject.core.renderers.RenderUtils;
 import cbproject.deathmatch.items.wpns.Weapon_crossbow;
+import cbproject.deathmatch.register.DMItems;
 import cbproject.deathmatch.utils.InformationBullet;
 
 @SideOnly(Side.CLIENT)
@@ -67,16 +69,15 @@ public class RenderCrossbow implements IItemRenderer {
 	
 	public void doRender(RenderBlocks render, EntityLiving ent, ItemStack item){
 		
+		Minecraft mc = Minecraft.getMinecraft();
 		t = Tessellator.instance;
 		
 		Weapon_crossbow wpn = (Weapon_crossbow) item.getItem();
 		InformationBullet inf = wpn.getInformation(item, ent.worldObj);
 		float w = 0.05F;
 		float w2 = 0.1F;
-		int tex = RenderUtils.getTexture(ClientProps.CROSSBOW_SIDE_PATH[5 - item.getItemDamage()]);
 		GL11.glPushMatrix();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
-		renderItemIn2d(t, w); //Vertical rendering
+		RenderUtils.renderItemIn2d(ent, item, w, DMItems.weapon_crossbow.sideIcons[5 - item.getItemDamage()]); //Vertical rendering
 
 	    //Horizonal rendering
 	    Vec3    b1 = newV3(0, 0.0 + w2, -0.5),
@@ -89,8 +90,7 @@ public class RenderCrossbow implements IItemRenderer {
 	    	    b7 = newV3(1.0 + w2, 1.0, 0.5),
 	    	    b8 = newV3(1.0 + w2, 1.0, -0.5);
 	    
-	    tex = RenderUtils.getTexture(ClientProps.CROSSBOW_FRONT_PATH[wpn.isBowPulling(item) ? 0: 1]);
-	    GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
+	    mc.renderEngine.bindTexture(ClientProps.CROSSBOW_FRONT_PATH[wpn.isBowPulling(item) ? 0: 1]);
 	    t.startDrawingQuads();
 		t.setNormal(1.0F, 0.0F, 0.0F);
 		addVertex(b1, 1.0F, 1.0F);
@@ -115,7 +115,6 @@ public class RenderCrossbow implements IItemRenderer {
         float tx = 1.0f / (32 * tileSize);
         float tz = 1.0f /  tileSize;
         
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, tex);
         t.startDrawingQuads();
         t.setNormal(-1.0F, 0.0F, 0.0F);
         for (var7 = 0; var7 < tileSize; ++var7)

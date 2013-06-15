@@ -15,6 +15,7 @@
 package cbproject.core.register;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.client.Minecraft;
@@ -32,6 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CBCSoundEvents {
 
 	private static HashSet<String[]> pathSounds = new HashSet();
+	public static HashMap<String, SoundPoolEntry> pathStreamings = new HashMap();
 	
 	@ForgeSubscribe
 	public void onSound(SoundLoadEvent event)
@@ -59,15 +61,4 @@ public class CBCSoundEvents {
 		pathSounds.add(s);
 	}
 	
-	/**
-	 * 请在Init中使用这个函数 ||
-	 * @param name : 声音流名字。 i.e. "cbc/Half-Life01"
-	 * @param absPath : 声音的绝对路径。  i.e."cbproject/gfx/sounds/Half-Life01.ogg"
-	 */
-	public static void addStreaming(String name, String absPath){
-		File file =  new File(absPath);
-		System.out.println("registered " + "streaming/" + name + ".ogg" + " , path = " + file);
-		Minecraft.getMinecraft().installResource("streaming/" + name + ".ogg", file);
-	}
-
 }

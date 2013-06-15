@@ -73,7 +73,6 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 		}
 		
 		if(isCrafting && currentRecipe != null){
-			System.out.println("Crafting, recipe :" + currentRecipe.toString());
 			if(currentRecipe.heatRequired <= this.heat && hasEnoughMaterial(currentRecipe)){
 				craftItem();
 			}

@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import cbproject.core.utils.GenericUtils;
 import cbproject.core.utils.MotionXYZ;
 import cbproject.deathmatch.register.DMBlocks;
 import net.minecraft.tileentity.TileEntity;
@@ -31,6 +32,8 @@ public class TileTripmine extends TileEntity {
 		int meta = this.blockMetadata;
 		MotionXYZ end = new MotionXYZ(endX, endY, endZ, 0, 0, 0);
 		double minX, minY, minZ, maxX, maxY, maxZ;
+		if(meta == 0)
+			return;
 		if(end.posX > begin.posX){
 			minX = begin.posX + 0.5;
 			maxX = end.posX+ 0.5;
@@ -64,8 +67,8 @@ public class TileTripmine extends TileEntity {
 			maxX = maxX + RAY_RAD;
 		}
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
-		List list = worldObj.getEntitiesWithinAABBExcludingEntity(null, box);
-		if(list != null && list.size() != 0){
+		List list = worldObj.getEntitiesWithinAABBExcludingEntity(null, box, GenericUtils.selectorLiving);
+		if(list != null && list.size() > 0 && list.size() < 3){
 			blockType.breakBlock(worldObj, xCoord, yCoord, zCoord, meta, 0);
 		}
 		if(worldObj.getWorldTime() % 5 == 0)

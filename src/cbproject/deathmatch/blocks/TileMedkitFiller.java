@@ -91,7 +91,7 @@ public class TileMedkitFiller extends TileElectricStorage implements IInventory 
 		if(energyReq > 0){
 			ItemStack sl = slots[5];
 			if (sl != null){
-				EnergyUtils.tryChargeFromStack(sl, energyReq);
+				currentEnergy += EnergyUtils.tryChargeFromStack(sl, energyReq);
 				if(sl.stackSize <= 0)
 					this.setInventorySlotContents(5, null);
 			}
@@ -130,7 +130,7 @@ public class TileMedkitFiller extends TileElectricStorage implements IInventory 
 	}
 	
 	private boolean isMedkitAvailable() {
-		return slots[3] != null && !ItemMedkit.isMedkitFull(slots[3]);
+		return slots[3] != null && slots[3].getItem() instanceof ItemMedkit &&  !ItemMedkit.isMedkitFull(slots[3]);
 	}
 
 	@Override

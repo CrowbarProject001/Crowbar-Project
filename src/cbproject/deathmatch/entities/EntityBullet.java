@@ -53,6 +53,7 @@ public class EntityBullet extends EntityThrowable {
 	@Override
 	public void onUpdate(){
 		super.onUpdate();
+		this.ticksExisted++;
 		if(ticksExisted > 50)
 			this.setDead();
 	}
@@ -83,7 +84,6 @@ public class EntityBullet extends EntityThrowable {
 	    	doEntityCollision(par1);
 	    	break;
 	    }
-	    this.setDead();
 	}
 	
 	protected void doBlockCollision(MovingObjectPosition result){	

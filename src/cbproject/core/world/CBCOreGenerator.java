@@ -38,17 +38,17 @@ public class CBCOreGenerator  implements IWorldGenerator {
 			int uraniumOreZCoord = j + random.nextInt(16);
 			(new WorldGenMinable(CBCBlocks.uraniumOre.blockID, 3)).generate(world, random, uraniumOreXCoord, uraniumOreYCoord, uraniumOreZCoord);
 		}
-		for(int k = 0; k < 10; k++) {
+		for(int k = 0; k < 15; k++) {
 			int tinOreXCoord = i + random.nextInt(16);
-			int tinOreYCoord = random.nextInt(64);
+			int tinOreYCoord = random.nextInt(48);
 			int tinOreZCoord = j + random.nextInt(16);
-			(new WorldGenMinable(CBCBlocks.uraniumOre.blockID, 3)).generate(world, random, tinOreXCoord, tinOreYCoord, tinOreZCoord);
+			(new WorldGenMinable(CBCBlocks.oreTin.blockID, 3)).generate(world, random, tinOreXCoord, tinOreYCoord, tinOreZCoord);
 		}
-		for(int k = 0; k < 10; k++) {
+		for(int k = 0; k < 15; k++) {
 			int copperOreXCoord = i + random.nextInt(16);
-			int copperOreYCoord = random.nextInt(64);
+			int copperOreYCoord = random.nextInt(48);
 			int copperOreZCoord = j + random.nextInt(16);
-			(new WorldGenMinable(CBCBlocks.uraniumOre.blockID, 3)).generate(world, random, copperOreXCoord, copperOreYCoord, copperOreZCoord);
+			(new WorldGenMinable(CBCBlocks.oreCopper.blockID, 3)).generate(world, random, copperOreXCoord, copperOreYCoord, copperOreZCoord);
 		}
 	}
 

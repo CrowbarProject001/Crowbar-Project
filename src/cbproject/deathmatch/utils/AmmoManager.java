@@ -65,7 +65,17 @@ public class AmmoManager {
 	 * determine if player have any ammo for reloading/energy weapon shooting.
 	 */
 	public static boolean hasAmmo(WeaponGeneral is, EntityPlayer player){
-		return player.inventory.hasItem(is.ammoID);
+		for(ItemStack i : player.inventory.mainInventory) {
+			if(i == null)
+				continue;
+			if(i.itemID == is.ammoID) {
+				if(i.isStackable())
+					return true;
+				else if(i.getItemDamage() < i.getMaxDamage() - 1)
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	public static boolean hasAmmo(int itemID, EntityPlayer player){

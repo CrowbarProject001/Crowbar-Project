@@ -16,6 +16,7 @@ package cbproject.core.utils;
 
 import cbproject.mob.utils.EntitySelectorLiving;
 import net.minecraft.command.IEntitySelector;
+import net.minecraft.entity.Entity;
 
 /**
  * @author Administrator
@@ -24,4 +25,16 @@ import net.minecraft.command.IEntitySelector;
 public class GenericUtils {
 
 	public static IEntitySelector selectorLiving = new EntitySelectorLiving();
+	
+	public static double distanceSqTo(Entity ent, double x, double y, double z) {
+		if(ent == null)
+			throw new NullPointerException();
+		double dx = (ent.posX - x), dy = (ent.posY - y), dz = (ent.posZ - z);
+		return dx * dx + dy * dy + dz * dz;
+	}
+	
+	public static double distanceTo(Entity ent, double x, double y, double z) {
+		return Math.sqrt(distanceSqTo(ent, x, y, z));
+	}
+	
 }

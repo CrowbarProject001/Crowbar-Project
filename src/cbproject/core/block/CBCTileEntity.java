@@ -14,6 +14,7 @@
  */
 package cbproject.core.block;
 
+import cbproject.core.props.GeneralProps;
 import net.minecraft.tileentity.TileEntity;
 
 /**
@@ -23,7 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 public abstract class CBCTileEntity extends TileEntity {
 
 	protected int lastTick;
-	private int updateFreq = 3;
+	private int updateFreq = GeneralProps.updateRate;
 
 	@Override
 	public boolean canUpdate() {

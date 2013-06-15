@@ -47,7 +47,7 @@ public class LCRecord extends ItemRecord {
 	 */
 	public LCRecord(int par1, String par2Str, int subID) {
 		super(par1, par2Str);
-		setCreativeTab(CBCMod.cct);
+		setCreativeTab(CBCMod.cctMisc);
 		setUnlocalizedName("lcrecord");
 		recID = subID;
 	}
@@ -70,13 +70,13 @@ public class LCRecord extends ItemRecord {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.add(this.recordName + " by Valve");
+		par3List.add("Half - Life0" + (recID + 1) + " by Valve");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getRecordTitle() {
-		return "Valve - " + this.recordName;
+		return "Valve - " + "Half - Life0" + (recID + 1);
 	}
 	
 	@Override

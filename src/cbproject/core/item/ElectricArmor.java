@@ -164,7 +164,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements ICustomEn
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     	if(this.canShowChargeToolTip(par1ItemStack))
-    		par3List.add(StatCollector.translateToLocal("curenergy.name") + " : " + 
+    		par3List.add(StatCollector.translateToLocal("gui.curenergy.name") + " : " + 
     				getItemCharge(par1ItemStack) + "/" + this.maxCharge + " EU");
     }
     

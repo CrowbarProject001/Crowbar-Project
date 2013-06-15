@@ -52,13 +52,13 @@ import cbproject.deathmatch.renderers.RenderEgon;
 import cbproject.deathmatch.renderers.RenderEgonRay;
 import cbproject.deathmatch.renderers.RenderGaussRay;
 import cbproject.deathmatch.renderers.RenderHornet;
-import cbproject.deathmatch.renderers.RenderItemSatchel;
 import cbproject.deathmatch.renderers.RenderSatchel;
 import cbproject.deathmatch.renderers.RenderTileCharger;
 import cbproject.deathmatch.renderers.RenderTileHeCharger;
 import cbproject.deathmatch.renderers.RenderTileTripmine;
 import cbproject.deathmatch.renderers.RenderTrail;
 import cbproject.deathmatch.renderers.models.ModelBattery;
+import cbproject.deathmatch.renderers.models.ModelMedkit;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -80,17 +80,16 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityEgonRay.class, new RenderEgonRay());
 		RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new RenderCrossedProjectile(0.8, 0.27, ClientProps.RPG_ROCKET_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowArrow.class, new RenderCrossedProjectile(0.6, 0.12, ClientProps.CROSSBOW_BOW_PATH));
-		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class, new RenderIcon(ClientProps.RED_DOT_PATH));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class, new RenderIcon(ClientProps.RED_DOT_PATH).setBlend(0.8F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGauss.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGaussSec.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityTrailFX.class, new RenderTrail());
 		RenderingRegistry.registerEntityRenderingHandler(EntityHornet.class, new RenderHornet());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBattery.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityMedkit.class, new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH, 0.5F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityMedkit.class, new RenderModel(new ModelMedkit(), ClientProps.MEDKIT_ENT_PATH, 1.0F));
 		
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_satchel.itemID, new RenderItemSatchel());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_egon.itemID, new RenderEgon());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmhandgun.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmhandgun, 0.08F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_357, 0.08F));

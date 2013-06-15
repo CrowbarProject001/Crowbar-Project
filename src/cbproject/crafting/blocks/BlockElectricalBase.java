@@ -35,6 +35,7 @@ public class BlockElectricalBase extends CBCBlockContainer {
 	 */
 	public BlockElectricalBase(int par1, Material mat) {
 		super(par1, mat);
+		this.setHardness(2.0F);
 		// TODO Auto-generated constructor stub
 	}
 	

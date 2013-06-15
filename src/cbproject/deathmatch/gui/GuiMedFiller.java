@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) LambdaCraft Modding Team, 2013
+4 * Copyright (c) LambdaCraft Modding Team, 2013
  * 版权许可：LambdaCraft 制作小组， 2013.
  * http://lambdacraft.half-life.cn/
  * 
@@ -71,7 +71,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 
 		@Override
 		public String getTip() {
-			return te.currentBehavior.toString();
+			return StatCollector.translateToLocal(te.currentBehavior.toString());
 		}
 		
 	}
@@ -119,7 +119,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 				100 - fontRenderer.getStringWidth(blockName) / 2, 1, 0xffffff);
 		blockName = StatCollector.translateToLocal("container.inventory");
 		fontRenderer.drawString(EnumChatFormatting.DARK_GRAY + blockName,
-				12, 84, 0xffffff);
+				8, 86, 0xffffff);
 	}
 
 	/*

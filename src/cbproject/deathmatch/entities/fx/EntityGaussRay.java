@@ -65,6 +65,7 @@ public class EntityGaussRay extends Entity {
         this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
         this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, f3) * 180.0D / Math.PI);
     }
+    
 	@Override
 	public void onUpdate(){
 		if(this.ticksExisted > 2)

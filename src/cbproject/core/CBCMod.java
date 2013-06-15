@@ -62,7 +62,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(modid="lc",name="LambdaCraft|Core",version="1.0.0pre1")
+@Mod(modid="lc",name="LambdaCraft|Core",version="1.0.0.05")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false, 
 clientPacketHandlerSpec = @SidedPacketHandler(channels = {GeneralProps.NET_CHANNEL_CLIENT}, packetHandler = CBCNetHandler.class),
 serverPacketHandlerSpec = @SidedPacketHandler(channels = {GeneralProps.NET_CHANNEL_SERVER}, packetHandler = CBCNetHandler.class))
@@ -84,7 +84,7 @@ public class CBCMod implements ITickHandler
 	/**
 	 * Creative Tab.
 	 */
-	public static CreativeTabs cct = new CBCCreativeTab("CBCMod");
+	public static CreativeTabs cct = new CBCCreativeTab("CBCMod", 0), cctMisc = new CBCCreativeTab("CBCMisc", 1);
 	
 	/**
 	 * 公用设置。
@@ -130,6 +130,7 @@ public class CBCMod implements ITickHandler
 		//Blocks, Items, GUI Handler,Key Process.
         NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
+		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMisc", "LambdaCraft:Misc");
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);

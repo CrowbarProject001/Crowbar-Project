@@ -14,6 +14,7 @@
  */
 package cbproject.crafting.blocks;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -146,6 +147,12 @@ public class TileGeneratorLava extends TileGeneratorBase implements IInventory{
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
 		return slots[i];
+	}
+	
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
+				zCoord + 0.5) <= 64;
 	}
 
 

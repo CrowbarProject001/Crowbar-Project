@@ -64,7 +64,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	class TipMain implements IGuiTip {
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "gui.hemain.name";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.hemain.name");
 		}
 
 		@Override
@@ -76,12 +76,12 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	class TipSide implements IGuiTip {
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "gui.heside.name";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.heside.name");
 		}
 
 		@Override
 		public String getTip() {
-			return te.sideEff/20.0F + "/" + TileHealthCharger.EFFECT_MAX/20.0F + " sec";
+			return te.sideEff/20.0F + "/" + TileHealthCharger.EFFECT_MAX/20.0F + " s";
 		}
 	}
 

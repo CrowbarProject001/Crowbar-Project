@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import cbproject.core.network.NetExplosion;
+import cbproject.core.props.GeneralProps;
 import cbproject.core.utils.CBCExplosion;
 import cbproject.deathmatch.entities.EntityBullet;
 import net.minecraft.entity.Entity;
@@ -25,7 +26,8 @@ public class BulletManager {
 	}
 	
 	public static void doEntityAttack(Entity ent, DamageSource ds, int damage, double dx, double dy, double dz){
-		ent.attackEntityFrom(ds, damage);
+		if(GeneralProps.doPlayerDamage)
+			ent.attackEntityFrom(ds, damage);
 		//ent.addVelocity(dx, dy, dz);
 	}
 	
@@ -46,7 +48,7 @@ public class BulletManager {
 		explosion.doExplosionA();
 		explosion.doExplosionB(true);
         
-		if(additionalDamage <= 0)
+		if(additionalDamage <= 0 || !GeneralProps.doPlayerDamage)
 			return;
 		
 		AxisAlignedBB par2 = AxisAlignedBB.getBoundingBox(posX-4, posY-4, posZ-4, posX+4, posY+4, posZ+4);

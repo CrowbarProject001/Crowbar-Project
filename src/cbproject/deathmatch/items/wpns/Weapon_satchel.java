@@ -3,16 +3,20 @@
  */
 package cbproject.deathmatch.items.wpns;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.deathmatch.entities.EntitySatchel;
 import cbproject.deathmatch.utils.AmmoManager;
 import cbproject.deathmatch.utils.InformationWeapon;
 import cbproject.deathmatch.utils.InformationSet;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 /**
@@ -24,7 +28,8 @@ import net.minecraft.world.World;
  */
 public class Weapon_satchel extends WeaponGeneral {
 
-
+	public Icon iconSetting;
+	
 	public Weapon_satchel(int par1) {
 		
 		super(par1, 0, 2);
@@ -40,6 +45,24 @@ public class Weapon_satchel extends WeaponGeneral {
 		int dam[] = {0, 0}, offset[] = {0, 0};
 		
 	}
+	
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IconRegister reg)
+    {
+        super.registerIcons(reg);
+        iconSetting = reg.registerIcon("lambdacraft:weapon_satchel1");
+    }
+    
+    @SideOnly(Side.CLIENT)
+    @Override
+    /**
+     * Gets an icon index based on an item's damage value
+     */
+    public Icon getIconFromDamage(int par1)
+    {
+        return par1 == 0 ? this.itemIcon : this.iconSetting;
+    }
 	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
@@ -71,7 +94,6 @@ public class Weapon_satchel extends WeaponGeneral {
 		
 		NBTTagCompound nbt = par3EntityPlayer.getEntityData();
 		int count = nbt.getInteger("satchelCount");
-		System.out.println(count);
 		//Max 6 satchel
 		if(mode == 0){ //Setting mode
 			if(count > 5)
@@ -127,6 +149,11 @@ public class Weapon_satchel extends WeaponGeneral {
 		InformationWeapon inf = new InformationWeapon(is);
 		InformationWeapon inf2 = new InformationWeapon(is);
 		return new InformationSet(inf, inf2);
+	}
+	
+	public void onModeChange(ItemStack item, EntityPlayer player, int newMode){
+		super.onModeChange(item, player, newMode);
+		item.setItemDamage(newMode);
 	}
 	
     @Override

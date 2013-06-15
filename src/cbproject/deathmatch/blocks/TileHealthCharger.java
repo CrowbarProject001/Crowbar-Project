@@ -142,7 +142,7 @@ public class TileHealthCharger extends TileElectricStorage implements IInventory
 			for(EntityPlayer charger : chargers) {
 				currentEnergy -= 5;//5EU/T per player
 				this.doHealing(charger);
-				if(worldObj.getWorldTime() % 40 == 0) {
+				if(worldObj.getWorldTime() % 15 == 0) {
 					worldObj.playSoundAtEntity(charger, "cbc.entities.medcharge", 0.3F, 1.0F);
 				}
 				if(currentEnergy <= 0) {

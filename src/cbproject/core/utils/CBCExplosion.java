@@ -255,8 +255,7 @@ public class CBCExplosion {
                     {
                         block.dropBlockAsItemWithChance(this.worldObj, i, j, k, this.worldObj.getBlockMetadata(i, j, k), 1.0F / this.explosionSize, 0);
                     }
-
-                    this.worldObj.setBlock(i, j, k, 0, 0, 2);
+                    this.worldObj.setBlock(i, j, k, 0, 0, 3);
                    
                     block.onBlockDestroyedByExplosion(this.worldObj, i, j, k, explosion);
                 }

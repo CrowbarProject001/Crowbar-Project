@@ -19,19 +19,20 @@ public class RenderBulletWeapon implements IItemRenderer {
 
 	Tessellator t = Tessellator.instance;
 	Minecraft mc = Minecraft.getMinecraft();
-	float tx = 0, ty = 0, tz = 0;
-	float width = 0.1F;
+	float tx = 0F, ty = 0F, tz = 0F;
+	float width = 0.05F;
 	private WeaponGeneralBullet weaponType;
 	
-	public RenderBulletWeapon(WeaponGeneralBullet weapon, float width) {
+	public RenderBulletWeapon(WeaponGeneralBullet weapon, float w) {
 		weaponType = weapon;
+		width = w/2F;
 	}
 	
 	public RenderBulletWeapon(WeaponGeneralBullet weapon, float width, float x, float y, float z) {
+		this(weapon, width);
 		tx = x;
 		ty = y;
 		tz = z;
-		weaponType = weapon;
 	}
 
 	@Override
@@ -81,30 +82,7 @@ public class RenderBulletWeapon implements IItemRenderer {
 		int mode = item.getTagCompound().getInteger("mode");
 		GL11.glPushMatrix();
 		
-		bindTextureByItem(item);
-		Icon icon = entity.getItemIcon(item, 0);
-
-        if (icon == null)
-        {
-            GL11.glPopMatrix();
-            return;
-        }
-
-        if (item.getItemSpriteNumber() == 0)
-        {
-            this.mc.renderEngine.bindTexture("/terrain.png");
-        }
-        else
-        {
-            this.mc.renderEngine.bindTexture("/gui/items.png");
-        }
-
-        Tessellator tessellator = Tessellator.instance;
-        float f = icon.getMinU();
-        float f1 = icon.getMaxU();
-        float f2 = icon.getMinV();
-        float f3 = icon.getMaxV();
-        RenderUtils.renderItemIn2D(tessellator, f1, f2, f, f3, icon.getSheetWidth(), icon.getSheetHeight(), width);
+		RenderUtils.renderItemIn2d(entity, item, width);
 		
 		boolean rendMuz = false;
 		InformationBullet inf = weaponType.getInformation(item, entity.worldObj);

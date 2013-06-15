@@ -14,6 +14,7 @@
  */
 package cbproject.crafting.proxy;
 
+import net.minecraft.client.Minecraft;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cbproject.core.register.CBCSoundEvents;
@@ -27,12 +28,9 @@ import cbproject.crafting.render.RenderWire;
  *
  */
 public class ClientProxy extends Proxy {
+	
 	@Override public void init() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWire.class, new RenderWire());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpray.class, new RenderSpray());
-		for (int i = 1; i <= 3; i++) {
-			CBCSoundEvents.addStreaming("Half-Life0" + i,
-					"cbproject/gfx/sounds/Half-Life0" + i + ".ogg");
-		}
 	}
 }

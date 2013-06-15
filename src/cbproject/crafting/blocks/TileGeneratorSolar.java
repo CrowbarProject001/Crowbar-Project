@@ -14,6 +14,7 @@
  */
 package cbproject.crafting.blocks;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,9 +28,9 @@ import cbproject.api.energy.item.IEnItem;
  */
 public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 
-	public ItemStack[] slots = new ItemStack[1];
 	public int currentEnergy = 0;
 	public boolean isEmitting;
+	public ItemStack[] slots = new ItemStack[1];
 	
 	/**
 	 * @param tier
@@ -39,6 +40,108 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 		super(1, 10000);
 	}
 	
+
+	@Override
+	public void closeChest() {}
+	
+	@Override
+	public ItemStack decrStackSize(int slot, int amt) {
+		ItemStack stack = getStackInSlot(slot);
+		if (stack != null) {
+			if (stack.stackSize <= amt) {
+				setInventorySlotContents(slot, null);
+			} else {
+				stack = stack.splitStack(amt);
+				if (stack.stackSize == 0) {
+					setInventorySlotContents(slot, null);
+				}
+			}
+		}
+		return stack;
+	}
+	
+    @Override
+	public int getInventoryStackLimit() {
+		return 2;
+	}
+
+    @Override
+	public String getInvName() {
+		return "cbc.tile.genfire";
+	}
+	
+	@Override
+	public int getMaxEnergyOutput() {
+		return 5;
+	}
+
+
+	@Override
+	public int getSizeInventory() {
+		return 2;
+	}
+
+
+	@Override
+	public ItemStack getStackInSlot(int i) {
+		return slots[i];
+	}
+
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int i) {
+		return slots[i];
+	}
+
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		if(i == 0)
+			return true;
+		else return(itemstack.getItem() instanceof IEnItem);
+	}
+
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
+				zCoord + 0.5) <= 64;
+	}
+
+
+	@Override
+	public void openChest() {}
+
+
+	/**
+     * Reads a tile entity from NBT.
+     */
+	@Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        for(int i = 0; i < slots.length; i++){
+        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
+        	byte count = nbt.getByte("count" + i);
+        	if(id == 0)
+        		continue;
+        	ItemStack is = new ItemStack(id, count, damage);
+        	slots[i] = is;
+        }
+    }
+
+
+	@Override
+	public void setInventorySlotContents(int i, ItemStack itemstack) {
+		slots[i] = itemstack;
+	}
+
 
 	@Override
 	public void updateEntity() {
@@ -62,25 +165,9 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 		}
 		
 	}
-	
-    /**
-     * Reads a tile entity from NBT.
-     */
-	@Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        for(int i = 0; i < slots.length; i++){
-        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
-        	byte count = nbt.getByte("count" + i);
-        	if(id == 0)
-        		continue;
-        	ItemStack is = new ItemStack(id, count, damage);
-        	slots[i] = is;
-        }
-    }
 
-    /**
+
+	/**
      * Writes a tile entity to NBT.
      */
     @Override
@@ -95,85 +182,5 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
         	nbt.setShort("damage"+i, (short)slots[i].getItemDamage());
         }
     }
-	
-	@Override
-	public int getMaxEnergyOutput() {
-		return 5;
-	}
-
-
-	@Override
-	public int getSizeInventory() {
-		return 2;
-	}
-
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return slots[i];
-	}
-
-
-	@Override
-	public ItemStack decrStackSize(int slot, int amt) {
-		ItemStack stack = getStackInSlot(slot);
-		if (stack != null) {
-			if (stack.stackSize <= amt) {
-				setInventorySlotContents(slot, null);
-			} else {
-				stack = stack.splitStack(amt);
-				if (stack.stackSize == 0) {
-					setInventorySlotContents(slot, null);
-				}
-			}
-		}
-		return stack;
-	}
-
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
-		return slots[i];
-	}
-
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		slots[i] = itemstack;
-	}
-
-
-	@Override
-	public String getInvName() {
-		return "cbc.tile.genfire";
-	}
-
-
-	@Override
-	public boolean isInvNameLocalized() {
-		return false;
-	}
-
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 2;
-	}
-
-
-	@Override
-	public void openChest() {}
-
-
-	@Override
-	public void closeChest() {}
-
-
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		if(i == 0)
-			return true;
-		else return(itemstack.getItem() instanceof IEnItem);
-	}
 
 }

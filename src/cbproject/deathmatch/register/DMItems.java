@@ -29,15 +29,14 @@ public class DMItems {
 	
 	public static Weapon_gauss weapon_gauss;
 	public static Weapon_satchel weapon_satchel;
-	public static Item weapon_egon;
+	public static Weapon_egon weapon_egon;
 	public static Item weapon_9mmhandgun;
 	public static Item weapon_9mmAR;
 	public static Item weapon_357;
 	public static Item weapon_shotgun;
 	public static Weapon_hornet weapon_hornet;
 	public static Weapon_RPG weapon_RPG;
-	public static Item weapon_crossbow;
-	public static ItemBattery battery;
+	public static Weapon_crossbow weapon_crossbow;
 	public static ItemMedkit medkit;
 	
 	public static ArmorHEV armorHEVBoot, armorHEVLeggings, armorHEVChestplate, armorHEVHelmet;
@@ -68,7 +67,6 @@ public class DMItems {
 		longjump = new ArmorLongjump(GeneralRegistry.getItemId("armorLongjump", 3), 1);
 		hevLongjump = new ArmorHEV(GeneralRegistry.getItemId("hevLongjump", 3), EnumAttachment.LONGJUMP);
 		
-		battery = new ItemBattery(GeneralRegistry.getItemId("battery", 3));
 		medkit = new ItemMedkit(GeneralRegistry.getItemId("medkit", 3));
 		
 	}

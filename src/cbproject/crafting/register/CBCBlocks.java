@@ -2,6 +2,7 @@ package cbproject.crafting.register;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.core.misc.Config;
@@ -36,7 +37,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class CBCBlocks {
 	
 	public static Block weaponCrafter, blockRefined, uraniumOre, advCrafter,genFire, genLava, genSolar, genMugen, wire, storageS, storageL;
-	public static Block oreTin, oreCooper, elCrafter;
+	public static Block oreTin, oreCopper, elCrafter;
 	
 	/**
 	 * 在这里进行实际的方块加载。请在Init中调用它。
@@ -48,7 +49,7 @@ public class CBCBlocks {
 		blockRefined = new BlockRefined(GeneralRegistry.getBlockId("refined", 0));
 		uraniumOre = new BlockUraniumOre(GeneralRegistry.getBlockId("oreUranium", 0));
 		advCrafter = new BlockAdvWeaponCrafter(GeneralRegistry.getBlockId("advCrafter", 0));
-		genMugen = new BlockElectricalBase(GeneralRegistry.getBlockId("mugen", 0), Material.rock).setTileType(TileGeneratorMugen.class).setUnlocalizedName("mugen");
+		genMugen = new BlockElectricalBase(GeneralRegistry.getBlockId("mugen", 0), Material.rock).setTileType(TileGeneratorMugen.class).setIconName("genfire_side").setUnlocalizedName("mugen");
 		wire = new BlockWire(GeneralRegistry.getBlockId("wire", 0));
 		storageS = new BlockBatBox(GeneralRegistry.getBlockId("storagesmall", 0), 0);
 		storageL = new BlockBatBox(GeneralRegistry.getBlockId("storagelarge", 0), 1);
@@ -56,16 +57,8 @@ public class CBCBlocks {
 		genLava = new BlockGeneratorLava(GeneralRegistry.getBlockId("genLava", 0));
 		genFire = new BlockGeneratorFire(GeneralRegistry.getBlockId("genFire", 0));
 		oreTin = new BlockTinOre(GeneralRegistry.getBlockId("tinOre", 0));
-		oreCooper = new BlockCopperOre(GeneralRegistry.getBlockId("cooperOre", 0));
+		oreCopper = new BlockCopperOre(GeneralRegistry.getBlockId("cooperOre", 0));
 		elCrafter = new BlockElectricCrafter(GeneralRegistry.getBlockId("elCrafter", 0));
-		
-		LanguageRegistry.addName(genMugen, "Mugen Generator");
-		LanguageRegistry.addName(wire, "Conductive wire");
-		LanguageRegistry.addName(storageS, "Small Battery Box");
-		LanguageRegistry.addName(storageL, "Large Battery Box");
-		LanguageRegistry.addName(genLava, "Lava Generator");
-		LanguageRegistry.addName(genSolar, "Solar Generator");
-		LanguageRegistry.addName(genFire, "Fire Generator");
 		
 		ModLoader.registerBlock(weaponCrafter);
 		ModLoader.registerBlock(blockRefined);
@@ -79,7 +72,7 @@ public class CBCBlocks {
 		ModLoader.registerBlock(genSolar);
 		ModLoader.registerBlock(genFire);
 		ModLoader.registerBlock(oreTin);
-		ModLoader.registerBlock(oreCooper);
+		ModLoader.registerBlock(oreCopper);
 		ModLoader.registerBlock(elCrafter);
 		
 		//TODO:添加其他房客的Harvest Level
@@ -88,7 +81,7 @@ public class CBCBlocks {
 		MinecraftForge.setBlockHarvestLevel(weaponCrafter, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(advCrafter, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(oreTin, "pickaxe", 1);
-		MinecraftForge.setBlockHarvestLevel(oreCooper, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(oreCopper, "pickaxe", 1);
 		ModLoader.registerTileEntity(TileWeaponCrafter.class, "tile_entity_weapon_crafter");
 		ModLoader.registerTileEntity(TileGeneratorMugen.class, "tile_entity_mugen");
 		ModLoader.registerTileEntity(TileGeneratorSolar.class, "tile_entity_solar");

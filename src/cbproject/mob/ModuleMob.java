@@ -22,7 +22,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 
 
 
-@Mod(modid="lcmob",name="LambdaCraft|Living",version="1.0.0pre1")
+@Mod(modid="lcmob",name="LambdaCraft|Living",version="1.0.0pre2")
 @NetworkMod(clientSideRequired=true,serverSideRequired=false)
 public class ModuleMob
 {

@@ -17,11 +17,15 @@ package cbproject.crafting.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.MathHelper;
 import cbproject.core.block.CBCTileEntity;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.items.ItemMaterial;
@@ -54,6 +58,8 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 	public boolean isAdvanced = false;
 	public boolean isLoad = false;
 	public int tickUpdate = 0;
+	
+	public int heatRequired = 0;
 	
 	/**
 	 * inventory: 1-18：材料存储  19:燃料槽  20:合成结果槽
@@ -368,8 +374,9 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 				iconType = CrafterIconType.NOMATERIAL;
 				return;
 			}
-			int damage = inventory[slotWeapon].getItemDamage() - bulletCount;
+			int damage = inventory[slotWeapon].getItemDamage() - bulletCount * rs.scale;
 			int bulletToConsume = (damage<0) ? inventory[slotWeapon].getItemDamage() : bulletCount;
+			bulletToConsume /= rs.scale;
 			damage = damage < 0? 0 : damage;
 			AmmoManager.consumeInventoryItem(inventory, rs.inputB.itemID, bulletToConsume, 2);
 			inventory[slotWeapon] = null;

@@ -59,7 +59,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "gui.curtask.name";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.curtask.name");
 		}
 
 		@Override
@@ -165,9 +165,9 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
         if(height > 0){
         	drawTexturedModalRect(x + 174, y + 78 - height, 232, 150 - height, 8, height);
         }
-        if(te.isCrafting){
+        if(te.heatRequired > 0){
         	if(te.currentRecipe != null){
-        		height = te.currentRecipe.heatRequired * 64 / te.maxHeat;
+        		height = te.heatRequired * 64 / te.maxHeat;
         		drawTexturedModalRect(x + 173, y + 77 - height, 201, 1, 6, 3);
         	}
         }

@@ -49,7 +49,6 @@ public class ClientProps {
 			SHOTGUN_SHELL_PATH = "/cbproject/gfx/textures/entities/shotgun_shell.png",
 			CROSSBOW_BOW_PATH = "/cbproject/gfx/textures/entities/steelbow.png",
 			RED_DOT_PATH = "/cbproject/gfx/textures/entities/reddot.png",
-			EGON_EQUIPPED_PATH = "/cbproject/gfx/textures/items/weapon_egon0.png",
 			GUI_ARMORCHARGER_PATH = "/cbproject/gfx/textures/gui/armor_charger.png",
 			GUI_WEAPONCRAFTER_PATH = "/cbproject/gfx/textures/gui/crafter.png",
 			GUI_MEDFILLER_PATH = "/cbproject/gfx/textures/gui/medfiller.png",
@@ -69,18 +68,13 @@ public class ClientProps {
 			HECHARGER_SIDE_PATH = "/cbproject/gfx/textures/blocks/hecharger_side.png",
 			HECHARGER_TD_PATH = "/cbproject/gfx/textures/blocks/hecharger_td.png",
 			HECHARGER_BACK_PATH = "/cbproject/gfx/textures/blocks/hecharger_back.png",
+			LONGJUMP_ARMOR_PATH = "/cbproject/gfx/textures/armor/longjump.png",
+			MEDKIT_ENT_PATH = "/cbproject/gfx/textures/entities/medkit.png",
 			SPRY_PATH[] = { "/cbproject/gfx/textures/sprays/spry0.png",
 					"/cbproject/gfx/textures/sprays/spry1.png" },
 			ITEM_SATCHEL_PATH[] = {
 					"/cbproject/gfx/textures/items/weapon_satchel1.png",
 					"/cbproject/gfx/textures/items/weapon_satchel2.png" },
-			CROSSBOW_SIDE_PATH[] = {
-					"/cbproject/gfx/textures/items/crossbow_side0.png",
-					"/cbproject/gfx/textures/items/crossbow_side1.png",
-					"/cbproject/gfx/textures/items/crossbow_side2.png",
-					"/cbproject/gfx/textures/items/crossbow_side3.png",
-					"/cbproject/gfx/textures/items/crossbow_side4.png",
-					"/cbproject/gfx/textures/items/crossbow_side5.png" },
 			CROSSBOW_FRONT_PATH[] = {
 					"/cbproject/gfx/textures/items/crossbow_front0.png",
 					"/cbproject/gfx/textures/items/crossbow_front1.png" },

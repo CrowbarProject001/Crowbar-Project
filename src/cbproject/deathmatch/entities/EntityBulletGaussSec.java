@@ -47,8 +47,7 @@ public class EntityBulletGaussSec extends EntityBullet {
 		super(worldObj, entityPlayer, itemStack);
 		if(typeOfRay == EnumGaussRayType.NORMAL){
 			damage = dmg;
-			if(!worldObj.isRemote)
-				worldObj.spawnEntityInWorld(new EntityGaussRayColored(new MotionXYZ(this), worldObj));	
+			worldObj.spawnEntityInWorld(new EntityGaussRayColored(new MotionXYZ(this), worldObj));	
 			return;
 		}
 		

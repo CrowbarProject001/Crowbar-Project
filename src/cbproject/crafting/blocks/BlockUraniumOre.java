@@ -13,7 +13,7 @@ public class BlockUraniumOre extends BlockOre {
 
 	public BlockUraniumOre(int par1) {
 		super(par1);
-		setCreativeTab(CBCMod.cct);
+		setCreativeTab(CBCMod.cctMisc);
 		setResistance(5.0F);
 		setHardness(2.5F);
 		setUnlocalizedName("uranium");

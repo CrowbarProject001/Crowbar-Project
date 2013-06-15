@@ -15,7 +15,7 @@ public class IngotUranium extends Item {
 
 	public IngotUranium(int par1) {
 		super(par1);
-		setCreativeTab(CBCMod.cct);
+		setCreativeTab(CBCMod.cctMisc);
 		setUnlocalizedName("ingotUranium");
 	}
 	

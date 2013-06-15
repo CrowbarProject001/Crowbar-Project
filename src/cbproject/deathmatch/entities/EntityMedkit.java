@@ -4,7 +4,9 @@ import java.util.List;
 
 import cbproject.core.utils.EntitySelectorPlayer;
 import cbproject.deathmatch.items.ItemMedkit;
+import cbproject.deathmatch.register.DMItems;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,18 +16,20 @@ import net.minecraft.world.World;
 
 public class EntityMedkit extends Entity {
 
-	
+	private boolean spawnItem = true;
 
 	public EntityMedkit(World world) {
 		super(world);
-		this.setSize(0.85F, 0.4F);
+		this.setSize(1.0F, 0.2F);
 	}
 	
-	public EntityMedkit(World world, double x, double y, double z, ItemStack itemStack) {
+	public EntityMedkit(World world,EntityPlayer entityPlayer, double x, double y, double z, ItemStack itemStack) {
 		super(world);
 		this.setPosition(x, y, z);
 		writePotionInf(itemStack);
-		this.setSize(0.85F, 0.2F);
+		this.setSize(0.8F, 0.4F);
+		if(entityPlayer.capabilities.isCreativeMode)
+			spawnItem = false;
 	}
     /**
      * Called to update the entity's position/logic.
@@ -49,7 +53,7 @@ public class EntityMedkit extends Entity {
             this.motionY *= -0.5D;
         }
         
-        if(++this.ticksExisted < 20)
+        if(++this.ticksExisted < 20 || worldObj.isRemote)
         	return;
         
         AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX-0.15, posY-0.3, posZ - 0.15, posX + 0.15, posY + 0.3, posZ + 0.15);
@@ -70,6 +74,9 @@ public class EntityMedkit extends Entity {
     		}
     	}
     	this.playSound("cbc.entities.medkit", 0.5F, 1.0F);
+    	int damage = this.getEntityData().getInteger("damage");
+    	if(damage < 25 && spawnItem)
+    		worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, new ItemStack(DMItems.medkit, 1, ++damage)));
     	this.setDead();
     }
     
@@ -104,7 +111,8 @@ public class EntityMedkit extends Entity {
 			nbt.setInteger("id" + i, nbtItem.getInteger("id" + i));
 			nbt.setInteger("duration" + i, nbtItem.getInteger("duration" + i));
 			nbt.setInteger("amplifier" + i, nbtItem.getInteger("amplifier" + i));
-			}
+		}
+		nbt.setInteger("damage", medkit.getItemDamage());
 	}
 
 	@Override

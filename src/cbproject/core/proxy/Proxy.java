@@ -14,6 +14,9 @@
  */
 package cbproject.core.proxy;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.util.StringTranslate;
@@ -24,6 +27,14 @@ import net.minecraft.util.StringTranslate;
  *
  */
 public class Proxy {
+	
+	public static Set<String> languages = new HashSet();
+	
+	static {
+		languages.add("zh_CN");
+		languages.add("en_US");
+		languages.add("zh_TW");
+	}
 	
 	public static void profilerStartSection(String section){
 		
@@ -45,10 +56,9 @@ public class Proxy {
 	}
 	
 	public void init() {
-		String currentLang = StringTranslate.getInstance().getCurrentLanguage();
-		if(currentLang != "en_US")
-			LanguageRegistry.instance().loadLocalization("/cbproject/lang/" + currentLang + ".properties", currentLang, false);
-		LanguageRegistry.instance().loadLocalization("/cbproject/lang/en_US.properties", "en_US", false);
+		for(String lang : languages) {
+			LanguageRegistry.instance().loadLocalization("/cbproject/lang/" + lang + ".properties", lang, false);
+		}
 	}
 	
 }

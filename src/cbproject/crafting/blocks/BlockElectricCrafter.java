@@ -38,10 +38,10 @@ public class BlockElectricCrafter extends BlockWeaponCrafter {
     @Override
 	public void registerIcons(IconRegister par1IconRegister)
     {
-        iconSide = par1IconRegister.registerIcon("lambdacraft:elcrafter_side");
-        iconTop = par1IconRegister.registerIcon("lambdacraft:elcrafter_top");
-        iconBottom = par1IconRegister.registerIcon("lambdacraft:elcrafter_bottom");
-        iconMain = par1IconRegister.registerIcon("lambdacraft:elcrafter_main");
+        iconSide = par1IconRegister.registerIcon("lambdacraft:ec_side");
+        iconTop = par1IconRegister.registerIcon("lambdacraft:ec_top");
+        iconBottom = par1IconRegister.registerIcon("lambdacraft:crafter_bottom");
+        iconMain = par1IconRegister.registerIcon("lambdacraft:ec_main");
         blockIcon = iconTop;
     }
 	

@@ -62,9 +62,6 @@ public class RecipeWeapons {
 	}
 	
 	public static void close(){
-		System.out.println("normal :" + recipes);
-		System.out.println("advanced :" + advancedRecipes);
-		System.out.println("EC :" + recipeEC);
 		finished = true;
 	}
 

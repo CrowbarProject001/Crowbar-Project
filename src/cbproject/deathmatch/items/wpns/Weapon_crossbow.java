@@ -1,5 +1,7 @@
 package cbproject.deathmatch.items.wpns;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.core.CBCMod;
 import cbproject.core.utils.CBCWeaponInformation;
 import cbproject.crafting.register.CBCItems;
@@ -7,9 +9,11 @@ import cbproject.deathmatch.entities.EntityCrossbowArrow;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationBullet;
 import cbproject.deathmatch.utils.InformationSet;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 /**
@@ -20,6 +24,8 @@ import net.minecraft.world.World;
  */
 public class Weapon_crossbow extends WeaponGeneralBullet {
 
+	public Icon[] sideIcons = new Icon[6];
+	
 	public Weapon_crossbow(int par1) {
 		super(par1 , CBCItems.ammo_bow.itemID, 2);
 		
@@ -34,6 +40,16 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		setReloadTime(40);
 		
 	}
+	
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IconRegister reg)
+    {
+        super.registerIcons(reg);
+        for(int i = 0; i < 6; i++) {
+        	sideIcons[i] = reg.registerIcon("lambdacraft:crossbow_side" + i);
+        }
+    }
 
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,

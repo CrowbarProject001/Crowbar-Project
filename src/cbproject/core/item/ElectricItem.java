@@ -152,7 +152,7 @@ public abstract class ElectricItem extends CBCGenericItem implements ICustomEnIt
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     	super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
     	if(this.canShowChargeToolTip(par1ItemStack))
-    		par3List.add(StatCollector.translateToLocal("curenergy.name") + " : " + 
+    		par3List.add(StatCollector.translateToLocal("gui.curenergy.name") + " : " + 
     				getItemCharge(par1ItemStack) + "/" + this.maxCharge + " EU");
     }
     
@@ -171,7 +171,7 @@ public abstract class ElectricItem extends CBCGenericItem implements ICustomEnIt
 		return true;
 	}
 	
-	protected void setItemCharge(ItemStack stack, int charge){
+	public void setItemCharge(ItemStack stack, int charge){
 		loadCompound(stack).setInteger("charge", (charge > 0) ? (charge > this.maxCharge ? this.maxCharge : charge) : 0);
 	}
 	

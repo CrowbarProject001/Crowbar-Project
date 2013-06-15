@@ -30,8 +30,9 @@ public class ArmorHEV extends ElectricArmor {
 	
 	public static int reductionAmount[] = {0, 0, 0, 0};
 	protected static EnumArmorMaterial material = EnumHelper.addArmorMaterial("armorHEV", 100000, reductionAmount, 0);
-	private static ArmorProperties propChest = new ArmorProperties(3, 100.0, 325),
-			propDefault = new ArmorProperties(2, 100.0, 250), 
+	private static ArmorProperties 
+			propChest = new ArmorProperties(3, 100.0, 200),
+			propDefault = new ArmorProperties(2, 100.0, 150), 
 			propNone = new ArmorProperties(2, 0.0, 0),
 			propShoe = new ArmorProperties(2, 100.0, 125),
 			propShoeFalling = new ArmorProperties(3, 100.0, 2500);
@@ -50,6 +51,7 @@ public class ArmorHEV extends ElectricArmor {
 		this(par1, attach.getSlot());
 		this.setIconName("hev_" + attach.name().toLowerCase());
 		this.attatches = EnumSet.of(attach);
+		this.setDescription(attach.name().toLowerCase());
 	}
 	
 	/**

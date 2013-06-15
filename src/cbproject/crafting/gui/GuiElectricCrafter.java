@@ -51,7 +51,7 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "gui.curenergy.name";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.curenergy.name");
 		}
 
 		@Override
@@ -65,7 +65,7 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "gui.curtask.name";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.curtask.name");
 		}
 
 		@Override
@@ -144,8 +144,8 @@ public class GuiElectricCrafter extends CBCGuiContainer {
         	drawTexturedModalRect(x + 116, y + 63 - height, 174, 0, 6, height);
         }
         if(tileEntity.isCrafting){
-        	if(tileEntity.currentRecipe != null){
-        		height = tileEntity.currentRecipe.heatRequired * 46 / tileEntity.maxHeat;
+        	if(tileEntity.heatRequired > 0){
+        		height = tileEntity.heatRequired * 46 / tileEntity.maxHeat;
         		drawTexturedModalRect(x + 136, y + 63 - height, 207, 1, 6, 3);
         	}
         }
@@ -157,13 +157,11 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 	public void onButtonClicked(CBCGuiButton button) {
 		if(button.name == "up" || button.name =="down"){
 			boolean isDown = button.name == "down" ? true: false;
-			tileEntity.addScrollFactor(isDown);
 			NetCrafterClient.sendCrafterPacket(tileEntity, 0, isDown);
 			return;
 		}
 		if(button.name == "left" || button.name == "right"){
 			boolean isForward = button.name == "right" ? true: false;
-			tileEntity.addPage(isForward);
 			NetCrafterClient.sendCrafterPacket(tileEntity, 1, isForward);
 			return;
 		}

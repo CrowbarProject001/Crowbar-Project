@@ -82,6 +82,13 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 			information.setLastTick();
 			return;
 		}
+		if(!par2World.isRemote) {
+			int count = mode == 0 ? 8 : 16;
+			for(int i = 0; i < count; i++) 
+				par2World.spawnEntityInWorld(new EntityBulletSG(par2World, par3Entity, par1ItemStack));
+			par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
+		}
+		
 		if(par3Entity instanceof EntityPlayer){	
     		doUplift(information, par3Entity);
     		if(!par3Entity.capabilities.isCreativeMode){
@@ -91,12 +98,6 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 		information.setLastTick();
 		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-		if(par2World.isRemote)
-			return;
-		int count = mode == 0 ? 8 : 16;
-		EntityBulletSG sg = new EntityBulletSG(par2World, par3Entity, par1ItemStack);
-		par2World.spawnEntityInWorld(sg);
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
 		
     }
 
@@ -148,8 +149,7 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 
 	@Override
 	public int getOffset(int mode) {
-		// TODO Auto-generated method stub
-		return (mode == 0) ? 0 : 3;
+		return (mode == 0) ? 8: 17;
 	}
 
 	@Override

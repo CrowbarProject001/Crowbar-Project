@@ -68,13 +68,15 @@ public class NetCrafterClient implements IChannelProcess{
 
 	@Override
 	public void onPacketData(DataInputStream packet, Player player) {
-		NetCrafterClient c = new NetCrafterClient().getCrafterPacket(packet);
+		getCrafterPacket(packet);
 		EntityPlayer p = (EntityPlayer) player;
-		TileEntity te = p.worldObj.getBlockTileEntity(c.blockX, c.blockY, c.blockZ);
+		TileEntity te = p.worldObj.getBlockTileEntity(blockX, blockY, blockZ);
 		if(te != null && !te.worldObj.isRemote){
-			if(c.id == 0)
-				((TileWeaponCrafter)te).addScrollFactor(c.direction);
-			else ((TileWeaponCrafter)te).addPage(c.direction);
+			if(id == 0) {
+	        	((TileWeaponCrafter)te).addScrollFactor(direction);
+	        } else {
+	        	((TileWeaponCrafter)te).addPage(direction);
+	        }
 		}
 		return;
 	}

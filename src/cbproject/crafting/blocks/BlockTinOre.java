@@ -13,7 +13,7 @@ public class BlockTinOre extends BlockOre {
 
 	public BlockTinOre(int par1) {
 		super(par1);
-		setCreativeTab(CBCMod.cct);
+		setCreativeTab(CBCMod.cctMisc);
 		setResistance(5.0F);
 		setHardness(1.5F);
 		setUnlocalizedName("tin");

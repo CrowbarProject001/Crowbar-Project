@@ -20,6 +20,7 @@ import cbproject.api.energy.tile.IEnergySink;
 import cbproject.core.utils.EnergyUtils;
 import cbproject.crafting.register.CBCBlocks;
 import cbproject.deathmatch.blocks.TileArmorCharger.EnumBehavior;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -242,5 +243,10 @@ public class TileBatBox extends TileGeneratorBase implements IInventory, IEnergy
 	@Override
 	public int getMaxSafeInput() {
 		return type == 0 ? 32 : 128;
+	}
+
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
+				zCoord + 0.5) <= 64;
 	}
 }

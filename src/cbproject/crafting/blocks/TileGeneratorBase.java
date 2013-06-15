@@ -58,11 +58,6 @@ public abstract class TileGeneratorBase extends TileElectrical implements IEnerg
 		return true;
 	}
 	
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
-				zCoord + 0.5) <= 64;
-	}
-	
     /**
      * Reads a tile entity from NBT.
      */

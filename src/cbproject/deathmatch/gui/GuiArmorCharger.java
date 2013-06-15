@@ -50,13 +50,12 @@ public class GuiArmorCharger extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return "";
+			return StatCollector.translateToLocal("gui.curenergy.name");
 		}
 
 		@Override
 		public String getTip() {
-			return StatCollector.translateToLocal("curenergy.name") + ": "
-					+ te.currentEnergy + "/" + TileArmorCharger.ENERGY_MAX + " EU";
+			return  te.currentEnergy + "/" + TileArmorCharger.ENERGY_MAX + " EU";
 		}
 
 	}
@@ -65,12 +64,12 @@ public class GuiArmorCharger extends CBCGuiContainer {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + "gui.rsbehavior.name";
+			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.rsbehavior.name");
 		}
 
 		@Override
 		public String getTip() {
-			return te.currentBehavior.toString();
+			return StatCollector.translateToLocal(te.currentBehavior.toString());
 		}
 		
 		

@@ -50,6 +50,7 @@ public class ItemMedkit extends CBCGenericItem {
 		setUnlocalizedName("medkit");
 		this.setIconName("medkit");
 		this.setMaxStackSize(1);
+		this.setMaxDamage(25); //最多使用25次
 	}
 	
 
@@ -116,14 +117,14 @@ public class ItemMedkit extends CBCGenericItem {
 			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
 			int par6, int par7, float par8, float par9, float par10) {
 		if(!par3World.isRemote)
-			ItemMedkit.spawnMedkitAt(par1ItemStack, par3World, par4, par5, par6, par7);
+			ItemMedkit.spawnMedkitAt(par1ItemStack, par3World, par2EntityPlayer, par4, par5, par6, par7);
 		if(!par2EntityPlayer.capabilities.isCreativeMode){
 			par1ItemStack.splitStack(1);
 		}
 		return true;
 	}
 	
-	public static void spawnMedkitAt(ItemStack itemStack, World par0World,
+	public static void spawnMedkitAt(ItemStack itemStack, World par0World, EntityPlayer player,
 			int par1, int par2, int par3, int side) {
 		Entity entity = null;
 		double x = par1 + 0.5, y = par2 + 0.5, z = par3 + 0.5;
@@ -140,7 +141,7 @@ public class ItemMedkit extends CBCGenericItem {
 		} else if(side == 5) {
 			x += 0.8;
 		}
-		entity = new EntityMedkit(par0World, x, y, z, itemStack);
+		entity = new EntityMedkit(par0World, player, x, y, z, itemStack);
 		par0World.spawnEntityInWorld(entity);
 	}
 	

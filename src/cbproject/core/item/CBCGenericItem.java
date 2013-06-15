@@ -33,7 +33,7 @@ import net.minecraft.item.ItemStack;
 public class CBCGenericItem extends Item {
 
 	protected String description;
-	protected boolean useDescription = false;;
+	protected boolean useDescription = false;
 	private String iconName = "";
 	
 	/**
@@ -41,7 +41,7 @@ public class CBCGenericItem extends Item {
 	 */
 	public CBCGenericItem(int par1) {
 		super(par1);
-		setCreativeTab(CBCMod.cct);
+		setCreativeTab(CBCMod.cctMisc);
 	}
 	
 	public CBCGenericItem setDescription(String d){

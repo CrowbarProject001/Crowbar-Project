@@ -24,13 +24,16 @@ import net.minecraft.item.ItemStack;
  */
 public class CBCCreativeTab extends CreativeTabs {
 
-	public CBCCreativeTab(String label) {
+	private int id;
+	
+	public CBCCreativeTab(String label, int i) {
 		super(label);
+		id = i;
 	}
 	
 	@Override
-	public ItemStack getIconItemStack() {
-	    return new ItemStack(DMItems.weapon_crowbar);
+	public int getTabIconItemIndex() {
+	    return id == 0 ? DMItems.weapon_gauss.itemID : DMItems.medkit.itemID;
 	}
 	
 }

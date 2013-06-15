@@ -18,11 +18,14 @@ import java.util.List;
 
 import cbproject.core.utils.EnergyUtils;
 import cbproject.core.utils.EntitySelectorPlayer;
+import cbproject.crafting.register.CBCItems;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 
 /**
  * 触碰会自动给HEV充能的电池实体。
@@ -33,12 +36,15 @@ public class EntityBattery extends Entity {
 
 	public static final int EU_PER_BATTERY = 50000;
 	private int currentEnergy;
+	private boolean spawnItem = true;
 	
-	public EntityBattery(World world, double x, double y, double z, int energy) {
+	public EntityBattery(World world, EntityPlayer player, double x, double y, double z, int energy) {
 		super(world);
 		this.setPosition(x, y, z);
 		this.setSize(0.25f, 0.4f);
 		this.currentEnergy = energy;
+		if(player.capabilities.isCreativeMode)
+			spawnItem = false;
 	}
 	
 	public EntityBattery(World world) {
@@ -76,7 +82,12 @@ public class EntityBattery extends Entity {
 		if(list == null || list.size() == 0)
 			return;
 		EntityPlayer player = list.get(0);
-		EnergyUtils.tryChargeArmor(player, currentEnergy, 2, true);
+		currentEnergy -= EnergyUtils.tryChargeArmor(player, currentEnergy, 2, true);
+		if(spawnItem) {
+			ItemStack newBattery = new ItemStack(CBCItems.battery);
+			CBCItems.battery.setItemCharge(newBattery, currentEnergy);
+			worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, newBattery));
+		}
 		this.playSound("cbc.entities.battery", 0.5F, 1.0F);
 		this.setDead();
 	}

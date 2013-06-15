@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class MotionXYZ {
 	public double motionX,motionY,motionZ;
 	public double posX, posY, posZ;
-	public static final double SCALE = 0.01D;
+	public static final double SCALE = 0.5D;
 	
 	public MotionXYZ(double par1,double par2,double par3, double par4, double par5, double par6) {
 		// TODO Auto-generated constructor stub
@@ -78,18 +78,11 @@ public class MotionXYZ {
 		return world.getWorldVec3Pool().getVecFromPool(posX, posY, posZ);
 	}
 	
-	@Override
-	public String toString(){
-		
-		return "[ Pos : " + posX + " " + posY + " "  + posZ + " ; Motion: " + motionX + " " + motionY + " " + motionZ + " ] "; 
-		
-	}
-	
 	public MotionXYZ setMotionOffset(double par1){
 		
-		this.motionX += (Math.random() - 1) * 2 * par1 * SCALE;
-		this.motionY += (Math.random() - 1) * 2 * par1 * SCALE;
-		this.motionZ += (Math.random() - 1) * 2 * par1 * SCALE;
+		this.motionX += (Math.random() - 1) * par1 * SCALE;
+		this.motionY += (Math.random() - 1) * par1 * SCALE;
+		this.motionZ += (Math.random() - 1) * par1 * SCALE;
 		return this;
 		
 	}
@@ -173,6 +166,11 @@ public class MotionXYZ {
 	public static final double calculateDistance(double x1, double y1, double z1, double x2, double y2, double z2){
 		double dx = x2 - x1, dy = y2 - y1, dz = z2 - z1;
 		return Math.sqrt(dx * dx + dy * dy + dz * dz);
+	}
+	
+	@Override
+	public String toString() {
+		return "motion[ " + motionX + ", " + motionY + ", " + motionZ + " ]";
 	}
 	
 }

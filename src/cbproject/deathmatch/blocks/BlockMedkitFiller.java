@@ -46,6 +46,7 @@ public class BlockMedkitFiller extends CBCBlockContainer{
 	public BlockMedkitFiller(int par1) {
 		super(par1, Material.rock);
 		this.setUnlocalizedName("medkitfiller");
+		setHardness(2.0F);
 		setCreativeTab(CBCMod.cct);
 	}
 	

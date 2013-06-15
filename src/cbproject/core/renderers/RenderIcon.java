@@ -27,10 +27,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class RenderIcon extends Render
 {
 	String icon;
+	private boolean renderBlend = false;
+	private float alpha = 1.0F;
 	
     public RenderIcon(String ic)
     {
     	icon = ic;
+    }
+    
+    public RenderIcon setBlend(float a) {
+    	renderBlend = true;
+    	alpha = a;
+    	return this;
     }
 
     /**
@@ -46,6 +54,11 @@ public class RenderIcon extends Render
         if (icon != null)
         {
             GL11.glPushMatrix();
+            if(renderBlend) {
+            	GL11.glEnable(GL11.GL_BLEND);
+            	GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            	GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
+            }
             GL11.glTranslatef((float)par2, (float)par4, (float)par6);
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             GL11.glScalef(0.5F, 0.5F, 0.5F);
@@ -53,6 +66,10 @@ public class RenderIcon extends Render
             Tessellator tessellator = Tessellator.instance;
             this.func_77026_a(tessellator);
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            if(renderBlend) {
+            	GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            	GL11.glDisable(GL11.GL_BLEND);
+            }
             GL11.glPopMatrix();
         }
     }
