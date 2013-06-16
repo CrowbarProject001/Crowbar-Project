@@ -10,15 +10,6 @@ public class Ammo_shotgun extends ItemAmmo {
 	public Ammo_shotgun(int par1) {
 		super(par1);
 		setCreativeTab(CBCMod.cct);
-		setUnlocalizedName("ammo_shotgun");
-		setMaxStackSize(64);
+		setIAndU("ammo_shotgun");
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister
-				.registerIcon("lambdacraft:ammo_shotgun");
-	}
-
 }

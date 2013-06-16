@@ -15,8 +15,7 @@ public class ArmorLongjump extends CBCGenericArmor {
 
 	public ArmorLongjump(int par1, int armorType) {
 		super(par1, material, 2, armorType);
-		setUnlocalizedName("longjump");
-		this.setIconName("longjump");
+		setIAndU("longjump");
 	}
 
 	@Override
