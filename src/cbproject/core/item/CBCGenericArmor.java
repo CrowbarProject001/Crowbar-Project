@@ -62,6 +62,13 @@ public class CBCGenericArmor extends ItemArmor {
 		useDescription = true;
 		return this;
 	}
+	
+	public CBCGenericArmor setIAndU(String names) {
+		this.setUnlocalizedName(names);
+		this.setIconName(names);
+		return this;
+	}
+	
 
 	@SideOnly(Side.CLIENT)
 	@Override
