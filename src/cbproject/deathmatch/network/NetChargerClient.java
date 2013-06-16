@@ -31,51 +31,52 @@ import cbproject.deathmatch.blocks.TileArmorCharger;
 
 /**
  * @author Administrator
- *
+ * 
  */
 public class NetChargerClient implements IChannelProcess {
 
-	public static void sendChargerPacket(TileArmorCharger te){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_CHARGER_CL, 10);
+	public static void sendChargerPacket(TileArmorCharger te) {
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(
+				GeneralProps.NET_ID_CHARGER_CL, 10);
 		DataOutputStream outputStream = new DataOutputStream(bos);
-		
+
 		try {
-	        outputStream.writeInt(te.xCoord);
-	        outputStream.writeShort(te.yCoord);
-	        outputStream.writeInt(te.zCoord);
+			outputStream.writeInt(te.xCoord);
+			outputStream.writeShort(te.yCoord);
+			outputStream.writeInt(te.zCoord);
 		} catch (Exception ex) {
-	        ex.printStackTrace();
+			ex.printStackTrace();
 		}
-		
+
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToServer(packet);
 	}
-	
+
 	@Override
 	public void onPacketData(DataInputStream stream, Player player) {
-		World world = ((EntityPlayerMP)player).worldObj;
-		
+		World world = ((EntityPlayerMP) player).worldObj;
+
 		int x, y, z;
-		
+
 		try {
-			x=stream.readInt();
-			y=stream.readShort();
-			z=stream.readInt();
-			TileEntity te = world.getBlockTileEntity(x,y,z);
-			if(te == null || !(te instanceof TileArmorCharger))
-				throw new RuntimeException("Cannot't get the right tileEntity of armor charger.");
+			x = stream.readInt();
+			y = stream.readShort();
+			z = stream.readInt();
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			if (te == null || !(te instanceof TileArmorCharger))
+				throw new RuntimeException(
+						"Cannot't get the right tileEntity of armor charger.");
 			else {
 				TileArmorCharger tt = (TileArmorCharger) te;
 				tt.nextBehavior();
 			}
-			
+
 		} catch (Exception ex) {
-	        ex.printStackTrace();
+			ex.printStackTrace();
 		}
-		
-		
+
 	}
 }

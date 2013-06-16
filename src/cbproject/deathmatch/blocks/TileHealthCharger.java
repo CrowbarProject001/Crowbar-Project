@@ -1,6 +1,6 @@
 /** 
  * Copyright (c) LambdaCraft Modding Team, 2013
- * 鐗堟潈璁稿彲锛歀ambdaCraft 鍒朵綔灏忕粍锛�2013.
+ * 版权许可：LambdaCraft 制作小组， 2013.
  * http://lambdacraft.half-life.cn/
  * 
  * LambdaCraft is open-source. It is distributed under the terms of the
@@ -9,8 +9,8 @@
  * or its modifications in any form, binary or source, except if expressively
  * granted by the copyright holder.
  *
- * LambdaCraft鏄畬鍏ㄥ紑婧愮殑銆傚畠鐨勫彂甯冮伒浠庛�LambdaCraft寮�簮鍗忚銆嬨�浣犲厑璁搁槄璇伙紝淇敼浠ュ強璋冭瘯杩愯
- * 婧愪唬鐮侊紝 鐒惰�浣犱笉鍏佽灏嗘簮浠ｇ爜浠ュ彟澶栦换浣曠殑鏂瑰紡鍙戝竷锛岄櫎闈炰綘寰楀埌浜嗙増鏉冩墍鏈夎�鐨勮鍙�
+ * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》你允许阅读，修改以及调试运行
+ * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
 package cbproject.deathmatch.blocks;
 
@@ -33,20 +33,21 @@ import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.core.block.TileElectricStorage;
 
 /**
- * 鐩旂敳鍏呰兘鏈烘柟鍧椼� TODO:娣诲姞瀵瑰伐涓�鐨勬敮鎸併�
  * 
- * @author WeAthFolD
+ * @author WeAthFolD, Rikka
  * 
  */
-public class TileHealthCharger extends TileElectricStorage implements IInventory {
+public class TileHealthCharger extends TileElectricStorage implements
+		IInventory {
 
-	public static final int ENERGY_MAX = 30000, EFFECT_MAX = 14400, PROGRESS_TIME = 100, HEALTH_MAX = 100; // 1.25  batbox, 4-6 potions
+	public static final int ENERGY_MAX = 30000, EFFECT_MAX = 14400,
+			PROGRESS_TIME = 100, HEALTH_MAX = 100; // 1.25 batbox, 4-6 potions
 	public boolean isUsing = false;
 	public HashSet<EntityPlayer> chargers = new HashSet();
 	public int mainEff = 0, sideEff = 0;
 	public int prgAddMain = 0, prgAddSide = 0;
 	private int sideEffectId = 0;
-	
+
 	public static Set<Integer> availableIds = new HashSet();
 	static {
 		availableIds.add(Potion.digSpeed.id);
@@ -61,22 +62,20 @@ public class TileHealthCharger extends TileElectricStorage implements IInventory
 	}
 
 	/**
-	 * Slot 0:涓昏嵂姘存Ы銆�
-	 * Slot 1:鍓嵂姘存Ы銆�
-	 * Slot 2:鏀剧數姹犳Ы銆�
+	 * Slot 0:涓昏嵂姘存Ы銆� Slot 1:鍓嵂姘存Ы銆� Slot 2:鏀剧數姹犳Ы銆�
 	 */
 	public ItemStack slots[] = new ItemStack[3];
 	public int currentBehavior;
 	public boolean isRSActivated;
-	
+
 	public void startUsing(EntityPlayer player) {
 		chargers.add(player);
 		isUsing = true;
 	}
-	
+
 	public void stopUsing(EntityPlayer player) {
 		chargers.remove(player);
-		if(chargers.size() == 0)
+		if (chargers.size() == 0)
 			isUsing = false;
 	}
 
@@ -109,13 +108,13 @@ public class TileHealthCharger extends TileElectricStorage implements IInventory
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(worldObj.isRemote)
+		if (worldObj.isRemote)
 			return;
 		int energyReq = ENERGY_MAX - currentEnergy;
-		
-		if(currentEnergy < 0)
+
+		if (currentEnergy < 0)
 			currentEnergy = 0;
-		
+
 		/**
 		 * 
 		 * Charge the energy into tileentity
@@ -128,116 +127,125 @@ public class TileHealthCharger extends TileElectricStorage implements IInventory
 					this.decrStackSize(2, 1);
 				}
 				currentEnergy += 500;
-			} else if (sl!= null && sl.getItem() instanceof ICustomEnItem) {
+			} else if (sl != null && sl.getItem() instanceof ICustomEnItem) {
 				ICustomEnItem item = (ICustomEnItem) sl.getItem();
-				if (item.canProvideEnergy(sl)){
+				if (item.canProvideEnergy(sl)) {
 					int cn = energyReq < 128 ? energyReq : 128;
 					cn = item.discharge(sl, cn, 2, false, false);
 					currentEnergy += cn;
 				}
 			}
 		}
-		
-		//澶勭悊F閿娇鐢ㄨ涓�
-		if(this.isUsing) {
-			
-			for(EntityPlayer charger : chargers) {
-				currentEnergy -= 5;//5EU/T per player
+
+		// 澶勭悊F閿娇鐢ㄨ涓�
+		if (this.isUsing) {
+
+			for (EntityPlayer charger : chargers) {
+				currentEnergy -= 5;// 5EU/T per player
 				this.doHealing(charger);
-				if(worldObj.getWorldTime() % 15 == 0) {
-					worldObj.playSoundAtEntity(charger, "cbc.entities.medcharge", 0.3F, 1.0F);
+				if (worldObj.getWorldTime() % 15 == 0) {
+					worldObj.playSoundAtEntity(charger,
+							"cbc.entities.medcharge", 0.3F, 1.0F);
 				}
-				if(currentEnergy <= 0) {
+				if (currentEnergy <= 0) {
 					this.chargers.clear();
 					this.isUsing = false;
-					worldObj.playSoundAtEntity(charger, "cbc.entities.medshotno", 0.5F, 1.0F);
+					worldObj.playSoundAtEntity(charger,
+							"cbc.entities.medshotno", 0.5F, 1.0F);
 				}
 			}
-			
+
 		}
-		
-		if(slots[0] != null && slots[0].itemID == Item.potion.itemID) {
+
+		if (slots[0] != null && slots[0].itemID == Item.potion.itemID) {
 			int dmg = slots[0].getItemDamage();
 			List<PotionEffect> list = Item.potion.getEffects(dmg);
 			PotionEffect effect = list.get(0);
-			if(mainEff < HEALTH_MAX){
-				if(effect.getPotionID() == Potion.heal.getId()) {
-					
-					if(currentEnergy > 5){
+			if (mainEff < HEALTH_MAX) {
+				if (effect.getPotionID() == Potion.heal.getId()) {
+
+					if (currentEnergy > 5) {
 						currentEnergy -= 5;
 						prgAddMain++;
-					}
-					else currentEnergy = 0;
-					if(prgAddMain >= PROGRESS_TIME){
+					} else
+						currentEnergy = 0;
+					if (prgAddMain >= PROGRESS_TIME) {
 						this.setInventorySlotContents(0, null);
 						mainEff += (effect.getAmplifier() == 0 ? 12 : 18);
 						prgAddMain = 0;
 					}
-					
-				} else if(effect.getPotionID() == Potion.regeneration.getId()) {
-					
-					if(currentEnergy > 5){
+
+				} else if (effect.getPotionID() == Potion.regeneration.getId()) {
+
+					if (currentEnergy > 5) {
 						currentEnergy -= 5;
 						prgAddMain++;
-					}
-					else currentEnergy = 0;
-					if(prgAddMain >= PROGRESS_TIME){
+					} else
+						currentEnergy = 0;
+					if (prgAddMain >= PROGRESS_TIME) {
 						this.setInventorySlotContents(0, null);
-						if(dmg == 8193)
+						if (dmg == 8193)
 							mainEff += 36;
-						else if(dmg == 8257)
+						else if (dmg == 8257)
 							mainEff += 96;
-						else if(dmg == 8225)
+						else if (dmg == 8225)
 							mainEff += 38;
 						prgAddMain = 0;
 					}
-					
-				} else prgAddMain = 0;
+
+				} else
+					prgAddMain = 0;
 			}
-			if(mainEff > this.HEALTH_MAX)
+			if (mainEff > TileHealthCharger.HEALTH_MAX)
 				mainEff = HEALTH_MAX;
-		} 
-		
-		if(slots[1] != null && slots[1].itemID == Item.potion.itemID) {
-			
+		}
+
+		if (slots[1] != null && slots[1].itemID == Item.potion.itemID) {
+
 			int dmg = slots[1].getItemDamage();
 			List<PotionEffect> list = Item.potion.getEffects(dmg);
 			PotionEffect effect = list.get(0);
-			if(this.availableIds.contains(effect.getPotionID()) && sideEff < EFFECT_MAX){
-				if(this.sideEffectId == 0 || effect.getPotionID() == sideEffectId || this.sideEff == 0) {
+			if (TileHealthCharger.availableIds.contains(effect.getPotionID())
+					&& sideEff < EFFECT_MAX) {
+				if (this.sideEffectId == 0
+						|| effect.getPotionID() == sideEffectId
+						|| this.sideEff == 0) {
 					this.sideEffectId = effect.getPotionID();
-					if(currentEnergy > 5){
+					if (currentEnergy > 5) {
 						currentEnergy -= 5;
 						prgAddSide++;
 					}
-					if(prgAddSide >= PROGRESS_TIME){
+					if (prgAddSide >= PROGRESS_TIME) {
 						this.setInventorySlotContents(1, null);
 						sideEff += effect.getDuration();
 						prgAddSide = 0;
 					}
-				} else prgAddSide = 0;
+				} else
+					prgAddSide = 0;
 			}
-			if(sideEff > this.EFFECT_MAX)
+			if (sideEff > TileHealthCharger.EFFECT_MAX)
 				sideEff = EFFECT_MAX;
-			
-		} 
+
+		}
 	}
-	
+
 	public void doHealing(EntityPlayer charger) {
-		if(mainEff > 0 && charger.getHealth() < 20) {
-			if(worldObj.getWorldTime() % 10 == 0){
+		if (mainEff > 0 && charger.getHealth() < 20) {
+			if (worldObj.getWorldTime() % 10 == 0) {
 				charger.heal(1);
 				this.mainEff -= 1;
 			}
 		}
-		if(sideEff > 0 && sideEffectId != 0) {
+		if (sideEff > 0 && sideEffectId != 0) {
 			int amt = sideEff > 10 ? 10 : sideEff;
 			this.sideEff -= amt;
-			PotionEffect eff = charger.getActivePotionEffect(Potion.potionTypes[sideEffectId]);
-			if(eff != null) {
+			PotionEffect eff = charger
+					.getActivePotionEffect(Potion.potionTypes[sideEffectId]);
+			if (eff != null) {
 				eff.duration += amt;
 				charger.addPotionEffect(eff);
-			} else charger.addPotionEffect(new PotionEffect(sideEffectId, amt, 0));
+			} else
+				charger.addPotionEffect(new PotionEffect(sideEffectId, amt, 0));
 		}
 	}
 
@@ -388,7 +396,7 @@ public class TileHealthCharger extends TileElectricStorage implements IInventory
 		return 32;
 	}
 
-	//IC2 Compatibility
+	// IC2 Compatibility
 	@Override
 	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) {
 		return !(getCurrentBehavior() == EnumBehavior.RECEIVEONLY && !this.isRSActivated);

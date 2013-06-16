@@ -18,20 +18,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
 import cbproject.api.energy.item.ICustomEnItem;
 import cbproject.api.energy.item.IEnItem;
- 
+
 /**
  * @author WeAthFolD
- *
+ * 
  */
-public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
+public class TileGeneratorSolar extends TileGeneratorBase implements IInventory {
 
 	public int currentEnergy = 0;
 	public boolean isEmitting;
 	public ItemStack[] slots = new ItemStack[1];
-	
+
 	/**
 	 * @param tier
 	 * @param store
@@ -39,11 +38,11 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 	public TileGeneratorSolar() {
 		super(1, 10000);
 	}
-	
 
 	@Override
-	public void closeChest() {}
-	
+	public void closeChest() {
+	}
+
 	@Override
 	public ItemStack decrStackSize(int slot, int amt) {
 		ItemStack stack = getStackInSlot(slot);
@@ -59,54 +58,49 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 		}
 		return stack;
 	}
-	
-    @Override
+
+	@Override
 	public int getInventoryStackLimit() {
 		return 2;
 	}
 
-    @Override
+	@Override
 	public String getInvName() {
 		return "cbc.tile.genfire";
 	}
-	
+
 	@Override
 	public int getMaxEnergyOutput() {
 		return 5;
 	}
-
 
 	@Override
 	public int getSizeInventory() {
 		return 2;
 	}
 
-
 	@Override
 	public ItemStack getStackInSlot(int i) {
 		return slots[i];
 	}
-
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
 		return slots[i];
 	}
 
-
 	@Override
 	public boolean isInvNameLocalized() {
 		return false;
 	}
 
-
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		if(i == 0)
+		if (i == 0)
 			return true;
-		else return(itemstack.getItem() instanceof IEnItem);
+		else
+			return (itemstack.getItem() instanceof IEnItem);
 	}
-
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
@@ -114,73 +108,71 @@ public class TileGeneratorSolar extends TileGeneratorBase implements IInventory{
 				zCoord + 0.5) <= 64;
 	}
 
-
 	@Override
-	public void openChest() {}
-
+	public void openChest() {
+	}
 
 	/**
-     * Reads a tile entity from NBT.
-     */
+	 * Reads a tile entity from NBT.
+	 */
 	@Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        for(int i = 0; i < slots.length; i++){
-        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
-        	byte count = nbt.getByte("count" + i);
-        	if(id == 0)
-        		continue;
-        	ItemStack is = new ItemStack(id, count, damage);
-        	slots[i] = is;
-        }
-    }
-
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		for (int i = 0; i < slots.length; i++) {
+			short id = nbt.getShort("id" + i), damage = nbt.getShort("damage"
+					+ i);
+			byte count = nbt.getByte("count" + i);
+			if (id == 0)
+				continue;
+			ItemStack is = new ItemStack(id, count, damage);
+			slots[i] = is;
+		}
+	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		slots[i] = itemstack;
 	}
 
-
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(worldObj.isRemote)
+		if (worldObj.isRemote)
 			return;
-		
-		if(this.worldObj.isDaytime() && worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord)) {
-				currentEnergy += 4;
-				int amt = currentEnergy > 16 ? 16 : currentEnergy;
-				amt -= this.sendEnergy(amt);
-				currentEnergy -= amt;
-				if(currentEnergy > maxStorage)
-					currentEnergy = maxStorage;
-				isEmitting = true;
+
+		if (this.worldObj.isDaytime()
+				&& worldObj.canBlockSeeTheSky(xCoord, yCoord + 1, zCoord)) {
+			currentEnergy += 4;
+			int amt = currentEnergy > 16 ? 16 : currentEnergy;
+			amt -= this.sendEnergy(amt);
+			currentEnergy -= amt;
+			if (currentEnergy > maxStorage)
+				currentEnergy = maxStorage;
+			isEmitting = true;
 		}
 		isEmitting = false;
-		
-		if(this.slots[0] != null && slots[0].getItem() instanceof ICustomEnItem) {
-			currentEnergy -= ((ICustomEnItem)slots[0].getItem()).charge(slots[0], currentEnergy, 1, false, false);
+
+		if (this.slots[0] != null
+				&& slots[0].getItem() instanceof ICustomEnItem) {
+			currentEnergy -= ((ICustomEnItem) slots[0].getItem()).charge(
+					slots[0], currentEnergy, 1, false, false);
 		}
-		
+
 	}
 
-
 	/**
-     * Writes a tile entity to NBT.
-     */
-    @Override
-	public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        for(int i = 0; i < slots.length; i++){
-        	if(slots[i] == null)
-        		continue;
-        	nbt.setShort("id"+i, (short) slots[i].itemID);
-        	nbt.setByte("count"+i, (byte) slots[i].stackSize);
-        	nbt.setShort("damage"+i, (short)slots[i].getItemDamage());
-        }
-    }
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+		for (int i = 0; i < slots.length; i++) {
+			if (slots[i] == null)
+				continue;
+			nbt.setShort("id" + i, (short) slots[i].itemID);
+			nbt.setByte("count" + i, (byte) slots[i].stackSize);
+			nbt.setShort("damage" + i, (short) slots[i].getItemDamage());
+		}
+	}
 
 }

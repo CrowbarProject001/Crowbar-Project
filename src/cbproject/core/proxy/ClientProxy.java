@@ -24,41 +24,42 @@ import cbproject.deathmatch.renderers.RenderEmptyBlock;
 
 /**
  * 客户端代理加载。
+ * 
  * @author WeAthFolD, Mkpoli, HopeAsd
- *
+ * 
  */
-public class ClientProxy extends Proxy{
+public class ClientProxy extends Proxy {
 
-	@Override 
-	public void init() { 
+	@Override
+	public void init() {
 		super.init();
 		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
-		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());	
+		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
 		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess());
 	}
-	
-	public static void profilerStartSection(String section){
-		if (isRendering()){
+
+	public static void profilerStartSection(String section) {
+		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.startSection(section);
-		}else{
+		} else {
 			Proxy.profilerStartSection(section);
 		}
 	}
-	
-	public static void profilerEndSection(){
-		if (isRendering()){
+
+	public static void profilerEndSection() {
+		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.endSection();
-		}else{
+		} else {
 			Proxy.profilerEndSection();
 		}
-		
+
 	}
-	
-	public static void profilerEndStartSection(String section){
-		if(isRendering()){
+
+	public static void profilerEndStartSection(String section) {
+		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.endStartSection(section);
 		}
 		Proxy.profilerEndStartSection(section);
 	}
-	
+
 }

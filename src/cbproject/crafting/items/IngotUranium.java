@@ -18,24 +18,24 @@ public class IngotUranium extends Item {
 		setCreativeTab(CBCMod.cctMisc);
 		setUnlocalizedName("ingotUranium");
 	}
-	
-    @Override
+
+	@Override
 	@SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:uranium");
-    }
-    
-    @Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
-    	if(!(par3Entity instanceof EntityPlayer))
-    		return;
-    	EntityPlayer p = (EntityPlayer) par3Entity;
-    	ItemStack currentItem = p.inventory.getCurrentItem();
-    	if(currentItem != par1ItemStack)
-    		return;
-    	if(par2World.getWorldTime() % 20 == 0){
-    		p.attackEntityFrom(DamageSource.starve, 1);
-    	}
-    }
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:uranium");
+	}
+
+	@Override
+	public void onUpdate(ItemStack par1ItemStack, World par2World,
+			Entity par3Entity, int par4, boolean par5) {
+		if (!(par3Entity instanceof EntityPlayer))
+			return;
+		EntityPlayer p = (EntityPlayer) par3Entity;
+		ItemStack currentItem = p.inventory.getCurrentItem();
+		if (currentItem != par1ItemStack)
+			return;
+		if (par2World.getWorldTime() % 20 == 0) {
+			p.attackEntityFrom(DamageSource.starve, 1);
+		}
+	}
 }

@@ -24,10 +24,10 @@ import cbproject.deathmatch.utils.InformationBullet;
 
 /**
  * @author WeAthFolD.
- *
+ * 
  */
-public class Weapon_hornet extends WeaponGeneralBullet{
-	
+public class Weapon_hornet extends WeaponGeneralBullet {
+
 	public static final int RECOVER_TIME = 10;
 
 	public Weapon_hornet(int par1) {
@@ -41,47 +41,55 @@ public class Weapon_hornet extends WeaponGeneralBullet{
 	public String getModeDescription(int mode) {
 		return mode == 0 ? "mode.hornet1" : "mode.hornet2";
 	}
-	
+
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
-		InformationBullet inf = onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-		if(inf == null)
+		InformationBullet inf = onBulletWpnUpdate(par1ItemStack, par2World,
+				par3Entity, par4, par5);
+		if (inf == null)
 			return;
 		int dt = inf.ticksExisted;
 		EntityPlayer player = (EntityPlayer) par3Entity;
-		if(dt % RECOVER_TIME == 0 && !(this.canShoot(player, par1ItemStack) && inf.isShooting)){
-			if(par1ItemStack.getItemDamage() > 0)
+		if (dt % RECOVER_TIME == 0
+				&& !(this.canShoot(player, par1ItemStack) && inf.isShooting)) {
+			if (par1ItemStack.getItemDamage() > 0)
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
 		}
 	}
-	
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
+
+	/**
+	 * Called whenever this item is equipped and the right mouse button is
+	 * pressed. Args: itemStack, world, entityPlayer
+	 */
 	@Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3EntityPlayer) {
 		this.processRightClick(par1ItemStack, par2World, par3EntityPlayer);
-        return par1ItemStack;
-    }
-	
+		return par1ItemStack;
+	}
+
 	@Override
-    public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer player, InformationBullet information ){
-    	
-		if(!(player.capabilities.isCreativeMode))
+	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
+			EntityPlayer player, InformationBullet information) {
+
+		if (!(player.capabilities.isCreativeMode))
 			par1ItemStack.damageItem(1, player);
-		player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-		if(!par2World.isRemote)
-			par2World.spawnEntityInWorld(new EntityHornet(par2World, player, this.getMode(par1ItemStack) == 0 ? true : false));
-    	par2World.playSoundAtEntity(player, this.getSoundShoot(this.getMode(par1ItemStack)), 0.5F, 1.0F);
-    	information.setLastTick();
+		player.setItemInUse(par1ItemStack,
+				this.getMaxItemUseDuration(par1ItemStack));
+		if (!par2World.isRemote)
+			par2World.spawnEntityInWorld(new EntityHornet(par2World, player,
+					this.getMode(par1ItemStack) == 0 ? true : false));
+		par2World.playSoundAtEntity(player,
+				this.getSoundShoot(this.getMode(par1ItemStack)), 0.5F, 1.0F);
+		information.setLastTick();
 		return;
-    }
-	
+	}
+
 	@Override
-    public void onBulletWpnReload(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
-    }
+	public void onBulletWpnReload(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3Entity, InformationBullet information) {
+	}
 
 	@Override
 	public double getPushForce(int mode) {
@@ -101,7 +109,9 @@ public class Weapon_hornet extends WeaponGeneralBullet{
 	@Override
 	public String getSoundShoot(int mode) {
 		int random = (int) (Math.random() * 3);
-		return random == 0? "cbc.weapons.ag_firea" : (random == 1? "cbc.weapons.ag_fireb" : "cbc.weapons.ag_firec");
+		return random == 0 ? "cbc.weapons.ag_firea"
+				: (random == 1 ? "cbc.weapons.ag_fireb"
+						: "cbc.weapons.ag_firec");
 	}
 
 	@Override
@@ -118,5 +128,5 @@ public class Weapon_hornet extends WeaponGeneralBullet{
 	public int getShootTime(int mode) {
 		return mode == 0 ? 5 : 2;
 	}
-	
+
 }

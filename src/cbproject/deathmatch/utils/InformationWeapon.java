@@ -8,25 +8,25 @@ public class InformationWeapon {
 	public int ticksExisted, lastTick, recoverTick;
 	public Boolean isRecovering;
 	public float originPitch;
-	
+
 	public InformationWeapon(ItemStack i) {
 		isRecovering = false;
 		itemStack = i;
 	}
-	
-	public void updateTick(){
+
+	public void updateTick() {
 		ticksExisted++;
 	}
-	
-	public void setLastTick(){
+
+	public void setLastTick() {
 		lastTick = ticksExisted;
 	}
 
-	public int getDeltaTick(){
+	public int getDeltaTick() {
 		return ticksExisted - lastTick;
 	}
-	
-	public void resetState(){
+
+	public void resetState() {
 		ticksExisted = lastTick = recoverTick = 0;
 		isRecovering = false;
 	}

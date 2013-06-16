@@ -18,20 +18,26 @@ import net.minecraft.entity.Entity;
 
 /**
  * 在Entity中链接另外一个Entity（一般为玩家）的实用类。
+ * 
  * @author WeAthFolD
- *
- * @param <T> Entity类型
+ * 
+ * @param <T>
+ *            Entity类型
  */
 public interface IEntityLink<T extends Entity> {
+
 	/**
 	 * 获取链接的Entity。
+	 * 
 	 * @return
 	 */
-	public T  getLinkedEntity();
-	
+	public T getLinkedEntity();
+
 	/**
 	 * 设置连接的Entity。
+	 * 
 	 * @param entity
 	 */
 	public void setLinkedEntity(T entity);
+
 }

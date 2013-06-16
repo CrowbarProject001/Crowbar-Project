@@ -14,29 +14,23 @@
  */
 package cbproject.crafting.items;
 
-import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.core.CBCMod;
 import cbproject.core.item.CBCGenericItem;
 import cbproject.crafting.entities.EntitySpray;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 /**
  * 
  * 喷漆的物品
+ * 
  * @author mkpoli
  * 
  */
 public class ItemSpray extends CBCGenericItem {
 
-	private int title_id; //喷漆的ID
+	private int title_id; // 喷漆的ID
 
 	public ItemSpray(int par1, int title_id) {
 		super(par1);
@@ -60,7 +54,7 @@ public class ItemSpray extends CBCGenericItem {
 		int direction = Direction.facingToDirection[side];
 		// 创建EntityArt实例
 		EntitySpray entity = new EntitySpray(world, x, y, z, direction,
-				title_id , player);
+				title_id, player);
 		// 判断是否被放置在了可用的表面
 		if (entity.onValidSurface()) {
 			if (!world.isRemote) {

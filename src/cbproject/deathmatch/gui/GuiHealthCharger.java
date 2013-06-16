@@ -26,11 +26,10 @@ import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
 import cbproject.deathmatch.blocks.TileHealthCharger;
-import cbproject.deathmatch.register.DMBlocks;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class GuiHealthCharger extends CBCGuiContainer {
 
@@ -56,15 +55,17 @@ public class GuiHealthCharger extends CBCGuiContainer {
 		@Override
 		public String getTip() {
 			return StatCollector.translateToLocal("gui.curenergy.name") + ": "
-					+ te.currentEnergy + "/" + TileHealthCharger.ENERGY_MAX + " EU";
+					+ te.currentEnergy + "/" + TileHealthCharger.ENERGY_MAX
+					+ " EU";
 		}
 
 	}
-	
+
 	class TipMain implements IGuiTip {
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.hemain.name");
+			return EnumChatFormatting.RED
+					+ StatCollector.translateToLocal("gui.hemain.name");
 		}
 
 		@Override
@@ -72,28 +73,30 @@ public class GuiHealthCharger extends CBCGuiContainer {
 			return te.mainEff + "/" + TileHealthCharger.HEALTH_MAX + " HP";
 		}
 	}
-	
+
 	class TipSide implements IGuiTip {
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.heside.name");
+			return EnumChatFormatting.RED
+					+ StatCollector.translateToLocal("gui.heside.name");
 		}
 
 		@Override
 		public String getTip() {
-			return te.sideEff/20.0F + "/" + TileHealthCharger.EFFECT_MAX/20.0F + " s";
+			return te.sideEff / 20.0F + "/" + TileHealthCharger.EFFECT_MAX
+					/ 20.0F + " s";
 		}
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart behavior = new CBCGuiPart("behavior", 154, 8, 5, 48),
-				main = new CBCGuiPart("main", 20, 8, 14, 46),
-				side = new CBCGuiPart("side", 42, 8, 14, 46);
-		this.addElement(behavior); 
-		this.addElement(main); 
-		this.addElement(side); 
+		CBCGuiPart behavior = new CBCGuiPart("behavior", 154, 8, 5, 48), main = new CBCGuiPart(
+				"main", 20, 8, 14, 46), side = new CBCGuiPart("side", 42, 8,
+				14, 46);
+		this.addElement(behavior);
+		this.addElement(main);
+		this.addElement(side);
 		this.setElementTip("behavior", new TipEnergy());
 		this.setElementTip("main", new TipMain());
 		this.setElementTip("side", new TipSide());
@@ -121,7 +124,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		mc.renderEngine.bindTexture(ClientProps.GUI_HECHARGER_PATH);
-		if(te.currentEnergy == 0) {
+		if (te.currentEnergy == 0) {
 			this.drawTexturedModalRect(9, 7, 190, 0, 60, 72);
 		}
 		super.drawGuiContainerForegroundLayer(par1, par2);
@@ -141,26 +144,31 @@ public class GuiHealthCharger extends CBCGuiContainer {
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
 		this.drawElements();
- 
-		if(te.currentEnergy > 0) {
+
+		if (te.currentEnergy > 0) {
 			int len = te.currentEnergy * 48 / TileHealthCharger.ENERGY_MAX;
-			this.drawTexturedModalRect(x + 154, y + 55 - len, 176, 93 - len, 5, len);
-		} 
-		if(te.mainEff > 0) {
-			int len = te.mainEff * 46 / te.HEALTH_MAX;
-			this.drawTexturedModalRect(x + 20, y + 54 - len, 176, 46 - len, 14, len);
+			this.drawTexturedModalRect(x + 154, y + 55 - len, 176, 93 - len, 5,
+					len);
 		}
-		if(te.sideEff > 0) {
-			int len = te.sideEff * 46 / te.EFFECT_MAX;
-			this.drawTexturedModalRect(x + 42, y + 54 - len, 176, 140 - len, 14, len);
+		if (te.mainEff > 0) {
+			int len = te.mainEff * 46 / TileHealthCharger.HEALTH_MAX;
+			this.drawTexturedModalRect(x + 20, y + 54 - len, 176, 46 - len, 14,
+					len);
 		}
-		if(te.prgAddMain > 0) {
-			int len = te.prgAddMain * 17 / te.PROGRESS_TIME;
-			this.drawTexturedModalRect(x + 36, y + 77 - len, 176, 157 - len, 14, len);
+		if (te.sideEff > 0) {
+			int len = te.sideEff * 46 / TileHealthCharger.EFFECT_MAX;
+			this.drawTexturedModalRect(x + 42, y + 54 - len, 176, 140 - len,
+					14, len);
 		}
-		if(te.prgAddSide > 0) {
-			int len = te.prgAddSide * 17 / te.PROGRESS_TIME;
-			this.drawTexturedModalRect(x + 58, y + 77 - len, 176, 157 - len, 14, len);
+		if (te.prgAddMain > 0) {
+			int len = te.prgAddMain * 17 / TileHealthCharger.PROGRESS_TIME;
+			this.drawTexturedModalRect(x + 36, y + 77 - len, 176, 157 - len,
+					14, len);
+		}
+		if (te.prgAddSide > 0) {
+			int len = te.prgAddSide * 17 / TileHealthCharger.PROGRESS_TIME;
+			this.drawTexturedModalRect(x + 58, y + 77 - len, 176, 157 - len,
+					14, len);
 		}
 	}
 

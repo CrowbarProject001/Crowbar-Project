@@ -28,13 +28,12 @@ import net.minecraftforge.common.ForgeDirection;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class BlockGeneratorLava extends BlockElectricalBase {
 
 	public Icon iconSide, iconTop, iconBottom, iconMain, iconBack;;
 	private ForgeDirection[] dirs = ForgeDirection.values();
-	
 
 	public BlockGeneratorLava(int par1) {
 		super(par1, Material.rock);
@@ -43,60 +42,56 @@ public class BlockGeneratorLava extends BlockElectricalBase {
 		setGuiId(GeneralProps.GUI_ID_GENLAVA);
 		setUnlocalizedName("genLava");
 	}
-	
-    /**
-     * Called when the block is placed in the world.
-     */
-    @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
-    {
-        int l = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-        if (l == 0)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-        }
+	/**
+	 * Called when the block is placed in the world.
+	 */
+	@Override
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4,
+			EntityLiving par5EntityLiving, ItemStack par6ItemStack) {
+		int l = MathHelper
+				.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-        if (l == 1)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-        }
+		if (l == 0) {
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+		}
 
-        if (l == 2)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-        }
+		if (l == 1) {
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+		}
 
-        if (l == 3)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-        }
-    }
-	
-    @Override
-	public void registerIcons(IconRegister par1IconRegister)
-    {
-        iconSide = par1IconRegister.registerIcon("lambdacraft:genfire_side");
-        iconTop = par1IconRegister.registerIcon("lambdacraft:genfire_top");
-        iconBottom = par1IconRegister.registerIcon("lambdacraft:crafter_bottom");
-        iconMain = par1IconRegister.registerIcon("lambdacraft:genlava_main");
-        iconBack = par1IconRegister.registerIcon("lambdacraft:genfire_back");
-        blockIcon = iconTop;
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Icon getIcon(int par1, int par2)
-    {
-    	if(par1 < 1)
-    		return iconBottom;
-        if(par1 < 2)
-        	return iconTop;
-        if(par1 == par2)
-        	return iconMain;
-        if(par1 == dirs[par2].getOpposite().ordinal())
-        	return iconBack;
-        return iconSide;
-    }
+		if (l == 2) {
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+		}
+
+		if (l == 3) {
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+		}
+	}
+
+	@Override
+	public void registerIcons(IconRegister par1IconRegister) {
+		iconSide = par1IconRegister.registerIcon("lambdacraft:genfire_side");
+		iconTop = par1IconRegister.registerIcon("lambdacraft:genfire_top");
+		iconBottom = par1IconRegister
+				.registerIcon("lambdacraft:crafter_bottom");
+		iconMain = par1IconRegister.registerIcon("lambdacraft:genlava_main");
+		iconBack = par1IconRegister.registerIcon("lambdacraft:genfire_back");
+		blockIcon = iconTop;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Icon getIcon(int par1, int par2) {
+		if (par1 < 1)
+			return iconBottom;
+		if (par1 < 2)
+			return iconTop;
+		if (par1 == par2)
+			return iconMain;
+		if (par1 == dirs[par2].getOpposite().ordinal())
+			return iconBack;
+		return iconSide;
+	}
 
 }

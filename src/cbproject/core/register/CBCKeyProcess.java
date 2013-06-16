@@ -24,45 +24,44 @@ import net.minecraft.command.WrongUsageException;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 
-
 /**
- * 统一处理按键的实用类。
- * 请使用addKey(...)注册按键绑定。详见函数本身说明
+ * 统一处理按键的实用类。 请使用addKey(...)注册按键绑定。详见函数本身说明
+ * 
  * @author WeAthFolD
  */
-public class CBCKeyProcess extends KeyHandler{
-	
-	private static HashMap<KeyBinding, IKeyProcess>keyProcesses = new HashMap();
-	private static List<KeyBinding>keyCodes = new ArrayList();
-	private static List<Boolean>isRepeating = new ArrayList();
-	
+public class CBCKeyProcess extends KeyHandler {
+
+	private static HashMap<KeyBinding, IKeyProcess> keyProcesses = new HashMap();
+	private static List<KeyBinding> keyCodes = new ArrayList();
+	private static List<Boolean> isRepeating = new ArrayList();
+
 	public static CBCKeyProcess instance;
-	
-	public CBCKeyProcess(){
+
+	public CBCKeyProcess() {
 		super(toKeyBindingArray(), toBooleanArray());
-		if(instance == null)
+		if (instance == null)
 			instance = this;
 	}
-	
+
 	@Override
-	public String  getLabel() {
+	public String getLabel() {
 		return "LambdaCraft Keys";
 	}
 
 	@Override
 	public void keyDown(EnumSet<TickType> types, KeyBinding kb,
 			boolean tickEnd, boolean isRepeat) {
-		if(tickEnd)
+		if (tickEnd)
 			return;
-		if(keyProcesses.containsKey(kb))
+		if (keyProcesses.containsKey(kb))
 			keyProcesses.get(kb).onKeyDown();
 	}
 
 	@Override
 	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
-		if(tickEnd)
+		if (tickEnd)
 			return;
-		if(keyProcesses.containsKey(kb))
+		if (keyProcesses.containsKey(kb))
 			keyProcesses.get(kb).onKeyUp();
 	}
 
@@ -70,36 +69,41 @@ public class CBCKeyProcess extends KeyHandler{
 	public EnumSet<TickType> ticks() {
 		return EnumSet.of(TickType.CLIENT);
 	}
-	
+
 	/**
 	 * 在按键处理中添加一个键位。请务必在preInit（Init之前）调用这个函数。
-	 * @param key 按键
-	 * @param isRep 是否重复
-	 * @param process 对应的处理类
+	 * 
+	 * @param key
+	 *            按键
+	 * @param isRep
+	 *            是否重复
+	 * @param process
+	 *            对应的处理类
 	 */
-	public static void addKey(KeyBinding key, boolean isRep, IKeyProcess process){
-		if(instance != null)
-			throw new WrongUsageException("Trying to add a key after the process is instanted.");
-		
+	public static void addKey(KeyBinding key, boolean isRep, IKeyProcess process) {
+		if (instance != null)
+			throw new WrongUsageException(
+					"Trying to add a key after the process is instanted.");
+
 		keyCodes.add(key);
 		isRepeating.add(isRep);
 		keyProcesses.put(key, process);
 	}
-	
-	private static boolean[] toBooleanArray(){
+
+	private static boolean[] toBooleanArray() {
 		boolean[] b = new boolean[isRepeating.size()];
-		for(int i = 0; i < b.length; i++){
+		for (int i = 0; i < b.length; i++) {
 			b[i] = isRepeating.get(i);
 		}
 		return b;
 	}
-	
-	private static KeyBinding[] toKeyBindingArray(){
+
+	private static KeyBinding[] toKeyBindingArray() {
 		KeyBinding kb[] = new KeyBinding[keyCodes.size()];
-		for(int i = 0; i < kb.length; i++){
+		for (int i = 0; i < kb.length; i++) {
 			kb[i] = keyCodes.get(i);
 		}
 		return kb;
 	}
-	
+
 }

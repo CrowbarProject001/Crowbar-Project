@@ -41,7 +41,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		return mode == 0 ? super.canShoot(player, is) : AmmoManager.hasAmmo(
 				CBCItems.ammo_argrenade.itemID, player);
 	}
-	
+
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
@@ -66,7 +66,8 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 					information);
 		} else {
 			if (!par2World.isRemote)
-				if (par3Entity.capabilities.isCreativeMode || AmmoManager.tryConsume(par3Entity,
+				if (par3Entity.capabilities.isCreativeMode
+						|| AmmoManager.tryConsume(par3Entity,
 								CBCItems.ammo_argrenade.itemID, 1) == 0) {
 					par2World.spawnEntityInWorld(new EntityARGrenade(par2World,
 							par3Entity));
@@ -74,7 +75,8 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 							getSoundShoot(mode), 0.5F, 1.0F);
 				}
 		}
-		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+		par3Entity.setItemInUse(par1ItemStack,
+				this.getMaxItemUseDuration(par1ItemStack));
 
 		information.setLastTick();
 		return;

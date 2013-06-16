@@ -19,8 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
 /**
- * 客户端的一些信息。（贴图和渲染器）
- * 
+ * 客户端的一些信息。（贴图和渲染器)
  * @author WeAthFolD
  */
 @SideOnly(Side.CLIENT)
@@ -70,6 +69,7 @@ public class ClientProps {
 			HECHARGER_BACK_PATH = "/cbproject/gfx/textures/blocks/hecharger_back.png",
 			LONGJUMP_ARMOR_PATH = "/cbproject/gfx/textures/armor/longjump.png",
 			MEDKIT_ENT_PATH = "/cbproject/gfx/textures/entities/medkit.png",
+			GLOW_PATH = "/cbproject/gfx/textures/entities/glow.png",
 			SPRY_PATH[] = { "/cbproject/gfx/textures/sprays/spry0.png",
 					"/cbproject/gfx/textures/sprays/spry1.png" },
 			ITEM_SATCHEL_PATH[] = {

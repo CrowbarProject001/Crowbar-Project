@@ -26,49 +26,49 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 /**
- * @author WeAthFolD
- *
+ * 通用盔甲类。
  */
-public class CBCGenericArmor extends ItemArmor{
+public class CBCGenericArmor extends ItemArmor {
 
 	private String iconName = "";
 	protected String description;
 	protected boolean useDescription = false;
-	
+
 	/**
 	 * @param id
 	 * @param mat
 	 * @param renderIndex
 	 * @param armorType
 	 */
-	public CBCGenericArmor(int id, EnumArmorMaterial mat,
-			int renderIndex, int armorType) {
+	public CBCGenericArmor(int id, EnumArmorMaterial mat, int renderIndex,
+			int armorType) {
 		super(id, mat, renderIndex, armorType);
 		setCreativeTab(CBCMod.cct);
 	}
 
-	public void setIconName(String name){
+	public void setIconName(String name) {
 		this.iconName = name;
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
-    }
-    
-	public CBCGenericArmor setDescription(String d){
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.itemIcon = par1IconRegister
+				.registerIcon("lambdacraft:" + iconName);
+	}
+
+	public CBCGenericArmor setDescription(String d) {
 		this.description = d;
 		useDescription = true;
 		return this;
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		if(useDescription)
+	public void addInformation(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		if (useDescription)
 			par3List.add(description);
 	}
-	
+
 }

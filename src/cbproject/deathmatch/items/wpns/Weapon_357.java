@@ -12,50 +12,51 @@ import net.minecraft.world.World;
 
 /**
  * .357 Magnum weapon class.
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class Weapon_357 extends WeaponGeneralBullet {
 
 	public Weapon_357(int par1) {
-		
-		super(par1 , CBCItems.ammo_357.itemID, 1);
+
+		super(par1, CBCItems.ammo_357.itemID, 1);
 
 		setUnlocalizedName("weapon_357");
-		setCreativeTab( CBCMod.cct );
+		setCreativeTab(CBCMod.cct);
 		setMaxStackSize(1);
 		setMaxDamage(7);
 		setNoRepair();
-			
+
 		setReloadTime(70);
 		setJamTime(20);
 		setLiftProps(25, 3);
-		
+
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_357");
-    }
-	
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_357");
+	}
+
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
-		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4,
+				par5);
 	}
-	
+
 	@Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3EntityPlayer) {
 		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
-    }
+	}
 
 	@Override
 	public String getSoundShoot(int mode) {
-		String[] shoot  = { "cbc.weapons.pyt_shota", "cbc.weapons.pyt_shotb"};
+		String[] shoot = { "cbc.weapons.pyt_shota", "cbc.weapons.pyt_shotb" };
 		int index = (int) (Math.random() * 2);
 		return shoot[index];
 	}

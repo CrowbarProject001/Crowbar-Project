@@ -13,46 +13,51 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 
-public class NetCrafterClient implements IChannelProcess{
-	
+public class NetCrafterClient implements IChannelProcess {
+
 	public short id;
 	public int blockX, blockY, blockZ;
 	public boolean direction;
-	
-	public NetCrafterClient(){}
-	
+
+	public NetCrafterClient() {
+	}
+
 	/**
 	 * Sends the WeaponCrafter information packet.
-	 * @param i id(0 = factor, 1 = page)
-	 * @param dir 方向（true=下，false=上）
+	 * 
+	 * @param i
+	 *            id(0 = factor, 1 = page)
+	 * @param dir
+	 *            方向（true=下，false=上）
 	 */
-	public static void sendCrafterPacket(TileWeaponCrafter te, int id, boolean isForward){
-		
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_CRAFTER_CL, 12);
+	public static void sendCrafterPacket(TileWeaponCrafter te, int id,
+			boolean isForward) {
+
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(
+				GeneralProps.NET_ID_CRAFTER_CL, 12);
 		DataOutputStream outputStream = new DataOutputStream(bos);
-		
+
 		try {
-			outputStream.writeByte((byte)id);
+			outputStream.writeByte((byte) id);
 			outputStream.writeInt(te.xCoord);
 			outputStream.writeShort(te.yCoord);
 			outputStream.writeInt(te.zCoord);
-	        outputStream.writeBoolean(isForward);
+			outputStream.writeBoolean(isForward);
 		} catch (Exception ex) {
-	        ex.printStackTrace();
+			ex.printStackTrace();
 		}
-		
+
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToServer(packet);
 	}
-	
-	public NetCrafterClient getCrafterPacket(DataInputStream inputStream){
-		
+
+	public NetCrafterClient getCrafterPacket(DataInputStream inputStream) {
+
 		try {
 			id = inputStream.readByte();
 			blockX = inputStream.readInt();
@@ -63,7 +68,7 @@ public class NetCrafterClient implements IChannelProcess{
 			e.printStackTrace();
 		}
 		return this;
-		
+
 	}
 
 	@Override
@@ -71,15 +76,14 @@ public class NetCrafterClient implements IChannelProcess{
 		getCrafterPacket(packet);
 		EntityPlayer p = (EntityPlayer) player;
 		TileEntity te = p.worldObj.getBlockTileEntity(blockX, blockY, blockZ);
-		if(te != null && !te.worldObj.isRemote){
-			if(id == 0) {
-	        	((TileWeaponCrafter)te).addScrollFactor(direction);
-	        } else {
-	        	((TileWeaponCrafter)te).addPage(direction);
-	        }
+		if (te != null && !te.worldObj.isRemote) {
+			if (id == 0) {
+				((TileWeaponCrafter) te).addScrollFactor(direction);
+			} else {
+				((TileWeaponCrafter) te).addPage(direction);
+			}
 		}
 		return;
 	}
-	
-	
+
 }

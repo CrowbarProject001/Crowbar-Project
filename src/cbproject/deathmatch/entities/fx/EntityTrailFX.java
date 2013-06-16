@@ -2,6 +2,9 @@ package cbproject.deathmatch.entities.fx;
 
 import java.util.LinkedList;
 
+import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+
 import cbproject.core.utils.SamplePoint;
 
 import net.minecraft.entity.Entity;
@@ -10,9 +13,11 @@ import net.minecraft.world.World;
 
 /**
  * Entity尾迹渲染类。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
+@SideOnly(Side.CLIENT)
 public class EntityTrailFX extends Entity {
 
 	private LinkedList<SamplePoint> samples = new LinkedList();
@@ -21,7 +26,7 @@ public class EntityTrailFX extends Entity {
 	private boolean doesRenderEnd;
 	private int decayTime, sampleFreq;
 	private double width;
-	
+
 	public EntityTrailFX(World par1World, Entity par2LinkedEntity) {
 		super(par1World);
 		this.linkedEntity = par2LinkedEntity;
@@ -33,80 +38,82 @@ public class EntityTrailFX extends Entity {
 		this.posY = linkedEntity.posY;
 		this.posZ = linkedEntity.posZ;
 		this.width = 0.5;
-		this.ignoreFrustumCheck  = true;
+		this.ignoreFrustumCheck = true;
 	}
-	
-	public EntityTrailFX setTrailWidth(double w){
+
+	public EntityTrailFX setTrailWidth(double w) {
 		width = w;
 		return this;
 	}
-	
-	public EntityTrailFX setTextures(String n, String e){
+
+	public EntityTrailFX setTextures(String n, String e) {
 		texNormal = n;
 		texEnd = e;
 		return this;
 	}
-	
-	public EntityTrailFX setDoesRenderEnd(boolean b){
+
+	public EntityTrailFX setDoesRenderEnd(boolean b) {
 		doesRenderEnd = b;
 		return this;
 	}
-	
-	public EntityTrailFX setDecayTime(int time){
+
+	public EntityTrailFX setDecayTime(int time) {
 		decayTime = time;
 		return this;
 	}
-	
-	public EntityTrailFX setSampleFreq(int freq){
+
+	public EntityTrailFX setSampleFreq(int freq) {
 		sampleFreq = freq;
 		return this;
 	}
-	
+
 	@Override
 	protected void entityInit() {
 	}
-	
+
 	@Override
-	public void onUpdate(){
-		if(posX == 0 && posY == 0 && posZ == 0){
+	public void onUpdate() {
+		if (posX == 0 && posY == 0 && posZ == 0) {
 			posX = linkedEntity.posX;
 			posY = linkedEntity.posY;
 			posZ = linkedEntity.posZ;
 		}
-		
-		if(this.ticksExisted % sampleFreq == 0){
-			if(ticksExisted > 2 * decayTime)
+
+		if (this.ticksExisted % sampleFreq == 0) {
+			if (ticksExisted > 2 * decayTime)
 				samples.removeFirst();
-			if(linkedEntity.isDead){
-				if(samples.size() <= 0)
+			if (linkedEntity.isDead) {
+				if (samples.size() <= 0)
 					this.setDead();
 				return;
 			}
-			samples.offer(new SamplePoint(linkedEntity.posX - posX, linkedEntity.posY - posY, linkedEntity.posZ - posZ, ticksExisted));
+			samples.offer(new SamplePoint(linkedEntity.posX - posX,
+					linkedEntity.posY - posY, linkedEntity.posZ - posZ,
+					ticksExisted));
 		}
 	}
-	
-	public String getTexNormal(){
+
+	public String getTexNormal() {
 		return texNormal;
 	}
-	
-	public String getTexEnd(){
+
+	public String getTexEnd() {
 		return texEnd;
 	}
-	
-	public double getTrailWidth(){
+
+	public double getTrailWidth() {
 		return width;
 	}
-	
-	public int getDecayTime(){
+
+	public int getDecayTime() {
 		return this.decayTime;
 	}
-	
-	public Boolean doesRenderEnd(){
+
+	public Boolean doesRenderEnd() {
 		return doesRenderEnd;
 	}
-	
-	public LinkedList<SamplePoint> getSamplePoints(){
+
+	public LinkedList<SamplePoint> getSamplePoints() {
 		return (LinkedList<SamplePoint>) samples.clone();
 	}
 

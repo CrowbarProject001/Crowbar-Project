@@ -16,8 +16,9 @@ package cbproject.crafting.proxy;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class Proxy {
-	public void init(){}
+	public void init() {
+	}
 }

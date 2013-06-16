@@ -18,18 +18,19 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 /**
- * TODO:求自己添加注释
+ * 能量TileEntity摧毁时发出的事件。
+ * 
  * @author HopeAsd
- *
+ * 
  */
-public class EnergyTileUnloadEvent extends EnergyTileEvent{
-	
+public class EnergyTileUnloadEvent extends EnergyTileEvent {
+
 	public World world;
 
-	public EnergyTileUnloadEvent (World theWorld , IEnergyTile energyTile){
+	public EnergyTileUnloadEvent(World theWorld, IEnergyTile energyTile) {
 		super(theWorld, energyTile);
 		this.world = theWorld;
-		
+
 	}
 
 }

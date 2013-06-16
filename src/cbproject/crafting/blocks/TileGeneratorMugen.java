@@ -16,12 +16,10 @@ package cbproject.crafting.blocks;
 
 import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
-import cbproject.api.energy.tile.IEnergySource;
-import cbproject.core.block.CBCTileEntity;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class TileGeneratorMugen extends TileGeneratorBase {
 
@@ -32,15 +30,15 @@ public class TileGeneratorMugen extends TileGeneratorBase {
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(this.addedToNet)
+		if (this.addedToNet)
 			this.sendEnergy(32);
 	}
-	
+
 	@Override
-	public boolean emitEnergyTo(TileEntity emTileEntity,
-			LCDirection emDirection) {
+	public boolean emitEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
 		return true;
 	}
+
 	@Override
 	public int getMaxEnergyOutput() {
 		return 128;

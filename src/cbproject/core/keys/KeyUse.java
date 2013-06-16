@@ -14,47 +14,45 @@
  */
 package cbproject.core.keys;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import cbproject.api.tile.IUseable;
 import cbproject.core.network.NetKeyUsing;
 import cbproject.core.register.IKeyProcess;
-import cbproject.core.utils.BlockPos;
 
 /**
  * 使用按键的处理类，负责发包和功能性函数。
+ * 
  * @see cbproject.core.network.NetKeyUsing
  * @see cbproject.api.tile.IUseable
  * @author WeAthFolD
- *
+ * 
  */
 public class KeyUse implements IKeyProcess {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see cbproject.core.register.IKeyProcess#onKeyDown()
 	 */
 	@Override
 	public void onKeyDown() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-		if(player == null)
+		if (player == null)
 			return;
 		NetKeyUsing.sendUsingPacket(true);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see cbproject.core.register.IKeyProcess#onKeyUp()
 	 */
 	@Override
 	public void onKeyUp() {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-		if(player == null)
+		if (player == null)
 			return;
 		NetKeyUsing.sendUsingPacket(false);
 	}
-	
 
 }

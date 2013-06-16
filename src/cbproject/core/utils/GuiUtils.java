@@ -16,7 +16,7 @@ package cbproject.core.utils;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class GuiUtils {
 }

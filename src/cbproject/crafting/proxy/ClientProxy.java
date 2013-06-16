@@ -14,10 +14,8 @@
  */
 package cbproject.crafting.proxy;
 
-import net.minecraft.client.Minecraft;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cbproject.core.register.CBCSoundEvents;
 import cbproject.crafting.blocks.TileWire;
 import cbproject.crafting.entities.EntitySpray;
 import cbproject.crafting.render.RenderSpray;
@@ -25,12 +23,15 @@ import cbproject.crafting.render.RenderWire;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class ClientProxy extends Proxy {
-	
-	@Override public void init() {
-		ClientRegistry.bindTileEntitySpecialRenderer(TileWire.class, new RenderWire());
-		RenderingRegistry.registerEntityRenderingHandler(EntitySpray.class, new RenderSpray());
+
+	@Override
+	public void init() {
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWire.class,
+				new RenderWire());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySpray.class,
+				new RenderSpray());
 	}
 }

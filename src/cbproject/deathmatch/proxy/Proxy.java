@@ -16,10 +16,11 @@ package cbproject.deathmatch.proxy;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class Proxy {
 
-	public void init(){}
+	public void init() {
+	}
 
 }

@@ -9,17 +9,17 @@ public class Ammo_uranium extends ItemAmmo {
 
 	public Ammo_uranium(int par1) {
 		super(par1);
-		setCreativeTab( CBCMod.cct );
+		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("ammo_uranium");
-		setMaxDamage( 100 );
-		setMaxStackSize ( 1 );
+		setMaxDamage(100);
+		setMaxStackSize(1);
 	}
-	
+
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:ammo_uranium");
-    }
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.itemIcon = par1IconRegister
+				.registerIcon("lambdacraft:ammo_uranium");
+	}
 
 }

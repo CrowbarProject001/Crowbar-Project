@@ -12,9 +12,8 @@ public class SlotElectricItem extends Slot {
 		super(par1iInventory, par2, par3, par4);
 	}
 
-    @Override
-    public boolean isItemValid(ItemStack par1ItemStack)
-    {
-        return (par1ItemStack != null && par1ItemStack.getItem() instanceof ICustomEnItem);
-    }
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack) {
+		return (par1ItemStack != null && par1ItemStack.getItem() instanceof ICustomEnItem);
+	}
 }

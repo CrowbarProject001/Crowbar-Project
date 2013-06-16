@@ -14,25 +14,17 @@
  */
 package cbproject.crafting;
 
-import cbproject.crafting.blocks.TileWire;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.event.ForgeSubscribe;
-
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class CRClientEventHandler {
 
 	/*
-	@ForgeSubscribe
-	public void onDrawWireframe(DrawBlockHighlightEvent event) {
-		World world = event.player.worldObj;
-		TileEntity te = world.getBlockTileEntity(event.target.blockX, event.target.blockY, event.target.blockZ);
-		if(te instanceof TileWire)
-			event.setCanceled(true);
-	}
-	*/
+	 * @ForgeSubscribe public void onDrawWireframe(DrawBlockHighlightEvent
+	 * event) { World world = event.player.worldObj; TileEntity te =
+	 * world.getBlockTileEntity(event.target.blockX, event.target.blockY,
+	 * event.target.blockZ); if(te instanceof TileWire) event.setCanceled(true);
+	 * }
+	 */
 }

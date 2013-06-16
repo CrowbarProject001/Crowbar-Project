@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Icon;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -22,13 +21,14 @@ public class RenderBulletWeapon implements IItemRenderer {
 	float tx = 0F, ty = 0F, tz = 0F;
 	float width = 0.05F;
 	private WeaponGeneralBullet weaponType;
-	
+
 	public RenderBulletWeapon(WeaponGeneralBullet weapon, float w) {
 		weaponType = weapon;
-		width = w/2F;
+		width = w / 2F;
 	}
-	
-	public RenderBulletWeapon(WeaponGeneralBullet weapon, float width, float x, float y, float z) {
+
+	public RenderBulletWeapon(WeaponGeneralBullet weapon, float width, float x,
+			float y, float z) {
 		this(weapon, width);
 		tx = x;
 		ty = y;
@@ -73,37 +73,38 @@ public class RenderBulletWeapon implements IItemRenderer {
 		}
 
 	}
-	
+
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLiving entity) {
-		
-		if(item.stackTagCompound == null)
+
+		if (item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();
 		int mode = item.getTagCompound().getInteger("mode");
 		GL11.glPushMatrix();
-		
+
 		RenderUtils.renderItemIn2d(entity, item, width);
-		
+
 		boolean rendMuz = false;
-		InformationBullet inf = weaponType.getInformation(item, entity.worldObj);
-		if(inf != null){
-			if(inf.isShooting && inf.getDeltaTick() < 3)
+		InformationBullet inf = weaponType
+				.getInformation(item, entity.worldObj);
+		if (inf != null) {
+			if (inf.isShooting && inf.getDeltaTick() < 3)
 				rendMuz = true;
 		}
-		if(rendMuz)
+		if (rendMuz)
 			RenderMuzzleFlash.renderItemIn2d(t, tx, ty, tz);
 		GL11.glPopMatrix();
 
 	}
-	
+
 	protected void addVertex(Vec3 vec3, double texU, double texV) {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord,
 				texU, texV);
 	}
-	
-	private void bindTextureByItem(ItemStack item){
-		if(item.stackTagCompound == null)
+
+	private void bindTextureByItem(ItemStack item) {
+		if (item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();
 		int mode = item.getTagCompound().getInteger("mode");
 		int tex = RenderUtils.getTexture(ClientProps.ITEM_SATCHEL_PATH[mode]);

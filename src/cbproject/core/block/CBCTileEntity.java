@@ -43,9 +43,9 @@ public abstract class CBCTileEntity extends TileEntity {
 			this.onInventoryChanged();
 		}
 	}
-	
+
 	public void frequentUpdate() {
-		
+
 	}
 
 	@Override

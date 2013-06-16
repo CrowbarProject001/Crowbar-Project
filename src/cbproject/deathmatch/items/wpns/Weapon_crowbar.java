@@ -15,20 +15,20 @@ public class Weapon_crowbar extends ItemSword {
 	public Weapon_crowbar(int item_id) {
 		super(item_id, EnumToolMaterial.IRON);
 		setUnlocalizedName("weapon_crowbar");
-		setCreativeTab( CBCMod.cct );
+		setCreativeTab(CBCMod.cct);
 	}
-	
+
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_crowbar");
-    }
-	
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.itemIcon = par1IconRegister
+				.registerIcon("lambdacraft:weapon_crowbar");
+	}
+
 	@Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-        return par1ItemStack;
-    }
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3EntityPlayer) {
+		return par1ItemStack;
+	}
 
 }

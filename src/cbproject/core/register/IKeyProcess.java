@@ -16,16 +16,16 @@ package cbproject.core.register;
 
 /**
  * 实现这个接口以使用CBCKeyProcess及其按键统一处理。
+ * 
  * @author WeAthFolD
  */
 public interface IKeyProcess {
-	
+
 	/**
 	 * 处理键位被按下时的行为。
 	 */
 	public void onKeyDown();
-	
-	
+
 	/**
 	 * 处理键位被松开时的行为。
 	 */

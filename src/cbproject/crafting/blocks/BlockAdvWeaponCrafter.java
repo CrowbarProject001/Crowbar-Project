@@ -23,8 +23,9 @@ import net.minecraft.world.World;
 
 /**
  * 高级武器合成机！
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class BlockAdvWeaponCrafter extends BlockWeaponCrafter {
 
@@ -33,29 +34,27 @@ public class BlockAdvWeaponCrafter extends BlockWeaponCrafter {
 		setUnlocalizedName("advcrafter");
 	}
 
-    @Override
-	public void registerIcons(IconRegister par1IconRegister)
-    {
-        iconSide = par1IconRegister.registerIcon("lambdacraft:advcrafter_side");
-        iconTop = par1IconRegister.registerIcon("lambdacraft:advcrafter_top");
-        iconBottom = par1IconRegister.registerIcon("lambdacraft:advcrafter_bottom");
-        iconMain = par1IconRegister.registerIcon("lambdacraft:advcrafter_main");
-        blockIcon = iconTop;
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Icon getIcon(int par1, int par2)
-    {
-        if(par1 < 1)
-        	return iconBottom;
-        if(par1 < 2)
-        	return iconTop;
-        if(par1 == par2)
-        	return iconMain;
-        return iconSide;
-    }
-    
+	@Override
+	public void registerIcons(IconRegister par1IconRegister) {
+		iconSide = par1IconRegister.registerIcon("lambdacraft:advcrafter_side");
+		iconTop = par1IconRegister.registerIcon("lambdacraft:advcrafter_top");
+		iconBottom = par1IconRegister.registerIcon("lambdacraft:advcrafter_bottom");
+		iconMain = par1IconRegister.registerIcon("lambdacraft:advcrafter_main");
+		blockIcon = iconTop;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Icon getIcon(int par1, int par2) {
+		if (par1 < 1)
+			return iconBottom;
+		if (par1 < 2)
+			return iconTop;
+		if (par1 == par2)
+			return iconMain;
+		return iconSide;
+	}
+
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileWeaponCrafter().setAdvanced(true);

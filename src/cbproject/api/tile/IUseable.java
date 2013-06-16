@@ -19,30 +19,44 @@ import net.minecraft.world.World;
 
 /**
  * 用来指明一个方块可以被Mod中的使用按钮调用。
+ * 
  * @see cbproject.core.network.NetKeyUsing
  * @see cbproject.core.keys.KeyUse
  * @author WeAthFolD
  */
 public interface IUseable {
-	
+
 	/**
 	 * 处理方块被使用时的行为。
-	 * @param world 当前世界
-	 * @param player 使用的玩家
-	 * @param bx 方块X坐标
-	 * @param by 方块Y坐标
-	 * @param bz 方块Z坐标
+	 * 
+	 * @param world
+	 *            当前世界
+	 * @param player
+	 *            使用的玩家
+	 * @param bx
+	 *            方块X坐标
+	 * @param by
+	 *            方块Y坐标
+	 * @param bz
+	 *            方块Z坐标
 	 */
 	void onBlockUse(World world, EntityPlayer player, int bx, int by, int bz);
-	
+
 	/**
 	 * 处理方块被停止使用时的行为。只有当你在onBlockUse中调用了KeyUse.setBlockInUse(...),它才会被调用。
-	 * @param world 当前世界
-	 * @param player 使用的玩家
-	 * @param bx 方块X坐标
-	 * @param by 方块Y坐标
-	 * @param bz 方块Z坐标
+	 * 
+	 * @param world
+	 *            当前世界
+	 * @param player
+	 *            使用的玩家
+	 * @param bx
+	 *            方块X坐标
+	 * @param by
+	 *            方块Y坐标
+	 * @param bz
+	 *            方块Z坐标
 	 */
-	void onBlockStopUsing(World world, EntityPlayer player, int bx, int by, int bz);
-	
+	void onBlockStopUsing(World world, EntityPlayer player, int bx, int by,
+			int bz);
+
 }

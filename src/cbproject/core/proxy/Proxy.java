@@ -19,46 +19,48 @@ import java.util.Set;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.util.StringTranslate;
 
 /**
  * 加载代理。
+ * 
  * @author WeAthFOlD, Mkpoli, HopeAsd
- *
+ * 
  */
 public class Proxy {
-	
+
 	public static Set<String> languages = new HashSet();
-	
+
 	static {
 		languages.add("zh_CN");
 		languages.add("en_US");
 		languages.add("zh_TW");
 	}
-	
-	public static void profilerStartSection(String section){
-		
+
+	public static void profilerStartSection(String section) {
+
 	}
 
-	public static void profilerEndSection(){
-		
+	public static void profilerEndSection() {
+
 	}
-	
-	public static void profilerEndStartSection(String section){
-		
+
+	public static void profilerEndStartSection(String section) {
+
 	}
-	
-	public static boolean isRendering(){
+
+	public static boolean isRendering() {
 		return !isSimulating();
 	}
+
 	private static boolean isSimulating() {
 		return !FMLCommonHandler.instance().getEffectiveSide().isClient();
 	}
-	
+
 	public void init() {
-		for(String lang : languages) {
-			LanguageRegistry.instance().loadLocalization("/cbproject/lang/" + lang + ".properties", lang, false);
+		for (String lang : languages) {
+			LanguageRegistry.instance().loadLocalization(
+					"/cbproject/lang/" + lang + ".properties", lang, false);
 		}
 	}
-	
+
 }

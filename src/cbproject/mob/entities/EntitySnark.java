@@ -33,14 +33,15 @@ import cbproject.core.utils.GenericUtils;
 
 /**
  * 蛇鲨虫子的生物实体类。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
-public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
+public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> {
 
 	public static final float MOVE_SPEED = 2.0F;
 	private EntityPlayer thrower;
-	
+
 	public EntitySnark(World par1World) {
 		super(par1World);
 		this.texture = ClientProps.SQUEAK_MOB_PATH;
@@ -48,30 +49,30 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
 		this.moveSpeed = MOVE_SPEED;
 		this.experienceValue = 0;
 	}
-	
+
 	@Override
 	public int getMaxHealth() {
 		return 1;
 	}
-	
+
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if(this.ticksExisted > 400) {
+		if (this.ticksExisted > 400) {
 			this.attackEntityFrom(DamageSource.lava, 1);
 		}
 	}
-	
-	@Override
-    public boolean attackEntityAsMob(Entity par1Entity)
-    {
-        int i = this.getAttackStrength(par1Entity);
-        boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), i);
-        this.playSound("cbc.mobs.sqk_deploy", 0.5F, 1.0F);
 
-        return flag;
-    }
-	
+	@Override
+	public boolean attackEntityAsMob(Entity par1Entity) {
+		int i = this.getAttackStrength(par1Entity);
+		boolean flag = par1Entity.attackEntityFrom(
+				DamageSource.causeMobDamage(this), i);
+		this.playSound("cbc.mobs.sqk_deploy", 0.5F, 1.0F);
+
+		return flag;
+	}
+
 	/**
 	 * 蛇鲨掉落不受伤害=w=
 	 */
@@ -96,21 +97,24 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
 	 */
 	@Override
 	protected Entity findPlayerToAttack() {
-		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(posX - 8.0, posY - 8.0, posZ - 8.0, posX +8.0, posY +8.0, posZ +8.0);
-		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox, GenericUtils.selectorLiving);
+		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(posX - 8.0,
+				posY - 8.0, posZ - 8.0, posX + 8.0, posY + 8.0, posZ + 8.0);
+		List<EntityLiving> list = worldObj
+				.getEntitiesWithinAABBExcludingEntity(this, boundingBox,
+						GenericUtils.selectorLiving);
 		EntityLiving entity = null;
 		double distance = 10000.0F;
-		for(EntityLiving s : list){
+		for (EntityLiving s : list) {
 			double dx = s.posX - posX, dy = s.posY - posY, dz = s.posZ - posZ;
 			double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-			if(s instanceof EntitySnark || (s == thrower && ticksExisted < 80 ))
+			if (s instanceof EntitySnark || (s == thrower && ticksExisted < 80))
 				continue;
-			if(d < distance){
+			if (d < distance) {
 				entity = s;
 				distance = d;
 			}
 		}
-		if(entity == null)
+		if (entity == null)
 			return null;
 		return entity;
 	}
@@ -162,13 +166,12 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer>{
 	}
 
 	@Override
-    protected void onDeathUpdate()
-    {
-        super.onDeathUpdate();
-        if(this.ticksExisted == 20)
-        	this.playSound("cbc.mobs.sqk_blast", 0.5F, 1.0F);
-    }
-	
+	protected void onDeathUpdate() {
+		super.onDeathUpdate();
+		if (this.ticksExisted == 20)
+			this.playSound("cbc.mobs.sqk_blast", 0.5F, 1.0F);
+	}
+
 	/**
 	 * Returns the item ID for the item the mob drops on death.
 	 */

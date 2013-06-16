@@ -33,13 +33,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
-public class BlockMedkitFiller extends CBCBlockContainer{
+public class BlockMedkitFiller extends CBCBlockContainer {
 
 	private Icon iconTop, iconBottom;
-	
-	 /**
+
+	/**
 	 * @param par1
 	 * @param par2Material
 	 */
@@ -49,82 +49,84 @@ public class BlockMedkitFiller extends CBCBlockContainer{
 		setHardness(2.0F);
 		setCreativeTab(CBCMod.cct);
 	}
-	
+
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:medfiller_side");
-        this.iconTop = par1IconRegister.registerIcon("lambdacraft:medfiller_top");
-        this.iconBottom = par1IconRegister.registerIcon("lambdacraft:crafter_bottom");
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Icon getIcon(int par1, int par2)
-    {
-        if(par1 < 1)
-        	return iconBottom;
-        if(par1 < 2)
-        	return iconTop;
-        return this.blockIcon;
-    }
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.blockIcon = par1IconRegister
+				.registerIcon("lambdacraft:medfiller_side");
+		this.iconTop = par1IconRegister
+				.registerIcon("lambdacraft:medfiller_top");
+		this.iconBottom = par1IconRegister
+				.registerIcon("lambdacraft:crafter_bottom");
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Icon getIcon(int par1, int par2) {
+		if (par1 < 1)
+			return iconBottom;
+		if (par1 < 2)
+			return iconTop;
+		return this.blockIcon;
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileMedkitFiller();
 	}
-	
-    @Override
-    public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-            dropItems(world, x, y, z);
-            super.breakBlock(world, x, y, z, par5, par6);
-    }
-    
-    private void dropItems(World world, int x, int y, int z){
-        Random rand = new Random();
 
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        if (!(tileEntity instanceof TileMedkitFiller)) {
-                return;
-        }
-        TileMedkitFiller inventory = (TileMedkitFiller) tileEntity;
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+		dropItems(world, x, y, z);
+		super.breakBlock(world, x, y, z, par5, par6);
+	}
 
-        for (ItemStack item : inventory.slots) {
+	private void dropItems(World world, int x, int y, int z) {
+		Random rand = new Random();
 
-                if (item != null && item.stackSize > 0) {
-                        float rx = rand.nextFloat() * 0.8F + 0.1F;
-                        float ry = rand.nextFloat() * 0.8F + 0.1F;
-                        float rz = rand.nextFloat() * 0.8F + 0.1F;
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		if (!(tileEntity instanceof TileMedkitFiller)) {
+			return;
+		}
+		TileMedkitFiller inventory = (TileMedkitFiller) tileEntity;
 
-                        EntityItem entityItem = new EntityItem(world,
-                                        x + rx, y + ry, z + rz,
-                                        new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
+		for (ItemStack item : inventory.slots) {
 
-                        if (item.hasTagCompound()) {
-                                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
-                        }
+			if (item != null && item.stackSize > 0) {
+				float rx = rand.nextFloat() * 0.8F + 0.1F;
+				float ry = rand.nextFloat() * 0.8F + 0.1F;
+				float rz = rand.nextFloat() * 0.8F + 0.1F;
 
-                        float factor = 0.05F;
-                        entityItem.motionX = rand.nextGaussian() * factor;
-                        entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
-                        entityItem.motionZ = rand.nextGaussian() * factor;
-                        world.spawnEntityInWorld(entityItem);
-                        item.stackSize = 0;
-                }
-        }
-    }
-	
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z,
-                    EntityPlayer player, int idk, float what, float these, float are) {
-            TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-            if (tileEntity == null || player.isSneaking()) {
-                    return false;
-            }
-            player.openGui(CBCMod.instance, GeneralProps.GUI_ID_MEDFILLER, world, x, y, z);
-            return true;
-    }
+				EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z
+						+ rz, new ItemStack(item.itemID, item.stackSize,
+						item.getItemDamage()));
 
+				if (item.hasTagCompound()) {
+					entityItem.getEntityItem().setTagCompound(
+							(NBTTagCompound) item.getTagCompound().copy());
+				}
+
+				float factor = 0.05F;
+				entityItem.motionX = rand.nextGaussian() * factor;
+				entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
+				entityItem.motionZ = rand.nextGaussian() * factor;
+				world.spawnEntityInWorld(entityItem);
+				item.stackSize = 0;
+			}
+		}
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z,
+			EntityPlayer player, int idk, float what, float these, float are) {
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		if (tileEntity == null || player.isSneaking()) {
+			return false;
+		}
+		player.openGui(CBCMod.instance, GeneralProps.GUI_ID_MEDFILLER, world,
+				x, y, z);
+		return true;
+	}
 
 }

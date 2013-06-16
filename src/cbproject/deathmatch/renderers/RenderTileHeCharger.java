@@ -21,16 +21,20 @@ import cbproject.core.renderers.RendererSidedCube;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class RenderTileHeCharger extends RendererSidedCube {
 
-	public RenderTileHeCharger(Block block){
+	public RenderTileHeCharger(Block block) {
 		super(block);
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer#renderTileEntityAt(net.minecraft.tileentity.TileEntity, double, double, double, float)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer#
+	 * renderTileEntityAt(net.minecraft.tileentity.TileEntity, double, double,
+	 * double, float)
 	 */
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y,
@@ -40,12 +44,12 @@ public class RenderTileHeCharger extends RendererSidedCube {
 
 	@Override
 	public String getTexture(int side, int metadata) {
-		if(side == 0 || side == 1)
+		if (side == 0 || side == 1)
 			return ClientProps.HECHARGER_TD_PATH;
-		if(side == metadata)
+		if (side == metadata)
 			return ClientProps.HECHARGER_MAIN_PATH;
-		if(metadata == 5 || metadata == 3)
-			if(side == metadata - 2)
+		if (metadata == 5 || metadata == 3)
+			if (side == metadata - 2)
 				return ClientProps.HECHARGER_BACK_PATH;
 		return ClientProps.HECHARGER_SIDE_PATH;
 	}

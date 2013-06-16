@@ -20,50 +20,42 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
+@Mod(modid = "LambdaCraft|Living", name = "LambdaCraft Living", version = CBCMod.VERSION)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false)
+public class ModuleMob {
 
-
-@Mod(modid="lcmob",name="LambdaCraft|Living",version="1.0.0pre2")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false)
-public class ModuleMob
-{
-	
-	@SidedProxy(clientSide="cbproject.mob.proxy.ClientProxy",serverSide="cbproject.mob.proxy.Proxy")
+	@SidedProxy(clientSide = "cbproject.mob.proxy.ClientProxy", serverSide = "cbproject.mob.proxy.Proxy")
 	public static cbproject.mob.proxy.Proxy proxy;
-	
-	@Instance("lcmob")
+
+	@Instance("LambdaCraft|Living")
 	public static ModuleMob instance;
-	
+
 	@PreInit
-	public void preInit(FMLPreInitializationEvent Init)
-	{
-		if(Proxy.isRendering())
-			for(String s : SND_MOBS){
-				CBCSoundEvents.addSoundPath("cbc/mobs/" + s, "/cbproject/gfx/sounds/mobs/" + s);
+	public void preInit(FMLPreInitializationEvent Init) {
+		if (Proxy.isRendering())
+			for (String s : SND_MOBS) {
+				CBCSoundEvents.addSoundPath("cbc/mobs/" + s,
+						"/cbproject/gfx/sounds/mobs/" + s);
 			}
 	}
 
 	@Init
-	public void init(FMLInitializationEvent Init){
+	public void init(FMLInitializationEvent Init) {
 		CBCMobItems.init(CBCMod.config);
-		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
+		EntityRegistry.registerModEntity(EntitySnark.class, "snark",
+				GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
 		proxy.init();
 	}
 
 	@PostInit
-	public void postInit(FMLPostInitializationEvent Init){
+	public void postInit(FMLPostInitializationEvent Init) {
 	}
 
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
 	}
-	
-	public static final String SND_MOBS[] = {
-		"sqk_blast",
-		"sqk_hunta",
-		"sqk_huntb",
-		"sqk_huntc",
-		"sqk_die",
-		"sqk_deploy"
-	};
-	
+
+	public static final String SND_MOBS[] = { "sqk_blast", "sqk_hunta",
+			"sqk_huntb", "sqk_huntc", "sqk_die", "sqk_deploy" };
+
 }

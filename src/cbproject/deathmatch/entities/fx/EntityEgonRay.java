@@ -27,8 +27,9 @@ import net.minecraft.world.World;
 
 /**
  * 进行Egon光束渲染的实用实体。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class EntityEgonRay extends Entity {
 
@@ -37,8 +38,8 @@ public class EntityEgonRay extends Entity {
 	public boolean draw = true;
 	public boolean isClient = false;
 	private EntityLiving thrower;
-	
-	public EntityEgonRay(World par1World,EntityLiving ent, ItemStack itemStack){
+
+	public EntityEgonRay(World par1World, EntityLiving ent, ItemStack itemStack) {
 		super(par1World);
 		this.posX = ent.posX;
 		this.posY = ent.posY;
@@ -49,43 +50,54 @@ public class EntityEgonRay extends Entity {
 		renderThirdPerson = true;
 		isClient = true;
 	}
-	
-	public EntityEgonRay(World world){
+
+	public EntityEgonRay(World world) {
 		super(world);
 		thrower = Minecraft.getMinecraft().thePlayer;
 		isClient = false;
 	}
-	
-	public EntityLiving getThrower(){
+
+	public EntityLiving getThrower() {
 		return thrower;
 	}
-	
+
 	@Override
-	public void onUpdate(){
-		
-		if(worldObj.isRemote && !isClient){
-			System.out.println(this.getDistanceSqToEntity(thrower));
-			if(this.getDistanceSqToEntity(thrower) < 4.5)
+	public void onUpdate() {
+
+		if (worldObj.isRemote && !isClient && draw) {
+			if (this.getDistanceSqToEntity(thrower) < 4.5)
 				draw = false;
 			return;
 		}
-		
-		if(item == null)
+
+		if (item == null)
 			return;
-		
-		InformationEnergy inf = ((Weapon_egon)item.getItem()).getInformation(item, worldObj);
-		if(inf == null || !(inf.isShooting && ((Weapon_egon)item.getItem()).canShoot((EntityPlayer)thrower, item))){
+
+		InformationEnergy inf = ((Weapon_egon) item.getItem()).getInformation(
+				item, worldObj);
+		if (inf == null
+				|| !(inf.isShooting && ((Weapon_egon) item.getItem()).canShoot(
+						(EntityPlayer) thrower, item))) {
 			this.setDead();
 			return;
 		}
-		
+
 		EntityLiving ent = thrower;
-		this.setLocationAndAngles(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ, ent.rotationYawHead, ent.rotationPitch);
-		
+		this.setLocationAndAngles(ent.posX, ent.posY + ent.getEyeHeight(),
+				ent.posZ, ent.rotationYawHead, ent.rotationPitch);
+
 		float var3 = 0.4F;
-		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3;
-        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3;
-        this.motionY = -MathHelper.sin((this.rotationPitch) / 180.0F * (float)Math.PI) * var3;
+		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F
+				* (float) Math.PI)
+				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI)
+				* var3;
+		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F
+				* (float) Math.PI)
+				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI)
+				* var3;
+		this.motionY = -MathHelper.sin((this.rotationPitch) / 180.0F
+				* (float) Math.PI)
+				* var3;
 	}
 
 	@Override

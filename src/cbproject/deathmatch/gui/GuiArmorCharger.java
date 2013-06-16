@@ -55,32 +55,33 @@ public class GuiArmorCharger extends CBCGuiContainer {
 
 		@Override
 		public String getTip() {
-			return  te.currentEnergy + "/" + TileArmorCharger.ENERGY_MAX + " EU";
+			return te.currentEnergy + "/" + TileArmorCharger.ENERGY_MAX + " EU";
 		}
 
 	}
-	
+
 	class TipBehavior implements IGuiTip {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.rsbehavior.name");
+			return EnumChatFormatting.RED
+					+ StatCollector.translateToLocal("gui.rsbehavior.name");
 		}
 
 		@Override
 		public String getTip() {
-			return StatCollector.translateToLocal(te.currentBehavior.toString());
+			return StatCollector
+					.translateToLocal(te.currentBehavior.toString());
 		}
-		
-		
+
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 		CBCGuiPart behavior = new CBCGuiPart("behavior", 80, 28, 64, 10)
-				.setDraw(false),
-				redstone = new CBCGuiButton("redstone", 153, 5, 19, 10).setDownCoords(180, 13).setTextureCoords(153, 5);
+				.setDraw(false), redstone = new CBCGuiButton("redstone", 153,
+				5, 19, 10).setDownCoords(180, 13).setTextureCoords(153, 5);
 		this.addElement(behavior);
 		this.addElement(redstone);
 		this.setElementTip("behavior", new TipEnergy());
@@ -104,7 +105,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	 */
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
-		if(button.name == "redstone"){
+		if (button.name == "redstone") {
 			te.nextBehavior();
 			NetChargerClient.sendChargerPacket(te);
 		}
@@ -114,8 +115,9 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		String blockName = EnumChatFormatting.DARK_GRAY + StatCollector
-				.translateToLocal(DMBlocks.armorCharger.getLocalizedName());
+		String blockName = EnumChatFormatting.DARK_GRAY
+				+ StatCollector.translateToLocal(DMBlocks.armorCharger
+						.getLocalizedName());
 		fontRenderer.drawString(blockName,
 				88 - fontRenderer.getStringWidth(blockName) / 2, 5, 0x969494);
 	}

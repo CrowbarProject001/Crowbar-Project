@@ -16,8 +16,9 @@ package cbproject.core.gui;
 
 /**
  * LambdaCraft GUI元素。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class CBCGuiPart {
 
@@ -25,23 +26,23 @@ public class CBCGuiPart {
 	 * 该GUI元素的名称。
 	 */
 	public String name;
-	
+
 	/**
 	 * GUI元素位置。
 	 */
 	public int posX, posY;
-	
+
 	/**
 	 * GUI元素的大小。
 	 */
 	public int width, height;
-	
+
 	public int texU, texV;
-	
+
 	public boolean doesDraw;
-	
+
 	public IGuiTip tip;
-	
+
 	/**
 	 * 
 	 */
@@ -53,35 +54,38 @@ public class CBCGuiPart {
 		height = h;
 		doesDraw = false;
 	}
-	
+
 	/**
 	 * 设置按钮是否被渲染。
+	 * 
 	 * @param b
 	 * @return
 	 */
-	public CBCGuiPart setDraw(boolean b){
+	public CBCGuiPart setDraw(boolean b) {
 		this.doesDraw = b;
 		return this;
 	}
-	
+
 	/**
 	 * 设置GUI元素空闲时的U、V位置（像素，左上角）
+	 * 
 	 * @param u
 	 * @param v
 	 * @return 当前按钮
 	 */
-	public CBCGuiPart setTextureCoords(int u, int v){
+	public CBCGuiPart setTextureCoords(int u, int v) {
 		texU = u;
 		texV = v;
 		doesDraw = true;
 		return this;
 	}
-	
+
 	/**
 	 * 判断是否拥有鼠标移上去时提示。
+	 * 
 	 * @return
 	 */
-	public boolean hasToolTip(){
+	public boolean hasToolTip() {
 		return this.tip != null;
 	}
 

@@ -21,34 +21,35 @@ import net.minecraft.item.ItemStack;
 
 /**
  * 锁住的Item槽，能强制设置，不能被取出，不能被点击。
+ * 
  * @author WeAThFolD
- *
+ * 
  */
 public class SlotLocked extends Slot {
 
-	public SlotLocked(TileWeaponCrafter par1iInventory, int par2, int par3, int par4) {
+	public SlotLocked(TileWeaponCrafter par1iInventory, int par2, int par3,
+			int par4) {
 		super(par1iInventory, par2, par3, par4);
 	}
-	
-	@Override
-    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)   {}
-	
-	
-    @Override
-	public ItemStack decrStackSize(int par1){
-        return null;
-    }
 
-    @Override
-    public boolean isItemValid(ItemStack par1ItemStack)
-    {
-        return false;
-    }
-    
-    @Override
-    public boolean canTakeStack(EntityPlayer par1EntityPlayer)
-    {
-    	return false;
-    }
+	@Override
+	public void onPickupFromSlot(EntityPlayer par1EntityPlayer,
+			ItemStack par2ItemStack) {
+	}
+
+	@Override
+	public ItemStack decrStackSize(int par1) {
+		return null;
+	}
+
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack) {
+		return false;
+	}
+
+	@Override
+	public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+		return false;
+	}
 
 }

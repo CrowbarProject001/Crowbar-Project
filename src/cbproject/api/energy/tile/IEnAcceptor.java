@@ -19,10 +19,12 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  * 用来指定一个TileEntity是否接受能源。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
-public interface IEnAcceptor extends IEnergyTile{
-	
-	public abstract boolean acceptsEnergyFrom(TileEntity paramTileEntity, LCDirection paramDirection);
+public interface IEnAcceptor extends IEnergyTile {
+
+	public abstract boolean acceptsEnergyFrom(TileEntity paramTileEntity,
+			LCDirection paramDirection);
 }

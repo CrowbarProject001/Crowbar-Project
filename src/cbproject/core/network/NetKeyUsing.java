@@ -25,9 +25,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cbproject.core.keys.KeyUse;
 import cbproject.core.keys.UsingUtils;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.register.CBCNetHandler;
@@ -37,18 +34,20 @@ import cbproject.core.utils.MotionXYZ;
 
 /**
  * 用来处理使用键网络包收发的类。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class NetKeyUsing implements IChannelProcess {
 
-	public static void sendUsingPacket(boolean isUsing){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_USE, 1);
+	public static void sendUsingPacket(boolean isUsing) {
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(
+				GeneralProps.NET_ID_USE, 1);
 		DataOutputStream outputStream = new DataOutputStream(bos);
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		try {
 			outputStream.writeBoolean(isUsing);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
@@ -63,23 +62,25 @@ public class NetKeyUsing implements IChannelProcess {
 		EntityPlayer thePlayer = (EntityPlayer) player;
 		World world = thePlayer.worldObj;
 		try {
-	        isUsing = inputStream.readBoolean();
+			isUsing = inputStream.readBoolean();
 		} catch (Exception ex) {
-	        ex.printStackTrace();
+			ex.printStackTrace();
 		}
-		if(isUsing) { 
-			MotionXYZ begin = new MotionXYZ(thePlayer),
-					end = new MotionXYZ(thePlayer).updateMotion(8.0);
-			MovingObjectPosition mop = world.rayTraceBlocks(begin.asVec3(world), end.asVec3(world));
-			if(mop == null || mop.sideHit == -1) 
+		if (isUsing) {
+			MotionXYZ begin = new MotionXYZ(thePlayer), end = new MotionXYZ(
+					thePlayer).updateMotion(8.0);
+			MovingObjectPosition mop = world.rayTraceBlocks(
+					begin.asVec3(world), end.asVec3(world));
+			if (mop == null || mop.sideHit == -1)
 				return;
 			int id = world.getBlockId(mop.blockX, mop.blockY, mop.blockZ);
-			UsingUtils.useBlock(new BlockPos(mop.blockX, mop.blockY, mop.blockZ, id), world, thePlayer);
-			
+			UsingUtils.useBlock(new BlockPos(mop.blockX, mop.blockY,
+					mop.blockZ, id), world, thePlayer);
+
 		} else {
 			UsingUtils.stopUsingBlock(world, thePlayer);
 		}
-		
+
 	}
 
 }

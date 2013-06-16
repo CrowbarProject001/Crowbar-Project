@@ -14,51 +14,50 @@
  */
 package cbproject.core.register;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.HashSet;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import cbproject.core.CBCMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * 统一的声音注册类，请使用addSoundPath加入声音（详见方法说明）
+ * 
  * @author WeAthFolD
  */
 public class CBCSoundEvents {
 
 	private static HashSet<String[]> pathSounds = new HashSet();
-	public static HashMap<String, SoundPoolEntry> pathStreamings = new HashMap();
-	
+
 	@ForgeSubscribe
-	public void onSound(SoundLoadEvent event)
-	{
-		System.out.println("Attempting to load CBC sound files...");
-		try{
+	public void onSound(SoundLoadEvent event) {
+		try {
 			SoundPoolEntry snd;
-			for(String[] path:pathSounds){
-				snd = event.manager.soundPoolSounds.addSound(path[0], CBCMod.class.getResource(path[1]));
-				System.out.println("AddSound : " + snd.soundName + " URL: " + snd.soundUrl);
+			for (String[] path : pathSounds) {
+				snd = event.manager.soundPoolSounds.addSound(path[0],
+						CBCMod.class.getResource(path[1]));
+				// System.out.println("AddSound : " + snd.soundName + " URL: " +
+				// snd.soundUrl);
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		CBCMod.log.fine("LambdaCraft successfully loaded " + pathSounds.size()
+				+ " sound files");
 	}
-	
+
 	/**
-	 * 请在preInit中使用这个函数 ||
-	 * 两个参数的末尾都自动被加上了 .wav 后缀。
-	 * @param name : 声音名字. i.e. "cbc/weapons/rocket"
-	 * @param absPath : 声音的绝对路径。  i.e."/cbproject/gfx/weapons/glauncherb"
+	 * 请在preInit中使用这个函数 || 两个参数的末尾都自动被加上了 .wav 后缀。
+	 * 
+	 * @param name
+	 *            : 声音名字. i.e. "cbc/weapons/rocket"
+	 * @param absPath
+	 *            : 声音的绝对路径。 i.e."/cbproject/gfx/weapons/glauncherb"
 	 */
-	public static void addSoundPath(String name, String absPath){
-		String[] s = {name + ".wav", absPath + ".wav"};
+	public static void addSoundPath(String name, String absPath) {
+		String[] s = { name + ".wav", absPath + ".wav" };
 		pathSounds.add(s);
 	}
-	
+
 }

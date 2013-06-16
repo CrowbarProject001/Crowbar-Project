@@ -16,11 +16,6 @@ package cbproject.deathmatch.entities;
 
 import java.util.List;
 
-import cbproject.core.props.ClientProps;
-import cbproject.deathmatch.entities.fx.EntityTrailFX;
-import cbproject.deathmatch.register.DMItems;
-import cbproject.deathmatch.utils.BulletManager;
-import cbproject.mob.utils.EntitySelectorLiving;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -32,86 +27,103 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import cbproject.core.props.ClientProps;
+import cbproject.core.utils.EntitySelectorLiving;
+import cbproject.deathmatch.entities.fx.EntityTrailFX;
+import cbproject.deathmatch.register.DMItems;
+import cbproject.deathmatch.utils.BulletManager;
 
 /**
  * 蜂巢枪实体。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class EntityHornet extends EntityThrowable {
 
 	private boolean searchForPlayer = false;
 	private EntityLiving currentTarget;
 	public static final double RAD = 8.0, TURNING_SPEED = 0.5;
-	
+
 	public EntityHornet(World par1World) {
 		super(par1World);
 	}
-	
+
 	public EntityHornet(World par1World, EntityPlayer player, boolean doSearch) {
 		super(par1World, player);
 		searchForPlayer = doSearch;
 	}
-	
+
 	@Override
-	protected void entityInit(){
-		if(worldObj.isRemote)
-			worldObj.spawnEntityInWorld(new EntityTrailFX(worldObj, this).setSampleFreq(1).setTrailWidth(0.1F).setTextures(ClientProps.HORNET_TRAIL_PATH, "").setDecayTime(20));
+	protected void entityInit() {
+		if (worldObj.isRemote)
+			worldObj.spawnEntityInWorld(new EntityTrailFX(worldObj, this)
+					.setSampleFreq(1).setTrailWidth(0.1F)
+					.setTextures(ClientProps.HORNET_TRAIL_PATH, "")
+					.setDecayTime(20));
 	}
 
-    public void setHornetHeading(double par1, double par3, double par5, float par7)
-    {
-        float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
-        par1 /= f2;
-        par3 /= f2;
-        par5 /= f2;
-        par1 *= par7;
-        par3 *= par7;
-        par5 *= par7;
-        if(Math.abs(this.motionX - par1) < TURNING_SPEED);
-        double dx = par1 - motionX, dy = par3 - motionY, dz = par5 - motionZ;
-        float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
-        
-        if(Math.abs(dx) < TURNING_SPEED)
-        	this.motionX = par1;
-        else this.motionX += (dx > 0) ? TURNING_SPEED : -TURNING_SPEED;
-        if(Math.abs(dy) < TURNING_SPEED)
-        	this.motionY = par3;
-        else this.motionY += (dy > 0) ? TURNING_SPEED : -TURNING_SPEED;
-        if(Math.abs(dz) < TURNING_SPEED)
-        	this.motionZ = par5;
-        else this.motionZ += (dz > 0) ? TURNING_SPEED : -TURNING_SPEED;
-       
-        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, f3) * 180.0D / Math.PI);
-    }
-	
-	public void setDoSearch(boolean b){
+	public void setHornetHeading(double par1, double par3, double par5,
+			float par7) {
+		float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5
+				* par5);
+		par1 /= f2;
+		par3 /= f2;
+		par5 /= f2;
+		par1 *= par7;
+		par3 *= par7;
+		par5 *= par7;
+		if (Math.abs(this.motionX - par1) < TURNING_SPEED)
+			;
+		double dx = par1 - motionX, dy = par3 - motionY, dz = par5 - motionZ;
+		float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+
+		if (Math.abs(dx) < TURNING_SPEED)
+			this.motionX = par1;
+		else
+			this.motionX += (dx > 0) ? TURNING_SPEED : -TURNING_SPEED;
+		if (Math.abs(dy) < TURNING_SPEED)
+			this.motionY = par3;
+		else
+			this.motionY += (dy > 0) ? TURNING_SPEED : -TURNING_SPEED;
+		if (Math.abs(dz) < TURNING_SPEED)
+			this.motionZ = par5;
+		else
+			this.motionZ += (dz > 0) ? TURNING_SPEED : -TURNING_SPEED;
+
+		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(par1,
+				par5) * 180.0D / Math.PI);
+		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3,
+				f3) * 180.0D / Math.PI);
+	}
+
+	public void setDoSearch(boolean b) {
 		searchForPlayer = b;
 	}
-	
+
 	@Override
-	public void onUpdate(){
+	public void onUpdate() {
 		super.onUpdate();
-		if(this.ticksExisted > 120)
+		if (this.ticksExisted > 120)
 			this.setDead();
-		if(!this.searchForPlayer)
+		if (!this.searchForPlayer)
 			return;
-		if(currentTarget != null){
-			double dx = currentTarget.posX - this.posX, dy = currentTarget.posY - this.posY, dz = currentTarget.posZ - this.posZ;
+		if (currentTarget != null) {
+			double dx = currentTarget.posX - this.posX, dy = currentTarget.posY
+					- this.posY, dz = currentTarget.posZ - this.posZ;
 			this.setHornetHeading(dx, dy, dz, func_70182_d());
-		} else if(ticksExisted % 5 == 0){
-				this.searchTarget();
+		} else if (ticksExisted % 5 == 0) {
+			this.searchTarget();
 		}
 	}
 
 	@Override
 	protected void onImpact(MovingObjectPosition m) {
-		if(this.ticksExisted > 200)
+		if (this.ticksExisted > 200)
 			this.setDead();
-		if(m.typeOfHit == EnumMovingObjectType.TILE){
-			switch(m.sideHit){
-			case 0 :
+		if (m.typeOfHit == EnumMovingObjectType.TILE) {
+			switch (m.sideHit) {
+			case 0:
 				this.motionY = -0.05F;
 				break;
 			case 1:
@@ -130,38 +142,45 @@ public class EntityHornet extends EntityThrowable {
 				this.motionX = 0.05F;
 				break;
 			}
-			this.setThrowableHeading(motionX, motionY, motionZ, this.func_70182_d(), 0.0F);
-			if(searchForPlayer)
+			this.setThrowableHeading(motionX, motionY, motionZ,
+					this.func_70182_d(), 0.0F);
+			if (searchForPlayer)
 				searchTarget();
 		} else {
-			if(!(m.entityHit instanceof EntityLiving || m.entityHit instanceof EntityDragonPart || m.entityHit instanceof EntityEnderCrystal))
+			if (!(m.entityHit instanceof EntityLiving
+					|| m.entityHit instanceof EntityDragonPart || m.entityHit instanceof EntityEnderCrystal))
 				return;
-			BulletManager.doEntityAttack(m.entityHit, DamageSource.causeMobDamage(getThrower()), DMItems.weapon_hornet.getDamage(0));
+			BulletManager.doEntityAttack(m.entityHit,
+					DamageSource.causeMobDamage(getThrower()),
+					DMItems.weapon_hornet.getDamage(0));
 			this.setDead();
 		}
 	}
-	
+
 	@Override
-	public float getGravityVelocity(){
+	public float getGravityVelocity() {
 		return 0.0F;
 	}
-	
-	private void searchTarget(){
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - RAD, posY - RAD, posZ - RAD, posX + RAD, posY + RAD, posZ + RAD);
-		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(getThrower(), box, new EntitySelectorLiving());
+
+	private void searchTarget() {
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - RAD,
+				posY - RAD, posZ - RAD, posX + RAD, posY + RAD, posZ + RAD);
+		List<EntityLiving> list = worldObj
+				.getEntitiesWithinAABBExcludingEntity(getThrower(), box,
+						new EntitySelectorLiving());
 		float distance = 10000.0F;
 		EntityLiving target = null;
-		for(EntityLiving e : list){
+		for (EntityLiving e : list) {
 			float d = e.getDistanceToEntity(this);
-			if(d < distance){
+			if (d < distance) {
 				distance = d;
 				target = e;
 			}
 		}
-		if(target != null)
+		if (target != null)
 			this.currentTarget = target;
-		else currentTarget = null;
+		else
+			currentTarget = null;
 	}
-
 
 }

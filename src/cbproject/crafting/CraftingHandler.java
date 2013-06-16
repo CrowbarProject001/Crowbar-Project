@@ -12,8 +12,7 @@ public class CraftingHandler implements ICraftingHandler {
 	@Override
 	public void onCrafting(EntityPlayer player, ItemStack item,
 			IInventory craftMatrix) {
-		}
-
+	}
 
 	@Override
 	public void onSmelting(EntityPlayer player, ItemStack item) {
@@ -24,9 +23,10 @@ public class CraftingHandler implements ICraftingHandler {
 			} else if (item.itemID == CBCItems.ingotUranium.itemID) {
 				CBCAchievements.getAchievement(player,
 						CBCAchievements.radioactiveBeryl);
-			} else if (item.itemID == CBCItems.halfLife01.itemID || item.itemID == CBCItems.halfLife02.itemID ||  item.itemID == CBCItems.halfLife03.itemID ) {
-				CBCAchievements.getAchievement(player,
-						CBCAchievements.letsMoe);
+			} else if (item.itemID == CBCItems.halfLife01.itemID
+					|| item.itemID == CBCItems.halfLife02.itemID
+					|| item.itemID == CBCItems.halfLife03.itemID) {
+				CBCAchievements.getAchievement(player, CBCAchievements.letsMoe);
 			}
 		}
 	}

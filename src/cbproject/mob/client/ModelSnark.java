@@ -40,54 +40,54 @@ public class ModelSnark extends ModelBase {
 		textureWidth = 64;
 		textureHeight = 32;
 
-	      head = new ModelRenderer(this, 0, 0);
-	      head.addBox(-1F, 0F, -1F, 2, 2, 2);
-	      head.setRotationPoint(1F, 20F, -4F);
-	      head.setTextureSize(64, 32);
-	      head.mirror = true;
-	      setRotation(head, 0F, 0F, 0F);
-	      body1 = new ModelRenderer(this, 0, 4);
-	      body1.addBox(-2F, -1F, 0F, 4, 2, 3);
-	      body1.setRotationPoint(1F, 21F, -4F);
-	      body1.setTextureSize(64, 32);
-	      body1.mirror = true;
-	      setRotation(body1, 0.2094395F, 0F, 0F);
-	      body2 = new ModelRenderer(this, 0, 16);
-	      body2.addBox(-2F, -1F, -1F, 4, 2, 4);
-	      body2.setRotationPoint(1F, 20F, -1F);
-	      body2.setTextureSize(64, 32);
-	      body2.mirror = true;
-	      setRotation(body2, -0.2094395F, 0F, 0F);
-	      body3 = new ModelRenderer(this, 0, 9);
-	      body3.addBox(-1F, 0F, -3F, 2, 2, 5);
-	      body3.setRotationPoint(1F, 21F, 0F);
-	      body3.setTextureSize(64, 32);
-	      body3.mirror = true;
-	      setRotation(body3, 0F, 0F, 0F);
-	      leg1 = new ModelRenderer(this, 8, 16);
-	      leg1.addBox(-1F, 0F, 0F, 1, 3, 1);
-	      leg1.setRotationPoint(1F, 23F, 1F);
-	      leg1.setTextureSize(64, 32);
-	      leg1.mirror = true;
-	      setRotation(leg1, 0.0174533F, 0.0174533F, 1.047198F);
-	      leg2 = new ModelRenderer(this, 8, 0);
-	      leg2.addBox(0F, 0F, 0F, 1, 3, 1);
-	      leg2.setRotationPoint(1F, 23F, 1F);
-	      leg2.setTextureSize(64, 32);
-	      leg2.mirror = true;
-	      setRotation(leg2, 0F, 0F, -1.117011F);
-	      leg3 = new ModelRenderer(this, 8, 0);
-	      leg3.addBox(-1F, 0F, 0F, 1, 3, 1);
-	      leg3.setRotationPoint(1F, 23F, -2F);
-	      leg3.setTextureSize(64, 32);
-	      leg3.mirror = true;
-	      setRotation(leg3, 0F, 0F, 1.117011F);
-	      leg4 = new ModelRenderer(this, 8, 0);
-	      leg4.addBox(0F, 0F, 0F, 1, 3, 1);
-	      leg4.setRotationPoint(1F, 23F, -2F);
-	      leg4.setTextureSize(64, 32);
-	      leg4.mirror = true;
-	      setRotation(leg4, 0F, 0F, -1.117011F);
+		head = new ModelRenderer(this, 0, 0);
+		head.addBox(-1F, 0F, -1F, 2, 2, 2);
+		head.setRotationPoint(1F, 20F, -4F);
+		head.setTextureSize(64, 32);
+		head.mirror = true;
+		setRotation(head, 0F, 0F, 0F);
+		body1 = new ModelRenderer(this, 0, 4);
+		body1.addBox(-2F, -1F, 0F, 4, 2, 3);
+		body1.setRotationPoint(1F, 21F, -4F);
+		body1.setTextureSize(64, 32);
+		body1.mirror = true;
+		setRotation(body1, 0.2094395F, 0F, 0F);
+		body2 = new ModelRenderer(this, 0, 16);
+		body2.addBox(-2F, -1F, -1F, 4, 2, 4);
+		body2.setRotationPoint(1F, 20F, -1F);
+		body2.setTextureSize(64, 32);
+		body2.mirror = true;
+		setRotation(body2, -0.2094395F, 0F, 0F);
+		body3 = new ModelRenderer(this, 0, 9);
+		body3.addBox(-1F, 0F, -3F, 2, 2, 5);
+		body3.setRotationPoint(1F, 21F, 0F);
+		body3.setTextureSize(64, 32);
+		body3.mirror = true;
+		setRotation(body3, 0F, 0F, 0F);
+		leg1 = new ModelRenderer(this, 8, 16);
+		leg1.addBox(-1F, 0F, 0F, 1, 3, 1);
+		leg1.setRotationPoint(1F, 23F, 1F);
+		leg1.setTextureSize(64, 32);
+		leg1.mirror = true;
+		setRotation(leg1, 0.0174533F, 0.0174533F, 1.047198F);
+		leg2 = new ModelRenderer(this, 8, 0);
+		leg2.addBox(0F, 0F, 0F, 1, 3, 1);
+		leg2.setRotationPoint(1F, 23F, 1F);
+		leg2.setTextureSize(64, 32);
+		leg2.mirror = true;
+		setRotation(leg2, 0F, 0F, -1.117011F);
+		leg3 = new ModelRenderer(this, 8, 0);
+		leg3.addBox(-1F, 0F, 0F, 1, 3, 1);
+		leg3.setRotationPoint(1F, 23F, -2F);
+		leg3.setTextureSize(64, 32);
+		leg3.mirror = true;
+		setRotation(leg3, 0F, 0F, 1.117011F);
+		leg4 = new ModelRenderer(this, 8, 0);
+		leg4.addBox(0F, 0F, 0F, 1, 3, 1);
+		leg4.setRotationPoint(1F, 23F, -2F);
+		leg4.setTextureSize(64, 32);
+		leg4.mirror = true;
+		setRotation(leg4, 0F, 0F, -1.117011F);
 	}
 
 	@Override
@@ -112,13 +112,16 @@ public class ModelSnark extends ModelBase {
 	}
 
 	@Override
-	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity ent) {
+	public void setRotationAngles(float par1, float par2, float par3,
+			float par4, float par5, float par6, Entity ent) {
 		super.setRotationAngles(par1, par2, par3, par4, par5, par6, ent);
-        this.head.rotateAngleY = par4 / (180F / (float)Math.PI);
-        this.head.rotateAngleX = par5 / (180F / (float)Math.PI);
-        this.leg1.rotateAngleX = MathHelper.cos(par1 * 4.0F) * 0.5F * par2;
-        this.leg2.rotateAngleX = MathHelper.cos(par1 * 4.0F + (float)Math.PI) * 0.5F * par2;
-        this.leg3.rotateAngleX = MathHelper.cos(par1 * 4.0F + (float)Math.PI) * 0.5F * par2;
-        this.leg4.rotateAngleX = MathHelper.cos(par1 * 4.0F) * 0.5F * par2;
+		this.head.rotateAngleY = par4 / (180F / (float) Math.PI);
+		this.head.rotateAngleX = par5 / (180F / (float) Math.PI);
+		this.leg1.rotateAngleX = MathHelper.cos(par1 * 4.0F) * 0.5F * par2;
+		this.leg2.rotateAngleX = MathHelper.cos(par1 * 4.0F + (float) Math.PI)
+				* 0.5F * par2;
+		this.leg3.rotateAngleX = MathHelper.cos(par1 * 4.0F + (float) Math.PI)
+				* 0.5F * par2;
+		this.leg4.rotateAngleX = MathHelper.cos(par1 * 4.0F) * 0.5F * par2;
 	}
 }

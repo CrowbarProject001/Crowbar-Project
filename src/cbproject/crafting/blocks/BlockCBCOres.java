@@ -25,11 +25,11 @@ import net.minecraft.world.World;
 
 /**
  * @author mkpoli
- *
+ * 
  */
-public class BlockCBCOres  extends BlockOre {
+public class BlockCBCOres extends BlockOre {
 	private int type;
-	
+
 	public BlockCBCOres(int par1, int type) {
 		super(par1);
 		this.type = type;
@@ -37,25 +37,27 @@ public class BlockCBCOres  extends BlockOre {
 		setHardness(type == 0 ? 5.0F : 2.0F);
 		setUnlocalizedName(type == 0 ? "uranium" : type == 1 ? "tin" : "copper");
 	}
-	
+
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		blockIcon = par1IconRegister.registerIcon("lambdacraft:" + (type == 0 ? "uranium" : type == 1 ? "tin" : "copper"));
+		blockIcon = par1IconRegister.registerIcon("lambdacraft:"
+				+ (type == 0 ? "uranium" : type == 1 ? "tin" : "copper"));
 	}
-	
+
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
 		return this.blockID;
 	}
-	
+
 	@Override
 	public int quantityDropped(Random par1Random) {
 		return 1;
 	}
-	
+
 	@Override
 	public void onBlockHarvested(World par1World, int par2, int par3, int par4,
 			int par5, EntityPlayer par6EntityPlayer) {
-		CBCAchievements.getAchievement(par6EntityPlayer, CBCAchievements.oreAchievements[this.type]);
+		CBCAchievements.getAchievement(par6EntityPlayer,
+				CBCAchievements.oreAchievements[this.type]);
 	}
 }

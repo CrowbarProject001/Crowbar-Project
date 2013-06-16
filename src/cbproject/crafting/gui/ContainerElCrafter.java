@@ -22,27 +22,24 @@ import net.minecraft.inventory.Slot;
 import cbproject.crafting.blocks.TileElCrafter;
 import cbproject.crafting.blocks.TileWeaponCrafter;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
-import cbproject.crafting.recipes.RecipeCrafter;
-import cbproject.crafting.recipes.RecipeWeapons;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class ContainerElCrafter extends ContainerWeaponCrafter {
 
 	protected TileElCrafter tileEntity;
-	
+
 	/**
 	 * @param inventoryPlayer
 	 * @param te
 	 */
-	public ContainerElCrafter(InventoryPlayer inventoryPlayer,
-			TileElCrafter te) {
+	public ContainerElCrafter(InventoryPlayer inventoryPlayer, TileElCrafter te) {
 		super(inventoryPlayer, te);
 		this.tileEntity = te;
 	}
-	
+
 	@Override
 	protected void addSlots(TileWeaponCrafter te) {
 		// Crafting recipe slot
@@ -81,34 +78,38 @@ public class ContainerElCrafter extends ContainerWeaponCrafter {
 			addSlotToContainer(new Slot(inventoryPlayer, i, 6 + i * 18, 170));
 		}
 	}
-	
+
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
 			icrafting.sendProgressBarUpdate(this, 0, tileEntity.page);
-			icrafting.sendProgressBarUpdate(this, 1, tileEntity.iconType.ordinal());
-			icrafting.sendProgressBarUpdate(this, 2, tileEntity.currentEnergy / 2);
+			icrafting.sendProgressBarUpdate(this, 1,
+					tileEntity.iconType.ordinal());
+			icrafting.sendProgressBarUpdate(this, 2,
+					tileEntity.currentEnergy / 2);
 			icrafting.sendProgressBarUpdate(this, 3, tileEntity.heat);
-			if(tileEntity.currentRecipe != null) {
-				icrafting.sendProgressBarUpdate(this, 4, tileEntity.currentRecipe.heatRequired);
-			} else icrafting.sendProgressBarUpdate(this, 4, 0);
+			if (tileEntity.currentRecipe != null) {
+				icrafting.sendProgressBarUpdate(this, 4,
+						tileEntity.currentRecipe.heatRequired);
+			} else
+				icrafting.sendProgressBarUpdate(this, 4, 0);
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
 			tileEntity.page = Math.abs(par2);
-		} else if(par1 == 1) {
+		} else if (par1 == 1) {
 			tileEntity.iconType = CrafterIconType.values()[par2];
-		} else if(par1 == 2) {
-			tileEntity.currentEnergy = (int) (par2 * 2);
-		} else if(par1 == 3) {
+		} else if (par1 == 2) {
+			tileEntity.currentEnergy = par2 * 2;
+		} else if (par1 == 3) {
 			tileEntity.heat = par2;
-		} else if(par1 == 4)
+		} else if (par1 == 4)
 			tileEntity.heatRequired = par2;
 	}
 

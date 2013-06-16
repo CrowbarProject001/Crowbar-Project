@@ -14,11 +14,6 @@
  */
 package cbproject.deathmatch.entities;
 
-import java.util.List;
-
-import cbproject.core.utils.GenericUtils;
-import cbproject.core.utils.MotionXYZ;
-import cbproject.deathmatch.entities.fx.EntityGaussRay;
 import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.utils.BulletManager;
 import net.minecraft.entity.Entity;
@@ -28,113 +23,116 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
  * TODO:未完成
+ * 
  * @author Administrator
- *
+ * 
  */
 public class EntityBulletSG extends EntityBullet {
 
 	double startX, startY, startZ;
 	private Entity hitEntity;
-	
-	public EntityBulletSG(World par1World, EntityPlayer par2EntityLiving, ItemStack par3itemStack) {
+
+	public EntityBulletSG(World par1World, EntityPlayer par2EntityLiving,
+			ItemStack par3itemStack) {
 		super(par1World, par2EntityLiving, par3itemStack);
 		startX = posX;
 		startY = posY;
 		startZ = posZ;
 		this.motionX = motion.motionX;
 		this.motionY = motion.motionY;
-		this.motionZ = motion.motionZ; 
+		this.motionZ = motion.motionZ;
 	}
 
 	public EntityBulletSG(World world) {
 		super(world);
 	}
-	
+
 	@Override
-	protected void entityInit(){
+	protected void entityInit() {
 	}
-	
+
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		
-		if(hitEntity == null)
+
+		if (hitEntity == null)
 			return;
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		
+
 		int damage = item.getDamage(item.getMode(itemStack));
-		
+
 		NBTTagCompound nbt = hitEntity.getEntityData();
 		int lastTime = nbt.getInteger("lastTick");
-		
+
 		int tdamage = nbt.getInteger("damage");
-		if(tdamage == 0) {
+		if (tdamage == 0) {
 			this.setDead();
 			return;
 		}
-		if(ticksExisted - lastTime >= 4) {
-			BulletManager.doEntityAttack(hitEntity, DamageSource.causeMobDamage(getThrower()), tdamage + damage);
+		if (ticksExisted - lastTime >= 4) {
+			BulletManager
+					.doEntityAttack(hitEntity,
+							DamageSource.causeMobDamage(getThrower()), tdamage
+									+ damage);
 			nbt.setInteger("lastTick", 0);
 			nbt.setInteger("damage", 0);
 		}
-		
+
 	}
-	
+
 	@Override
-	public void doBlockCollision(MovingObjectPosition result){}
-	
+	public void doBlockCollision(MovingObjectPosition result) {
+	}
+
 	@Override
-	public void doEntityCollision(MovingObjectPosition result){
-		
-		if( result.entityHit == null)
+	public void doEntityCollision(MovingObjectPosition result) {
+
+		if (result.entityHit == null)
 			return;
-		if(!(result.entityHit instanceof EntityLiving || result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
+		if (!(result.entityHit instanceof EntityLiving
+				|| result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
 			return;
 		doEntityCollision(result.entityHit);
 	}
-	
+
 	protected void doEntityCollision(Entity ent) {
-		if(hitEntity != null)
+		if (hitEntity != null)
 			return;
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		
+
 		int damage = item.getDamage(item.getMode(itemStack));
 		/**
-		 * @Deprecated
-		 * Distance related, max 22/44 in 0 distance, min 1 in distance 30, 0.1 chance of a critical hit( 100% damage)
+		 * @Deprecated Distance related, max 22/44 in 0 distance, min 1 in
+		 *             distance 30, 0.1 chance of a critical hit( 100% damage)
 		 */
 		/*
-		double critical = Math.random();
-		if(critical > 0.1) {
-			double distance = new MotionXYZ(ent).asVec3(worldObj).distanceTo(Vec3.createVectorHelper(startX, startY, startZ));
-			if(distance > 3.0D)
-				damage *= 1/Math.sqrt(distance);
-			System.out.println("d : " + distance);
-		}
-		*/
-		
+		 * double critical = Math.random(); if(critical > 0.1) { double distance
+		 * = new
+		 * MotionXYZ(ent).asVec3(worldObj).distanceTo(Vec3.createVectorHelper
+		 * (startX, startY, startZ)); if(distance > 3.0D) damage *=
+		 * 1/Math.sqrt(distance); System.out.println("d : " + distance); }
+		 */
+
 		NBTTagCompound nbt = ent.getEntityData();
 		int lastTime = nbt.getInteger("lastTick");
 		int tdamage = nbt.getInteger("damage");
 		this.hitEntity = ent;
-		if(lastTime == 0) {
+		if (lastTime == 0) {
 			nbt.setInteger("lastTick", ticksExisted);
 			nbt.setInteger("damage", damage);
 		} else {
 			nbt.setInteger("damage", tdamage + damage);
 		}
 	}
-	
+
 	@Override
-	public boolean canBeCollidedWith(){
+	public boolean canBeCollidedWith() {
 		return false;
 	}
 

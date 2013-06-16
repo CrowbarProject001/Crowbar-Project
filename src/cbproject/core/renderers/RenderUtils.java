@@ -83,29 +83,29 @@ public class RenderUtils {
 				1, 1, -w), a8 = newV3(0, 1, -w);
 
 		Icon icon = stackToRender.getIconIndex();
-		if(specialIcon != null)
+		if (specialIcon != null)
 			icon = specialIcon;
-		
+
 		Minecraft mc = Minecraft.getMinecraft();
 
 		if (icon == null) {
 			GL11.glPopMatrix();
 			return;
 		}
-		
+
 		if (stackToRender.getItemSpriteNumber() == 0) {
 			mc.renderEngine.bindTexture("/terrain.png");
 		} else {
 			mc.renderEngine.bindTexture("/gui/items.png");
 		}
-		
+
 		float u1 = 0.0F, v1 = 0.0F, u2 = 0.0F, v2 = 0.0F;
 		u1 = icon.getMinU();
 		v1 = icon.getMinV();
 		u2 = icon.getMaxU();
 		v2 = icon.getMaxV();
-		
-		Tessellator t; 
+
+		Tessellator t;
 		t = Tessellator.instance;
 		GL11.glPushMatrix();
 

@@ -22,13 +22,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cbproject.crafting.blocks.TileWeaponCrafter;
-import cbproject.crafting.recipes.RecipeCrafter;
-import cbproject.crafting.recipes.RecipeWeapons;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * 武器合成机和高级武器合成机的Container类。
+ * 
  * @author WeAthFolD
  */
 public class ContainerWeaponCrafter extends Container {
@@ -44,11 +43,11 @@ public class ContainerWeaponCrafter extends Container {
 		bindPlayerInventory(inventoryPlayer);
 		scrollFactor = te.scrollFactor;
 	}
-	
-	public ContainerWeaponCrafter(TileWeaponCrafter te){
+
+	public ContainerWeaponCrafter(TileWeaponCrafter te) {
 		this.tileEntity = te;
 	}
-	
+
 	protected void addSlots(TileWeaponCrafter te) {
 		// Crafting recipe slot
 		for (int i = 0; i < 3; i++) {
@@ -92,11 +91,14 @@ public class ContainerWeaponCrafter extends Container {
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
 			icrafting.sendProgressBarUpdate(this, 0, tileEntity.page);
-			icrafting.sendProgressBarUpdate(this, 1, tileEntity.iconType.ordinal());
+			icrafting.sendProgressBarUpdate(this, 1,
+					tileEntity.iconType.ordinal());
 			icrafting.sendProgressBarUpdate(this, 2, tileEntity.heat);
-			if(tileEntity.currentRecipe != null) {
-				icrafting.sendProgressBarUpdate(this, 3, tileEntity.currentRecipe.heatRequired);
-			} else icrafting.sendProgressBarUpdate(this, 3, 0);
+			if (tileEntity.currentRecipe != null) {
+				icrafting.sendProgressBarUpdate(this, 3,
+						tileEntity.currentRecipe.heatRequired);
+			} else
+				icrafting.sendProgressBarUpdate(this, 3, 0);
 		}
 	}
 
@@ -105,11 +107,11 @@ public class ContainerWeaponCrafter extends Container {
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
 			tileEntity.page = Math.abs(par2);
-		} else if(par1 == 1) {
+		} else if (par1 == 1) {
 			tileEntity.iconType = CrafterIconType.values()[par2];
-		} else if(par1 == 2) {
+		} else if (par1 == 2) {
 			tileEntity.heat = par2;
-		} else if(par1 == 3)
+		} else if (par1 == 3)
 			tileEntity.heatRequired = par2;
 	}
 

@@ -24,28 +24,27 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cbproject.api.energy.item.IEnItem;
 import cbproject.deathmatch.blocks.TileHealthCharger;
-import cbproject.deathmatch.blocks.TileArmorCharger.EnumBehavior;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
-public class ContainerHealthCharger extends Container{
-	
+public class ContainerHealthCharger extends Container {
+
 	protected TileHealthCharger te;
-	
+
 	/**
 	 * 
 	 */
 	public ContainerHealthCharger(TileHealthCharger t, InventoryPlayer playerinv) {
-		te  = t;
+		te = t;
 		addSlotToContainer(new Slot(t, 0, 19, 60));
 		addSlotToContainer(new Slot(t, 1, 41, 60));
 		addSlotToContainer(new Slot(t, 2, 149, 60));
 		bindPlayerInventory(playerinv);
-				
+
 	}
-	
+
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -57,7 +56,7 @@ public class ContainerHealthCharger extends Container{
 			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
 		}
 	}
-	
+
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
@@ -70,26 +69,27 @@ public class ContainerHealthCharger extends Container{
 			icrafting.sendProgressBarUpdate(this, 4, te.prgAddSide);
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void updateProgressBar(int par1, int par2) {
-		if (par1 == 0) 
+		if (par1 == 0)
 			te.currentEnergy = par2;
-		else if(par1 == 1)
+		else if (par1 == 1)
 			te.mainEff = par2;
-		else if(par1 == 2)
+		else if (par1 == 2)
 			te.sideEff = par2;
-		else if(par1 == 3)
+		else if (par1 == 3)
 			te.prgAddMain = par2;
-		else te.prgAddSide = par2;
+		else
+			te.prgAddSide = par2;
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return te.isUseableByPlayer(player);
 	}
-	
+
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
 		ItemStack stack = null;
@@ -102,16 +102,16 @@ public class ContainerHealthCharger extends Container{
 			// places it into the tileEntity is possible since its in the player
 			// inventory
 			if (slot >= 3) {
-				if(stackInSlot.getItem() instanceof IEnItem){
+				if (stackInSlot.getItem() instanceof IEnItem) {
 					if (!this.mergeItemStack(stackInSlot, 2, 3, true)) {
 						return null;
 					}
-				} else if(!this.mergeItemStack(stackInSlot, 0, 2, true)) {
+				} else if (!this.mergeItemStack(stackInSlot, 0, 2, true)) {
 					return null;
 				}
 			}
 			// merges the item into player inventory since its in the tileEntity
-			else{
+			else {
 				if (!this.mergeItemStack(stackInSlot, 4, 39, false))
 					return null;
 			}

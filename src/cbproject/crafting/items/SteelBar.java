@@ -17,10 +17,10 @@ package cbproject.crafting.items;
 import cbproject.core.item.CBCGenericItem;
 
 public class SteelBar extends CBCGenericItem {
-	
+
 	public SteelBar(int par1) {
 		super(par1);
 		setIAndU("steelbar");
 	}
-	
+
 }

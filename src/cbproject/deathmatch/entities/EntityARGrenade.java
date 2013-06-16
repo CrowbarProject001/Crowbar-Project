@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 
 /**
  * 9mmAR的榴弹实体类。
+ * 
  * @author WeAthFolD
  */
 public class EntityARGrenade extends EntityThrowable {
@@ -31,10 +32,10 @@ public class EntityARGrenade extends EntityThrowable {
 		super(par1World, par2EntityLiving);
 	}
 
-	public EntityARGrenade(World world){
+	public EntityARGrenade(World world) {
 		super(world);
 	}
-	
+
 	/**
 	 * Explode once impact.
 	 */
@@ -42,11 +43,11 @@ public class EntityARGrenade extends EntityThrowable {
 	protected void onImpact(MovingObjectPosition par1) {
 		explode();
 	}
-	
+
 	@Override
-	public void onUpdate(){
+	public void onUpdate() {
 		super.onUpdate();
-		if(this.isBurning())
+		if (this.isBurning())
 			explode();
 	}
 
@@ -64,7 +65,7 @@ public class EntityARGrenade extends EntityThrowable {
 	protected float func_70182_d() {
 		return 1.5F;
 	}
-	
+
 	@Override
 	public boolean canBeCollidedWith() {
 		return true;

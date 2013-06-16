@@ -22,18 +22,24 @@ import cbproject.api.tile.IUseable;
 import cbproject.core.utils.BlockPos;
 
 /**
+ * 和使用方块按键相关的各种功能。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class UsingUtils {
 
-
 	/**
 	 * 在你的onBlockRightClick函数中使用它来让该方块进入被使用状态。
-	 * @param player 玩家实体
-	 * @param x 方块X
-	 * @param y 方块Y
-	 * @param z 方块Z
+	 * 
+	 * @param player
+	 *            玩家实体
+	 * @param x
+	 *            方块X
+	 * @param y
+	 *            方块Y
+	 * @param z
+	 *            方块Z
 	 */
 	public static void setBlockInUse(EntityPlayer player, int x, int y, int z) {
 		NBTTagCompound nbt = player.getEntityData();
@@ -41,36 +47,39 @@ public class UsingUtils {
 		nbt.setInteger("usingY", y);
 		nbt.setInteger("usingZ", z);
 	}
-	
+
 	/**
-	 * 在键位被按下的时候调用方块的使用函数。
-	 * **内部函数，一般不建议在你的方块类中调用。**
-	 * @param block 要调用的方块
+	 * 在键位被按下的时候调用方块的使用函数。 **内部函数，一般不建议在你的方块类中调用。**
+	 * 
+	 * @param block
+	 *            要调用的方块
 	 * @param world
 	 * @param player
 	 */
 	public static void useBlock(BlockPos block, World world, EntityPlayer player) {
-		if(!(Block.blocksList[block.blockID] instanceof IUseable))
+		if (!(Block.blocksList[block.blockID] instanceof IUseable))
 			return;
-		if(block.equals(getCurrentUsingBlock(world, player))){
-			if(player.getDistance(block.x, block.y, block.z) > 8.0){
+		if (block.equals(getCurrentUsingBlock(world, player))) {
+			if (player.getDistance(block.x, block.y, block.z) > 8.0) {
 				stopUsingBlock(world, player);
 			}
 			return;
 		}
-		((IUseable)Block.blocksList[block.blockID]).onBlockUse(world, player, block.x, block.y, block.z);
+		((IUseable) Block.blocksList[block.blockID]).onBlockUse(world, player,
+				block.x, block.y, block.z);
 	}
-	
+
 	/**
-	 * 在键位被松开的时候调用停止使用的函数。
-	 * **内部函数，一般不建议在你的方块中使用。**
+	 * 在键位被松开的时候调用停止使用的函数。 **内部函数，一般不建议在你的方块中使用。**
+	 * 
 	 * @param world
 	 * @param player
 	 */
 	public static void stopUsingBlock(World world, EntityPlayer player) {
 		BlockPos block = getCurrentUsingBlock(world, player);
-		if(block != null) {
-			((IUseable)Block.blocksList[block.blockID]).onBlockStopUsing(world, player, block.x, block.y, block.z);
+		if (block != null) {
+			((IUseable) Block.blocksList[block.blockID]).onBlockStopUsing(
+					world, player, block.x, block.y, block.z);
 		}
 		NBTTagCompound nbt = player.getEntityData();
 		nbt.setInteger("usingX", -1);
@@ -80,8 +89,11 @@ public class UsingUtils {
 
 	/**
 	 * 获取当前正在使用的方块。如果没有，则返回null。
-	 * @param world 世界
-	 * @param player 要查找的玩家
+	 * 
+	 * @param world
+	 *            世界
+	 * @param player
+	 *            要查找的玩家
 	 * @return
 	 */
 	public static BlockPos getCurrentUsingBlock(World world, EntityPlayer player) {
@@ -89,8 +101,7 @@ public class UsingUtils {
 		int x = nbt.getInteger("usingX"), y = nbt.getInteger("usingY"), z = nbt
 				.getInteger("usingZ");
 		int id = world.getBlockId(x, y, z);
-		if(!(Block.blocksList[id] instanceof IUseable)) {
-			//stopUsingBlock(world, player);
+		if (!(Block.blocksList[id] instanceof IUseable)) {
 			return null;
 		} else {
 			return new BlockPos(x, y, z, id);

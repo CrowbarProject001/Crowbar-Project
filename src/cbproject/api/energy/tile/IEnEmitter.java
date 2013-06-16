@@ -17,7 +17,8 @@ package cbproject.api.energy.tile;
 import net.minecraft.tileentity.TileEntity;
 import cbproject.api.LCDirection;
 
-public abstract interface IEnEmitter extends IEnergyTile{
-	public abstract boolean emitEnergyTo(TileEntity emTileEntity,LCDirection emDirection);
+public abstract interface IEnEmitter extends IEnergyTile {
+	public abstract boolean emitEnergyTo(TileEntity emTileEntity,
+			LCDirection emDirection);
 
 }

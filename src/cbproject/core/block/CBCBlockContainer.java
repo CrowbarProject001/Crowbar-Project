@@ -17,7 +17,6 @@ package cbproject.core.block;
 import java.util.Random;
 
 import cbproject.core.CBCMod;
-import cbproject.deathmatch.blocks.TileArmorCharger;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
@@ -32,13 +31,13 @@ import net.minecraft.world.World;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public abstract class CBCBlockContainer extends BlockContainer {
 
 	private String iconName;
 	protected int guiId = -1;
-	
+
 	/**
 	 * @param par1
 	 * @param par2Material
@@ -47,60 +46,62 @@ public abstract class CBCBlockContainer extends BlockContainer {
 		super(par1, mat);
 		setCreativeTab(CBCMod.cct);
 	}
-	
+
 	public CBCBlockContainer setIconName(String name) {
 		this.iconName = name;
 		return this;
 	}
-	
+
 	public CBCBlockContainer setGuiId(int id) {
 		this.guiId = id;
 		return this;
 	}
-	
+
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-        this.blockIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
-    }
-	
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z,
-                    EntityPlayer player, int idk, float what, float these, float are) {
-            TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-            if (guiId == -1 || tileEntity == null || player.isSneaking()) {
-                    return false;
-            }
-            player.openGui(CBCMod.instance, guiId, world, x, y, z);
-            return true;
-    }
-    
-    protected void dropItems(World world, int x, int y, int z, ItemStack[] inventory){
-        Random rand = new Random();
-        
-        for (ItemStack item : inventory) {
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.blockIcon = par1IconRegister.registerIcon("lambdacraft:"
+				+ iconName);
+	}
 
-                if (item != null && item.stackSize > 0) {
-                        float rx = rand.nextFloat() * 0.8F + 0.1F;
-                        float ry = rand.nextFloat() * 0.8F + 0.1F;
-                        float rz = rand.nextFloat() * 0.8F + 0.1F;
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z,
+			EntityPlayer player, int idk, float what, float these, float are) {
+		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		if (guiId == -1 || tileEntity == null || player.isSneaking()) {
+			return false;
+		}
+		player.openGui(CBCMod.instance, guiId, world, x, y, z);
+		return true;
+	}
 
-                        EntityItem entityItem = new EntityItem(world,
-                                        x + rx, y + ry, z + rz,
-                                        new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
+	protected void dropItems(World world, int x, int y, int z,
+			ItemStack[] inventory) {
+		Random rand = new Random();
 
-                        if (item.hasTagCompound()) {
-                                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
-                        }
+		for (ItemStack item : inventory) {
 
-                        float factor = 0.05F;
-                        entityItem.motionX = rand.nextGaussian() * factor;
-                        entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
-                        entityItem.motionZ = rand.nextGaussian() * factor;
-                        world.spawnEntityInWorld(entityItem);
-                        item.stackSize = 0;
-                }
-        }
-    }
+			if (item != null && item.stackSize > 0) {
+				float rx = rand.nextFloat() * 0.8F + 0.1F;
+				float ry = rand.nextFloat() * 0.8F + 0.1F;
+				float rz = rand.nextFloat() * 0.8F + 0.1F;
+
+				EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z
+						+ rz, new ItemStack(item.itemID, item.stackSize,
+						item.getItemDamage()));
+
+				if (item.hasTagCompound()) {
+					entityItem.getEntityItem().setTagCompound(
+							(NBTTagCompound) item.getTagCompound().copy());
+				}
+
+				float factor = 0.05F;
+				entityItem.motionX = rand.nextGaussian() * factor;
+				entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
+				entityItem.motionZ = rand.nextGaussian() * factor;
+				world.spawnEntityInWorld(entityItem);
+				item.stackSize = 0;
+			}
+		}
+	}
 }

@@ -28,21 +28,21 @@ import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
 
 /**
- * 通用的网络包处理类。
- * 请在任何网络包被发送之前（一般是Init中）注册Channel。
- * 用一个独立的Byte值注册Channel。
+ * 通用的网络包处理类。 请在任何网络包被发送之前（一般是Init中）注册Channel。 用一个独立的Byte值注册Channel。
+ * 
  * @author WeAthFolD
  */
 public class CBCNetHandler implements IPacketHandler {
 
 	private static HashMap<Byte, IChannelProcess> channels = new HashMap();
-	
+
 	@Override
 	public void onPacketData(INetworkManager manager,
 			Packet250CustomPayload packet, Player player) {
-		
-		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
-		
+
+		DataInputStream inputStream = new DataInputStream(
+				new ByteArrayInputStream(packet.data));
+
 		byte i = -1;
 		try {
 			i = inputStream.readByte();
@@ -50,44 +50,52 @@ public class CBCNetHandler implements IPacketHandler {
 			e.printStackTrace();
 		}
 		IChannelProcess p = channels.get(i);
-		if(packet.channel.equals(GeneralProps.NET_CHANNEL_CLIENT) || packet.channel.equals(GeneralProps.NET_CHANNEL_SERVER)){
-			if(p != null)
+		if (packet.channel.equals(GeneralProps.NET_CHANNEL_CLIENT)
+				|| packet.channel.equals(GeneralProps.NET_CHANNEL_SERVER)) {
+			if (p != null)
 				p.onPacketData(inputStream, player);
 		}
 	}
-	
+
 	/**
 	 * 注册一个网络包频道和一个处理类。
-	 * @param channel 频道
-	 * @param process 包处理类
+	 * 
+	 * @param channel
+	 *            频道
+	 * @param process
+	 *            包处理类
 	 */
-	public static boolean addChannel(byte channel, IChannelProcess process){
-		if(channels.containsKey(channel)){
+	public static boolean addChannel(byte channel, IChannelProcess process) {
+		if (channels.containsKey(channel)) {
 			return false;
 		}
 		channels.put(channel, process);
 		return true;
 	}
-	
+
 	/**
 	 * 获取一个没有被使用的Channel ID。
+	 * 
 	 * @return ID
 	 */
-	public static byte getUniqueChannelID(){
-		for(byte i = 0; i < Byte.MAX_VALUE; i++){
-			if(!channels.containsKey(i))
+	public static byte getUniqueChannelID() {
+		for (byte i = 0; i < Byte.MAX_VALUE; i++) {
+			if (!channels.containsKey(i))
 				return i;
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * 如果使用CBCNetHandler来处理数据，请使用这个来获取用于发送的OutputStream。
-	 * @param id 频道ID
-	 * @param size 包数据大小。
+	 * 
+	 * @param id
+	 *            频道ID
+	 * @param size
+	 *            包数据大小。
 	 * @return 所要求的输出流，频道信息已经预先写入。
 	 */
-	public static ByteArrayOutputStream getStream(short id, int size){
+	public static ByteArrayOutputStream getStream(short id, int size) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(size + 1);
 		DataOutputStream stream = new DataOutputStream(bos);
 		try {

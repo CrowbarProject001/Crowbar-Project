@@ -19,12 +19,14 @@ import net.minecraft.world.World;
 
 /**
  * 实现这个接口以使用CBCGuiHandler及对应的GUI打开处理。
+ * 
  * @author WeAthFOlD
  */
 public interface IGuiElement {
-	
+
 	/**
 	 * 获取Server的Container，可能为Null
+	 * 
 	 * @param ID
 	 * @param player
 	 * @param world
@@ -33,11 +35,12 @@ public interface IGuiElement {
 	 * @param z
 	 * @return 对应Container
 	 */
-	public Object getServerContainer(EntityPlayer player, World world,
-			int x, int y, int z);
-	
+	public Object getServerContainer(EntityPlayer player, World world, int x,
+			int y, int z);
+
 	/**
 	 * 获取Client端的GUI。
+	 * 
 	 * @param ID
 	 * @param player
 	 * @param world
@@ -46,6 +49,6 @@ public interface IGuiElement {
 	 * @param z
 	 * @return 对应GUI
 	 */
-	public Object getClientGui(EntityPlayer player, World world,
-			int x, int y, int z);
+	public Object getClientGui(EntityPlayer player, World world, int x, int y,
+			int z);
 }

@@ -27,23 +27,25 @@ import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
-
-
 /**
  * 
  * 喜闻乐见的彩蛋
+ * 
  * @author mkpoli & Weathfold
- *
+ * 
  */
 public class LCRecord extends ItemRecord {
-	
-	int recID; //Record的ID
-	
+
+	int recID; // Record的ID
+
 	/**
 	 * 
-	 * @param par1 ItemID
-	 * @param par2Str RecordName
-	 * @param subID Record的ID
+	 * @param par1
+	 *            ItemID
+	 * @param par2Str
+	 *            RecordName
+	 * @param subID
+	 *            Record的ID
 	 */
 	public LCRecord(int par1, String par2Str, int subID) {
 		super(par1, par2Str);
@@ -51,21 +53,19 @@ public class LCRecord extends ItemRecord {
 		setUnlocalizedName("lcrecord");
 		recID = subID;
 	}
-    
+
 	@Override
 	@SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int par1)
-    {
-        return this.itemIcon;
-    }
-    
-    @Override
+	public Icon getIconFromDamage(int par1) {
+		return this.itemIcon;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
-    {
-    	return EnumRarity.rare;
-    }
-    
+	public EnumRarity getRarity(ItemStack par1ItemStack) {
+		return EnumRarity.rare;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack,
@@ -78,7 +78,7 @@ public class LCRecord extends ItemRecord {
 	public String getRecordTitle() {
 		return "Valve - " + "Half - Life0" + (recID + 1);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs,
@@ -87,9 +87,9 @@ public class LCRecord extends ItemRecord {
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister)
-    {
-		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:record" + recID);
-    }
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister) {
+		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:record"
+				+ recID);
+	}
 }

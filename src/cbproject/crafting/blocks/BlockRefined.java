@@ -13,11 +13,10 @@ public class BlockRefined extends Block {
 		setHardness(2.0F);
 		setUnlocalizedName("refined");
 	}
-	
+
 	@Override
-	public void registerIcons(IconRegister par1IconRegister)
-    {
-        blockIcon = par1IconRegister.registerIcon("lambdacraft:refined");
-    }
+	public void registerIcons(IconRegister par1IconRegister) {
+		blockIcon = par1IconRegister.registerIcon("lambdacraft:refined");
+	}
 
 }

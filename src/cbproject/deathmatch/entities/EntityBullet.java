@@ -19,8 +19,6 @@ import cbproject.deathmatch.items.wpns.WeaponGeneral;
 import cbproject.deathmatch.utils.BulletManager;
 import cbproject.deathmatch.utils.InformationWeapon;
 
-
-
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
@@ -30,92 +28,95 @@ import net.minecraft.world.World;
 
 /**
  * Bullet entity class which handles all bullet weapons.
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class EntityBullet extends EntityThrowable {
-	
+
 	protected InformationWeapon information;
 	protected ItemStack itemStack;
 	protected MotionXYZ motion;
-	
-	public EntityBullet(World par1World, EntityLiving par2EntityLiving, ItemStack par3itemStack) {
-		
+
+	public EntityBullet(World par1World, EntityLiving par2EntityLiving,
+			ItemStack par3itemStack) {
+
 		super(par1World, par2EntityLiving);
-		
+
 		itemStack = par3itemStack;
-		if( itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral) )
+		if (itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral))
 			this.setDead();
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		motion = new MotionXYZ(this).setMotionOffset(item.getOffset(item.getMode(par3itemStack)));
+		motion = new MotionXYZ(this).setMotionOffset(item.getOffset(item
+				.getMode(par3itemStack)));
 	}
-	
+
 	@Override
-	public void onUpdate(){
+	public void onUpdate() {
 		super.onUpdate();
 		this.ticksExisted++;
-		if(ticksExisted > 50)
+		if (ticksExisted > 50)
 			this.setDead();
 	}
 
-	
 	@Override
 	protected void entityInit() {
 	}
-	
-	public EntityBullet(World world){
+
+	public EntityBullet(World world) {
 		super(world);
 	}
 
-    @Override
-	protected float getGravityVelocity()
-    {
-        return 0.0F;
-    }
-    
 	@Override
-	protected void onImpact(MovingObjectPosition par1)
-	{    
-	    switch(par1.typeOfHit){
-	    case TILE:
-	    	doBlockCollision(par1);
-	    	break;
-	    case ENTITY:
-	    	doEntityCollision(par1);
-	    	break;
-	    }
+	protected float getGravityVelocity() {
+		return 0.0F;
 	}
-	
-	protected void doBlockCollision(MovingObjectPosition result){	
+
+	@Override
+	protected void onImpact(MovingObjectPosition par1) {
+		switch (par1.typeOfHit) {
+		case TILE:
+			doBlockCollision(par1);
+			break;
+		case ENTITY:
+			doEntityCollision(par1);
+			break;
+		}
 	}
-	
-	public void doEntityCollision(MovingObjectPosition result){
-	
-		if( result.entityHit == null)
+
+	protected void doBlockCollision(MovingObjectPosition result) {
+		this.setDead();
+	}
+
+	public void doEntityCollision(MovingObjectPosition result) {
+		if (result.entityHit == null)
 			return;
+		System.out.println(result.entityHit);
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		InformationWeapon inf = item.getInformation(itemStack, worldObj);
 		int mode = item.getMode(itemStack);
 		double pf = item.getPushForce(mode) * 0.1;
-		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ * pf;
-		BulletManager.doEntityAttack(result.entityHit, DamageSource.causeMobDamage(getThrower()), item.getDamage(mode), dx, dy, dz);
-		
+		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ
+				* pf;
+		BulletManager.doEntityAttack(result.entityHit,
+				DamageSource.causeMobDamage(getThrower()),
+				item.getDamage(mode), dx, dy, dz);
+
 	}
-	
-	public int getBulletDamage(int mode){
+
+	public int getBulletDamage(int mode) {
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		return item.getDamage(mode);
 	}
-	
+
 	@Override
-	public boolean canBeCollidedWith()
-	{
-	    return false;
+	public boolean canBeCollidedWith() {
+		return false;
 	}
 
 	@Override
 	protected float func_70182_d() {
 		return 50.0F;
 	}
-	
+
 }

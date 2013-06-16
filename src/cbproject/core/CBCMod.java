@@ -35,7 +35,6 @@ import cbproject.core.network.NetExplosion;
 import cbproject.core.network.NetKeyUsing;
 import cbproject.core.props.GeneralProps;
 import cbproject.core.proxy.Proxy;
-import cbproject.core.register.CBCAchievements;
 import cbproject.core.register.CBCGuiHandler;
 import cbproject.core.register.CBCKeyProcess;
 import cbproject.core.register.CBCNetHandler;
@@ -64,79 +63,87 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(modid="lc",name="LambdaCraft|Core",version="1.0.0.05")
-@NetworkMod(clientSideRequired=true,serverSideRequired=false, 
-clientPacketHandlerSpec = @SidedPacketHandler(channels = {GeneralProps.NET_CHANNEL_CLIENT}, packetHandler = CBCNetHandler.class),
-serverPacketHandlerSpec = @SidedPacketHandler(channels = {GeneralProps.NET_CHANNEL_SERVER}, packetHandler = CBCNetHandler.class))
-public class CBCMod implements ITickHandler
-{ 
+@Mod(modid = "LambdaCraft", name = "LambdaCraft Core", version = CBCMod.VERSION)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_CLIENT }, packetHandler = CBCNetHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
+public class CBCMod implements ITickHandler {
+	
+	public static final String VERSION = "1.0.0.10pre";
+	
+	public static final String DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION;
+	
 	@SideOnly(Side.CLIENT)
 	private Minecraft mc;
-	
+
 	/**
-	 *  日志
+	 * 日志
 	 */
-	public static Logger log =FMLLog.getLogger();
-	
+	public static Logger log = FMLLog.getLogger();
+
 	/**
 	 * 武器制作机的合成表。
 	 */
 	public static RecipeWeapons recipeWeapons;
-	
+
 	/**
 	 * Creative Tab.
 	 */
-	public static CreativeTabs cct = new CBCCreativeTab("CBCMod", 0), cctMisc = new CBCCreativeTab("CBCMisc", 1);
-	
+	public static CreativeTabs cct = new CBCCreativeTab("CBCMod", 0),
+			cctMisc = new CBCCreativeTab("CBCMisc", 1);
+
 	/**
 	 * 公用设置。
 	 */
 	public static Config config;
-	
-	
-	@Instance("lc")
+
+	@Instance("LambdaCraft")
 	public static CBCMod instance;
-	
+
 	/**
 	 * 加载代理。
 	 */
-	@SidedProxy(clientSide="cbproject.core.proxy.ClientProxy",serverSide="cbproject.core.proxy.Proxy")
+	@SidedProxy(clientSide = "cbproject.core.proxy.ClientProxy", serverSide = "cbproject.core.proxy.Proxy")
 	public static cbproject.core.proxy.Proxy proxy;
 
-	public static boolean ic2Installed;
-	
+	public static boolean ic2Installed = false;
+
 	/**
 	 * 预加载（设置、世界生成、注册Event）
+	 * 
 	 * @param event
 	 */
 	@PreInit
-	public void preInit(FMLPreInitializationEvent event)
-	{
-		config=new Config(event.getSuggestedConfigurationFile());
+	public void preInit(FMLPreInitializationEvent event) {
+		config = new Config(event.getSuggestedConfigurationFile());
 		EnergyNet.initialize();
 
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
-		
-		if(FMLCommonHandler.instance().getSide().isClient()){
+
+		if (FMLCommonHandler.instance().getSide().isClient()) {
 			MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
-			CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
+			CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F),
+					true, new KeyUse());
 		}
-		
-	} 
+
+	}
 
 	/**
 	 * 加载（方块、物品、网络处理、其他)
+	 * 
 	 * @param Init
 	 */
 	@Init
-	public void init(FMLInitializationEvent Init){
+	public void init(FMLInitializationEvent Init) {
 		ic2Installed = ModLoader.isModLoaded("ic2");
-		//Blocks, Items, GUI Handler,Key Process.
-        NetworkRegistry.instance().registerGuiHandler(this, new CBCGuiHandler());
-		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod", "LambdaCraft");
-		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMisc", "LambdaCraft:Misc");
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION, new NetExplosion());
+		// Blocks, Items, GUI Handler,Key Process.
+		NetworkRegistry.instance()
+				.registerGuiHandler(this, new CBCGuiHandler());
+		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod",
+				"LambdaCraft");
+		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMisc",
+				"LambdaCraft:Misc");
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION,
+				new NetExplosion());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
@@ -144,22 +151,25 @@ public class CBCMod implements ITickHandler
 
 	/**
 	 * 加载后（保存设置）
+	 * 
 	 * @param Init
 	 */
 	@PostInit
-	public void postInit(FMLPostInitializationEvent Init){
+	public void postInit(FMLPostInitializationEvent Init) {
 		config.SaveConfig();
-		
+
 	}
 
 	/**
 	 * 服务器加载（注册指令）
+	 * 
 	 * @param event
 	 */
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
-	    CommandHandler commandManager = (CommandHandler)event.getServer().getCommandManager();
-	 
+		CommandHandler commandManager = (CommandHandler) event.getServer()
+				.getCommandManager();
+
 	}
 
 	@Override
@@ -183,11 +193,5 @@ public class CBCMod implements ITickHandler
 	public String getLabel() {
 		return "LambdaCraft ticks";
 	}
-	
+
 }
-
-
-
-
-
-

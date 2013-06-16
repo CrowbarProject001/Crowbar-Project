@@ -16,8 +16,6 @@ package cbproject.crafting.gui;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
 import org.lwjgl.opengl.GL11;
 
 import cbproject.core.gui.CBCGuiButton;
@@ -25,15 +23,14 @@ import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
-import cbproject.crafting.blocks.TileGeneratorFire;
 import cbproject.crafting.blocks.TileGeneratorLava;
 import cbproject.crafting.register.CBCBlocks;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
-public class GuiGenLava  extends CBCGuiContainer{
+public class GuiGenLava extends CBCGuiContainer {
 
 	TileGeneratorLava te;
 
@@ -46,53 +43,52 @@ public class GuiGenLava  extends CBCGuiContainer{
 
 		@Override
 		public String getTip() {
-			return te.bucketCnt * te.ENERGY_PER_BUCKET + te.currentEnergy + "/420000 EU";
+			return te.bucketCnt * TileGeneratorLava.ENERGY_PER_BUCKET + te.currentEnergy
+					+ "/420000 EU";
 		}
-		
+
 	}
-	
+
 	public GuiGenLava(TileGeneratorLava gen, InventoryPlayer inv) {
 		super(new ContainerGeneratorLava(gen, inv));
 		te = gen;
 		this.xSize = 173;
 		this.ySize = 178;
 	}
-	
+
 	@Override
-    public void initGui()
-    {
+	public void initGui() {
 		super.initGui();
 		CBCGuiPart energy = new CBCGuiPart("energy", 91, 18, 6, 47);
 		this.addElement(energy);
 		this.setElementTip("energy", new TipEnergy());
-    }
+	}
 
 	@Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	String guiName = CBCBlocks.genLava.getLocalizedName();
-    	this.fontRenderer.drawString(guiName, 7, 7, 0xdadada);
-    }
-	
+		String guiName = CBCBlocks.genLava.getLocalizedName();
+		this.fontRenderer.drawString(guiName, 7, 7, 0xdadada);
+	}
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture(ClientProps.GUI_GENLAVA_PATH);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-        int len = 0;
-        len = te.bucketCnt * 47 / te.maxStorage;
-        len += Math.round(2.35F * te.currentEnergy / te.ENERGY_PER_BUCKET);
-        this.drawTexturedModalRect(x + 91, y + 65 - len, 173, 59 - len, 6, len);
-        this.drawElements();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+		mc.renderEngine.bindTexture(ClientProps.GUI_GENLAVA_PATH);
+		int x = (width - xSize) / 2;
+		int y = (height - ySize) / 2;
+		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+		int len = 0;
+		len = te.bucketCnt * 47 / te.maxStorage;
+		len += Math.round(2.35F * te.currentEnergy / TileGeneratorLava.ENERGY_PER_BUCKET);
+		this.drawTexturedModalRect(x + 91, y + 65 - len, 173, 59 - len, 6, len);
+		this.drawElements();
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPopMatrix();
 	}
 
 	@Override

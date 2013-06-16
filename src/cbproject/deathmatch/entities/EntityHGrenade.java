@@ -14,7 +14,6 @@
  */
 package cbproject.deathmatch.entities;
 
-
 import cbproject.deathmatch.utils.BulletManager;
 
 import net.minecraft.block.Block;
@@ -26,6 +25,7 @@ import net.minecraft.world.World;
 
 /**
  * 手雷实体。
+ * 
  * @author Administrator
  * 
  */
@@ -33,93 +33,89 @@ public class EntityHGrenade extends EntityThrowable {
 
 	int delay;
 	int time;
-	
-    public EntityHGrenade(World par1World, EntityLiving par2EntityLiving,int par3Fuse)
-    {
-        super(par1World,par2EntityLiving);
-        delay = 60 - par3Fuse;
-        time = 0;
-        
-    }
-    
-    public EntityHGrenade(World world){
-    	super(world);
-    }
+
+	public EntityHGrenade(World par1World, EntityLiving par2EntityLiving,
+			int par3Fuse) {
+		super(par1World, par2EntityLiving);
+		delay = 60 - par3Fuse;
+		time = 0;
+
+	}
+
+	public EntityHGrenade(World world) {
+		super(world);
+	}
 
 	@Override
-	protected void onImpact(MovingObjectPosition par1)
-	{    
-		if(worldObj.isRemote)
+	protected void onImpact(MovingObjectPosition par1) {
+		if (worldObj.isRemote)
 			return;
-		
-	    if(ticksExisted - time > 5){ //最小时间间隔0.3s
-	    	worldObj.playSound(posX,posY,posZ, "cbc.weapons.hgrenadebounce", 0.5F, (float) (Math.random() * 0.4F + 0.8F),true);
-	    	time = ticksExisted;
-	    }
-	    
 
-	    int id =  this.worldObj.getBlockId(par1.blockX, par1.blockY, par1.blockZ);
-	    //碰撞代码
-	    if(par1.typeOfHit == EnumMovingObjectType.TILE)
-	    {
-	    	if(!Block.blocksList[id].isCollidable())
-	    		return;
-	    	switch(par1.sideHit){
-	    	
-	    	case 0:
-	    	case 1:
-	    		this.motionY = 0.3*-motionY;
-	    		this.motionX = 0.6 * motionX;
-	    		this.motionZ = 0.6 * motionZ;
-	    		break;
-	    		
-	    	case 2:
-	    	case 3:
-	    		this.motionZ = 0.6*-motionZ;
-	    		break;
-	    		
-	    	case 4:
-	    	case 5:
-	    		this.motionX = 0.6*-motionX;
-	    		break;
-	    		
-	    	default:
-	    		break;
-	    	}
-	    }
+		if (ticksExisted - time > 5) { // 最小时间间隔0.3s
+			worldObj.playSound(posX, posY, posZ, "cbc.weapons.hgrenadebounce",
+					0.5F, (float) (Math.random() * 0.4F + 0.8F), true);
+			time = ticksExisted;
+		}
+
+		int id = this.worldObj
+				.getBlockId(par1.blockX, par1.blockY, par1.blockZ);
+		// 碰撞代码
+		if (par1.typeOfHit == EnumMovingObjectType.TILE) {
+			if (!Block.blocksList[id].isCollidable())
+				return;
+			switch (par1.sideHit) {
+
+			case 0:
+			case 1:
+				this.motionY = 0.3 * -motionY;
+				this.motionX = 0.6 * motionX;
+				this.motionZ = 0.6 * motionZ;
+				break;
+
+			case 2:
+			case 3:
+				this.motionZ = 0.6 * -motionZ;
+				break;
+
+			case 4:
+			case 5:
+				this.motionX = 0.6 * -motionX;
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
-	
-	private void Explode(){
-		if(worldObj.isRemote)
+
+	private void Explode() {
+		if (worldObj.isRemote)
 			return;
-		BulletManager.Explode(worldObj,this, 3.0F, 3.5F, posX, posY, posZ, 35);
+		BulletManager.Explode(worldObj, this, 3.0F, 3.5F, posX, posY, posZ, 35);
 		this.setDead();
 	}
-	
+
 	@Override
-    public void onUpdate()
-    {
-        super.onUpdate();
-        if(this.ticksExisted >= delay || this.isBurning()) //Time to explode >)
-        		Explode();
-    }
-	
-	@Override
-	public boolean canBeCollidedWith()
-	{
-	    return true;
+	public void onUpdate() {
+		super.onUpdate();
+		if (this.ticksExisted >= delay || this.isBurning()) // Time to explode
+															// >)
+			Explode();
 	}
 
 	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.025F;
-    }
-    
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+
 	@Override
-    protected float func_70182_d()
-    {
-    	return 0.7F;
-    }
+	protected float getGravityVelocity() {
+		return 0.025F;
+	}
+
+	@Override
+	protected float func_70182_d() {
+		return 0.7F;
+	}
 
 }

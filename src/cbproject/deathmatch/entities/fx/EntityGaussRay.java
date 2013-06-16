@@ -18,17 +18,23 @@ import cbproject.core.utils.MotionXYZ;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
  * 高斯枪光束渲染的实用类。
+ * 
  * @author WeAthFolD
  */
 public class EntityGaussRay extends Entity {
+
+	public double distanceToRender = 50;
+	private MotionXYZ motion = null;
 	
 	
-	public EntityGaussRay(MotionXYZ begin, World par1World){
-		
+	public EntityGaussRay(MotionXYZ begin, World par1World) {
+
 		super(par1World);
 		this.posX = begin.posX;
 		this.posY = begin.posY;
@@ -37,50 +43,69 @@ public class EntityGaussRay extends Entity {
 		this.motionY = begin.motionY;
 		this.motionZ = begin.motionZ;
 		this.setRayHeading(motionX, motionY, motionZ, 1.0F, 1.0F);
+		
 	}
 
-	public EntityGaussRay(World world){
+	public EntityGaussRay(World world) {
 		super(world);
 	}
-	
-    /**
-     * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
-     */
-    public void setRayHeading(double par1, double par3, double par5, float par7, float par8)
-    {
-        float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
-        par1 /= f2;
-        par3 /= f2;
-        par5 /= f2;
-        par1 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
-        par3 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
-        par5 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
-        par1 *= par7;
-        par3 *= par7;
-        par5 *= par7;
-        this.motionX = par1;
-        this.motionY = par3;
-        this.motionZ = par5;
-        float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
-        this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, f3) * 180.0D / Math.PI);
-    }
-    
+
+	/**
+	 * Similar to setArrowHeading, it's point the throwable entity to a x, y, z
+	 * direction.
+	 */
+	public void setRayHeading(double par1, double par3, double par5,
+			float par7, float par8) {
+		float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5
+				* par5);
+		par1 /= f2;
+		par3 /= f2;
+		par5 /= f2;
+		par1 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
+		par3 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
+		par5 += this.rand.nextGaussian() * 0.007499999832361937D * par8;
+		par1 *= par7;
+		par3 *= par7;
+		par5 *= par7;
+		this.motionX = par1;
+		this.motionY = par3;
+		this.motionZ = par5;
+		float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(par1,
+				par5) * 180.0D / Math.PI);
+		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3,
+				f3) * 180.0D / Math.PI);
+	}
+
 	@Override
-	public void onUpdate(){
-		if(this.ticksExisted > 2)
+	public void onUpdate() {
+		if(motion == null)
+			motion = new MotionXYZ(this);
+		MovingObjectPosition trace = this.worldObj.rayTraceBlocks(motion
+				.asVec3(this.worldObj),
+				motion.updateMotion(100.0F).asVec3(this.worldObj));
+		Vec3 end = (trace == null) ? motion.asVec3(this.worldObj) : trace.hitVec;
+		double dx = end.xCoord - this.posX;
+		double dy = end.yCoord - this.posY;
+		double dz = end.zCoord - this.posZ;
+		distanceToRender = Math.sqrt(dx * dx + dy * dy + dz * dz);
+		if(distanceToRender < 3)
+			distanceToRender = 50;
+		if (this.ticksExisted > 2)
 			this.setDead();
 	}
-	
+
 	@Override
 	protected void entityInit() {
 		ignoreFrustumCheck = true;
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {}
+	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
+	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {}
+	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
+	}
 
 }

@@ -21,16 +21,20 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author Administrator
- *
+ * 
  */
 public class RenderTileCharger extends RendererSidedCube {
 
-	public RenderTileCharger(Block block){
+	public RenderTileCharger(Block block) {
 		super(block);
 	}
-	
-	/* (non-Javadoc)
-	 * @see net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer#renderTileEntityAt(net.minecraft.tileentity.TileEntity, double, double, double, float)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer#
+	 * renderTileEntityAt(net.minecraft.tileentity.TileEntity, double, double,
+	 * double, float)
 	 */
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y,
@@ -40,12 +44,12 @@ public class RenderTileCharger extends RendererSidedCube {
 
 	@Override
 	public String getTexture(int side, int metadata) {
-		if(side == 0 || side == 1)
+		if (side == 0 || side == 1)
 			return ClientProps.HEVCHARGER_TD;
-		if(side == metadata)
+		if (side == metadata)
 			return ClientProps.HEVCHARGER_MAIN;
-		if(metadata == 5 || metadata == 3)
-			if(side == metadata - 2)
+		if (metadata == 5 || metadata == 3)
+			if (side == metadata - 2)
 				return ClientProps.HEVCHARGER_BACK;
 		return ClientProps.HEVCHARGER_SIDE;
 	}

@@ -31,7 +31,7 @@ import cbproject.deathmatch.register.DMBlocks;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class GuiMedFiller extends CBCGuiContainer {
 
@@ -61,26 +61,29 @@ public class GuiMedFiller extends CBCGuiContainer {
 		}
 
 	}
-	
+
 	class TipBehavior implements IGuiTip {
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.rsbehavior.name");
+			return EnumChatFormatting.RED
+					+ StatCollector.translateToLocal("gui.rsbehavior.name");
 		}
 
 		@Override
 		public String getTip() {
-			return StatCollector.translateToLocal(te.currentBehavior.toString());
+			return StatCollector
+					.translateToLocal(te.currentBehavior.toString());
 		}
-		
+
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart energy = new CBCGuiPart("energy", 112, 22, 7, 51),
-				behavior = new CBCGuiButton("behavior", 171, 15, 23, 10).setDownCoords(223, 57).setTextureCoords(200, 57);
+		CBCGuiPart energy = new CBCGuiPart("energy", 112, 22, 7, 51), behavior = new CBCGuiButton(
+				"behavior", 171, 15, 23, 10).setDownCoords(223, 57)
+				.setTextureCoords(200, 57);
 		this.addElement(energy);
 		this.addElement(behavior);
 		this.setElementTip("energy", new TipEnergy());
@@ -104,7 +107,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 	 */
 	@Override
 	public void onButtonClicked(CBCGuiButton button) {
-		if(button.name == "behavior") {
+		if (button.name == "behavior") {
 			NetMedFillerClient.sendPacket(te);
 		}
 	}
@@ -113,13 +116,13 @@ public class GuiMedFiller extends CBCGuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		//String blockName = DMBlocks.medkitFiller.getLocalizedName();
+		// String blockName = DMBlocks.medkitFiller.getLocalizedName();
 		String blockName = DMBlocks.medkitFiller.getLocalizedName();
 		fontRenderer.drawString(EnumChatFormatting.RED + blockName,
 				100 - fontRenderer.getStringWidth(blockName) / 2, 1, 0xffffff);
 		blockName = StatCollector.translateToLocal("container.inventory");
-		fontRenderer.drawString(EnumChatFormatting.DARK_GRAY + blockName,
-				8, 86, 0xffffff);
+		fontRenderer.drawString(EnumChatFormatting.DARK_GRAY + blockName, 8,
+				86, 0xffffff);
 	}
 
 	/*
@@ -131,18 +134,20 @@ public class GuiMedFiller extends CBCGuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int a, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
+
 		mc.renderEngine.bindTexture(ClientProps.GUI_MEDFILLER_PATH);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-		
+
 		int height = te.currentEnergy * 51 / te.maxEnergy;
-		this.drawTexturedModalRect(x + 112, y + 73 - height, 200, 57 - height, 7, height);
-		
-		for(int i = 0; i < 3; i++) {
+		this.drawTexturedModalRect(x + 112, y + 73 - height, 200, 57 - height,
+				7, height);
+
+		for (int i = 0; i < 3; i++) {
 			int length = te.progresses[i] * 17 / TileMedkitFiller.CRAFT_LIMIT;
-			this.drawTexturedModalRect(x + 29 * (i + 1), y + 77, 200, 3, length, 3);
+			this.drawTexturedModalRect(x + 29 * (i + 1), y + 77, 200, 3,
+					length, 3);
 		}
 		this.drawElements();
 	}

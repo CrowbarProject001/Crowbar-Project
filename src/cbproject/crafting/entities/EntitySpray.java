@@ -16,16 +16,9 @@ package cbproject.crafting.entities;
 
 import java.util.List;
 
-import cpw.mods.fml.common.network.Player;
-
-import cbproject.crafting.register.CBCItems;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -38,15 +31,15 @@ import net.minecraft.world.World;
  */
 public class EntitySpray extends Entity {
 
-	public final static int[] GRIDS_HEIGHTS = {2, 2};
-	public final static int[] GRIDS_WIDTHS = {10, 2};
+	public final static int[] GRIDS_HEIGHTS = { 2, 2 };
+	public final static int[] GRIDS_WIDTHS = { 10, 2 };
 
 	public int hanging_direction;
 	public int block_pos_x;
 	public int block_pos_y;
 	public int block_pos_z;
 	public int title_id;
-	
+
 	private EntityPlayer player;
 
 	// 被框架自动调用
@@ -57,7 +50,7 @@ public class EntitySpray extends Entity {
 
 	// 被 Item 调用
 	public EntitySpray(World world, int x, int y, int z, int direction,
-			int title_id , EntityPlayer thePlayer) {
+			int title_id, EntityPlayer thePlayer) {
 		this(world);
 
 		this.block_pos_x = x;
@@ -66,10 +59,9 @@ public class EntitySpray extends Entity {
 		this.hanging_direction = direction;
 		this.title_id = title_id;
 
-		
 		this.save_params();
 		this.init_params();
-		
+
 		this.player = thePlayer;
 	}
 
@@ -90,7 +82,7 @@ public class EntitySpray extends Entity {
 		this.dataWatcher.updateObject(22, this.title_id);
 	}
 
-	//为渲染器载入方向， x， y， z， title_id 等参数
+	// 为渲染器载入方向， x， y， z， title_id 等参数
 	public void load_params() {
 		this.hanging_direction = this.dataWatcher.getWatchableObjectInt(18);
 		this.block_pos_x = this.dataWatcher.getWatchableObjectInt(19);
@@ -187,9 +179,9 @@ public class EntitySpray extends Entity {
 		}
 	}
 
-	//判断被放置界面是否可用
+	// 判断被放置界面是否可用
 	public boolean onValidSurface() {
-		//如果碰撞箱不是空的返回false
+		// 如果碰撞箱不是空的返回false
 		if (!this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox)
 				.isEmpty()) {
 			return false;
@@ -200,8 +192,8 @@ public class EntitySpray extends Entity {
 		int z = this.block_pos_z;
 		int direction = this.hanging_direction;
 
-		float half_width = GRIDS_WIDTHS[this.title_id] / 2.0F; //宽度一半
-		float half_height = GRIDS_HEIGHTS[this.title_id] / 2.0F; //高度一半
+		float half_width = GRIDS_WIDTHS[this.title_id] / 2.0F; // 宽度一半
+		float half_height = GRIDS_HEIGHTS[this.title_id] / 2.0F; // 高度一半
 
 		if (direction == 2) {
 			x = MathHelper.floor_double(this.posX - half_width);
@@ -233,29 +225,30 @@ public class EntitySpray extends Entity {
 				} else {
 					material = this.worldObj.getBlockMaterial(x + i, y + j,
 							this.block_pos_z);
-					material2 = this.worldObj.getBlockMaterial(x + i,
-							y + j, this.block_pos_z + 1);
+					material2 = this.worldObj.getBlockMaterial(x + i, y + j,
+							this.block_pos_z + 1);
 				}
 				if (!material.isSolid()) {
 					sendMessage(StatCollector.translateToLocal("spary.nospace"));
 					return false;
 				}
 				if (material2.isLiquid()) {
-					sendMessage(StatCollector.translateToLocal("spary.haswater"));
+					sendMessage(StatCollector
+							.translateToLocal("spary.haswater"));
 					return false;
 				}
 			}
-		
-			
+
 		}
 
-		//判断碰装箱内是否出现EntitySpray的实例
+		// 判断碰装箱内是否出现EntitySpray的实例
 		List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this,
 				this.boundingBox);
 		for (Object entity : list) {
 			if (!(entity instanceof EntitySpray))
 				continue;
-			sendMessage(StatCollector.translateToLocal("spary.beenblocked"), entity.toString());
+			sendMessage(StatCollector.translateToLocal("spary.beenblocked"),
+					entity.toString());
 			return false;
 		}
 
@@ -281,7 +274,7 @@ public class EntitySpray extends Entity {
 		}
 		return true;
 	}
-	
+
 	private void sendMessage(String... str) {
 		for (String s : str) {
 			player.sendChatToPlayer(s);

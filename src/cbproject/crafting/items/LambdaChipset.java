@@ -22,5 +22,5 @@ public class LambdaChipset extends CBCGenericItem {
 		super(par1);
 		setIAndU("lambdachip");
 	}
-	
+
 }

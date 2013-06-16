@@ -28,37 +28,39 @@ import net.minecraft.item.ItemStack;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class ContainerArmorCharger extends Container {
 
 	protected TileArmorCharger te;
-	
+
 	/**
 	 * 
 	 */
 	public ContainerArmorCharger(TileArmorCharger t, InventoryPlayer playerinv) {
-		te  = t;
-		for(int i = 0; i < 4; i++){
+		te = t;
+		for (int i = 0; i < 4; i++) {
 			addSlotToContainer(new SlotElectricItem(te, i, 8, 8 + 18 * i));
 		}
-		for(int i = 0; i < 3; i++){
+		for (int i = 0; i < 3; i++) {
 			addSlotToContainer(new Slot(te, i + 4, 81 + 23 * i, 60));
 		}
 		bindPlayerInventory(playerinv);
-				
+
 	}
-	
+
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
-			icrafting.sendProgressBarUpdate(this, 0, (int) (te.currentEnergy / 12));
-			icrafting.sendProgressBarUpdate(this, 1, te.currentBehavior.ordinal() * (te.isCharging ? 1 : -1));
+			icrafting.sendProgressBarUpdate(this, 0,
+					te.currentEnergy / 12);
+			icrafting.sendProgressBarUpdate(this, 1,
+					te.currentBehavior.ordinal() * (te.isCharging ? 1 : -1));
 		}
 	}
-	
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void updateProgressBar(int par1, int par2) {
@@ -69,7 +71,7 @@ public class ContainerArmorCharger extends Container {
 			te.isCharging = par2 > 0 ? true : false;
 		}
 	}
-	
+
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -86,7 +88,7 @@ public class ContainerArmorCharger extends Container {
 	public boolean canInteractWith(EntityPlayer player) {
 		return te.isUseableByPlayer(player);
 	}
-	
+
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
 		ItemStack stack = null;
@@ -99,7 +101,8 @@ public class ContainerArmorCharger extends Container {
 			// places it into the tileEntity is possible since its in the player
 			// inventory
 			if (slot >= 8) {
-				if(stackInSlot != null && stackInSlot.getItem() instanceof ArmorHEV){
+				if (stackInSlot != null
+						&& stackInSlot.getItem() instanceof ArmorHEV) {
 					if (!this.mergeItemStack(stackInSlot, 0, 4, true)) {
 						return null;
 					}
@@ -108,7 +111,7 @@ public class ContainerArmorCharger extends Container {
 				}
 			}
 			// merges the item into player inventory since its in the tileEntity
-			else{
+			else {
 				if (!this.mergeItemStack(stackInSlot, 8, 43, false))
 					return null;
 			}

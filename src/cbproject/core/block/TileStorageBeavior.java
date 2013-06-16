@@ -16,7 +16,7 @@ package cbproject.core.block;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public enum TileStorageBeavior {
 	NONE, RECEIVEONLY;

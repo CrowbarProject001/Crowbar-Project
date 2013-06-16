@@ -19,6 +19,7 @@ import cpw.mods.fml.common.network.Player;
 
 /**
  * 实现这个接口以使用CBCNetHandler及对应的包处理。
+ * 
  * @author WeAthFolD
  */
 public interface IChannelProcess {

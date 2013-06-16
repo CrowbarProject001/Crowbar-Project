@@ -19,8 +19,9 @@ import cbproject.core.utils.MotionXYZ;
 
 /**
  * 用来标记高斯光束用色彩渲染的空类。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class EntityGaussRayColored extends EntityGaussRay {
 

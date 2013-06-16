@@ -23,45 +23,43 @@ import net.minecraft.world.World;
 
 /**
  * 十字弩的爆炸弩箭实体。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class EntityCrossbowArrow extends EntityThrowable {
 
 	public EntityCrossbowArrow(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
 	}
-	
-	public EntityCrossbowArrow(World world){
+
+	public EntityCrossbowArrow(World world) {
 		super(world);
 	}
-	
+
 	@Override
 	protected void onImpact(MovingObjectPosition var1) {
-		Explode();	
+		Explode();
 	}
-	
-	private void Explode(){
+
+	private void Explode() {
 		BulletManager.Explode(worldObj, this, 1.0F, 3.0F, posX, posY, posZ, 30);
 		this.setDead();
 	}
-	
+
 	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.0F;
-    }
-    
+	protected float getGravityVelocity() {
+		return 0.0F;
+	}
+
 	@Override
-    protected float func_70182_d()
-    {
-    	return 5.0F;
-    }
-	
+	protected float func_70182_d() {
+		return 5.0F;
+	}
+
 	@Override
-	public boolean canBeCollidedWith()
-	{
-	    return true;
+	public boolean canBeCollidedWith() {
+		return true;
 	}
 
 }

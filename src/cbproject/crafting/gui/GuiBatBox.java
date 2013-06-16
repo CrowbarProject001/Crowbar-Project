@@ -17,7 +17,6 @@ package cbproject.crafting.gui;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import cbproject.core.gui.CBCGuiButton;
@@ -26,16 +25,15 @@ import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
 import cbproject.crafting.blocks.TileBatBox;
-import cbproject.crafting.register.CBCBlocks;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class GuiBatBox extends CBCGuiContainer {
 
 	private TileBatBox te;
-	
+
 	/**
 	 * @param par1Container
 	 */
@@ -45,7 +43,7 @@ public class GuiBatBox extends CBCGuiContainer {
 		this.xSize = 173;
 		this.ySize = 165;
 	}
-	
+
 	private class TipEnergy implements IGuiTip {
 
 		@Override
@@ -57,9 +55,9 @@ public class GuiBatBox extends CBCGuiContainer {
 		public String getTip() {
 			return te.currentEnergy + "/" + te.maxStorage + " EU";
 		}
-		
+
 	}
-	
+
 	@Override
 	public void initGui() {
 		super.initGui();
@@ -67,21 +65,24 @@ public class GuiBatBox extends CBCGuiContainer {
 		this.addElement(energy);
 		this.setElementTip("energy", new TipEnergy());
 	}
-	
-	@Override
-	public void onButtonClicked(CBCGuiButton button) {}
 
 	@Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
+	public void onButtonClicked(CBCGuiButton button) {
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	String guiName = StatCollector.translateToLocal(te.getInvName());
-    	this.fontRenderer.drawString(guiName, 7, 7, 0xdadada);
-    }
-	
-	/* (non-Javadoc)
-	 * @see net.minecraft.client.gui.inventory.GuiContainer#drawGuiContainerBackgroundLayer(float, int, int)
+		String guiName = StatCollector.translateToLocal(te.getInvName());
+		this.fontRenderer.drawString(guiName, 7, 7, 0xdadada);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.minecraft.client.gui.inventory.GuiContainer#
+	 * drawGuiContainerBackgroundLayer(float, int, int)
 	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
@@ -90,18 +91,18 @@ public class GuiBatBox extends CBCGuiContainer {
 		mc.renderEngine.bindTexture(ClientProps.GUI_BATBOX_PATH);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-       
-        if(te.currentEnergy > 0){ 
-        	int len = te.currentEnergy * 50 / te.maxStorage;
-        	this.drawTexturedModalRect(x + 53, y + 38, 173, 10, len, 7);
-        }
-        
-        this.drawElements();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+		int x = (width - xSize) / 2;
+		int y = (height - ySize) / 2;
+		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+
+		if (te.currentEnergy > 0) {
+			int len = te.currentEnergy * 50 / te.maxStorage;
+			this.drawTexturedModalRect(x + 53, y + 38, 173, 10, len, 7);
+		}
+
+		this.drawElements();
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPopMatrix();
 	}
 
 }

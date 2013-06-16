@@ -18,18 +18,19 @@ import net.minecraft.world.World;
 import cbproject.api.energy.tile.IEnergyTile;
 
 /**
- * TODO:求自己添加注释
+ * 注册能量TileEntity的事件。
+ * 
  * @author HopeAsd
- *
+ * 
  */
-public class EnergyTileLoadEvent extends EnergyTileEvent{
+public class EnergyTileLoadEvent extends EnergyTileEvent {
 	public static World theWorld;
-	
-	public EnergyTileLoadEvent (IEnergyTile energyTile){
+
+	public EnergyTileLoadEvent(IEnergyTile energyTile) {
 		super(theWorld, energyTile);
 	}
 
-	public EnergyTileLoadEvent (World world , IEnergyTile energyTile){
+	public EnergyTileLoadEvent(World world, IEnergyTile energyTile) {
 		super(world, energyTile);
 	}
 

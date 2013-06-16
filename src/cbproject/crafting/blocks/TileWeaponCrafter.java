@@ -1,5 +1,5 @@
 /** 
-  * Copyright (c) LambdaCraft Modding Team, 2013
+ * Copyright (c) LambdaCraft Modding Team, 2013
  * 版权许可：LambdaCraft 制作小组， 2013.
  * http://lambdacraft.half-life.cn/
  * 
@@ -14,21 +14,15 @@
  */
 package cbproject.crafting.blocks;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.MathHelper;
 import cbproject.core.block.CBCTileEntity;
 import cbproject.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
-import cbproject.crafting.items.ItemMaterial;
 import cbproject.crafting.recipes.RecipeCrafter;
 import cbproject.crafting.recipes.RecipeRepair;
 import cbproject.crafting.recipes.RecipeWeapons;
@@ -37,6 +31,7 @@ import cbproject.deathmatch.utils.AmmoManager;
 
 /**
  * 武器合成机和高级武器合成机的TileEntity类。
+ * 
  * @author WeAthFolD
  */
 public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
@@ -45,7 +40,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 	 * 最大存储热量。
 	 */
 	public int maxHeat;
-	
+
 	public ItemStack[] inventory;
 	public ItemStack[] craftingStacks;
 	public int scrollFactor = 0;
@@ -58,13 +53,13 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 	public boolean isAdvanced = false;
 	public boolean isLoad = false;
 	public int tickUpdate = 0;
-	
+
 	public int heatRequired = 0;
-	
+
 	/**
-	 * inventory: 1-18：材料存储  19:燃料槽  20:合成结果槽
+	 * inventory: 1-18：材料存储 19:燃料槽 20:合成结果槽
 	 * 
-	 * craftingStacks: 4*3  的合成表显示槽。
+	 * craftingStacks: 4*3 的合成表显示槽。
 	 */
 	public TileWeaponCrafter() {
 		inventory = new ItemStack[20];
@@ -73,62 +68,68 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 
 	@Override
 	public void updateEntity() {
-		
-		if(!isLoad){
-			if(blockType == null)
+
+		if (!isLoad) {
+			if (blockType == null)
 				return;
-			isAdvanced = this.blockType.blockID == CBCBlocks.weaponCrafter.blockID? false : true;
+			isAdvanced = this.blockType.blockID == CBCBlocks.weaponCrafter.blockID ? false
+					: true;
 			this.maxHeat = isAdvanced ? 7000 : 4000;
 			this.writeRecipeInfoToSlot();
 			isLoad = true;
 		}
-		
-		if(worldObj.isRemote)
+
+		if (worldObj.isRemote)
 			return;
-		
-		if(heat > 0)
+
+		if (heat > 0)
 			heat--;
-		
-		if(iconType == CrafterIconType.NOMATERIAL && worldObj.getWorldTime() - lastTime > 20){
-			iconType = isCrafting? CrafterIconType.CRAFTING : CrafterIconType.NONE;
+
+		if (iconType == CrafterIconType.NOMATERIAL
+				&& worldObj.getWorldTime() - lastTime > 20) {
+			iconType = isCrafting ? CrafterIconType.CRAFTING
+					: CrafterIconType.NONE;
 		}
-		
-		if(isCrafting){
-			if(currentRecipe.heatRequired <= this.heat && hasEnoughMaterial(currentRecipe)){
+
+		if (isCrafting) {
+			if (currentRecipe.heatRequired <= this.heat
+					&& hasEnoughMaterial(currentRecipe)) {
 				craftItem();
 			}
-        	if(!isBurning){
-        		tryBurn();
-        	}
-        	if(worldObj.getWorldTime() - lastTime > 1000){
-        		isCrafting = false;
-        	}
-        }
-		
-		if(isBurning){
+			if (!isBurning) {
+				tryBurn();
+			}
+			if (worldObj.getWorldTime() - lastTime > 1000) {
+				isCrafting = false;
+			}
+		}
+
+		if (isBurning) {
 			burnTimeLeft--;
-			if(heat < maxHeat)
-				heat+=3;
-			if(burnTimeLeft <= 0){
+			if (heat < maxHeat)
+				heat += 3;
+			if (burnTimeLeft <= 0) {
 				isBurning = false;
 			}
 		}
-		
-		if(++tickUpdate > 3)
+
+		if (++tickUpdate > 3)
 			this.onInventoryChanged();
 	}
-	
+
 	protected void writeRecipeInfoToSlot() {
 		clearRecipeInfo();
 		int length;
-		if(!this.isAdvanced)
+		if (!this.isAdvanced)
 			length = RecipeWeapons.getRecipeLength(this.page);
-		else length = RecipeWeapons.getAdvRecipeLength(this.page);
-		
+		else
+			length = RecipeWeapons.getAdvRecipeLength(this.page);
+
 		for (int i = 0; i < length && i < 3; i++) {
-			RecipeCrafter r = !this.isAdvanced ? RecipeWeapons.getRecipe(this.page, i
-					+ scrollFactor) : RecipeWeapons.getAdvRecipe(this.page, i + scrollFactor);
-			if(r == null)
+			RecipeCrafter r = !this.isAdvanced ? RecipeWeapons.getRecipe(
+					this.page, i + scrollFactor) : RecipeWeapons.getAdvRecipe(
+					this.page, i + scrollFactor);
+			if (r == null)
 				return;
 			for (int j = 0; j < 3; j++) {
 				if (r.input.length > j)
@@ -137,13 +138,13 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			this.setInventorySlotContents(9 + i, r.output);
 		}
 	}
-	
+
 	protected void clearRecipeInfo() {
 		for (int i = 0; i < 12; i++) {
 			this.setInventorySlotContents(i, null);
 		}
 	}
-	
+
 	@Override
 	public int getSizeInventory() {
 		return inventory.length;
@@ -171,7 +172,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 		}
 		return stack;
 	}
-	
+
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 		ItemStack stack = getStackInSlot(slot);
@@ -222,61 +223,62 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 		else
 			inventory[i - 12] = itemstack;
 	}
-	
-    /**
-     * Reads a tile entity from NBT.
-     */
-	@Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        for(int i = 0; i < 20; i++){
-        	short id = nbt.getShort("id" + i), damage = nbt.getShort("damage" + i);
-        	byte count = nbt.getByte("count" + i);
-        	if(id == 0)
-        		continue;
-        	ItemStack is = new ItemStack(id, count, damage);
-        	inventory[i] = is;
-        }
-        this.page = nbt.getByte("page");
-        this.scrollFactor = nbt.getShort("scroll");
-    }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
-    @Override
-	public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        for(int i = 0; i < 20; i++){
-        	if(inventory[i] == null)
-        		continue;
-        	nbt.setShort("id"+i, (short) inventory[i].itemID);
-        	nbt.setByte("count"+i, (byte) inventory[i].stackSize);
-        	nbt.setShort("damage"+i, (short)inventory[i].getItemDamage());
-        }
-        nbt.setByte("page", (byte) page);
-        nbt.setShort("scroll", (short) scrollFactor);
-    }
-    
-	public TileWeaponCrafter setAdvanced(boolean is){
+	/**
+	 * Reads a tile entity from NBT.
+	 */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+		for (int i = 0; i < 20; i++) {
+			short id = nbt.getShort("id" + i), damage = nbt.getShort("damage"
+					+ i);
+			byte count = nbt.getByte("count" + i);
+			if (id == 0)
+				continue;
+			ItemStack is = new ItemStack(id, count, damage);
+			inventory[i] = is;
+		}
+		this.page = nbt.getByte("page");
+		this.scrollFactor = nbt.getShort("scroll");
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+		for (int i = 0; i < 20; i++) {
+			if (inventory[i] == null)
+				continue;
+			nbt.setShort("id" + i, (short) inventory[i].itemID);
+			nbt.setByte("count" + i, (byte) inventory[i].stackSize);
+			nbt.setShort("damage" + i, (short) inventory[i].getItemDamage());
+		}
+		nbt.setByte("page", (byte) page);
+		nbt.setShort("scroll", (short) scrollFactor);
+	}
+
+	public TileWeaponCrafter setAdvanced(boolean is) {
 		isAdvanced = is;
-		if(is)
+		if (is)
 			maxHeat = 8000;
-		else maxHeat = 4000;
+		else
+			maxHeat = 4000;
 		return this;
 	}
-	
+
 	public void addScrollFactor(boolean isForward) {
-		if(!isAdvanced){
+		if (!isAdvanced) {
 			if (!RecipeWeapons.doesNeedScrollBar(page))
 				return;
 		} else {
 			if (!RecipeWeapons.doesAdvNeedScrollBar(page))
 				return;
 		}
-		List<RecipeCrafter> recipes[] = (!isAdvanced? RecipeWeapons.recipes : RecipeWeapons.advancedRecipes);
+		List<RecipeCrafter> recipes[] = (!isAdvanced ? RecipeWeapons.recipes
+				: RecipeWeapons.advancedRecipes);
 		if (isForward) {
 			if (scrollFactor < recipes[page].size() - 3) {
 				scrollFactor++;
@@ -288,9 +290,10 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 		}
 		this.writeRecipeInfoToSlot();
 	}
-	
+
 	public void addPage(boolean isForward) {
-		List<RecipeCrafter> recipes[] = (!isAdvanced? RecipeWeapons.recipes : RecipeWeapons.advancedRecipes);
+		List<RecipeCrafter> recipes[] = (!isAdvanced ? RecipeWeapons.recipes
+				: RecipeWeapons.advancedRecipes);
 		if (isForward) {
 			if (page < recipes.length - 1) {
 				page++;
@@ -304,21 +307,22 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 		this.writeRecipeInfoToSlot();
 	}
 
-    public void tryBurn(){
-    	if(inventory[1] != null && TileEntityFurnace.getItemBurnTime(inventory[1]) > 0){
-    		this.burnTimeLeft = TileEntityFurnace.getItemBurnTime(inventory[1]) / 2;
-    		this.maxBurnTime = this.burnTimeLeft;
-    		inventory[1].splitStack(1);
-    		if(inventory[1].stackSize <= 1)
-    			inventory[1] = null;
-    		isBurning = true;
-    		blockType.setLightValue(0.4F);
-    	}
-    }
-	
+	public void tryBurn() {
+		if (inventory[1] != null
+				&& TileEntityFurnace.getItemBurnTime(inventory[1]) > 0) {
+			this.burnTimeLeft = TileEntityFurnace.getItemBurnTime(inventory[1]) / 2;
+			this.maxBurnTime = this.burnTimeLeft;
+			inventory[1].splitStack(1);
+			if (inventory[1].stackSize <= 1)
+				inventory[1] = null;
+			isBurning = true;
+			blockType.setLightValue(0.4F);
+		}
+	}
+
 	public void attemptItemCrafting(int slot) {
 		RecipeCrafter r = getRecipeBySlotAndScroll(slot, this.scrollFactor);
-		if(r == null)
+		if (r == null)
 			return;
 		if (hasEnoughMaterial(r)) {
 			resetCraftingState();
@@ -330,19 +334,20 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 		}
 		lastTime = worldObj.getWorldTime();
 	}
-	
-	public void craftItem(){
-		if(this.currentRecipe == null){
+
+	public void craftItem() {
+		if (this.currentRecipe == null) {
 			resetCraftingState();
 			return;
 		}
-		if(!hasEnoughMaterial(currentRecipe))
+		if (!hasEnoughMaterial(currentRecipe))
 			return;
-		if(!(currentRecipe instanceof RecipeRepair)){
+		if (!(currentRecipe instanceof RecipeRepair)) {
 			if (inventory[0] != null) {
-				if (!(inventory[0].itemID == currentRecipe.output.itemID && inventory[0].isStackable()))
+				if (!(inventory[0].itemID == currentRecipe.output.itemID && inventory[0]
+						.isStackable()))
 					return;
-				if (inventory[0].stackSize >= inventory[0].getMaxStackSize()){
+				if (inventory[0].stackSize >= inventory[0].getMaxStackSize()) {
 					lastTime = worldObj.getWorldTime();
 					iconType = CrafterIconType.NOMATERIAL;
 					return;
@@ -350,10 +355,10 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 				inventory[0].stackSize += currentRecipe.output.stackSize;
 			} else {
 				inventory[0] = currentRecipe.output.copy();
-			} 
+			}
 			consumeMaterial(currentRecipe);
 		} else {
-			if(inventory[0] != null){
+			if (inventory[0] != null) {
 				iconType = CrafterIconType.NOMATERIAL;
 				lastTime = worldObj.getWorldTime();
 				return;
@@ -361,59 +366,62 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			RecipeRepair rs = (RecipeRepair) currentRecipe;
 			int bulletCount = 0;
 			int slotWeapon = 0;
-			for(int i = 2; i < 20; i++){
-				if(inventory[i] == null)
+			for (int i = 2; i < 20; i++) {
+				if (inventory[i] == null)
 					continue;
-				if(slotWeapon == 0 && inventory[i].getItem() == rs.inputA && inventory[i].getItemDamage() > 0)
+				if (slotWeapon == 0 && inventory[i].getItem() == rs.inputA
+						&& inventory[i].getItemDamage() > 0)
 					slotWeapon = i;
-				if(inventory[i].getItem() == rs.inputB)
+				if (inventory[i].getItem() == rs.inputB)
 					bulletCount += inventory[i].stackSize;
 			}
-			if(slotWeapon == 0 || bulletCount == 0){
+			if (slotWeapon == 0 || bulletCount == 0) {
 				lastTime = worldObj.getWorldTime();
 				iconType = CrafterIconType.NOMATERIAL;
 				return;
 			}
-			int damage = inventory[slotWeapon].getItemDamage() - bulletCount * rs.scale;
-			int bulletToConsume = (damage<0) ? inventory[slotWeapon].getItemDamage() : bulletCount;
+			int damage = inventory[slotWeapon].getItemDamage() - bulletCount
+					* rs.scale;
+			int bulletToConsume = (damage < 0) ? inventory[slotWeapon]
+					.getItemDamage() : bulletCount;
 			bulletToConsume /= rs.scale;
-			damage = damage < 0? 0 : damage;
-			AmmoManager.consumeInventoryItem(inventory, rs.inputB.itemID, bulletToConsume, 2);
+			damage = damage < 0 ? 0 : damage;
+			AmmoManager.consumeInventoryItem(inventory, rs.inputB.itemID,
+					bulletToConsume, 2);
 			inventory[slotWeapon] = null;
 			inventory[0] = new ItemStack(rs.inputA, 1, damage);
 		}
 		resetCraftingState();
 	}
-	
-	public void resetCraftingState(){
+
+	public void resetCraftingState() {
 		isCrafting = false;
 		currentRecipe = null;
 		iconType = CrafterIconType.NONE;
 	}
-	
 
 	public boolean hasEnoughMaterial(RecipeCrafter r) {
 		ItemStack is;
 
-		if(r instanceof RecipeRepair){
+		if (r instanceof RecipeRepair) {
 			RecipeRepair rs = (RecipeRepair) r;
 			boolean flag1 = false, flag2 = false;
-			for(int i = 2; i < 20; i++){
+			for (int i = 2; i < 20; i++) {
 				is = inventory[i];
-				if(is == null)
+				if (is == null)
 					continue;
-				if(is.getItem() == rs.inputA){
-					if(is.getItemDamage() > 0)
+				if (is.getItem() == rs.inputA) {
+					if (is.getItemDamage() > 0)
 						flag1 = true;
-				} else if(is.getItem() == rs.inputB){
+				} else if (is.getItem() == rs.inputB) {
 					flag2 = true;
 				}
 			}
-			if(flag1 && flag2)
+			if (flag1 && flag2)
 				return true;
 			return false;
 		}
-		
+
 		int left[] = new int[3];
 		for (int j = 0; j < r.input.length; j++) {
 			if (r.input[j] != null) {
@@ -479,9 +487,10 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			i = 1;
 		if (slot == 8)
 			i = 2;
-		if(!isAdvanced)
+		if (!isAdvanced)
 			return RecipeWeapons.getRecipe(page, factor + i);
-		else return RecipeWeapons.getAdvRecipe(page, factor + i);
+		else
+			return RecipeWeapons.getAdvRecipe(page, factor + i);
 	}
 
 }

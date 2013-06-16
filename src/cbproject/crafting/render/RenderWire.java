@@ -33,6 +33,7 @@ import net.minecraftforge.common.ForgeDirection;
 public class RenderWire extends TileEntitySpecialRenderer {
 
 	public static float WIDTH = 0.10F;
+
 	/**
 	 * 
 	 */
@@ -55,8 +56,8 @@ public class RenderWire extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslated(d0 + 0.5, d1 + 0.5, d2 + 0.5);
 		renderWireBox(t, -1, wire.renderSides);
-		for(int i = 0; i < 6; i++ ) {
-			if(wire.renderSides[i])
+		for (int i = 0; i < 6; i++) {
+			if (wire.renderSides[i])
 				renderWireBox(t, i, wire.renderSides);
 		}
 		GL11.glPopMatrix();
@@ -64,18 +65,16 @@ public class RenderWire extends TileEntitySpecialRenderer {
 
 	private void renderWireBox(Tessellator t, int side, boolean[] theArray) {
 		ForgeDirection[] dirs = ForgeDirection.values();
-		Vec3 v1 = RenderUtils.newV3(-WIDTH, -WIDTH, -WIDTH),
-				v2 = RenderUtils.newV3(WIDTH, -WIDTH, -WIDTH),
-				v3 = RenderUtils.newV3(WIDTH, -WIDTH, WIDTH),
-				v4 = RenderUtils.newV3(-WIDTH, -WIDTH, WIDTH),
-				v5 = RenderUtils.newV3(-WIDTH, WIDTH, -WIDTH),
-				v6 = RenderUtils.newV3(WIDTH, WIDTH, -WIDTH),
-				v7 = RenderUtils.newV3(WIDTH, WIDTH, WIDTH),
-				v8 = RenderUtils.newV3(-WIDTH, WIDTH, WIDTH);
+		Vec3 v1 = RenderUtils.newV3(-WIDTH, -WIDTH, -WIDTH), v2 = RenderUtils
+				.newV3(WIDTH, -WIDTH, -WIDTH), v3 = RenderUtils.newV3(WIDTH,
+				-WIDTH, WIDTH), v4 = RenderUtils.newV3(-WIDTH, -WIDTH, WIDTH), v5 = RenderUtils
+				.newV3(-WIDTH, WIDTH, -WIDTH), v6 = RenderUtils.newV3(WIDTH,
+				WIDTH, -WIDTH), v7 = RenderUtils.newV3(WIDTH, WIDTH, WIDTH), v8 = RenderUtils
+				.newV3(-WIDTH, WIDTH, WIDTH);
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		float dx = 0.0F, dy = 0.0F, dz = 0.0F;
-		switch(side) {
+		switch (side) {
 		case 0:
 			dy = -1;
 			break;
@@ -97,22 +96,24 @@ public class RenderWire extends TileEntitySpecialRenderer {
 		}
 		float offset = (0.5F + WIDTH) / 2F;
 		GL11.glTranslatef(dx * offset, dy * offset, dz * offset);
-		if(side != -1) {
+		if (side != -1) {
 			float scale = 2F;
-			GL11.glScalef(Math.abs(dx == 0.0F ? 1 : dx * scale), Math.abs(dy == 0.0F ? 1 : dy * scale), Math.abs(dz == 0.0F ? 1 : dz * scale));
+			GL11.glScalef(Math.abs(dx == 0.0F ? 1 : dx * scale),
+					Math.abs(dy == 0.0F ? 1 : dy * scale),
+					Math.abs(dz == 0.0F ? 1 : dz * scale));
 		}
 		int a = 0;
-		for(int i = 0; i < theArray.length; i++)
-			if(theArray[i])
+		for (int i = 0; i < theArray.length; i++)
+			if (theArray[i])
 				a++;
-		for(int i = 0; i < 6; i++) {
-			if(!doesRenderSide(side, i, theArray))
+		for (int i = 0; i < 6; i++) {
+			if (!doesRenderSide(side, i, theArray))
 				continue;
 			Vec3 vec1 = null, vec2 = null, vec3 = null, vec4 = null;
 			dx = 0.0F;
 			dy = 0.0F;
 			dz = 0.0F;
-			switch(i) {
+			switch (i) {
 			case 0:
 				vec1 = v4;
 				vec2 = v3;
@@ -157,14 +158,15 @@ public class RenderWire extends TileEntitySpecialRenderer {
 				break;
 			}
 			GL11.glPushMatrix();
-			if(side == -1){
-				if(a == 1  && theArray[dirs[i].getOpposite().ordinal()]) 
+			if (side == -1) {
+				if (a == 1 && theArray[dirs[i].getOpposite().ordinal()])
 					RenderUtils.loadTexture(ClientProps.WIRE_MAIN_PATH);
-				else RenderUtils.loadTexture(ClientProps.WIRE_SIDE_PATH);
+				else
+					RenderUtils.loadTexture(ClientProps.WIRE_SIDE_PATH);
 			} else {
 				RenderUtils.loadTexture(ClientProps.WIRE_SIDE_PATH2);
 			}
-			
+
 			t.startDrawingQuads();
 			t.setNormal(dx, dy, dz);
 			RenderUtils.addVertex(vec4, 0.0, 1.0);
@@ -177,15 +179,17 @@ public class RenderWire extends TileEntitySpecialRenderer {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 	}
-	
-	private boolean doesRenderSide(int blockSide, int subSide, boolean[] theArray) {
+
+	private boolean doesRenderSide(int blockSide, int subSide,
+			boolean[] theArray) {
 		ForgeDirection[] dirs = ForgeDirection.values();
-		if(blockSide == -1) {
-			if(theArray[subSide])
+		if (blockSide == -1) {
+			if (theArray[subSide])
 				return false;
 			return true;
 		}
-		if(dirs[blockSide].getOpposite().ordinal() == subSide || (blockSide == subSide && theArray[subSide]))
+		if (dirs[blockSide].getOpposite().ordinal() == subSide
+				|| (blockSide == subSide && theArray[subSide]))
 			return false;
 		return true;
 	}

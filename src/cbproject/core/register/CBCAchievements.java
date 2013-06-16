@@ -21,7 +21,6 @@ import cbproject.crafting.register.CBCItems;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 
@@ -40,7 +39,7 @@ public class CBCAchievements {
 
 	/* Oh my teeth! */
 	public static Achievement ohMyTeeth;
-	
+
 	/* Let's Moe! */
 	public static Achievement letsMoe;
 
@@ -57,10 +56,9 @@ public class CBCAchievements {
 					"nuclearRawMaterial", 99), "nuclearRawMaterial", 0, 0,
 					CBCBlocks.uraniumOre, (Achievement) null))
 					.registerAchievement();
-			oreAchievements[1] = (new Achievement(conf.getInteger(
-					"newTinOre", 100), "newTinOre", 2, 0,
-					CBCBlocks.oreTin, (Achievement) null))
-					.registerAchievement();
+			oreAchievements[1] = (new Achievement(conf.getInteger("newTinOre",
+					100), "newTinOre", 2, 0, CBCBlocks.oreTin,
+					(Achievement) null)).registerAchievement();
 			oreAchievements[2] = (new Achievement(conf.getInteger(
 					"newCopperOre", 101), "newCopperOre", 4, 0,
 					CBCBlocks.oreCopper, (Achievement) null))
@@ -72,13 +70,15 @@ public class CBCAchievements {
 			ohMyTeeth = (new Achievement(conf.getInteger("ohMyTeeth", 103),
 					"ohMyTeeth", 3, 0, CBCItems.ingotSteel, (Achievement) null))
 					.registerAchievement();
-			letsMoe = (new Achievement(conf.getInteger("letsMoe", 104), "letsMoe", 12, 12, CBCItems.halfLife01, (Achievement)null)).registerAchievement();
+			letsMoe = (new Achievement(conf.getInteger("letsMoe", 104),
+					"letsMoe", 12, 12, CBCItems.halfLife01, (Achievement) null))
+					.registerAchievement();
 			System.out.println("finish achievements");
 			achpage = new AchievementPage("LambdaCraft", oreAchievements[0],
 
-					oreAchievements[1], oreAchievements[2], radioactiveBeryl,
+			oreAchievements[1], oreAchievements[2], radioactiveBeryl,
 					ohMyTeeth, letsMoe);
-			
+
 			AchievementPage.registerAchievementPage(achpage);
 			craftHandler = new CraftingHandler();
 			GameRegistry.registerCraftingHandler(craftHandler);

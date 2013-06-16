@@ -24,37 +24,42 @@ import cbproject.api.energy.item.ICustomEnItem;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class EnergyUtils {
 
 	/**
-	 * TODO:NEEDS INTERGRATION.
-	 * Charges the HEV armor wearing on the player with the amount of par2.
-	 * @param player the player entity
+	 * TODO:NEEDS INTERGRATION. Charges the HEV armor wearing on the player with
+	 * the amount of par2.
+	 * 
+	 * @param player
+	 *            the player entity
 	 * @return amount of the energy received from armor
 	 */
-	public static int tryChargeArmor(EntityPlayer player, int energy, int tier, boolean ignoreTransferLimit){
+	public static int tryChargeArmor(EntityPlayer player, int energy, int tier,
+			boolean ignoreTransferLimit) {
 		int amount = 0;
 		List<ICustomEnItem> armor = new ArrayList();
 		List<ItemStack> stack = new ArrayList();
-		for(ItemStack s : player.inventory.armorInventory){
-			if(s != null && (s.getItem() instanceof ICustomEnItem)){
+		for (ItemStack s : player.inventory.armorInventory) {
+			if (s != null && (s.getItem() instanceof ICustomEnItem)) {
 				amount++;
-				ICustomEnItem i = (ICustomEnItem)s.getItem();
+				ICustomEnItem i = (ICustomEnItem) s.getItem();
 				armor.add(i);
 				stack.add(s);
 			}
 		}
 		int received = 0;
-		for(int i = 0; i < stack.size(); i++){
-			received += armor.get(i).charge(stack.get(i), energy / amount, tier, ignoreTransferLimit, false);
+		for (int i = 0; i < stack.size(); i++) {
+			received += armor.get(i).charge(stack.get(i), energy / amount,
+					tier, ignoreTransferLimit, false);
 		}
 		return received;
 	}
-	
+
 	/**
-	 * 请在调用这个函数之后进行恰当的stackSize检查。
+	 * 从一个ItemStack中获取能量。 请在调用这个函数之后进行恰当的stackSize检查。
+	 * 
 	 * @param sl
 	 * @param energyReq
 	 * @return
@@ -68,7 +73,7 @@ public class EnergyUtils {
 			energyReceived += 500;
 		} else if (sl.getItem() instanceof ICustomEnItem) {
 			ICustomEnItem item = (ICustomEnItem) sl.getItem();
-			if (item.canProvideEnergy(sl)){
+			if (item.canProvideEnergy(sl)) {
 				int cn = energyReq < 128 ? energyReq : 128;
 				cn = item.discharge(sl, cn, 2, false, false);
 				energyReceived += cn;
@@ -76,4 +81,5 @@ public class EnergyUtils {
 		}
 		return energyReceived;
 	}
+
 }

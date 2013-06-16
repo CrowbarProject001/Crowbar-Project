@@ -17,7 +17,6 @@ package cbproject.crafting.gui;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cbproject.api.energy.item.IEnItem;
-import cbproject.crafting.blocks.TileGeneratorBase;
 import cbproject.crafting.blocks.TileGeneratorFire;
 import cbproject.deathmatch.gui.SlotElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,26 +25,25 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class ContainerGenerator extends Container {
 
-	//0:fuel 1:charge
+	// 0:fuel 1:charge
 	TileGeneratorFire te;
-	
+
 	public ContainerGenerator(TileGeneratorFire ent, InventoryPlayer player) {
 		te = ent;
-		//燃料槽
+		// 燃料槽
 		addSlotToContainer(new Slot(ent, 0, 108, 34));
-		//充电槽
+		// 充电槽
 		addSlotToContainer(new SlotElectricItem(ent, 1, 133, 34));
 		bindPlayerInventory(player);
 	}
-	
+
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -57,7 +55,7 @@ public class ContainerGenerator extends Container {
 			addSlotToContainer(new Slot(inventoryPlayer, i, 6 + i * 18, 142));
 		}
 	}
-	
+
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
@@ -75,12 +73,12 @@ public class ContainerGenerator extends Container {
 		super.updateProgressBar(par1, par2);
 		if (par1 == 0) {
 			te.currentEnergy = par2;
-		} else if(par1 == 1) {
+		} else if (par1 == 1) {
 			te.tickLeft = par2;
 		} else
 			te.maxBurnTime = par2;
 	}
-	
+
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return te.isUseableByPlayer(player);
@@ -97,11 +95,11 @@ public class ContainerGenerator extends Container {
 
 			// 将玩家物品栏中的物品放到TileEntity中
 			if (slot >= 2) {
-				if(stackInSlot.getItem() instanceof IEnItem){
+				if (stackInSlot.getItem() instanceof IEnItem) {
 					if (!this.mergeItemStack(stackInSlot, 1, 2, true)) {
 						return null;
 					}
-				} else if(!this.mergeItemStack(stackInSlot, 0, 1, true)) {
+				} else if (!this.mergeItemStack(stackInSlot, 0, 1, true)) {
 					return null;
 				}
 			}

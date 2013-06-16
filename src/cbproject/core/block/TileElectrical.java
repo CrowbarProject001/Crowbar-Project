@@ -14,89 +14,94 @@
  */
 package cbproject.core.block;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import cbproject.api.energy.events.EnergyTileLoadEvent;
 import cbproject.api.energy.events.EnergyTileSourceEvent;
 import cbproject.api.energy.events.EnergyTileUnloadEvent;
 import cbproject.api.energy.tile.IEnergyTile;
 import cbproject.core.CBCMod;
+
 /**
  * @author WeAthFolD
- *
+ * 
  */
-public abstract class TileElectrical extends CBCTileEntity implements IEnergyTile,ic2.api.energy.tile.IEnergySink {
+public abstract class TileElectrical extends CBCTileEntity implements
+		IEnergyTile, ic2.api.energy.tile.IEnergySink {
 
 	public boolean addedToNet = false;
-	
+
 	/**
 	 * 
 	 */
 	public TileElectrical() {
-		
+
 	}
-	
+
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		if(!this.addedToNet) {
+		if (!this.addedToNet) {
 			if (CBCMod.ic2Installed)
-				MinecraftForge.EVENT_BUS.post(new ic2.api.energy.event.EnergyTileLoadEvent(this));			
-			
-			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(worldObj, this));
-			System.out.println("Adding " + this + " to Net");
+				MinecraftForge.EVENT_BUS
+						.post(new ic2.api.energy.event.EnergyTileLoadEvent(this));
+			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(worldObj,
+					this));
 			this.addedToNet = true;
 		}
 	}
 
-    @Override
-    public void invalidate()
-    {
-        if (this.addedToNet)
-        {
+	@Override
+	public void invalidate() {
+		if (this.addedToNet) {
 			if (CBCMod.ic2Installed)
-				MinecraftForge.EVENT_BUS.post(new ic2.api.energy.event.EnergyTileUnloadEvent(this));	
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(worldObj,this));
-            this.addedToNet = false;
-        }
+				MinecraftForge.EVENT_BUS
+						.post(new ic2.api.energy.event.EnergyTileUnloadEvent(
+								this));
+			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(worldObj,
+					this));
+			this.addedToNet = false;
+		}
 
-        super.invalidate();
-    }
-	
+		super.invalidate();
+	}
+
 	@Override
 	public void onTileUnload() {
 		super.onTileUnload();
-		
+
 		if (CBCMod.ic2Installed)
-			MinecraftForge.EVENT_BUS.post(new ic2.api.energy.event.EnergyTileUnloadEvent(this));
-		
-		
-		MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(worldObj, this));
+			MinecraftForge.EVENT_BUS
+					.post(new ic2.api.energy.event.EnergyTileUnloadEvent(this));
+
+		MinecraftForge.EVENT_BUS
+				.post(new EnergyTileUnloadEvent(worldObj, this));
 		this.addedToNet = false;
 	}
-	
+
 	@Override
 	public boolean isAddToEnergyNet() {
 		return addedToNet;
 	}
-	
-	//IC2
-	public boolean isAddedToEnergyNet(){
+
+	// IC2
+	@Override
+	public boolean isAddedToEnergyNet() {
 		return addedToNet;
 	}
-	
+
 	public int sendEnergy(int amm) {
-		int amount=0;
-		EnergyTileSourceEvent event = new EnergyTileSourceEvent(worldObj, this, amm);
+		int amount = 0;
+		EnergyTileSourceEvent event = new EnergyTileSourceEvent(worldObj, this,
+				amm);
 		MinecraftForge.EVENT_BUS.post(event);
-		amount+= event.amount;
-		if (CBCMod.ic2Installed){
-			ic2.api.energy.event.EnergyTileSourceEvent event2 = new ic2.api.energy.event.EnergyTileSourceEvent((ic2.api.energy.tile.IEnergySource)this, amm);
+		amount += event.amount;
+		if (CBCMod.ic2Installed) {
+			ic2.api.energy.event.EnergyTileSourceEvent event2 = new ic2.api.energy.event.EnergyTileSourceEvent(
+					(ic2.api.energy.tile.IEnergySource) this, amm);
 			MinecraftForge.EVENT_BUS.post(event2);
-			amount= event2.amount;
+			amount = event2.amount;
 		}
 		return amount;
 	}
 
-	
 }

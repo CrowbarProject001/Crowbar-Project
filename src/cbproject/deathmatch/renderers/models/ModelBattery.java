@@ -20,12 +20,10 @@ import net.minecraft.entity.Entity;
 
 /**
  * @author Mkpoli
- *
+ * 
  */
-public class ModelBattery extends ModelBase
-{
-	public ModelBattery()
-	{
+public class ModelBattery extends ModelBase {
+	public ModelBattery() {
 		BatSide = new ModelRenderer(this, 0, 0);
 		BatSide.addBox(-5F, 12F, -4F, 8, 13, 8, 0F);
 		BatSide.setRotationPoint(0F, 0F, 0F);
@@ -55,10 +53,10 @@ public class ModelBattery extends ModelBase
 		BatPanel.rotateAngleZ = 0F;
 		BatPanel.mirror = false;
 	}
-	
+
 	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-	{
+	public void render(Entity entity, float f, float f1, float f2, float f3,
+			float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		BatSide.render(f5);
@@ -66,14 +64,14 @@ public class ModelBattery extends ModelBase
 		BatTop.render(f5);
 		BatPanel.render(f5);
 	}
-	
+
 	@Override
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity ent)
-	{
+	public void setRotationAngles(float f, float f1, float f2, float f3,
+			float f4, float f5, Entity ent) {
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, ent);
 	}
-	
-	//fields
+
+	// fields
 	public ModelRenderer BatSide;
 	public ModelRenderer BatContact;
 	public ModelRenderer BatTop;

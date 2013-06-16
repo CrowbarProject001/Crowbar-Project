@@ -16,24 +16,24 @@ package cbproject.core.misc;
 
 import cbproject.deathmatch.register.DMItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 
 /**
  * 自定义CreativeTab.
+ * 
  * @author Mkpoli
  */
 public class CBCCreativeTab extends CreativeTabs {
 
 	private int id;
-	
+
 	public CBCCreativeTab(String label, int i) {
 		super(label);
 		id = i;
 	}
-	
+
 	@Override
 	public int getTabIconItemIndex() {
-	    return id == 0 ? DMItems.weapon_gauss.itemID : DMItems.medkit.itemID;
+		return id == 0 ? DMItems.weapon_gauss.itemID : DMItems.medkit.itemID;
 	}
-	
+
 }

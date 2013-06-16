@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 
 /**
  * 合成结果的Item槽，不能放入，能被取出。
+ * 
  * @author WeAthFolD
  */
 public class SlotResult extends Slot {
@@ -29,16 +30,14 @@ public class SlotResult extends Slot {
 		super(par1iInventory, par2, par3, par4);
 	}
 
-    @Override
-    public boolean isItemValid(ItemStack par1ItemStack)
-    {
-        return false;
-    }
-    
-    @Override
-    public boolean canTakeStack(EntityPlayer par1EntityPlayer)
-    {
-    	return true;
-    }
+	@Override
+	public boolean isItemValid(ItemStack par1ItemStack) {
+		return false;
+	}
+
+	@Override
+	public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+		return true;
+	}
 
 }

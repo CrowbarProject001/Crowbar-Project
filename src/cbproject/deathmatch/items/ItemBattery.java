@@ -45,32 +45,34 @@ public class ItemBattery extends ElectricItem {
 	public boolean onItemUse(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
 			int par6, int par7, float par8, float par9, float par10) {
-		if(!par3World.isRemote)
-			ItemBattery.spawnBatteryAt(par1ItemStack, par3World, par2EntityPlayer, par4, par5, par6, par7);
-		if(!par2EntityPlayer.capabilities.isCreativeMode){
+		if (!par3World.isRemote)
+			ItemBattery.spawnBatteryAt(par1ItemStack, par3World,
+					par2EntityPlayer, par4, par5, par6, par7);
+		if (!par2EntityPlayer.capabilities.isCreativeMode) {
 			par1ItemStack.splitStack(1);
 		}
 		return true;
 	}
 
-	public static void spawnBatteryAt(ItemStack itemStack, World par0World, EntityPlayer player,
-			int par1, int par2, int par3, int side) {
+	public static void spawnBatteryAt(ItemStack itemStack, World par0World,
+			EntityPlayer player, int par1, int par2, int par3, int side) {
 		Entity entity = null;
 		double x = par1 + 0.5, y = par2 + 0.5, z = par3 + 0.5;
-		if(side == 0) {
+		if (side == 0) {
 			return;
-		} else if(side == 1) {
+		} else if (side == 1) {
 			y += 0.8;
-		} else if(side == 2) {
+		} else if (side == 2) {
 			z -= 0.8;
-		} else if(side == 3) {
+		} else if (side == 3) {
 			z += 0.8;
-		} else if(side == 4) {
+		} else if (side == 4) {
 			x -= 0.8;
-		} else if(side == 5) {
+		} else if (side == 5) {
 			x += 0.8;
 		}
-		entity = new EntityBattery(par0World, player, x, y, z, EntityBattery.EU_PER_BATTERY - itemStack.getItemDamage());
+		entity = new EntityBattery(par0World, player, x, y, z,
+				EntityBattery.EU_PER_BATTERY - itemStack.getItemDamage());
 		par0World.spawnEntityInWorld(entity);
 	}
 

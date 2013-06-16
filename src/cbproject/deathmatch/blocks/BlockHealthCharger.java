@@ -14,15 +14,9 @@
  */
 package cbproject.deathmatch.blocks;
 
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.WEST;
-
 import cbproject.api.tile.IUseable;
 import cbproject.core.CBCMod;
 import cbproject.core.block.CBCBlockContainer;
-import cbproject.core.keys.KeyUse;
 import cbproject.core.keys.UsingUtils;
 import cbproject.core.props.ClientProps;
 import cbproject.core.props.GeneralProps;
@@ -36,7 +30,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 
 /**
  * @author Administrator
@@ -147,34 +140,31 @@ public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 
 	}
 
-    /**
-     * Called when the block is placed in the world.
-     */
-    @Override
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
-    {
-        int l = MathHelper.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	/**
+	 * Called when the block is placed in the world.
+	 */
+	@Override
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4,
+			EntityLiving par5EntityLiving, ItemStack par6ItemStack) {
+		int l = MathHelper
+				.floor_double(par5EntityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
-        if (l == 0)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
-        }
+		if (l == 0) {
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 2, 2);
+		}
 
-        if (l == 1)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
-        }
+		if (l == 1) {
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 5, 2);
+		}
 
-        if (l == 2)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
-        }
+		if (l == 2) {
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
+		}
 
-        if (l == 3)
-        {
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
-        }
-    }
+		if (l == 3) {
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, 4, 2);
+		}
+	}
 
 	@Override
 	public void onBlockUse(World world, EntityPlayer player, int bx, int by,

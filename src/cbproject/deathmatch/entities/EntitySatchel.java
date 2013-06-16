@@ -23,18 +23,19 @@ import net.minecraft.world.World;
 
 /**
  * 遥控炸弹实体。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class EntitySatchel extends EntityProjectile {
-	
+
 	public static double HEIGHT = 0.083, WIDTH1 = 0.2, WIDTH2 = 0.15;
-	
+
 	/**
 	 * 被击中时的tick数。
 	 */
 	public int tickHit = 0;
-	
+
 	/**
 	 * 实体的旋转情况。
 	 */
@@ -44,34 +45,32 @@ public class EntitySatchel extends EntityProjectile {
 		super(par1World, par2EntityLiving);
 	}
 
-	public EntitySatchel(World world){
+	public EntitySatchel(World world) {
 		super(world);
 	}
 
 	@Override
-    public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-	
-	public void Explode(){
-		
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+
+	public void Explode() {
+
 		BulletManager.Explode(worldObj, this, 3.0F, 4.0F, posX, posY, posZ, 35);
 		this.setDead();
-		
+
 	}
-	
+
 	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.025F;
-    }
-    
-    @Override
-    public AxisAlignedBB getBoundingBox()
-    {
-        return AxisAlignedBB.getBoundingBox(-WIDTH1, -HEIGHT, -WIDTH2, WIDTH1, HEIGHT, WIDTH2);
-    }
+	protected float getGravityVelocity() {
+		return 0.025F;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox() {
+		return AxisAlignedBB.getBoundingBox(-WIDTH1, -HEIGHT, -WIDTH2, WIDTH1,
+				HEIGHT, WIDTH2);
+	}
 
 	@Override
 	protected float getHeadingVelocity() {
@@ -89,29 +88,31 @@ public class EntitySatchel extends EntityProjectile {
 	}
 
 	@Override
-	public void onUpdate(){
+	public void onUpdate() {
 		super.onUpdate();
-		if(worldObj.isRemote)
+		if (worldObj.isRemote)
 			return;
-		if(getThrower() == null){
+		if (getThrower() == null) {
 			this.setDead();
 			return;
 		}
-		boolean doesExplode = getThrower().getEntityData().getBoolean("doesExplode");
-		if(doesExplode || isBurning())
+		boolean doesExplode = getThrower().getEntityData().getBoolean(
+				"doesExplode");
+		if (doesExplode || isBurning())
 			Explode();
-		if(this.onGround){
+		if (this.onGround) {
 			rotationFactor += 0.01F;
-		} else rotationFactor += 3.0F;
-		if(rotationFactor > 360.0F)
+		} else
+			rotationFactor += 3.0F;
+		if (rotationFactor > 360.0F)
 			rotationFactor = 0.0F;
 	}
 
 	@Override
 	protected void onCollide(MovingObjectPosition result) {
-		switch(result.sideHit){
+		switch (result.sideHit) {
 		case 1:
-			motionY = -0.5*motionY;
+			motionY = -0.5 * motionY;
 			return;
 		case 2:
 		case 3:
@@ -119,7 +120,7 @@ public class EntitySatchel extends EntityProjectile {
 			return;
 		case 4:
 		case 5:
-			motionX = -0.6*motionX;
+			motionX = -0.6 * motionX;
 			return;
 		default:
 			this.onGround = true;
@@ -129,5 +130,4 @@ public class EntitySatchel extends EntityProjectile {
 		}
 	}
 
-    
 }

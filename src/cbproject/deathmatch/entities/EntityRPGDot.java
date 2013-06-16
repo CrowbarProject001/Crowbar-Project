@@ -22,61 +22,68 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 /**
  * RPG制导红点。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class EntityRPGDot extends EntityThrowable {
 
 	public static final double DOT_MAX_RANGE = 100.0;
 	private EntityPlayer shooter;
-	
-	//-1:Render facing the player. else : Render on block surface.
+
+	// -1:Render facing the player. else : Render on block surface.
 	private int side;
-	
+
 	public EntityRPGDot(World par1World, EntityPlayer player) {
 		super(par1World, player);
 		System.out.println(player);
 		shooter = player;
 		updateDotPosition();
 	}
-	
-	public EntityRPGDot(World world){
+
+	public EntityRPGDot(World world) {
 		super(world);
 	}
 
 	@Override
 	protected void entityInit() {
 	}
-	
+
 	@Override
-	public void onUpdate(){
-		if(worldObj.isRemote || getThrower() == null)
+	public void onUpdate() {
+		if (worldObj.isRemote || getThrower() == null)
 			return;
 		ItemStack currentItem = getThrower().getCurrentItemOrArmor(0);
-		if(currentItem == null || !Weapon_RPG.class.isInstance(currentItem.getItem()) ){
+		if (currentItem == null
+				|| !Weapon_RPG.class.isInstance(currentItem.getItem())) {
 			setDead();
 			return;
-		}
-		else {
+		} else {
 			int mode = DMItems.weapon_RPG.getMode(currentItem);
-			if(mode == 0)
+			if (mode == 0)
 				this.setDead();
 		}
 		updateDotPosition();
 	}
-	
-	private void updateDotPosition(){
+
+	private void updateDotPosition() {
 		MotionXYZ begin = new MotionXYZ(shooter);
 		MotionXYZ end = new MotionXYZ(begin).updateMotion(DOT_MAX_RANGE);
-		MovingObjectPosition result = worldObj.rayTraceBlocks(begin.asVec3(worldObj), end.asVec3(worldObj));
-		if(result != null){
+		MovingObjectPosition result = worldObj.rayTraceBlocks(
+				begin.asVec3(worldObj), end.asVec3(worldObj));
+		if (result != null) {
 			posX = result.hitVec.xCoord;
 			posY = result.hitVec.yCoord;
 			posZ = result.hitVec.zCoord;
 			side = result.sideHit;
+			ForgeDirection[] v = ForgeDirection.values();
+			ForgeDirection d = v[side].getOpposite();
+			double dx = d.offsetX, dy = d.offsetY, dz = d.offsetZ;
+			this.setPosition(posX + 0.03 * dx, posY + 0.03 * dy, posZ + 0.03 * dz);
 		} else {
 			posX = end.posX;
 			posY = end.posY;
@@ -85,17 +92,17 @@ public class EntityRPGDot extends EntityThrowable {
 		}
 	}
 
-	public int getDotSide(){
+	public int getDotSide() {
 		return side;
 	}
-	
+
 	@Override
-	protected float func_70182_d(){
+	protected float func_70182_d() {
 		return 0.0F;
 	}
 
 	@Override
-	protected float getGravityVelocity(){
+	protected float getGravityVelocity() {
 		return 0.0F;
 	}
 

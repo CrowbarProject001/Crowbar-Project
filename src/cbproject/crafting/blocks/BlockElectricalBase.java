@@ -14,8 +14,6 @@
  */
 package cbproject.crafting.blocks;
 
-import java.lang.reflect.InvocationTargetException;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -23,12 +21,12 @@ import cbproject.core.block.CBCBlockContainer;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class BlockElectricalBase extends CBCBlockContainer {
 
 	private Class<? extends TileEntity> generatorType;
-	
+
 	/**
 	 * @param par1
 	 * @param mat
@@ -38,14 +36,18 @@ public class BlockElectricalBase extends CBCBlockContainer {
 		this.setHardness(2.0F);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public BlockElectricalBase setTileType(Class<? extends TileEntity> type) {
 		this.generatorType = type;
 		return this;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.minecraft.block.ITileEntityProvider#createNewTileEntity(net.minecraft.world.World)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * net.minecraft.block.ITileEntityProvider#createNewTileEntity(net.minecraft
+	 * .world.World)
 	 */
 	@Override
 	public TileEntity createNewTileEntity(World world) {

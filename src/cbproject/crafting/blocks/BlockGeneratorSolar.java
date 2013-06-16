@@ -23,12 +23,12 @@ import net.minecraft.util.Icon;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class BlockGeneratorSolar extends BlockElectricalBase {
 
 	public Icon iconSide, iconTop, iconBottom;
-	
+
 	public BlockGeneratorSolar(int par1) {
 		super(par1, Material.rock);
 		this.setHardness(2.0F);
@@ -36,25 +36,24 @@ public class BlockGeneratorSolar extends BlockElectricalBase {
 		setGuiId(GeneralProps.GUI_ID_GENSOLAR);
 		setUnlocalizedName("genSolar");
 	}
-	
-    @Override
-	public void registerIcons(IconRegister par1IconRegister)
-    {
-        iconSide = par1IconRegister.registerIcon("lambdacraft:gensolar_main");
-        iconTop = par1IconRegister.registerIcon("lambdacraft:gensolar_top");
-        iconBottom = par1IconRegister.registerIcon("lambdacraft:crafter_bottom");
-        blockIcon = iconTop;
-    }
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Icon getIcon(int par1, int par2)
-    {
-    	if(par1 < 1)
-    		return iconBottom;
-        if(par1 < 2)
-        	return iconTop;
-        return iconSide;
-    }
+
+	@Override
+	public void registerIcons(IconRegister par1IconRegister) {
+		iconSide = par1IconRegister.registerIcon("lambdacraft:gensolar_main");
+		iconTop = par1IconRegister.registerIcon("lambdacraft:gensolar_top");
+		iconBottom = par1IconRegister
+				.registerIcon("lambdacraft:crafter_bottom");
+		blockIcon = iconTop;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public Icon getIcon(int par1, int par2) {
+		if (par1 < 1)
+			return iconBottom;
+		if (par1 < 2)
+			return iconTop;
+		return iconSide;
+	}
 
 }

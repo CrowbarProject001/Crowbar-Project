@@ -13,7 +13,7 @@ public class KeyMode implements IKeyProcess {
 	@Override
 	public void onKeyDown() {
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-		if(player == null)
+		if (player == null)
 			return;
 		ItemStack currentItem = player.inventory.getCurrentItem();
 		if (currentItem != null
@@ -46,7 +46,7 @@ public class KeyMode implements IKeyProcess {
 			return;
 		int mode = wpn.getMode(itemStack);
 		mode = (maxModes - 1 <= mode) ? 0 : mode + 1;
-		NetDeathmatch.sendModePacket((byte)stackInSlot, (byte)0, (byte)mode);
+		NetDeathmatch.sendModePacket((byte) stackInSlot, (byte) 0, (byte) mode);
 
 	}
 

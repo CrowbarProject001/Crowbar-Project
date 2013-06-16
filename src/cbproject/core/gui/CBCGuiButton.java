@@ -16,80 +16,91 @@ package cbproject.core.gui;
 
 /**
  * GUI按钮类，和CBCGuiContainer配合使用
+ * 
  * @author WeAthFolD
- *
+ * 
  */
-public class CBCGuiButton extends CBCGuiPart{
-	
-	
-	public enum ButtonState{
+public class CBCGuiButton extends CBCGuiPart {
+
+	public enum ButtonState {
 		INVAILD, IDLE, DOWN;
 	}
-	
+
 	/**
 	 * 两种状态对应贴图的U、V。
 	 */
 	public int downTexU, downTexV, invaildTexU, invaildTexV;
-	
+
 	/*
 	 * 当前的按钮状态。
 	 */
 	public ButtonState buttonState;
-	
+
 	/**
 	 * GUI按钮的构造类。
-	 * @param name 按钮名字，用于获取按钮信息。
-	 * @param x 渲染位置X坐标
-	 * @param y 渲染位置Y坐标
-	 * @param w 宽度
-	 * @param h 高度
+	 * 
+	 * @param name
+	 *            按钮名字，用于获取按钮信息。
+	 * @param x
+	 *            渲染位置X坐标
+	 * @param y
+	 *            渲染位置Y坐标
+	 * @param w
+	 *            宽度
+	 * @param h
+	 *            高度
 	 */
 	public CBCGuiButton(String name, int x, int y, int w, int h) {
 		super(name, x, y, w, h);
 		buttonState = ButtonState.IDLE;
 	}
-	
+
 	/**
 	 * 设置按钮按下时的U、V位置（像素，左上角）
+	 * 
 	 * @param u
 	 * @param v
 	 * @return 当前按钮
 	 */
-	public CBCGuiButton setDownCoords(int u, int v){
+	public CBCGuiButton setDownCoords(int u, int v) {
 		downTexU = u;
 		downTexV = v;
 		doesDraw = true;
 		return this;
 	}
-	
+
 	/**
 	 * 设置按钮无法使用时的U、V位置（像素，左上角）
+	 * 
 	 * @param u
 	 * @param v
 	 * @return 当前按钮
 	 */
-	public CBCGuiButton setInvaildCoords(int u, int v){
+	public CBCGuiButton setInvaildCoords(int u, int v) {
 		invaildTexU = u;
 		invaildTexV = v;
 		doesDraw = true;
 		return this;
 	}
-	
+
 	/**
 	 * 设置当前的按钮状态。
+	 * 
 	 * @param a
 	 */
-	public void setButtonState(ButtonState a){
-		if(this.buttonState != ButtonState.INVAILD)
+	public void setButtonState(ButtonState a) {
+		if (this.buttonState != ButtonState.INVAILD)
 			this.buttonState = a;
 	}
-	
+
 	/**
 	 * 强制设置按钮状态。
-	 * @param a 按钮状态
+	 * 
+	 * @param a
+	 *            按钮状态
 	 */
-	public void setButtonStateForce(ButtonState a){
-			this.buttonState = a;
+	public void setButtonStateForce(ButtonState a) {
+		this.buttonState = a;
 	}
 
 }

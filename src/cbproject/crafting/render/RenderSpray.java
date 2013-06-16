@@ -24,7 +24,7 @@ public class RenderSpray extends Render {
 		this.renderThePainting((EntitySpray) entity, pos_x, pos_y, pos_z);
 	}
 
-	//载入Texture
+	// 载入Texture
 	private void load_texture(int title_id) {
 		loadTexture(ClientProps.SPRY_PATH[title_id]);
 	}
@@ -32,12 +32,11 @@ public class RenderSpray extends Render {
 	public void renderThePainting(EntitySpray entity_art, double pos_x,
 			double pos_y, double pos_z) {
 
-		//载入参数
+		// 载入参数
 		entity_art.load_params();
 
-		
 		GL11.glPushMatrix();
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL); 
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
 		GL11.glTranslatef((float) pos_x, (float) pos_y, (float) pos_z);
 		GL11.glRotatef(entity_art.rotationYaw, 0.0F, 1.0F, 0.0F);
@@ -50,14 +49,14 @@ public class RenderSpray extends Render {
 	}
 
 	private void draw(EntitySpray entity) {
-		float start_x = -EntitySpray.GRIDS_WIDTHS[entity.title_id] / 2.0F; //x的起点(宽度的一半)
+		float start_x = -EntitySpray.GRIDS_WIDTHS[entity.title_id] / 2.0F; // x的起点(宽度的一半)
 		float start_y = EntitySpray.GRIDS_HEIGHTS[entity.title_id] / 2.0F; // Ditto.
 		float half_thickness = 0.03125F; // 画的厚度 1/16，一半的厚度为 1/32
 
-		for (float i = 0; i < EntitySpray.GRIDS_WIDTHS[entity.title_id]; i++) { //i为从0到宽度的所有值
-			for (float j = 0; j < EntitySpray.GRIDS_HEIGHTS[entity.title_id]; j++) { //j为从0到高度的所有值
+		for (float i = 0; i < EntitySpray.GRIDS_WIDTHS[entity.title_id]; i++) { // i为从0到宽度的所有值
+			for (float j = 0; j < EntitySpray.GRIDS_HEIGHTS[entity.title_id]; j++) { // j为从0到高度的所有值
 
-				float left = start_x + i;  
+				float left = start_x + i;
 				float right = left + 1;
 				float top = start_y - j;
 				float bottom = top - 1;
@@ -65,10 +64,14 @@ public class RenderSpray extends Render {
 				this.render_light(entity, (right + left) / 2,
 						(bottom + top) / 2);
 
-				float texture_left = i / EntitySpray.GRIDS_WIDTHS[entity.title_id];
-				float texture_right = (i + 1) / EntitySpray.GRIDS_WIDTHS[entity.title_id];
-				float texture_top = j / EntitySpray.GRIDS_HEIGHTS[entity.title_id];
-				float texture_bottom = (j + 1) / EntitySpray.GRIDS_HEIGHTS[entity.title_id];
+				float texture_left = i
+						/ EntitySpray.GRIDS_WIDTHS[entity.title_id];
+				float texture_right = (i + 1)
+						/ EntitySpray.GRIDS_WIDTHS[entity.title_id];
+				float texture_top = j
+						/ EntitySpray.GRIDS_HEIGHTS[entity.title_id];
+				float texture_bottom = (j + 1)
+						/ EntitySpray.GRIDS_HEIGHTS[entity.title_id];
 
 				Tessellator tessellator = Tessellator.instance;
 				tessellator.startDrawingQuads();

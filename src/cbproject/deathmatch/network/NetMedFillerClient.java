@@ -32,57 +32,59 @@ import cpw.mods.fml.common.network.Player;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class NetMedFillerClient implements IChannelProcess {
 
-	public static void sendPacket(TileMedkitFiller te){
-		ByteArrayOutputStream bos = CBCNetHandler.getStream(GeneralProps.NET_ID_MEDFILLER_CL, 10);
+	public static void sendPacket(TileMedkitFiller te) {
+		ByteArrayOutputStream bos = CBCNetHandler.getStream(
+				GeneralProps.NET_ID_MEDFILLER_CL, 10);
 		DataOutputStream outputStream = new DataOutputStream(bos);
-		
+
 		try {
-	        outputStream.writeInt(te.xCoord);
-	        outputStream.writeShort(te.yCoord);
-	        outputStream.writeInt(te.zCoord);
+			outputStream.writeInt(te.xCoord);
+			outputStream.writeShort(te.yCoord);
+			outputStream.writeInt(te.zCoord);
 		} catch (Exception ex) {
-	        ex.printStackTrace();
+			ex.printStackTrace();
 		}
-		
+
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GeneralProps.NET_CHANNEL_SERVER;
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
 		PacketDispatcher.sendPacketToServer(packet);
 	}
-	
+
 	@Override
 	public void onPacketData(DataInputStream stream, Player player) {
-		World world = ((EntityPlayerMP)player).worldObj;
-		
+		World world = ((EntityPlayerMP) player).worldObj;
+
 		int x, y, z;
-		
+
 		try {
-			x=stream.readInt();
-			y=stream.readShort();
-			z=stream.readInt();
-			TileEntity te = world.getBlockTileEntity(x,y,z);
-			if(te == null || !(te instanceof TileMedkitFiller))
-				throw new RuntimeException("Cannot't get the right tileEntity of medkit filler.");
+			x = stream.readInt();
+			y = stream.readShort();
+			z = stream.readInt();
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			if (te == null || !(te instanceof TileMedkitFiller))
+				throw new RuntimeException(
+						"Cannot't get the right tileEntity of medkit filler.");
 			else {
-				
+
 				TileMedkitFiller tt = (TileMedkitFiller) te;
 				int value = tt.currentBehavior.ordinal();
-				if(value == EnumMedFillerBehavior.values().length - 1)
+				if (value == EnumMedFillerBehavior.values().length - 1)
 					value = 0;
-				else value++;
+				else
+					value++;
 				tt.currentBehavior = EnumMedFillerBehavior.values()[value];
 			}
-			
+
 		} catch (Exception ex) {
-	        ex.printStackTrace();
+			ex.printStackTrace();
 		}
-		
-		
+
 	}
 
 }

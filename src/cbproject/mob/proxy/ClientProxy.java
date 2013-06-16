@@ -21,11 +21,13 @@ import cbproject.mob.entities.EntitySnark;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class ClientProxy extends Proxy {
-	
-	@Override public void init() {
-		RenderingRegistry.registerEntityRenderingHandler(EntitySnark.class, new RenderLiving(new ModelSnark(), 0.2F));
+
+	@Override
+	public void init() {
+		RenderingRegistry.registerEntityRenderingHandler(EntitySnark.class,
+				new RenderLiving(new ModelSnark(), 0.2F));
 	}
 }

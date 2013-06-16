@@ -25,15 +25,14 @@ import cbproject.core.gui.CBCGuiContainer;
 import cbproject.core.gui.CBCGuiPart;
 import cbproject.core.gui.IGuiTip;
 import cbproject.core.props.ClientProps;
-import cbproject.crafting.blocks.TileGeneratorFire;
 import cbproject.crafting.blocks.TileGeneratorSolar;
 import cbproject.crafting.register.CBCBlocks;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
-public class GuiGenSolar extends CBCGuiContainer{
+public class GuiGenSolar extends CBCGuiContainer {
 
 	TileGeneratorSolar te;
 
@@ -41,65 +40,65 @@ public class GuiGenSolar extends CBCGuiContainer{
 
 		@Override
 		public String getHeadText() {
-			return EnumChatFormatting.RED + StatCollector.translateToLocal("gui.curenergy.name");
+			return EnumChatFormatting.RED
+					+ StatCollector.translateToLocal("gui.curenergy.name");
 		}
 
 		@Override
 		public String getTip() {
 			return te.currentEnergy + "/" + te.maxStorage + " EU";
 		}
-		
+
 	}
-	
+
 	public GuiGenSolar(TileGeneratorSolar gen, InventoryPlayer inv) {
 		super(new ContainerGeneratorSolar(gen, inv));
 		te = gen;
 		this.xSize = 173;
 		this.ySize = 178;
 	}
-	
+
 	@Override
-    public void initGui()
-    {
+	public void initGui() {
 		super.initGui();
 		CBCGuiPart energy = new CBCGuiPart("energy", 25, 52, 48, 7);
 		this.addElement(energy);
 		this.setElementTip("energy", new TipEnergy());
-    }
+	}
 
 	@Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    	String guiName = CBCBlocks.genSolar.getLocalizedName();
-    	this.fontRenderer.drawString(EnumChatFormatting.GRAY + guiName, 7, 7, 0xffffff);
-    }
-	
+		String guiName = CBCBlocks.genSolar.getLocalizedName();
+		this.fontRenderer.drawString(EnumChatFormatting.GRAY + guiName, 7, 7,
+				0xffffff);
+	}
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture(ClientProps.GUI_GENSOLAR_PATH);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
-        this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
-        int len = 0;
-        len = te.currentEnergy * 48 / te.maxStorage;
-        if(len > 0)
-        	this.drawTexturedModalRect(x + 24, y + 52, 174, 70, len, 7);
-        if(te.worldObj.isDaytime()) {
-        	this.drawTexturedModalRect(x + 13, y + 19, 173, 0, 60, 30);
-        	this.drawTexturedModalRect(x + 86, y + 44, 186, 9, 5, 5);
-        } else {
-        	this.drawTexturedModalRect(x + 13, y + 19, 173, 34, 60, 30);
-        	this.drawTexturedModalRect(x + 86, y + 44, 186, 44, 5, 5);
-        }
-        this.drawElements();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+		mc.renderEngine.bindTexture(ClientProps.GUI_GENSOLAR_PATH);
+		int x = (width - xSize) / 2;
+		int y = (height - ySize) / 2;
+		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+		int len = 0;
+		len = te.currentEnergy * 48 / te.maxStorage;
+		if (len > 0)
+			this.drawTexturedModalRect(x + 24, y + 52, 174, 70, len, 7);
+		if (te.worldObj.isDaytime()) {
+			this.drawTexturedModalRect(x + 13, y + 19, 173, 0, 60, 30);
+			this.drawTexturedModalRect(x + 86, y + 44, 186, 9, 5, 5);
+		} else {
+			this.drawTexturedModalRect(x + 13, y + 19, 173, 34, 60, 30);
+			this.drawTexturedModalRect(x + 86, y + 44, 186, 44, 5, 5);
+		}
+		this.drawElements();
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPopMatrix();
 	}
 
 	@Override

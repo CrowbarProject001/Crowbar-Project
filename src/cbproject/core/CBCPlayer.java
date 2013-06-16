@@ -24,11 +24,11 @@ public class CBCPlayer extends PlayerBase {
 		if (slotChestplate != null && player.isSneaking()) {
 			Boolean b = false;
 			Item item = slotChestplate.getItem();
-			if(item instanceof ArmorLongjump)
+			if (item instanceof ArmorLongjump)
 				b = true;
-			else if(item instanceof ArmorHEV){
+			else if (item instanceof ArmorHEV) {
 				ArmorHEV hev = (ArmorHEV) item;
-				if(hev.getAttachment(slotChestplate, EnumAttachment.LONGJUMP))
+				if (hev.getAttachment(slotChestplate, EnumAttachment.LONGJUMP))
 					b = true;
 			}
 			if (b) {
@@ -44,6 +44,5 @@ public class CBCPlayer extends PlayerBase {
 			}
 		}
 	}
-	
 
 }

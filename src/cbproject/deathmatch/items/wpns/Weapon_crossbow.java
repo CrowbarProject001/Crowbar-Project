@@ -17,91 +17,96 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 /**
- * Crossbow in HLDM Style.
- * Mode I : Non-delay, sniper rifle style.
- * Mode II : Explosive arrow.
+ * Crossbow in HLDM Style. Mode I : Non-delay, sniper rifle style. Mode II :
+ * Explosive arrow.
+ * 
  * @author WeAthFolD
  */
 public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	public Icon[] sideIcons = new Icon[6];
-	
+
 	public Weapon_crossbow(int par1) {
-		super(par1 , CBCItems.ammo_bow.itemID, 2);
-		
+		super(par1, CBCItems.ammo_bow.itemID, 2);
+
 		setUnlocalizedName("weapon_crossbow");
-		setCreativeTab( CBCMod.cct );
+		setCreativeTab(CBCMod.cct);
 		setMaxStackSize(1);
 		setMaxDamage(6);
 		setNoRepair();
 		setIconName("weapon_crossbow");
-		
+
 		setLiftProps(10, 5);
 		setReloadTime(40);
-		
+
 	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IconRegister reg)
-    {
-        super.registerIcons(reg);
-        for(int i = 0; i < 6; i++) {
-        	sideIcons[i] = reg.registerIcon("lambdacraft:crossbow_side" + i);
-        }
-    }
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerIcons(IconRegister reg) {
+		super.registerIcons(reg);
+		for (int i = 0; i < 6; i++) {
+			sideIcons[i] = reg.registerIcon("lambdacraft:crossbow_side" + i);
+		}
+	}
 
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
-		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
+		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4,
+				par5);
 	}
-	
+
 	@Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3EntityPlayer) {
 		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
 		return par1ItemStack;
-    }
-	
+	}
+
 	@Override
-	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World, EntityPlayer par3Entity, InformationBullet information ){
-		
+	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3Entity, InformationBullet information) {
+
 		Boolean canUse = this.canShoot(par3Entity, par1ItemStack);
 		int mode = getMode(par1ItemStack);
-		if(!canUse){
+		if (!canUse) {
 			information.setLastTick();
 			return;
 		}
 
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);	
-		switch(mode){
+		par2World
+				.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
+		switch (mode) {
 		case 0:
-			if(!par2World.isRemote)
+			if (!par2World.isRemote)
 				BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
 			break;
 		case 1:
-			if(!par2World.isRemote)
-				par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World, par3Entity));
+			if (!par2World.isRemote)
+				par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World,
+						par3Entity));
 			break;
 		default:
 			break;
 		}
 		information.setLastTick();
-    	if(par3Entity instanceof EntityPlayer){
-    		doUplift(information, par3Entity);
-    		if(!par3Entity.capabilities.isCreativeMode ){
-    				par1ItemStack.damageItem( 1 , par3Entity);
-    				par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-    		}
-    	}
-		
+		if (par3Entity instanceof EntityPlayer) {
+			doUplift(information, par3Entity);
+			if (!par3Entity.capabilities.isCreativeMode) {
+				par1ItemStack.damageItem(1, par3Entity);
+				par3Entity.setItemInUse(par1ItemStack,
+						this.getMaxItemUseDuration(par1ItemStack));
+			}
+		}
+
 	}
-	
+
 	@Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4) 
-	{	
-		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer, par4);
+	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3EntityPlayer, int par4) {
+		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer,
+				par4);
 	}
 
 	@Override
@@ -146,8 +151,9 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 
 	public boolean isBowPulling(ItemStack item) {
 		InformationSet inf = CBCWeaponInformation.getInformation(item);
-		InformationBullet information = (InformationBullet) (inf == null ? null : inf.clientReference);
-		if(information == null)
+		InformationBullet information = (InformationBullet) (inf == null ? null
+				: inf.clientReference);
+		if (information == null)
 			return false;
 		return !(information.isShooting && information.getDeltaTick() < 17);
 	}

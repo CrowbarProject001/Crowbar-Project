@@ -29,70 +29,73 @@ import net.minecraft.item.ItemStack;
 
 /**
  * 触碰会自动给HEV充能的电池实体。
+ * 
  * @author WeAthFolD
- *
+ * 
  */
 public class EntityBattery extends Entity {
 
 	public static final int EU_PER_BATTERY = 50000;
 	private int currentEnergy;
 	private boolean spawnItem = true;
-	
-	public EntityBattery(World world, EntityPlayer player, double x, double y, double z, int energy) {
+
+	public EntityBattery(World world, EntityPlayer player, double x, double y,
+			double z, int energy) {
 		super(world);
 		this.setPosition(x, y, z);
 		this.setSize(0.25f, 0.4f);
 		this.currentEnergy = energy;
-		if(player.capabilities.isCreativeMode)
+		if (player.capabilities.isCreativeMode)
 			spawnItem = false;
 	}
-	
+
 	public EntityBattery(World world) {
 		super(world);
 		this.setSize(0.25f, 0.4f);
 	}
 
 	/**
-	 * TODO:BB碰撞的触发有问题（updateTick2之后的代码 没有被调用)
-	 * 出现生成一段时间自动消失的问题
+	 * TODO:BB碰撞的触发有问题（updateTick2之后的代码 没有被调用) 出现生成一段时间自动消失的问题
 	 */
 	@Override
-	public void onUpdate(){
+	public void onUpdate() {
 		this.prevPosX = this.posX;
-        this.prevPosY = this.posY;
-        this.prevPosZ = this.posZ;
-        this.motionY -= 0.03999999910593033D;
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
-        this.motionX *= 0.9800000190734863D;
-        this.motionY *= 0.9800000190734863D;
-        this.motionZ *= 0.9800000190734863D;
+		this.prevPosY = this.posY;
+		this.prevPosZ = this.posZ;
+		this.motionY -= 0.03999999910593033D;
+		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		this.motionX *= 0.9800000190734863D;
+		this.motionY *= 0.9800000190734863D;
+		this.motionZ *= 0.9800000190734863D;
 
-        if (this.onGround)
-        {
-            this.motionX *= 0.699999988079071D;
-            this.motionZ *= 0.699999988079071D;
-            this.motionY *= -0.5D;
-        }
-        
-        if(++this.ticksExisted < 20 || worldObj.isRemote)
-        	return;
-		
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX-0.15, posY-0.3, posZ - 0.15, posX + 0.15, posY + 0.3, posZ + 0.15);
-		List<EntityPlayer> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, new EntitySelectorPlayer());
-		if(list == null || list.size() == 0)
+		if (this.onGround) {
+			this.motionX *= 0.699999988079071D;
+			this.motionZ *= 0.699999988079071D;
+			this.motionY *= -0.5D;
+		}
+
+		if (++this.ticksExisted < 20 || worldObj.isRemote)
+			return;
+
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - 0.15,
+				posY - 0.3, posZ - 0.15, posX + 0.15, posY + 0.3, posZ + 0.15);
+		List<EntityPlayer> list = worldObj
+				.getEntitiesWithinAABBExcludingEntity(this, box,
+						new EntitySelectorPlayer());
+		if (list == null || list.size() == 0)
 			return;
 		EntityPlayer player = list.get(0);
-		currentEnergy -= EnergyUtils.tryChargeArmor(player, currentEnergy, 2, true);
-		if(spawnItem) {
+		currentEnergy -= EnergyUtils.tryChargeArmor(player, currentEnergy, 2,
+				true);
+		if (spawnItem) {
 			ItemStack newBattery = new ItemStack(CBCItems.battery);
 			CBCItems.battery.setItemCharge(newBattery, currentEnergy);
-			worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY, posZ, newBattery));
+			worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY,
+					posZ, newBattery));
 		}
 		this.playSound("cbc.entities.battery", 0.5F, 1.0F);
 		this.setDead();
 	}
-	
-
 
 	@Override
 	protected void entityInit() {
@@ -114,5 +117,5 @@ public class EntityBattery extends Entity {
 		nbt.setDouble("posZ", posZ);
 		nbt.setInteger("currentEnergy", currentEnergy);
 	}
-	
+
 }

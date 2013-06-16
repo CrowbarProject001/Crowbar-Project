@@ -21,7 +21,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cbproject.api.energy.item.IEnItem;
-import cbproject.crafting.blocks.TileGeneratorFire;
 import cbproject.crafting.blocks.TileGeneratorLava;
 import cbproject.deathmatch.gui.SlotElectricItem;
 import cpw.mods.fml.relauncher.Side;
@@ -29,22 +28,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class ContainerGeneratorLava extends Container {
 
-	//0:fuel 1:charge
+	// 0:fuel 1:charge
 	TileGeneratorLava te;
-	
+
 	public ContainerGeneratorLava(TileGeneratorLava ent, InventoryPlayer player) {
 		te = ent;
-		//燃料槽
+		// 燃料槽
 		addSlotToContainer(new Slot(ent, 0, 71, 50));
-		//充电槽
+		// 充电槽
 		addSlotToContainer(new SlotElectricItem(ent, 1, 71, 17));
 		bindPlayerInventory(player);
 	}
-	
+
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -56,7 +55,7 @@ public class ContainerGeneratorLava extends Container {
 			addSlotToContainer(new Slot(inventoryPlayer, i, 6 + i * 18, 142));
 		}
 	}
-	
+
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
@@ -73,11 +72,11 @@ public class ContainerGeneratorLava extends Container {
 		super.updateProgressBar(par1, par2);
 		if (par1 == 0) {
 			te.bucketCnt = par2;
-		} else if(par1 == 1) {
+		} else if (par1 == 1) {
 			te.currentEnergy = par2;
 		}
 	}
-	
+
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return te.isUseableByPlayer(player);
@@ -94,11 +93,11 @@ public class ContainerGeneratorLava extends Container {
 
 			// 将玩家物品栏中的物品放到TileEntity中
 			if (slot >= 2) {
-				if(stackInSlot.getItem() instanceof IEnItem){
+				if (stackInSlot.getItem() instanceof IEnItem) {
 					if (!this.mergeItemStack(stackInSlot, 1, 2, true)) {
 						return null;
 					}
-				} else if(!this.mergeItemStack(stackInSlot, 0, 1, true)) {
+				} else if (!this.mergeItemStack(stackInSlot, 0, 1, true)) {
 					return null;
 				}
 			}
