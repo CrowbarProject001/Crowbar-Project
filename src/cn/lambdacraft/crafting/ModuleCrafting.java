@@ -63,7 +63,7 @@ public class ModuleCrafting {
 
 	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + CBCMod.VERSION;
 	
-	@SidedProxy(clientSide = "cbproject.crafting.proxy.ClientProxy", serverSide = "cbproject.crafting.proxy.Proxy")
+	@SidedProxy(clientSide = "cn.lambdacraft.crafting.proxy.ClientProxy", serverSide = "cn.lambdacraft.crafting.proxy.Proxy")
 	public static cn.lambdacraft.crafting.proxy.Proxy proxy;
 
 	@Instance("LambdaCraft|World")

@@ -24,7 +24,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class ModuleMob {
 
-	@SidedProxy(clientSide = "cbproject.mob.proxy.ClientProxy", serverSide = "cbproject.mob.proxy.Proxy")
+	@SidedProxy(clientSide = "cn.lambdacraft.mob.proxy.ClientProxy", serverSide = "cn.lambdacraft.mob.proxy.Proxy")
 	public static cn.lambdacraft.mob.proxy.Proxy proxy;
 
 	@Instance("LambdaCraft|Living")

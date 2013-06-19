@@ -58,7 +58,7 @@ public class ModuleDM {
 	@Instance("LambdaCraft|DeathMatch")
 	public static ModuleDM instance;
 
-	@SidedProxy(clientSide = "cbproject.deathmatch.proxy.ClientProxy", serverSide = "cbproject.deathmatch.proxy.Proxy")
+	@SidedProxy(clientSide = "cn.lambdacraft.deathmatch.proxy.ClientProxy", serverSide = "cn.lambdacraft.deathmatch.proxy.Proxy")
 	public static cn.lambdacraft.deathmatch.proxy.Proxy proxy;
 
 	@PreInit

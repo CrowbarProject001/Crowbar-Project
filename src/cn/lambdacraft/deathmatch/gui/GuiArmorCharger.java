@@ -101,7 +101,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * cbproject.core.gui.CBCGuiContainer#onButtonClicked(cbproject.core.gui
+	 * cn.lambdacraft.core.gui.CBCGuiContainer#onButtonClicked(cn.lambdacraft.core.gui
 	 * .CBCGuiButton)
 	 */
 	@Override

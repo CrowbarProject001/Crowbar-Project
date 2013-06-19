@@ -32,7 +32,7 @@ public class KeyUse implements IKeyProcess {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see cbproject.core.register.IKeyProcess#onKeyDown()
+	 * @see cn.lambdacraft.core.register.IKeyProcess#onKeyDown()
 	 */
 	@Override
 	public void onKeyDown() {
@@ -45,7 +45,7 @@ public class KeyUse implements IKeyProcess {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see cbproject.core.register.IKeyProcess#onKeyUp()
+	 * @see cn.lambdacraft.core.register.IKeyProcess#onKeyUp()
 	 */
 	@Override
 	public void onKeyUp() {

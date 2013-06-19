@@ -107,7 +107,7 @@ public class CBCMod implements ITickHandler {
 	/**
 	 * 加载代理。
 	 */
-	@SidedProxy(clientSide = "cbproject.core.proxy.ClientProxy", serverSide = "cbproject.core.proxy.Proxy")
+	@SidedProxy(clientSide = "cn.lambdacraft.core.proxy.ClientProxy", serverSide = "cn.lambdacraft.core.proxy.Proxy")
 	public static cn.lambdacraft.core.proxy.Proxy proxy;
 
 	public static boolean ic2Installed = true;

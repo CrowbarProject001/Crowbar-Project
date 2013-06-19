@@ -52,7 +52,7 @@ public class ShapeSphere implements IMultipleCustomShape {
 	}
 
 	/* (non-Javadoc)
-	 * @see cbproject.core.client.IMultipleCustomShape#draw()
+	 * @see cn.lambdacraft.core.client.IMultipleCustomShape#draw()
 	 */
 	@Override
 	public void draw() {
