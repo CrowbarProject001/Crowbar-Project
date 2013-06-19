@@ -66,10 +66,10 @@ public class ModuleDM {
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			for (String s : SOUND_WEAPONS)
 				CBCSoundEvents.addSoundPath("cbc/weapons/" + s,
-						"/cbproject/gfx/sounds/weapons/" + s);
+						"/cn/lambdacraft/gfx/sounds/weapons/" + s);
 			for (String s : SND_ENTITIES)
 				CBCSoundEvents.addSoundPath("cbc/entities/" + s,
-						"/cbproject/gfx/sounds/entities/" + s);
+						"/cn/lambdacraft/gfx/sounds/entities/" + s);
 			CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R),
 					false, new KeyReload());
 			CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V),

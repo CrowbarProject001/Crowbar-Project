@@ -52,7 +52,7 @@ public class RenderSpray extends Render {
 	private void draw(EntitySpray entity) {
 		float start_x = -EntitySpray.GRIDS_WIDTHS[entity.title_id] / 2.0F; // x的起点(宽度的一半)
 		float start_y = EntitySpray.GRIDS_HEIGHTS[entity.title_id] / 2.0F; // Ditto.
-		float half_thickness = 0.03125F; // 画的厚度 1/16，一半的厚度为 1/32
+		float half_thickness = 0f; // 画的厚度 1/16，一半的厚度为 1/32
 
 		for (float i = 0; i < EntitySpray.GRIDS_WIDTHS[entity.title_id]; i++) { // i为从0到宽度的所有值
 			for (float j = 0; j < EntitySpray.GRIDS_HEIGHTS[entity.title_id]; j++) { // j为从0到高度的所有值

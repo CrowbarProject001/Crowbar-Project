@@ -54,7 +54,7 @@ public class CBCSoundEvents {
 	 * @param name
 	 *            : 声音名字. i.e. "cbc/weapons/rocket"
 	 * @param absPath
-	 *            : 声音的绝对路径。 i.e."/cbproject/gfx/weapons/glauncherb"
+	 *            : 声音的绝对路径。 i.e."/cn/lambdacraft/gfx/weapons/glauncherb"
 	 */
 	public static void addSoundPath(String name, String absPath) {
 		String[] s = { name + ".wav", absPath + ".wav" };

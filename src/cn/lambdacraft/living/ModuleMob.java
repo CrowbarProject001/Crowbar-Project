@@ -35,7 +35,7 @@ public class ModuleMob {
 		if (Proxy.isRendering())
 			for (String s : SND_MOBS) {
 				CBCSoundEvents.addSoundPath("cbc/mobs/" + s,
-						"/cbproject/gfx/sounds/mobs/" + s);
+						"/cn/lambdacraft/gfx/sounds/mobs/" + s);
 			}
 	}
 

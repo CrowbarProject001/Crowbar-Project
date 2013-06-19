@@ -75,7 +75,7 @@ public class ModuleCrafting {
 		if (Proxy.isRendering()) {
 			for (String s : SND_ENTITIES) {
 				CBCSoundEvents.addSoundPath("cbc/entities/" + s,
-						"/cbproject/gfx/sounds/entities/" + s);
+						"/cn/lambdacraft/gfx/sounds/entities/" + s);
 			}
 			MinecraftForge.EVENT_BUS.register(new CRClientEventHandler());
 			MinecraftForge.EVENT_BUS.register(this);
