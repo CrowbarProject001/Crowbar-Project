@@ -8,7 +8,7 @@ import cn.lambdacraft.api.energy.item.ICustomEnItem;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.core.misc.Config;
-import cn.lambdacraft.core.props.GeneralProps;
+import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.crafting.items.*;
 import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
@@ -213,13 +213,14 @@ public class CBCItems {
 						iSredstone, 'D', "ingotRefinedIron" },
 				{ "ABA", "CDC", "AEA", 'A', iSglass, 'B', smedkit, 'C',
 						iSlambdaChip, 'D', iSstorageS, 'E',
-						CBCBlocks.blockRefined },
+						"blockRefinedIron" },
 				{ "AAA", "CDC", "BEB", 'A', iSglass, 'B', smedkit, 'C',
 						iSlambdaChip, 'D', iSstorageS, 'E',
-						CBCBlocks.blockRefined },
+						"blockRefinedIron" },
 				{ "AAA", "CDC", "BEB", 'A', iSglass, 'B', iSlambdaChip, 'C',
-						battery, 'D', iSstorageL, 'E', CBCBlocks.blockRefined },
-				{ "AAA", "AAA", "AAA", 'A', ingotSteel } };
+						battery, 'D', iSstorageL, 'E', "blockRefinedIron" },
+				{ "AAA", "AAA", "AAA", 'A', "ingotRefinedIron" } ,
+				{"A  ", "A  ", 'A', "ingotRefinedIron"} };
 
 		ItemStack output[] = { materials.newStack(5, EnumMaterial.BOX),
 				materials.newStack(2, EnumMaterial.ARMOR),
@@ -237,7 +238,8 @@ public class CBCItems {
 				new ItemStack(DMBlocks.medkitFiller),
 				new ItemStack(DMBlocks.healthCharger),
 				new ItemStack(DMBlocks.armorCharger),
-				new ItemStack(CBCBlocks.blockRefined) };
+				new ItemStack(CBCBlocks.blockRefined),
+				new ItemStack(CBCItems.ironBar, 5)};
 
 		addOreRecipes(output, input);
 		GameRegistry.addShapelessRecipe(new ItemStack(halfLife01), lambdaChip,

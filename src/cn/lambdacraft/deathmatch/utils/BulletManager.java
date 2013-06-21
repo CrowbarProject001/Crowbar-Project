@@ -3,7 +3,7 @@ package cn.lambdacraft.deathmatch.utils;
 import java.util.List;
 
 import cn.lambdacraft.core.network.NetExplosion;
-import cn.lambdacraft.core.props.GeneralProps;
+import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.utils.CBCExplosion;
 import cn.lambdacraft.deathmatch.entities.EntityBullet;
 

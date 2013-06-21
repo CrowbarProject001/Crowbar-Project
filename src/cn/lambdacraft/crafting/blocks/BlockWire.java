@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.crafting.blocks;
 
-import cn.lambdacraft.core.props.ClientProps;
+import cn.lambdacraft.core.proxy.ClientProps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;

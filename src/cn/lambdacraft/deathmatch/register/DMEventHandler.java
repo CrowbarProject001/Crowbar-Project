@@ -14,10 +14,12 @@
  */
 package cn.lambdacraft.deathmatch.register;
 
+import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -36,7 +38,7 @@ public class DMEventHandler {
 	public void onRenderGameOverlay(RenderGameOverlayEvent event) {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-
+		ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft().gameSettings, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
 		if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR) {
 			ItemStack slotChestplate = player.inventory.armorInventory[2];
 			ItemStack slotHelmet = player.inventory.armorInventory[3];
@@ -44,6 +46,8 @@ public class DMEventHandler {
 				if (slotChestplate.getItem() instanceof ArmorHEV
 						&& slotHelmet.itemID == DMItems.armorHEVHelmet.itemID) {
 					event.setCanceled(true);
+					if(event.type == ElementType.HEALTH)
+						HEVRenderingUtils.drawPlayerHud(player, rs);
 				}
 			}
 		}

@@ -6,12 +6,15 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.props.GeneralProps;
+import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCKeyProcess;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.crafting.ModuleCrafting;
+import cn.lambdacraft.deathmatch.blocks.container.DMGuiElements;
+import cn.lambdacraft.deathmatch.client.keys.KeyMode;
+import cn.lambdacraft.deathmatch.client.keys.KeyReload;
 import cn.lambdacraft.deathmatch.entities.EntityARGrenade;
 import cn.lambdacraft.deathmatch.entities.EntityBattery;
 import cn.lambdacraft.deathmatch.entities.EntityCrossbowArrow;
@@ -25,9 +28,6 @@ import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRayColored;
 import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
-import cn.lambdacraft.deathmatch.gui.DMGuiElements;
-import cn.lambdacraft.deathmatch.keys.KeyMode;
-import cn.lambdacraft.deathmatch.keys.KeyReload;
 import cn.lambdacraft.deathmatch.network.NetChargerClient;
 import cn.lambdacraft.deathmatch.network.NetDeathmatch;
 import cn.lambdacraft.deathmatch.network.NetMedFillerClient;
@@ -51,7 +51,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = "LambdaCraft|DeathMatch", name = "LambdaCraft DeathMatch", version = CBCMod.VERSION, dependencies = ModuleCrafting.DEPENCY_CRAFTING)
+@Mod(modid = "LambdaCraft|DeathMatch", name = "LambdaCraft DeathMatch", version = CBCMod.VERSION, dependencies = CBCMod.DEPENCY_CRAFTING)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class ModuleDM {
 
@@ -66,10 +66,10 @@ public class ModuleDM {
 		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
 			for (String s : SOUND_WEAPONS)
 				CBCSoundEvents.addSoundPath("cbc/weapons/" + s,
-						"/cn/lambdacraft/gfx/sounds/weapons/" + s);
+						"/mods/lambdacraft/sounds/weapons/" + s);
 			for (String s : SND_ENTITIES)
 				CBCSoundEvents.addSoundPath("cbc/entities/" + s,
-						"/cn/lambdacraft/gfx/sounds/entities/" + s);
+						"/mods/lambdacraft/sounds/entities/" + s);
 			CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R),
 					false, new KeyReload());
 			CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V),

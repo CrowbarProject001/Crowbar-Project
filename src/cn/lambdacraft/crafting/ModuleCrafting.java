@@ -15,15 +15,15 @@
 package cn.lambdacraft.crafting;
 
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.props.GeneralProps;
+import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCAchievements;
 import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.core.world.CBCOreGenerator;
+import cn.lambdacraft.crafting.blocks.container.CRGuiElements;
 import cn.lambdacraft.crafting.entities.EntitySpray;
-import cn.lambdacraft.crafting.gui.CRGuiElements;
 import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
 import cn.lambdacraft.crafting.network.NetCrafterClient;
 import cn.lambdacraft.crafting.recipes.RecipeCrafter;
@@ -60,8 +60,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(modid = "LambdaCraft|World", name = "LambdaCraft World", version = CBCMod.VERSION, dependencies = CBCMod.DEPENDENCY_CORE)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class ModuleCrafting {
-
-	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + CBCMod.VERSION;
 	
 	@SidedProxy(clientSide = "cn.lambdacraft.crafting.proxy.ClientProxy", serverSide = "cn.lambdacraft.crafting.proxy.Proxy")
 	public static cn.lambdacraft.crafting.proxy.Proxy proxy;
@@ -75,9 +73,8 @@ public class ModuleCrafting {
 		if (Proxy.isRendering()) {
 			for (String s : SND_ENTITIES) {
 				CBCSoundEvents.addSoundPath("cbc/entities/" + s,
-						"/cn/lambdacraft/gfx/sounds/entities/" + s);
+						"/mods/lambdacraft/sounds/entities/" + s);
 			}
-			MinecraftForge.EVENT_BUS.register(new CRClientEventHandler());
 			MinecraftForge.EVENT_BUS.register(this);
 		}
 	}
@@ -125,56 +122,22 @@ public class ModuleCrafting {
 
 		// 这个是普通合成机的武器合成表
 		RecipeCrafter wpnRecipes[] = {
-				new RecipeCrafter(new ItemStack(DMItems.weapon_crowbar), 700,
-						new ItemStack(CBCItems.ironBar, 2),
-						CBCItems.materials
-								.newStack(1, EnumMaterial.ACCESSORIES),
-						new ItemStack(Item.dyePowder, 1, 1)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmhandgun),
-						1200, CBCItems.materials.newStack(2,
-								EnumMaterial.PISTOL)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_357), 1400,
-						CBCItems.materials.newStack(3, EnumMaterial.PISTOL),
-						CBCItems.materials
-								.newStack(2, EnumMaterial.ACCESSORIES)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmAR), 2700,
-						CBCItems.materials.newStack(3, EnumMaterial.LIGHT),
-						CBCItems.materials
-								.newStack(1, EnumMaterial.ACCESSORIES)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_shotgun), 3000,
-						CBCItems.materials.newStack(5, EnumMaterial.LIGHT),
-						CBCItems.materials
-								.newStack(3, EnumMaterial.ACCESSORIES)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_hgrenade, 10),
-						1600,
-						CBCItems.materials.newStack(2, EnumMaterial.LIGHT),
-						CBCItems.materials.newStack(4, EnumMaterial.EXPLOSIVE)), }, ammoRecipes[] = {
-				new RecipeCrafter(new ItemStack(CBCItems.bullet_9mm, 18), 600,
-						CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_357, 12), 700,
-						CBCItems.materials
-								.newStack(2, EnumMaterial.ACCESSORIES),
-						CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
-				new RecipeCrafter(
-						new ItemStack(CBCItems.ammo_shotgun, 8),
-						850,
-						CBCItems.materials.newStack(4, EnumMaterial.AMMUNITION),
-						CBCItems.materials
-								.newStack(1, EnumMaterial.ACCESSORIES)),
-				new RecipeCrafter(
-						new ItemStack(CBCItems.ammo_9mm2, 1),
-						1050,
-						CBCItems.materials.newStack(5, EnumMaterial.AMMUNITION),
-						CBCItems.materials.newStack(1, EnumMaterial.LIGHT)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_crowbar), 700,new ItemStack(CBCItems.ironBar, 2),CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES),new ItemStack(Item.dyePowder, 1, 1)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmhandgun),1200, CBCItems.materials.newStack(2,EnumMaterial.PISTOL)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_357), 1400,CBCItems.materials.newStack(3, EnumMaterial.PISTOL),CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_9mmAR), 2700,CBCItems.materials.newStack(3, EnumMaterial.LIGHT),CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_shotgun), 3000,CBCItems.materials.newStack(5, EnumMaterial.LIGHT),CBCItems.materials.newStack(3, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_hgrenade, 10),1600,CBCItems.materials.newStack(2, EnumMaterial.LIGHT),CBCItems.materials.newStack(4, EnumMaterial.EXPLOSIVE)), }, 
+					ammoRecipes[] = {
+				new RecipeCrafter(new ItemStack(CBCItems.bullet_9mm, 18), 600,CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),new RecipeCrafter(new ItemStack(CBCItems.ammo_9mm), 700, CBCItems.materials.newStack(2, EnumMaterial.PISTOL), CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_357, 12), 700,CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES),CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_shotgun, 8),850,CBCItems.materials.newStack(4, EnumMaterial.AMMUNITION),CBCItems.materials.newStack(1, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_9mm2, 1),1050,CBCItems.materials.newStack(5, EnumMaterial.AMMUNITION),CBCItems.materials.newStack(1, EnumMaterial.LIGHT)),
 				new RecipeRepair(CBCItems.ammo_9mm, CBCItems.bullet_9mm),
-				new RecipeRepair(CBCItems.ammo_9mm2, CBCItems.bullet_9mm) }, advWeapons[] = {
-				new RecipeCrafter(new ItemStack(DMBlocks.blockTripmine, 15),
-						3200,
-						CBCItems.materials.newStack(3, EnumMaterial.LIGHT),
-						CBCItems.materials.newStack(1, EnumMaterial.TECH),
-						CBCItems.materials.newStack(6, EnumMaterial.EXPLOSIVE)),
-				new RecipeCrafter(new ItemStack(DMItems.weapon_satchel, 15),
-						3500,
+				new RecipeRepair(CBCItems.ammo_9mm2, CBCItems.bullet_9mm) }, 
+				advWeapons[] = {
+				new RecipeCrafter(new ItemStack(DMBlocks.blockTripmine, 15),3200,CBCItems.materials.newStack(3, EnumMaterial.LIGHT),CBCItems.materials.newStack(1, EnumMaterial.TECH),CBCItems.materials.newStack(6, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(DMItems.weapon_satchel, 15),3500,
 						CBCItems.materials.newStack(3, EnumMaterial.LIGHT),
 						CBCItems.materials.newStack(1, EnumMaterial.TECH),
 						CBCItems.materials.newStack(6, EnumMaterial.EXPLOSIVE)),
@@ -196,41 +159,30 @@ public class ModuleCrafting {
 						CBCItems.materials.newStack(4, EnumMaterial.BIO),
 						CBCItems.materials
 								.newStack(3, EnumMaterial.ACCESSORIES)),
-				new RecipeCrafter(new ItemStack(CBCMobItems.weapon_snark, 5),
-						0, CBCItems.materials.newStack(1, EnumMaterial.BIO)) },
+				new RecipeCrafter(new ItemStack(CBCMobItems.weapon_snark, 5),0, CBCItems.materials.newStack(1, EnumMaterial.BIO)) },
 		// 高级武器合成机 弹药合成表
 		advAmmos[] = {
-				new RecipeCrafter(new ItemStack(CBCItems.bullet_steelbow, 10),
-						650, new ItemStack(CBCItems.ironBar, 10),
+				new RecipeCrafter(new ItemStack(CBCItems.bullet_steelbow, 10),650, new ItemStack(CBCItems.ironBar, 10),
 						CBCItems.materials.newStack(1, EnumMaterial.EXPLOSIVE)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_bow, 1), 950,
-						CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_bow, 1), 950,CBCItems.materials.newStack(3, EnumMaterial.AMMUNITION)),
 				new RecipeCrafter(new ItemStack(CBCItems.ammo_argrenade, 5),
-						600,
-						CBCItems.materials.newStack(1, EnumMaterial.LIGHT),
-						CBCItems.materials.newStack(2, EnumMaterial.EXPLOSIVE)),
-				new RecipeCrafter(new ItemStack(CBCItems.ammo_rpg, 6), 1500,
-						CBCItems.materials.newStack(1, EnumMaterial.HEAVY),
-						CBCItems.materials.newStack(3, EnumMaterial.EXPLOSIVE)),
+						600,CBCItems.materials.newStack(1, EnumMaterial.LIGHT),CBCItems.materials.newStack(2, EnumMaterial.EXPLOSIVE)),
+				new RecipeCrafter(new ItemStack(CBCItems.ammo_rpg, 6), 1500,CBCItems.materials.newStack(1, EnumMaterial.HEAVY),CBCItems.materials.newStack(3, EnumMaterial.EXPLOSIVE)),
 				new RecipeCrafter(new ItemStack(CBCItems.ammo_uranium, 1),
-						1500, CBCItems.materials.newStack(1, EnumMaterial.BOX),
-						new ItemStack(CBCItems.ingotUranium, 3)),
+						1500, CBCItems.materials.newStack(1, EnumMaterial.BOX),new ItemStack(CBCItems.ingotUranium, 3)),
 				new RecipeRepair(CBCItems.ammo_bow, CBCItems.bullet_steelbow),
-				new RecipeRepair(CBCItems.ammo_uranium, CBCItems.ingotUranium,
-						33) },
+				new RecipeRepair(CBCItems.ammo_uranium, CBCItems.ingotUranium,33) },
 		// 电力合成机独有 装备合成表
 		armors[] = {
 				new RecipeCrafter(new ItemStack(DMItems.armorHEVBoot), 6000,
 						CBCItems.materials.newStack(3, EnumMaterial.TECH),
 						CBCItems.materials.newStack(6, EnumMaterial.LIGHT),
 						CBCItems.materials.newStack(3, EnumMaterial.ARMOR)),
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVLeggings),
-						6000,
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVLeggings),6000,
 						CBCItems.materials.newStack(3, EnumMaterial.TECH),
 						CBCItems.materials.newStack(6, EnumMaterial.LIGHT),
 						CBCItems.materials.newStack(3, EnumMaterial.ARMOR)),
-				new RecipeCrafter(new ItemStack(DMItems.armorHEVChestplate),
-						7000,
+				new RecipeCrafter(new ItemStack(DMItems.armorHEVChestplate),7000,
 						CBCItems.materials.newStack(4, EnumMaterial.TECH),
 						CBCItems.materials.newStack(7, EnumMaterial.LIGHT),
 						CBCItems.materials.newStack(4, EnumMaterial.ARMOR)),

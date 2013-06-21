@@ -2,6 +2,9 @@ package cn.lambdacraft.api.weapon;
 
 import java.util.List;
 
+import cn.lambdacraft.api.hud.IHudIconProvider;
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 
@@ -9,8 +12,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
@@ -20,7 +25,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public abstract class WeaponGeneralBullet extends WeaponGeneral {
+public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudTipProvider {
 
 	public int reloadTime;
 	public int jamTime;
@@ -298,6 +303,35 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral {
 		InformationBullet inf = new InformationBullet(is);
 		InformationBullet inf2 = new InformationBullet(is);
 		return new InformationSet(inf, inf2);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
+		IHudTip[] tips = new IHudTip[1];
+		tips[0] = new IHudTip() {
+
+			@Override
+			public Icon getRenderingIcon(ItemStack itemStack,
+					EntityPlayer player) {
+				if(Item.itemsList[ammoID] != null){
+					return Item.itemsList[ammoID].getIconIndex(itemStack);
+				}
+				return null;
+			}
+
+			@Override
+			public String getTip(ItemStack itemStack, EntityPlayer player) {
+				return (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1) + "|" + AmmoManager.getAmmoCapacity(ammoID, player.inventory);
+			}
+
+			@Override
+			public int getTextureSheet(ItemStack itemStack) {
+				return itemStack.getItemSpriteNumber();
+			}
+			
+		};
+		return tips;
 	}
 
 }

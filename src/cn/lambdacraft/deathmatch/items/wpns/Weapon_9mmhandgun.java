@@ -1,5 +1,6 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;

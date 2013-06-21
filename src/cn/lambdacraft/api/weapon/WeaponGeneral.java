@@ -1,7 +1,9 @@
 package cn.lambdacraft.api.weapon;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.core.item.CBCGenericItem;
-import cn.lambdacraft.core.props.GeneralProps;
+import cn.lambdacraft.core.proxy.GeneralProps;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

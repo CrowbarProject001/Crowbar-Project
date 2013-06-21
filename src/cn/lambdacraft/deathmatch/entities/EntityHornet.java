@@ -16,7 +16,7 @@ package cn.lambdacraft.deathmatch.entities;
 
 import java.util.List;
 
-import cn.lambdacraft.core.props.ClientProps;
+import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.EntitySelectorLiving;
 import cn.lambdacraft.deathmatch.entities.fx.EntityTrailFX;
 import cn.lambdacraft.deathmatch.register.DMItems;

@@ -15,7 +15,7 @@
 package cn.lambdacraft.crafting.blocks;
 
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.props.GeneralProps;
+import cn.lambdacraft.core.proxy.GeneralProps;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

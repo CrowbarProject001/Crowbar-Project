@@ -2,16 +2,32 @@ package cn.lambdacraft.deathmatch.items;
 
 import java.util.EnumSet;
 
+import org.lwjgl.opengl.GL11;
+
+import scala.Char;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
+import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.item.ElectricArmor;
-import cn.lambdacraft.core.props.ClientProps;
+import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.register.DMItems;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Icon;
 import net.minecraftforge.common.EnumHelper;
 
 public class ArmorHEV extends ElectricArmor {
@@ -31,7 +47,7 @@ public class ArmorHEV extends ElectricArmor {
 		}
 	}
 
-	public static int reductionAmount[] = { 0, 0, 0, 0 };
+	public static int reductionAmount[] = { 5, 8, 5, 4 };
 	protected static EnumArmorMaterial material = EnumHelper.addArmorMaterial(
 			"armorHEV", 100000, reductionAmount, 0);
 	private static ArmorProperties propChest = new ArmorProperties(3, 100.0,
@@ -103,5 +119,35 @@ public class ArmorHEV extends ElectricArmor {
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
 		return (slot == 2) ? 8 : 4;
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void renderHelmetOverlay(ItemStack stack, EntityPlayer player,
+			ScaledResolution resolution, float partialTicks, boolean hasScreen,
+			int mouseX, int mouseY) {
+		RenderEngine eg = Minecraft.getMinecraft().renderEngine;
+		Tessellator t = Tessellator.instance;
+		int i = resolution.getScaledWidth();
+		int j = resolution.getScaledHeight();
+		GL11.glPushMatrix();
+		GL11.glDepthMask(false);
+		GL11.glBlendFunc(770, 771);
+		GL11.glColor4f(1.0F,1.0F,1.0F,1.0F);
+		GL11.glDisable(3008);
+		GL11.glDisable(2929);
+		eg.bindTexture(ClientProps.HEV_MASK_PATH);
+		t.startDrawingQuads();
+		t.setColorRGBA(255, 255, 255, 50);
+		t.addVertexWithUV(0.0D, j, -90D, 0.0D, 1.0D);
+		t.addVertexWithUV(i, j, -90D, 1.0D, 1.0D);
+		t.addVertexWithUV(i, 0.0D, -90D, 1.0D, 0.0D);
+		t.addVertexWithUV(0.0D, 0.0D, -90D, 0.0D, 0.0D);
+		t.draw();
+		GL11.glDepthMask(true);
+		GL11.glEnable(2929);
+		GL11.glEnable(3008);
+		GL11.glPopMatrix();
+	}
+
 
 }

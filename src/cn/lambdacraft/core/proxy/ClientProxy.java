@@ -16,7 +16,7 @@ package cn.lambdacraft.core.proxy;
 
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.register.CBCKeyProcess;
-import cn.lambdacraft.deathmatch.renderers.RenderEmptyBlock;
+import cn.lambdacraft.deathmatch.client.render.RenderEmptyBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.PlayerAPI;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;

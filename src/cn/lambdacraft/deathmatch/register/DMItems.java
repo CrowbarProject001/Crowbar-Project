@@ -2,7 +2,7 @@ package cn.lambdacraft.deathmatch.register;
 
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.misc.Config;
-import cn.lambdacraft.core.props.GeneralProps;
+import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
 import cn.lambdacraft.deathmatch.items.ArmorLongjump;

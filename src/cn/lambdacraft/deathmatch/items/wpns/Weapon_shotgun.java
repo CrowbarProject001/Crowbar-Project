@@ -1,5 +1,7 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;
@@ -166,5 +168,6 @@ public class Weapon_shotgun extends WeaponGeneralBullet {
 	public String getModeDescription(int mode) {
 		return mode == 0 ? "mode.sg1" : "mode.sg2";
 	}
+
 
 }

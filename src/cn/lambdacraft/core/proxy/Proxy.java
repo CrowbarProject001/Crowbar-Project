@@ -59,7 +59,7 @@ public class Proxy {
 	public void init() {
 		for (String lang : languages) {
 			LanguageRegistry.instance().loadLocalization(
-					"/cbproject/lang/" + lang + ".properties", lang, false);
+					"/mods/lambdacraft/lang/" + lang + ".properties", lang, false);
 		}
 	}
 

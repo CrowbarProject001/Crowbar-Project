@@ -27,7 +27,7 @@ import net.minecraftforge.common.Property;
  * 
  * 被注册类中标记的域必须为静态域。
  * 
- * @see cn.lambdacraft.core.props.GeneralProps
+ * @see cn.lambdacraft.core.proxy.GeneralProps
  * @author WeAthFolD
  * 
  */
@@ -84,7 +84,7 @@ public class GeneralRegistry {
 	 *            物品名字
 	 * @param cat
 	 *            物品分类
-	 * @see cn.lambdacraft.core.props.GeneralProps
+	 * @see cn.lambdacraft.core.proxy.GeneralProps
 	 * @return 获取的ID
 	 */
 	public static int getItemId(String name, int cat) {
@@ -104,7 +104,7 @@ public class GeneralRegistry {
 	 *            方块名字
 	 * @param cat
 	 *            方块分类
-	 * @see cn.lambdacraft.core.props.GeneralProps
+	 * @see cn.lambdacraft.core.proxy.GeneralProps
 	 * @return 获取的ID
 	 */
 	public static int getBlockId(String name, int cat) {

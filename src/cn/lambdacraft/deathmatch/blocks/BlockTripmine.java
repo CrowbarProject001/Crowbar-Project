@@ -11,7 +11,7 @@ import static net.minecraftforge.common.ForgeDirection.WEST;
 import java.util.Random;
 
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.props.ClientProps;
+import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 

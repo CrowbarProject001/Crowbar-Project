@@ -3,12 +3,16 @@
  */
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.api.weapon.CBCWeaponInformation;
 import cn.lambdacraft.api.weapon.InformationSet;
 import cn.lambdacraft.api.weapon.InformationWeapon;
 import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
 import cn.lambdacraft.deathmatch.entities.EntitySatchel;
+import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -25,7 +29,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public class Weapon_satchel extends WeaponGeneral {
+public class Weapon_satchel extends WeaponGeneral implements IHudTipProvider {
 
 	public Icon iconSetting;
 
@@ -184,5 +188,32 @@ public class Weapon_satchel extends WeaponGeneral {
 	public String getModeDescription(int mode) {
 		return mode == 0 ? "mode.satchel1" : "mode.satchel2";
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
+		IHudTip[] tips = new IHudTip[1];
+		tips[0] = new IHudTip() {
+
+			@Override
+			public Icon getRenderingIcon(ItemStack itemStack,
+					EntityPlayer player) {
+				return HEVRenderingUtils.getHudSheetIcon(32, 48, "satchel");
+			}
+
+			@Override
+			public String getTip(ItemStack itemStack, EntityPlayer player) {
+				return String.valueOf(AmmoManager.getAmmoCapacity(itemID, player.inventory));
+			}
+
+			@Override
+			public int getTextureSheet(ItemStack itemStack) {
+				return 5;
+			}
+			
+		};
+		return tips;
+	}
+	
 
 }

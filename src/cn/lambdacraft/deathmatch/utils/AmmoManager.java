@@ -2,6 +2,7 @@ package cn.lambdacraft.deathmatch.utils;
 
 import cn.lambdacraft.api.weapon.WeaponGeneral;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.*;
 
 public class AmmoManager {
@@ -79,6 +80,16 @@ public class AmmoManager {
 			}
 		}
 		return false;
+	}
+	
+	public static int getAmmoCapacity(int itemID, InventoryPlayer inv) {
+		int cnt = 0;
+		for(ItemStack s : inv.mainInventory) {
+			if(s != null && s.itemID == itemID) {
+				cnt += s.getMaxStackSize() == 1 ? s.getMaxDamage() - s.getItemDamage() - 1 : s.stackSize;
+			}
+		}
+		return cnt;
 	}
 
 	public static boolean hasAmmo(int itemID, EntityPlayer player) {

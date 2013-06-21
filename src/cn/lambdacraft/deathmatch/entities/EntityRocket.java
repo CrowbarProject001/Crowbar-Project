@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.deathmatch.entities;
 
-import cn.lambdacraft.core.props.ClientProps;
+import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.entities.fx.EntityTrailFX;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.deathmatch.utils.BulletManager;

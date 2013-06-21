@@ -30,13 +30,13 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
 import cn.lambdacraft.core.client.RenderUtils;
+import cn.lambdacraft.core.client.keys.KeyUse;
 import cn.lambdacraft.core.energy.EnergyNet;
-import cn.lambdacraft.core.keys.KeyUse;
 import cn.lambdacraft.core.misc.CBCCreativeTab;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.network.NetExplosion;
 import cn.lambdacraft.core.network.NetKeyUsing;
-import cn.lambdacraft.core.props.GeneralProps;
+import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCKeyProcess;
@@ -75,7 +75,12 @@ public class CBCMod implements ITickHandler {
 	
 	public static final String VERSION = "1.1.0 dev";
 	
-	public static final String DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION;
+	public static final String 
+			DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + VERSION,
+			DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION,
+			DEPENDENCY_DEATHMATCH = "required-after:LambdaCraft|DeathMatch@" + VERSION,
+			DEPENDENCY_MOB = "required-after:LambdaCraft|Living@" + VERSION,
+			DEPENCY_XEN = "required-after:LambdaCraft|Xen@" + VERSION;
 	
 	@SideOnly(Side.CLIENT)
 	private Minecraft mc;
@@ -155,17 +160,6 @@ public class CBCMod implements ITickHandler {
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);
 		Vec3[][] vs = RenderUtils.shapeSphere.getVertices();
-		DecimalFormat df = new DecimalFormat();
-		df.setMaximumFractionDigits(2);
-		StringBuilder b = new StringBuilder("The Vertices : \n");
-		for(int i = 0; i < vs.length; i ++) {
-			b.append("[");
-			for(int j = 0; j < vs[i].length; j++) {
-				b.append("(").append(df.format((float)vs[i][j].xCoord)).append(",").append(df.format((float)vs[i][j].yCoord)).append(",").append(df.format((float)vs[i][j].zCoord)).append(")");
-			}
-			b.append("],\n");
-		}
-		System.out.println(b.toString());
 		proxy.init();
 	}
 

@@ -1,9 +1,12 @@
 package cn.lambdacraft.deathmatch.items.ammos;
 
 import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 
 public class Ammo_uranium extends ItemAmmo {
 
@@ -12,5 +15,15 @@ public class Ammo_uranium extends ItemAmmo {
 		setCreativeTab(CBCMod.cct);
 		setIAndU("ammo_uranium");
 		setMaxDamage(100);
+	}
+
+	@Override
+	public Icon getHudIcon() {
+		return HEVRenderingUtils.getHudSheetIcon(0, 48, "uranium");
+	}
+
+	@Override
+	public int getIconSheetIndex(ItemStack stack) {
+		return 5;
 	}
 }

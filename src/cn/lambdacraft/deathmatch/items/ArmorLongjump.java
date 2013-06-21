@@ -1,7 +1,7 @@
 package cn.lambdacraft.deathmatch.items;
 
 import cn.lambdacraft.core.item.CBCGenericArmor;
-import cn.lambdacraft.core.props.ClientProps;
+import cn.lambdacraft.core.proxy.ClientProps;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemStack;

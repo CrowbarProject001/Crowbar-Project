@@ -17,7 +17,7 @@ package cn.lambdacraft.mob.entities;
 import java.util.List;
 
 import cn.lambdacraft.api.entities.IEntityLink;
-import cn.lambdacraft.core.props.ClientProps;
+import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.GenericUtils;
 
 import net.minecraft.entity.Entity;

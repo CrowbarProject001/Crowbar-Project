@@ -15,9 +15,9 @@
 package cn.lambdacraft.crafting.proxy;
 
 import cn.lambdacraft.crafting.blocks.TileWire;
+import cn.lambdacraft.crafting.client.RenderSpray;
+import cn.lambdacraft.crafting.client.RenderWire;
 import cn.lambdacraft.crafting.entities.EntitySpray;
-import cn.lambdacraft.crafting.render.RenderSpray;
-import cn.lambdacraft.crafting.render.RenderWire;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
