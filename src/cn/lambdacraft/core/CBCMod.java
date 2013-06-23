@@ -88,7 +88,7 @@ public class CBCMod implements ITickHandler {
 	/**
 	 * 日志
 	 */
-	public static Logger log = FMLLog.getLogger();
+	public static Logger log = Logger.getLogger("LambdaCraft");
 
 	/**
 	 * 武器制作机的合成表。
@@ -124,6 +124,11 @@ public class CBCMod implements ITickHandler {
 	 */
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
+		log.setParent(FMLLog.getLogger());
+		log.info("Starting LambdaCraft " + this.VERSION);
+		log.info("Copyright (c) Lambda Innovation, 2013");
+		log.info("http://www.lambdacraft.cn");
+		
 		config = new Config(event.getSuggestedConfigurationFile());
 		EnergyNet.initialize();
 
