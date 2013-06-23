@@ -21,7 +21,6 @@ import cn.lambdacraft.core.register.CBCAchievements;
 import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
-import cn.lambdacraft.core.world.CBCOreGenerator;
 import cn.lambdacraft.crafting.blocks.container.CRGuiElements;
 import cn.lambdacraft.crafting.entities.EntitySpray;
 import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
@@ -31,6 +30,7 @@ import cn.lambdacraft.crafting.recipes.RecipeRepair;
 import cn.lambdacraft.crafting.recipes.RecipeWeapons;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 import cn.lambdacraft.crafting.register.CBCItems;
+import cn.lambdacraft.crafting.world.CBCWorldGen;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.mob.register.CBCMobItems;
@@ -69,7 +69,7 @@ public class ModuleCrafting {
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent Init) {
-		GameRegistry.registerWorldGenerator(new CBCOreGenerator());
+		GameRegistry.registerWorldGenerator(new CBCWorldGen());
 		if (Proxy.isRendering()) {
 			for (String s : SND_ENTITIES) {
 				CBCSoundEvents.addSoundPath("cbc/entities/" + s,

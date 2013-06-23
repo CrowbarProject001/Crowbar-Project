@@ -10,11 +10,14 @@ import cn.lambdacraft.deathmatch.entities.EntityBullet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class BulletManager {
@@ -44,6 +47,89 @@ public class BulletManager {
 			int additionalDamage) {
 		Explode(world, entity, strengh, radius, posX, posY, posZ,
 				additionalDamage, 1.0, 1.0F);
+	}
+	
+	public static MovingObjectPosition rayTraceBlocksAndEntities(World world, Vec3 vec1, Vec3 vec2) {
+		MovingObjectPosition mop = rayTraceEntities(null, world, vec1, vec2);
+		if(mop == null)
+			return world.rayTraceBlocks(vec1, vec2);
+		return mop;
+	}
+	
+	public static MovingObjectPosition rayTraceBlocksAndEntities(IEntitySelector selector, World world, Vec3 vec1, Vec3 vec2, Entity... exclusion) {
+		MovingObjectPosition mop = rayTraceEntities(selector, world, vec1, vec2, exclusion);
+		if(mop == null)
+			return world.rayTraceBlocks(vec1, vec2);
+		return mop;
+	}
+	
+	public static MovingObjectPosition rayTraceEntities(IEntitySelector selector, World world, Vec3 vec1, Vec3 vec2, Entity... exclusion) {
+        Entity entity = null;
+        AxisAlignedBB boundingBox = getBoundingBox(vec1, vec2);
+        List list = world.getEntitiesWithinAABBExcludingEntity(null, boundingBox.expand(1.0D, 1.0D, 1.0D), selector);
+        double d0 = 0.0D;
+
+        for (int j = 0; j < list.size(); ++j)
+        {
+            Entity entity1 = (Entity)list.get(j);
+
+            Boolean b = entity1.canBeCollidedWith();
+            if(!b)
+            	continue;
+            for(Entity e : exclusion) {
+            	if(e == entity1)
+            		b = false;
+            }
+            if (entity1.canBeCollidedWith() && b)
+            {
+                float f = 0.3F;
+                AxisAlignedBB axisalignedbb = entity1.boundingBox.expand((double)f, (double)f, (double)f);
+                MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec1, vec2);
+
+                if (movingobjectposition1 != null)
+                {
+                    double d1 = vec1.distanceTo(movingobjectposition1.hitVec);
+
+                    if (d1 < d0 || d0 == 0.0D)
+                    {
+                        entity = entity1;
+                        d0 = d1;
+                    }
+                }
+            }
+        }
+
+        if (entity != null)
+        {
+            return new MovingObjectPosition(entity);
+        }
+        return null;
+	}
+	
+	private static AxisAlignedBB getBoundingBox(Vec3 vec1, Vec3 vec2) {
+		double minX = 0.0, minY = 0.0, minZ = 0.0, maxX = 0.0, maxY = 0.0, maxZ = 0.0;
+		if(vec1.xCoord < vec2.xCoord) {
+			minX = vec1.xCoord;
+			maxX = vec2.xCoord;
+		} else {
+			minX = vec2.xCoord;
+			maxX = vec1.xCoord;
+		}
+		if(vec1.yCoord < vec2.yCoord) {
+			minY = vec1.yCoord;
+			maxY = vec2.yCoord;
+		} else {
+			minY = vec2.yCoord;
+			maxY = vec1.yCoord;
+		}
+		if(vec1.zCoord < vec2.zCoord) {
+			minZ = vec1.zCoord;
+			maxZ = vec2.zCoord;
+		} else {
+			minZ = vec2.zCoord;
+			maxZ = vec1.zCoord;
+		}
+		return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 	}
 
 	public static void Explode(World world, Entity entity, float strengh,

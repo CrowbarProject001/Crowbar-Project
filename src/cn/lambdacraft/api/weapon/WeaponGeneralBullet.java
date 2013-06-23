@@ -139,12 +139,14 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer player, InformationBullet information) {
-		if (!(player.capabilities.isCreativeMode))
-			par1ItemStack.damageItem(1, player);
+		
 		player.setItemInUse(par1ItemStack,
 				this.getMaxItemUseDuration(par1ItemStack));
-		if (!par2World.isRemote)
+		if (!par2World.isRemote) {
 			BulletManager.Shoot(par1ItemStack, player, par2World);
+			if (!(player.capabilities.isCreativeMode))
+				par1ItemStack.damageItem(1, player);
+		}
 		par2World.playSoundAtEntity(player,
 				this.getSoundShoot(this.getMode(par1ItemStack)), 0.5F, 1.0F);
 		doUplift(information, player);

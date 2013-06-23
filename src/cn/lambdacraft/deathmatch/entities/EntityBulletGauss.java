@@ -8,7 +8,7 @@ import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.entities.EntityBulletGaussSec.EnumGaussRayType;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_gauss;
+import cn.lambdacraft.deathmatch.items.wpns.Weapon_Gauss;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.deathmatch.utils.GaussBulletManager;
 
@@ -32,7 +32,7 @@ public class EntityBulletGauss extends EntityBullet {
 
 	private static final float CHARGE_DAMAGE_SCALE = 2.0F;
 
-	private Weapon_gauss item;
+	private Weapon_Gauss item;
 	private InformationEnergy inf;
 
 	public enum EnumSubPlain {
@@ -47,7 +47,7 @@ public class EntityBulletGauss extends EntityBullet {
 			ItemStack par3itemStack, String particle) {
 		super(par1World, par2EntityLiving, par3itemStack);
 		motion = new MotionXYZ(par2EntityLiving);
-		item = (Weapon_gauss) itemStack.getItem();
+		item = (Weapon_Gauss) itemStack.getItem();
 		inf = item.getInformation(itemStack, worldObj);
 		worldObj.spawnEntityInWorld(new EntityGaussRay(new MotionXYZ(this),
 				worldObj));

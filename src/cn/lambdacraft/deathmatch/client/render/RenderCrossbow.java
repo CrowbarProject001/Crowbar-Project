@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_crossbow;
+import cn.lambdacraft.deathmatch.items.wpns.Weapon_Crossbow;
 import cn.lambdacraft.deathmatch.register.DMItems;
 
 import cpw.mods.fml.relauncher.Side;
@@ -72,7 +72,7 @@ public class RenderCrossbow implements IItemRenderer {
 		Minecraft mc = Minecraft.getMinecraft();
 		t = Tessellator.instance;
 
-		Weapon_crossbow wpn = (Weapon_crossbow) item.getItem();
+		Weapon_Crossbow wpn = (Weapon_Crossbow) item.getItem();
 		InformationBullet inf = wpn.getInformation(item, ent.worldObj);
 		float w = 0.05F;
 		float w2 = 0.1F;

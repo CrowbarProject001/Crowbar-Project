@@ -95,7 +95,7 @@ public class ClientProxy extends Proxy {
 				EntityCrossbowArrow.class, new RenderCrossedProjectile(0.6,
 						0.12, ClientProps.CROSSBOW_BOW_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class,
-				new RenderIcon(ClientProps.RED_DOT_PATH).setBlend(0.8F));
+				new RenderIcon(ClientProps.RED_DOT_PATH).setBlend(0.8F).setEnableDepth(false));
 		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class,
 				new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(
@@ -133,6 +133,7 @@ public class ClientProxy extends Proxy {
 		MinecraftForgeClient.registerItemRenderer(
 				DMItems.weapon_shotgun.itemID, new RenderBulletWeapon(
 						(WeaponGeneralBullet) DMItems.weapon_shotgun, 0.12F));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTripmine.class,
 				new RenderTileTripmine(DMBlocks.blockTripmine));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileArmorCharger.class,

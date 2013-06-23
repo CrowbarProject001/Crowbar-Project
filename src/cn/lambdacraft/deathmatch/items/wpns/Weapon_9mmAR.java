@@ -1,5 +1,8 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;
@@ -8,7 +11,9 @@ import cn.lambdacraft.deathmatch.entities.EntityARGrenade;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 /**
@@ -63,8 +68,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 
 		int mode = getMode(par1ItemStack);
 		if (mode == 0) {
-			super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity,
-					information);
+			super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
 		} else {
 			if (!par2World.isRemote)
 				if (par3Entity.capabilities.isCreativeMode
@@ -130,6 +134,58 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	@Override
 	public String getModeDescription(int mode) {
 		return mode == 0 ? "mode.9mmar1" : "mode.9mmar2";
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
+		IHudTip[] tips = new IHudTip[2];
+		tips[1] = new IHudTip() {
+
+			@Override
+			public Icon getRenderingIcon(ItemStack itemStack,
+					EntityPlayer player) {
+				if(Item.itemsList[ammoID] != null){
+					return Item.itemsList[ammoID].getIconIndex(itemStack);
+				}
+				return null;
+			}
+
+			@Override
+			public String getTip(ItemStack itemStack, EntityPlayer player) {
+				return (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1) + "|" + AmmoManager.getAmmoCapacity(ammoID, player.inventory);
+			}
+
+			@Override
+			public int getTextureSheet(ItemStack itemStack) {
+				return itemStack.getItemSpriteNumber();
+			}
+			
+		};
+		
+		tips[0] = new IHudTip() {
+
+			@Override
+			public Icon getRenderingIcon(ItemStack itemStack,
+					EntityPlayer player) {
+				if(Item.itemsList[ammoID] != null){
+					return CBCItems.ammo_argrenade.getIconIndex(itemStack);
+				}
+				return null;
+			}
+
+			@Override
+			public String getTip(ItemStack itemStack, EntityPlayer player) {
+				return String.valueOf(AmmoManager.getAmmoCapacity(CBCItems.ammo_argrenade.itemID, player.inventory));
+			}
+
+			@Override
+			public int getTextureSheet(ItemStack itemStack) {
+				return itemStack.getItemSpriteNumber();
+			}
+			
+		};
+		return tips;
 	}
 
 }

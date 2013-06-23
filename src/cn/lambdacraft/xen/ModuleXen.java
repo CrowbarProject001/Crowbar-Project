@@ -14,16 +14,9 @@
  */
 package cn.lambdacraft.xen;
 
-import java.awt.Dimension;
-
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.proxy.Proxy;
-import cn.lambdacraft.core.register.GeneralRegistry;
-import cn.lambdacraft.xen.register.XENBlocks;
-import cn.lambdacraft.xen.world.WorldProviderXen;
 import cn.lambdacraft.xen.world.XenWorldGenerator;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -47,10 +40,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class ModuleXen {
 	
-	public static final String DEPENCY_XEN = "required-after:LambdaCraft|World@" + CBCMod.VERSION;
-	public static int dimensionId;
-	public Config conf;
-	
 	@SidedProxy(clientSide = "cn.lambdacraft.xen.proxy.ClientProxy", serverSide = "cn.lambdacraft.xen.proxy.Proxy")
 	public static cn.lambdacraft.xen.proxy.Proxy proxy;
 	
@@ -63,15 +52,7 @@ public class ModuleXen {
 	
 	@Init
 	public void Init(FMLInitializationEvent Init) {
-/*		try {
-			dimensionId = conf.getInteger("DimensionID", 28);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
-		dimensionId = 28;
-		DimensionManager.registerProviderType(dimensionId, WorldProviderXen.class, false);
-		DimensionManager.registerDimension(dimensionId, dimensionId);
-		XENBlocks.init(conf);
+		GameRegistry.registerWorldGenerator(new XenWorldGenerator());
 	}
 	
 	@PostInit

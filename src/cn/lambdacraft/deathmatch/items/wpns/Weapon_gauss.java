@@ -23,7 +23,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public class Weapon_gauss extends WeaponGeneralEnergy {
+public class Weapon_Gauss extends WeaponGeneralEnergy {
 
 	
 	public static String SND_CHARGE_PATH = "cbc.weapons.gauss_charge",
@@ -32,7 +32,7 @@ public class Weapon_gauss extends WeaponGeneralEnergy {
 					"cbc.weapons.gauss_windupd" },
 			SND_SHOOT_PATH = "cbc.weapons.gaussb";
 
-	public Weapon_gauss(int par1) {
+	public Weapon_Gauss(int par1) {
 		super(par1, CBCItems.ammo_uranium.itemID, 2);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_gauss");

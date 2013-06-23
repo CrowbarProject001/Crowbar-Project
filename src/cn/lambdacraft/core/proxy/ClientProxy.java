@@ -14,6 +14,7 @@
  */
 package cn.lambdacraft.core.proxy;
 
+import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.register.CBCKeyProcess;
 import cn.lambdacraft.deathmatch.client.render.RenderEmptyBlock;
@@ -36,6 +37,7 @@ public class ClientProxy extends Proxy {
 		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
 		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
 		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess());
+		ClientProps.loadProps(CBCMod.config);
 	}
 
 	public static void profilerStartSection(String section) {

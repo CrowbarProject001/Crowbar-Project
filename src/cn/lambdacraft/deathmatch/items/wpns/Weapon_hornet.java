@@ -27,11 +27,11 @@ import net.minecraft.world.World;
  * @author WeAthFolD.
  * 
  */
-public class Weapon_hornet extends WeaponGeneralBullet {
+public class Weapon_Hornet extends WeaponGeneralBullet {
 
 	public static final int RECOVER_TIME = 10;
 
-	public Weapon_hornet(int par1) {
+	public Weapon_Hornet(int par1) {
 		super(par1, 0, 2);
 		setMaxDamage(9);
 		setCreativeTab(CBCMod.cct);

@@ -13,11 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class Weapon_shotgun extends WeaponGeneralBullet {
+public class Weapon_Shotgun extends WeaponGeneralBullet {
 
 	public static int BUCKSHOT_COUNT[] = { 8, 16 };
 
-	public Weapon_shotgun(int par1) {
+	public Weapon_Shotgun(int par1) {
 
 		super(par1, CBCItems.ammo_shotgun.itemID, 2);
 

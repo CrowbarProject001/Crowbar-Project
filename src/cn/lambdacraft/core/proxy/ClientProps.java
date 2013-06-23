@@ -14,6 +14,10 @@
  */
 package cn.lambdacraft.core.proxy;
 
+import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.misc.Config;
+import cn.lambdacraft.core.register.Configurable;
+import cn.lambdacraft.core.register.GeneralRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
@@ -25,6 +29,9 @@ import cpw.mods.fml.relauncher.Side;
 @SideOnly(Side.CLIENT)
 public class ClientProps {
 
+	@Configurable(category = "graphics", key = "HUD_drawInLeftCorner", comment = "Draws the HEV hud in the left corner, like the Half-Life does.", defValue = "false")
+	public static boolean HUD_drawInLeftCorner = false;
+	
 	public static final int RENDER_TYPE_TRIPMINE = RenderingRegistry
 			.getNextAvailableRenderId();
 	public static final int RENDER_TYPE_EMPTY = RenderingRegistry
@@ -98,6 +105,10 @@ public class ClientProps {
 		int random = (int) (Math.random() * 7) + 1;
 		String path = "/mods/lambdacraft/textures/muz/muz" + random + ".png";
 		return path;
+	}
+	
+	public static void loadProps(Config config) {
+		GeneralRegistry.loadConfigurableClass(CBCMod.config, ClientProps.class);
 	}
 
 }

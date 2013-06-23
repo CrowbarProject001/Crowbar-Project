@@ -17,7 +17,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public abstract class WeaponGeneral extends CBCGenericItem {
+public abstract class WeaponGeneral extends CBCGenericItem implements IModdable {
 
 	public int maxModes, type;
 	public int ammoID;
@@ -169,6 +169,11 @@ public abstract class WeaponGeneral extends CBCGenericItem {
 		if (item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();
 		return item.getTagCompound().getInteger("mode");
+	}
+	
+	@Override
+	public int getMaxModes() {
+		return maxModes;
 	}
 
 }

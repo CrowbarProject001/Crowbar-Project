@@ -44,13 +44,6 @@ public class RenderGlow extends RenderIcon {
 			double par6, float par8, float par9) {
 		this.alpha = ((GaussParticleFX)par1Entity).currentAlpha;
 		super.doRender(par1Entity, par2, par4, par6, par8, par9);
-		GL11.glPushMatrix();
-		GL11.glTranslated(par2, par4, par6);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glColor3f(0.5F, 0.5F, 0.5F);
-		RenderUtils.shapeSphere.draw();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glPopMatrix();
 	}
 
 }

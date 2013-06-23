@@ -17,9 +17,12 @@ package cn.lambdacraft.deathmatch.entities;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_RPG;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.lambdacraft.deathmatch.utils.BulletManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -73,12 +76,19 @@ public class EntityRPGDot extends EntityThrowable {
 	private void updateDotPosition() {
 		MotionXYZ begin = new MotionXYZ(shooter);
 		MotionXYZ end = new MotionXYZ(begin).updateMotion(DOT_MAX_RANGE);
-		MovingObjectPosition result = worldObj.rayTraceBlocks(
-				begin.asVec3(worldObj), end.asVec3(worldObj));
+		MovingObjectPosition result = BulletManager.rayTraceBlocksAndEntities(null, worldObj, begin.asVec3(worldObj), end.asVec3(worldObj), this, getThrower());
 		if (result != null) {
 			posX = result.hitVec.xCoord;
 			posY = result.hitVec.yCoord;
 			posZ = result.hitVec.zCoord;
+			if(result.typeOfHit == EnumMovingObjectType.ENTITY) {
+				double distance = result.entityHit.getDistance(begin.posX, begin.posY, begin.posZ);
+				distance -= Math.sqrt(result.entityHit.width * result.entityHit.width * result.entityHit.height) * 0.25;
+				end = begin.updateMotion(distance);
+				posX = end.posX;
+				posY = end.posY;
+				posZ = end.posZ;
+			}
 			side = result.sideHit;
 			ForgeDirection[] v = ForgeDirection.values();
 			ForgeDirection d = v[side].getOpposite();
@@ -110,5 +120,11 @@ public class EntityRPGDot extends EntityThrowable {
 	protected void onImpact(MovingObjectPosition var1) {
 
 	}
+	
+	@Override
+    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        this.setDead();
+    }
 
 }

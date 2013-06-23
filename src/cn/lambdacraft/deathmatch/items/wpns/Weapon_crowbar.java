@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.world.World;
 
-public class Weapon_crowbar extends ItemSword {
+public class Weapon_Crowbar extends ItemSword {
 
-	public Weapon_crowbar(int item_id) {
+	public Weapon_Crowbar(int item_id) {
 		super(item_id, EnumToolMaterial.IRON);
 		setUnlocalizedName("weapon_crowbar");
 		setCreativeTab(CBCMod.cct);

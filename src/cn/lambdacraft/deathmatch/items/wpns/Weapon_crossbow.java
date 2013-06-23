@@ -1,5 +1,11 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
+import net.minecraft.world.World;
 import cn.lambdacraft.api.weapon.CBCWeaponInformation;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.InformationSet;
@@ -10,12 +16,6 @@ import cn.lambdacraft.deathmatch.entities.EntityCrossbowArrow;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
-import net.minecraft.world.World;
 
 /**
  * Crossbow in HLDM Style. Mode I : Non-delay, sniper rifle style. Mode II :
@@ -23,11 +23,11 @@ import net.minecraft.world.World;
  * 
  * @author WeAthFolD
  */
-public class Weapon_crossbow extends WeaponGeneralBullet {
+public class Weapon_Crossbow extends WeaponGeneralBullet {
 
 	public Icon[] sideIcons = new Icon[6];
 
-	public Weapon_crossbow(int par1) {
+	public Weapon_Crossbow(int par1) {
 		super(par1, CBCItems.ammo_bow.itemID, 2);
 
 		setUnlocalizedName("weapon_crossbow");
@@ -95,7 +95,8 @@ public class Weapon_crossbow extends WeaponGeneralBullet {
 		if (par3Entity instanceof EntityPlayer) {
 			doUplift(information, par3Entity);
 			if (!par3Entity.capabilities.isCreativeMode) {
-				par1ItemStack.damageItem(1, par3Entity);
+				if(!par2World.isRemote)
+					par1ItemStack.damageItem(1, par3Entity);
 				par3Entity.setItemInUse(par1ItemStack,
 						this.getMaxItemUseDuration(par1ItemStack));
 			}

@@ -15,7 +15,7 @@
 package cn.lambdacraft.deathmatch.entities.fx;
 
 import cn.lambdacraft.api.weapon.InformationEnergy;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_egon;
+import cn.lambdacraft.deathmatch.items.wpns.Weapon_Egon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -73,10 +73,10 @@ public class EntityEgonRay extends Entity {
 		if (item == null)
 			return;
 
-		InformationEnergy inf = ((Weapon_egon) item.getItem()).getInformation(
+		InformationEnergy inf = ((Weapon_Egon) item.getItem()).getInformation(
 				item, worldObj);
 		if (inf == null
-				|| !(inf.isShooting && ((Weapon_egon) item.getItem()).canShoot(
+				|| !(inf.isShooting && ((Weapon_Egon) item.getItem()).canShoot(
 						(EntityPlayer) thrower, item))) {
 			this.setDead();
 			return;

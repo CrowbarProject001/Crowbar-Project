@@ -36,6 +36,7 @@ import net.minecraft.util.Icon;
  */
 public class HEVRenderingUtils {
 
+	
 	@SideOnly(Side.CLIENT)
 	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution) {
 		int k = resolution.getScaledWidth();
@@ -49,26 +50,32 @@ public class HEVRenderingUtils {
         engine.bindTexture(ClientProps.HEV_HUD_PATH);
         
         //Health Section
+        int xOffset = -90, yOffset = -45;
+        if(ClientProps.HUD_drawInLeftCorner) {
+        	xOffset = -k / 2 + 13;
+        	yOffset = -25;
+        }
         GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.9F);
-        drawTexturedModalRect(k / 2 - 90, l - 45, 0, 16, 16, 16);
+        drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 0, 16, 16, 16);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
         int h = player.getHealth() * 16 / 20;
-        drawTexturedModalRect(k / 2 - 90, l - 29 - h, 0, 32 - h, 16, h);
+        drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 16 - h, 0, 32 - h, 16, h);
         if(player.getHealth() <= 5)
         	GL11.glColor4f(0.9F, 0.1F, 0.1F, 0.9F);
-        drawNumberAt((byte) (player.getHealth() * 5), k / 2 - 72, l - 45);
+        drawNumberAt((byte) (player.getHealth() * 5), k / 2 + xOffset + 18, l + yOffset);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
         
         //Armor Section
+        xOffset += 48;
         GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.9F);
-        drawTexturedModalRect(k / 2 - 42, l - 45, 16, 16, 16, 16);
+        drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 16, 16, 16, 16);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
         h = player.getTotalArmorValue() * 16 / 20;
         if(h > 16)
         	h = 16;
-        drawTexturedModalRect(k / 2 - 42, l - 29 - h, 16, 32 - h, 16, h);
+        drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 16 - h, 16, 32 - h, 16, h);
         
-        drawNumberAt(player.getTotalArmorValue() * 5, k / 2 - 22, l - 45);
+        drawNumberAt(player.getTotalArmorValue() * 5, k / 2 + xOffset + 18, l + yOffset);
         
         //Other section
         drawArmorTip(player, engine, k, l);
@@ -116,7 +123,9 @@ public class HEVRenderingUtils {
 	
 	@SideOnly(Side.CLIENT)
 	private static void drawTips(IHudTip[] tips, RenderEngine engine, ItemStack itemStack, EntityPlayer player, int k, int l) {
-		int startHeight = l - 20 - 18 * tips.length;
+		int startHeight = l - 18 - 18 * tips.length;
+		if(ClientProps.HUD_drawInLeftCorner)
+			startHeight += 13;
 		for(int i = 0; i < tips.length; i ++) {
 			String s = tips[i].getTip(itemStack, player);
 			int width = k - 32 - getStringLength(s);

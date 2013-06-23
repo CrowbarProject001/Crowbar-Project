@@ -1,5 +1,6 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.weapon.CBCWeaponInformation;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.InformationSet;
@@ -15,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
@@ -176,6 +178,35 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 		InformationRPG inf = new InformationRPG(is);
 		InformationRPG inf2 = new InformationRPG(is);
 		return new InformationSet(inf, inf2);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
+		IHudTip[] tips = new IHudTip[1];
+		tips[0] = new IHudTip() {
+
+			@Override
+			public Icon getRenderingIcon(ItemStack itemStack,
+					EntityPlayer player) {
+				if(Item.itemsList[ammoID] != null){
+					return Item.itemsList[ammoID].getIconIndex(itemStack);
+				}
+				return null;
+			}
+
+			@Override
+			public String getTip(ItemStack itemStack, EntityPlayer player) {
+				return String.valueOf(AmmoManager.getAmmoCapacity(ammoID, player.inventory));
+			}
+
+			@Override
+			public int getTextureSheet(ItemStack itemStack) {
+				return itemStack.getItemSpriteNumber();
+			}
+			
+		};
+		return tips;
 	}
 
 }

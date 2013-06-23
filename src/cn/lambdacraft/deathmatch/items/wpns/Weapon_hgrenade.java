@@ -27,9 +27,9 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public class Weapon_hgrenade extends CBCGenericItem {
+public class Weapon_Hgrenade extends CBCGenericItem {
 
-	public Weapon_hgrenade(int par1ID) {
+	public Weapon_Hgrenade(int par1ID) {
 		super(par1ID);
 		setUnlocalizedName("weapon_hgrenade");
 		setCreativeTab(CBCMod.cct);

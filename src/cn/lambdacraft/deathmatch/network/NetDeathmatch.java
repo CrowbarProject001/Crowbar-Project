@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import cn.lambdacraft.api.weapon.IModdable;
 import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.proxy.GeneralProps;
@@ -11,6 +12,7 @@ import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.IChannelProcess;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.StatCollector;
@@ -57,21 +59,23 @@ public class NetDeathmatch implements IChannelProcess {
 		int[] prop = getModePacket(packet);
 		ItemStack is = p.inventory.mainInventory[prop[0]];
 
-		if (is == null || !(is.getItem() instanceof WeaponGeneral))
+		if (is == null)
 			return;
 
-		WeaponGeneral wpn = (WeaponGeneral) is.getItem();
+		Item item = is.getItem();
 		if (prop[1] == 1) {
-			if (!(wpn instanceof WeaponGeneralBullet))
+			if (!(item instanceof WeaponGeneralBullet))
 				return;
-			((WeaponGeneralBullet) wpn).onSetReload(is, p);
+			((WeaponGeneralBullet)item).onSetReload(is, p);
 		} else {
-			wpn.onModeChange(is, p, prop[2]);
+			if(!(item instanceof IModdable))
+				return;
+			IModdable moddable = (IModdable) item;
+			moddable.onModeChange(is, p, prop[2]);
 			((EntityPlayer) player).sendChatToPlayer(StatCollector
 					.translateToLocal("mode.new")
 					+ ": \u00a74"
-					+ StatCollector.translateToLocal(wpn.getModeDescription(wpn
-							.getMode(is))));
+					+ StatCollector.translateToLocal(moddable.getModeDescription(moddable.getMode(is))));
 		}
 		return;
 

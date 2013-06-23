@@ -23,14 +23,14 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public class Weapon_egon extends WeaponGeneralEnergy {
+public class Weapon_Egon extends WeaponGeneralEnergy {
 
 	public static String SND_WINDUP = "cbc.weapons.egon_windup",
 			SND_RUN = "cbc.weapons.egon_run", SND_OFF = "cbc.weapons.egon_off";
 
 	public Icon iconEquipped;
 
-	public Weapon_egon(int par1) {
+	public Weapon_Egon(int par1) {
 		super(par1, CBCItems.ammo_uranium.itemID, 1);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_egon");

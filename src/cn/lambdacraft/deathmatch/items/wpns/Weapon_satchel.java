@@ -3,18 +3,6 @@
  */
 package cn.lambdacraft.deathmatch.items.wpns;
 
-import cn.lambdacraft.api.hud.IHudTip;
-import cn.lambdacraft.api.hud.IHudTipProvider;
-import cn.lambdacraft.api.weapon.CBCWeaponInformation;
-import cn.lambdacraft.api.weapon.InformationSet;
-import cn.lambdacraft.api.weapon.InformationWeapon;
-import cn.lambdacraft.api.weapon.WeaponGeneral;
-import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
-import cn.lambdacraft.deathmatch.entities.EntitySatchel;
-import cn.lambdacraft.deathmatch.utils.AmmoManager;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +10,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
+import cn.lambdacraft.api.weapon.IModdable;
+import cn.lambdacraft.api.weapon.InformationWeapon;
+import cn.lambdacraft.api.weapon.WeaponGeneral;
+import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.item.CBCGenericItem;
+import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
+import cn.lambdacraft.deathmatch.entities.EntitySatchel;
+import cn.lambdacraft.deathmatch.utils.AmmoManager;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Remote detonation bomb. Mode I : Setting mode. Mode II : Detonating mode.
@@ -29,23 +29,17 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public class Weapon_satchel extends WeaponGeneral implements IHudTipProvider {
+public class Weapon_Satchel extends CBCGenericItem implements IHudTipProvider, IModdable {
 
 	public Icon iconSetting;
 
-	public Weapon_satchel(int par1) {
+	public Weapon_Satchel(int par1) {
 
-		super(par1, 0, 2);
+		super(par1);
 		setUnlocalizedName("weapon_satchel");
 		setIconName("weapon_satchel");
 		setCreativeTab(CBCMod.cct);
 		setMaxStackSize(64);
-
-		maxModes = 2;
-		upLiftRadius = recoverRadius = 0;
-
-		double push[] = { 0, 0 };
-		int dam[] = { 0, 0 }, offset[] = { 0, 0 };
 
 	}
 
@@ -68,33 +62,12 @@ public class Weapon_satchel extends WeaponGeneral implements IHudTipProvider {
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
-		onWpnUpdate(par1ItemStack, par2World, par3Entity, par4, par5);
-	}
-
-	@Override
-	public InformationWeapon onWpnUpdate(ItemStack par1ItemStack,
-			World par2World, Entity par3Entity, int par4, boolean par5) {
-
-		if (!(par3Entity instanceof EntityPlayer))
-			return null;
-		ItemStack currentItem = ((EntityPlayer) par3Entity).inventory
-				.getCurrentItem();
-		if (currentItem == null || !currentItem.equals(par1ItemStack))
-			return null;
-
-		InformationWeapon information = loadInformation(par1ItemStack,
-				(EntityPlayer) par3Entity);
-		return information;
-
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer) {
-		InformationWeapon inf = loadInformation(par1ItemStack, par3EntityPlayer);
-		if (inf == null)
-			return par1ItemStack;
-
+		
 		int mode = getMode(par1ItemStack);
 
 		NBTTagCompound nbt = par3EntityPlayer.getEntityData();
@@ -124,64 +97,15 @@ public class Weapon_satchel extends WeaponGeneral implements IHudTipProvider {
 		par3EntityPlayer.setEating(false);
 		return par1ItemStack;
 	}
-
-	@Override
-	public InformationWeapon getInformation(ItemStack itemStack, World world) {
-		InformationSet set = CBCWeaponInformation.getInformation(itemStack);
-		return set == null ? null : set.getProperInf(world);
-	}
-
-	@Override
-	public InformationWeapon loadInformation(ItemStack itemStack,
-			EntityPlayer entityPlayer) {
-
-		InformationWeapon inf = getInformation(itemStack, entityPlayer.worldObj);
-		if (inf != null) {
-			return inf;
-		}
-
-		double uniqueID = Math.random() * 65535D;
-		CBCWeaponInformation.addToList(uniqueID,
-				createInformation(itemStack, entityPlayer));
-
-		if (itemStack.stackTagCompound == null)
-			itemStack.stackTagCompound = new NBTTagCompound();
-
-		itemStack.stackTagCompound.setDouble("uniqueID", uniqueID);
-
-		return inf;
-	}
-
-	private InformationSet createInformation(ItemStack is, EntityPlayer player) {
-		InformationWeapon inf = new InformationWeapon(is);
-		InformationWeapon inf2 = new InformationWeapon(is);
-		return new InformationSet(inf, inf2);
-	}
-
+	
 	@Override
 	public void onModeChange(ItemStack item, EntityPlayer player, int newMode) {
-		super.onModeChange(item, player, newMode);
 		item.setItemDamage(newMode);
 	}
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
 		return 100;
-	}
-
-	@Override
-	public double getPushForce(int mode) {
-		return 0;
-	}
-
-	@Override
-	public int getDamage(int mode) {
-		return 0;
-	}
-
-	@Override
-	public int getOffset(int mode) {
-		return 0;
 	}
 
 	@Override
@@ -213,6 +137,16 @@ public class Weapon_satchel extends WeaponGeneral implements IHudTipProvider {
 			
 		};
 		return tips;
+	}
+
+	@Override
+	public int getMode(ItemStack item) {
+		return item.getItemDamage();
+	}
+
+	@Override
+	public int getMaxModes() {
+		return 2;
 	}
 	
 
