@@ -16,8 +16,16 @@ package cn.lambdacraft.xen.world;
 
 import java.util.Random;
 
+import cn.lambdacraft.xen.ModuleXen;
+import cn.lambdacraft.xen.register.XENBlocks;
+
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.Event.Result;
+import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import cpw.mods.fml.common.IWorldGenerator;
 
 /**
@@ -26,10 +34,24 @@ import cpw.mods.fml.common.IWorldGenerator;
  */
 public class XenWorldGenerator implements IWorldGenerator {
 
+	private byte[] densities;
+
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world,
 			IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-		world.setBlock(chunkX*16 + random.nextInt(16), 100, chunkZ*16 + random.nextInt(16), 5);
+		//world.setBlock(chunkX*16 + random.nextInt(16), 100, chunkZ*16 + random.nextInt(16), 5);
+		if (world.provider.dimensionId == ModuleXen.dimensionId)
+			generateXen(world, random, chunkX * 16, chunkZ * 16);
 	}
 
+	/**
+	 * @param world
+	 * @param random
+	 * @param i
+	 * @param j
+	 */
+	private void generateXen(World world, Random random, int i, int j) {
+		world.setBlock(i + random.nextInt(16), 100, j + random.nextInt(16), 5);
+	}
+	
 }
