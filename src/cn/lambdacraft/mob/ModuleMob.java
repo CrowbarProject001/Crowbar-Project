@@ -4,6 +4,7 @@ import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCSoundEvents;
+import cn.lambdacraft.mob.entities.EntityHeadcrab;
 import cn.lambdacraft.mob.entities.EntitySnark;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import cpw.mods.fml.common.Mod;
@@ -42,8 +43,8 @@ public class ModuleMob {
 	@Init
 	public void init(FMLInitializationEvent Init) {
 		CBCMobItems.init(CBCMod.config);
-		EntityRegistry.registerModEntity(EntitySnark.class, "snark",
-				GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
+		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
+		EntityRegistry.registerModEntity(EntityHeadcrab.class, "headcrab", GeneralProps.ENT_ID_HEADCRAB, CBCMod.instance, 32, 3, true);
 		proxy.init();
 	}
 
@@ -56,6 +57,8 @@ public class ModuleMob {
 	}
 
 	public static final String SND_MOBS[] = { "sqk_blast", "sqk_hunta",
-			"sqk_huntb", "sqk_huntc", "sqk_die", "sqk_deploy" };
+			"sqk_huntb", "sqk_huntc", "sqk_die", "sqk_deploy", "hc_attacka", "hc_attackb",
+			"hc_attackc", "hc_idlea", "hc_idleb", "hc_idlec", "hc_idled", "hc_idlee",
+			"hc_diea", "hc_dieb", "hc_paina", "hc_painb", "hc_painc" };
 
 }

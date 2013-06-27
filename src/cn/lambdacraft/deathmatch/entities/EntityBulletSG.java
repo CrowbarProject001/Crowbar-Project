@@ -35,7 +35,6 @@ import net.minecraft.world.World;
 public class EntityBulletSG extends EntityBullet {
 
 	double startX, startY, startZ;
-	private Entity hitEntity;
 
 	public EntityBulletSG(World par1World, EntityPlayer par2EntityLiving,
 			ItemStack par3itemStack) {
@@ -57,35 +56,6 @@ public class EntityBulletSG extends EntityBullet {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
-
-		if (hitEntity == null)
-			return;
-		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-
-		int damage = item.getDamage(item.getMode(itemStack));
-
-		NBTTagCompound nbt = hitEntity.getEntityData();
-		int lastTime = nbt.getInteger("lastTick");
-
-		int tdamage = nbt.getInteger("damage");
-		if (tdamage == 0) {
-			this.setDead();
-			return;
-		}
-		if (ticksExisted - lastTime >= 4) {
-			BulletManager
-					.doEntityAttack(hitEntity,
-							DamageSource.causeMobDamage(getThrower()), tdamage
-									+ damage);
-			nbt.setInteger("lastTick", 0);
-			nbt.setInteger("damage", 0);
-		}
-
-	}
-
-	@Override
 	public void doBlockCollision(MovingObjectPosition result) {
 	}
 
@@ -101,33 +71,10 @@ public class EntityBulletSG extends EntityBullet {
 	}
 
 	protected void doEntityCollision(Entity ent) {
-		if (hitEntity != null)
-			return;
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-
 		int damage = item.getDamage(item.getMode(itemStack));
-		/**
-		 * @Deprecated Distance related, max 22/44 in 0 distance, min 1 in
-		 *             distance 30, 0.1 chance of a critical hit( 100% damage)
-		 */
-		/*
-		 * double critical = Math.random(); if(critical > 0.1) { double distance
-		 * = new
-		 * MotionXYZ(ent).asVec3(worldObj).distanceTo(Vec3.createVectorHelper
-		 * (startX, startY, startZ)); if(distance > 3.0D) damage *=
-		 * 1/Math.sqrt(distance); System.out.println("d : " + distance); }
-		 */
-
-		NBTTagCompound nbt = ent.getEntityData();
-		int lastTime = nbt.getInteger("lastTick");
-		int tdamage = nbt.getInteger("damage");
-		this.hitEntity = ent;
-		if (lastTime == 0) {
-			nbt.setInteger("lastTick", ticksExisted);
-			nbt.setInteger("damage", damage);
-		} else {
-			nbt.setInteger("damage", tdamage + damage);
-		}
+		ent.hurtResistantTime = -1;
+		BulletManager.doEntityAttack(ent, DamageSource.causeMobDamage(getThrower()), damage);
 	}
 
 	@Override

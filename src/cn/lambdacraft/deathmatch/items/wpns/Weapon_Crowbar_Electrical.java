@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import cn.lambdacraft.api.energy.item.ICustomEnItem;
 import cn.lambdacraft.api.weapon.IModdable;
 
@@ -41,16 +42,16 @@ public class Weapon_Crowbar_Electrical extends Weapon_Crowbar implements ICustom
 
 	public Weapon_Crowbar_Electrical(int item_id) {
 		super(item_id);
-		this.setUnlocalizedName("Crowbar Electrical");
+		this.setUnlocalizedName("weapon_elcrowbar");
 		this.setMaxDamage(10000);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_crowbar_el");
+		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_crowbar");
 	}
-
+	
 	@Override
 	public boolean canProvideEnergy(ItemStack itemStack) {
 		return false;
@@ -83,7 +84,7 @@ public class Weapon_Crowbar_Electrical extends Weapon_Crowbar implements ICustom
     
     public boolean hitEntity(ItemStack par1ItemStack, EntityLiving attackedEntity, EntityLiving par3EntityLiving)
     {
-        if(discharge(par1ItemStack, 300, 2, true, false) == 300){
+        if(getMode(par1ItemStack) == 0 && discharge(par1ItemStack, 400, 2, true, false) == 400){
         	attackedEntity.hurtResistantTime = -1;
         	attackedEntity.attackEntityFrom(DamageSource.causeMobDamage(par3EntityLiving), 5);
         	if(attackedEntity instanceof EntityCreeper && Math.random() >= 0.9) {

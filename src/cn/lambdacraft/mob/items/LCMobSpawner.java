@@ -4,17 +4,26 @@ import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.mob.entities.EntitySnark;
 import cn.lambdacraft.mob.utils.MobSpawnHandler;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class Weapon_snark extends CBCGenericItem {
+public class LCMobSpawner extends CBCGenericItem {
 
-	public Weapon_snark(int par1) {
+	private Class<? extends EntityLiving> entClass = EntitySnark.class;
+	
+	public LCMobSpawner(int par1) {
 		super(par1);
 		this.setCreativeTab(CBCMod.cct);
-		setUnlocalizedName("snark");
-		setIconName("snark");
+		setIAndU("snark");
+	}
+	
+	public LCMobSpawner(int id, Class<? extends EntityLiving> entityClass, String name) {
+		super(id);
+		setCreativeTab(CBCMod.cct);
+		entClass = entityClass;
+		setIAndU(name);
 	}
 
 	/**
@@ -27,7 +36,7 @@ public class Weapon_snark extends CBCGenericItem {
 		if (par2World.isRemote)
 			return par1ItemStack;
 
-		MobSpawnHandler.spawnCreature(par2World, EntitySnark.class,
+		MobSpawnHandler.spawnCreature(par2World, entClass,
 				par3EntityPlayer);
 		if (!(par3EntityPlayer.capabilities.isCreativeMode)) {
 			par1ItemStack.stackSize--;

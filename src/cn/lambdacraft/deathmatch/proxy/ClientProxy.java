@@ -35,6 +35,7 @@ import cn.lambdacraft.deathmatch.client.render.RenderEgonRay;
 import cn.lambdacraft.deathmatch.client.render.RenderGaussRay;
 import cn.lambdacraft.deathmatch.client.render.RenderGlow;
 import cn.lambdacraft.deathmatch.client.render.RenderHornet;
+import cn.lambdacraft.deathmatch.client.render.RenderItemElCrowbar;
 import cn.lambdacraft.deathmatch.client.render.RenderSatchel;
 import cn.lambdacraft.deathmatch.client.render.RenderTileCharger;
 import cn.lambdacraft.deathmatch.client.render.RenderTileHeCharger;
@@ -134,6 +135,7 @@ public class ClientProxy extends Proxy {
 				DMItems.weapon_shotgun.itemID, new RenderBulletWeapon(
 						(WeaponGeneralBullet) DMItems.weapon_shotgun, 0.12F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crowbar_el.itemID, new RenderItemElCrowbar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTripmine.class,
 				new RenderTileTripmine(DMBlocks.blockTripmine));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileArmorCharger.class,

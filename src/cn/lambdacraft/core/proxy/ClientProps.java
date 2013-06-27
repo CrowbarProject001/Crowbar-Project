@@ -79,6 +79,7 @@ public class ClientProps {
 			GLOW_PATH = "/mods/lambdacraft/textures/entities/glow.png",
 			HEV_MASK_PATH = "/mods/lambdacraft/textures/gui/hud_mask.png",
 			HEV_HUD_PATH = "/mods/lambdacraft/textures/gui/hev_hud.png",
+			HEADCRAB_MOB_PATH = "/mods/lambdacraft/textures/entities/headcrab.png",
 			SPRY_PATH[] = { "/mods/lambdacraft/textures/sprays/spry0.png",
 					"/mods/lambdacraft/textures/sprays/spry1.png" },
 			ITEM_SATCHEL_PATH[] = {

@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import cn.lambdacraft.core.client.shape.*;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,91 @@ public class RenderUtils {
 
 	public static ShapeCircle shapeCircle = new ShapeCircle();
 	public static ShapeSphere shapeSphere = new ShapeSphere();
+	
+	
+	
+	public static void renderShadow() {
+		GL11.glDepthFunc(GL11.GL_EQUAL);
+    	GL11.glDisable(GL11.GL_LIGHTING);
+    	Minecraft.getMinecraft().renderEngine.bindTexture("%blur%/misc/glint.png");
+    	GL11.glEnable(GL11.GL_BLEND);
+    	GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+    	float f7 = 0.76F;
+    	GL11.glColor4f(0.5F * f7, 0.25F * f7, 0.8F * f7, 1.0F);
+    	GL11.glMatrixMode(GL11.GL_TEXTURE);
+    	GL11.glPushMatrix();
+        float f8 = 0.125F;
+        GL11.glScalef(f8, f8, f8);
+        float f9 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F * 8.0F;
+        GL11.glTranslatef(f9, 0.0F, 0.0F);
+        GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
+        ItemRenderer.renderItemIn2D(Tessellator.instance, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glScalef(f8, f8, f8);
+        f9 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F * 8.0F;
+        GL11.glTranslatef(-f9, 0.0F, 0.0F);
+        GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
+        ItemRenderer.renderItemIn2D(Tessellator.instance, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
+        GL11.glPopMatrix();
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
+	}
+	
+	public static void renderShadow_Inventory() {
+		GL11.glDepthFunc(GL11.GL_EQUAL);
+    	GL11.glDisable(GL11.GL_LIGHTING);
+    	Minecraft.getMinecraft().renderEngine.bindTexture("%blur%/misc/glint.png");
+    	Tessellator t = Tessellator.instance;
+    	GL11.glEnable(GL11.GL_BLEND);
+    	GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
+    	float f7 = 0.76F;
+    	GL11.glColor4f(0.5F * f7, 0.25F * f7, 0.8F * f7, 1.0F);
+    	GL11.glMatrixMode(GL11.GL_TEXTURE);
+    	GL11.glPushMatrix();
+        float f8 = 0.125F;
+        GL11.glScalef(f8, f8, f8);
+        float f9 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F * 8.0F;
+        GL11.glTranslatef(f9, 0.0F, 0.0F);
+        GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
+        t.startDrawingQuads();
+        t.addVertexWithUV(0.0, 0.0, 0.0, 0.0, 0.0);
+		t.addVertexWithUV(0.0, 16.0, 0.0, 0.0, 1.0);
+		t.addVertexWithUV(16.0, 16.0, 0.0, 1.0, 1.0);
+		t.addVertexWithUV(16.0, 0.0, 0.0, 1.0, 0.0);
+        t.draw();
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glScalef(f8, f8, f8);
+        f9 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F * 8.0F;
+        GL11.glTranslatef(-f9, 0.0F, 0.0F);
+        GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
+        t.startDrawingQuads();
+        t.addVertexWithUV(0.0, 0.0, 0.0, 0.0, 0.0);
+		t.addVertexWithUV(0.0, 16.0, 0.0, 0.0, 1.0);
+		t.addVertexWithUV(16.0, 16.0, 0.0, 1.0, 1.0);
+		t.addVertexWithUV(16.0, 0.0, 0.0, 1.0, 0.0);
+        t.draw();
+        GL11.glPopMatrix();
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
+	}
+	
+	public static void renderItemInventory(ItemStack item, Tessellator t) {
+		Icon icon = item.getIconIndex();
+		if(icon != null) {
+			t.startDrawingQuads();
+			t.addVertexWithUV(0.0, 0.0, 0.0, icon.getMinU(), icon.getMinV());
+			t.addVertexWithUV(0.0, 16.0, 0.0, icon.getMinU(), icon.getMaxV());
+			t.addVertexWithUV(16.0, 16.0, 0.0, icon.getMaxU(), icon.getMaxV());
+			t.addVertexWithUV(16.0, 0.0, 0.0, icon.getMaxU(), icon.getMinV());
+			t.draw();
+		}
+	}
 	
 	/**
 	 * 添加带UV的三维顶点。

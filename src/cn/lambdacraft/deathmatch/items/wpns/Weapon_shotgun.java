@@ -156,7 +156,7 @@ public class Weapon_Shotgun extends WeaponGeneralBullet {
 
 	@Override
 	public int getDamage(int mode) {
-		return 4;
+		return 3;
 	}
 
 	@Override
