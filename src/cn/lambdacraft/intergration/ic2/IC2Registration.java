@@ -47,8 +47,6 @@ public class IC2Registration {
 		DMItems.armorHEVLeggings = new ArmorHEVIC2(GeneralRegistry.getItemId(
 				"hevLeggings", 3), 2);
 		DMItems.armorHEVBoot = new ArmorHEVIC2(GeneralRegistry.getItemId("hevBoot", 3), 3);
-		DMItems.hevLongjump = new ArmorHEVIC2(GeneralRegistry.getItemId("hevLongjump", 3),
-					EnumAttachment.LONGJUMP);
 		DMItems.weapon_crowbar_el = new Weapon_Crowbar_ElectricalIC2(GeneralRegistry.getItemId("weapon_crowbar_el", 1));
 		CBCItems.battery = new ItemBatteryIC2(GeneralRegistry.getItemId("battery", 3));
 	}

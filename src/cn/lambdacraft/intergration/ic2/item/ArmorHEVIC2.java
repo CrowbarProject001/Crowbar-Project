@@ -31,12 +31,4 @@ public class ArmorHEVIC2 extends ArmorHEV implements ICustomElectricItem {
 		super(par1, armorType);
 	}
 
-	/**
-	 * @param par1
-	 * @param attach
-	 */
-	public ArmorHEVIC2(int par1, EnumAttachment attach) {
-		super(par1, attach);
-	}
-
 }

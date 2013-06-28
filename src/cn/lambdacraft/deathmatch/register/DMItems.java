@@ -44,7 +44,6 @@ public class DMItems {
 	
 	public static ArmorHEV armorHEVBoot, armorHEVLeggings, armorHEVChestplate,
 			armorHEVHelmet;
-	public static ArmorHEV hevLongjump;
 	public static ArmorLongjump longjump;
 
 	public static void init(Config conf) {
@@ -81,8 +80,6 @@ public class DMItems {
 			armorHEVLeggings = new ArmorHEV(GeneralRegistry.getItemId(
 				"hevLeggings", 3), 2);
 			armorHEVBoot = new ArmorHEV(GeneralRegistry.getItemId("hevBoot", 3), 3);
-			hevLongjump = new ArmorHEV(GeneralRegistry.getItemId("hevLongjump", 3),
-					EnumAttachment.LONGJUMP);
 			weapon_crowbar_el = new Weapon_Crowbar_Electrical(GeneralRegistry.getItemId("weapon_crowbar_el", 1));
 			
 		}

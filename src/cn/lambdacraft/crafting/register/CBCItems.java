@@ -12,6 +12,8 @@ import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.crafting.items.*;
 import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
+import cn.lambdacraft.deathmatch.items.ArmorHEV;
+import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
 import cn.lambdacraft.deathmatch.items.ItemBattery;
 import cn.lambdacraft.deathmatch.items.ammos.*;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
@@ -250,10 +252,7 @@ public class CBCItems {
 				Item.eyeOfEnder);
 		GameRegistry.addShapelessRecipe(iSstorageL, CBCBlocks.storageS,
 				lambdaChip);
-		GameRegistry.addRecipe(new RecipeElectricShapeless(new ItemStack(
-				DMItems.hevLongjump),
-				new ItemStack(DMItems.armorHEVChestplate), new ItemStack(
-						DMItems.longjump)));
+		GameRegistry.addRecipe(new RecipeHEVAttachedShapeless(EnumAttachment.LONGJUMP, new ItemStack(DMItems.armorHEVChestplate),new ItemStack(DMItems.armorHEVChestplate), new ItemStack(DMItems.longjump)));
 		GameRegistry.addRecipe(new RecipeRepair(spray1, new ItemStack(
 				Item.dyePowder)));
 		GameRegistry.addRecipe(new RecipeRepair(spray2, new ItemStack(
@@ -271,8 +270,8 @@ public class CBCItems {
 
 	private static class RecipeElectricShapeless implements IRecipe {
 
-		private ArrayList<ItemStack> recipeItems = new ArrayList();
-		private ItemStack result, source;
+		protected ArrayList<ItemStack> recipeItems = new ArrayList();
+		protected ItemStack result, source;
 
 		public RecipeElectricShapeless(ItemStack output, ItemStack original,
 				ItemStack... add) {
@@ -356,6 +355,27 @@ public class CBCItems {
 			return result;
 		}
 
+	}
+	
+	private static class RecipeHEVAttachedShapeless extends RecipeElectricShapeless {
+
+		protected EnumAttachment theAttach;
+		
+		public RecipeHEVAttachedShapeless(EnumAttachment attach, ItemStack output, ItemStack original,
+				ItemStack... add) {
+			super(output, original, add);
+			theAttach = attach;
+		}
+		
+		@Override
+		public ItemStack getCraftingResult(InventoryCrafting inv) {
+			ItemStack is = super.getCraftingResult(inv);
+			if(is != null && is.getItem() instanceof ArmorHEV){
+				ArmorHEV.addAttachTo(is, theAttach);
+				return is;
+			}
+			return null;
+		}
 	}
 
 	/**

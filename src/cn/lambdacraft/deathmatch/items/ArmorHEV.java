@@ -1,6 +1,7 @@
 package cn.lambdacraft.deathmatch.items;
 
 import java.util.EnumSet;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -14,38 +15,27 @@ import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.item.ElectricArmor;
 import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
 import cn.lambdacraft.deathmatch.register.DMItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.EnumHelper;
 
 public class ArmorHEV extends ElectricArmor {
-
-	private EnumSet<EnumAttachment> attatches = EnumSet.of(EnumAttachment.NONE);
-
-	public static enum EnumAttachment {
-		LONGJUMP(1), NONE(-1);
-		private int slot;
-
-		private EnumAttachment(int x) {
-			this.slot = x;
-		}
-
-		public int getSlot() {
-			return slot;
-		}
-	}
 
 	public static int reductionAmount[] = { 5, 8, 5, 4 };
 	protected static EnumArmorMaterial material = EnumHelper.addArmorMaterial(
@@ -64,26 +54,6 @@ public class ArmorHEV extends ElectricArmor {
 		this.setTier(2);
 		this.setTransferLimit(128);
 		this.setEnergyPerDamage(500);
-	}
-
-	public ArmorHEV(int par1, EnumAttachment attach) {
-		this(par1, attach.getSlot());
-		this.setIconName("hev_" + attach.name().toLowerCase());
-		this.attatches = EnumSet.of(attach);
-		this.setDescription(attach.name().toLowerCase());
-	}
-
-	/**
-	 * 获取HEV装甲的附件，目前半完成，硬编码。
-	 * 
-	 * @param is
-	 * @param attach
-	 * @return
-	 */
-	public boolean getAttachment(ItemStack is, EnumAttachment attach) {
-		if (is != null && !(is.getItem() instanceof ArmorHEV))
-			return false;
-		return attatches.contains(attach);
 	}
 
 	@Override
@@ -149,5 +119,131 @@ public class ArmorHEV extends ElectricArmor {
 		GL11.glPopMatrix();
 	}
 
+	
+	//---------------------Attachment Part------------------------//
+	public static enum EnumAttachment {
+		
+		LONGJUMP(1), BHOP(2), ELECTRICITY(-1), DEFENSE(-1);
+		
+		private int slot;
+
+		public boolean isAvailableSlot(int s) {
+			if(slot == -1)
+				return true;
+			return slot == s;
+		}
+		
+		private EnumAttachment(int x) {
+			this.slot = x;
+		}
+
+		public int getSlot() {
+			return slot;
+		}
+		
+		@Override
+		public String toString() {
+			return "attach." + this.name().toLowerCase() + ".name";
+		}
+		
+	}
+	
+	/**
+	 * 判断一个盔甲是否有对应的盔甲附件。
+	 * @param is
+	 * @param attach
+	 * @return
+	 */
+	public static boolean hasAttach(ItemStack is, EnumAttachment attach) {
+		if (is != null && !(is.getItem() instanceof ArmorHEV))
+			return false;
+		for(int i = 0; i < 5; i++) {
+			EnumAttachment a = getAttachInSlot(is, i);
+			if(a != null && a.equals(attach))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 获取一个盔甲所拥有的附件。
+	 * @param is
+	 * @return
+	 */
+	public static EnumSet<EnumAttachment> getAttachments(ItemStack is) {
+		EnumSet<EnumAttachment> attaches = EnumSet.noneOf(EnumAttachment.class);
+		for(int i = 0; i < 5; i++) {
+			EnumAttachment a = getAttachInSlot(is, i);
+			if(a != null)
+				attaches.add(a);
+		}
+		return attaches.isEmpty() ? null : attaches;
+	}
+	
+	/**
+	 * 向一个盔甲添加一种特定的附件（不能重复）
+	 * @param is
+	 * @param attach
+	 * @return 是否成功添加
+	 */
+	public static boolean addAttachTo(ItemStack is, EnumAttachment attach) {
+		if (is != null && !(is.getItem() instanceof ArmorHEV))
+			return false;
+		int slotToAdd = -1;
+		for(int i = 0; i < 5; i++) {
+			EnumAttachment att = getAttachInSlot(is, i);
+			if(slotToAdd == -1) {
+				if(att == null)
+					slotToAdd = i;
+			}
+			if(att != null && att.equals(attach))
+				return false;
+		}
+		if(slotToAdd == -1)
+			return false;
+		setAttach(is, slotToAdd, attach);
+		return true;
+	}
+	
+	/**
+	 * 设置一个特定槽的盔甲附件（0-4）
+	 * @param is
+	 * @param slot
+	 * @param attach
+	 */
+	private static void setAttach(ItemStack is, int slot, EnumAttachment attach) {
+		if(is.stackTagCompound == null)
+			is.stackTagCompound = new NBTTagCompound();
+		NBTTagCompound nbt = is.stackTagCompound;
+		nbt.setInteger("hev" + slot, attach.ordinal() + 1);
+	}
+	
+	/**
+	 * 获取特定槽的盔甲附件，可能为null。（0-4）
+	 * @param is
+	 * @param slot
+	 * @return
+	 */
+	private static EnumAttachment getAttachInSlot(ItemStack is, int slot) {
+		if(slot >= 5)
+			throw new UnsupportedOperationException();
+		if(is.stackTagCompound == null)
+			is.stackTagCompound = new NBTTagCompound();
+		NBTTagCompound nbt = is.stackTagCompound;
+		int a = nbt.getInteger("hev" + slot);
+		if(a == 0)
+			return null;
+		return EnumAttachment.values()[a-1];
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void addInformation(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		EnumSet<EnumAttachment> attaches = getAttachments(par1ItemStack);
+		if(attaches != null)
+			for(EnumAttachment a : attaches)
+				par3List.add(StatCollector.translateToLocal(a.toString()));
+	}
 
 }
