@@ -35,7 +35,9 @@ public class ClientProps {
 	public static final int RENDER_TYPE_TRIPMINE = RenderingRegistry
 			.getNextAvailableRenderId();
 	public static final int RENDER_TYPE_EMPTY = RenderingRegistry
-			.getNextAvailableRenderId();
+			.getNextAvailableRenderId(), 
+			RENDER_ID_XENPORTAL = RenderingRegistry
+					.getNextAvailableRenderId();;
 
 	public static final String GAUSS_BEAM_PATH = "/mods/lambdacraft/textures/entities/gaussbeam.png",
 			TRIPMINE_FRONT_PATH = "/mods/lambdacraft/textures/blocks/tripmine_front.png",

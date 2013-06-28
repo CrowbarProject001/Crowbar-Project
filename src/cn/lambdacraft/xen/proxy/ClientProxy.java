@@ -14,6 +14,9 @@
  */
 package cn.lambdacraft.xen.proxy;
 
+import cn.lambdacraft.xen.render.RenderXenPortal;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+
 /**
  * @author Administrator
  *
@@ -21,6 +24,7 @@ package cn.lambdacraft.xen.proxy;
 public class ClientProxy extends Proxy {
 	@Override
 	public void init() {
-		
+		RenderingRegistry.registerBlockHandler(new RenderXenPortal());
 	}
 }
+
