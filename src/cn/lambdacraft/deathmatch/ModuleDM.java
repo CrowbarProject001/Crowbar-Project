@@ -63,19 +63,6 @@ public class ModuleDM {
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent Init) {
-		if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-			for (String s : SOUND_WEAPONS)
-				CBCSoundEvents.addSoundPath("cbc/weapons/" + s,
-						"/mods/lambdacraft/sounds/weapons/" + s);
-			for (String s : SND_ENTITIES)
-				CBCSoundEvents.addSoundPath("cbc/entities/" + s,
-						"/mods/lambdacraft/sounds/entities/" + s);
-			CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R),
-					false, new KeyReload());
-			CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V),
-					false, new KeyMode());
-		}
-
 		MinecraftForge.EVENT_BUS.register(new DMEventHandler());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL,
@@ -88,6 +75,7 @@ public class ModuleDM {
 				new DMGuiElements.ElementHealthCharger());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_MEDFILLER,
 				new DMGuiElements.ElementMedFiller());
+		proxy.preInit();
 	}
 
 	@Init
@@ -132,24 +120,5 @@ public class ModuleDM {
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
 	}
-
-	public final static String SOUND_WEAPONS[] = {
-
-	"hgrenadepin", "hgrenadebounce", "plgun_c", "nmmclipa", "explode_a",
-			"explode_b", "g_bounceb", "gunjam_a", "hksa", "hksb", "hksc",
-			"nmmarr", "pyt_shota", "pyt_shotb", "pyt_cocka", "pyt_reloada",
-			"sbarrela", "sbarrela_a", "sbarrelb", "sbarrelb_a", "scocka",
-			"cbar_hita", "cbar_hitb", "cbar_hitboda", "cbar_hitbodb",
-			"cbar_hitbodc", "reloada", "reloadb", "reloadc", "gaussb",
-			"gauss_charge", "gauss_windupa", "gauss_windupb", "gauss_windupc",
-			"gauss_windupd", "rocketfirea", "xbow_fire", "xbow_reload",
-			"egon_run", "egon_windup", "egon_off", "rocket", "rocketfire",
-			"glauncher", "glauncherb", "ag_firea", "ag_fireb", "ag_firec"
-
-	};
-
-	public static final String SND_ENTITIES[] = { "medkit", "battery",
-			"suitcharge", "suitchargeno", "suitchargeok", "medshot",
-			"medshotno", "medcharge" };
 
 }

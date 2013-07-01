@@ -80,8 +80,7 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 				.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
 		switch (mode) {
 		case 0:
-			if (!par2World.isRemote)
-				BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
+			BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
 			break;
 		case 1:
 			if (!par2World.isRemote)

@@ -89,7 +89,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 
 	@Override
 	public int getOffset(int mode) {
-		return 2;
+		return 1;
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;
+import cn.lambdacraft.deathmatch.entities.EntityBullet;
 import cn.lambdacraft.deathmatch.entities.EntityBulletSG;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import net.minecraft.entity.Entity;
@@ -90,11 +91,15 @@ public class Weapon_Shotgun extends WeaponGeneralBullet {
 			information.setLastTick();
 			return;
 		}
-		if (!par2World.isRemote) {
-			int count = mode == 0 ? 8 : 16;
-			for (int i = 0; i < count; i++)
+		int count = mode == 0 ? 8 : 16;
+		for (int i = 0; i < count; i++) {
+			if(!par2World.isRemote)
 				par2World.spawnEntityInWorld(new EntityBulletSG(par2World,
 						par3Entity, par1ItemStack));
+			else par2World.spawnEntityInWorld(new EntityBullet(par2World,
+					par3Entity, par1ItemStack));
+		}
+		if (!par2World.isRemote) {
 			par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F,
 					1.0F);
 		}

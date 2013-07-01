@@ -19,12 +19,34 @@ public class RenderCrossedProjectile extends RenderEntity {
 	protected double LENGTH;
 	protected double HEIGHT;
 	protected String TEXTURE_PATH;
+	protected boolean renderTexture = true;
 	private static Tessellator tessellator = Tessellator.instance;
-
+	protected float colorR, colorG, colorB;
+	protected boolean ignoreLight = false;
+	
 	public RenderCrossedProjectile(double l, double h, String texturePath) {
 		LENGTH = l;
 		HEIGHT = h;
 		TEXTURE_PATH = texturePath;
+	}
+	
+	public RenderCrossedProjectile(double l, double h, float a, float b, float c) {
+		LENGTH = l;
+		HEIGHT = h;
+		setColor3f(a, b, c);
+	}
+	
+	public RenderCrossedProjectile setColor3f(float a, float b, float c) {
+		renderTexture = false;
+		colorR = a;
+		colorG = b;
+		colorB = c;
+		return this;
+	}
+	
+	public RenderCrossedProjectile setIgnoreLight(boolean b) {
+		ignoreLight = b;
+		return this;
 	}
 
 	@Override
@@ -46,7 +68,14 @@ public class RenderCrossedProjectile extends RenderEntity {
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ZERO);
-		loadTexture(TEXTURE_PATH);
+		if(renderTexture)
+			loadTexture(TEXTURE_PATH);
+		else {
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glColor3f(colorR, colorG, colorB);
+		}
+		if(ignoreLight)
+			GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glRotatef(270.0F - gren.rotationYaw, 0.0F, -1.0F, 0.0F); // 左右旋转
 		GL11.glRotatef(gren.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
 		tessellator.startDrawingQuads();
@@ -71,8 +100,10 @@ public class RenderCrossedProjectile extends RenderEntity {
 		addVertex(v6, 1, 1);
 		addVertex(v5, 0, 1);
 
-		tessellator.draw();
+		tessellator.draw(); 
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
 	}
 

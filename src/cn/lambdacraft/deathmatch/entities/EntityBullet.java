@@ -47,8 +47,12 @@ public class EntityBullet extends EntityThrowable {
 		if (itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral))
 			this.setDead();
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		motion = new MotionXYZ(this).setMotionOffset(item.getOffset(item
+		double f1 = par1World.isRemote ? 0.06 : 0.3;
+		motion = new MotionXYZ(this).setMotionOffset(f1 * item.getOffset(item
 				.getMode(par3itemStack)));
+		this.motionX = motion.motionX;
+		this.motionY = motion.motionY;
+		this.motionZ = motion.motionZ;
 	}
 
 	@Override
@@ -115,7 +119,7 @@ public class EntityBullet extends EntityThrowable {
 
 	@Override
 	protected float func_70182_d() {
-		return 50.0F;
+		return worldObj.isRemote ? 3.0F : 15.0F;
 	}
 
 }

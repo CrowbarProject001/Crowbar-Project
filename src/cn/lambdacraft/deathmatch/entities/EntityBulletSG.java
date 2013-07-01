@@ -34,17 +34,10 @@ import net.minecraft.world.World;
  */
 public class EntityBulletSG extends EntityBullet {
 
-	double startX, startY, startZ;
 
 	public EntityBulletSG(World par1World, EntityPlayer par2EntityLiving,
 			ItemStack par3itemStack) {
 		super(par1World, par2EntityLiving, par3itemStack);
-		startX = posX;
-		startY = posY;
-		startZ = posZ;
-		this.motionX = motion.motionX;
-		this.motionY = motion.motionY;
-		this.motionZ = motion.motionZ;
 	}
 
 	public EntityBulletSG(World world) {

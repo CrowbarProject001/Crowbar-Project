@@ -142,8 +142,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 		
 		player.setItemInUse(par1ItemStack,
 				this.getMaxItemUseDuration(par1ItemStack));
+		BulletManager.Shoot(par1ItemStack, player, par2World);
 		if (!par2World.isRemote) {
-			BulletManager.Shoot(par1ItemStack, player, par2World);
 			if (!(player.capabilities.isCreativeMode))
 				par1ItemStack.damageItem(1, player);
 		}
