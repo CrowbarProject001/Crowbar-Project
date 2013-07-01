@@ -94,7 +94,7 @@ public class HEVRenderingUtils {
 			if(is != null && is.getItem() instanceof ArmorHEV) {
 				hev = (ArmorHEV) is.getItem();
 				int energy = hev.discharge(is, Integer.MAX_VALUE, 0, true, true);
-				int heightToDraw = energy * 16 / 100000;
+				int heightToDraw = energy * 16 / is.getMaxDamage();
 				int height = l - 50 - i * 16;
 				if (is.getItemSpriteNumber() == 0) {
 					renderEngine.bindTexture("/terrain.png");

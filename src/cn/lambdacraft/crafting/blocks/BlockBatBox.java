@@ -105,12 +105,12 @@ public class BlockBatBox extends BlockElectricalBase {
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
 		if (type == 0) {
-			iconSide = par1IconRegister.registerIcon("lambdacraft:genfire_side");
+			iconSide = par1IconRegister.registerIcon("lambdacraft:batbox_side");
 			iconTop = par1IconRegister.registerIcon("lambdacraft:batbox_top_s");
 			iconBottom = par1IconRegister.registerIcon("lambdacraft:crafter_bottom");
 			iconMain = par1IconRegister.registerIcon("lambdacraft:batbox_main_s");
 		} else {
-			iconSide = par1IconRegister.registerIcon("lambdacraft:genfire_main");
+			iconSide = par1IconRegister.registerIcon("lambdacraft:batbox_large_side");
 			iconTop = par1IconRegister.registerIcon("lambdacraft:batbox_top");
 			iconBottom = par1IconRegister.registerIcon("lambdacraft:crafter_bottom");
 			iconMain = par1IconRegister.registerIcon("lambdacraft:batbox_main");
@@ -127,6 +127,8 @@ public class BlockBatBox extends BlockElectricalBase {
 			return iconBottom;
 		if (par1 < 2)
 			return iconTop;
+		if(par1 == 0)
+			return iconMain;
 		return iconSide;
 	}
 

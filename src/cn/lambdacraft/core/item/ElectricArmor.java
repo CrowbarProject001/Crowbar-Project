@@ -68,14 +68,6 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 		transferLimit = p;
 	}
 
-	/**
-	 * Returns the maximum damage an item can take.
-	 */
-	@Override
-	public int getMaxDamage() {
-		return this.maxCharge;
-	}
-
 	@Override
 	public int getItemMaxDamageFromStack(ItemStack is) {
 		return maxCharge;
@@ -92,7 +84,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	 */
 	@Override
 	public int getItemDamageFromStack(ItemStack stack) {
-		return maxCharge - getItemCharge(stack);
+		return getItemMaxDamageFromStack(stack) - getItemCharge(stack);
 	}
 
 	/**
@@ -104,7 +96,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	 */
 	@Override
 	public int getItemDamageFromStackForDisplay(ItemStack stack) {
-		return maxCharge - getItemCharge(stack);
+		return getMaxCharge(stack) - getItemCharge(stack);
 	}
 
 	@Override
@@ -145,7 +137,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	public int charge(ItemStack itemStack, int amount, int tier,
 			boolean ignoreTransferLimit, boolean simulate) {
 
-		int en = this.maxCharge - getItemCharge(itemStack) - 1;
+		int en = getItemMaxDamageFromStack(itemStack) - getItemCharge(itemStack) - 1;
 		if (en == 0)
 			return 0;
 		if (!ignoreTransferLimit)
@@ -169,7 +161,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 		if (this.canShowChargeToolTip(par1ItemStack))
 			par3List.add(StatCollector.translateToLocal("gui.curenergy.name")
 					+ " : " + getItemCharge(par1ItemStack) + "/"
-					+ this.maxCharge + " EU");
+					+ getItemMaxDamageFromStack(par1ItemStack) + " EU");
 	}
 
 	@Override
@@ -190,7 +182,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	protected void setItemCharge(ItemStack stack, int charge) {
 		loadCompound(stack).setInteger(
 				"charge",
-				(charge > 0) ? (charge > this.maxCharge ? this.maxCharge
+				(charge > 0) ? (charge > getItemMaxDamageFromStack(stack) ? getItemMaxDamageFromStack(stack)
 						: charge) : 0);
 	}
 
@@ -228,7 +220,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	 */
 	@Override
 	public boolean isItemStackDamaged(ItemStack stack) {
-		return getItemCharge(stack) < maxCharge;
+		return getItemCharge(stack) < getMaxDamage();
 	}
 
 	@Override

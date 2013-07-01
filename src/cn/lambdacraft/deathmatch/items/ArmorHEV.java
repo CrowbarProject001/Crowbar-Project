@@ -44,7 +44,10 @@ public class ArmorHEV extends ElectricArmor {
 			200), propDefault = new ArmorProperties(2, 100.0, 150),
 			propNone = new ArmorProperties(2, 0.0, 0),
 			propShoe = new ArmorProperties(2, 100.0, 125),
-			propShoeFalling = new ArmorProperties(3, 100.0, 2500);
+			propShoeFalling = new ArmorProperties(3, 100.0, 2500),
+			propChest_defense = new ArmorProperties(3, 100.0,
+					200) , propDefault_defense = new ArmorProperties(2, 100.0, 150),
+					propShoe_defense = new ArmorProperties(2, 100.0, 125);
 
 	public ArmorHEV(int par1, int armorType) {
 		super(par1, material, 2, armorType);
@@ -76,18 +79,33 @@ public class ArmorHEV extends ElectricArmor {
 			DamageSource source, double damage, int slot) {
 		if (getItemCharge(armor) <= this.energyPerDamage)
 			return propNone;
-		if (source == DamageSource.fall) {
-			if (slot == 0)
-				return propShoeFalling;
-			else
-				return propNone;
+		if(this.hasAttach(armor, EnumAttachment.DEFENSE)) {
+			if (source == DamageSource.fall) {
+				if (slot == 0)
+					return propShoeFalling;
+				else
+					return propNone;
+			}
+			return slot == 2 ? propChest_defense : (slot == 0 ? propShoe_defense : propDefault_defense);
+		} else {
+			if (source == DamageSource.fall) {
+				if (slot == 0)
+					return propShoeFalling;
+				else
+					return propNone;
+			}
+			return slot == 2 ? propChest : (slot == 0 ? propShoe : propDefault);
 		}
-		return slot == 2 ? propChest : (slot == 0 ? propShoe : propDefault);
 	}
 
 	@Override
 	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
 		return (slot == 2) ? 8 : 4;
+	}
+	
+	@Override
+	public int getItemMaxDamageFromStack(ItemStack is) {
+		return hasAttach(is, EnumAttachment.ELECTRICITY) ? 200000 : maxCharge;
 	}
 	
 	@Override
@@ -241,6 +259,7 @@ public class ArmorHEV extends ElectricArmor {
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		EnumSet<EnumAttachment> attaches = getAttachments(par1ItemStack);
+		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		if(attaches != null)
 			for(EnumAttachment a : attaches)
 				par3List.add(StatCollector.translateToLocal(a.toString()));

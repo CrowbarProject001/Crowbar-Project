@@ -91,6 +91,8 @@ public class BlockGeneratorLava extends BlockElectricalBase {
 			return iconMain;
 		if (par1 == dirs[par2].getOpposite().ordinal())
 			return iconBack;
+		if(par2 == 0)
+			return iconMain;
 		return iconSide;
 	}
 

@@ -252,7 +252,8 @@ public class CBCItems {
 				Item.eyeOfEnder);
 		GameRegistry.addShapelessRecipe(iSstorageL, CBCBlocks.storageS,
 				lambdaChip);
-		GameRegistry.addRecipe(new RecipeHEVAttachedShapeless(EnumAttachment.LONGJUMP, new ItemStack(DMItems.armorHEVChestplate),new ItemStack(DMItems.armorHEVChestplate), new ItemStack(DMItems.longjump)));
+		GameRegistry.addRecipe(new RecipeHEVAttachedShapeless(EnumAttachment.LONGJUMP, new ItemStack(DMItems.longjump)));
+		GameRegistry.addRecipe(new RecipeHEVAttachedShapeless(EnumAttachment.ELECTRICITY, new ItemStack(DMItems.weapon_9mmhandgun)));
 		GameRegistry.addRecipe(new RecipeRepair(spray1, new ItemStack(
 				Item.dyePowder)));
 		GameRegistry.addRecipe(new RecipeRepair(spray2, new ItemStack(
@@ -357,25 +358,102 @@ public class CBCItems {
 
 	}
 	
-	private static class RecipeHEVAttachedShapeless extends RecipeElectricShapeless {
+	private static class RecipeHEVAttachedShapeless implements IRecipe {
 
+		protected ArrayList<ItemStack> recipeItems = new ArrayList();
 		protected EnumAttachment theAttach;
-		
-		public RecipeHEVAttachedShapeless(EnumAttachment attach, ItemStack output, ItemStack original,
-				ItemStack... add) {
-			super(output, original, add);
+
+		public RecipeHEVAttachedShapeless(EnumAttachment attach, ItemStack... add) {
 			theAttach = attach;
+			Collections.addAll(recipeItems, add);
 		}
-		
+
+		/**
+		 * Used to check if a recipe matches current crafting inventory
+		 */
+		@Override
+		public boolean matches(InventoryCrafting par1InventoryCrafting,
+				World par2World) {
+			ArrayList arraylist = new ArrayList(this.recipeItems);
+			boolean hasOneHEV = false;
+
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					ItemStack itemstack = par1InventoryCrafting
+							.getStackInRowAndColumn(j, i);
+
+					if (itemstack != null) {
+						boolean flag = false;
+						Iterator iterator = arraylist.iterator();
+
+						if(itemstack.getItem() instanceof ArmorHEV) {
+							ArmorHEV hev = (ArmorHEV) itemstack.getItem();
+							if(theAttach.isAvailableSlot(hev.armorType))
+								if(!hasOneHEV)
+									hasOneHEV = true;
+								else return false;
+							continue;
+						}
+						
+						while (iterator.hasNext()) {
+							ItemStack itemstack1 = (ItemStack) iterator.next();
+
+							if (itemstack.itemID == itemstack1.itemID) {
+								flag = true;
+								arraylist.remove(itemstack1);
+								break;
+							}
+						}
+
+						if (!flag) {
+							return false;
+						}
+					}
+				}
+			}
+
+			return arraylist.isEmpty() && hasOneHEV;
+		}
+
 		@Override
 		public ItemStack getCraftingResult(InventoryCrafting inv) {
-			ItemStack is = super.getCraftingResult(inv);
-			if(is != null && is.getItem() instanceof ArmorHEV){
-				ArmorHEV.addAttachTo(is, theAttach);
-				return is;
-			}
+			ItemStack in = findIdentifyStack(inv);
+			if (in == null)
+				return null;
+			
+			ItemStack is = in.copy();
+			ICustomEnItem item = (ICustomEnItem) in.getItem();
+			ICustomEnItem item2 = (ICustomEnItem) is.getItem();
+			int energy = item.discharge(in, Integer.MAX_VALUE, 5, true, true);
+			item2.charge(is, energy, 5, true, false);
+			ArmorHEV.addAttachTo(is, theAttach);
+			return is;
+		}
+
+		private ItemStack findIdentifyStack(InventoryCrafting inv) {
+			ItemStack item = null;
+			for (int i = 0; i < 3; i++)
+				for (int j = 0; j < 3; j++) {
+					ItemStack s = inv.getStackInRowAndColumn(i, j);
+					if (s != null && s.getItem() instanceof ArmorHEV) {
+						if (item != null)
+							return null;
+						item = s;
+					}
+				}
+			return item;
+		}
+
+		@Override
+		public int getRecipeSize() {
+			return this.recipeItems.size() + 1;
+		}
+
+		@Override
+		public ItemStack getRecipeOutput() {
 			return null;
 		}
+
 	}
 
 	/**
