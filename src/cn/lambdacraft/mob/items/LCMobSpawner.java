@@ -4,6 +4,7 @@ import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.mob.entities.EntitySnark;
 import cn.lambdacraft.mob.utils.MobSpawnHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,7 @@ import net.minecraft.world.World;
 
 public class LCMobSpawner extends CBCGenericItem {
 
-	private Class<? extends EntityLiving> entClass = EntitySnark.class;
+	protected Class<? extends Entity> entClass = EntitySnark.class;
 	
 	public LCMobSpawner(int par1) {
 		super(par1);
@@ -19,7 +20,7 @@ public class LCMobSpawner extends CBCGenericItem {
 		setIAndU("snark");
 	}
 	
-	public LCMobSpawner(int id, Class<? extends EntityLiving> entityClass, String name) {
+	public LCMobSpawner(int id, Class<? extends Entity> entityClass, String name) {
 		super(id);
 		setCreativeTab(CBCMod.cct);
 		entClass = entityClass;

@@ -32,7 +32,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class BlockGeneratorLava extends BlockElectricalBase {
 
-	public Icon iconSide, iconTop, iconBottom, iconMain, iconBack;;
+	public Icon iconSide, iconTop, iconBottom, iconMain;
 	private ForgeDirection[] dirs = ForgeDirection.values();
 
 	public BlockGeneratorLava(int par1) {
@@ -71,12 +71,11 @@ public class BlockGeneratorLava extends BlockElectricalBase {
 
 	@Override
 	public void registerIcons(IconRegister par1IconRegister) {
-		iconSide = par1IconRegister.registerIcon("lambdacraft:genfire_side");
-		iconTop = par1IconRegister.registerIcon("lambdacraft:genfire_top");
+		iconSide = par1IconRegister.registerIcon("lambdacraft:genlava_side");
+		iconTop = par1IconRegister.registerIcon("lambdacraft:genlava_top");
 		iconBottom = par1IconRegister
 				.registerIcon("lambdacraft:crafter_bottom");
 		iconMain = par1IconRegister.registerIcon("lambdacraft:genlava_main");
-		iconBack = par1IconRegister.registerIcon("lambdacraft:genfire_back");
 		blockIcon = iconTop;
 	}
 
@@ -89,8 +88,6 @@ public class BlockGeneratorLava extends BlockElectricalBase {
 			return iconTop;
 		if (par1 == par2)
 			return iconMain;
-		if (par1 == dirs[par2].getOpposite().ordinal())
-			return iconBack;
 		if(par2 == 0)
 			return iconMain;
 		return iconSide;

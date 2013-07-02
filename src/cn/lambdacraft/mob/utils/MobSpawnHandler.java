@@ -14,7 +14,7 @@ public class MobSpawnHandler {
 	 * 把一个奇怪的生物生成到世界中。
 	 */
 	public static Entity spawnCreature(World par0World,
-			Class<? extends EntityLiving> c, EntityPlayer thrower) {
+			Class<? extends Entity> c, EntityPlayer thrower) {
 
 		Entity entity = null;
 

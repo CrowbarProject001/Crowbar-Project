@@ -44,7 +44,7 @@ public class GeneralProps {
 			ENT_ID_DOT = 8, ENT_ID_SATCHEL = 9, ENT_ID_SNARK = 10,
 			ENT_ID_BULLET = 11, ENT_ID_BOW = 12, ENT_ID_MEDKIT = 13,
 			ENT_ID_BATTERY = 14, ENT_ID_GAUSS2 = 15, ENT_ID_GAUSS_PARTICLE = 16, ENT_ID_ART = 17,
-			ENT_ID_HEADCRAB = 18;
+			ENT_ID_HEADCRAB = 18, ENT_ID_BARNACLE = 19;
 
 	public static final String NET_CHANNEL_CLIENT = "cbcclient",
 			NET_CHANNEL_SERVER = "cbcserver";

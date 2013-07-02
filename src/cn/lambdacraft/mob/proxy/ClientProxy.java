@@ -14,8 +14,10 @@
  */
 package cn.lambdacraft.mob.proxy;
 
-import cn.lambdacraft.mob.client.ModelHeadcrab;
-import cn.lambdacraft.mob.client.ModelSnark;
+import cn.lambdacraft.mob.client.models.ModelHeadcrab;
+import cn.lambdacraft.mob.client.models.ModelSnark;
+import cn.lambdacraft.mob.client.render.RenderBarnacle;
+import cn.lambdacraft.mob.entities.EntityBarnacle;
 import cn.lambdacraft.mob.entities.EntityHeadcrab;
 import cn.lambdacraft.mob.entities.EntitySnark;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -33,5 +35,6 @@ public class ClientProxy extends Proxy {
 				new RenderLiving(new ModelSnark(), 0.2F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityHeadcrab.class,
 				new RenderLiving(new ModelHeadcrab(), 0.4F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityBarnacle.class, new RenderBarnacle());
 	}
 }
