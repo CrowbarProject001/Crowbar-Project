@@ -32,6 +32,10 @@ public class GenericUtils {
 		double dx = (ent.posX - x), dy = (ent.posY - y), dz = (ent.posZ - z);
 		return dx * dx + dy * dy + dz * dz;
 	}
+	
+	public static float getEntitySizeSq(Entity e) {
+		return e.width * e.width * e.height;
+	}
 
 	public static double distanceTo(Entity ent, double x, double y, double z) {
 		return Math.sqrt(distanceSqTo(ent, x, y, z));

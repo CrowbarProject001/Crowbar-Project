@@ -12,7 +12,7 @@ import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.MathHelper;
-
+import java.util.EnumSet;
 public class CBCPlayer extends PlayerBase {
 
 	public static final float LJ_VEL_RADIUS = 1.5F, BHOP_VEL_SCALE = 0.003F, SPEED_REDUCE_SCALE = 0.0005F;
@@ -152,7 +152,10 @@ public class CBCPlayer extends PlayerBase {
 	//-----------------------效用函数----------------------------
 	
 	private boolean useBhop() {
-		return hevArmorStatus[1] && ArmorHEV.getAttachments(player.inventory.armorInventory[1]).contains(EnumAttachment.BHOP) && 
+		EnumSet<EnumAttachment> attach = ArmorHEV.getAttachments(player.inventory.armorInventory[1]);
+		if(attach == null)
+			return false;
+		return hevArmorStatus[1] && attach.contains(EnumAttachment.BHOP) && 
 				!(player.handleLavaMovement() || player.handleWaterMovement() || player.isOnLadder() || player.capabilities.isCreativeMode);
 	}
 	

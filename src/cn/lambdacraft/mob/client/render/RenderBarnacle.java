@@ -57,7 +57,7 @@ public class RenderBarnacle extends Render {
 		
 		//Barnacle Tentacle Render
 		double length = ((EntityBarnacle)entity).tentacleLength;
-		double h1 = 0.5, h2 = length;
+		double h1 = 0.5, h2 = length + 1.0;
 		Vec3 v1 = RenderUtils.newV3(-WIDTH, h1, -WIDTH),
 			 v2 = RenderUtils.newV3(-WIDTH, h1, WIDTH),
 			 v3 = RenderUtils.newV3(WIDTH, h1, WIDTH),

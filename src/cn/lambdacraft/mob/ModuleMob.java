@@ -61,6 +61,7 @@ public class ModuleMob {
 	public static final String SND_MOBS[] = { "sqk_blast", "sqk_hunta",
 			"sqk_huntb", "sqk_huntc", "sqk_die", "sqk_deploy", "hc_attacka", "hc_attackb",
 			"hc_attackc", "hc_idlea", "hc_idleb", "hc_idlec", "hc_idled", "hc_idlee",
-			"hc_diea", "hc_dieb", "hc_paina", "hc_painb", "hc_painc" };
+			"hc_diea", "hc_dieb", "hc_paina", "hc_painb", "hc_painc",
+			"bcl_tongue", "bcl_chewa", "bcl_chewb", "bcl_chewc", "bcl_alert", "bcl_bite"};
 
 }

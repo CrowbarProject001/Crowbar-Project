@@ -9,7 +9,7 @@ public class EntitySelectorLiving implements IEntitySelector {
 	@Override
 	public boolean isEntityApplicable(Entity entity) {
 		return IEntitySelector.selectAnything.isEntityApplicable(entity)
-				&& entity instanceof EntityLiving;
+				&& entity instanceof EntityLiving && !entity.isEntityInvulnerable();
 	}
 
 }

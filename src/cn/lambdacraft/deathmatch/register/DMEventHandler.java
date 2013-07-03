@@ -16,6 +16,7 @@ package cn.lambdacraft.deathmatch.register;
 
 import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
+import cn.lambdacraft.mob.entities.EntityBarnacle;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.EntityEvent.CanUpdate;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 /**
  * 统一的Forge事件处理。
@@ -51,6 +54,6 @@ public class DMEventHandler {
 				}
 			}
 		}
-
 	}
+	
 }

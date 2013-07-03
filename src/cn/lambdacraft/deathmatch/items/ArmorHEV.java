@@ -189,6 +189,8 @@ public class ArmorHEV extends ElectricArmor {
 	 * @return
 	 */
 	public static EnumSet<EnumAttachment> getAttachments(ItemStack is) {
+		if(is == null)
+			return null;
 		EnumSet<EnumAttachment> attaches = EnumSet.noneOf(EnumAttachment.class);
 		for(int i = 0; i < 5; i++) {
 			EnumAttachment a = getAttachInSlot(is, i);
