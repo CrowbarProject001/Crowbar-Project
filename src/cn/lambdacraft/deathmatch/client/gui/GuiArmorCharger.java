@@ -114,13 +114,13 @@ public class GuiArmorCharger extends CBCGuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		String blockName = EnumChatFormatting.DARK_GRAY
 				+ StatCollector.translateToLocal(DMBlocks.armorCharger
 						.getLocalizedName());
 		fontRenderer.drawString(blockName,
 				88 - fontRenderer.getStringWidth(blockName) / 2, 5, 0x969494);
+		super.drawGuiContainerForegroundLayer(par1, par2);
 	}
 
 	/*

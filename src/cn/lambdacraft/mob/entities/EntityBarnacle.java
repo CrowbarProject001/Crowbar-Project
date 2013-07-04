@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -35,15 +36,15 @@ import net.minecraftforge.common.ForgeDirection;
  * 喜闻乐见的藤壶怪哟，因为基本不需要用到生物的特性所以 直接继承的Entity类
  * @author WeAthFolD
  */
-public class EntityBarnacle extends Entity {
+public class EntityBarnacle extends EntityLiving {
 
 	public static HashMap<Entity, EntityBarnacle> pullingEntityMap = new HashMap();
 	
-	public int health;
 	public double tentacleLength;
 	public Entity pullingEntity;
 	private int tickBeforeLastAttack = 0, timesEaten = 0;
-	private int tickBreaking = 0;
+	private int tickBreaking = 0, fallingTick = 0;
+	private boolean falling;
 	
 	public EntityBarnacle(World world, int blockX, int blockY, int blockZ) {
 		super(world);
@@ -59,6 +60,7 @@ public class EntityBarnacle extends Entity {
 		super(par1World);
 		this.setSize(0.7F, 0.8F);
 		this.health = 20;
+		this.tentacleLength = 30;
 		this.ignoreFrustumCheck = true;
 	}
 	
@@ -66,6 +68,18 @@ public class EntityBarnacle extends Entity {
 	public void onUpdate() {
 		
 		++this.ticksExisted;
+		if(this.hurtResistantTime > 0)
+			--this.hurtResistantTime;
+		
+		if(falling) {
+			++this.fallingTick;
+			this.motionY += 0.075;
+			this.moveEntity(0.0, motionY, 0.0);
+			if(fallingTick > 30)
+				this.setDead();
+			System.out.println(worldObj.isRemote + " " + posX + " " + posY + " " + posZ);
+			return;
+		}
 		
 		if(pullingEntity == null) {
 			//Calculate tracking range
@@ -99,7 +113,6 @@ public class EntityBarnacle extends Entity {
 			pullingEntity.moveEntity(0.0, -pullingEntity.motionY, 0.0);
 			pullingEntity.motionY = 0.07;
 			pullingEntity.setPosition(posX, posY - tentacleLength, posZ);
-			System.out.println(pullingEntity.posY + ", " + pullingEntity.motionY);
 			pullingEntity.motionX = pullingEntity.motionZ = 0.0;
 			if(tentacleLength >= 0.8) {
 				tentacleLength -= 0.05;
@@ -109,7 +122,7 @@ public class EntityBarnacle extends Entity {
 					if(!(pullingEntity instanceof EntityLiving)) {
 						stopPullingEntity();
 					} else {
-						pullingEntity.attackEntityFrom(DamageSource.causeThrownDamage(this, this), 15);
+						pullingEntity.attackEntityFrom(DamageSource.causeMobDamage(this), 15);
 						this.playSound("cbc.mobs.bcl_bite", 0.5F, 1.0F);
 						if(++timesEaten > 5) {
 							pullingEntity.fallDistance = 0.0F;
@@ -122,13 +135,15 @@ public class EntityBarnacle extends Entity {
 				stopPullingEntity();
 		}
 		//Check if barnacle can still exist
-		if(worldObj.getBlockId((int)posX, (int)posY + 1, (int)posZ - 1) == 0) {
+		if(!this.falling && worldObj.getBlockId((int)posX, (int)posY + 1, (int)posZ - 1) == 0) {
 			this.setDead();
 			return;
 		}
 	}
 	
 	protected void startPullingEntity(Entity e) {
+		if(pullingEntityMap.containsKey(e))
+			return;
 		pullingEntity = e;
 		tentacleLength = posY - e.posY;
 		e.moveEntity(0.0, 0.1, 0.0);
@@ -142,48 +157,47 @@ public class EntityBarnacle extends Entity {
 	}
 
 	/* (non-Javadoc)
-	 * @see net.minecraft.entity.Entity#entityInit()
-	 */
-	@Override
-	protected void entityInit() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	@Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
-    {
-    	this.setDead();
-    	return true;
-    }
-
-	/* (non-Javadoc)
 	 * @see net.minecraft.entity.Entity#readEntityFromNBT(net.minecraft.nbt.NBTTagCompound)
 	 */
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbt) {
-		posX = nbt.getDouble("posX");
-		posY = nbt.getDouble("posY");
-		posZ = nbt.getDouble("posZ");
-		health = nbt.getInteger("health");
+	public void readEntityFromNBT(NBTTagCompound nbt) {
+		super.readEntityFromNBT(nbt);
 		tentacleLength = nbt.getDouble("tentacle");
 	}
+	
+	@Override
+	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    {
+		boolean b = super.attackEntityFrom(par1DamageSource, par2);
+		if(!worldObj.isRemote && health <= 0) {
+			falling = true;
+			this.fallingTick = 0;
+		}
+		return b;
+    }
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.entity.Entity#writeEntityToNBT(net.minecraft.nbt.NBTTagCompound)
 	 */
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setInteger("health", health);
-		nbt.setDouble("posX", posX);
-		nbt.setDouble("posY", posY);
-		nbt.setDouble("posZ", posZ);
+	public void writeEntityToNBT(NBTTagCompound nbt) {
+		super.writeEntityToNBT(nbt);
 		nbt.setDouble("tentacle", tentacleLength);
 	}
+	
+    public boolean canBeCollidedWith()
+    {
+        return true;
+    }
 	
     public boolean isEntityInvulnerable()
     {
     	return false;
     }
+
+	@Override
+	public int getMaxHealth() {
+		return 20;
+	}
 
 }

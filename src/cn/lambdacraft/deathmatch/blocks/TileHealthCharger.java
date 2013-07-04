@@ -197,7 +197,7 @@ public class TileHealthCharger extends TileElectricStorage implements
 			}
 			if (mainEff > TileHealthCharger.HEALTH_MAX)
 				mainEff = HEALTH_MAX;
-		}
+		} else prgAddMain = 0;
 
 		if (slots[1] != null && slots[1].itemID == Item.potion.itemID) {
 
@@ -225,7 +225,7 @@ public class TileHealthCharger extends TileElectricStorage implements
 			if (sideEff > TileHealthCharger.EFFECT_MAX)
 				sideEff = EFFECT_MAX;
 
-		}
+		} else prgAddSide = 0;
 	}
 
 	public void doHealing(EntityPlayer charger) {

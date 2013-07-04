@@ -127,8 +127,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 		mc.renderEngine.bindTexture(ClientProps.GUI_HECHARGER_PATH);
 		if (te.currentEnergy == 0) {
 			this.drawTexturedModalRect(9, 7, 190, 0, 60, 72);
-		}
-		super.drawGuiContainerForegroundLayer(par1, par2);
+		} else super.drawGuiContainerForegroundLayer(par1, par2);
 	}
 
 	/*

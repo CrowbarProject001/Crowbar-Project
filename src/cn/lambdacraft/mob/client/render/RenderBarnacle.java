@@ -46,6 +46,7 @@ public class RenderBarnacle extends Render {
 	@Override
 	public void doRender(Entity entity, double par2, double par4, double par6,
 			float par8, float par9) {
+		EntityBarnacle barnacle = (EntityBarnacle) entity;
 		Tessellator t = Tessellator.instance;
 		GL11.glPushMatrix();
 		this.loadTexture(ClientProps.BARNACLE_PATH);
@@ -56,7 +57,7 @@ public class RenderBarnacle extends Render {
 				0.0625F);
 		
 		//Barnacle Tentacle Render
-		double length = ((EntityBarnacle)entity).tentacleLength;
+		double length = barnacle.tentacleLength;
 		double h1 = 0.5, h2 = length + 1.0;
 		Vec3 v1 = RenderUtils.newV3(-WIDTH, h1, -WIDTH),
 			 v2 = RenderUtils.newV3(-WIDTH, h1, WIDTH),
@@ -67,6 +68,8 @@ public class RenderBarnacle extends Render {
 				 v7 = RenderUtils.newV3(WIDTH, h2, WIDTH),
 				 v8 = RenderUtils.newV3(WIDTH, h2, -WIDTH);
 		this.loadTexture(ClientProps.BARNACLE_TENTACLE_PATH);
+		if(barnacle.hurtResistantTime > 10)
+			GL11.glColor3f(1.0F, 0.5F, 0.5F);
 		t.startDrawingQuads();
 		RenderUtils.addVertex(v1, 0.0, 0.0);
 		RenderUtils.addVertex(v5, 0.0, length);
@@ -93,6 +96,7 @@ public class RenderBarnacle extends Render {
 		RenderUtils.addVertex(v6, 0.1, 0.1);
 		RenderUtils.addVertex(v5, 0.1, 0.0);
 		t.draw();
+		GL11.glColor3f(1.0F,1.0F,1.0F);
 		GL11.glPopMatrix();
 	}
 

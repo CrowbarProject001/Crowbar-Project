@@ -76,7 +76,7 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 		maxZ = block.getBlockBoundsMaxZ();
 	}
 
-	public abstract String getTexture(int side, int metadata);
+	public abstract String getTexture(TileEntity te, int side, int metadata);
 
 	public void doRender(TileEntity tileEntity, double x, double y, double z,
 			float f) {
@@ -100,7 +100,7 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 
-		RenderUtils.loadTexture(getTexture(4, var5));
+		RenderUtils.loadTexture(getTexture(tileEntity, 4, var5));
 		t.startDrawingQuads();
 		t.setNormal(-1, 0, 0);
 		addVertex(v1, 0, 1);
@@ -109,7 +109,7 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 		addVertex(v4, 0, 0);
 		t.draw();
 
-		RenderUtils.loadTexture(getTexture(5, var5));
+		RenderUtils.loadTexture(getTexture(tileEntity, 5, var5));
 		t.startDrawingQuads();
 		t.setNormal(1, 0, 0);
 		addVertex(v8, 1, 0);
@@ -118,7 +118,7 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 		addVertex(v5, 1, 1);
 		t.draw();
 
-		RenderUtils.loadTexture(getTexture(2, var5));
+		RenderUtils.loadTexture(getTexture(tileEntity, 2, var5));
 		t.startDrawingQuads();
 		t.setNormal(0, 0, -1);
 		addVertex(v4, 1, 0);
@@ -127,7 +127,7 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 		addVertex(v1, 1, 1);
 		t.draw();
 
-		RenderUtils.loadTexture(getTexture(3, var5));
+		RenderUtils.loadTexture(getTexture(tileEntity, 3, var5));
 		t.startDrawingQuads();
 		t.setNormal(0, 0, 1);
 		addVertex(v3, 0, 0);
@@ -136,7 +136,7 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 		addVertex(v7, 1, 0);
 		t.draw();
 
-		RenderUtils.loadTexture(getTexture(1, var5));
+		RenderUtils.loadTexture(getTexture(tileEntity, 1, var5));
 		t.startDrawingQuads();
 		t.setNormal(0, 1, 0);
 		addVertex(v3, 0, 0);
@@ -145,7 +145,7 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 		addVertex(v4, 0, 1);
 		t.draw();
 
-		RenderUtils.loadTexture(getTexture(0, var5));
+		RenderUtils.loadTexture(getTexture(tileEntity, 0, var5));
 		t.startDrawingQuads();
 		t.setNormal(0, -1, 0);
 		addVertex(v1, 0, 1);
@@ -155,85 +155,6 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 		t.draw();
 
 		GL11.glPopMatrix();
-	}
-
-	public boolean doRender(IBlockAccess world, int x, int y, int z,
-			Block block, int modelId, RenderBlocks renderer) {
-		Tessellator t = Tessellator.instance;
-		int var5 = world.getBlockMetadata(x, y, z);
-		block.setBlockBoundsBasedOnState(world, x, y, z);
-		setBound(block);
-
-		Vec3 v1, v2, v3, v4, v5, v6, v7, v8;
-		v1 = RenderUtils.newV3(minX, minY, minZ);
-		v2 = RenderUtils.newV3(minX, minY, maxZ);
-		v3 = RenderUtils.newV3(minX, maxY, maxZ);
-		v4 = RenderUtils.newV3(minX, maxY, minZ);
-
-		v5 = RenderUtils.newV3(maxX, minY, minZ);
-		v6 = RenderUtils.newV3(maxX, minY, maxZ);
-		v7 = RenderUtils.newV3(maxX, maxY, maxZ);
-		v8 = RenderUtils.newV3(maxX, maxY, minZ);
-
-		GL11.glPushMatrix();
-		GL11.glTranslated(x, y, z);
-
-		RenderUtils.loadTexture(getTexture(4, var5));
-		t.startDrawingQuads();
-		t.setNormal(-1, 0, 0);
-		addVertex(v1, 0, 1);
-		addVertex(v2, 1, 1);
-		addVertex(v3, 1, 0);
-		addVertex(v4, 0, 0);
-		t.draw();
-
-		RenderUtils.loadTexture(getTexture(5, var5));
-		t.startDrawingQuads();
-		t.setNormal(1, 0, 0);
-		addVertex(v8, 1, 0);
-		addVertex(v7, 0, 0);
-		addVertex(v6, 0, 1);
-		addVertex(v5, 1, 1);
-		t.draw();
-
-		RenderUtils.loadTexture(getTexture(2, var5));
-		t.startDrawingQuads();
-		t.setNormal(0, 0, -1);
-		addVertex(v4, 1, 0);
-		addVertex(v8, 0, 0);
-		addVertex(v5, 0, 1);
-		addVertex(v1, 1, 1);
-		t.draw();
-
-		RenderUtils.loadTexture(getTexture(3, var5));
-		t.startDrawingQuads();
-		t.setNormal(0, 0, 1);
-		addVertex(v3, 0, 0);
-		addVertex(v2, 0, 1);
-		addVertex(v6, 1, 1);
-		addVertex(v7, 1, 0);
-		t.draw();
-
-		RenderUtils.loadTexture(getTexture(1, var5));
-		t.startDrawingQuads();
-		t.setNormal(0, 1, 0);
-		addVertex(v3, 0, 0);
-		addVertex(v7, 1, 0);
-		addVertex(v8, 1, 1);
-		addVertex(v4, 0, 1);
-		t.draw();
-
-		RenderUtils.loadTexture(getTexture(0, var5));
-		t.startDrawingQuads();
-		t.setNormal(0, -1, 0);
-		addVertex(v1, 0, 1);
-		addVertex(v5, 1, 1);
-		addVertex(v6, 1, 0);
-		addVertex(v2, 0, 0);
-		t.draw();
-
-		GL11.glPopMatrix();
-		return true;
 	}
 
 }

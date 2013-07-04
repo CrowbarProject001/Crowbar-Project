@@ -91,14 +91,13 @@ public class ContainerWeaponCrafter extends Container {
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
 			icrafting.sendProgressBarUpdate(this, 0, tileEntity.page);
-			icrafting.sendProgressBarUpdate(this, 1,
-					tileEntity.iconType.ordinal());
+			icrafting.sendProgressBarUpdate(this, 1, tileEntity.iconType.ordinal());
 			icrafting.sendProgressBarUpdate(this, 2, tileEntity.heat);
-			if (tileEntity.currentRecipe != null) {
-				icrafting.sendProgressBarUpdate(this, 3,
-						tileEntity.currentRecipe.heatRequired);
-			} else
-				icrafting.sendProgressBarUpdate(this, 3, 0);
+			if(tileEntity.currentRecipe != null)
+				icrafting.sendProgressBarUpdate(this, 3, tileEntity.currentRecipe.heatRequired);
+			else icrafting.sendProgressBarUpdate(this, 3, 0);
+			icrafting.sendProgressBarUpdate(this, 4, tileEntity.maxBurnTime);
+			icrafting.sendProgressBarUpdate(this, 5, tileEntity.burnTimeLeft);
 		}
 	}
 
@@ -113,6 +112,10 @@ public class ContainerWeaponCrafter extends Container {
 			tileEntity.heat = par2;
 		} else if (par1 == 3)
 			tileEntity.heatRequired = par2;
+		else if(par1 == 4)
+			tileEntity.maxBurnTime = par2;
+		else if(par1 == 5)
+			tileEntity.burnTimeLeft = par2;
 	}
 
 	@Override

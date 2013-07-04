@@ -115,12 +115,10 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 		addElements(up, down, left, right, heat, behavior);
 		this.setElementTip("heat", new TipHeat());
 		this.setElementTip("behavior", new TipBehavior());
-		this.updateButtonState();
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 		String storage = StatCollector
 				.translateToLocal("gui.crafter_storage.name");
@@ -129,29 +127,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 		this.fontRenderer.drawString(storage, 8, 88, 4210752);
 		fontRenderer.drawString(currentPage,
 				100 - fontRenderer.getStringWidth(currentPage) / 2, 1, 4210752);
-	}
-
-	public void updateButtonState() {
-		int place = isAtTopOrBottom();
-		if (place == 1) {
-			this.setButtonState("up", ButtonState.INVAILD);
-		} else if (this.getButtonState("up") == ButtonState.INVAILD)
-			this.setButtonState("up", ButtonState.IDLE);
-
-		if (place == -1) {
-			this.setButtonState("down", ButtonState.INVAILD);
-		} else if (this.getButtonState("down") == ButtonState.INVAILD)
-			this.setButtonState("down", ButtonState.IDLE);
-
-		if (te.page == 0) {
-			this.setButtonState("left", ButtonState.INVAILD);
-		} else if (this.getButtonState("left") == ButtonState.INVAILD)
-			this.setButtonState("left", ButtonState.IDLE);
-		if (te.page == RecipeWeapons.recipes.length - 1) {
-			this.setButtonState("right", ButtonState.INVAILD);
-		} else if (this.getButtonState("right") == ButtonState.INVAILD)
-			this.setButtonState("right", ButtonState.IDLE);
-
+		super.drawGuiContainerForegroundLayer(par1, par2);
 	}
 
 	@Override
@@ -207,14 +183,12 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 			boolean isDown = button.name == "down" ? true : false;
 			te.addScrollFactor(isDown);
 			NetCrafterClient.sendCrafterPacket(te, 0, isDown);
-			this.updateButtonState();
 			return;
 		}
 		if (button.name == "left" || button.name == "right") {
 			boolean isForward = button.name == "right" ? true : false;
 			te.addPage(isForward);
 			NetCrafterClient.sendCrafterPacket(te, 1, isForward);
-			this.updateButtonState();
 			return;
 		}
 	}

@@ -18,6 +18,7 @@ import java.util.List;
 
 import cn.lambdacraft.core.utils.GenericUtils;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
@@ -50,8 +51,15 @@ public class EntityBulletEgon extends EntityBullet {
 			int damage = (int) (7.0 / distance);
 			e.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), damage);
 		}
-		if(Math.random() < 0.1) 
-			worldObj.setBlock(result.blockX, result.blockY, result.blockZ, 0, 0, 3);
+		if(Math.random() < 0.1)  {
+			int blockID = worldObj.getBlockId(result.blockX, result.blockY, result.blockZ);
+			//检查以防破坏基岩等重要方块
+			if(Block.blocksList[blockID] != null) {
+				float hardness = Block.blocksList[blockID].getBlockHardness(worldObj, result.blockX, result.blockY, result.blockZ);
+				if(hardness > 0.0F && hardness < 5.0F)
+					worldObj.setBlock(result.blockX, result.blockY, result.blockZ, 0, 0, 3);
+			} else worldObj.setBlock(result.blockX, result.blockY, result.blockZ, 0, 0, 3);
+		}
 		this.setDead();
 	}
 

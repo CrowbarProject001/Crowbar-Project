@@ -31,6 +31,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.EnumHelper;
@@ -48,7 +49,8 @@ public class ArmorHEV extends ElectricArmor {
 			propChest_defense = new ArmorProperties(3, 100.0,
 					200) , propDefault_defense = new ArmorProperties(2, 100.0, 150),
 					propShoe_defense = new ArmorProperties(2, 100.0, 125);
-
+	protected static String hevMark = "IV";
+	
 	public ArmorHEV(int par1, int armorType) {
 		super(par1, material, 2, armorType);
 		setUnlocalizedName("hev" + this.armorType);
@@ -261,6 +263,7 @@ public class ArmorHEV extends ElectricArmor {
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		EnumSet<EnumAttachment> attaches = getAttachments(par1ItemStack);
+		par3List.add(EnumChatFormatting.RED + "Mark " + this.hevMark);
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		if(attaches != null)
 			for(EnumAttachment a : attaches)

@@ -57,7 +57,7 @@ public class ContainerArmorCharger extends Container {
 			icrafting.sendProgressBarUpdate(this, 0,
 					te.currentEnergy / 12);
 			icrafting.sendProgressBarUpdate(this, 1,
-					te.currentBehavior.ordinal() * (te.isCharging ? 1 : -1));
+					(te.currentBehavior.ordinal() + 1) * (te.isCharging ? 1 : -1));
 		}
 	}
 
@@ -67,7 +67,7 @@ public class ContainerArmorCharger extends Container {
 		if (par1 == 0) {
 			te.currentEnergy = par2 * 12;
 		} else {
-			te.currentBehavior = EnumBehavior.values()[Math.abs(par2)];
+			te.currentBehavior = EnumBehavior.values()[Math.abs(par2) - 1];
 			te.isCharging = par2 > 0 ? true : false;
 		}
 	}

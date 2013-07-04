@@ -76,12 +76,11 @@ public class ItemMedkit extends CBCGenericItem {
 				.getEffects(potion.getItemDamage());
 		NBTTagCompound nbt = loadCompound(potion);
 		int addCount = 0;
-		for (int i = 0; i < 3; i++) {
-			System.out.println(getEffect(medkit, i));
-		}
 
 		for (PotionEffect e : list) {
 			for (int i = 0; i < 3; i++) {
+				if(type == EnumAddingType.DURATION)
+					e.duration *= 1.3;
 				if (isSlotAvailable(medkit, i)) {
 					addEffect(medkit, e, i);
 					break;
@@ -91,6 +90,7 @@ public class ItemMedkit extends CBCGenericItem {
 		return 0;
 	}
 
+	/*
 	@Override
 	public ItemStack onItemRightClick(ItemStack medkit, World par2World,
 			EntityPlayer pl) {
@@ -113,6 +113,7 @@ public class ItemMedkit extends CBCGenericItem {
 		return medkit;
 
 	}
+	*/
 
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack,

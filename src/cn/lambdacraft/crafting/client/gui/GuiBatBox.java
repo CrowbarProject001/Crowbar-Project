@@ -74,10 +74,10 @@ public class GuiBatBox extends CBCGuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		String guiName = StatCollector.translateToLocal(te.getInvName());
 		this.fontRenderer.drawString(guiName, 7, 7, 0xdadada);
+		super.drawGuiContainerForegroundLayer(par1, par2);
 	}
 
 	/*

@@ -87,10 +87,12 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 		processRightClick(inf, par1ItemStack, par2World, par3EntityPlayer);
 
 		if (inf.isShooting && canShoot(par3EntityPlayer, par1ItemStack)) {
-			par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, par3EntityPlayer, par1ItemStack));
+			
 			if (par2World.isRemote)
 				par2World.spawnEntityInWorld(new EntityEgonRay(par2World,
 						par3EntityPlayer, par1ItemStack));
+			else 
+				par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, par3EntityPlayer, par1ItemStack));
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_WINDUP, 0.5F,
 					1.0F);
 		}
@@ -104,7 +106,8 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 	@Override
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer player, InformationEnergy information) {
-		par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, player, par1ItemStack));
+		if(!par2World.isRemote)
+			par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, player, par1ItemStack));
 		doUplift(information, player);
 		player.setItemInUse(par1ItemStack,
 				this.getMaxItemUseDuration(par1ItemStack));

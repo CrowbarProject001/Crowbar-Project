@@ -119,12 +119,12 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		String currentPage = StatCollector.translateToLocal(RecipeWeapons
 				.getDescription(tileEntity.page));
 		fontRenderer.drawString(currentPage,
 				85 - fontRenderer.getStringWidth(currentPage) / 2, 3, 0xff9843);
+		super.drawGuiContainerForegroundLayer(par1, par2);
 	}
 
 	@Override

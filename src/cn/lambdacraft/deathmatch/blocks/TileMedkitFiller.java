@@ -22,6 +22,7 @@ import cn.lambdacraft.deathmatch.items.ItemMedkit;
 import cn.lambdacraft.deathmatch.items.ItemMedkit.EnumAddingType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -115,7 +116,21 @@ public class TileMedkitFiller extends TileElectricStorage implements IInventory 
 	}
 
 	private void addEffect(int slot) {
-		ItemMedkit.tryAddEffectTo(slots[3], slots[slot], EnumAddingType.NONE);
+		EnumAddingType type = EnumAddingType.NONE;
+		if(slots[4] != null) {
+			if(slots[4].itemID == Item.lightStoneDust.itemID) {
+				type = EnumAddingType.EFFECT;
+				slots[4].stackSize--;
+				if(slots[4].stackSize <= 0)
+					slots[4] = null;
+			} else if (slots[4].itemID == Item.redstone.itemID) {
+				type = EnumAddingType.DURATION;
+				slots[4].stackSize--;
+				if(slots[4].stackSize <= 0)
+					slots[4] = null;
+			}
+		}
+		ItemMedkit.tryAddEffectTo(slots[3], slots[slot], type);
 		slots[slot] = null;
 		progresses[slot] = 0;
 	}

@@ -115,15 +115,15 @@ public class GuiMedFiller extends CBCGuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		super.drawGuiContainerForegroundLayer(par1, par2);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		// String blockName = DMBlocks.medkitFiller.getLocalizedName();
 		String blockName = DMBlocks.medkitFiller.getLocalizedName();
 		fontRenderer.drawString(EnumChatFormatting.RED + blockName,
-				100 - fontRenderer.getStringWidth(blockName) / 2, 1, 0xffffff);
+				100 - fontRenderer.getStringWidth(blockName) / 2, 2, 0xffffff);
 		blockName = StatCollector.translateToLocal("container.inventory");
 		fontRenderer.drawString(EnumChatFormatting.DARK_GRAY + blockName, 8,
-				86, 0xffffff);
+				85, 0xffffff);
+		super.drawGuiContainerForegroundLayer(par1, par2);
 	}
 
 	/*

@@ -43,7 +43,7 @@ public class RenderTileHeCharger extends RendererSidedCube {
 	}
 
 	@Override
-	public String getTexture(int side, int metadata) {
+	public String getTexture(TileEntity te, int side, int metadata) {
 		if (side == 0 || side == 1)
 			return ClientProps.HECHARGER_TD_PATH;
 		if (side == metadata)

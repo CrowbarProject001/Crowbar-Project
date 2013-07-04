@@ -76,6 +76,7 @@ public class ClientProps {
 			HECHARGER_SIDE_PATH = "/mods/lambdacraft/textures/blocks/hecharger_side.png",
 			HECHARGER_TD_PATH = "/mods/lambdacraft/textures/blocks/hecharger_td.png",
 			HECHARGER_BACK_PATH = "/mods/lambdacraft/textures/blocks/hecharger_back.png",
+			AC_NOENERGY = "/mods/lambdacraft/textures/blocks/ac_noenergy.png",
 			LONGJUMP_ARMOR_PATH = "/mods/lambdacraft/textures/armor/longjump.png",
 			MEDKIT_ENT_PATH = "/mods/lambdacraft/textures/entities/medkit.png",
 			GLOW_PATH = "/mods/lambdacraft/textures/entities/glow.png",
