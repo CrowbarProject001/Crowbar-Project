@@ -16,7 +16,10 @@ package cn.lambdacraft.deathmatch.entities;
 
 import java.util.List;
 
+import cn.lambdacraft.api.weapon.InformationWeapon;
+import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.utils.GenericUtils;
+import cn.lambdacraft.deathmatch.utils.BulletManager;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -57,10 +60,28 @@ public class EntityBulletEgon extends EntityBullet {
 			if(Block.blocksList[blockID] != null) {
 				float hardness = Block.blocksList[blockID].getBlockHardness(worldObj, result.blockX, result.blockY, result.blockZ);
 				if(hardness > 0.0F && hardness < 5.0F)
-					worldObj.setBlock(result.blockX, result.blockY, result.blockZ, 0, 0, 3);
+					worldObj.destroyBlock(result.blockX, result.blockY, result.blockZ, false);
 			} else worldObj.setBlock(result.blockX, result.blockY, result.blockZ, 0, 0, 3);
 		}
 		this.setDead();
+	}
+	
+	public void doEntityCollision(MovingObjectPosition result) {
+		if(result != null)
+			System.out.println(" " + result.entityHit);
+		else System.out.println();
+		if (result.entityHit == null)
+			return;
+		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
+		InformationWeapon inf = item.getInformation(itemStack, worldObj);
+		int mode = item.getMode(itemStack);
+		double pf = item.getPushForce(mode) * 0.1;
+		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ
+				* pf;
+		BulletManager.doEntityAttack(result.entityHit,
+				DamageSource.causeMobDamage(getThrower()),
+				item.getDamage(mode), dx, dy, dz);
+
 	}
 
 }

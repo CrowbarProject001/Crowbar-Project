@@ -60,8 +60,18 @@ public class EntityBarnacle extends EntityLiving {
 		super(par1World);
 		this.setSize(0.7F, 0.8F);
 		this.health = 20;
-		this.tentacleLength = 30;
 		this.ignoreFrustumCheck = true;
+	}
+	
+	@Override
+	public void entityInit() {
+		super.entityInit();
+		//11 tentacle length
+		this.dataWatcher.addObject(11, Byte.valueOf((byte)0));
+		//12 pulling entity id
+		this.dataWatcher.addObject(12, Integer.valueOf((byte)0));
+		//13 breaking time left
+		this.dataWatcher.addObject(13, Byte.valueOf((byte)0));
 	}
 	
 	@Override
@@ -77,11 +87,12 @@ public class EntityBarnacle extends EntityLiving {
 			this.moveEntity(0.0, motionY, 0.0);
 			if(fallingTick > 30)
 				this.setDead();
-			System.out.println(worldObj.isRemote + " " + posX + " " + posY + " " + posZ);
 			return;
 		}
-		
+		this.updateTentacle();
+		this.updatePullingEntity();
 		if(pullingEntity == null) {
+			
 			//Calculate tracking range
 			if(--tickBreaking <= 0) {
 				MotionXYZ begin = new MotionXYZ(posX, posY, posZ, 0.0, -1.0, 0.0);
@@ -91,25 +102,27 @@ public class EntityBarnacle extends EntityLiving {
 				if(tentacleLength < distance)
 					tentacleLength += 0.05;
 				else tentacleLength = distance;
-				
-				AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - 0.3, posY - tentacleLength, posZ - 0.3, posX + 0.3, posY + 1, posZ + 0.3);
-				List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, GenericUtils.selectorLiving);
-				if(list != null && list.size() == 1) {
-					Entity e = list.get(0);
-					if(GenericUtils.getEntitySizeSq(e) <= 6.0 && !(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)) {
-						this.playSound("cbc.mobs.bcl_alert", 0.5F, 1.0F);
-						startPullingEntity(e);
+				//Bounding box calc
+				if(!worldObj.isRemote) {
+					AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - 0.3, posY - tentacleLength, posZ - 0.3, posX + 0.3, posY + 1, posZ + 0.3);
+					List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, GenericUtils.selectorLiving);
+					if(list != null && list.size() == 1) {
+						Entity e = list.get(0);
+						if(GenericUtils.getEntitySizeSq(e) <= 6.0 && !(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)) {
+							this.playSound("cbc.mobs.bcl_alert", 0.5F, 1.0F);
+							startPullingEntity(e);
+						}
 					}
-				}
-				if(ticksExisted % 80 == 0 && Math.random() < 0.4) {
-					this.playSound("cbc.mobs.bcl_tongue", 0.5F, 1.0F);
+					if(ticksExisted % 80 == 0 && Math.random() < 0.4) {
+						this.playSound("cbc.mobs.bcl_tongue", 0.5F, 1.0F);
+					}
 				}
 			} else
 			if(ticksExisted % 45 == 0) {
 				this.playSound(GenericUtils.getRandomSound("cbc.mobs.bcl_chew", 3), 0.5F, 1.0F);
 			}
-			
 		} else {
+			//Moving pulling entity
 			pullingEntity.moveEntity(0.0, -pullingEntity.motionY, 0.0);
 			pullingEntity.motionY = 0.07;
 			pullingEntity.setPosition(posX, posY - tentacleLength, posZ);
@@ -134,10 +147,32 @@ public class EntityBarnacle extends EntityLiving {
 			if(pullingEntity != null && pullingEntity.isDead)
 				stopPullingEntity();
 		}
-		//Check if barnacle can still exist
+		//Check if barnacle could still exist
 		if(!this.falling && worldObj.getBlockId((int)posX, (int)posY + 1, (int)posZ - 1) == 0) {
 			this.setDead();
 			return;
+		}
+	}
+	
+	private void updateTentacle() {
+		if(worldObj.isRemote) {
+			if(ticksExisted % 20 == 0) {
+				tentacleLength = dataWatcher.getWatchableObjectByte(11);
+				tickBreaking = dataWatcher.getWatchableObjectByte(13);
+				if(tickBreaking < 0)
+					tickBreaking += 510;
+			}
+		} else {
+			dataWatcher.updateObject(11, Byte.valueOf((byte)tentacleLength));
+			dataWatcher.updateObject(13, Byte.valueOf((byte)tickBreaking));
+		}
+	}
+	
+	private void updatePullingEntity() {
+		if(worldObj.isRemote) {
+			int id = dataWatcher.getWatchableObjectInt(12);
+			Entity e = worldObj.getEntityByID(id);
+			pullingEntity = e;
 		}
 	}
 	
@@ -147,13 +182,17 @@ public class EntityBarnacle extends EntityLiving {
 		pullingEntity = e;
 		tentacleLength = posY - e.posY;
 		e.moveEntity(0.0, 0.1, 0.0);
+		e.onGround = false;
 		tickBreaking = 300;
 		pullingEntityMap.put(e, this);
+		int entityid = pullingEntity == null ? 0 : pullingEntity.entityId;
+		dataWatcher.updateObject(12, Integer.valueOf(entityid));
 		timesEaten = tickBeforeLastAttack = 0;
 	}
 	
 	protected void stopPullingEntity() {
 		pullingEntity = null;
+		dataWatcher.updateObject(12, Integer.valueOf(0));
 	}
 
 	/* (non-Javadoc)

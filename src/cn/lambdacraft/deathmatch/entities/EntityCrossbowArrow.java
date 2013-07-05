@@ -18,6 +18,8 @@ import cn.lambdacraft.deathmatch.utils.BulletManager;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -29,17 +31,57 @@ import net.minecraft.world.World;
  */
 public class EntityCrossbowArrow extends EntityThrowable {
 
-	public EntityCrossbowArrow(World par1World, EntityLiving par2EntityLiving) {
+	public boolean isExplosive;
+	public boolean still = false;
+	public int damage;
+	
+	public EntityCrossbowArrow(World par1World, EntityLiving par2EntityLiving, boolean explode) {
 		super(par1World, par2EntityLiving);
+		isExplosive = explode;
+		damage = 20;
+	}
+	
+	public EntityCrossbowArrow(World world, double posX, double posY, double posZ, float yaw, float pitch) {
+		super(world);
+		this.setPositionAndRotation(posX, posY, posZ, yaw, pitch);
+		motionX = 0;
+		motionY = 0;
+		motionZ = 0;
+		still = true;
 	}
 
 	public EntityCrossbowArrow(World world) {
 		super(world);
 	}
+	
+	@Override
+	public void onUpdate() {
+		if(still)
+			return;
+		super.onUpdate();
+	}
 
 	@Override
 	protected void onImpact(MovingObjectPosition var1) {
-		Explode();
+		if(still)
+			return;
+		if(!worldObj.isRemote) {
+			if(isExplosive)
+				Explode();
+			else {
+				if(var1.typeOfHit == EnumMovingObjectType.ENTITY) {
+					if(damage <= 3)
+						setDead();
+					BulletManager.doEntityAttack(var1.entityHit, DamageSource.causeMobDamage(getThrower()), damage);
+					damage *= 0.6;
+				}
+				else {
+					worldObj.spawnEntityInWorld(
+							new EntityCrossbowArrow(worldObj, var1.hitVec.xCoord, var1.hitVec.yCoord, var1.hitVec.zCoord,
+									this.rotationYaw, this.rotationPitch));
+				}
+			}
+		}
 	}
 
 	private void Explode() {
@@ -54,7 +96,7 @@ public class EntityCrossbowArrow extends EntityThrowable {
 
 	@Override
 	protected float func_70182_d() {
-		return 5.0F;
+		return still ? 0.0F : 5.0F;
 	}
 
 	@Override

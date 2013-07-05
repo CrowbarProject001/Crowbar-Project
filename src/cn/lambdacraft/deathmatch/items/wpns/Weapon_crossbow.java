@@ -76,20 +76,9 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 			return;
 		}
 
-		par2World
-				.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
-		switch (mode) {
-		case 0:
-			BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
-			break;
-		case 1:
-			if (!par2World.isRemote)
-				par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World,
-						par3Entity));
-			break;
-		default:
-			break;
-		}
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
+		if (!par2World.isRemote)
+			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World,par3Entity, mode == 1));
 		information.setLastTick();
 		if (par3Entity instanceof EntityPlayer) {
 			doUplift(information, par3Entity);
@@ -100,7 +89,6 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 						this.getMaxItemUseDuration(par1ItemStack));
 			}
 		}
-
 	}
 
 	@Override

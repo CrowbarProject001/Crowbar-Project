@@ -19,6 +19,7 @@ import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
@@ -89,6 +90,10 @@ public class EntityBullet extends EntityThrowable {
 	}
 
 	protected void doBlockCollision(MovingObjectPosition result) {
+		int blockid = worldObj.getBlockId(result.blockX, result.blockY, result.blockZ);
+		if(!worldObj.isRemote && (blockid == Block.glass.blockID || blockid == Block.thinGlass.blockID)) {
+			worldObj.destroyBlock(result.blockX, result.blockY, result.blockZ, false);
+		}
 		this.setDead();
 	}
 

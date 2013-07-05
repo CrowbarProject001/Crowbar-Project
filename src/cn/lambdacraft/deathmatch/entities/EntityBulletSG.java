@@ -49,10 +49,6 @@ public class EntityBulletSG extends EntityBullet {
 	}
 
 	@Override
-	public void doBlockCollision(MovingObjectPosition result) {
-	}
-
-	@Override
 	public void doEntityCollision(MovingObjectPosition result) {
 
 		if (result.entityHit == null)

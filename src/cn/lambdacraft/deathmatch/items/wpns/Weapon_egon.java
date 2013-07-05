@@ -50,7 +50,7 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer, int par4) {
 		InformationEnergy inf = getInformation(par1ItemStack, par2World);
-		if (inf.isShooting && AmmoManager.hasAmmo(this, par3EntityPlayer))
+		if (inf.isShooting && canShoot(par3EntityPlayer, par1ItemStack))
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_OFF, 0.5F, 1.0F);
 		inf.isShooting = false;
 	}
@@ -70,9 +70,8 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 			if (dTick % 3 == 0 && !par2World.isRemote) {
 				EntityPlayer player = (EntityPlayer) par3Entity;
 				AmmoManager.consumeAmmo((EntityPlayer) par3Entity, this, 1);
-				if (!AmmoManager.hasAmmo(this, player)) {
-					par2World
-							.playSoundAtEntity(par3Entity, SND_OFF, 0.5F, 1.0F);
+				if (!canShoot((EntityPlayer) par3Entity, par1ItemStack)) {
+					par2World.playSoundAtEntity(par3Entity, SND_OFF, 0.5F, 1.0F);
 					inf.isShooting = false;
 				}
 			}
@@ -85,17 +84,16 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 
 		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer);
 		processRightClick(inf, par1ItemStack, par2World, par3EntityPlayer);
-
 		if (inf.isShooting && canShoot(par3EntityPlayer, par1ItemStack)) {
-			
 			if (par2World.isRemote)
 				par2World.spawnEntityInWorld(new EntityEgonRay(par2World,
 						par3EntityPlayer, par1ItemStack));
-			else 
+			else {
 				par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, par3EntityPlayer, par1ItemStack));
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_WINDUP, 0.5F,
 					1.0F);
-		}
+			}
+		} else par2World.playSoundAtEntity(par3EntityPlayer, SND_OFF, 0.5F, 1.0F);
 
 		inf.ticksExisted = inf.lastTick = 0;
 
