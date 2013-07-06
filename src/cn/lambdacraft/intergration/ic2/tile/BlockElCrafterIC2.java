@@ -15,7 +15,7 @@
 package cn.lambdacraft.intergration.ic2.tile;
 
 import cn.lambdacraft.crafting.blocks.BlockElectricCrafter;
-import cn.lambdacraft.crafting.blocks.TileElCrafter;
+import cn.lambdacraft.crafting.blocks.tile.TileElCrafter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 

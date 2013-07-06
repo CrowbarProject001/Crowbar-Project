@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.crafting.proxy;
 
-import cn.lambdacraft.crafting.blocks.TileWire;
+import cn.lambdacraft.crafting.blocks.tile.TileWire;
 import cn.lambdacraft.crafting.client.RenderSpray;
 import cn.lambdacraft.crafting.client.RenderWire;
 import cn.lambdacraft.crafting.entities.EntitySpray;

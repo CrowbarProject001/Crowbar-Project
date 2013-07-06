@@ -1,28 +1,33 @@
 package cn.lambdacraft.crafting.register;
 
 import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.block.BlockElectricalBase;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.crafting.blocks.BlockAdvWeaponCrafter;
 import cn.lambdacraft.crafting.blocks.BlockBatBox;
 import cn.lambdacraft.crafting.blocks.BlockCBCOres;
 import cn.lambdacraft.crafting.blocks.BlockElectricCrafter;
-import cn.lambdacraft.crafting.blocks.BlockElectricalBase;
 import cn.lambdacraft.crafting.blocks.BlockGeneratorFire;
 import cn.lambdacraft.crafting.blocks.BlockGeneratorLava;
 import cn.lambdacraft.crafting.blocks.BlockGeneratorSolar;
+import cn.lambdacraft.crafting.blocks.BlockRadioactiveFlow;
+import cn.lambdacraft.crafting.blocks.BlockRadioactiveStill;
 import cn.lambdacraft.crafting.blocks.BlockRefined;
 import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter;
 import cn.lambdacraft.crafting.blocks.BlockWire;
-import cn.lambdacraft.crafting.blocks.TileBatBox;
-import cn.lambdacraft.crafting.blocks.TileElCrafter;
-import cn.lambdacraft.crafting.blocks.TileGeneratorFire;
-import cn.lambdacraft.crafting.blocks.TileGeneratorLava;
-import cn.lambdacraft.crafting.blocks.TileGeneratorMugen;
-import cn.lambdacraft.crafting.blocks.TileGeneratorSolar;
-import cn.lambdacraft.crafting.blocks.TileWeaponCrafter;
-import cn.lambdacraft.crafting.blocks.TileWire;
+import cn.lambdacraft.crafting.blocks.tile.TileBatBox;
+import cn.lambdacraft.crafting.blocks.tile.TileElCrafter;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorFire;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorLava;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorMugen;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorSolar;
+import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
+import cn.lambdacraft.crafting.blocks.tile.TileWire;
+import cn.lambdacraft.crafting.items.CBCBucket;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFlowing;
+import net.minecraft.block.BlockStationary;
 import net.minecraft.block.material.Material;
 import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,6 +42,8 @@ public class CBCBlocks {
 	public static Block weaponCrafter, blockRefined, uraniumOre, advCrafter,
 			genFire, genLava, genSolar, genMugen, wire, storageS, storageL;
 	public static Block oreTin, oreCopper, elCrafter;
+	public static BlockStationary radioActiveStill;
+	public static BlockFlowing radioActiveFlowing;
 
 	/**
 	 * 在这里进行实际的方块加载。请在Init中调用它。
@@ -72,13 +79,17 @@ public class CBCBlocks {
 				0));
 		genFire = new BlockGeneratorFire(GeneralRegistry.getBlockId("genFire",
 				0));
-
+		radioActiveStill = new BlockRadioactiveStill(GeneralRegistry.getBlockId("radioActiveStill",0) + 1);
+		radioActiveFlowing = new BlockRadioactiveFlow(radioActiveStill.blockID - 1);
+		
 		ModLoader.registerBlock(weaponCrafter);
 		ModLoader.registerBlock(blockRefined);
 		ModLoader.registerBlock(uraniumOre);
 		ModLoader.registerBlock(advCrafter);
 		ModLoader.registerBlock(oreTin);
 		ModLoader.registerBlock(oreCopper);
+		ModLoader.registerBlock(radioActiveStill);
+		ModLoader.registerBlock(radioActiveFlowing);
 		
 		if(!CBCMod.ic2Installed) {
 			elCrafter = new BlockElectricCrafter(GeneralRegistry.getBlockId(

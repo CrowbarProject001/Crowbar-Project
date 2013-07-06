@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL12;
 
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.TileWire;
+import cn.lambdacraft.crafting.blocks.tile.TileWire;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

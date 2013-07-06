@@ -15,12 +15,12 @@
 package cn.lambdacraft.crafting.blocks.container;
 
 import cn.lambdacraft.core.register.IGuiElement;
-import cn.lambdacraft.crafting.blocks.TileBatBox;
-import cn.lambdacraft.crafting.blocks.TileElCrafter;
-import cn.lambdacraft.crafting.blocks.TileGeneratorFire;
-import cn.lambdacraft.crafting.blocks.TileGeneratorLava;
-import cn.lambdacraft.crafting.blocks.TileGeneratorSolar;
-import cn.lambdacraft.crafting.blocks.TileWeaponCrafter;
+import cn.lambdacraft.crafting.blocks.tile.TileBatBox;
+import cn.lambdacraft.crafting.blocks.tile.TileElCrafter;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorFire;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorLava;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorSolar;
+import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
 import cn.lambdacraft.crafting.client.gui.GuiBatBox;
 import cn.lambdacraft.crafting.client.gui.GuiElectricCrafter;
 import cn.lambdacraft.crafting.client.gui.GuiGenFire;

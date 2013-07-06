@@ -25,8 +25,8 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.TileGeneratorSolar;
 import cn.lambdacraft.crafting.blocks.container.ContainerGeneratorSolar;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorSolar;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 
 

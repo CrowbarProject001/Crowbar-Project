@@ -56,7 +56,7 @@ public class CBCItems {
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
 	public static ItemSpray spray1, spray2;
-	public static Item tin, copper, chip;
+	public static Item tin, copper, chip, bucketRadioactive;
 
 	public static ItemBattery battery;
 
@@ -113,6 +113,7 @@ public class CBCItems {
 				GeneralProps.CAT_MISC)).setIAndU("copper");
 		chip = new CBCGenericItem(GeneralRegistry.getItemId("chip",
 				GeneralProps.CAT_MISC)).setIAndU("chip");
+		bucketRadioactive = new CBCBucket(GeneralRegistry.getItemId("bucket0",0), CBCBlocks.radioActiveStill.blockID, "bucketRadioactive");
 		if(!CBCMod.ic2Installed)
 			battery = new ItemBattery(GeneralRegistry.getItemId("battery", 3));
 	}

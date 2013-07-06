@@ -14,6 +14,7 @@
  */
 package cn.lambdacraft.crafting.blocks;
 
+import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;

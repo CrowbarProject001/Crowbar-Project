@@ -14,8 +14,8 @@
  */
 package cn.lambdacraft.crafting.blocks.container;
 
-import cn.lambdacraft.crafting.blocks.TileWeaponCrafter;
 import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
+import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

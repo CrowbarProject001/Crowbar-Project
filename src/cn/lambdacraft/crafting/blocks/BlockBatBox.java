@@ -15,7 +15,9 @@
 package cn.lambdacraft.crafting.blocks;
 
 import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.block.BlockElectricalBase;
 import cn.lambdacraft.core.proxy.GeneralProps;
+import cn.lambdacraft.crafting.blocks.tile.TileBatBox;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;

@@ -15,7 +15,7 @@
 package cn.lambdacraft.crafting.blocks.container;
 
 import cn.lambdacraft.api.energy.item.ICustomEnItem;
-import cn.lambdacraft.crafting.blocks.TileGeneratorSolar;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorSolar;
 import cn.lambdacraft.deathmatch.blocks.container.SlotElectricItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

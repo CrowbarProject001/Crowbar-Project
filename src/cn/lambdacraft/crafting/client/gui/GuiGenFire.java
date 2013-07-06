@@ -21,8 +21,8 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.TileGeneratorFire;
 import cn.lambdacraft.crafting.blocks.container.ContainerGenerator;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorFire;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 
 import net.minecraft.entity.player.InventoryPlayer;

@@ -14,9 +14,9 @@
  */
 package cn.lambdacraft.crafting.blocks.container;
 
-import cn.lambdacraft.crafting.blocks.TileElCrafter;
-import cn.lambdacraft.crafting.blocks.TileWeaponCrafter;
 import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
+import cn.lambdacraft.crafting.blocks.tile.TileElCrafter;
+import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -8,7 +8,7 @@ import java.io.IOException;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.IChannelProcess;
-import cn.lambdacraft.crafting.blocks.TileWeaponCrafter;
+import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;

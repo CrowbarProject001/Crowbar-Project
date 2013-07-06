@@ -21,8 +21,8 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.TileBatBox;
 import cn.lambdacraft.crafting.blocks.container.ContainerBatBox;
+import cn.lambdacraft.crafting.blocks.tile.TileBatBox;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;

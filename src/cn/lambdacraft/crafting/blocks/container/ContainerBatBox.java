@@ -15,7 +15,7 @@
 package cn.lambdacraft.crafting.blocks.container;
 
 import cn.lambdacraft.api.energy.item.IEnItem;
-import cn.lambdacraft.crafting.blocks.TileBatBox;
+import cn.lambdacraft.crafting.blocks.tile.TileBatBox;
 import cn.lambdacraft.deathmatch.blocks.container.SlotElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

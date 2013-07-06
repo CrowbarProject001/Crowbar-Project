@@ -189,7 +189,6 @@ public class CBCMod implements ITickHandler {
 	public void serverStarting(FMLServerStartingEvent event) {
 		CommandHandler commandManager = (CommandHandler) event.getServer()
 				.getCommandManager();
-
 	}
 
 	@Override

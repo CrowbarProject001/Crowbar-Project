@@ -23,8 +23,8 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.TileGeneratorLava;
 import cn.lambdacraft.crafting.blocks.container.ContainerGeneratorLava;
+import cn.lambdacraft.crafting.blocks.tile.TileGeneratorLava;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 
 

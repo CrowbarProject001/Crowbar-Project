@@ -5,6 +5,7 @@ import java.util.Random;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.block.CBCBlockContainer;
 import cn.lambdacraft.core.proxy.GeneralProps;
+import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
