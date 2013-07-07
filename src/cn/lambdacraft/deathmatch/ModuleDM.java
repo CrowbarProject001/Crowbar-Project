@@ -24,6 +24,7 @@ import cn.lambdacraft.deathmatch.entities.EntityMedkit;
 import cn.lambdacraft.deathmatch.entities.EntityRPGDot;
 import cn.lambdacraft.deathmatch.entities.EntityRocket;
 import cn.lambdacraft.deathmatch.entities.EntitySatchel;
+import cn.lambdacraft.deathmatch.entities.fx.EntityCrossbowStill;
 import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRayColored;
@@ -109,6 +110,8 @@ public class ModuleDM {
 				GeneralProps.ENT_ID_BATTERY, CBCMod.instance, 32, 5, true);
 		EntityRegistry.registerModEntity(GaussParticleFX.class, "gaussp",
 				GeneralProps.ENT_ID_GAUSS_PARTICLE, CBCMod.instance, 32, 5, true);
+		EntityRegistry.registerModEntity(EntityCrossbowStill.class, "still",
+				GeneralProps.ENT_ID_BOW_STILL, CBCMod.instance, 16, 5, false);
 
 		proxy.init();
 	}

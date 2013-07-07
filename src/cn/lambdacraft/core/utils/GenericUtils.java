@@ -18,14 +18,22 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 
 /**
- * @author Administrator
- * 
+ * 通用效用工具？
+ * @author WeAthFolD
  */
 public class GenericUtils {
 
 	public static IEntitySelector selectorLiving = new EntitySelectorLiving(),
 			selectorPlayer = new EntitySelectorPlayer();
 
+	/**
+	 * 获取Entity到一个点距离的平方。
+	 * @param ent
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
 	public static double distanceSqTo(Entity ent, double x, double y, double z) {
 		if (ent == null)
 			throw new NullPointerException();
@@ -33,14 +41,33 @@ public class GenericUtils {
 		return dx * dx + dy * dy + dz * dz;
 	}
 	
-	public static float getEntitySizeSq(Entity e) {
+	/**
+	 * 获取Entity的体积。
+	 * @param e
+	 * @return
+	 */
+	public static float getEntitySize(Entity e) {
 		return e.width * e.width * e.height;
 	}
 
+	/**
+	 * 获取Entity到一个点的距离。
+	 * @param ent
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
 	public static double distanceTo(Entity ent, double x, double y, double z) {
 		return Math.sqrt(distanceSqTo(ent, x, y, z));
 	}
 	
+	/**
+	 * 获取一个随机音效，目录名遵循"soundname[a,b,c,d,...]"
+	 * @param sndPath
+	 * @param countSounds
+	 * @return
+	 */
 	public static String getRandomSound(String sndPath, int countSounds) {
 		int a = (int) (Math.random() * countSounds);
 		System.out.println(sndPath.concat(String.valueOf(String.valueOf((char)('a' + a)))));

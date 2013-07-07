@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
  * **Inspired by HyperX，将一个变量标记为可以Config设置。 需要在GeneralRegistry中加载标记过的类。
  * 当前只支持static域。
  * 
- * @see GeneralRegistry
+ * @see GeneralRegistry#loadConfigurableClass
  * @author WeAthFolD
  */
 @Target(ElementType.FIELD)

@@ -3,6 +3,7 @@ package cn.lambdacraft.mob.utils;
 import cn.lambdacraft.api.entities.IEntityLink;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
@@ -31,10 +32,12 @@ public class MobSpawnHandler {
 					* (float) Math.PI)
 					* MathHelper.cos(thrower.rotationPitch / 180.0F
 							* (float) Math.PI) * f;
+			motionX = motionX + 0.5f;
 			double motionZ = MathHelper.cos(thrower.rotationYaw / 180.0F
 					* (float) Math.PI)
 					* MathHelper.cos(thrower.rotationPitch / 180.0F
 							* (float) Math.PI) * f;
+			motionZ = motionZ + 0.5f;
 			entityliving.setLocationAndAngles(thrower.posX + motionX * 2,
 					thrower.posY, thrower.posZ + motionZ * 2,
 					thrower.rotationYawHead, 0.0F);
@@ -50,6 +53,34 @@ public class MobSpawnHandler {
 
 		return entity;
 	}
+	
+    public static Entity spawnCreature(World par0World, Class<? extends Entity> c, double par2, double par4, double par6)
+    {
+            Entity entity = null;
+
+    		try {
+    			entity = c.getConstructor(World.class).newInstance(par0World);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+            
+            for (int j = 0; j < 1; ++j)
+            {
+
+                if (entity != null && entity instanceof EntityLiving)
+                {
+                    EntityLiving entityliving = (EntityLiving)entity;
+                    entity.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
+                    entityliving.rotationYawHead = entityliving.rotationYaw;
+                    entityliving.renderYawOffset = entityliving.rotationYaw;
+                    entityliving.initCreature();
+                    par0World.spawnEntityInWorld(entity);
+                    entityliving.playLivingSound();
+                }
+            }
+
+            return entity;
+    }
 
 	private static void setEntityHeading(Entity ent, double par1, double par3,
 			double par5, double moveSpeed) {

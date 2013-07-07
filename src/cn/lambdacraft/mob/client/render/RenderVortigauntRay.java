@@ -14,21 +14,25 @@
  */
 package cn.lambdacraft.mob.client.render;
 
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.core.utils.MotionXYZ;
+import cn.lambdacraft.deathmatch.client.render.RenderEgonRay;
+import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
+import cn.lambdacraft.mob.entities.fx.EntityVorLightning;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 
 /**
  * @author WeAthFolD
  *
  */
-public class RenderVortigauntRay extends Render {
-
-	/**
-	 * 
-	 */
-	public RenderVortigauntRay() {
-		// TODO Auto-generated constructor stub
-	}
+public class RenderVortigauntRay extends RenderEgonRay {
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.client.renderer.entity.Render#doRender(net.minecraft.entity.Entity, double, double, double, float, float)
@@ -36,8 +40,76 @@ public class RenderVortigauntRay extends Render {
 	@Override
 	public void doRender(Entity entity, double d0, double d1, double d2,
 			float f, float f1) {
-		// TODO Auto-generated method stub
+		EntityVorLightning ray = (EntityVorLightning)entity;
+		if (!ray.draw)
+			return;
+		MotionXYZ motion = new MotionXYZ(ray);
+		MovingObjectPosition trace = ray.worldObj.rayTraceBlocks(motion
+				.asVec3(ray.worldObj),
+				motion.updateMotion(100.0F).asVec3(ray.worldObj));
+		Vec3 end = (trace == null) ? motion.asVec3(ray.worldObj)
+				: trace.hitVec;
+		tessellator = Tessellator.instance;
 
+		GL11.glPushMatrix();
+
+		double dx = end.xCoord - ray.posX;
+		double dy = end.yCoord - ray.posY;
+		double dz = end.zCoord - ray.posZ;
+		double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+		float angle = ray.ticksExisted;
+		float du = -ray.ticksExisted * 0.05F;
+		double tx = 0.1, tz = 0.2;
+
+		double ty = -0.63;
+		Vec3 v1 = newV3(0, 0, -WIDTH).addVector(tx, ty, tz), v2 = newV3(0, 0,
+				WIDTH).addVector(tx, ty, tz), v3 = newV3(d, 0, -WIDTH), v4 = newV3(
+				d, 0, WIDTH),
+
+		v5 = newV3(0, WIDTH, 0).addVector(tx, ty, tz), v6 = newV3(0, -WIDTH, 0)
+				.addVector(tx, ty, tz), v7 = newV3(d, -WIDTH, 0), v8 = newV3(d,
+				WIDTH, 0);
+
+		// Translations and rotations
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		GL11.glTranslatef((float) d0, (float) d1, (float) d2);
+		GL11.glRotatef(270.0F - ray.rotationYaw, 0.0F, 1.0F, 0.0F); // 左右旋转
+		GL11.glRotatef(ray.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
+		// GL11.glRotatef(angle, 1.0F, 0, 0);
+		int rand = (int) (Math.random() * 3.0);
+		this.loadTexture(ClientProps.VORTIGAUNT_RAY_PATH[rand]);
+
+		tessellator.startDrawingQuads();
+		tessellator.setColorRGBA(200, 200, 200, 200);
+		addVertex(v1, 0 + du, 0);
+		addVertex(v2, 0 + du, 1);
+		addVertex(v3, d + du, 1);
+		addVertex(v4, d + du, 0);
+
+		addVertex(v4, d + du, 0);
+		addVertex(v3, d + du, 1);
+		addVertex(v2, 0 + du, 1);
+		addVertex(v1, 0 + du, 0);
+
+		addVertex(v5, 0 + du, 0);
+		addVertex(v6, 0 + du, 1);
+		addVertex(v7, d + du, 1);
+		addVertex(v8, d + du, 0);
+
+		addVertex(v8, d + du, 0);
+		addVertex(v7, d + du, 1);
+		addVertex(v6, 0 + du, 1);
+		addVertex(v5, 0 + du, 0);
+
+		tessellator.draw();
+
+		tessellator.draw();
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPopMatrix();
 	}
 
 }

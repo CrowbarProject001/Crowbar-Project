@@ -45,7 +45,6 @@ public class NetExplosion implements IChannelProcess {
 	@SideOnly(Side.CLIENT)
 	public void onPacketData(DataInputStream inputStream, Player player) {
 		float bx = 0, by = 0, bz = 0, st = 0;
-		System.out.println("get packet");
 		try {
 			bx = inputStream.readFloat();
 			by = inputStream.readFloat();

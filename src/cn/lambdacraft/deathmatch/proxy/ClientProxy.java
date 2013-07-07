@@ -60,6 +60,7 @@ import cn.lambdacraft.deathmatch.entities.EntityMedkit;
 import cn.lambdacraft.deathmatch.entities.EntityRPGDot;
 import cn.lambdacraft.deathmatch.entities.EntityRocket;
 import cn.lambdacraft.deathmatch.entities.EntitySatchel;
+import cn.lambdacraft.deathmatch.entities.fx.EntityCrossbowStill;
 import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRayColored;
@@ -137,6 +138,9 @@ public class ClientProxy extends Proxy {
 						ClientProps.RPG_ROCKET_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(
 				EntityCrossbowArrow.class, new RenderCrossedProjectile(0.6,
+						0.12, ClientProps.CROSSBOW_BOW_PATH));
+		RenderingRegistry.registerEntityRenderingHandler(
+				EntityCrossbowStill.class, new RenderCrossedProjectile(0.6,
 						0.12, ClientProps.CROSSBOW_BOW_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class,
 				new RenderIcon(ClientProps.RED_DOT_PATH).setBlend(0.8F).setEnableDepth(false));

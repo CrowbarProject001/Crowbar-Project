@@ -14,6 +14,8 @@
  */
 package cn.lambdacraft.deathmatch.entities;
 
+import cn.lambdacraft.core.utils.MotionXYZ;
+import cn.lambdacraft.deathmatch.entities.fx.EntityCrossbowStill;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 
 import net.minecraft.entity.EntityLiving;
@@ -32,22 +34,12 @@ import net.minecraft.world.World;
 public class EntityCrossbowArrow extends EntityThrowable {
 
 	public boolean isExplosive;
-	public boolean still = false;
 	public int damage;
 	
 	public EntityCrossbowArrow(World par1World, EntityLiving par2EntityLiving, boolean explode) {
 		super(par1World, par2EntityLiving);
 		isExplosive = explode;
 		damage = 20;
-	}
-	
-	public EntityCrossbowArrow(World world, double posX, double posY, double posZ, float yaw, float pitch) {
-		super(world);
-		this.setPositionAndRotation(posX, posY, posZ, yaw, pitch);
-		motionX = 0;
-		motionY = 0;
-		motionZ = 0;
-		still = true;
 	}
 
 	public EntityCrossbowArrow(World world) {
@@ -56,15 +48,11 @@ public class EntityCrossbowArrow extends EntityThrowable {
 	
 	@Override
 	public void onUpdate() {
-		if(still)
-			return;
 		super.onUpdate();
 	}
 
 	@Override
 	protected void onImpact(MovingObjectPosition var1) {
-		if(still)
-			return;
 		if(!worldObj.isRemote) {
 			if(isExplosive)
 				Explode();
@@ -73,14 +61,19 @@ public class EntityCrossbowArrow extends EntityThrowable {
 					if(damage <= 3)
 						setDead();
 					BulletManager.doEntityAttack(var1.entityHit, DamageSource.causeMobDamage(getThrower()), damage);
+					if(var1.entityHit instanceof EntityLiving) {
+						EntityLiving living = (EntityLiving) var1.entityHit;
+						living.setArrowCountInEntity(living.getArrowCountInEntity() + 1);
+					}
 					damage *= 0.6;
 				}
 				else {
 					worldObj.spawnEntityInWorld(
-							new EntityCrossbowArrow(worldObj, var1.hitVec.xCoord, var1.hitVec.yCoord, var1.hitVec.zCoord,
+							new EntityCrossbowStill(worldObj, new MotionXYZ(var1.hitVec.xCoord, var1.hitVec.yCoord, var1.hitVec.zCoord, motionX, motionY, motionZ),
 									this.rotationYaw, this.rotationPitch));
 				}
 			}
+			this.setDead();
 		}
 	}
 
@@ -96,7 +89,7 @@ public class EntityCrossbowArrow extends EntityThrowable {
 
 	@Override
 	protected float func_70182_d() {
-		return still ? 0.0F : 5.0F;
+		return 5.0F;
 	}
 
 	@Override

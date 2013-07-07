@@ -24,7 +24,7 @@ public class RenderEgonRay extends RenderEntity {
 
 	public static final double WIDTH = 0.05F, RADIUS = 0.14F;
 	public static final int IDENSITY = 16;
-	private static Tessellator tessellator = Tessellator.instance;
+	protected static Tessellator tessellator = Tessellator.instance;
 
 	@Override
 	public void doRender(Entity par1Entity, double par2, double par4,

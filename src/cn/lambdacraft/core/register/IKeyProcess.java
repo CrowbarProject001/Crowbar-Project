@@ -16,7 +16,7 @@ package cn.lambdacraft.core.register;
 
 /**
  * 实现这个接口以使用CBCKeyProcess及其按键统一处理。
- * 
+ * @see CBCKeyProcess
  * @author WeAthFolD
  */
 public interface IKeyProcess {

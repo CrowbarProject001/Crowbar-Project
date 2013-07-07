@@ -36,8 +36,8 @@ import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 
 /**
- * @author WeAthFolD
- *
+ * 辐射废液。
+ * @author Rikka
  */
 public class BlockRadioactiveStill extends BlockStationary {
 

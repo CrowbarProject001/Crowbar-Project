@@ -5,6 +5,7 @@ import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
+import cn.lambdacraft.mob.entities.EntityHLZombie;
 import cn.lambdacraft.mob.entities.EntityHeadcrab;
 import cn.lambdacraft.mob.entities.EntitySnark;
 import cn.lambdacraft.mob.register.CBCMobItems;
@@ -47,6 +48,7 @@ public class ModuleMob {
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityHeadcrab.class, "headcrab", GeneralProps.ENT_ID_HEADCRAB, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityBarnacle.class, "barnacle", GeneralProps.ENT_ID_BARNACLE, CBCMod.instance, 32, 5, false);
+		EntityRegistry.registerModEntity(EntityHLZombie.class, "hlzombie", GeneralProps.ENT_ID_ZOMBIE, CBCMod.instance, 32, 3, true);
 		proxy.init();
 	}
 
@@ -59,9 +61,12 @@ public class ModuleMob {
 	}
 
 	public static final String SND_MOBS[] = { "sqk_blast", "sqk_hunta",
-			"sqk_huntb", "sqk_huntc", "sqk_die", "sqk_deploy", "hc_attacka", "hc_attackb",
-			"hc_attackc", "hc_idlea", "hc_idleb", "hc_idlec", "hc_idled", "hc_idlee",
-			"hc_diea", "hc_dieb", "hc_paina", "hc_painb", "hc_painc",
-			"bcl_tongue", "bcl_chewa", "bcl_chewb", "bcl_chewc", "bcl_alert", "bcl_bite"};
+		"sqk_huntb", "sqk_huntc", "sqk_die", "sqk_deploy", "hc_attacka", "hc_attackb",
+		"hc_attackc", "hc_idlea", "hc_idleb", "hc_idlec", "hc_idled", "hc_idlee",
+		"hc_diea", "hc_dieb", "hc_paina", "hc_painb", "hc_painc",
+		"bcl_tongue", "bcl_chewa", "bcl_chewb", "bcl_chewc", "bcl_alert", "bcl_bite", "zo_alerta",
+		"zo_alertb", "zo_alertc", "zo_attacka", "zo_attackb", "zo_claw_missa", "zo_claw_missb", 
+		"zo_claw_strikea", "zo_claw_strikeb", "zo_claw_strikec", "zo_idlea", "zo_idleb", "zo_idlec",
+		"zo_paina", "zo_painb", "zo_moan_loopa", "zo_moan_loopb", "zo_moan_loopc", "zo_moan_loopd", "zo_diea", "zo_dieb", "zo_diec"};
 
 }

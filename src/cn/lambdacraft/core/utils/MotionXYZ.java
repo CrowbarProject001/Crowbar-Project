@@ -178,5 +178,12 @@ public class MotionXYZ {
 	public String toString() {
 		return "motion[ " + motionX + ", " + motionY + ", " + motionZ + " ]";
 	}
+	
+	public static void setMotionToEntity(MotionXYZ mo, Entity e) {
+		e.setPosition(mo.posX, mo.posY, mo.posZ);
+		e.motionX = mo.motionX;
+		e.motionY = mo.motionY;
+		e.motionZ = mo.motionZ;
+	}
 
 }

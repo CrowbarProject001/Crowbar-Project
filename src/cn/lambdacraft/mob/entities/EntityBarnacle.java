@@ -108,7 +108,7 @@ public class EntityBarnacle extends EntityLiving {
 					List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, GenericUtils.selectorLiving);
 					if(list != null && list.size() == 1) {
 						Entity e = list.get(0);
-						if(GenericUtils.getEntitySizeSq(e) <= 6.0 && !(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)) {
+						if(GenericUtils.getEntitySize(e) <= 6.0 && !(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)) {
 							this.playSound("cbc.mobs.bcl_alert", 0.5F, 1.0F);
 							startPullingEntity(e);
 						}

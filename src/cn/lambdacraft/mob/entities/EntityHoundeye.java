@@ -14,35 +14,31 @@
  */
 package cn.lambdacraft.mob.entities;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.world.World;
-import cn.lambdacraft.deathmatch.entities.EntityBullet;
 
 /**
- * 腹地刚！的绿色Bilibili！
- * @author WeAthFolD
+ * TODO:待坑
+ * @author WeAt3hFolD
+ *
  */
-public class EntityVorLightning extends EntityBullet {
+public class EntityHoundeye extends EntityMob {
 
-	public double startX, startY, startZ;
-	
 	/**
 	 * @param par1World
-	 * @param par2EntityLiving
-	 * @param par3itemStack
 	 */
-	public EntityVorLightning(World par1World, EntityLiving par2EntityLiving,
-			ItemStack par3itemStack) {
-		super(par1World, par2EntityLiving, par3itemStack);
-		startX = posX;
-		startY = posY;
-		startZ = posZ;
-		this.ignoreFrustumCheck = true;
+	public EntityHoundeye(World par1World) {
+		super(par1World);
+		// TODO Auto-generated constructor stub
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see net.minecraft.entity.EntityLiving#getMaxHealth()
+	 */
 	@Override
-	public void entityInit() {
-		super.entityInit();
+	public int getMaxHealth() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
 }

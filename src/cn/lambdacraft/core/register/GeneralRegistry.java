@@ -25,7 +25,7 @@ import net.minecraftforge.common.Property;
 
 /**
  * 
- * 被注册类中标记的域必须为静态域。
+ * 通用的注册函数。目前所有函数中被标记的域必须都为静态public域。
  * 
  * @see cn.lambdacraft.core.proxy.GeneralProps
  * @author WeAthFolD

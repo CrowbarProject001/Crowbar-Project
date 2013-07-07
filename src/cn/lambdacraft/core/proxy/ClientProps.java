@@ -85,6 +85,8 @@ public class ClientProps {
 			HEADCRAB_MOB_PATH = "/mods/lambdacraft/textures/entities/headcrab.png",
 			BARNACLE_PATH = "/mods/lambdacraft/textures/entities/barnacle.png",
 			BARNACLE_TENTACLE_PATH = "/mods/lambdacraft/textures/entities/barnacle_tentacle.png",
+			LIGHT_BALL_PATH = "/mods/lambdacraft/textures/entities/lightball.png",
+			ZOMBIE_MOB_PATH = "/mods/lambdacraft/textures/entities/zombie.png",
 			SPRY_PATH[] = { "/mods/lambdacraft/textures/sprays/spry0.png",
 					"/mods/lambdacraft/textures/sprays/spry1.png" },
 			ITEM_SATCHEL_PATH[] = {
@@ -100,7 +102,12 @@ public class ClientProps {
 					"/mods/lambdacraft/textures/armor/hev_2.png" },
 			RPG_TRAIL_PATH[] = {
 					"/mods/lambdacraft/textures/entities/rpg_trail.png",
-					"/mods/lambdacraft/textures/entities/rpg_trail_tail.png" };
+					"/mods/lambdacraft/textures/entities/rpg_trail_tail.png" },
+			VORTIGAUNT_RAY_PATH[] = { 
+					"/mods/lambdacraft/textures/entities/ltn0.png",
+					"/mods/lambdacraft/textures/entities/ltn1.png",
+					"/mods/lambdacraft/textures/entities/ltn2.png"
+					};
 
 	/**
 	 * 获取随机的一个火光贴图。

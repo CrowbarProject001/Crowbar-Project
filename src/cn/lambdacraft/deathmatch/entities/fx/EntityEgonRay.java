@@ -37,7 +37,7 @@ public class EntityEgonRay extends Entity {
 	public boolean renderThirdPerson;
 	public boolean draw = true;
 	public boolean isClient = false;
-	private EntityLiving thrower;
+	protected EntityLiving thrower;
 
 	public EntityEgonRay(World par1World, EntityLiving ent, ItemStack itemStack) {
 		super(par1World);

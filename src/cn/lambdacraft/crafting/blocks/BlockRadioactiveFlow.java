@@ -25,6 +25,7 @@ import net.minecraftforge.liquids.LiquidDictionary;
 import net.minecraftforge.liquids.LiquidStack;
 
 /**
+ * 辐射废液-流动。 
  * @author Rikka
  *
  */
