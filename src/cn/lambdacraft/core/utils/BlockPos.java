@@ -14,6 +14,8 @@
  */
 package cn.lambdacraft.core.utils;
 
+import net.minecraft.tileentity.TileEntity;
+
 /**
  * 提供方块位置信息的实用类。
  * 
@@ -30,11 +32,22 @@ public class BlockPos {
 		z = par3;
 		blockID = bID;
 	}
+	
+	public BlockPos(TileEntity te) {
+		this(te.xCoord, te.yCoord, te.zCoord, te.worldObj.getBlockId(te.xCoord, te.yCoord, te.zCoord));
+	}
 
-	public Boolean equals(BlockPos b) {
-		if (b == null)
+	@Override
+	public boolean equals(Object b) {
+		if (b == null || !(b instanceof BlockPos))
 			return false;
-		return (x == b.x && y == b.y && z == b.z) && blockID == b.blockID;
+		BlockPos bp = (BlockPos) b;
+		return (x == bp.x && y == bp.y && z == bp.z);
+	}
+	
+	@Override
+	public int hashCode() {
+		return x*100 + y * 10 + z;
 	}
 
 	public BlockPos copy() {

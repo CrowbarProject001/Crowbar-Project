@@ -14,23 +14,39 @@
  */
 package cn.lambdacraft.mob.entities;
 
+import cn.lambdacraft.core.utils.GenericUtils;
+import cn.lambdacraft.mob.ModuleMob;
+import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 /**
- * 步哨，待坑
+ * 你问我为什么要继承EntityLiving？这货本来可是大光圈基地的产物啊，233
  * @author WeAthFolD
  *
  */
-public class EntitySentry extends Entity {
+public class EntitySentry extends EntityLiving {
 
+	public Entity currentTarget;
+	public boolean isActivated;
+	
 	/**
 	 * @param par1World
 	 */
 	public EntitySentry(World par1World) {
 		super(par1World);
-		// TODO Auto-generated constructor stub
+	}
+	
+	public EntitySentry(World par1World, double x, double y, double z, float yaw) {
+		super(par1World);
+		this.setPosition(x, y, z);
+		this.rotationYaw = yaw;
 	}
 
 	/* (non-Javadoc)
@@ -38,26 +54,72 @@ public class EntitySentry extends Entity {
 	 */
 	@Override
 	protected void entityInit() {
-		// TODO Auto-generated method stub
-
+		super.entityInit();
+		this.setSize(0.4F, 1.575F);
+		this.dataWatcher.addObject(3, Integer.valueOf(0));
+	}
+	
+	@Override
+	public void onUpdate() {
+		++this.ticksExisted;
+		if(hurtResistantTime > 0)
+			--hurtResistantTime;
+		if(this.health <= 0)
+			this.onDeathUpdate();
+		this.onGround = true;
+		this.moveEntity(0.0, 0.0, 0.0);
+		this.rotationYawHead = MathHelper.sin(ticksExisted * 0.06F) * 50;
+		//super.onUpdate(); <-去掉注释会有神奇的效果
 	}
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.entity.Entity#readEntityFromNBT(net.minecraft.nbt.NBTTagCompound)
 	 */
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		// TODO Auto-generated method stub
-
+	public void readEntityFromNBT(NBTTagCompound nbt) {
+		super.readEntityFromNBT(nbt);
+		int entityid = nbt.getInteger("targetId");
+		Entity e = worldObj.getEntityByID(entityid);
+		if(e != null)
+			currentTarget = e;
+		isActivated = nbt.getBoolean("isActivated");
 	}
+	
+	public void activate() {
+		
+	}
+	
+	@Override
+	public boolean interact(EntityPlayer player)
+    {
+		ItemStack currentItem = player.getCurrentEquippedItem();
+		if(currentItem != null && currentItem.itemID == CBCMobItems.sentrySyncer.itemID) {
+			ModuleMob.syncMap.put(player, this);
+			if(worldObj.isRemote)
+				return true;
+			StringBuilder b = new StringBuilder("---------HECU Marine Force Automatic Sentry---------\n");
+			b.append(EnumChatFormatting.RED).append("Sentry ID : ").append(EnumChatFormatting.WHITE).append(this.entityId).append("\n");
+			b.append(EnumChatFormatting.DARK_RED).append("The Sentry has successfully linked to your syncer.");
+			player.sendChatToPlayer(b.toString());
+			return true;
+		}
+		return false;
+    }
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.entity.Entity#writeEntityToNBT(net.minecraft.nbt.NBTTagCompound)
 	 */
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		// TODO Auto-generated method stub
+	public void writeEntityToNBT(NBTTagCompound nbt) {
+		super.writeEntityToNBT(nbt);
+		if(currentTarget != null)
+			nbt.setInteger("targetId", currentTarget.entityId);
+		nbt.setBoolean("isActivated", isActivated);
+	}
 
+	@Override
+	public int getMaxHealth() {
+		return 20;
 	}
 
 }

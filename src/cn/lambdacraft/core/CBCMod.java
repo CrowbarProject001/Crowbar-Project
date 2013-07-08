@@ -36,6 +36,7 @@ import cn.lambdacraft.core.misc.CBCCreativeTab;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.network.NetExplosion;
 import cn.lambdacraft.core.network.NetKeyUsing;
+import cn.lambdacraft.core.network.TileEntitySyncer;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCGuiHandler;
@@ -135,6 +136,7 @@ public class CBCMod implements ITickHandler {
 
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
+		TileEntitySyncer.init();
 
 		if (FMLCommonHandler.instance().getSide().isClient()) {
 			MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());

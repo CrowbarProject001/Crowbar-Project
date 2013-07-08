@@ -1,5 +1,6 @@
 package cn.lambdacraft.core;
 
+import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
 import cn.lambdacraft.deathmatch.items.ArmorLongjump;
 import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
@@ -124,12 +125,12 @@ public class CBCPlayer extends PlayerBase {
 		//变向
 		double vel = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
 		float motionYaw = getMotionRotationYaw();
-		changedYaw = wrapYawAngle(player.rotationYaw - lastTickRotationYaw);
+		changedYaw = GenericUtils.wrapYawAngle(player.rotationYaw - lastTickRotationYaw);
 		if(changedYaw > 20)
 			changedYaw = changedYaw > 0 ? 20 : -20;
 		motionYaw -= changedYaw;
 		vel -= changedYaw * SPEED_REDUCE_SCALE;
-		motionYaw = wrapYawAngle(motionYaw);
+		motionYaw = GenericUtils.wrapYawAngle(motionYaw);
 		player.motionX = MathHelper.sin(motionYaw * (float) Math.PI / 180.0F) * vel;
 		player.motionZ = MathHelper.cos(motionYaw / 180.0F * (float) Math.PI) * vel;
 		//调用原本的Update
@@ -157,14 +158,6 @@ public class CBCPlayer extends PlayerBase {
 			return false;
 		return hevArmorStatus[1] && attach.contains(EnumAttachment.BHOP) && 
 				!(player.handleLavaMovement() || player.handleWaterMovement() || player.isOnLadder() || player.capabilities.isCreativeMode);
-	}
-	
-	private float wrapYawAngle(float f) {
-		if(f > 180.0F)
-			f -= 360.0F;
-		else if(f < -180.0F)
-			f = 360.0F - f;
-		return f;
 	}
 	
 	private float getMotionRotationYaw() {

@@ -212,8 +212,7 @@ public class BlockTripmine extends BlockContainer {
 			var10 = 4;
 		}
 
-		if (par5 == 5
-				&& par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH,
+		if (par5 == 5 && par1World.isBlockSolidOnSide(par2 - 1, par3, par4, SOUTH,
 						true)) {
 			var10 = 5;
 		}

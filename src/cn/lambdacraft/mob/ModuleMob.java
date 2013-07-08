@@ -1,13 +1,21 @@
 package cn.lambdacraft.mob;
 
+import java.util.HashMap;
+
+import net.minecraft.entity.player.EntityPlayer;
+
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCSoundEvents;
+import cn.lambdacraft.core.utils.BlockPos;
+import cn.lambdacraft.mob.blocks.TileSentryRay;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
 import cn.lambdacraft.mob.entities.EntityHLZombie;
 import cn.lambdacraft.mob.entities.EntityHeadcrab;
+import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.entities.EntitySnark;
+import cn.lambdacraft.mob.register.CBCMobBlocks;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -27,6 +35,19 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class ModuleMob {
 
+	/**
+	 * 玩家对应当前选定的Sentry的映射表。
+	 */
+	public static HashMap<EntityPlayer, EntitySentry> syncMap = new HashMap();
+	/**
+	 * 放置时临时采用的映射表。
+	 */
+	public static HashMap<EntityPlayer, TileSentryRay> tileMap = new HashMap();
+	/**
+	 * 放置着对应方块位置的映射表。
+	 */
+	public static HashMap<BlockPos, EntityPlayer> playerMap = new HashMap();
+	
 	@SidedProxy(clientSide = "cn.lambdacraft.mob.proxy.ClientProxy", serverSide = "cn.lambdacraft.mob.proxy.Proxy")
 	public static cn.lambdacraft.mob.proxy.Proxy proxy;
 
@@ -45,10 +66,12 @@ public class ModuleMob {
 	@Init
 	public void init(FMLInitializationEvent Init) {
 		CBCMobItems.init(CBCMod.config);
+		CBCMobBlocks.init();
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityHeadcrab.class, "headcrab", GeneralProps.ENT_ID_HEADCRAB, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityBarnacle.class, "barnacle", GeneralProps.ENT_ID_BARNACLE, CBCMod.instance, 32, 5, false);
 		EntityRegistry.registerModEntity(EntityHLZombie.class, "hlzombie", GeneralProps.ENT_ID_ZOMBIE, CBCMod.instance, 32, 3, true);
+		EntityRegistry.registerModEntity(EntitySentry.class, "turret", GeneralProps.ENT_ID_TURRET, CBCMod.instance, 32, 3, true);
 		proxy.init();
 	}
 

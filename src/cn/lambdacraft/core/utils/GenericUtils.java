@@ -41,6 +41,14 @@ public class GenericUtils {
 		return dx * dx + dy * dy + dz * dz;
 	}
 	
+	public static float wrapYawAngle(float f) {
+		if(f > 180.0F)
+			f -= 360.0F;
+		else if(f < -180.0F)
+			f = 360.0F - f;
+		return f;
+	}
+	
 	/**
 	 * 获取Entity的体积。
 	 * @param e
