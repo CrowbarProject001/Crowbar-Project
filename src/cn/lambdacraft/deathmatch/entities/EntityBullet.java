@@ -16,6 +16,7 @@ package cn.lambdacraft.deathmatch.entities;
 
 import cn.lambdacraft.api.weapon.InformationWeapon;
 import cn.lambdacraft.api.weapon.WeaponGeneral;
+import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 
@@ -24,7 +25,9 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
@@ -35,25 +38,39 @@ import net.minecraft.world.World;
  */
 public class EntityBullet extends EntityThrowable {
 
-	protected InformationWeapon information;
-	protected ItemStack itemStack;
 	protected MotionXYZ motion;
-
+	protected double pushForce;
+	protected int damage;
+	
 	public EntityBullet(World par1World, EntityLiving par2EntityLiving,
-			ItemStack par3itemStack) {
+			ItemStack itemStack) {
 
 		super(par1World, par2EntityLiving);
 
-		itemStack = par3itemStack;
-		if (itemStack == null || !(itemStack.getItem() instanceof WeaponGeneral))
+		if (!(itemStack.getItem() instanceof WeaponGeneral))
 			this.setDead();
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		double f1 = par1World.isRemote ? 0.06 : 0.3;
 		motion = new MotionXYZ(this).setMotionOffset(f1 * item.getOffset(item
-				.getMode(par3itemStack)));
+				.getMode(itemStack)));
 		this.motionX = motion.motionX;
 		this.motionY = motion.motionY;
 		this.motionZ = motion.motionZ;
+		int mode = item.getMode(itemStack);
+		this.damage = item.getDamage(mode);
+		this.pushForce = item.getPushForce(mode);
+	}
+	
+	public EntityBullet(World par1World, EntityLiving par2EntityLiving,
+			int dmg) {
+		super(par1World, par2EntityLiving);
+		this.rotationYaw = GenericUtils.wrapYawAngle(-par2EntityLiving.rotationYawHead);
+        this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.4F);
+        this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.4F);
+        this.motionY = (double)(-MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * 0.4F);
+        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
+		this.motion = new MotionXYZ(this);
+		this.damage = dmg;
 	}
 
 	@Override
@@ -100,21 +117,17 @@ public class EntityBullet extends EntityThrowable {
 	public void doEntityCollision(MovingObjectPosition result) {
 		if (result.entityHit == null)
 			return;
-		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		InformationWeapon inf = item.getInformation(itemStack, worldObj);
-		int mode = item.getMode(itemStack);
-		double pf = item.getPushForce(mode) * 0.1;
+		double pf = pushForce * 0.1;
 		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ
 				* pf;
 		BulletManager.doEntityAttack(result.entityHit,
 				DamageSource.causeMobDamage(getThrower()),
-				item.getDamage(mode), dx, dy, dz);
+				damage, dx, dy, dz);
 
 	}
 
 	public int getBulletDamage(int mode) {
-		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		return item.getDamage(mode);
+		return damage;
 	}
 
 	@Override

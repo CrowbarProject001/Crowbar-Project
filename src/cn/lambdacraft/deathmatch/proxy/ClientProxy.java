@@ -66,13 +66,18 @@ import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRayColored;
 import cn.lambdacraft.deathmatch.entities.fx.EntityTrailFX;
 import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
+import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.lambdacraft.mob.blocks.TileSentryRay;
+import cn.lambdacraft.mob.client.render.RenderSentryRay;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * @author WeAthFolD
@@ -80,6 +85,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
  */
 public class ClientProxy extends Proxy {
 
+	public static ClientTickHandler cth;
 
 	public final static String SOUND_WEAPONS[] = {
 
@@ -190,6 +196,7 @@ public class ClientProxy extends Proxy {
 				new RenderTileCharger(DMBlocks.armorCharger));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileHealthCharger.class,
 				new RenderTileHeCharger(DMBlocks.healthCharger));
-
+		cth = new ClientTickHandler();
+		TickRegistry.registerTickHandler(cth, Side.CLIENT);
 	}
 }

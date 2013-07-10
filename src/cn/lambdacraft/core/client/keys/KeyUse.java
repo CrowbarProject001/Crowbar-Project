@@ -16,8 +16,14 @@ package cn.lambdacraft.core.client.keys;
 
 import cn.lambdacraft.core.network.NetKeyUsing;
 import cn.lambdacraft.core.register.IKeyProcess;
+import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
+import cn.lambdacraft.deathmatch.proxy.ClientProxy;
+import cn.lambdacraft.deathmatch.register.DMItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 /**
  * 使用按键的处理类，负责发包和功能性函数。
@@ -42,6 +48,7 @@ public class KeyUse implements IKeyProcess {
 		NetKeyUsing.sendUsingPacket(true);
 	}
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -53,6 +60,19 @@ public class KeyUse implements IKeyProcess {
 		if (player == null)
 			return;
 		NetKeyUsing.sendUsingPacket(false);
+		ItemStack armorStack = null;
+		try {
+			if (player.inventory.armorInventory[3] == null)
+				return;
+			armorStack = player.inventory.armorInventory[3];
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (Minecraft.getMinecraft().theWorld.isRemote) {
+			ClientProxy.cth.flag = !ClientProxy.cth.flag;
+			if (armorStack.itemID == DMItems.armorHEVHelmet.itemID)
+				player.sendChatToPlayer(StatCollector.translateToLocal("flashlight.status.name") + (ClientProxy.cth.flag ? StatCollector.translateToLocal("flashlight.status.on.name") : StatCollector.translateToLocal("flashlight.status.off.name")));
+		}
 	}
 
 }

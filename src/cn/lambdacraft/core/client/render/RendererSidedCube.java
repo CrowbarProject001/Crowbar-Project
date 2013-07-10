@@ -82,7 +82,9 @@ public abstract class RendererSidedCube extends TileEntitySpecialRenderer {
 			float f) {
 		Tessellator t = Tessellator.instance;
 		int var5 = tileEntity.getBlockMetadata();
-		block.setBlockBoundsBasedOnState(tileEntity.worldObj,
+		block.
+		setBlockBoundsBasedOnState(
+				tileEntity.worldObj,
 				tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 		setBound(block);
 

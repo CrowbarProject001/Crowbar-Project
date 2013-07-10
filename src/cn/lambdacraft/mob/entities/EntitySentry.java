@@ -14,14 +14,22 @@
  */
 package cn.lambdacraft.mob.entities;
 
+import java.util.List;
+
+import cn.lambdacraft.api.entities.IEntityLink;
 import cn.lambdacraft.core.utils.GenericUtils;
+import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.mob.ModuleMob;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import net.minecraft.block.Block;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -31,10 +39,29 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public class EntitySentry extends EntityLiving {
+public class EntitySentry extends EntityLiving implements IEntityLink {
 
 	public Entity currentTarget;
-	public boolean isActivated;
+	public String placerName = "";
+	public boolean isActivated, rotationSet;
+	public int activationCounter = 0;
+	public int tickSinceLastAttack = 0;
+	public float rotationYawSearch;
+	public static final float TURNING_SPEED = 5.0F;
+	
+	protected IEntitySelector selector = new IEntitySelector() {
+
+		@Override
+		public boolean isEntityApplicable(Entity entity) {
+			if(entity instanceof EntityPlayer) {
+				EntityPlayer ep = (EntityPlayer) entity;
+				if(ep.username.equals(placerName))
+					return false;
+			}
+			return GenericUtils.selectorLiving.isEntityApplicable(entity);
+		}
+		
+	};
 	
 	/**
 	 * @param par1World
@@ -47,6 +74,15 @@ public class EntitySentry extends EntityLiving {
 		super(par1World);
 		this.setPosition(x, y, z);
 		this.rotationYaw = yaw;
+		this.rotationYawSearch = yaw;
+	}
+	
+	public EntitySentry(World par1World, EntityPlayer placer, double x, double y, double z, float yaw) {
+		super(par1World);
+		this.setPosition(x, y, z);
+		placerName = placer.username;
+		this.rotationYaw = yaw;
+		this.rotationYawSearch = yaw;
 	}
 
 	/* (non-Javadoc)
@@ -56,20 +92,141 @@ public class EntitySentry extends EntityLiving {
 	protected void entityInit() {
 		super.entityInit();
 		this.setSize(0.4F, 1.575F);
-		this.dataWatcher.addObject(3, Integer.valueOf(0));
+		this.dataWatcher.addObject(15, Integer.valueOf(0));
+		this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
 	}
 	
 	@Override
 	public void onUpdate() {
-		++this.ticksExisted;
-		if(hurtResistantTime > 0)
-			--hurtResistantTime;
-		if(this.health <= 0)
-			this.onDeathUpdate();
-		this.onGround = true;
-		this.moveEntity(0.0, 0.0, 0.0);
-		this.rotationYawHead = MathHelper.sin(ticksExisted * 0.06F) * 50;
-		//super.onUpdate(); <-去掉注释会有神奇的效果
+		
+		//float lastRotationYaw = this.rotationYaw;
+		super.onUpdate();
+		//this.rotationYaw = lastRotationYaw;
+		if(this.isActivated) {
+			++activationCounter;
+			if(this.isSearching()) {
+				this.rotationYawHead = MathHelper.sin(ticksExisted * 0.06F) * 50 + this.rotationYawSearch;
+				this.rotationYawHead = GenericUtils.wrapYawAngle(rotationYawHead);
+			}
+			if(currentTarget == null){
+				if(!worldObj.isRemote && ticksExisted % 10 == 0)
+					searchForTarget();
+			} else attemptAttack();
+		}
+		this.sync();
+	}
+	
+	public void sync() {
+		if(worldObj.isRemote) {
+			int entityid = dataWatcher.getWatchableObjectInt(15);
+			Entity e = worldObj.getEntityByID(entityid);
+			if(e != null && e.isEntityAlive())
+				currentTarget = e;
+			
+			this.isActivated = dataWatcher.getWatchableObjectByte(16) > 0;
+		} else {
+			if(currentTarget != null)
+				dataWatcher.updateObject(15, currentTarget.entityId);
+			dataWatcher.updateObject(16, Byte.valueOf((byte) (isActivated? 0x1 : 0x0)));
+		}
+	}
+	
+	protected void searchForTarget() {
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - 10, posY - 6, posZ - 10, posX + 10, posY + 6, posZ + 10);
+		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, this.selector);
+		double lastDistance = 10000.0;
+		EntityLiving targetEntity = null;
+		for(EntityLiving e : list) {
+			if(!e.isEntityInvulnerable() && this.canEntityBeSeen(e)) {
+				double distance = e.getDistanceSqToEntity(this);
+				if(distance > lastDistance)
+					continue;
+				lastDistance = distance;
+				targetEntity = e;
+			}
+		}
+		if(targetEntity != null) {
+			currentTarget = targetEntity;
+		}
+	}
+	
+	protected boolean isSearching() {
+		boolean b = this.activationCounter > 20 && currentTarget == null;
+		b = b || (currentTarget != null && !this.canEntityBeSeen(this.currentTarget));
+		return b;
+	}
+	
+    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    {
+    	boolean b = super.attackEntityFrom(par1DamageSource, par2);
+    	if(b) {
+    		isActivated = true;
+    		if(par1DamageSource.getEntity() != null && selector.isEntityApplicable(par1DamageSource.getEntity()))
+    			currentTarget = par1DamageSource.getEntity();
+    	}
+    	return b;
+    }
+	
+	/**
+	 * Similar to setArrowHeading, it's point the throwable entity to a x, y, z
+	 * direction.
+	 */
+	public void setSentryHeading(double par1, double par3, double par5,
+			float par7) {
+		float f2 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5
+				* par5);
+		par1 /= f2;
+		par3 /= f2;
+		par5 /= f2;
+		par1 *= par7;
+		par3 *= par7;
+		par5 *= par7;
+		
+		double dx = par1 - motionX, dy = par3 - motionY, dz = par5 - motionZ;
+		float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+
+		float lastRotationYaw = rotationYawHead;
+		this.prevRotationYawHead = this.rotationYawHead = (float) (Math.atan2(par1,
+				par5) * 180.0D / Math.PI);
+		float dyaw = rotationYawHead - lastRotationYaw;
+		if(Math.abs(dyaw) > 20.0F) {
+			dyaw = dyaw > 0 ? 20.0F : -20.0F;
+			this.rotationYawHead = GenericUtils.wrapYawAngle(lastRotationYaw + dyaw);
+		}
+		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(par3,
+				f3) * 180.0D / Math.PI);
+	}
+	
+	protected void attemptAttack() {
+		if(currentTarget == null)
+			return;
+		double dx = currentTarget.posX - this.posX, dy = currentTarget.posY - this.posY, dz = currentTarget.posZ
+				- this.posZ;
+		if(!isSearching())
+			this.setSentryHeading(dx, dy, dz, 1.0F);
+		if(++tickSinceLastAttack > 5) {
+			tickSinceLastAttack = 0;
+			if(!canEntityBeSeen(currentTarget)) {
+				if(!rotationSet)
+					rotationYawSearch = rotationYawHead;
+				rotationSet = true;
+			} else { 
+				rotationSet = false;
+				BulletManager.Shoot(3, this, worldObj);
+			}
+			if(currentTarget.getDistanceSqToEntity(this) > 400) {
+				this.currentTarget = null;
+				return;
+			}
+		}
+		if(currentTarget.isDead || currentTarget.isEntityInvulnerable())
+			this.currentTarget = null;
+	}
+	
+	@Override
+	protected boolean isMovementBlocked()
+	{
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -83,10 +240,13 @@ public class EntitySentry extends EntityLiving {
 		if(e != null)
 			currentTarget = e;
 		isActivated = nbt.getBoolean("isActivated");
+		activationCounter = nbt.getInteger("activationTime");
+		rotationYawSearch = nbt.getFloat("searchYaw");
+		placerName = nbt.getString("placer");
 	}
 	
 	public void activate() {
-		
+		isActivated = true;
 	}
 	
 	@Override
@@ -115,11 +275,25 @@ public class EntitySentry extends EntityLiving {
 		if(currentTarget != null)
 			nbt.setInteger("targetId", currentTarget.entityId);
 		nbt.setBoolean("isActivated", isActivated);
+		nbt.setInteger("activationTime", activationCounter);
+		nbt.setFloat("searchYaw", rotationYawSearch);
+		nbt.setString("placer", placerName);
 	}
 
 	@Override
 	public int getMaxHealth() {
 		return 20;
+	}
+
+	@Override
+	public Entity getLinkedEntity() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setLinkedEntity(Entity entity) {
+		if(!(entity instanceof EntityPlayer))return;
+		this.placerName = ((EntityPlayer)entity).username;
 	}
 
 }

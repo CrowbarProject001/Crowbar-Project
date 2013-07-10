@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
+import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.core.utils.BlockPos;
 import cn.lambdacraft.mob.blocks.TileSentryRay;
@@ -15,6 +16,7 @@ import cn.lambdacraft.mob.entities.EntityHLZombie;
 import cn.lambdacraft.mob.entities.EntityHeadcrab;
 import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.entities.EntitySnark;
+import cn.lambdacraft.mob.network.NetSentrySync;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import cpw.mods.fml.common.Mod;
@@ -67,6 +69,7 @@ public class ModuleMob {
 	public void init(FMLInitializationEvent Init) {
 		CBCMobItems.init(CBCMod.config);
 		CBCMobBlocks.init();
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER, new NetSentrySync());
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityHeadcrab.class, "headcrab", GeneralProps.ENT_ID_HEADCRAB, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityBarnacle.class, "barnacle", GeneralProps.ENT_ID_BARNACLE, CBCMod.instance, 32, 5, false);

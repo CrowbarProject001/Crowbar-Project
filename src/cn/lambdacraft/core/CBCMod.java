@@ -14,7 +14,6 @@
  */
 package cn.lambdacraft.core;
 
-import java.text.DecimalFormat;
 import java.util.EnumSet;
 import java.util.logging.Logger;
 
@@ -22,7 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.src.ModLoader;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,7 +34,6 @@ import cn.lambdacraft.core.misc.CBCCreativeTab;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.network.NetExplosion;
 import cn.lambdacraft.core.network.NetKeyUsing;
-import cn.lambdacraft.core.network.TileEntitySyncer;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCGuiHandler;
@@ -45,11 +42,9 @@ import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.crafting.recipes.RecipeWeapons;
 import cn.lambdacraft.intergration.ic2.IC2Module;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -63,8 +58,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -136,7 +131,6 @@ public class CBCMod implements ITickHandler {
 
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
-		TileEntitySyncer.init();
 
 		if (FMLCommonHandler.instance().getSide().isClient()) {
 			MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());

@@ -30,6 +30,12 @@ public class BulletManager {
 		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, entityPlayer,
 				itemStack));
 	}
+	
+	public static void Shoot(int damage, EntityLiving entityPlayer,
+			World worldObj) {
+		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, entityPlayer,
+				damage));
+	}
 
 	public static void doEntityAttack(Entity ent, DamageSource ds, int damage,
 			double dx, double dy, double dz) {

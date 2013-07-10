@@ -34,10 +34,12 @@ import net.minecraft.world.World;
  */
 public class EntityBulletSG extends EntityBullet {
 
+	protected ItemStack itemStack;
 
 	public EntityBulletSG(World par1World, EntityPlayer par2EntityLiving,
 			ItemStack par3itemStack) {
 		super(par1World, par2EntityLiving, par3itemStack);
+		itemStack = par3itemStack;
 	}
 
 	public EntityBulletSG(World world) {

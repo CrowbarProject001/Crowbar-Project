@@ -59,7 +59,7 @@ public class RenderTrail extends Render {
 			GL11.glTranslated(par2, par4, par6);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-
+			GL11.glDisable(GL11.GL_CULL_FACE);
 			t.startDrawingQuads();
 			t.setColorRGBA_F(0.8F, 0.8F, 0.8F, alpha);
 
@@ -68,32 +68,18 @@ public class RenderTrail extends Render {
 			RenderUtils.addVertex(v3, 1, 1);
 			RenderUtils.addVertex(v4, 1, 0);
 
-			RenderUtils.addVertex(v4, 1, 0);
-			RenderUtils.addVertex(v3, 1, 1);
-			RenderUtils.addVertex(v2, 0, 1);
-			RenderUtils.addVertex(v1, 0, 0);
-
 			RenderUtils.addVertex(v5, 0, 0);
 			RenderUtils.addVertex(v6, 0, 1);
 			RenderUtils.addVertex(v7, 1, 1);
 			RenderUtils.addVertex(v8, 1, 0);
 
-			RenderUtils.addVertex(v8, 1, 0);
-			RenderUtils.addVertex(v7, 1, 1);
-			RenderUtils.addVertex(v6, 0, 1);
-			RenderUtils.addVertex(v5, 0, 0);
-
 			RenderUtils.addVertex(v9, 0, 0);
 			RenderUtils.addVertex(v10, 0, 1);
 			RenderUtils.addVertex(v11, 1, 1);
 			RenderUtils.addVertex(v12, 1, 0);
-
-			RenderUtils.addVertex(v12, 1, 0);
-			RenderUtils.addVertex(v11, 1, 1);
-			RenderUtils.addVertex(v10, 0, 1);
-			RenderUtils.addVertex(v9, 0, 0);
-
+			
 			t.draw();
+			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glPopMatrix();
 		}

@@ -15,7 +15,6 @@
 package cn.lambdacraft.mob.register;
 
 import net.minecraft.src.ModLoader;
-import cn.lambdacraft.core.network.TileEntitySyncer;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.mob.blocks.BlockSentryRay;
@@ -33,7 +32,6 @@ public class CBCMobBlocks {
 		sentryRay = new BlockSentryRay(GeneralRegistry.getBlockId("sentryRay", GeneralProps.CAT_MISC));
 		
 		ModLoader.registerBlock(sentryRay);
-		TileEntitySyncer.register(TileSentryRay.class);
 		ModLoader.registerTileEntity(TileSentryRay.class, "tile_entity_sentry_ray");
 	}
 

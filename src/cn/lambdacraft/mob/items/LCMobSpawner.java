@@ -38,7 +38,8 @@ public class LCMobSpawner extends CBCGenericItem {
 
 //		MobSpawnHandler.spawnCreature(par2World, entClass,
 //				par3EntityPlayer);
-		MobSpawnHandler.spawnCreature(par3World, entClass, (double)par4 + 0.5d, (double)par2EntityPlayer.posY, (double)par6 + 0.5d);
+		if(!par3World.isRemote)
+			MobSpawnHandler.spawnCreature(par3World, par2EntityPlayer, entClass, (double)par4 + 0.5d, (double)par2EntityPlayer.posY, (double)par6 + 0.5d);
 		if (!(par2EntityPlayer.capabilities.isCreativeMode)) {
 			par1ItemStack.stackSize--;
 		}

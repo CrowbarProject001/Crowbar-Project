@@ -24,18 +24,20 @@ import cn.lambdacraft.mob.client.models.ModelTurret;
 import cn.lambdacraft.mob.entities.EntitySentry;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 
 /**
  * @author WeAthFolD
  *
  */
-public class RenderTurret extends Render {
+public class RenderTurret extends RenderLiving {
 
-	private ModelTurret model = new ModelTurret();
+	private static ModelTurret model = new ModelTurret();
 	
 	public RenderTurret() {
-		// TODO Auto-generated constructor stub
+		super(model, 1.0F);
 	}
 
 	/* (non-Javadoc)
@@ -46,16 +48,22 @@ public class RenderTurret extends Render {
 			float par8, float f1) {
 		EntitySentry turret = (EntitySentry) entity;
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float) par2, (float) par4 + turret.height,(float) par6);
 		loadTexture(ClientProps.TURRET_PATH);
+		super.doRender(entity, par2, par4, par6, par8, f1);
+		GL11.glTranslatef((float) par2, (float) par4 + turret.height - turret.deathTime * 0.06F,(float) par6);
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
-		GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
 		if(turret.hurtResistantTime > 15)
 			GL11.glColor3f(1.0F, 0.3F, 0.3F);
-		model.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-		GL11.glRotatef(turret.rotationYawHead, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(turret.deathTime * 3, 1.0F, 0.2F, -1.0F);
+		GL11.glRotatef(180.0F - turret.rotationYawHead, 0.0F, 1.0F, 0.0F);
 		model.renderTop(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 	}
+	
+	@Override
+    protected void func_98190_a(EntityLiving par1EntityLiving)
+    {
+    	
+    }
 
 }

@@ -18,6 +18,9 @@ import static net.minecraftforge.common.ForgeDirection.EAST;
 import static net.minecraftforge.common.ForgeDirection.NORTH;
 import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.WEST;
+import cn.lambdacraft.core.proxy.ClientProps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -50,8 +53,8 @@ public class BlockSentryRay extends BlockContainer {
 		float var7 = WIDTH;
 		if (var5 == 5) // X+
 		{
-			this.setBlockBounds(0.0F, 0.5F - var6, 0.5F - var7, var6 * 2.0F,
-					0.5F + var6, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2,
+			this.setBlockBounds(0.0F, 0.5F - var6, 0.5F - var6, var6 * 2.0F,
+					0.5F + var6, 0.5F + var6); // (0, 0.5) (0.3, 0.7), (0.2,
 												// 0.8)
 		} else if (var5 == 4) // X-
 		{
@@ -81,6 +84,13 @@ public class BlockSentryRay extends BlockContainer {
 	public TileEntity createNewTileEntity(World world) {
 		return new TileSentryRay();
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderType() {
+		return ClientProps.RENDER_TYPE_EMPTY;
+	}
+
 	
 	@Override
 	public boolean isOpaqueCube() {

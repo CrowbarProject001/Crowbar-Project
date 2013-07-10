@@ -14,6 +14,7 @@
  */
 package cn.lambdacraft.mob.client.models;
 
+import cn.lambdacraft.mob.entities.EntitySentry;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -93,19 +94,19 @@ public class ModelTurret extends ModelBase {
 		sensor.setRotationPoint(1F, 2F, 0F);
 		sensor.setTextureSize(64, 32);
 		sensor.mirror = true;
-		setRotation(sensor, 0F, 0F, 1.570796F);
+		setRotation(sensor, 0F, 0F, 0F);
 		gun0 = new ModelRenderer(this, 16, 0);
 		gun0.addBox(-1F, -1F, -1F, 2, 7, 2);
-		gun0.setRotationPoint(0F, 4F, 0F);
+		gun0.setRotationPoint(0F, 5F, 0F);
 		gun0.setTextureSize(64, 32);
 		gun0.mirror = true;
-		setRotation(gun0, -1.570796F, 0F, 0F);
+		setRotation(gun0, 0F, 0F, 0F);
 		gun1 = new ModelRenderer(this, 24, 0);
 		gun1.addBox(0F, 0F, -0.5F, 2, 3, 2);
-		gun1.setRotationPoint(-1F, 4F, 1F);
+		gun1.setRotationPoint(-1F, 5F, 1F);
 		gun1.setTextureSize(64, 32);
 		gun1.mirror = true;
-		setRotation(gun1, 1.570796F, 0F, 0F);
+		setRotation(gun1, 0F, 0F, 0F);
 	}
 
 	public void render(Entity entity, float f, float f1, float f2, float f3,
@@ -137,6 +138,28 @@ public class ModelTurret extends ModelBase {
 
 	public void setRotationAngles(float f, float f1, float f2, float f3,
 			float f4, float f5, Entity e) {
+		EntitySentry sentry = (EntitySentry) e;
+		if(sentry.isActivated) {
+			if(sentry.activationCounter < 20) {
+				float rotation = 1.570796F * sentry.activationCounter / 20;
+				gun0.rotateAngleX = -rotation;
+				gun1.rotateAngleX = rotation;
+				sensor.rotateAngleZ = rotation;
+			} else {
+				float rotation = -0.01745329F * sentry.rotationPitch;
+				if(rotation > 1.0F)
+					rotation = 1.0F;
+				else if(rotation < -1.0F)
+					rotation = -1.0F;
+				gun0.rotateAngleX = -1.570796F +rotation;
+				gun1.rotateAngleX = 1.570796F +rotation;
+				sensor.rotateAngleZ = 1.570796F;
+			}
+		} else {
+			gun0.rotateAngleX = 0.0F;
+			gun1.rotateAngleX = 0.0F;
+			sensor.rotateAngleZ = 0.0F;
+		}
 		super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
 	}
 

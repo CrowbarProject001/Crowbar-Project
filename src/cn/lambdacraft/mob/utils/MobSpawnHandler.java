@@ -54,7 +54,7 @@ public class MobSpawnHandler {
 		return entity;
 	}
 	
-    public static Entity spawnCreature(World par0World, Class<? extends Entity> c, double par2, double par4, double par6)
+    public static Entity spawnCreature(World par0World, EntityPlayer thrower, Class<? extends Entity> c, double par2, double par4, double par6)
     {
             Entity entity = null;
 
@@ -74,6 +74,9 @@ public class MobSpawnHandler {
                     entityliving.rotationYawHead = entityliving.rotationYaw;
                     entityliving.renderYawOffset = entityliving.rotationYaw;
                     entityliving.initCreature();
+                    if (entityliving instanceof IEntityLink) {
+        				((IEntityLink) entityliving).setLinkedEntity(thrower);
+        			}
                     par0World.spawnEntityInWorld(entity);
                     entityliving.playLivingSound();
                 }

@@ -14,17 +14,16 @@
  */
 package cn.lambdacraft.mob.blocks;
 
-import cn.lambdacraft.core.network.TileEntitySyncer;
-import cn.lambdacraft.core.register.SyncableField;
-import cn.lambdacraft.core.utils.BlockPos;
-import cn.lambdacraft.mob.ModuleMob;
-import cn.lambdacraft.mob.entities.EntitySentry;
-import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Vec3;
+import cn.lambdacraft.core.utils.BlockPos;
+import cn.lambdacraft.mob.ModuleMob;
+import cn.lambdacraft.mob.entities.EntitySentry;
+import cn.lambdacraft.mob.network.NetSentrySync;
 
 /**
  * @author WeAthFolD
@@ -37,14 +36,7 @@ public class TileSentryRay extends TileEntity {
 	
 	private int tickSinceLastUpdate = 0;
 	
-	@SyncableField(Boolean.class)
 	public boolean isActivated;
-	
-	@SyncableField(Integer.class)
-	public int linkedX, linkedZ;
-	
-	@SyncableField(Short.class)
-	public int linkedY;
 	
 	/**
 	 * 
@@ -77,21 +69,59 @@ public class TileSentryRay extends TileEntity {
 					ModuleMob.syncMap.remove(player);
 					ModuleMob.tileMap.remove(player);
 					sendChatToPlayer(player, linkedSentry);
+					NetSentrySync.sendSyncPacket(this);
 					isActivated = true;
 				}
 			} else isActivated = false;
 			isLoaded = true;
 		}
 		
-		if(++tickSinceLastUpdate > 5) {
+		if(++tickSinceLastUpdate > 40) {
 			tickSinceLastUpdate = 0;
-			if(linkedBlock != null) {
-				linkedX = linkedBlock.xCoord;
-				linkedY = linkedBlock.yCoord;
-				linkedZ = linkedBlock.zCoord;
-			}
-			TileEntitySyncer.updateTileEntity(this);
+			if(linkedBlock != null)
+				NetSentrySync.sendSyncPacket(this);
 		}
+	}
+	
+	public Vec3 getRayOffset() {
+		double x = 0.0, y = 0.0, z = 0.0;
+		float var6 = BlockSentryRay.HEIGHT;
+		float var7 = BlockSentryRay.WIDTH;
+		switch(this.blockMetadata) {
+		case 5 :
+			y += 0.5;
+			z += 0.5;
+			x += 2 * var6;
+			break;
+		case 4 :
+			y += 0.5;
+			z += 0.5;
+			x += 1 - 2 * var6;
+			break;
+		case 3 :
+			y += 0.5;
+			x += 0.5;
+			z += 2 * var6;
+			break;
+		case 2 :
+			y += 0.5;
+			x += 0.5;
+			z += 1 - 2 * var6;
+			break;
+		case 1 :
+			x += 0.5;
+			z += 0.5;
+			y += 2 * var6;
+			break;
+		case 0 :
+			x += 0.5;
+			z += 0.5;
+			y += 1- 2 * var6;
+			break;
+		default:
+			break;
+		}
+		return Vec3.createVectorHelper(x, y, z);
 	}
 	
 	protected void sendChatToPlayer(EntityPlayer player, EntitySentry sentry) {
@@ -116,8 +146,10 @@ public class TileSentryRay extends TileEntity {
         
         int x = nbt.getInteger("linkX"), y = nbt.getInteger("linkY"), z = nbt.getInteger("linkZ");
         TileEntity te = worldObj.getBlockTileEntity(x, y, z);
-        if(te != null && te instanceof TileSentryRay)
+        if(te != null && te instanceof TileSentryRay) {
         	linkedBlock = (TileSentryRay) te;
+        	NetSentrySync.sendSyncPacket(this);
+        }
         
         isLoaded = nbt.getBoolean("isLoaded");
         isActivated = nbt.getBoolean("isActivated");

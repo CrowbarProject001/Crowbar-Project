@@ -14,10 +14,12 @@
  */
 package cn.lambdacraft.mob.proxy;
 
+import cn.lambdacraft.mob.blocks.TileSentryRay;
 import cn.lambdacraft.mob.client.models.ModelHLZombie;
 import cn.lambdacraft.mob.client.models.ModelHeadcrab;
 import cn.lambdacraft.mob.client.models.ModelSnark;
 import cn.lambdacraft.mob.client.render.RenderBarnacle;
+import cn.lambdacraft.mob.client.render.RenderSentryRay;
 import cn.lambdacraft.mob.client.render.RenderTurret;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
 import cn.lambdacraft.mob.entities.EntityHLZombie;
@@ -25,6 +27,7 @@ import cn.lambdacraft.mob.entities.EntityHeadcrab;
 import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.entities.EntitySnark;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 /**
@@ -42,6 +45,8 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityBarnacle.class, new RenderBarnacle());
 		RenderingRegistry.registerEntityRenderingHandler(EntityHLZombie.class, new RenderLiving(new ModelHLZombie(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, new RenderTurret());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileSentryRay.class,
+				new RenderSentryRay());
 	}
 	
 }

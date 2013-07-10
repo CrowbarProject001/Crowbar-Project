@@ -17,6 +17,11 @@ package cn.lambdacraft.core.proxy;
 import java.util.HashSet;
 import java.util.Set;
 
+import cn.lambdacraft.core.CBCMod;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.TileEntity;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -61,6 +66,26 @@ public class Proxy {
 			LanguageRegistry.instance().loadLocalization(
 					"/mods/lambdacraft/lang/" + lang + ".properties", lang, false);
 		}
+	}
+	
+	public static void logExceptionMessage(TileEntity te, String... addition) {
+		StringBuilder sb = new StringBuilder("LambdaCraft has caught a exception during runtime. \n");
+		sb.append("TileEntity : ").append(te == null ? "null" : te.toString()).append("\n");
+		sb.append("Additional Information : \n");
+		for(String s : addition) {
+			sb.append(s).append("\n");
+		}
+		CBCMod.log.severe(sb.toString());
+	}
+	
+	public static void logExceptionMessage(Entity entity, String... addition) {
+		StringBuilder sb = new StringBuilder("LambdaCraft has caught a exception during runtime. \n");
+		sb.append("Entity : ").append(entity == null ? "null" : entity.toString()).append("\n");
+		sb.append("Additional Information : \n");
+		for(String s : addition) {
+			sb.append(s).append("\n");
+		}
+		CBCMod.log.severe(sb.toString());
 	}
 
 }

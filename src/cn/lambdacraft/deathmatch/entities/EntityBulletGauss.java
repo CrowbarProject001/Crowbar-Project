@@ -34,6 +34,7 @@ public class EntityBulletGauss extends EntityBullet {
 
 	private Weapon_Gauss item;
 	private InformationEnergy inf;
+	protected ItemStack itemStack;
 
 	public enum EnumSubPlain {
 		PLAIN_X, PLAIN_Y, PLAIN_Z;
@@ -47,6 +48,7 @@ public class EntityBulletGauss extends EntityBullet {
 			ItemStack par3itemStack, String particle) {
 		super(par1World, par2EntityLiving, par3itemStack);
 		motion = new MotionXYZ(par2EntityLiving);
+		itemStack = par3itemStack;
 		item = (Weapon_Gauss) itemStack.getItem();
 		inf = item.getInformation(itemStack, worldObj);
 		worldObj.spawnEntityInWorld(new EntityGaussRay(new MotionXYZ(this),
