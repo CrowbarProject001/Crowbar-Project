@@ -34,7 +34,7 @@ import net.minecraftforge.common.ForgeDirection;
  */
 public class BlockSentryRay extends BlockContainer {
 
-	public static final float HEIGHT = 0.15F, WIDTH = 0.25F;
+	public static final float HEIGHT = 0.1F, WIDTH = 0.2F;
 			
 	/**
 	 * @param par1
@@ -53,21 +53,21 @@ public class BlockSentryRay extends BlockContainer {
 		float var7 = WIDTH;
 		if (var5 == 5) // X+
 		{
-			this.setBlockBounds(0.0F, 0.5F - var6, 0.5F - var6, var6 * 2.0F,
-					0.5F + var6, 0.5F + var6); // (0, 0.5) (0.3, 0.7), (0.2,
+			this.setBlockBounds(0.0F, 0.5F - var7, 0.5F - var7, var6 * 2.0F,
+					0.5F + var7, 0.5F + var7); // (0, 0.5) (0.3, 0.7), (0.2,
 												// 0.8)
 		} else if (var5 == 4) // X-
 		{
-			this.setBlockBounds(1.0F - var6 * 2.0F, 0.5F - var6, 0.5F - var7,
-					1.0F, 0.5F + var6, 0.5F + var7);
+			this.setBlockBounds(1.0F - var6 * 2.0F, 0.5F - var7, 0.5F - var7,
+					1.0F, 0.5F + var7, 0.5F + var7);
 		} else if (var5 == 3) // Z+
 		{
-			this.setBlockBounds(0.5F - var7, 0.5F - var6, 0.0F, 0.5F + var7,
-					0.5F + var6, var6 * 2.0F);
+			this.setBlockBounds(0.5F - var7, 0.5F - var7, 0.0F, 0.5F + var7,
+					0.5F + var7, var6 * 2.0F);
 		} else if (var5 == 2) // Z-
 		{
-			this.setBlockBounds(0.5F - var7, 0.5F - var6, 1.0F - var6 * 2.0F,
-					0.5F + var7, 0.5F + var6, 1.0F);
+			this.setBlockBounds(0.5F - var7, 0.5F - var7, 1.0F - var6 * 2.0F,
+					0.5F + var7, 0.5F + var7, 1.0F);
 		} else if(var5 == 1) {//Y+
 			this.setBlockBounds(0.5F - var7, 0.0F, 0.5F-var7,
 					0.5F + var7, 2 * var6, 0.5F + var7);

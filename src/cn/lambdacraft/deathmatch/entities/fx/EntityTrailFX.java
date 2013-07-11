@@ -23,7 +23,7 @@ public class EntityTrailFX extends Entity {
 	private LinkedList<SamplePoint> samples = new LinkedList();
 	private Entity linkedEntity;
 	private String texNormal, texEnd;
-	private boolean doesRenderEnd;
+	private boolean doesRenderEnd, hasLight;
 	private int decayTime, sampleFreq;
 	private double width;
 
@@ -39,6 +39,15 @@ public class EntityTrailFX extends Entity {
 		this.posZ = linkedEntity.posZ;
 		this.width = 0.5;
 		this.ignoreFrustumCheck = true;
+	}
+	
+	public EntityTrailFX setHasLight(boolean b) {
+		this.hasLight = b;
+		return this;
+	}
+	
+	public boolean getHasLight() {
+		return hasLight;
 	}
 
 	public EntityTrailFX setTrailWidth(double w) {

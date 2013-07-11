@@ -82,6 +82,8 @@ public class RenderEgonRay extends RenderEntity {
 
 		tessellator.startDrawingQuads();
 		tessellator.setColorRGBA(200, 200, 200, 200);
+		tessellator.setBrightness(255);
+		
 		addVertex(v1, 0 + du, 0);
 		addVertex(v2, 0 + du, 1);
 		addVertex(v3, d + du, 1);
@@ -107,6 +109,7 @@ public class RenderEgonRay extends RenderEntity {
 		this.loadTexture(ClientProps.EGON_BEAM_PATH[1]);
 		tessellator.startDrawingQuads();
 		tessellator.setColorRGBA(200, 200, 200, 200);
+		tessellator.setBrightness(255);
 		float dt = 0.5f;
 		for (int i = 0; i < 2 * IDENSITY - 1; i++) { // upper half
 			addVertex(vecs[i].addVector(tx, ty, tz), dt + i / 2.0 / IDENSITY,

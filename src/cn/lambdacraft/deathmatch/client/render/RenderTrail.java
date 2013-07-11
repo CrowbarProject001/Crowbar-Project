@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 
 public class RenderTrail extends Render {
+	
 	private static Tessellator t = Tessellator.instance;
 
 	public RenderTrail() {
@@ -26,6 +27,7 @@ public class RenderTrail extends Render {
 		EntityTrailFX ent = (EntityTrailFX) par1Entity;
 		LinkedList<SamplePoint> list = ent.getSamplePoints();
 		double width = ent.getTrailWidth();
+		boolean hasLight = ent.getHasLight();
 		for (int i = 0; i < list.size() - 1; i++) {
 			GL11.glPushMatrix();
 
@@ -60,9 +62,14 @@ public class RenderTrail extends Render {
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			GL11.glDisable(GL11.GL_CULL_FACE);
+			if(!hasLight)
+				GL11.glDisable(GL11.GL_LIGHTING);
+			
 			t.startDrawingQuads();
 			t.setColorRGBA_F(0.8F, 0.8F, 0.8F, alpha);
-
+			if(!hasLight)
+				t.setBrightness(255);
+			
 			RenderUtils.addVertex(v1, 0, 0);
 			RenderUtils.addVertex(v2, 0, 1);
 			RenderUtils.addVertex(v3, 1, 1);
@@ -81,6 +88,7 @@ public class RenderTrail extends Render {
 			t.draw();
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnableClientState(GL11.GL_LIGHTING);
 			GL11.glPopMatrix();
 		}
 

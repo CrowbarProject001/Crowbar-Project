@@ -14,12 +14,15 @@
  */
 package cn.lambdacraft.crafting.blocks;
 
+import java.util.List;
+
 import cn.lambdacraft.core.block.BlockElectricalBase;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.crafting.blocks.tile.TileWire;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
@@ -52,5 +55,10 @@ public class BlockWire extends BlockElectricalBase {
 	public boolean renderAsNormalBlock() {
 		return false;
 	}
+	
+    public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
+    {
+    	super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+    }
 
 }

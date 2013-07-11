@@ -88,6 +88,8 @@ public class ClientProps {
 			LIGHT_BALL_PATH = "/mods/lambdacraft/textures/entities/lightball.png",
 			ZOMBIE_MOB_PATH = "/mods/lambdacraft/textures/entities/zombie.png",
 			TURRET_PATH = "/mods/lambdacraft/textures/entities/turret.png",
+			SS_SIDE_PATH[] = {"/mods/lambdacraft/textures/blocks/ss_side0.png", "/mods/lambdacraft/textures/blocks/ss_side1.png"},
+			SS_MAIN_PATH[] = {"/mods/lambdacraft/textures/blocks/ss_0.png", "/mods/lambdacraft/textures/blocks/ss_1.png"},
 			SPRY_PATH[] = { "/mods/lambdacraft/textures/sprays/spry0.png",
 					"/mods/lambdacraft/textures/sprays/spry1.png" },
 			ITEM_SATCHEL_PATH[] = {

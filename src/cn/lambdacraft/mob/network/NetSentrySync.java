@@ -34,25 +34,31 @@ import cn.lambdacraft.mob.blocks.TileSentryRay;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class NetSentrySync implements IChannelProcess {
 
 	public static void sendSyncPacket(TileSentryRay tile) {
+		int dataSize = tile.linkedBlock == null ? 11 : 21;
 		ByteArrayOutputStream bos = CBCNetHandler.getStream(
-				GeneralProps.NET_ID_SENTRYSYNCER, 20);
+				GeneralProps.NET_ID_SENTRYSYNCER, dataSize);
 		DataOutputStream outputStream = new DataOutputStream(bos);
+		boolean isVaild = tile.isActivated && tile.linkedSentry != null
+				&& tile.linkedBlock != null;
 		try {
 			outputStream.writeInt(tile.xCoord);
 			outputStream.writeShort(tile.yCoord);
 			outputStream.writeInt(tile.zCoord);
-			outputStream.writeInt(tile.linkedBlock.xCoord);
-			outputStream.writeShort(tile.linkedBlock.yCoord);
-			outputStream.writeInt(tile.linkedBlock.zCoord);
-		} catch(Exception e) {
+			outputStream.writeBoolean(isVaild);
+			if (tile.linkedBlock != null) {
+				outputStream.writeInt(tile.linkedBlock.xCoord);
+				outputStream.writeShort(tile.linkedBlock.yCoord);
+				outputStream.writeInt(tile.linkedBlock.zCoord);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		Packet250CustomPayload packet = new Packet250CustomPayload();
 		packet.channel = GeneralProps.NET_CHANNEL_CLIENT;
 		packet.data = bos.toByteArray();
@@ -64,24 +70,32 @@ public class NetSentrySync implements IChannelProcess {
 	@Override
 	public void onPacketData(DataInputStream stream, Player player) {
 		try {
-			int x = stream.readInt(), y = stream.readShort(), z = stream.readInt();
+			int x = stream.readInt(), y = stream.readShort(), z = stream
+					.readInt();
 			World world = Minecraft.getMinecraft().theWorld;
 			TileEntity te = world.getBlockTileEntity(x, y, z);
-			if(te == null || !(te instanceof TileSentryRay)) {
+			if (te == null || !(te instanceof TileSentryRay)) {
 				Proxy.logExceptionMessage(te, "Didn't find right instance of TileEntity though server has required update");
 				return;
 			}
 			TileSentryRay ray = (TileSentryRay) te;
-			x = stream.readInt();
-			y = stream.readShort();
-			z = stream.readInt();
-			te = world.getBlockTileEntity(x, y, z);
-			if(te == null || !(te instanceof TileSentryRay)) {
-				Proxy.logExceptionMessage(te, "Couldn't find the right partner TileEntity.");
-				return;
+			boolean isVaild = stream.readBoolean();
+			if (isVaild) {
+				x = stream.readInt();
+				y = stream.readShort();
+				z = stream.readInt();
+				te = world.getBlockTileEntity(x, y, z);
+				if (te == null || !(te instanceof TileSentryRay)) {
+					Proxy.logExceptionMessage(te,
+							"Couldn't find the right partner TileEntity.");
+					return;
+				}
+				ray.linkedBlock = (TileSentryRay) te;
+			} else {
+				ray.linkedBlock = null;
+				ray.linkedSentry = null;
 			}
-			ray.linkedBlock = (TileSentryRay) te;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

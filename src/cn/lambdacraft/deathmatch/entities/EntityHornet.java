@@ -52,7 +52,7 @@ public class EntityHornet extends EntityThrowable {
 			worldObj.spawnEntityInWorld(new EntityTrailFX(worldObj, this)
 					.setSampleFreq(1).setTrailWidth(0.1F)
 					.setTextures(ClientProps.HORNET_TRAIL_PATH, "")
-					.setDecayTime(20));
+					.setDecayTime(20).setHasLight(false));
 	}
 
 	public EntityHornet(World par1World, EntityPlayer player, boolean doSearch) {

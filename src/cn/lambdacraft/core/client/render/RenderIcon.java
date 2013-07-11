@@ -109,6 +109,8 @@ public class RenderIcon extends Render {
 				0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 		par1Tessellator.startDrawingQuads();
+		if(!hasLight)
+			par1Tessellator.setBrightness(255);
 		par1Tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, alpha);
 		par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
 		par1Tessellator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, 0, 0);

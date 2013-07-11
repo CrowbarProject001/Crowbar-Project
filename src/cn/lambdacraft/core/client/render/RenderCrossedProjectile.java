@@ -67,6 +67,7 @@ public class RenderCrossedProjectile extends RenderEntity {
 		GL11.glTranslatef((float) par2, (float) par4, (float) par6);
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ZERO);
 		if(renderTexture)
 			loadTexture(TEXTURE_PATH);
@@ -79,31 +80,22 @@ public class RenderCrossedProjectile extends RenderEntity {
 		GL11.glRotatef(270.0F - gren.rotationYaw, 0.0F, -1.0F, 0.0F); // 左右旋转
 		GL11.glRotatef(gren.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
 		tessellator.startDrawingQuads();
-
+		if(ignoreLight)
+			tessellator.setBrightness(255);
 		addVertex(v1, 0, 1);
 		addVertex(v2, 1, 1);
 		addVertex(v3, 1, 0);
 		addVertex(v4, 0, 0);
-
-		addVertex(v4, 0, 0);
-		addVertex(v3, 1, 0);
-		addVertex(v2, 1, 1);
-		addVertex(v1, 0, 1);
-
+		
 		addVertex(v5, 0, 1);
 		addVertex(v6, 1, 1);
 		addVertex(v7, 1, 0);
 		addVertex(v8, 0, 0);
-
-		addVertex(v8, 0, 0);
-		addVertex(v7, 1, 0);
-		addVertex(v6, 1, 1);
-		addVertex(v5, 0, 1);
-
 		tessellator.draw(); 
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glPopMatrix();
 	}
 

@@ -24,12 +24,14 @@ public class RenderMuzzleFlash {
 		t = Tessellator.instance;
 		GL11.glPushMatrix();
 		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 				RenderUtils.getTexture(ClientProps.getRandomMuzzleFlash()));
 		GL11.glTranslated(tx, ty + 0.1F, tz + 0.1F);
 		t.startDrawingQuads();
 		t.setNormal(0.0F, 0.0F, 1.0F);
+		t.setBrightness(255);
 		addVertex(a1, u2, v2);
 		addVertex(a2, u1, v2);
 		addVertex(a3, u1, v1);
@@ -41,6 +43,7 @@ public class RenderMuzzleFlash {
 		addVertex(a1, u2, v2);
 		t.draw();
 		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
 
 	}

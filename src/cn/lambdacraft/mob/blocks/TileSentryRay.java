@@ -19,8 +19,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.utils.BlockPos;
+import cn.lambdacraft.core.utils.GenericUtils;
+import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.mob.ModuleMob;
 import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.network.NetSentrySync;
@@ -38,6 +42,8 @@ public class TileSentryRay extends TileEntity {
 	
 	public boolean isActivated;
 	
+	private int linkedX = 0, linkedY = 0, linkedZ = 0, sentryId = 0;
+	
 	/**
 	 * 
 	 */
@@ -54,14 +60,37 @@ public class TileSentryRay extends TileEntity {
 	
 	@Override
 	public void updateEntity() {
+		if(linkedSentry != null && linkedSentry.isDead) {
+			isActivated = false;
+			linkedSentry = null;
+		}
+		if(linkedBlock != null && linkedBlock.isInvalid()) {
+			linkedBlock = null;
+		}
 		if(worldObj.isRemote)
 			return;
+		if(linkedX != 0 || linkedY != 0 || linkedZ != 0) {
+	        TileEntity te = worldObj.getBlockTileEntity(linkedX, linkedY, linkedZ);
+	        if(te != null && te instanceof TileSentryRay) {
+	        	linkedBlock = (TileSentryRay) te;
+	        	NetSentrySync.sendSyncPacket(this);
+	        }
+	        linkedX = linkedY = linkedZ = 0;
+		}
+		if(sentryId != 0) {
+			Entity e = worldObj.getEntityByID(sentryId);
+	        if(e != null && EntitySentry.class.isInstance(e)) {
+	        	linkedSentry = (EntitySentry) e;
+	        	sentryId = 0;
+	        }
+	        System.out.println("Looping search...");
+		}
 		//TODO:Check if touched, and notice the entity to activate
 		if(!isLoaded) {
 			EntityPlayer player = ModuleMob.playerMap.get(new BlockPos(this));
 			if(player != null) {
 				TileSentryRay another = ModuleMob.tileMap.get(player);
-				if(another == null)
+				if(another == null || another.isInvalid())
 					ModuleMob.tileMap.put(player, this);
 				else {
 					linkedBlock = another;
@@ -75,11 +104,21 @@ public class TileSentryRay extends TileEntity {
 			} else isActivated = false;
 			isLoaded = true;
 		}
-		
-		if(++tickSinceLastUpdate > 40) {
+		if(linkedBlock != null) {
+			Vec3 offset = getRayOffset();
+			Vec3 vec0 = worldObj.getWorldVec3Pool().getVecFromPool(xCoord, yCoord, zCoord).addVector(offset.xCoord, offset.yCoord, offset.zCoord);
+			offset = linkedBlock.getRayOffset();
+			Vec3 vec1 = worldObj.getWorldVec3Pool().getVecFromPool(linkedBlock.xCoord, linkedBlock.yCoord, linkedBlock.zCoord).addVector(offset.xCoord, offset.yCoord, offset.zCoord);
+			MovingObjectPosition result = BulletManager.rayTraceEntities(GenericUtils.selectorLiving, worldObj, vec0, vec1);
+			if(result != null) {
+				if(linkedSentry != null)
+					this.linkedSentry.activate();
+				else CBCMod.log.severe("Why didn't I find my target?");
+			}
+		}
+		if(++tickSinceLastUpdate > 20) {
 			tickSinceLastUpdate = 0;
-			if(linkedBlock != null)
-				NetSentrySync.sendSyncPacket(this);
+			NetSentrySync.sendSyncPacket(this);
 		}
 	}
 	
@@ -140,17 +179,11 @@ public class TileSentryRay extends TileEntity {
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        Entity e = worldObj.getEntityByID(nbt.getInteger("sentry"));
-        if(e != null && EntitySentry.class.isInstance(e))
-        	linkedSentry = (EntitySentry) e;
         
-        int x = nbt.getInteger("linkX"), y = nbt.getInteger("linkY"), z = nbt.getInteger("linkZ");
-        TileEntity te = worldObj.getBlockTileEntity(x, y, z);
-        if(te != null && te instanceof TileSentryRay) {
-        	linkedBlock = (TileSentryRay) te;
-        	NetSentrySync.sendSyncPacket(this);
-        }
-        
+        sentryId = nbt.getInteger("sentry");
+        linkedX = nbt.getInteger("linkX");
+        linkedY = nbt.getInteger("linkY");
+        linkedZ = nbt.getInteger("linkZ");
         isLoaded = nbt.getBoolean("isLoaded");
         isActivated = nbt.getBoolean("isActivated");
     }
