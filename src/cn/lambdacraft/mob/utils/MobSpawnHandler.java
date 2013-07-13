@@ -15,7 +15,7 @@ public class MobSpawnHandler {
 	 * 把一个奇怪的生物生成到世界中。
 	 */
 	public static Entity spawnCreature(World par0World,
-			Class<? extends Entity> c, EntityPlayer thrower) {
+			Class<? extends Entity> c, EntityLiving thrower, boolean front) {
 
 		Entity entity = null;
 
@@ -38,8 +38,12 @@ public class MobSpawnHandler {
 					* MathHelper.cos(thrower.rotationPitch / 180.0F
 							* (float) Math.PI) * f;
 			motionZ = motionZ + 0.5f;
+			if(front)
 			entityliving.setLocationAndAngles(thrower.posX + motionX * 2,
 					thrower.posY, thrower.posZ + motionZ * 2,
+					thrower.rotationYawHead, 0.0F);
+			else entityliving.setLocationAndAngles(thrower.posX,
+					thrower.posY, thrower.posZ,
 					thrower.rotationYawHead, 0.0F);
 			entityliving.rotationYawHead = entityliving.rotationYaw;
 			entityliving.renderYawOffset = entityliving.rotationYaw;

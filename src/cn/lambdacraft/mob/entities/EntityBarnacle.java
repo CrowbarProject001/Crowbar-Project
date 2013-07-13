@@ -41,10 +41,11 @@ public class EntityBarnacle extends EntityLiving {
 	public static HashMap<Entity, EntityBarnacle> pullingEntityMap = new HashMap();
 	
 	public double tentacleLength;
+
+	public boolean detach = false;
 	public Entity pullingEntity;
 	private int tickBeforeLastAttack = 0, timesEaten = 0;
-	private int tickBreaking = 0, fallingTick = 0;
-	private boolean falling;
+	private int tickBreaking = 0;
 	
 	public EntityBarnacle(World world, int blockX, int blockY, int blockZ) {
 		super(world);
@@ -81,12 +82,8 @@ public class EntityBarnacle extends EntityLiving {
 		if(this.hurtResistantTime > 0)
 			--this.hurtResistantTime;
 		
-		if(falling) {
-			++this.fallingTick;
-			this.motionY += 0.075;
-			this.moveEntity(0.0, motionY, 0.0);
-			if(fallingTick > 30)
-				this.setDead();
+		if(detach) {
+			super.onUpdate();
 			return;
 		}
 		this.updateTentacle();
@@ -148,10 +145,13 @@ public class EntityBarnacle extends EntityLiving {
 				stopPullingEntity();
 		}
 		//Check if barnacle could still exist
-		if(!this.falling && worldObj.getBlockId((int)posX, (int)posY + 1, (int)posZ - 1) == 0) {
-			this.setDead();
-			return;
-		}
+		if(worldObj.getBlockId((int)posX, (int)posY + 1, (int)posZ) == 0) {
+			health = 0;
+			detach = true;
+			motionY = 0.0;
+			motionX = (Math.random() - 0.5) * 0.2F;
+			motionZ = (Math.random() - 0.5) * 0.2F;
+		} else detach = false;
 	}
 	
 	private void updateTentacle() {
@@ -203,17 +203,6 @@ public class EntityBarnacle extends EntityLiving {
 		super.readEntityFromNBT(nbt);
 		tentacleLength = nbt.getDouble("tentacle");
 	}
-	
-	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
-    {
-		boolean b = super.attackEntityFrom(par1DamageSource, par2);
-		if(!worldObj.isRemote && health <= 0) {
-			falling = true;
-			this.fallingTick = 0;
-		}
-		return b;
-    }
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.entity.Entity#writeEntityToNBT(net.minecraft.nbt.NBTTagCompound)

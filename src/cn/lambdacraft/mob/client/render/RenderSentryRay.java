@@ -84,7 +84,7 @@ public class RenderSentryRay extends RendererSidedCube {
 			
 			t.startDrawingQuads();
 			t.setColorRGBA_F(1.0F, 0.2F, 0.2F, 0.65F);
-			t.setBrightness(255);
+			t.setBrightness(512);
 			RenderUtils.addVertex(v1, 0, 0);
 			RenderUtils.addVertex(v2, 0, 1);
 			RenderUtils.addVertex(v3, dist, 1);

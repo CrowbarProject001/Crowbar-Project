@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -31,11 +32,15 @@ import net.minecraft.world.World;
  * 
  */
 public class BlockWire extends BlockElectricalBase {
+	
+	public static final float  WIDTH = 0.16666666F;
 
 	public BlockWire(int par1) {
-		super(par1, Material.cloth);
+		super(par1, Material.cake);
 		this.setIconName("wire");
+		this.setStepSound(this.soundClothFootstep);
 		this.setUnlocalizedName("wire");
+		this.setHardness(1.0F);
 		this.setGuiId(-1);
 		this.setTileType(TileWire.class);
 	}
@@ -59,6 +64,56 @@ public class BlockWire extends BlockElectricalBase {
     public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
     	super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+    	TileWire tile = (TileWire) par1World.getBlockTileEntity(par2, par3, par4);
+    	float minA = 0.5F - WIDTH, maxA = 0.5F + WIDTH;
+    	float minX = 0.5F - WIDTH,
+    	minY = 0.5F - WIDTH,
+    	minZ = 0.5F - WIDTH,
+    	maxX = 0.5F + WIDTH,
+    	maxY = 0.5F + WIDTH,
+    	maxZ = 0.5F + WIDTH;
+    	
+    	//X方向
+    	boolean[] arr = tile.renderSides;
+    	if(arr[5]) 
+    		maxA = 1.0F;
+    	if(arr[4])
+    		minA = 0.0F;
+    	if(arr[5] || arr[4]) {
+    		setBlockBounds(minA, minY, minZ, maxA, maxY, maxZ);
+    		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+    	}
+    	
+    	if(arr[3])
+    		maxA = 1.0F;
+    	else maxA = 0.5F + WIDTH;
+    	if(arr[2])
+    		minA = 0.0F;
+    	else minA = 0.5F - WIDTH;
+    	if(arr[3] || arr[2]) {
+    		setBlockBounds(minX, minY, minA, maxX, maxY, maxA);
+    		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+    	}
+    	
+    	if(arr[1])
+    		maxA = 1.0F;
+    	else maxA = 0.5F + WIDTH;
+    	if(arr[0])
+    		minA = 0.0F;
+    	else minA = 0.5F - WIDTH;
+    	if(arr[1] || arr[0]) {
+    		setBlockBounds(minX, minA, minZ, maxX, maxA, maxZ);
+    		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+    	}
+    }
+    
+    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+    	minX = 0.5 - WIDTH;
+    	minY = 0.5 - WIDTH;
+    	minZ = 0.5 - WIDTH;
+    	maxX = 0.5 + WIDTH;
+    	maxY = 0.5 + WIDTH;
+    	maxZ = 0.5 + WIDTH;
     }
 
 }

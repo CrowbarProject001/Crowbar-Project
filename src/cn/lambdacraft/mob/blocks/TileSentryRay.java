@@ -14,10 +14,13 @@
  */
 package cn.lambdacraft.mob.blocks;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -37,60 +40,61 @@ public class TileSentryRay extends TileEntity {
 	public EntitySentry linkedSentry;
 	public TileSentryRay linkedBlock;
 	public boolean isLoaded;
-	
+
 	private int tickSinceLastUpdate = 0;
-	
+
 	public boolean isActivated;
-	
+
 	private int linkedX = 0, linkedY = 0, linkedZ = 0, sentryId = 0;
-	
+
 	/**
 	 * 
 	 */
 	public TileSentryRay() {
 	}
-	
+
 	public void connectWith(TileSentryRay another) {
 		this.linkedBlock = another;
 	}
-	
+
 	public void noticeSentry() {
 		linkedSentry.activate();
 	}
-	
+
 	@Override
 	public void updateEntity() {
-		if(linkedSentry != null && linkedSentry.isDead) {
+		if (linkedSentry != null && linkedSentry.isDead) {
 			isActivated = false;
 			linkedSentry = null;
 		}
-		if(linkedBlock != null && linkedBlock.isInvalid()) {
+		if (linkedBlock != null && linkedBlock.isInvalid()) {
 			linkedBlock = null;
 		}
-		if(worldObj.isRemote)
+		if (worldObj.isRemote)
 			return;
-		if(linkedX != 0 || linkedY != 0 || linkedZ != 0) {
-	        TileEntity te = worldObj.getBlockTileEntity(linkedX, linkedY, linkedZ);
-	        if(te != null && te instanceof TileSentryRay) {
-	        	linkedBlock = (TileSentryRay) te;
-	        	NetSentrySync.sendSyncPacket(this);
-	        }
-	        linkedX = linkedY = linkedZ = 0;
+		if (linkedX != 0 || linkedY != 0 || linkedZ != 0) {
+			TileEntity te = worldObj.getBlockTileEntity(linkedX, linkedY,
+					linkedZ);
+			if (te != null && te instanceof TileSentryRay) {
+				linkedBlock = (TileSentryRay) te;
+				NetSentrySync.sendSyncPacket(this);
+			}
+			linkedX = linkedY = linkedZ = 0;
 		}
-		if(sentryId != 0) {
+		if (sentryId != 0) {
 			Entity e = worldObj.getEntityByID(sentryId);
-	        if(e != null && EntitySentry.class.isInstance(e)) {
-	        	linkedSentry = (EntitySentry) e;
-	        	sentryId = 0;
-	        }
-	        System.out.println("Looping search...");
+			if (e != null && EntitySentry.class.isInstance(e)) {
+				linkedSentry = (EntitySentry) e;
+				sentryId = 0;
+			}
+			System.out.println("Looping search...");
 		}
-		//TODO:Check if touched, and notice the entity to activate
-		if(!isLoaded) {
+		// TODO:Check if touched, and notice the entity to activate
+		if (!isLoaded) {
 			EntityPlayer player = ModuleMob.playerMap.get(new BlockPos(this));
-			if(player != null) {
+			if (player != null) {
 				TileSentryRay another = ModuleMob.tileMap.get(player);
-				if(another == null || another.isInvalid())
+				if (another == null || another.isInvalid())
 					ModuleMob.tileMap.put(player, this);
 				else {
 					linkedBlock = another;
@@ -101,109 +105,131 @@ public class TileSentryRay extends TileEntity {
 					NetSentrySync.sendSyncPacket(this);
 					isActivated = true;
 				}
-			} else isActivated = false;
+			} else
+				isActivated = false;
 			isLoaded = true;
 		}
-		if(linkedBlock != null) {
+		if (linkedBlock != null) {
 			Vec3 offset = getRayOffset();
-			Vec3 vec0 = worldObj.getWorldVec3Pool().getVecFromPool(xCoord, yCoord, zCoord).addVector(offset.xCoord, offset.yCoord, offset.zCoord);
+			Vec3 vec0 = worldObj.getWorldVec3Pool()
+					.getVecFromPool(xCoord, yCoord, zCoord)
+					.addVector(offset.xCoord, offset.yCoord, offset.zCoord);
 			offset = linkedBlock.getRayOffset();
-			Vec3 vec1 = worldObj.getWorldVec3Pool().getVecFromPool(linkedBlock.xCoord, linkedBlock.yCoord, linkedBlock.zCoord).addVector(offset.xCoord, offset.yCoord, offset.zCoord);
-			MovingObjectPosition result = BulletManager.rayTraceEntities(GenericUtils.selectorLiving, worldObj, vec0, vec1);
-			if(result != null) {
-				if(linkedSentry != null)
+			Vec3 vec1 = worldObj
+					.getWorldVec3Pool()
+					.getVecFromPool(linkedBlock.xCoord, linkedBlock.yCoord,
+							linkedBlock.zCoord)
+					.addVector(offset.xCoord, offset.yCoord, offset.zCoord);
+			MovingObjectPosition result = BulletManager.rayTraceEntities(
+					GenericUtils.selectorLiving, worldObj, vec0, vec1);
+			if (result != null) {
+				if (linkedSentry != null)
 					this.linkedSentry.activate();
-				else CBCMod.log.severe("Why didn't I find my target?");
+				else
+					CBCMod.log.severe("Why didn't I find my target?");
 			}
 		}
-		if(++tickSinceLastUpdate > 20) {
+		if (++tickSinceLastUpdate > 20) {
 			tickSinceLastUpdate = 0;
 			NetSentrySync.sendSyncPacket(this);
 		}
 	}
-	
+
 	public Vec3 getRayOffset() {
 		double x = 0.0, y = 0.0, z = 0.0;
 		float var6 = BlockSentryRay.HEIGHT;
 		float var7 = BlockSentryRay.WIDTH;
-		switch(this.blockMetadata) {
-		case 5 :
+		switch (this.blockMetadata) {
+		case 5:
 			y += 0.5;
 			z += 0.5;
 			x += 2 * var6;
 			break;
-		case 4 :
+		case 4:
 			y += 0.5;
 			z += 0.5;
 			x += 1 - 2 * var6;
 			break;
-		case 3 :
+		case 3:
 			y += 0.5;
 			x += 0.5;
 			z += 2 * var6;
 			break;
-		case 2 :
+		case 2:
 			y += 0.5;
 			x += 0.5;
 			z += 1 - 2 * var6;
 			break;
-		case 1 :
+		case 1:
 			x += 0.5;
 			z += 0.5;
 			y += 2 * var6;
 			break;
-		case 0 :
+		case 0:
 			x += 0.5;
 			z += 0.5;
-			y += 1- 2 * var6;
+			y += 1 - 2 * var6;
 			break;
 		default:
 			break;
 		}
 		return Vec3.createVectorHelper(x, y, z);
 	}
-	
+
 	protected void sendChatToPlayer(EntityPlayer player, EntitySentry sentry) {
-		if(worldObj.isRemote)
+		if (worldObj.isRemote)
 			return;
-		StringBuilder sb = new StringBuilder("---------HECU Special Force---------\n");
-		sb.append(EnumChatFormatting.RED).append("Sentry ID : ").append(EnumChatFormatting.RED).append(sentry.entityId).append("\n").
-			append(EnumChatFormatting.GREEN).append("Sentry Ray Successfully Deployed.");
+		StringBuilder sb = new StringBuilder(
+				"---------HECU Special Force---------\n");
+		sb.append(EnumChatFormatting.RED).append("Sentry ID : ")
+				.append(EnumChatFormatting.RED).append(sentry.entityId)
+				.append("\n").append(EnumChatFormatting.GREEN)
+				.append("Sentry Ray Successfully Deployed.");
 		player.sendChatToPlayer(sb.toString());
 	}
-	
-    /**
-     * Reads a tile entity from NBT.
-     */
-	@Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        
-        sentryId = nbt.getInteger("sentry");
-        linkedX = nbt.getInteger("linkX");
-        linkedY = nbt.getInteger("linkY");
-        linkedZ = nbt.getInteger("linkZ");
-        isLoaded = nbt.getBoolean("isLoaded");
-        isActivated = nbt.getBoolean("isActivated");
-    }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
+	@SideOnly(Side.CLIENT)
+	public AxisAlignedBB getRenderBoundingBox() {
+		AxisAlignedBB bb = INFINITE_EXTENT_AABB;
+		if(linkedBlock == null)
+		bb = AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord,
+				xCoord + 1, yCoord + 1, zCoord + 1);
+		else
+			bb = AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord,
+					linkedBlock.xCoord + 1, linkedBlock.yCoord + 1, linkedBlock.zCoord + 1);
+		return bb;
+	}
+
+	/**
+	 * Reads a tile entity from NBT.
+	 */
 	@Override
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        if(linkedSentry != null)
-        	nbt.setInteger("sentry", linkedSentry.entityId);
-        if(linkedBlock != null) {
-        	nbt.setInteger("linkX", linkedBlock.xCoord);
-        	nbt.setInteger("linkY", linkedBlock.yCoord);
-        	nbt.setInteger("linkZ", linkedBlock.zCoord);
-        }
-        nbt.setBoolean("isLoaded", isLoaded);
-        nbt.setBoolean("isActivated", isActivated);
-    }
+	public void readFromNBT(NBTTagCompound nbt) {
+		super.readFromNBT(nbt);
+
+		sentryId = nbt.getInteger("sentry");
+		linkedX = nbt.getInteger("linkX");
+		linkedY = nbt.getInteger("linkY");
+		linkedZ = nbt.getInteger("linkZ");
+		isLoaded = nbt.getBoolean("isLoaded");
+		isActivated = nbt.getBoolean("isActivated");
+	}
+
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+		super.writeToNBT(nbt);
+		if (linkedSentry != null)
+			nbt.setInteger("sentry", linkedSentry.entityId);
+		if (linkedBlock != null) {
+			nbt.setInteger("linkX", linkedBlock.xCoord);
+			nbt.setInteger("linkY", linkedBlock.yCoord);
+			nbt.setInteger("linkZ", linkedBlock.zCoord);
+		}
+		nbt.setBoolean("isLoaded", isLoaded);
+		nbt.setBoolean("isActivated", isActivated);
+	}
 
 }

@@ -14,11 +14,15 @@
  */
 package cn.lambdacraft.crafting.blocks.tile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.api.LCDirection;
 import cn.lambdacraft.api.energy.tile.IEnConductor;
 import cn.lambdacraft.api.energy.tile.IEnergyTile;
 import cn.lambdacraft.core.block.TileElectrical;
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 
 /**
@@ -43,8 +47,6 @@ public class TileWire extends TileElectrical implements IEnConductor {
 	}
 
 	public void updateSides() {
-		if (!worldObj.isRemote)
-			return;
 		ForgeDirection[] dirs = ForgeDirection.values();
 		for (int i = 0; i < 6; i++) {
 			TileEntity ent = worldObj.getBlockTileEntity(xCoord
@@ -95,4 +97,12 @@ public class TileWire extends TileElectrical implements IEnConductor {
 	public boolean emitEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
 		return true;
 	}
+	
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        AxisAlignedBB bb = INFINITE_EXTENT_AABB;
+        bb = AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+        return bb;
+    }
 }

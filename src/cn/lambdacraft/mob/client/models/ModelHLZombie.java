@@ -165,8 +165,8 @@ public class ModelHLZombie extends ModelBase {
         this.leftleg.rotateAngleY = 0.0F;
         this.leftarm.rotateAngleY = 0.0F;
         this.rightarm.rotateAngleY = 0.0F;
-        this.leftarm.rotateAngleX = -0.2F + MathHelper.cos(f * 0.6662F) * 2.0F * f1 * 0.2F;
-        this.rightarm.rotateAngleX = -0.50F + MathHelper.cos(f * 0.6662F + (float)Math.PI) * 2.0F * f1 * 0.2F;
+        this.leftarm.rotateAngleX = -1.1F + MathHelper.cos(f * 0.6662F) * 2.0F * f1 * 0.2F;
+        this.rightarm.rotateAngleX = -1.25F + MathHelper.cos(f * 0.6662F + (float)Math.PI) * 2.0F * f1 * 0.2F;
         if(zombie.isBurning()) {
         	this.leftarm.rotateAngleX = -2.8797932658F;
         	this.rightarm.rotateAngleX = -2.9321531F;

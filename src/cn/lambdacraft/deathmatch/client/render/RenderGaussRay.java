@@ -68,7 +68,7 @@ public class RenderGaussRay extends RenderEntity {
 		GL11.glTranslatef(0, -0.4F, 0);
 		// drawing>)
 		tessellator.startDrawingQuads();
-		tessellator.setBrightness(255);
+		tessellator.setBrightness(512);
 		
 		addVertex(v1, 0, 0);
 		addVertex(v2, 0, 1);

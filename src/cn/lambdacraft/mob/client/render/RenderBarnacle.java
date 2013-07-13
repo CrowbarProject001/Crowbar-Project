@@ -53,49 +53,55 @@ public class RenderBarnacle extends Render {
 		GL11.glTranslatef((float) par2, (float) par4 + 2 * entity.height,
 				(float) par6);
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
+		GL11.glTranslatef(0.0F, 1.5F, 0.0F);
+		if(barnacle.getHealth() <= 0)
+			GL11.glRotatef(barnacle.deathTime * 6.5F, 1.0F, 0.0F, -1.0F);
+		GL11.glTranslatef(0.0F, -1.5F, 0.0F);
 		this.model.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F,
 				0.0625F);
+	
+		if(barnacle.getHealth() > 0) {
+			//Barnacle Tentacle Render
+			double length = barnacle.tentacleLength;
+			double h1 = 0.5, h2 = length + 1.0;
+			Vec3 v1 = RenderUtils.newV3(-WIDTH, h1, -WIDTH),
+				 v2 = RenderUtils.newV3(-WIDTH, h1, WIDTH),
+				 v3 = RenderUtils.newV3(WIDTH, h1, WIDTH),
+				 v4 = RenderUtils.newV3(WIDTH, h1, -WIDTH);
+			Vec3 v5 = RenderUtils.newV3(-WIDTH, h1, -WIDTH),
+					 v6 = RenderUtils.newV3(-WIDTH, h2, WIDTH),
+					 v7 = RenderUtils.newV3(WIDTH, h2, WIDTH),
+					 v8 = RenderUtils.newV3(WIDTH, h2, -WIDTH);
+			this.loadTexture(ClientProps.BARNACLE_TENTACLE_PATH);
+			if(barnacle.hurtResistantTime > 10)
+				GL11.glColor3f(1.0F, 0.5F, 0.5F);
+			t.startDrawingQuads();
+			RenderUtils.addVertex(v1, 0.0, 0.0);
+			RenderUtils.addVertex(v5, 0.0, length);
+			RenderUtils.addVertex(v6, 1.0, length);
+			RenderUtils.addVertex(v2, 1.0, 0.0);
 		
-		//Barnacle Tentacle Render
-		double length = barnacle.tentacleLength;
-		double h1 = 0.5, h2 = length + 1.0;
-		Vec3 v1 = RenderUtils.newV3(-WIDTH, h1, -WIDTH),
-			 v2 = RenderUtils.newV3(-WIDTH, h1, WIDTH),
-			 v3 = RenderUtils.newV3(WIDTH, h1, WIDTH),
-			 v4 = RenderUtils.newV3(WIDTH, h1, -WIDTH);
-		Vec3 v5 = RenderUtils.newV3(-WIDTH, h1, -WIDTH),
-				 v6 = RenderUtils.newV3(-WIDTH, h2, WIDTH),
-				 v7 = RenderUtils.newV3(WIDTH, h2, WIDTH),
-				 v8 = RenderUtils.newV3(WIDTH, h2, -WIDTH);
-		this.loadTexture(ClientProps.BARNACLE_TENTACLE_PATH);
-		if(barnacle.hurtResistantTime > 10)
-			GL11.glColor3f(1.0F, 0.5F, 0.5F);
-		t.startDrawingQuads();
-		RenderUtils.addVertex(v1, 0.0, 0.0);
-		RenderUtils.addVertex(v5, 0.0, length);
-		RenderUtils.addVertex(v6, 1.0, length);
-		RenderUtils.addVertex(v2, 1.0, 0.0);
+			RenderUtils.addVertex(v2, 0.0, 0.0);
+			RenderUtils.addVertex(v6, 0.0, length);
+			RenderUtils.addVertex(v7, 1.0, length);
+			RenderUtils.addVertex(v3, 1.0, 0.0);
 		
-		RenderUtils.addVertex(v2, 0.0, 0.0);
-		RenderUtils.addVertex(v6, 0.0, length);
-		RenderUtils.addVertex(v7, 1.0, length);
-		RenderUtils.addVertex(v3, 1.0, 0.0);
+			RenderUtils.addVertex(v3, 0.0, 0.0);
+			RenderUtils.addVertex(v7, 0.0, length);
+			RenderUtils.addVertex(v8, 1.0, length);
+			RenderUtils.addVertex(v4, 1.0, 0.0);
 		
-		RenderUtils.addVertex(v3, 0.0, 0.0);
-		RenderUtils.addVertex(v7, 0.0, length);
-		RenderUtils.addVertex(v8, 1.0, length);
-		RenderUtils.addVertex(v4, 1.0, 0.0);
+			RenderUtils.addVertex(v4, 0.0, 0.0);
+			RenderUtils.addVertex(v8, 0.0, length);
+			RenderUtils.addVertex(v5, 1.0, length);
+			RenderUtils.addVertex(v1, 1.0, 0.0);
 		
-		RenderUtils.addVertex(v4, 0.0, 0.0);
-		RenderUtils.addVertex(v8, 0.0, length);
-		RenderUtils.addVertex(v5, 1.0, length);
-		RenderUtils.addVertex(v1, 1.0, 0.0);
-		
-		RenderUtils.addVertex(v8, 0.0, 0.0);
-		RenderUtils.addVertex(v7, 0.0, 0.1);
-		RenderUtils.addVertex(v6, 0.1, 0.1);
-		RenderUtils.addVertex(v5, 0.1, 0.0);
-		t.draw();
+			RenderUtils.addVertex(v8, 0.0, 0.0);
+			RenderUtils.addVertex(v7, 0.0, 0.1);
+			RenderUtils.addVertex(v6, 0.1, 0.1);
+			RenderUtils.addVertex(v5, 0.1, 0.0);
+			t.draw();
+		}
 		GL11.glColor3f(1.0F,1.0F,1.0F);
 		GL11.glPopMatrix();
 	}

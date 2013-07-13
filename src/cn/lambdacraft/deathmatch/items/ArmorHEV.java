@@ -81,9 +81,10 @@ public class ArmorHEV extends ElectricArmor {
 			DamageSource source, double damage, int slot) {
 		if (getItemCharge(armor) <= this.energyPerDamage)
 			return propNone;
-		if(this.hasAttach(armor, EnumAttachment.DEFENSE)) {
+		EnumSet<EnumAttachment> attaches = this.getAttachments(armor);
+		if(attaches.contains(EnumAttachment.DEFENSE)) {
 			if (source == DamageSource.fall) {
-				if (slot == 0)
+				if (slot == 0 && attaches.contains(EnumAttachment.FALLING))
 					return propShoeFalling;
 				else
 					return propNone;
@@ -91,7 +92,7 @@ public class ArmorHEV extends ElectricArmor {
 			return slot == 2 ? propChest_defense : (slot == 0 ? propShoe_defense : propDefault_defense);
 		} else {
 			if (source == DamageSource.fall) {
-				if (slot == 0)
+				if (slot == 0 && attaches.contains(EnumAttachment.FALLING))
 					return propShoeFalling;
 				else
 					return propNone;
@@ -143,7 +144,7 @@ public class ArmorHEV extends ElectricArmor {
 	//---------------------Attachment Part------------------------//
 	public static enum EnumAttachment {
 		
-		LONGJUMP(1), BHOP(2), ELECTRICITY(-1), DEFENSE(-1);
+		LONGJUMP(1), BHOP(2), ELECTRICITY(-1), DEFENSE(-1), FALLING(3);
 		
 		private int slot;
 
@@ -199,7 +200,7 @@ public class ArmorHEV extends ElectricArmor {
 			if(a != null)
 				attaches.add(a);
 		}
-		return attaches.isEmpty() ? null : attaches;
+		return attaches;
 	}
 	
 	/**

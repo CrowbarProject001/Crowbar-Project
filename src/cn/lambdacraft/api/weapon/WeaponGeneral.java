@@ -35,6 +35,7 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 	public WeaponGeneral(int par1, int par2AmmoID, int par3MaxModes) {
 		super(par1);
 		setMaxStackSize(1);
+		this.setFull3D();
 		maxModes = par3MaxModes;
 		ammoID = par2AmmoID;
 	}

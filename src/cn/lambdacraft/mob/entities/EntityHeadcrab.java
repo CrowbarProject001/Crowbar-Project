@@ -19,11 +19,13 @@ import java.util.List;
 import cn.lambdacraft.api.entities.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.GenericUtils;
+import cn.lambdacraft.mob.utils.MobSpawnHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
@@ -35,17 +37,24 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public class EntityHeadcrab extends EntityMob {
+public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLiving> {
 
 	public static final float MOVE_SPEED = 0.5F;
-	public int lastJumpTick = 0;
+	public int lastJumpTick = 0, tickSinceBite = 0;
+	public EntityLiving thrower, attacher;
 
 	public EntityHeadcrab(World par1World) {
 		super(par1World);
 		this.texture = ClientProps.HEADCRAB_MOB_PATH;
-		this.setSize(0.6F, 0.3F);
+		this.setSize(0.4F, 0.3F);
 		this.moveSpeed = MOVE_SPEED;
 		this.experienceValue = 5;
+	}
+	
+	@Override
+	public void entityInit() {
+		super.entityInit();
+		dataWatcher.addObject(20, Integer.valueOf((byte) 0));
 	}
 
 	@Override
@@ -61,8 +70,65 @@ public class EntityHeadcrab extends EntityMob {
 		boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), i);
 		this.motionX = 0.0;
 		this.motionZ = 0.0;
+		if(par1Entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) par1Entity;
+			ItemStack armorStack = player.inventory.armorInventory[3];
+			if(armorStack == null) {
+				attacher = player;
+				player.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 100));
+				player.addPotionEffect(new PotionEffect(Potion.confusion.getId(), 100));
+				this.setPositionAndRotation(attacher.posX, attacher.posY + 0.05, attacher.posZ, attacher.rotationYaw, attacher.rotationPitch);
+			} else {
+				armorStack.damageItem(20, this);
+			}
+		}
 		return flag;
 	}
+	
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+		
+		if(attacher != null) {
+			this.setPositionAndRotation(attacher.posX, attacher.posY + 0.05, attacher.posZ, attacher.rotationYaw, attacher.rotationPitch);
+			if(++tickSinceBite >= 15) {
+				dataWatcher.updateObject(20, Integer.valueOf(attacher.entityId));
+				tickSinceBite = 0;
+				int health = attacher.getHealth() - 1;
+				if(!(attacher instanceof EntityPlayer && ((EntityPlayer)attacher).capabilities.isCreativeMode)) {
+					attacher.setEntityHealth(health);
+					
+					if(health <= 0 && !worldObj.isRemote) {
+						attacher = null;
+						MobSpawnHandler.spawnCreature(worldObj, EntityHLZombie.class, this, false);
+						dataWatcher.updateObject(20, Integer.valueOf(0));
+						this.setDead();
+					}
+				}
+			}
+			if(attacher != null && attacher.isDead) {
+				attacher = null;
+			}
+		} else {
+			if(worldObj.isRemote) {
+				int id = dataWatcher.getWatchableObjectInt(20);
+				Entity e = worldObj.getEntityByID(id);
+				if(e != null && e instanceof EntityLiving)
+					attacher = (EntityLiving) e;
+			} else {
+				dataWatcher.updateObject(20, Integer.valueOf(0));
+			}
+		}
+	}
+	
+    /**
+     * Disables a mob's ability to move on its own while true.
+     */
+	@Override
+    protected boolean isMovementCeased()
+    {
+        return attacher != null;
+    }
 
 	/**
 	 * 头蟹掉落不受伤害=w=
@@ -87,7 +153,7 @@ public class EntityHeadcrab extends EntityMob {
 
 	/**
 	 * 自定义的寻路函数，
-	 */
+	 *
 	@Override
 	protected Entity findPlayerToAttack() {
 		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(posX - 8.0,
@@ -97,6 +163,8 @@ public class EntityHeadcrab extends EntityMob {
 		EntityLiving entity = null;
 		double distance = 10000.0F;
 		for (EntityLiving s : list) {
+			if(thrower != null && s.equals(thrower))
+				continue;
 			double dx = s.posX - posX, dy = s.posY - posY, dz = s.posZ - posZ;
 			double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
 			if (d < distance) {
@@ -108,7 +176,10 @@ public class EntityHeadcrab extends EntityMob {
 			return null;
 		return entity;
 	}
-
+	*/
+	
+	
+	
 	/**
 	 * Returns the sound this mob makes while it's alive.
 	 */
@@ -198,6 +269,16 @@ public class EntityHeadcrab extends EntityMob {
 	 */
 	@Override
 	public int getAttackStrength(Entity par1Entity) {
-		return 16;
+		return 6;
+	}
+
+	@Override
+	public EntityLiving getLinkedEntity() {
+		return thrower;
+	}
+
+	@Override
+	public void setLinkedEntity(EntityLiving entity) {
+		thrower = entity;
 	}
 }

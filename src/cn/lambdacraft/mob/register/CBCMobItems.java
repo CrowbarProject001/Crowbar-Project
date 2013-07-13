@@ -18,9 +18,9 @@ public class CBCMobItems {
 	public static void init(Config conf) {
 		weapon_snark = new LCMobSpawner(GeneralRegistry.getItemId("snark",
 				1));
-		headcrab0w0 = new LCMobSpawner(GeneralRegistry.getItemId("headcrab", 1), EntityHeadcrab.class, "headcrab");
-		barnacle = new ItemBarnaclePlacer(GeneralRegistry.getItemId("barnacle", 1));
-		zombie = new LCMobSpawner(GeneralRegistry.getItemId("zombie", 1), EntityHLZombie.class, "zombie");
+		headcrab0w0 = new LCMobSpawner(GeneralRegistry.getItemId("headcrab", 1), EntityHeadcrab.class, "headcrab").setIconName("egg5");
+		barnacle = new ItemBarnaclePlacer(GeneralRegistry.getItemId("barnacle", 1)).setIconName("egg0");
+		zombie = new LCMobSpawner(GeneralRegistry.getItemId("zombie", 1), EntityHLZombie.class, "zombie").setIconName("egg3");
 		turret = new LCMobSpawner(GeneralRegistry.getItemId("turret", 1), EntitySentry.class, "turret");
 		sentrySyncer = new ItemSentrySyncer(GeneralRegistry.getItemId("syncer", 1));
 		
