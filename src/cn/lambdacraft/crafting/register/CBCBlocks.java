@@ -25,6 +25,7 @@ import cn.lambdacraft.crafting.blocks.tile.TileGeneratorSolar;
 import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
 import cn.lambdacraft.crafting.blocks.tile.TileWire;
 import cn.lambdacraft.crafting.items.CBCBucket;
+import cn.lambdacraft.intergration.ic2.tile.ItemBlockIC2;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowing;
 import net.minecraft.block.BlockStationary;
@@ -92,20 +93,31 @@ public class CBCBlocks {
 		ModLoader.registerBlock(radioActiveFlowing);
 		
 		if(!CBCMod.ic2Installed) {
+			
 			elCrafter = new BlockElectricCrafter(GeneralRegistry.getBlockId(
 					"elCrafter", 0));
+			ModLoader.registerBlock(elCrafter);
+			ModLoader.registerTileEntity(TileElCrafter.class,
+					"tile_entity_elcrafter");
+			
 			ModLoader.registerBlock(wire);
 			ModLoader.registerBlock(storageS);
 			ModLoader.registerBlock(storageL);
+			
 			ModLoader.registerBlock(genLava);
 			ModLoader.registerBlock(genSolar);
 			ModLoader.registerBlock(genFire);
 			ModLoader.registerBlock(genMugen);
-			ModLoader.registerBlock(elCrafter);
-			ModLoader.registerTileEntity(TileElCrafter.class,
-					"tile_entity_elcrafter");
+			
+		} else {
+			
+			ModLoader.registerBlock(wire, ItemBlockIC2.class);
+			ModLoader.registerBlock(storageS, ItemBlockIC2.class);
+			ModLoader.registerBlock(storageL, ItemBlockIC2.class);
+			
 		}
-		// TODO:添加其他房客的Harvest Level
+		
+		// TODO:添加其他方块的Harvest Level
 		MinecraftForge.setBlockHarvestLevel(uraniumOre, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(blockRefined, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(weaponCrafter, "pickaxe", 1);

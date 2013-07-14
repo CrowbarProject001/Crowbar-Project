@@ -145,7 +145,7 @@ public class EntityBarnacle extends EntityLiving {
 				stopPullingEntity();
 		}
 		//Check if barnacle could still exist
-		if(worldObj.getBlockId((int)posX, (int)posY + 1, (int)posZ) == 0) {
+		if(worldObj.getBlockId(MathHelper.floor_double(posX), (int)posY + 1, MathHelper.floor_double(posZ)) == 0) {
 			health = 0;
 			detach = true;
 			motionY = 0.0;

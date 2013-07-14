@@ -498,7 +498,6 @@ public class CBCItems {
 				if (s != null) {
 					if (s.itemID == itemToRepair.itemID) {
 						if (theItem != null) {
-							System.out.println("more than 1 cntItem ");
 							return null;
 						}
 						theItem = s;
@@ -507,7 +506,6 @@ public class CBCItems {
 				}
 			}
 			if (theItem == null) {
-				System.out.println("No");
 				return null;
 			}
 			int damage = theItem.getItemDamage();
