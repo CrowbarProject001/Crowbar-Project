@@ -8,6 +8,7 @@ import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
@@ -70,19 +71,19 @@ public class RenderEgonRay extends RenderEntity {
 		}
 
 		// Translations and rotations
-		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		GL11.glTranslatef((float) par2, (float) par4, (float) par6);
 		GL11.glRotatef(270.0F - egon.rotationYaw, 0.0F, 1.0F, 0.0F); // 左右旋转
 		GL11.glRotatef(egon.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.6F);
 		// GL11.glRotatef(angle, 1.0F, 0, 0);
 		this.loadTexture(ClientProps.EGON_BEAM_PATH[0]);
-
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA(255, 255, 255, 200);
-		tessellator.setBrightness(512);
+		tessellator.setColorRGBA(255, 255, 255, 150);
+		tessellator.setBrightness(15728880);
 		
 		addVertex(v1, 0 + du, 0);
 		addVertex(v2, 0 + du, 1);
@@ -108,8 +109,8 @@ public class RenderEgonRay extends RenderEntity {
 
 		this.loadTexture(ClientProps.EGON_BEAM_PATH[1]);
 		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA(200, 200, 200, 200);
-		tessellator.setBrightness(255);
+		tessellator.setColorRGBA(255, 255, 255, 150);
+		tessellator.setBrightness(15728880);
 		float dt = 0.5f;
 		for (int i = 0; i < 2 * IDENSITY - 1; i++) { // upper half
 			addVertex(vecs[i].addVector(tx, ty, tz), dt + i / 2.0 / IDENSITY,
@@ -130,9 +131,7 @@ public class RenderEgonRay extends RenderEntity {
 		}
 
 		tessellator.draw();
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glPopMatrix();
+ 		GL11.glPopMatrix();
 	}
 
 	protected int getTexture(String path) {

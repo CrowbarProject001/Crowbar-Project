@@ -136,8 +136,9 @@ public class EntityHLZombie extends EntityMob {
 		super.onDeath(par1DamageSource);
 		if (!this.worldObj.isRemote && !par1DamageSource.isFireDamage()) {
 			EntityHeadcrab entityHeadcrab = new EntityHeadcrab(this.worldObj);
-			entityHeadcrab.setLocationAndAngles(this.posX, this.posY, this.posZ, MathHelper.wrapAngleTo180_float(this.worldObj.rand.nextFloat() * 360.0F), 0.0F);
+			entityHeadcrab.setLocationAndAngles(this.posX, this.posY + this.height, this.posZ, MathHelper.wrapAngleTo180_float(this.worldObj.rand.nextFloat() * 360.0F), 0.0F);
 			this.worldObj.spawnEntityInWorld(entityHeadcrab);
+			entityHeadcrab.setEntityHealth(10);
 		}
 	}
 	

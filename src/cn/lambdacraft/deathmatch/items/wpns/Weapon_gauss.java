@@ -161,7 +161,7 @@ public class Weapon_Gauss extends WeaponGeneralEnergy {
 			return;
 		}
 		int damage = charge * 2 / 3;
-		double vel = charge / 12.0;
+		double vel = charge / 14.0;
 
 		MotionXYZ var0 = MotionXYZ.getPosByPlayer2(par3EntityPlayer);
 		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ

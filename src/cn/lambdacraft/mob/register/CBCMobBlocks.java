@@ -18,7 +18,7 @@ import net.minecraft.src.ModLoader;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.mob.blocks.BlockSentryRay;
-import cn.lambdacraft.mob.blocks.TileSentryRay;
+import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 
 /**
  * @author WeAthFolD

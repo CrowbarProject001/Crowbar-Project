@@ -1,5 +1,6 @@
 package cn.lambdacraft.deathmatch.client.render;
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Vec3;
 
@@ -29,9 +30,10 @@ public class RenderMuzzleFlash {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D,
 				RenderUtils.getTexture(ClientProps.getRandomMuzzleFlash()));
 		GL11.glTranslated(tx, ty + 0.1F, tz + 0.1F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		t.startDrawingQuads();
 		t.setNormal(0.0F, 0.0F, 1.0F);
-		t.setBrightness(255);
+		t.setBrightness(15728880);
 		addVertex(a1, u2, v2);
 		addVertex(a2, u1, v2);
 		addVertex(a3, u1, v1);

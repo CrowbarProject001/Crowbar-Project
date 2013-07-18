@@ -19,12 +19,17 @@ import java.util.List;
 import cn.lambdacraft.api.entities.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.GenericUtils;
+import cn.lambdacraft.mob.register.CBCMobItems;
 
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
@@ -41,8 +46,26 @@ import net.minecraft.world.World;
 public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> {
 
 	public static final float MOVE_SPEED = 2.0F;
-	private EntityPlayer thrower;
+	private String throwerName = "";
 
+	protected IEntitySelector selector = new IEntitySelector() {
+
+		@Override
+		public boolean isEntityApplicable(Entity entity) {
+			boolean b = GenericUtils.selectorLiving.isEntityApplicable(entity);
+			if(!b)
+				return false;
+			if(entity instanceof EntityPlayer) {
+				if(throwerName.equals(((EntityPlayer)entity).username))
+						return ticksExisted < 120;
+		    }
+			else if(entity instanceof EntitySnark)
+				return false;
+			return true;
+		}
+		
+	};
+	
 	public EntitySnark(World par1World) {
 		super(par1World);
 		this.texture = ClientProps.SQUEAK_MOB_PATH;
@@ -50,6 +73,16 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> 
 		this.moveSpeed = MOVE_SPEED;
 		this.experienceValue = 0;
 	}
+	
+    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+    {
+        return this.entityDropItem(new ItemStack(par1, par2, 3), par3);
+    }
+    
+    @Override
+    public int getDropItemId() {
+    	return CBCMobItems.bioTissue.itemID;
+    }
 
 	@Override
 	public int getMaxHealth() {
@@ -100,16 +133,12 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> 
 	protected Entity findPlayerToAttack() {
 		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(posX - 8.0,
 				posY - 8.0, posZ - 8.0, posX + 8.0, posY + 8.0, posZ + 8.0);
-		List<EntityLiving> list = worldObj
-				.getEntitiesWithinAABBExcludingEntity(this, boundingBox,
-						GenericUtils.selectorLiving);
+		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox,selector);
 		EntityLiving entity = null;
 		double distance = 10000.0F;
 		for (EntityLiving s : list) {
 			double dx = s.posX - posX, dy = s.posY - posY, dz = s.posZ - posZ;
 			double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-			if (s instanceof EntitySnark || (s == thrower && ticksExisted < 80))
-				continue;
 			if (d < distance) {
 				entity = s;
 				distance = d;
@@ -174,14 +203,6 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> 
 	}
 
 	/**
-	 * Returns the item ID for the item the mob drops on death.
-	 */
-	@Override
-	protected int getDropItemId() {
-		return 0;
-	}
-
-	/**
 	 * Drop 0-2 items of this living's type. @param par1 - Whether this entity
 	 * has recently been hit by a player. @param par2 - Level of Looting used to
 	 * kill this mob.
@@ -222,12 +243,26 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> 
 
 	@Override
 	public EntityPlayer getLinkedEntity() {
-		return thrower;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setLinkedEntity(EntityPlayer entity) {
-		this.thrower = entity;
+		this.throwerName = entity.username;
 	}
+	
+	@Override
+    public void writeEntityToNBT(NBTTagCompound nbt)
+    {
+    	super.writeEntityToNBT(nbt);
+    	nbt.setString("thrower", throwerName);
+    }
+	
+	@Override
+    public void readEntityFromNBT(NBTTagCompound nbt)
+    {
+    	super.readEntityFromNBT(nbt);
+    	throwerName = nbt.getString("thrower");
+    }
 
 }

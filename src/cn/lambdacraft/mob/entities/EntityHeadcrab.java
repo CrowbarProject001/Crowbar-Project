@@ -19,13 +19,18 @@ import java.util.List;
 import cn.lambdacraft.api.entities.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.GenericUtils;
+import cn.lambdacraft.mob.register.CBCMobItems;
 import cn.lambdacraft.mob.utils.MobSpawnHandler;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
@@ -37,12 +42,22 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLiving> {
+public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityPlayer> {
 
 	public static final float MOVE_SPEED = 0.5F;
 	public int lastJumpTick = 0, tickSinceBite = 0;
-	public EntityLiving thrower, attacher;
+	public EntityLiving attacher;
+	protected String throwerName = "";
 
+	public static IEntitySelector selector = new IEntitySelector() {
+
+		@Override
+		public boolean isEntityApplicable(Entity entity) {
+			return entity instanceof EntityPlayer || entity instanceof EntityVillager;
+		}
+		
+	};
+	
 	public EntityHeadcrab(World par1World) {
 		super(par1World);
 		this.texture = ClientProps.HEADCRAB_MOB_PATH;
@@ -75,12 +90,15 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLivin
 			ItemStack armorStack = player.inventory.armorInventory[3];
 			if(armorStack == null) {
 				attacher = player;
-				player.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 100));
-				player.addPotionEffect(new PotionEffect(Potion.confusion.getId(), 100));
+				player.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 200));
+				player.addPotionEffect(new PotionEffect(Potion.confusion.getId(), 200));
 				this.setPositionAndRotation(attacher.posX, attacher.posY + 0.05, attacher.posZ, attacher.rotationYaw, attacher.rotationPitch);
 			} else {
 				armorStack.damageItem(20, this);
 			}
+		} else if(par1Entity instanceof EntityVillager) {
+			attacher = (EntityLiving) par1Entity;
+			this.setPositionAndRotation(attacher.posX, attacher.posY + attacher.height + 0.05, attacher.posZ, attacher.rotationYaw, attacher.rotationPitch);
 		}
 		return flag;
 	}
@@ -90,7 +108,10 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLivin
 		super.onUpdate();
 		
 		if(attacher != null) {
-			this.setPositionAndRotation(attacher.posX, attacher.posY + 0.05, attacher.posZ, attacher.rotationYaw, attacher.rotationPitch);
+			if(attacher instanceof EntityPlayer)
+				this.setPositionAndRotation(attacher.posX, attacher.posY + 0.05, attacher.posZ, attacher.rotationYaw, attacher.rotationPitch);
+			else
+				this.setPositionAndRotation(attacher.posX, attacher.posY + attacher.height + 0.05, attacher.posZ, attacher.rotationYaw, attacher.rotationPitch);
 			if(++tickSinceBite >= 15) {
 				dataWatcher.updateObject(20, Integer.valueOf(attacher.entityId));
 				tickSinceBite = 0;
@@ -153,17 +174,17 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLivin
 
 	/**
 	 * 自定义的寻路函数，
-	 *
+	 */
 	@Override
 	protected Entity findPlayerToAttack() {
 		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(posX - 8.0,
 				posY - 8.0, posZ - 8.0, posX + 8.0, posY + 8.0, posZ + 8.0);
 		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox,
-						GenericUtils.selectorLiving);
+						selector);
 		EntityLiving entity = null;
 		double distance = 10000.0F;
 		for (EntityLiving s : list) {
-			if(thrower != null && s.equals(thrower))
+			if(s.getEntityName().equals(throwerName))
 				continue;
 			double dx = s.posX - posX, dy = s.posY - posY, dz = s.posZ - posZ;
 			double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
@@ -176,8 +197,6 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLivin
 			return null;
 		return entity;
 	}
-	*/
-	
 	
 	
 	/**
@@ -210,7 +229,7 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLivin
 	 */
 	@Override
 	protected void attackEntity(Entity par1Entity, float par2) {
-		if (par2 > 2.0F && par2 < 6.0F && this.rand.nextInt(10) == 0) {
+		if (par2 < 6.0F && this.rand.nextInt(6) == 0) {
 			if (this.onGround && ticksExisted - lastJumpTick > 30) {
 				double d0 = par1Entity.posX - this.posX;
 				double d1 = par1Entity.posZ - this.posZ;
@@ -225,22 +244,16 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLivin
 			super.attackEntity(par1Entity, par2);
 		}
 	}
-	/**
-	 * Returns the item ID for the item the mob drops on death.
-	 */
-	@Override
-	protected int getDropItemId() {
-		return 0;
-	}
-
-	/**
-	 * Drop 0-2 items of this living's type. @param par1 - Whether this entity
-	 * has recently been hit by a player. @param par2 - Level of Looting used to
-	 * kill this mob.
-	 */
-	@Override
-	protected void dropFewItems(boolean par1, int par2) {
-	}
+	
+    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+    {
+        return this.entityDropItem(new ItemStack(par1, par2, 0), par3);
+    }
+    
+    @Override
+    public int getDropItemId() {
+    	return CBCMobItems.bioTissue.itemID;
+    }
 
 	/**
 	 * Get this Entity's EnumCreatureAttribute
@@ -273,12 +286,26 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityLivin
 	}
 
 	@Override
-	public EntityLiving getLinkedEntity() {
-		return thrower;
+	public EntityPlayer getLinkedEntity() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void setLinkedEntity(EntityLiving entity) {
-		thrower = entity;
+	public void setLinkedEntity(EntityPlayer entity) {
+		throwerName = entity.username;
 	}
+	
+	@Override
+    public void writeEntityToNBT(NBTTagCompound nbt)
+    {
+    	super.writeEntityToNBT(nbt);
+    	nbt.setString("thrower", throwerName);
+    }
+	
+	@Override
+    public void readEntityFromNBT(NBTTagCompound nbt)
+    {
+    	super.readEntityFromNBT(nbt);
+    	throwerName = nbt.getString("thrower");
+    }
 }

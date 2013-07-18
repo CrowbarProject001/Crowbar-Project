@@ -30,7 +30,7 @@ import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.IChannelProcess;
-import cn.lambdacraft.mob.blocks.TileSentryRay;
+import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 
 /**
  * @author WeAthFolD

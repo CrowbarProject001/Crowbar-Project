@@ -38,8 +38,8 @@ public class CBCSoundEvents {
 			for (String[] path : pathSounds) {
 				snd = event.manager.soundPoolSounds.addSound(path[0],
 						CBCMod.class.getResource(path[1]));
-				// System.out.println("AddSound : " + snd.soundName + " URL: " +
-				// snd.soundUrl);
+				System.out.println("AddSound : " + snd.soundName + " URL: " +
+				 snd.soundUrl);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,6 +59,13 @@ public class CBCSoundEvents {
 	public static void addSoundPath(String name, String absPath) {
 		String[] s = { name + ".wav", absPath + ".wav" };
 		pathSounds.add(s);
+	}
+	
+	public static void addSoundWithVariety(String name, String absPath, int cnt) {
+		for(int i = 0; i < cnt; i ++) {
+			char ch = (char) ('a' + i);
+			addSoundPath(name + ch, absPath + ch);
+		}
 	}
 
 }

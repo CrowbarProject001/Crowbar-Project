@@ -57,7 +57,8 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 				EntityPlayer ep = (EntityPlayer) entity;
 				if(ep.username.equals(placerName))
 					return false;
-			}
+			} else if(entity instanceof EntitySentry)
+				return !((EntitySentry)entity).placerName.equals(placerName);
 			return GenericUtils.selectorLiving.isEntityApplicable(entity);
 		}
 		
@@ -189,6 +190,8 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 		this.prevRotationYawHead = this.rotationYawHead = (float) (Math.atan2(par1,
 				par5) * 180.0D / Math.PI);
 		float dyaw = rotationYawHead - lastRotationYaw;
+		if(dyaw > 180.0F || dyaw < -180.0F)
+			dyaw = -dyaw;
 		if(Math.abs(dyaw) > 20.0F) {
 			dyaw = dyaw > 0 ? 20.0F : -20.0F;
 			this.rotationYawHead = GenericUtils.wrapYawAngle(lastRotationYaw + dyaw);

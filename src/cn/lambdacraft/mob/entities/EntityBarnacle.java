@@ -20,9 +20,12 @@ import java.util.List;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
+import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -194,6 +197,16 @@ public class EntityBarnacle extends EntityLiving {
 		pullingEntity = null;
 		dataWatcher.updateObject(12, Integer.valueOf(0));
 	}
+	
+    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+    {
+        return this.entityDropItem(new ItemStack(par1, par2, 1), par3);
+    }
+    
+    @Override
+    public int getDropItemId() {
+    	return CBCMobItems.bioTissue.itemID;
+    }
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.entity.Entity#readEntityFromNBT(net.minecraft.nbt.NBTTagCompound)

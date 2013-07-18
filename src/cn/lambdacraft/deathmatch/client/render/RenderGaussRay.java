@@ -8,6 +8,7 @@ import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
@@ -67,8 +68,9 @@ public class RenderGaussRay extends RenderEntity {
 		GL11.glRotatef(7.5F, -1.0F, 0.0F, 0.0F);
 		GL11.glTranslatef(0, -0.4F, 0);
 		// drawing>)
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		tessellator.startDrawingQuads();
-		tessellator.setBrightness(512);
+		tessellator.setBrightness(15728880);
 		
 		addVertex(v1, 0, 0);
 		addVertex(v2, 0, 1);

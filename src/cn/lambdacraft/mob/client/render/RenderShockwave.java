@@ -14,6 +14,11 @@
  */
 package cn.lambdacraft.mob.client.render;
 
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.core.proxy.ClientProps;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 
@@ -34,10 +39,40 @@ public class RenderShockwave extends Render {
 	 * @see net.minecraft.client.renderer.entity.Render#doRender(net.minecraft.entity.Entity, double, double, double, float, float)
 	 */
 	@Override
-	public void doRender(Entity entity, double d0, double d1, double d2,
+	public void doRender(Entity entity, double x, double y, double z,
 			float f, float f1) {
-		// TODO Auto-generated method stub
-
+		Tessellator t = Tessellator.instance;
+		int tickTime = entity.ticksExisted;
+		this.loadTexture(ClientProps.SHOCKWAVE_PATH);
+		renderWave(t, x, y + 0.1, z, tickTime * 0.48F);
+		renderWave(t, x, y + 0.24, z, tickTime * 0.48F);
+		if(tickTime > 5) {
+			renderWave(t, x, y + 0.14, z, (tickTime - 5) * 0.55F);
+			renderWave(t, x, y + 0.25, z, (tickTime - 5) * 0.55F);
+		}
+	}
+	
+	protected void renderWave(Tessellator t, double x, double y, double z, float radius) {
+		GL11.glPushMatrix();
+		
+		GL11.glTranslated(x, y, z);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
+		t.startDrawingQuads();
+		t.setColorRGBA(255, 255, 255, 128);
+		t.setBrightness(15728880);
+		
+		t.addVertexWithUV(-radius, 0.0, -radius, 0.0, 0.0);
+		t.addVertexWithUV(-radius, 0.0, radius, 0.0, 1.0);
+		t.addVertexWithUV(radius, 0.0, radius, 1.0, 1.0);
+		t.addVertexWithUV(radius, 0.0, -radius, 1.0, 0.0);
+		
+		t.draw();
+		
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glPopMatrix();
 	}
 
 }

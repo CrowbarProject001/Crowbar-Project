@@ -19,6 +19,7 @@ import static net.minecraftforge.common.ForgeDirection.NORTH;
 import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;

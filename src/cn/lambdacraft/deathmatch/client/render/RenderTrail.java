@@ -9,6 +9,7 @@ import cn.lambdacraft.core.utils.SamplePoint;
 import cn.lambdacraft.deathmatch.entities.fx.EntityTrailFX;
 
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -62,13 +63,15 @@ public class RenderTrail extends Render {
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			GL11.glDisable(GL11.GL_CULL_FACE);
-			if(!hasLight)
+			if(!hasLight) {
 				GL11.glDisable(GL11.GL_LIGHTING);
+				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
+			}
 			
 			t.startDrawingQuads();
 			t.setColorRGBA_F(0.8F, 0.8F, 0.8F, alpha);
 			if(!hasLight)
-				t.setBrightness(255);
+				t.setBrightness(15728880);
 			
 			RenderUtils.addVertex(v1, 0, 0);
 			RenderUtils.addVertex(v2, 0, 1);

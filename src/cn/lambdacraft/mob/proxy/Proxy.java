@@ -21,4 +21,8 @@ package cn.lambdacraft.mob.proxy;
 public class Proxy {
 	public void init() {
 	}
+	
+	public void preInit() {
+		
+	}
 }

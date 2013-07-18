@@ -23,7 +23,7 @@ import net.minecraft.util.Vec3;
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.client.render.RendererSidedCube;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.mob.blocks.TileSentryRay;
+import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
 
 

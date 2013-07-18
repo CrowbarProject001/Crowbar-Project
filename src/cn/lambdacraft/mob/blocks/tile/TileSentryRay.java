@@ -12,10 +12,13 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cn.lambdacraft.mob.blocks;
+package cn.lambdacraft.mob.blocks.tile;
+
+import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +32,7 @@ import cn.lambdacraft.core.utils.BlockPos;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.mob.ModuleMob;
+import cn.lambdacraft.mob.blocks.BlockSentryRay;
 import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.network.NetSentrySync;
 
@@ -45,13 +49,22 @@ public class TileSentryRay extends TileEntity {
 
 	public boolean isActivated;
 
-	private int linkedX = 0, linkedY = 0, linkedZ = 0, sentryId = 0;
+	private int linkedX = 0, linkedY = 0, linkedZ = 0;
 
-	/**
-	 * 
-	 */
-	public TileSentryRay() {
-	}
+	private long sentryId;
+	private double senX, senY, senZ;
+	
+	public IEntitySelector selector = new IEntitySelector() {
+
+		@Override
+		public boolean isEntityApplicable(Entity entity) {
+			boolean b = entity instanceof EntitySentry;
+			if(b) {
+				return entity.getPersistentID().getLeastSignificantBits() == sentryId;
+			} else return false;
+		}
+		
+	};
 
 	public void connectWith(TileSentryRay another) {
 		this.linkedBlock = another;
@@ -82,10 +95,14 @@ public class TileSentryRay extends TileEntity {
 			linkedX = linkedY = linkedZ = 0;
 		}
 		if (sentryId != 0) {
-			Entity e = worldObj.getEntityByID(sentryId);
-			if (e != null && EntitySentry.class.isInstance(e)) {
-				linkedSentry = (EntitySentry) e;
-				sentryId = 0;
+			AxisAlignedBB box = AxisAlignedBB.getBoundingBox(senX - 1.0, senY - 1.0, senZ -1.0, senX + 1.0, senY + 1.0, senZ + 1.0);
+			List<EntitySentry> list = worldObj.getEntitiesWithinAABBExcludingEntity(null, box, selector);
+			if(list != null && list.size() == 1) {
+				linkedSentry = list.get(0);
+				senX = 0;
+				senY = 0;
+				senZ = 0;
+				sentryId = 0L;
 			}
 			System.out.println("Looping search...");
 		}
@@ -213,6 +230,11 @@ public class TileSentryRay extends TileEntity {
 		linkedZ = nbt.getInteger("linkZ");
 		isLoaded = nbt.getBoolean("isLoaded");
 		isActivated = nbt.getBoolean("isActivated");
+		
+		senX = nbt.getDouble("sentryX");
+		senY = nbt.getDouble("sentryY");
+		senZ = nbt.getDouble("sentryZ");
+		sentryId = nbt.getLong("sentryID");
 	}
 
 	/**
@@ -221,12 +243,25 @@ public class TileSentryRay extends TileEntity {
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		if (linkedSentry != null)
-			nbt.setInteger("sentry", linkedSentry.entityId);
+		if (linkedSentry != null) {
+			nbt.setLong("sentryID", linkedSentry.getPersistentID().getLeastSignificantBits());
+			nbt.setDouble("sentryX", linkedSentry.posX);
+			nbt.setDouble("sentryY", linkedSentry.posY);
+			nbt.setDouble("sentryZ", linkedSentry.posZ);
+		} else {
+			nbt.setLong("sentryID", 0L);
+			nbt.setDouble("sentryX", 0.0);
+			nbt.setDouble("sentryY", 0.0);
+			nbt.setDouble("sentryZ", 0.0);
+		}
 		if (linkedBlock != null) {
 			nbt.setInteger("linkX", linkedBlock.xCoord);
 			nbt.setInteger("linkY", linkedBlock.yCoord);
 			nbt.setInteger("linkZ", linkedBlock.zCoord);
+		} else {
+			nbt.setInteger("linkX", 0);
+			nbt.setInteger("linkY", 0);
+			nbt.setInteger("linkZ", 0);
 		}
 		nbt.setBoolean("isLoaded", isLoaded);
 		nbt.setBoolean("isActivated", isActivated);

@@ -6,15 +6,17 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.proxy.Proxy;
+import cn.lambdacraft.mob.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.core.utils.BlockPos;
-import cn.lambdacraft.mob.blocks.TileSentryRay;
+import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
 import cn.lambdacraft.mob.entities.EntityHLZombie;
 import cn.lambdacraft.mob.entities.EntityHeadcrab;
+import cn.lambdacraft.mob.entities.EntityHoundeye;
 import cn.lambdacraft.mob.entities.EntitySentry;
+import cn.lambdacraft.mob.entities.EntityShockwave;
 import cn.lambdacraft.mob.entities.EntitySnark;
 import cn.lambdacraft.mob.network.NetSentrySync;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
@@ -58,11 +60,7 @@ public class ModuleMob {
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent Init) {
-		if (Proxy.isRendering())
-			for (String s : SND_MOBS) {
-				CBCSoundEvents.addSoundPath("cbc/mobs/" + s,
-						"/mods/lambdacraft/sounds/mobs/" + s);
-			}
+		proxy.preInit();
 	}
 
 	@Init
@@ -75,6 +73,8 @@ public class ModuleMob {
 		EntityRegistry.registerModEntity(EntityBarnacle.class, "barnacle", GeneralProps.ENT_ID_BARNACLE, CBCMod.instance, 32, 5, false);
 		EntityRegistry.registerModEntity(EntityHLZombie.class, "hlzombie", GeneralProps.ENT_ID_ZOMBIE, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntitySentry.class, "turret", GeneralProps.ENT_ID_TURRET, CBCMod.instance, 32, 3, true);
+		EntityRegistry.registerModEntity(EntityHoundeye.class, "houndeye", GeneralProps.ENT_ID_HOUNDEYE, CBCMod.instance, 48, 3, true);
+		EntityRegistry.registerModEntity(EntityShockwave.class, "shockwave", GeneralProps.ENT_ID_SHOCKWAVE, CBCMod.instance, 48, 3, false);
 		proxy.init();
 	}
 
@@ -85,14 +85,5 @@ public class ModuleMob {
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
 	}
-
-	public static final String SND_MOBS[] = { "sqk_blast", "sqk_hunta",
-		"sqk_huntb", "sqk_huntc", "sqk_die", "sqk_deploy", "hc_attacka", "hc_attackb",
-		"hc_attackc", "hc_idlea", "hc_idleb", "hc_idlec", "hc_idled", "hc_idlee",
-		"hc_diea", "hc_dieb", "hc_paina", "hc_painb", "hc_painc",
-		"bcl_tongue", "bcl_chewa", "bcl_chewb", "bcl_chewc", "bcl_alert", "bcl_bite", "zo_alerta",
-		"zo_alertb", "zo_alertc", "zo_attacka", "zo_attackb", "zo_claw_missa", "zo_claw_missb", 
-		"zo_claw_strikea", "zo_claw_strikeb", "zo_claw_strikec", "zo_idlea", "zo_idleb", "zo_idlec",
-		"zo_paina", "zo_painb", "zo_moan_loopa", "zo_moan_loopb", "zo_moan_loopc", "zo_moan_loopd", "zo_diea", "zo_dieb", "zo_diec"};
 
 }

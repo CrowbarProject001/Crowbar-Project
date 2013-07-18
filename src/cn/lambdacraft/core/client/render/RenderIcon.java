@@ -14,6 +14,7 @@
  */
 package cn.lambdacraft.core.client.render;
 
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -108,9 +109,11 @@ public class RenderIcon extends Render {
 		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F,
 				0.0F);
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+		if(!hasLight) 
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		par1Tessellator.startDrawingQuads();
-		if(!hasLight)
-			par1Tessellator.setBrightness(255);
+		if(!hasLight) 
+			par1Tessellator.setBrightness(15728880);
 		par1Tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, alpha);
 		par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
 		par1Tessellator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, 0, 0);

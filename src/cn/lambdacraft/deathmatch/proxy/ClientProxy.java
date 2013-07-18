@@ -69,7 +69,7 @@ import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.lambdacraft.mob.blocks.TileSentryRay;
+import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 import cn.lambdacraft.mob.client.render.RenderSentryRay;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.settings.KeyBinding;
