@@ -1,14 +1,9 @@
-package cn.lambdacraft.api;
+﻿package cn.lambdacraft.api;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-/**
- * 自定义的方向Enum。
- * 
- * @author WeAthFolD
- * 
- */
 public enum LCDirection {
 
 	XN(0),
@@ -24,12 +19,7 @@ public enum LCDirection {
 	ZP(5);
 
 	private int dir;
-
-	private static final LCDirection[] lcdirections;
-
-	static {
-		lcdirections = values();
-	}
+	public static final LCDirection[] directions;
 
 	private LCDirection(int dir) {
 		this.dir = dir;
@@ -53,26 +43,27 @@ public enum LCDirection {
 	public LCDirection getInverse() {
 		int inverseDir = this.dir - getSign();
 
-		for (LCDirection lcdirection : lcdirections) {
-			if (lcdirection.dir == inverseDir)
-				return lcdirection;
+		for (LCDirection direction : directions) {
+			if (direction.dir == inverseDir)
+				return direction;
 		}
+
 		return this;
 	}
 
-	private int toSideValue() {
-
+	public int toSideValue() {
 		return (this.dir + 4) % 6;
 	}
 
 	private int getSign() {
-
 		return this.dir % 2 * 2 - 1;
-
 	}
 
 	public ForgeDirection toForgeDirection() {
 		return ForgeDirection.getOrientation(toSideValue());
 	}
 
+	static {
+		directions = values();
+	}
 }

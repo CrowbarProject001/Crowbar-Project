@@ -30,6 +30,7 @@ import org.lwjgl.input.Keyboard;
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.client.keys.KeyUse;
 import cn.lambdacraft.core.energy.EnergyNet;
+import cn.lambdacraft.core.energy.ITickCallback;
 import cn.lambdacraft.core.misc.CBCCreativeTab;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.network.NetExplosion;
@@ -40,6 +41,7 @@ import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCKeyProcess;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
+import cn.lambdacraft.core.world.WorldData;
 import cn.lambdacraft.crafting.recipes.RecipeWeapons;
 import cn.lambdacraft.intergration.ic2.IC2Module;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -68,16 +70,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(modid = "LambdaCraft", name = "LambdaCraft Core", version = CBCMod.VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_CLIENT }, packetHandler = CBCNetHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler {
-	
+
 	public static final String VERSION = "1.1.0 dev";
-	
-	public static final String 
-			DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + VERSION,
+
+	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@"
+			+ VERSION,
 			DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION,
-			DEPENDENCY_DEATHMATCH = "required-after:LambdaCraft|DeathMatch@" + VERSION,
+			DEPENDENCY_DEATHMATCH = "required-after:LambdaCraft|DeathMatch@"
+					+ VERSION,
 			DEPENDENCY_MOB = "required-after:LambdaCraft|Living@" + VERSION,
 			DEPENCY_XEN = "required-after:LambdaCraft|Xen@" + VERSION;
-	
+
 	@SideOnly(Side.CLIENT)
 	private Minecraft mc;
 
@@ -120,12 +123,12 @@ public class CBCMod implements ITickHandler {
 	 */
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
-		
+
 		log.setParent(FMLLog.getLogger());
 		log.info("Starting LambdaCraft " + this.VERSION);
 		log.info("Copyright (c) Lambda Innovation, 2013");
 		log.info("http://www.lambdacraft.cn");
-		
+
 		config = new Config(event.getSuggestedConfigurationFile());
 		EnergyNet.initialize();
 
@@ -149,7 +152,8 @@ public class CBCMod implements ITickHandler {
 	public void init(FMLInitializationEvent Init) {
 		Class a;
 		ic2Installed = IC2Module.init();
-		System.out.println("LambdaCraft IC2 Intergration Module STATE : " + ic2Installed);
+		System.out.println("LambdaCraft IC2 Intergration Module STATE : "
+				+ ic2Installed);
 		// Blocks, Items, GUI Handler,Key Process.
 		NetworkRegistry.instance()
 				.registerGuiHandler(this, new CBCGuiHandler());
@@ -189,14 +193,55 @@ public class CBCMod implements ITickHandler {
 
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-		World world = (World) tickData[0];
-		Proxy.profilerEndStartSection("EnergyNet");
-		EnergyNet.onTick(world);
+		if (type.contains(TickType.WORLD)) {
+			World world = (World) tickData[0];
+			proxy.profilerEndStartSection("EnergyNet");
+			EnergyNet.onTick(world);
+			proxy.profilerEndStartSection("TickCallbacks");
+			processTickCallbacks(world);
+
+			proxy.profilerEndSection();
+		}
+	}
+
+	public void processTickCallbacks(World world) {
+		WorldData worldData = WorldData.get(world);
+
+		proxy.profilerStartSection("SingleTickCallback");
+
+		for (ITickCallback tickCallback = (ITickCallback) worldData.singleTickCallbacks
+				.poll(); tickCallback != null; tickCallback = (ITickCallback) worldData.singleTickCallbacks
+				.poll()) {
+			proxy.profilerStartSection(tickCallback.getClass().getName());
+			tickCallback.tickCallback(world);
+			proxy.profilerEndSection();
+		}
+
+		proxy.profilerEndStartSection("ContTickCallback");
+
+		worldData.continuousTickCallbacksInUse = true;
+
+		for (ITickCallback tickCallback : worldData.continuousTickCallbacks) {
+			proxy.profilerStartSection(tickCallback.getClass().getName());
+			tickCallback.tickCallback(world);
+			proxy.profilerEndSection();
+		}
+
+		worldData.continuousTickCallbacksInUse = false;
+
+		worldData.continuousTickCallbacks
+				.addAll(worldData.continuousTickCallbacksToAdd);
+		worldData.continuousTickCallbacksToAdd.clear();
+
+		worldData.continuousTickCallbacks
+				.removeAll(worldData.continuousTickCallbacksToRemove);
+		worldData.continuousTickCallbacksToRemove.clear();
+
+		proxy.profilerEndSection();
 	}
 
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-		Proxy.profilerEndStartSection("EnergyNet");
 	}
 
 	@Override
