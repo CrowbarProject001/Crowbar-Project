@@ -14,32 +14,48 @@
  */
 package cn.lambdacraft.crafting.items;
 
-import cn.lambdacraft.core.item.CBCGenericItem;
-import cn.lambdacraft.crafting.entities.EntitySpray;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import cn.lambdacraft.core.item.CBCGenericItem;
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.core.utils.Color4I;
+import cn.lambdacraft.crafting.entities.EntitySpray;
+
 /**
- * 
- * 喷漆的物品
- * 
  * @author mkpoli
  * 
  */
 public class HLSpray extends CBCGenericItem {
 
-	private int title_id; // 喷漆的ID
-
-	public HLSpray(int par1, int title_id) {
+	public static HashMap<String, Integer> listOfLogos = new HashMap<String, Integer>();
+	int logoID;
+	String logoName;
+	boolean flagChanging;
+	private Color4I color;
+	
+	public HLSpray(int par1) {
 		super(par1);
-		this.title_id = title_id;
-		setIAndU("spray" + this.title_id);
+		this.logoID = 0;
 		setMaxStackSize(1);
 		setMaxDamage(10);
+		listOfLogos.put("gun1", 0);
+		setColor3f(0, 255, 255);
 	}
-
+	
+	@Override
+	public String getLocalizedName(ItemStack par1ItemStack) {
+		return StatCollector.translateToLocal("spray.hl") + logoName;
+	}
+	
+	
 	@Override
 	public boolean onItemUse(ItemStack item_stack, EntityPlayer player,
 			World world, int x, int y, int z, int side, float x_off,
@@ -54,7 +70,7 @@ public class HLSpray extends CBCGenericItem {
 		int direction = Direction.facingToDirection[side];
 		// 创建EntityArt实例
 		EntitySpray entity = new EntitySpray(world, x, y, z, direction,
-				title_id, player);
+				logoID + 2, player, this.color);
 		// 判断是否被放置在了可用的表面
 		if (entity.onValidSurface()) {
 			if (!world.isRemote) {
@@ -64,5 +80,21 @@ public class HLSpray extends CBCGenericItem {
 			item_stack.damageItem(1, player);
 		}
 		return true;
+	}
+
+	
+	
+	public void setColor3f(int red, int green, int blue) {
+		this.color = new Color4I(red, green, blue);
+	}
+
+	public int onChangedGUI(String logoName) {
+		if (!listOfLogos.values().contains(logoName)) {
+			listOfLogos.put(logoName, listOfLogos.size());
+		}
+		logoID = listOfLogos.get(logoName);
+		this.logoName  = logoName;
+		flagChanging = true;
+		return logoID;
 	}
 }

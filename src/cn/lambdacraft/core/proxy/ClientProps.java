@@ -91,6 +91,7 @@ public class ClientProps {
 			TURRET_PATH = "/mods/lambdacraft/textures/entities/turret.png",
 			SHOCKWAVE_PATH = "/mods/lambdacraft/textures/entities/shockwave.png",
 			VORTIGAUNT_PATH = "/mods/lambdacraft/textures/entities/vortigaunt.png",
+			HLSPRAY_DIC_PATH = "/spray/",
 			SS_SIDE_PATH[] = {"/mods/lambdacraft/textures/blocks/ss_side0.png", "/mods/lambdacraft/textures/blocks/ss_side1.png"},
 			SS_MAIN_PATH[] = {"/mods/lambdacraft/textures/blocks/ss_0.png", "/mods/lambdacraft/textures/blocks/ss_1.png"},
 			SPRY_PATH[] = { "/mods/lambdacraft/textures/sprays/spry0.png",

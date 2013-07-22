@@ -14,6 +14,11 @@
  */
 package cn.lambdacraft.core.utils;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 
@@ -82,4 +87,19 @@ public class GenericUtils {
 		return sndPath.concat(String.valueOf((char)('a' + a)));
 	}
 
+	public static <T, U> T getKeyByValueFromMap(Map<T, U>map, Object value) {
+        T o = null;  
+        ArrayList all = new ArrayList(); // 建一个数组用来存放符合条件的KEY值  
+        Set set = map.entrySet();  
+        Iterator it = set.iterator();  
+        while (it.hasNext()) {  
+            Map.Entry<T, U> entry = (Map.Entry) it.next();  
+            if (entry.getValue().equals(value)) {  
+                o = entry.getKey();  
+                return o;
+            }  
+        }
+		return null; 
+	}
+	
 }

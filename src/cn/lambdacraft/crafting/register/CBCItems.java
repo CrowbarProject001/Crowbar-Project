@@ -56,7 +56,7 @@ public class CBCItems {
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
-	public static HLSpray spray1, spray2;
+	public static HLSpray spray;
 	public static Item tin, copper, chip, bucketRadioactive;
 
 	public static ItemBattery battery;
@@ -103,10 +103,8 @@ public class CBCItems {
 		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03",
 				GeneralProps.CAT_MISC), "hlc", 2);
 
-		spray1 = new HLSpray(GeneralRegistry.getItemId("spray1",
-				GeneralProps.CAT_MISC), 0);
-		spray2 = new HLSpray(GeneralRegistry.getItemId("spray2",
-				GeneralProps.CAT_MISC), 1);
+		spray = new HLSpray(GeneralRegistry.getItemId("spray",
+				GeneralProps.CAT_MISC));
 
 		tin = new CBCGenericItem(GeneralRegistry.getItemId("tin",
 				GeneralProps.CAT_MISC)).setIAndU("tin");
@@ -160,8 +158,7 @@ public class CBCItems {
 				CBCBlocks.genLava), iSbucketEmpty = new ItemStack(
 				Item.bucketEmpty), iSgenSolar = new ItemStack(
 				CBCBlocks.genSolar), iSnetherQuartz = new ItemStack(
-				Item.netherQuartz), iSspray = new ItemStack(CBCItems.spray1), iSspray2 = new ItemStack(
-				CBCItems.spray2), sfspieye = new ItemStack(
+				Item.netherQuartz), sfspieye = new ItemStack(
 				Item.fermentedSpiderEye), srotten = new ItemStack(
 				Item.rottenFlesh), smagma = new ItemStack(Item.magmaCream), sendereye = new ItemStack(
 				Item.eyeOfEnder), smedkit = new ItemStack(DMItems.medkit);
@@ -209,8 +206,6 @@ public class CBCItems {
 						iSchip, 'D', "ingotRefinedIron", 'E', iSgenFire },
 				{ "AAA", "BCB", "DED", 'A', iSglass, 'B', battery, 'C',
 						iSredstone, 'D', iSchip, 'E', "blockRefinedIron" },
-				{ " AB", "B B", "B B", 'A', iSredstone, 'B', "ingotTin" },
-				{ " AB", "B B", "B B", 'A', iSredstone, 'B', "ingotcopper" },
 				{ "AAA", "ABA", "CDC", 'A', iSgunpowder, 'B', iSredstone, 'C',
 						iSglass, 'D', iSmaterials_1_0 },
 				{ "ABA", "CDC", "ABA", 'A', iSwire, 'B', iSnetherQuartz, 'C',
@@ -237,8 +232,7 @@ public class CBCItems {
 				materials.newStack(1, EnumMaterial.TECH), iSweaponCrafter,
 				iSadvCrafter, new ItemStack(CBCBlocks.wire, 6),
 				new ItemStack(lambdaChip, 2), iSelectricCrafter, iSbattery,
-				iSgenFire, iSgenLava, iSgenSolar, iSstorageS, iSspray,
-				iSspray2, iSmaterials_1_1, iSchip,
+				iSgenFire, iSgenLava, iSgenSolar, iSstorageS, iSmaterials_1_1, iSchip,
 				new ItemStack(DMBlocks.medkitFiller),
 				new ItemStack(DMBlocks.healthCharger),
 				new ItemStack(DMBlocks.armorCharger),
@@ -254,10 +248,6 @@ public class CBCItems {
 				Item.eyeOfEnder);
 		GameRegistry.addShapelessRecipe(iSstorageL, CBCBlocks.storageS,
 				lambdaChip);
-		GameRegistry.addRecipe(new RecipeRepair(spray1, new ItemStack(
-				Item.dyePowder)));
-		GameRegistry.addRecipe(new RecipeRepair(spray2, new ItemStack(
-				Item.dyePowder)));
 		GameRegistry.addRecipe(new RecipeHEVAttach());
 
 		ModLoader.addSmelting(Item.ingotIron.itemID, new ItemStack(
