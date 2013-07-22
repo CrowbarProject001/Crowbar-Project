@@ -11,6 +11,7 @@ import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.core.utils.BlockPos;
 import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
+import cn.lambdacraft.mob.entities.EntityAlienSlave;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
 import cn.lambdacraft.mob.entities.EntityHLZombie;
 import cn.lambdacraft.mob.entities.EntityHeadcrab;
@@ -18,6 +19,7 @@ import cn.lambdacraft.mob.entities.EntityHoundeye;
 import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.entities.EntityShockwave;
 import cn.lambdacraft.mob.entities.EntitySnark;
+import cn.lambdacraft.mob.entities.EntityVortigauntRay;
 import cn.lambdacraft.mob.network.NetSentrySync;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
 import cn.lambdacraft.mob.register.CBCMobItems;
@@ -75,6 +77,8 @@ public class ModuleMob {
 		EntityRegistry.registerModEntity(EntitySentry.class, "turret", GeneralProps.ENT_ID_TURRET, CBCMod.instance, 32, 3, true);
 		EntityRegistry.registerModEntity(EntityHoundeye.class, "houndeye", GeneralProps.ENT_ID_HOUNDEYE, CBCMod.instance, 48, 3, true);
 		EntityRegistry.registerModEntity(EntityShockwave.class, "shockwave", GeneralProps.ENT_ID_SHOCKWAVE, CBCMod.instance, 48, 3, false);
+		EntityRegistry.registerModEntity(EntityAlienSlave.class, "vortigaunt", GeneralProps.ENT_ID_VORTIGAUNT, CBCMod.instance, 48, 3, true);
+		EntityRegistry.registerModEntity(EntityVortigauntRay.class, "vor_ray", GeneralProps.ENT_ID_VOR_RAY, CBCMod.instance, 48, 3, false);
 		proxy.init();
 	}
 

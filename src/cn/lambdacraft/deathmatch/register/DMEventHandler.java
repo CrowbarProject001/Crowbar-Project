@@ -43,14 +43,17 @@ public class DMEventHandler {
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft().gameSettings, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
 		if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR) {
-			ItemStack slotChestplate = player.inventory.armorInventory[2];
-			ItemStack slotHelmet = player.inventory.armorInventory[3];
-			if (slotChestplate != null && slotHelmet != null) {
-				if (slotChestplate.getItem() instanceof ArmorHEV
-						&& slotHelmet.itemID == DMItems.armorHEVHelmet.itemID) {
-					event.setCanceled(true);
-					if(event.type == ElementType.HEALTH)
-						HEVRenderingUtils.drawPlayerHud(player, rs);
+			ItemStack chest = player.inventory.armorInventory[2];
+			ItemStack helmet = player.inventory.armorInventory[3];
+			if (chest != null && helmet != null) {
+				if (chest.getItem() instanceof ArmorHEV
+						&& helmet.itemID == DMItems.armorHEVHelmet.itemID) {
+					ArmorHEV hev = (ArmorHEV) chest.getItem();
+					if(hev.getItemCharge(chest) > 0 && hev.getItemCharge(helmet) > 0) {
+						event.setCanceled(true);
+						if(event.type == ElementType.HEALTH)
+							HEVRenderingUtils.drawPlayerHud(player, rs);
+					}
 				}
 			}
 		}

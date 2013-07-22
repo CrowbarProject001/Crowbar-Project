@@ -14,16 +14,16 @@
  */
 package cn.lambdacraft.crafting.blocks.tile;
 
-import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.item.ICustomEnItem;
-import cn.lambdacraft.api.energy.tile.IEnergySink;
-import cn.lambdacraft.core.utils.EnergyUtils;
-import cn.lambdacraft.crafting.register.CBCBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import cn.lambdacraft.api.LCDirection;
+import cn.lambdacraft.api.energy.IEnergySink;
+import cn.lambdacraft.api.energy.item.ICustomEnItem;
+import cn.lambdacraft.core.utils.EnergyUtils;
+import cn.lambdacraft.crafting.register.CBCBlocks;
 
 /**
  * @author WeAthFolD, Rikka
@@ -149,12 +149,11 @@ public class TileBatBox extends TileGeneratorBase implements IInventory,
 	public int getMaxEnergy() {
 		return maxStorage;
 	}
-
-	@Override
+	
 	public int getMaxEnergyOutput() {
 		return type == 0 ? 32 : 128;
 	}
-
+	
 	@Override
 	public int getSizeInventory() {
 		return 2;
@@ -221,14 +220,7 @@ public class TileBatBox extends TileGeneratorBase implements IInventory,
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
-			LCDirection paramDirection) {
-		return currentEnergy < maxStorage
-				&& paramDirection.toForgeDirection().ordinal() != this.blockMetadata;
-	}
-
-	@Override
-	public boolean emitEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
+	public boolean emitsEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
 		return emDirection.toForgeDirection().ordinal() == this.blockMetadata;
 	}
 
@@ -241,5 +233,12 @@ public class TileBatBox extends TileGeneratorBase implements IInventory,
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5,
 				zCoord + 0.5) <= 64;
+	}
+
+	@Override
+	public boolean acceptEnergyFrom(TileEntity paramTileEntity,
+			LCDirection paramDirection) {
+		return currentEnergy < maxStorage
+				&& paramDirection.toForgeDirection().ordinal() != this.blockMetadata;
 	}
 }

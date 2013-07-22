@@ -1,28 +1,26 @@
 package cn.lambdacraft.deathmatch.register;
 
+import net.minecraft.item.Item;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
-import cn.lambdacraft.deathmatch.items.ArmorLongjump;
+import cn.lambdacraft.deathmatch.items.ItemAttachment;
 import cn.lambdacraft.deathmatch.items.ItemMedkit;
-import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_357;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_9mmAR;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_9mmhandgun;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_Crowbar_Electrical;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_RPG;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Crossbow;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Crowbar;
+import cn.lambdacraft.deathmatch.items.wpns.Weapon_Crowbar_Electrical;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Egon;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Gauss;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Hgrenade;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Hornet;
+import cn.lambdacraft.deathmatch.items.wpns.Weapon_RPG;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Satchel;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Shotgun;
-import cn.lambdacraft.intergration.ic2.item.ArmorHEVIC2;
-import net.minecraft.item.Item;
 
 public class DMItems {
 
@@ -44,7 +42,7 @@ public class DMItems {
 	
 	public static ArmorHEV armorHEVBoot, armorHEVLeggings, armorHEVChestplate,
 			armorHEVHelmet;
-	public static ArmorLongjump longjump;
+	public static ItemAttachment attach;
 
 	public static void init(Config conf) {
 
@@ -84,9 +82,8 @@ public class DMItems {
 			
 		}
 		
-		longjump = new ArmorLongjump(GeneralRegistry.getItemId("armorLongjump",
-				3), 1);
-		
+		attach = new ItemAttachment(GeneralRegistry.getItemId("attaches",
+				3));
 		medkit = new ItemMedkit(GeneralRegistry.getItemId("medkit", 3));
 
 	}

@@ -14,18 +14,17 @@
  */
 package cn.lambdacraft.crafting.blocks.tile;
 
-import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.tile.IEnergySource;
-import cn.lambdacraft.core.block.TileElectrical;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import cn.lambdacraft.api.LCDirection;
+import cn.lambdacraft.api.energy.IEnergySource;
+import cn.lambdacraft.core.block.TileElectrical;
 
 /**
  * @author WeAthFolD, Rikka
  * 
  */
-public abstract class TileGeneratorBase extends TileElectrical implements
-		IEnergySource {
+public abstract class TileGeneratorBase extends TileElectrical implements IEnergySource {
 
 	public final int maxStorage, tier;
 	public int currentEnergy;
@@ -46,11 +45,6 @@ public abstract class TileGeneratorBase extends TileElectrical implements
 
 	}
 
-	@Override
-	public boolean emitEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
-		return true;
-	}
-
 	/**
 	 * Reads a tile entity from NBT.
 	 */
@@ -67,6 +61,12 @@ public abstract class TileGeneratorBase extends TileElectrical implements
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setInteger("energy", currentEnergy);
+	}
+	
+	@Override
+	public boolean emitsEnergyTo(TileEntity paramTileEntity,
+			LCDirection paramDirection) {
+		return true;
 	}
 
 }

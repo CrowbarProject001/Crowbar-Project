@@ -14,6 +14,7 @@ import cn.lambdacraft.crafting.items.*;
 import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
 import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
+import cn.lambdacraft.deathmatch.items.ItemAttachment;
 import cn.lambdacraft.deathmatch.items.ItemBattery;
 import cn.lambdacraft.deathmatch.items.ammos.*;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
@@ -55,7 +56,7 @@ public class CBCItems {
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
-	public static ItemSpray spray1, spray2;
+	public static HLSpray spray1, spray2;
 	public static Item tin, copper, chip, bucketRadioactive;
 
 	public static ItemBattery battery;
@@ -102,9 +103,9 @@ public class CBCItems {
 		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03",
 				GeneralProps.CAT_MISC), "hlc", 2);
 
-		spray1 = new ItemSpray(GeneralRegistry.getItemId("spray1",
+		spray1 = new HLSpray(GeneralRegistry.getItemId("spray1",
 				GeneralProps.CAT_MISC), 0);
-		spray2 = new ItemSpray(GeneralRegistry.getItemId("spray2",
+		spray2 = new HLSpray(GeneralRegistry.getItemId("spray2",
 				GeneralProps.CAT_MISC), 1);
 
 		tin = new CBCGenericItem(GeneralRegistry.getItemId("tin",
@@ -253,12 +254,11 @@ public class CBCItems {
 				Item.eyeOfEnder);
 		GameRegistry.addShapelessRecipe(iSstorageL, CBCBlocks.storageS,
 				lambdaChip);
-		GameRegistry.addRecipe(new RecipeHEVAttachedShapeless(EnumAttachment.LONGJUMP, new ItemStack(DMItems.longjump)));
-		GameRegistry.addRecipe(new RecipeHEVAttachedShapeless(EnumAttachment.ELECTRICITY, new ItemStack(DMItems.weapon_9mmhandgun)));
 		GameRegistry.addRecipe(new RecipeRepair(spray1, new ItemStack(
 				Item.dyePowder)));
 		GameRegistry.addRecipe(new RecipeRepair(spray2, new ItemStack(
 				Item.dyePowder)));
+		GameRegistry.addRecipe(new RecipeHEVAttach());
 
 		ModLoader.addSmelting(Item.ingotIron.itemID, new ItemStack(
 				ingotSteel.itemID, 1, 0));
@@ -359,95 +359,56 @@ public class CBCItems {
 
 	}
 	
-	private static class RecipeHEVAttachedShapeless implements IRecipe {
-
-		protected ArrayList<ItemStack> recipeItems = new ArrayList();
-		protected EnumAttachment theAttach;
-
-		public RecipeHEVAttachedShapeless(EnumAttachment attach, ItemStack... add) {
-			theAttach = attach;
-			Collections.addAll(recipeItems, add);
-		}
+	private static class RecipeHEVAttach implements IRecipe {
 
 		/**
 		 * Used to check if a recipe matches current crafting inventory
 		 */
 		@Override
-		public boolean matches(InventoryCrafting par1InventoryCrafting,
+		public boolean matches(InventoryCrafting inv,
 				World par2World) {
-			ArrayList arraylist = new ArrayList(this.recipeItems);
-			boolean hasOneHEV = false;
-
-			for (int i = 0; i < 3; ++i) {
-				for (int j = 0; j < 3; ++j) {
-					ItemStack itemstack = par1InventoryCrafting
-							.getStackInRowAndColumn(j, i);
-
-					if (itemstack != null) {
-						boolean flag = false;
-						Iterator iterator = arraylist.iterator();
-
-						if(itemstack.getItem() instanceof ArmorHEV) {
-							ArmorHEV hev = (ArmorHEV) itemstack.getItem();
-							if(theAttach.isAvailableSlot(hev.armorType))
-								if(!hasOneHEV)
-									hasOneHEV = true;
-								else return false;
-							continue;
-						}
-						
-						while (iterator.hasNext()) {
-							ItemStack itemstack1 = (ItemStack) iterator.next();
-
-							if (itemstack.itemID == itemstack1.itemID) {
-								flag = true;
-								arraylist.remove(itemstack1);
-								break;
-							}
-						}
-
-						if (!flag) {
+			ItemStack is1 = null, is2 = null;
+			for(int i = 0; i < inv.getSizeInventory(); i++) {
+				ItemStack is = inv.getStackInSlot(i);
+				if(is != null) {
+					if(is.getItem() instanceof ItemAttachment) {
+						if(is1 != null)
 							return false;
-						}
+						is1 = is;
+					} else if(is.getItem() instanceof ArmorHEV) {
+						if(is2 != null)
+							return false;
+						is2 = is;
 					}
 				}
 			}
-
-			return arraylist.isEmpty() && hasOneHEV;
+			if(is1 != null && is2 != null) {
+				return ArmorHEV.isAttachAvailable(is2, ArmorHEV.attachForStack(is1));
+			}
+			return false;
 		}
 
 		@Override
 		public ItemStack getCraftingResult(InventoryCrafting inv) {
-			ItemStack in = findIdentifyStack(inv);
-			if (in == null)
-				return null;
-			
-			ItemStack is = in.copy();
-			ICustomEnItem item = (ICustomEnItem) in.getItem();
-			ICustomEnItem item2 = (ICustomEnItem) is.getItem();
-			int energy = item.discharge(in, Integer.MAX_VALUE, 5, true, true);
-			item2.charge(is, energy, 5, true, false);
-			ArmorHEV.addAttachTo(is, theAttach);
-			return is;
-		}
-
-		private ItemStack findIdentifyStack(InventoryCrafting inv) {
-			ItemStack item = null;
-			for (int i = 0; i < 3; i++)
-				for (int j = 0; j < 3; j++) {
-					ItemStack s = inv.getStackInRowAndColumn(i, j);
-					if (s != null && s.getItem() instanceof ArmorHEV) {
-						if (item != null)
-							return null;
-						item = s;
+			ItemStack hev = null, attach = null;
+			for(int i = 0; i < inv.getSizeInventory(); i++) {
+				ItemStack is = inv.getStackInSlot(i);
+				if(is != null) {
+					if(is.getItem() instanceof ItemAttachment) {
+						attach = is;
+					} else if(is.getItem() instanceof ArmorHEV) {
+						hev = is;
 					}
 				}
-			return item;
+			}
+			ItemStack is = hev.copy();
+			ArmorHEV.addAttachTo(is, ArmorHEV.attachForStack(attach));
+			return is;
 		}
 
 		@Override
 		public int getRecipeSize() {
-			return this.recipeItems.size() + 1;
+			return 2;
 		}
 
 		@Override

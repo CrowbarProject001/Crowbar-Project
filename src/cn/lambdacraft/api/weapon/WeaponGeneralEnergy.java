@@ -2,15 +2,19 @@ package cn.lambdacraft.api.weapon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
-public abstract class WeaponGeneralEnergy extends WeaponGeneral {
+public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudTipProvider {
 
 	public int jamTime;
 
@@ -231,6 +235,35 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral {
 		InformationEnergy inf = new InformationEnergy(is, player);
 		InformationEnergy inf2 = new InformationEnergy(is, player);
 		return new InformationSet(inf, inf2);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
+		IHudTip[] tips = new IHudTip[1];
+		tips[0] = new IHudTip() {
+
+			@Override
+			public Icon getRenderingIcon(ItemStack itemStack,
+					EntityPlayer player) {
+				if(Item.itemsList[ammoID] != null){
+					return Item.itemsList[ammoID].getIconIndex(itemStack);
+				}
+				return null;
+			}
+
+			@Override
+			public String getTip(ItemStack itemStack, EntityPlayer player) {
+				return String.valueOf(AmmoManager.getAmmoCapacity(ammoID, player.inventory));
+			}
+
+			@Override
+			public int getTextureSheet(ItemStack itemStack) {
+				return itemStack.getItemSpriteNumber();
+			}
+			
+		};
+		return tips;
 	}
 
 }

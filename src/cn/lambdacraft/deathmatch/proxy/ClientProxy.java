@@ -14,6 +14,10 @@
  */
 package cn.lambdacraft.deathmatch.proxy;
 
+import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.client.MinecraftForgeClient;
+
 import org.lwjgl.input.Keyboard;
 
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
@@ -69,11 +73,6 @@ import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
-import cn.lambdacraft.mob.client.render.RenderSentryRay;
-import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -105,6 +104,10 @@ public class ClientProxy extends Proxy {
 	public static final String SND_ENTITIES[] = { "medkit", "battery",
 			"suitcharge", "suitchargeno", "suitchargeok", "medshot",
 			"medshotno", "medcharge" };
+	
+	public static final String SND_HEV[] = {"hev_logon", "health_critical",
+		"health_dropping", "heat_damage", "hev_shutdown", "major_fracture",
+		"morphine_shot", "radiation_detected" };
 
 	
 	@Override
@@ -115,6 +118,9 @@ public class ClientProxy extends Proxy {
 		for (String s : SND_ENTITIES)
 			CBCSoundEvents.addSoundPath("cbc/entities/" + s,
 					"/mods/lambdacraft/sounds/entities/" + s);
+		for (String s : SND_HEV)
+			CBCSoundEvents.addSoundPath("cbc/hev/" + s,
+					"/mods/lambdacraft/sounds/hev/" + s);
 		CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R),
 				false, new KeyReload());
 		CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V),

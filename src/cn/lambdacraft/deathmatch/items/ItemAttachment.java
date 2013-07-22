@@ -12,12 +12,14 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cn.lambdacraft.mob.items;
+package cn.lambdacraft.deathmatch.items;
 
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,57 +30,61 @@ import net.minecraft.util.StatCollector;
 
 /**
  * @author WeAthFolD
- *
  */
-public class ItemDNAFragment extends Item {
+public class ItemAttachment extends Item {
 
-	Icon[] icons = new Icon[6];
-	protected static final String[] descriptions = ItemBioTissue.descriptions;
+	EnumAttachment[] attaches = EnumAttachment.values();
+	Icon[] icons = new Icon[attaches.length];
 	
 	/**
 	 * @param par1
 	 */
-	public ItemDNAFragment(int par1) {
+	public ItemAttachment(int par1) {
 		super(par1);
-		setUnlocalizedName("dna");
-		setCreativeTab(CreativeTabs.tabMisc);
+		setUnlocalizedName("attaches");
+		setCreativeTab(CBCMod.cctMisc);
 		this.hasSubtypes = true;
 	}
 	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IconRegister ir) {
-		for(int i = 0; i < 6; i++) {
-			icons[i] = ir.registerIcon("lambdacraft:dna" + i);
-		}
-	}
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister ir)
+    {
+        for(int i = 0; i < icons.length; i++) {
+        	icons[i] = ir.registerIcon("lambdacraft:attach" + i);
+        }
+    }
 	
     @SideOnly(Side.CLIENT)
+
+    /**
+     * Gets an icon index based on an item's damage value
+     */
+    public Icon getIconFromDamage(int par1)
+    {
+        return icons[par1];
+    }
+    
+    @SideOnly(Side.CLIENT)
     @Override
+    /**
+     * allows items to add custom lines of information to the mouseover description
+     */
+    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+    	int dmg = par1ItemStack.getItemDamage();
+    	list.add(StatCollector.translateToLocal("hev.attach" + dmg + ".description"));
+    }
+    
+    @SideOnly(Side.CLIENT)
+
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
      */
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List list)
     {
-    	for(int i = 0; i < 6; i ++)
+    	for(int i = 0; i < icons.length; i ++) {
     		list.add(new ItemStack(par1, 1, i));
+    	}
     }
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.add(StatCollector.translateToLocal("tissue." + descriptions[par1ItemStack.getItemDamage()] + ".name"));
-	}
-	
-    @SideOnly(Side.CLIENT)
-    @Override
-    /**
-     * Gets an icon index based on an item's damage value
-     */
-    public Icon getIconFromDamage(int i)
-    {
-    	return icons[i];
-    }
+
 
 }

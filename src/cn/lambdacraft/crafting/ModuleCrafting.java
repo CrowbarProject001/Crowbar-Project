@@ -196,7 +196,7 @@ public class ModuleCrafting {
 						CBCItems.materials.newStack(2, EnumMaterial.TECH),
 						CBCItems.materials.newStack(4, EnumMaterial.LIGHT),
 						CBCItems.materials.newStack(2, EnumMaterial.ARMOR)),
-				new RecipeCrafter(new ItemStack(DMItems.longjump), 3000,
+				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 0), 3000,
 						CBCItems.materials.newStack(2, EnumMaterial.TECH),
 						CBCItems.materials.newStack(2, EnumMaterial.ARMOR)),
 				new RecipeCrafter(new ItemStack(DMItems.medkit, 3), 2000,

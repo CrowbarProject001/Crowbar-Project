@@ -25,6 +25,7 @@ import cn.lambdacraft.mob.client.render.RenderHoundeye;
 import cn.lambdacraft.mob.client.render.RenderSentryRay;
 import cn.lambdacraft.mob.client.render.RenderShockwave;
 import cn.lambdacraft.mob.client.render.RenderTurret;
+import cn.lambdacraft.mob.client.render.RenderVortigauntRay;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
 import cn.lambdacraft.mob.entities.EntityHLZombie;
 import cn.lambdacraft.mob.entities.EntityHeadcrab;
@@ -32,6 +33,7 @@ import cn.lambdacraft.mob.entities.EntityHoundeye;
 import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.entities.EntityShockwave;
 import cn.lambdacraft.mob.entities.EntitySnark;
+import cn.lambdacraft.mob.entities.EntityVortigauntRay;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -53,6 +55,7 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityHoundeye.class, new RenderHoundeye());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, new RenderTurret());
 		RenderingRegistry.registerEntityRenderingHandler(EntityShockwave.class, new RenderShockwave());
+		RenderingRegistry.registerEntityRenderingHandler(EntityVortigauntRay.class, new RenderVortigauntRay());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSentryRay.class,
 				new RenderSentryRay());
 	}

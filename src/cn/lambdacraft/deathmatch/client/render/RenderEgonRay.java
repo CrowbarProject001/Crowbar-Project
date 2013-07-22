@@ -23,7 +23,7 @@ import net.minecraft.util.Vec3;
  */
 public class RenderEgonRay extends RenderEntity {
 
-	public static final double WIDTH = 0.05F, RADIUS = 0.14F;
+	public static double WIDTH = 0.05F, RADIUS = 0.14F;
 	public static final int IDENSITY = 16;
 	protected static Tessellator tessellator = Tessellator.instance;
 

@@ -3,6 +3,7 @@ package cn.lambdacraft.mob.register;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.register.GeneralRegistry;
+import cn.lambdacraft.mob.entities.EntityAlienSlave;
 import cn.lambdacraft.mob.entities.EntityHLZombie;
 import cn.lambdacraft.mob.entities.EntityHeadcrab;
 import cn.lambdacraft.mob.entities.EntityHoundeye;
@@ -16,7 +17,7 @@ import net.minecraft.item.Item;
 
 public class CBCMobItems {
 
-	public static Item weapon_snark, headcrab0w0, barnacle, zombie, turret, sentrySyncer, houndeye;
+	public static Item weapon_snark, headcrab0w0, barnacle, zombie, turret, sentrySyncer, houndeye, vortigaunt;
 	public static ItemBioTissue bioTissue;
 	public static ItemDNAFragment dna;
 	
@@ -28,6 +29,7 @@ public class CBCMobItems {
 		zombie = new LCMobSpawner(GeneralRegistry.getItemId("zombie", 1), EntityHLZombie.class, "zombie").setIconName("egg3");
 		turret = new LCMobSpawner(GeneralRegistry.getItemId("turret", 1), EntitySentry.class, "turret");
 		houndeye = new LCMobSpawner(GeneralRegistry.getItemId("houndeye", 1), EntityHoundeye.class, "houndeye").setIconName("egg1");
+		vortigaunt = new LCMobSpawner(GeneralRegistry.getItemId("vortigaunt", 1), EntityAlienSlave.class, "vortigaunt").setIconName("egg4");
 		sentrySyncer = new ItemSentrySyncer(GeneralRegistry.getItemId("syncer", 1));
 		bioTissue = new ItemBioTissue(GeneralRegistry.getItemId("tissue", 1));
 		dna = new ItemDNAFragment(GeneralRegistry.getItemId("dna", 1));
