@@ -1,5 +1,6 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.api.weapon.InformationEnergy;
 import cn.lambdacraft.api.weapon.WeaponGeneralEnergy;
 import cn.lambdacraft.core.CBCMod;
@@ -12,6 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -23,7 +25,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public class Weapon_Gauss extends WeaponGeneralEnergy {
+public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrosshair {
 
 	
 	public static String SND_CHARGE_PATH = "cbc.weapons.gauss_charge",
@@ -49,15 +51,17 @@ public class Weapon_Gauss extends WeaponGeneralEnergy {
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
 
-		InformationEnergy information = onEnergyWpnUpdate(par1ItemStack,
+		InformationEnergy inf = onEnergyWpnUpdate(par1ItemStack,
 				par2World, par3Entity, par4, par5);
-		int mode = getMode(par1ItemStack);
-		if (information == null)
+		if (inf == null)
 			return;
+		inf.rotationAngle += inf.rotationVelocity;
+		int mode = getMode(par1ItemStack);
 		if (mode == 1)
-			onChargeModeUpdate(information, par1ItemStack, par2World,
+			onChargeModeUpdate(inf, par1ItemStack, par2World,
 					(EntityPlayer) par3Entity, par4, par5);
-
+		else if(inf.rotationVelocity > 0)
+			inf.rotationVelocity -= 0.5;
 	}
 
 	@Override
@@ -74,8 +78,10 @@ public class Weapon_Gauss extends WeaponGeneralEnergy {
 		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer);
 		processRightClick(inf, par1ItemStack, par2World, par3EntityPlayer);
 		int mode = getMode(par1ItemStack);
-		if (mode == 0)
+		if (mode == 0) {
+			inf.rotationVelocity = 15.0F;
 			return par1ItemStack;
+		}
 
 		if (mode == 1) {
 			inf.resetState();
@@ -98,6 +104,8 @@ public class Weapon_Gauss extends WeaponGeneralEnergy {
 		if (inf.isShooting) {
 			int ticksChange = inf.getDeltaTick();
 			inf.chargeTime++;
+			if(inf.rotationVelocity <= 15)
+				inf.rotationVelocity += 1;
 
 			Boolean canUse = this.canShoot(player, par1ItemStack);
 			Boolean ignoreAmmo = player.capabilities.isCreativeMode;
@@ -136,7 +144,8 @@ public class Weapon_Gauss extends WeaponGeneralEnergy {
 				par2World
 						.playSoundAtEntity(player, SND_CHARGE_PATH, 0.5F, 1.0F);
 			}
-		}
+		} else if(inf.rotationVelocity > 0)
+			inf.rotationVelocity -= 0.5;
 
 	}
 
@@ -189,6 +198,16 @@ public class Weapon_Gauss extends WeaponGeneralEnergy {
 		information.setLastTick();
 		return;
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public float getRotationForStack(ItemStack is, EntityLiving living) {
+		if(!(living instanceof EntityPlayer))
+			return 0.0F;
+		InformationEnergy inf = loadInformation(is, (EntityPlayer) living);
+		if(inf == null)
+			return 0;
+		return inf.rotationAngle / 0.01745329252F;
+	}
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
@@ -228,6 +247,11 @@ public class Weapon_Gauss extends WeaponGeneralEnergy {
 	@Override
 	public String getModeDescription(int mode) {
 		return mode == 0 ? "mode.gauss1" : "mode.gauss2";
+	}
+
+	@Override
+	public int getHalfWidth() {
+		return 8;
 	}
 
 }

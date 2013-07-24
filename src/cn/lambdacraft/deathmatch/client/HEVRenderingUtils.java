@@ -14,16 +14,6 @@
  */
 package cn.lambdacraft.deathmatch.client;
 
-import org.lwjgl.opengl.GL11;
-
-import cn.lambdacraft.api.hud.IHudTip;
-import cn.lambdacraft.api.hud.IHudTipProvider;
-import cn.lambdacraft.core.CBCPlayer;
-import cn.lambdacraft.core.CBCPlayer.EnumStatus;
-import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.items.ArmorHEV;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderEngine;
@@ -32,6 +22,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
+import cn.lambdacraft.api.hud.ISpecialCrosshair;
+import cn.lambdacraft.core.CBCPlayer;
+import cn.lambdacraft.core.CBCPlayer.EnumStatus;
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.deathmatch.items.ArmorHEV;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD
@@ -88,9 +90,46 @@ public class HEVRenderingUtils {
         	drawWeaponTip(player, engine, k, l);
         drawStatusHud(player, engine, k, l);
         
+        
         engine.bindTexture("/gui/icons.png");
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void drawCrosshair(ItemStack item, int k, int l) {
+		String xhairPath;
+		RenderEngine engine = Minecraft.getMinecraft().renderEngine;
+		int h = 12;
+		if(item != null) {
+			if(item.getItem() instanceof ISpecialCrosshair)
+				h = ((ISpecialCrosshair)item.getItem()).getHalfWidth();
+			xhairPath = ClientProps.getCrosshairPath(item.getItemName());
+			
+			if(xhairPath == null)
+				xhairPath = ClientProps.DEFAULT_XHAIR_PATH;
+		} else {
+			xhairPath = ClientProps.DEFAULT_XHAIR_PATH;
+		}
+		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND);
+	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		int par1 = k / 2 - h, par2 = l / 2 - h;
+		engine.bindTexture(xhairPath);
+		Tessellator t = Tessellator.instance;
+        t.startDrawingQuads();
+        t.setColorRGBA(ClientProps.xHairR, ClientProps.xHairG, ClientProps.xHairB, 255);
+        t.addVertexWithUV((double)(par1 + 0), (double)(par2 + 2*h), (double)-90, 0, 1);
+        t.addVertexWithUV((double)(par1 + 2*h), (double)(par2 + 2*h), (double)-90, 1, 1);
+        t.addVertexWithUV((double)(par1 + 2*h), (double)(par2 + 0), (double)-90, 1, 0);
+        t.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, 0, 0);
+        t.draw();
+        
+        engine.bindTexture("/gui/icons.png");
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
+        GL11.glPopMatrix();
 	}
 	
 	@SideOnly(Side.CLIENT) 

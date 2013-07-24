@@ -12,26 +12,17 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cn.lambdacraft.xen.world.gen.structure;
+package cn.lambdacraft.api.client;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.ComponentNetherBridgeStartPiece;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.item.ItemStack;
 
 /**
- * @author mkpoli
- *
- *
- * 大概是结构？
+ * 物品用模型的？
+ * @author WeAthFolD
  */
-public class StructureXenBridgeStart extends StructureStart {
-    public StructureXenBridgeStart(World par1World, Random par2Random, int par3, int par4)
-    {
-        this.updateBoundingBox();
-        this.setRandomHeight(par1World, par2Random, 48, 70);
-    }
+public interface IItemModel {
+
+	public void render(ItemStack is, float scale, float f);
+	public void setRotationAngles(ItemStack is, double posX, double posY, double posZ, float f);
+	
 }

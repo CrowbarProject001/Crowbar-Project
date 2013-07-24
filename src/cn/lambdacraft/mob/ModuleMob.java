@@ -2,7 +2,9 @@ package cn.lambdacraft.mob;
 
 import java.util.HashMap;
 
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
@@ -53,7 +55,7 @@ public class ModuleMob {
 	 * 放置着对应方块位置的映射表。
 	 */
 	public static HashMap<BlockPos, EntityPlayer> playerMap = new HashMap();
-	
+
 	@SidedProxy(clientSide = "cn.lambdacraft.mob.proxy.ClientProxy", serverSide = "cn.lambdacraft.mob.proxy.Proxy")
 	public static cn.lambdacraft.mob.proxy.Proxy proxy;
 
@@ -69,18 +71,48 @@ public class ModuleMob {
 	public void init(FMLInitializationEvent Init) {
 		CBCMobItems.init(CBCMod.config);
 		CBCMobBlocks.init();
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER, new NetSentrySync());
-		EntityRegistry.registerModEntity(EntitySnark.class, "snark", GeneralProps.ENT_ID_SNARK, CBCMod.instance, 32, 3, true);
-		EntityRegistry.registerModEntity(EntityHeadcrab.class, "headcrab", GeneralProps.ENT_ID_HEADCRAB, CBCMod.instance, 32, 3, true);
-		EntityRegistry.registerModEntity(EntityBarnacle.class, "barnacle", GeneralProps.ENT_ID_BARNACLE, CBCMod.instance, 32, 5, false);
-		EntityRegistry.registerModEntity(EntityHLZombie.class, "hlzombie", GeneralProps.ENT_ID_ZOMBIE, CBCMod.instance, 32, 3, true);
-		EntityRegistry.registerModEntity(EntitySentry.class, "turret", GeneralProps.ENT_ID_TURRET, CBCMod.instance, 32, 3, true);
-		EntityRegistry.registerModEntity(EntityHoundeye.class, "houndeye", GeneralProps.ENT_ID_HOUNDEYE, CBCMod.instance, 48, 3, true);
-		EntityRegistry.registerModEntity(EntityShockwave.class, "shockwave", GeneralProps.ENT_ID_SHOCKWAVE, CBCMod.instance, 48, 3, false);
-		EntityRegistry.registerModEntity(EntityAlienSlave.class, "vortigaunt", GeneralProps.ENT_ID_VORTIGAUNT, CBCMod.instance, 48, 3, true);
-		EntityRegistry.registerModEntity(EntityVortigauntRay.class, "vor_ray", GeneralProps.ENT_ID_VOR_RAY, CBCMod.instance, 48, 3, false);
+
+		EntityRegistry.addSpawn(EntityHeadcrab.class, 7, 0, 50,
+				EnumCreatureType.monster, genericGen);
+		EntityRegistry.addSpawn(EntityHoundeye.class, 15, 0, 70,
+				EnumCreatureType.monster, genericGen);
+		EntityRegistry.addSpawn(EntityBarnacle.class, 10, 0, 65,
+				EnumCreatureType.monster, barnacleGen);
+
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER,
+				new NetSentrySync());
+		EntityRegistry.registerModEntity(EntitySnark.class, "snark",
+				GeneralProps.ENT_ID_SNARK, CBCMod.instance, 64, 3, true);
+		EntityRegistry.registerModEntity(EntityHeadcrab.class, "headcrab",
+				GeneralProps.ENT_ID_HEADCRAB, CBCMod.instance, 64, 3, true);
+		EntityRegistry.registerModEntity(EntityBarnacle.class, "barnacle",
+				GeneralProps.ENT_ID_BARNACLE, CBCMod.instance, 64, 5, false);
+		EntityRegistry.registerModEntity(EntityHLZombie.class, "hlzombie",
+				GeneralProps.ENT_ID_ZOMBIE, CBCMod.instance, 64, 3, true);
+		EntityRegistry.registerModEntity(EntitySentry.class, "turret",
+				GeneralProps.ENT_ID_TURRET, CBCMod.instance, 48, 3, true);
+		EntityRegistry.registerModEntity(EntityHoundeye.class, "houndeye",
+				GeneralProps.ENT_ID_HOUNDEYE, CBCMod.instance, 64, 3, true);
+		EntityRegistry.registerModEntity(EntityShockwave.class, "shockwave",
+				GeneralProps.ENT_ID_SHOCKWAVE, CBCMod.instance, 32, 3, false);
+		EntityRegistry.registerModEntity(EntityAlienSlave.class, "vortigaunt",
+				GeneralProps.ENT_ID_VORTIGAUNT, CBCMod.instance, 64, 3, true);
+		EntityRegistry.registerModEntity(EntityVortigauntRay.class, "vor_ray",
+				GeneralProps.ENT_ID_VOR_RAY, CBCMod.instance, 48, 3, false);
 		proxy.init();
 	}
+
+	private static BiomeGenBase genericGen[] = { BiomeGenBase.beach,
+			BiomeGenBase.desert, BiomeGenBase.desertHills,
+			BiomeGenBase.extremeHills, BiomeGenBase.forest,
+			BiomeGenBase.forestHills, BiomeGenBase.frozenOcean,
+			BiomeGenBase.frozenRiver, BiomeGenBase.jungle,
+			BiomeGenBase.swampland, BiomeGenBase.plains }, barnacleGen[] = {
+			BiomeGenBase.beach, BiomeGenBase.desert, BiomeGenBase.desertHills,
+			BiomeGenBase.extremeHills, BiomeGenBase.forest,
+			BiomeGenBase.forestHills, BiomeGenBase.frozenOcean,
+			BiomeGenBase.frozenRiver, BiomeGenBase.jungle,
+			BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.hell };
 
 	@PostInit
 	public void postInit(FMLPostInitializationEvent Init) {

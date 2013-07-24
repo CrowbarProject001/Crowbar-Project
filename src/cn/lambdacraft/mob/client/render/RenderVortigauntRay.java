@@ -34,9 +34,7 @@ import net.minecraft.util.Vec3;
  */
 public class RenderVortigauntRay extends RenderEgonRay {
 
-	static {
-		WIDTH = 0.2F;
-	}
+	public static final double WIDTH = 0.2F;
 	
 	/* (non-Javadoc)
 	 * @see net.minecraft.client.renderer.entity.Render#doRender(net.minecraft.entity.Entity, double, double, double, float, float)

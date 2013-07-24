@@ -14,6 +14,8 @@
  */
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;

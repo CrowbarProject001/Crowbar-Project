@@ -187,5 +187,4 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		};
 		return tips;
 	}
-
 }

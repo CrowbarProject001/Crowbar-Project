@@ -1,5 +1,6 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.api.weapon.InformationEnergy;
 import cn.lambdacraft.api.weapon.WeaponGeneralEnergy;
 import cn.lambdacraft.core.CBCMod;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public class Weapon_Egon extends WeaponGeneralEnergy {
+public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshair {
 
 	public static String SND_WINDUP = "cbc.weapons.egon_windup",
 			SND_RUN = "cbc.weapons.egon_run", SND_OFF = "cbc.weapons.egon_off";
@@ -150,6 +151,11 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 	@Override
 	public String getModeDescription(int mode) {
 		return "mode.egon";
+	}
+
+	@Override
+	public int getHalfWidth() {
+		return 8;
 	}
 
 }

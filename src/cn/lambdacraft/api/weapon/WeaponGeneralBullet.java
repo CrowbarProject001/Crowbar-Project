@@ -2,14 +2,6 @@ package cn.lambdacraft.api.weapon;
 
 import java.util.List;
 
-import cn.lambdacraft.api.hud.IHudIconProvider;
-import cn.lambdacraft.api.hud.IHudTip;
-import cn.lambdacraft.api.hud.IHudTipProvider;
-import cn.lambdacraft.deathmatch.utils.AmmoManager;
-import cn.lambdacraft.deathmatch.utils.BulletManager;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,6 +10,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
+import cn.lambdacraft.deathmatch.utils.AmmoManager;
+import cn.lambdacraft.deathmatch.utils.BulletManager;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * General bullet weapon class, including 9mmhandgun, rpg, etc...

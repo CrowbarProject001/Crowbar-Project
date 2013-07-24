@@ -174,5 +174,4 @@ public class Weapon_Shotgun extends WeaponGeneralBullet {
 		return mode == 0 ? "mode.sg1" : "mode.sg2";
 	}
 
-
 }

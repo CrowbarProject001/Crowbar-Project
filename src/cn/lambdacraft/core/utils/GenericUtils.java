@@ -83,7 +83,6 @@ public class GenericUtils {
 	 */
 	public static String getRandomSound(String sndPath, int countSounds) {
 		int a = (int) (Math.random() * countSounds);
-		System.out.println(sndPath.concat(String.valueOf(String.valueOf((char)('a' + a)))));
 		return sndPath.concat(String.valueOf((char)('a' + a)));
 	}
 

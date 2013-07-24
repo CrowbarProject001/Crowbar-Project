@@ -14,6 +14,7 @@
  */
 package cn.lambdacraft.deathmatch.register;
 
+import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
@@ -42,7 +43,7 @@ public class DMEventHandler {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft().gameSettings, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-		if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR) {
+		if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR || event.type == ElementType.CROSSHAIRS) {
 			ItemStack chest = player.inventory.armorInventory[2];
 			ItemStack helmet = player.inventory.armorInventory[3];
 			if (chest != null && helmet != null) {
@@ -53,9 +54,16 @@ public class DMEventHandler {
 						event.setCanceled(true);
 						if(event.type == ElementType.HEALTH)
 							HEVRenderingUtils.drawPlayerHud(player, rs);
+						if(event.type == ElementType.CROSSHAIRS)
+							HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), rs.getScaledWidth(), rs.getScaledHeight());
 					}
 				}
 			}
+			return;
+		}
+		
+		if(ClientProps.alwaysCustomCrossHair && event.type == ElementType.CROSSHAIRS) {
+			HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), rs.getScaledWidth(), rs.getScaledHeight());
 		}
 	}
 	

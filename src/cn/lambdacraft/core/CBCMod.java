@@ -150,10 +150,8 @@ public class CBCMod implements ITickHandler {
 	 */
 	@Init
 	public void init(FMLInitializationEvent Init) {
-		Class a;
 		ic2Installed = IC2Module.init();
-		System.out.println("LambdaCraft IC2 Intergration Module STATE : "
-				+ ic2Installed);
+		log.fine("LambdaCraft IC2 Intergration Module STATE : " + ic2Installed);
 		// Blocks, Items, GUI Handler,Key Process.
 		NetworkRegistry.instance()
 				.registerGuiHandler(this, new CBCGuiHandler());
@@ -165,7 +163,6 @@ public class CBCMod implements ITickHandler {
 				new NetExplosion());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);
-		Vec3[][] vs = RenderUtils.shapeSphere.getVertices();
 		proxy.init();
 	}
 

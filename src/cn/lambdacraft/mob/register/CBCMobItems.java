@@ -26,20 +26,14 @@ public class CBCMobItems {
 				1));
 		headcrab0w0 = new LCMobSpawner(GeneralRegistry.getItemId("headcrab", 1), EntityHeadcrab.class, "headcrab").setIconName("egg5");
 		barnacle = new ItemBarnaclePlacer(GeneralRegistry.getItemId("barnacle", 1)).setIconName("egg0");
-		zombie = new LCMobSpawner(GeneralRegistry.getItemId("zombie", 1), EntityHLZombie.class, "zombie").setIconName("egg3");
+		zombie = new LCMobSpawner(GeneralRegistry.getItemId("zombie", 1), EntityHLZombie.class, "hlzombie").setIconName("egg3");
 		turret = new LCMobSpawner(GeneralRegistry.getItemId("turret", 1), EntitySentry.class, "turret");
 		houndeye = new LCMobSpawner(GeneralRegistry.getItemId("houndeye", 1), EntityHoundeye.class, "houndeye").setIconName("egg1");
 		vortigaunt = new LCMobSpawner(GeneralRegistry.getItemId("vortigaunt", 1), EntityAlienSlave.class, "vortigaunt").setIconName("egg4");
 		sentrySyncer = new ItemSentrySyncer(GeneralRegistry.getItemId("syncer", 1));
 		bioTissue = new ItemBioTissue(GeneralRegistry.getItemId("tissue", 1));
 		dna = new ItemDNAFragment(GeneralRegistry.getItemId("dna", 1));
-		
-		LanguageRegistry.addName(headcrab0w0, "Headcrab");
-		LanguageRegistry.addName(barnacle, "Barnacle");
-		LanguageRegistry.addName(zombie, "Zombie");
-		LanguageRegistry.addName(turret, "Turret");
-		LanguageRegistry.addName(houndeye, "Houndeye");
-		LanguageRegistry.addName(sentrySyncer, "Sentry Syncer");
+
 	}
 
 }

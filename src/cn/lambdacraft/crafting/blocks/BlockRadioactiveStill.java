@@ -47,6 +47,7 @@ public class BlockRadioactiveStill extends BlockStationary {
 	 */
 	public BlockRadioactiveStill(int id) {
 		super(id, Material.water);
+		setUnlocalizedName("radioactive");
         setCreativeTab(CBCMod.cctMisc);
         blockHardness = 100.0F;
         setLightOpacity(3);

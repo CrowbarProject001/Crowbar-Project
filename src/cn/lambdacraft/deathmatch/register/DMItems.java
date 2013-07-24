@@ -8,6 +8,7 @@ import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
 import cn.lambdacraft.deathmatch.items.ItemAttachment;
 import cn.lambdacraft.deathmatch.items.ItemMedkit;
+import cn.lambdacraft.deathmatch.items.wpns.ItemPhysicalCalibur;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_357;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_9mmAR;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_9mmhandgun;
@@ -24,7 +25,7 @@ import cn.lambdacraft.deathmatch.items.wpns.Weapon_Shotgun;
 
 public class DMItems {
 
-	public static Weapon_Crowbar weapon_crowbar;
+	public static Weapon_Crowbar weapon_crowbar, physCalibur;
 	public static Weapon_Hgrenade weapon_hgrenade;
 
 	public static Weapon_Gauss weapon_gauss;
@@ -70,6 +71,8 @@ public class DMItems {
 				1));
 		weapon_hornet = new Weapon_Hornet(GeneralRegistry.getItemId(
 				"weapon_hornet", 1));
+		physCalibur = new ItemPhysicalCalibur(GeneralRegistry.getItemId("physCalibur", 1));
+		
 		if(!CBCMod.ic2Installed) {
 			armorHEVHelmet = new ArmorHEV(GeneralRegistry.getItemId("hevHelmet",
 				GeneralProps.CAT_EQUIPMENT), 0);

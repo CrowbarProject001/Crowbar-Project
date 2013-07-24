@@ -23,6 +23,7 @@ import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -149,12 +150,22 @@ public class EntityBarnacle extends EntityLiving {
 		}
 		//Check if barnacle could still exist
 		if(worldObj.getBlockId(MathHelper.floor_double(posX), (int)posY + 1, MathHelper.floor_double(posZ)) == 0) {
-			health = 0;
-			detach = true;
-			motionY = 0.0;
-			motionX = (Math.random() - 0.5) * 0.2F;
-			motionZ = (Math.random() - 0.5) * 0.2F;
+			if(ticksExisted < 10) {
+				MotionXYZ mo = new MotionXYZ(this);
+				MovingObjectPosition result = worldObj.rayTraceBlocks(mo.asVec3(worldObj), mo.asVec3(worldObj).addVector(0.0, 40.0, 0.0));
+				if(result != null) {
+					this.setPosition(result.blockX + 0.5, result.blockY - 1.0, result.blockZ + 0.5);
+				} else this.setDead();
+			} else {
+				health = 0;
+				detach = true;
+				motionY = 0.0;
+				motionX = (Math.random() - 0.5) * 0.2F;
+				motionZ = (Math.random() - 0.5) * 0.2F;
+			}
 		} else detach = false;
+		if(worldObj.difficultySetting == 0)
+			this.setDead();
 	}
 	
 	private void updateTentacle() {
@@ -240,5 +251,10 @@ public class EntityBarnacle extends EntityLiving {
 	public int getMaxHealth() {
 		return 20;
 	}
+	
+    public EnumCreatureAttribute getCreatureAttribute()
+    {
+        return EnumCreatureAttribute.ARTHROPOD;
+    }
 
 }
