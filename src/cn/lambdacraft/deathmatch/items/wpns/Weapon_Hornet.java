@@ -54,8 +54,7 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 			return;
 		int dt = inf.ticksExisted;
 		EntityPlayer player = (EntityPlayer) par3Entity;
-		if (dt % RECOVER_TIME == 0
-				&& !(this.canShoot(player, par1ItemStack) && inf.isShooting)) {
+		if (dt % RECOVER_TIME == 0 && !(this.canShoot(player, par1ItemStack) && player.isUsingItem())) {
 			if (par1ItemStack.getItemDamage() > 0)
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
 		}
@@ -91,8 +90,7 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 
 	@Override
 	public void onBulletWpnReload(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3Entity, InformationBullet information) {
-	}
+			EntityPlayer par3Entity, InformationBullet information) {}
 
 	@Override
 	public double getPushForce(int mode) {

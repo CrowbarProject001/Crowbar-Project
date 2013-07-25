@@ -53,19 +53,18 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 
 		InformationEnergy inf = onEnergyWpnUpdate(par1ItemStack,
 				par2World, par3Entity, par4, par5);
+		
 		if (inf == null)
 			return;
+		EntityPlayer player = (EntityPlayer) par3Entity;
+		if(!player.isUsingItem() && inf.rotationVelocity > 0)
+			inf.rotationVelocity -= 0.5;
 		inf.rotationAngle += inf.rotationVelocity;
 		int mode = getMode(par1ItemStack);
-		if (mode == 1)
-			onChargeModeUpdate(inf, par1ItemStack, par2World,
-					(EntityPlayer) par3Entity, par4, par5);
-		else if(inf.rotationVelocity > 0)
-			inf.rotationVelocity -= 0.5;
 	}
 
 	@Override
-	public Boolean doesShoot(InformationEnergy inf, ItemStack itemStack,
+	public boolean doesShoot(InformationEnergy inf, ItemStack itemStack,
 			EntityPlayer player) {
 		int mode = getMode(itemStack);
 		return mode == 0 && super.doesShoot(inf, itemStack, player);
@@ -85,7 +84,6 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 
 		if (mode == 1) {
 			inf.resetState();
-			inf.isShooting = true;
 			if (canShoot(par3EntityPlayer, par1ItemStack))
 				par2World.playSoundAtEntity(par3EntityPlayer,
 						SND_CHARGEA_PATH[0], 0.5F, 1.0F);
@@ -93,6 +91,16 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 		return par1ItemStack;
 
 	}
+	
+	@Override
+    public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count)
+    {
+		super.onUsingItemTick(stack, player, count);
+		InformationEnergy inf = loadInformation(stack, player);
+		int mode = getMode(stack);
+		if(mode == 1)
+			onChargeModeUpdate(inf, stack, player.worldObj, player, 0, true);
+    }
 
 	public void onChargeModeUpdate(InformationEnergy inf,
 			ItemStack par1ItemStack, World par2World, EntityPlayer player,
@@ -101,54 +109,49 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 		final int OVER_CHARGE_LIMIT = 160;
 		final int CHARGE_TIME_LIMIT = 41;
 
-		if (inf.isShooting) {
-			int ticksChange = inf.getDeltaTick();
-			inf.chargeTime++;
-			if(inf.rotationVelocity <= 15)
-				inf.rotationVelocity += 1;
+		int ticksChange = inf.getDeltaTick();
+		inf.chargeTime++;
+		
+		if(inf.rotationVelocity <= 15)
+			inf.rotationVelocity += 1;
 
-			Boolean canUse = this.canShoot(player, par1ItemStack);
-			Boolean ignoreAmmo = player.capabilities.isCreativeMode;
+		Boolean canUse = this.canShoot(player, par1ItemStack);
+		Boolean ignoreAmmo = player.capabilities.isCreativeMode;
 
-			if (canUse && inf.chargeTime < CHARGE_TIME_LIMIT)
-				inf.charge++;
+		if (canUse && inf.chargeTime < CHARGE_TIME_LIMIT)
+			inf.charge++;
 
-			if (!canUse)
-				player.stopUsingItem();
+		if (!canUse)
+			player.stopUsingItem();
 
-			if (!ignoreAmmo && inf.ticksExisted <= CHARGE_TIME_LIMIT
-					&& inf.chargeTime % 4 == 0)
-				AmmoManager.consumeAmmo(player, this, 1);
+		if (!ignoreAmmo && inf.ticksExisted <= CHARGE_TIME_LIMIT
+				&& inf.chargeTime % 4 == 0)
+			AmmoManager.consumeAmmo(player, this, 1);
 
-			// OverCharge!
-			if (inf.chargeTime > OVER_CHARGE_LIMIT) {
-				inf.isShooting = false;
-				inf.resetState();
-				player.attackEntityFrom(DamageSource.causeMobDamage(player), 15);
-			}
+		// OverCharge!
+		if (inf.chargeTime > OVER_CHARGE_LIMIT) {
+			inf.resetState();
+			player.stopUsingItem();
+			player.attackEntityFrom(DamageSource.causeMobDamage(player), 15);
+		}
 
-			int i = -1;
-			if (inf.ticksExisted == 9) {
-				i = 1;
-			} else if (inf.ticksExisted == 18) {
-				i = 2;
-			} else if (inf.ticksExisted == 27) {
-				i = 3;
-			}
-			if (i > 0)
-				par2World.playSoundAtEntity(player, SND_CHARGEA_PATH[i], 0.5F,
-						1.0F);
+		int i = -1;
+		if (inf.ticksExisted == 9) 
+			i = 1;
+		else if (inf.ticksExisted == 18) 
+			i = 2;
+		else if (inf.ticksExisted == 27) 
+			i = 3;
+		if (i > 0) 
+			par2World.playSoundAtEntity(player, SND_CHARGEA_PATH[i], 0.5F, 1.0F);
 
-			if (inf.chargeTime >= 30 && inf.chargeTime % 15 == 0) {
-				inf.setLastTick();
-				par2World
-						.playSoundAtEntity(player, SND_CHARGE_PATH, 0.5F, 1.0F);
-			}
-		} else if(inf.rotationVelocity > 0)
-			inf.rotationVelocity -= 0.5;
+		if (inf.chargeTime >= 30 && inf.chargeTime % 15 == 0) {
+			inf.setLastTick();
+			par2World.playSoundAtEntity(player, SND_CHARGE_PATH, 0.5F, 1.0F);
+		}
 
 	}
-
+	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer, int par4) {
@@ -165,10 +168,8 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 
 		// Do the charge attack part
 		int charge = (inf.charge > 60 ? 60 : inf.charge);
-		if (charge <= 6) {
-			inf.isShooting = false;
+		if (charge <= 6)
 			return;
-		}
 		int damage = charge * 2 / 3;
 		double vel = charge / 14.0;
 
@@ -176,7 +177,6 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ
 				* vel;
 
-		inf.isShooting = false;
 		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
 		if (!par2World.isRemote) {
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_SHOOT_PATH, 0.5F,

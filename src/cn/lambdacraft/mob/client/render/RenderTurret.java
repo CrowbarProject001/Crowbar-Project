@@ -37,7 +37,7 @@ public class RenderTurret extends RenderLiving {
 	private static ModelTurret model = new ModelTurret();
 	
 	public RenderTurret() {
-		super(model, 1.0F);
+		super(model, 0.4F);
 	}
 
 	/* (non-Javadoc)

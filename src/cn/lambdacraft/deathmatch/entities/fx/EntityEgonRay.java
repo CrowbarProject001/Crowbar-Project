@@ -16,6 +16,7 @@ package cn.lambdacraft.deathmatch.entities.fx;
 
 import cn.lambdacraft.api.weapon.InformationEnergy;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Egon;
+import cn.lambdacraft.deathmatch.register.DMItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -37,9 +38,9 @@ public class EntityEgonRay extends Entity {
 	public boolean renderThirdPerson;
 	public boolean draw = true;
 	public boolean isClient = false;
-	protected EntityLiving thrower;
+	protected EntityPlayer thrower;
 
-	public EntityEgonRay(World par1World, EntityLiving ent, ItemStack itemStack) {
+	public EntityEgonRay(World par1World, EntityPlayer ent, ItemStack itemStack) {
 		super(par1World);
 		this.posX = ent.posX;
 		this.posY = ent.posY;
@@ -57,7 +58,7 @@ public class EntityEgonRay extends Entity {
 		isClient = false;
 	}
 
-	public EntityLiving getThrower() {
+	public EntityPlayer getThrower() {
 		return thrower;
 	}
 
@@ -75,9 +76,9 @@ public class EntityEgonRay extends Entity {
 
 		InformationEnergy inf = ((Weapon_Egon) item.getItem()).getInformation(
 				item, worldObj);
-		if (inf == null
-				|| !(inf.isShooting && ((Weapon_Egon) item.getItem()).canShoot(
-						(EntityPlayer) thrower, item))) {
+		if (inf == null|| 
+				!(thrower.getCurrentEquippedItem() != null && thrower.getCurrentEquippedItem().itemID == DMItems.weapon_egon.itemID && 
+				thrower.isUsingItem() && ((Weapon_Egon)item.getItem()).canShoot((EntityPlayer) thrower, item))) {
 			this.setDead();
 			return;
 		}

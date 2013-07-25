@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import cn.lambdacraft.core.utils.MotionXYZ;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
@@ -79,9 +80,11 @@ public class RenderCrossedProjectile extends RenderEntity {
 			GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glRotatef(270.0F - gren.rotationYaw, 0.0F, -1.0F, 0.0F); // 左右旋转
 		GL11.glRotatef(gren.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
+		if(ignoreLight) 
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		tessellator.startDrawingQuads();
-		if(ignoreLight)
-			tessellator.setBrightness(255);
+		if(ignoreLight) 
+			tessellator.setBrightness(15728880);
 		addVertex(v1, 0, 1);
 		addVertex(v2, 1, 1);
 		addVertex(v3, 1, 0);

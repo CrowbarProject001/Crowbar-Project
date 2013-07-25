@@ -69,12 +69,7 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3Entity, InformationBullet information) {
 
-		Boolean canUse = this.canShoot(par3Entity, par1ItemStack);
 		int mode = getMode(par1ItemStack);
-		if (!canUse) {
-			information.setLastTick();
-			return;
-		}
 
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
 		if (!par2World.isRemote)
@@ -83,10 +78,8 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 		if (par3Entity instanceof EntityPlayer) {
 			doUplift(information, par3Entity);
 			if (!par3Entity.capabilities.isCreativeMode) {
-				if(!par2World.isRemote)
 					par1ItemStack.damageItem(1, par3Entity);
-				par3Entity.setItemInUse(par1ItemStack,
-						this.getMaxItemUseDuration(par1ItemStack));
+				par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 			}
 		}
 	}
@@ -144,6 +137,6 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 				: inf.clientReference);
 		if (information == null)
 			return false;
-		return !(information.isShooting && information.getDeltaTick() < 17);
+		return !(information.getDeltaTick() < 17);
 	}
 }

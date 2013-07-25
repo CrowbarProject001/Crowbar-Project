@@ -58,7 +58,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 	@Override
 	public String getSoundShoot(int mode) {
 		String[] shoot = { "cbc.weapons.pyt_shota", "cbc.weapons.pyt_shotb" };
-		int index = (int) (Math.random() * 2);
+		int index = (int) (itemRand.nextFloat() * 2);
 		return shoot[index];
 	}
 

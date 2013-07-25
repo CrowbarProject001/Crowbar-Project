@@ -81,9 +81,8 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	}
 
 	@Override
-	public Boolean canShoot(EntityPlayer player, ItemStack is) {
-		return AmmoManager.hasAmmo(this, player)
-				|| player.capabilities.isCreativeMode;
+	public boolean canShoot(EntityPlayer player, ItemStack is) {
+		return AmmoManager.hasAmmo(this, player) || player.capabilities.isCreativeMode;
 	}
 
 	@Override

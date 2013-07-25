@@ -2,6 +2,8 @@ package cn.lambdacraft.api.weapon;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -23,7 +25,8 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author WeAthFolD
  * 
  */
-public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudTipProvider {
+public abstract class WeaponGeneralBullet extends WeaponGeneral implements
+		IHudTipProvider {
 
 	public int reloadTime;
 	public int jamTime;
@@ -47,22 +50,22 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 
 		InformationBullet information = loadInformation(par1ItemStack,
 				par3EntityPlayer);
-		Boolean canUse = (par1ItemStack.getMaxDamage()
-				- par1ItemStack.getItemDamage() - 1 > 0);
+		Boolean canUse = canShoot(par3EntityPlayer, par1ItemStack);
 		int mode = getMode(par1ItemStack);
 
 		if (canUse) {
-			if (information.getDeltaTick() >= getShootTime(mode)) {
-				this.onBulletWpnShoot(par1ItemStack, par2World,
-						par3EntityPlayer, information);
+			if (!information.isReloading) {
+				if (information.getDeltaTick() >= getShootTime(mode)) {
+					this.onBulletWpnShoot(par1ItemStack, par2World,
+							par3EntityPlayer, information);
+				}
+				par3EntityPlayer.setItemInUse(par1ItemStack,
+						getMaxItemUseDuration(par1ItemStack));
 			}
-			information.isShooting = true;
 		} else {
 			onSetReload(par1ItemStack, par3EntityPlayer);
 		}
 
-		par3EntityPlayer.setItemInUse(par1ItemStack,
-				getMaxItemUseDuration(par1ItemStack));
 		return information;
 	}
 
@@ -76,28 +79,39 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 			information = getInformation(par1ItemStack, par2World);
 			if (information == null)
 				return null;
-
-			information.isShooting = false;
 			information.isReloading = false;
 			return null;
 		}
-		information.updateTick();
 
 		EntityPlayer player = (EntityPlayer) par3Entity;
-
-		if (doesShoot(information, par1ItemStack))
-			this.onBulletWpnShoot(par1ItemStack, par2World, player, information);
-
 		if (doesReload(information, par1ItemStack))
 			this.onBulletWpnReload(par1ItemStack, par2World, player,
 					information);
-		if (doesJam(information, par1ItemStack))
-			this.onBulletWpnJam(par1ItemStack, par2World, player, information);
 
 		return information;
 	}
 
-	public Boolean canShoot(EntityPlayer player, ItemStack is) {
+	@Override
+	public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count) {
+		InformationBullet information = loadInformation(stack, player);
+		World world = player.worldObj;
+
+		if (doesShoot(information, player, stack))
+			this.onBulletWpnShoot(stack, world, player, information);
+
+		else if (doesJam(information, player, stack))
+			this.onBulletWpnJam(stack, world, player, information);
+
+	}
+
+	@Override
+	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
+			EntityPlayer par3EntityPlayer, int par4) {
+	}
+
+	// --------------------Utilities---------------------------
+
+	public boolean canShoot(EntityPlayer player, ItemStack is) {
 		return (is.getMaxDamage() - is.getItemDamage() - 1 > 0)
 				|| player.capabilities.isCreativeMode;
 	}
@@ -107,12 +121,13 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 	 * 
 	 * @return If the shoot method should be called in this tick or not.
 	 */
-	public Boolean doesShoot(InformationBullet inf, ItemStack itemStack) {
-		Boolean canUse;
+	public boolean doesShoot(InformationBullet inf, EntityPlayer player,
+			ItemStack itemStack) {
+		boolean canUse;
 		int mode = getMode(itemStack);
-		canUse = (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1 > 0);
-		return (getShootTime(mode) != 0 && inf.isShooting && canUse && inf
-				.getDeltaTick() >= getShootTime(mode));
+		canUse = canShoot(player, itemStack);
+		return getShootTime(mode) != 0 && canUse
+				&& inf.getDeltaTick() >= getShootTime(mode) && !inf.isReloading;
 	}
 
 	/**
@@ -120,7 +135,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 	 * 
 	 * @return If the Reload method should be called in this tick or not.
 	 */
-	public Boolean doesReload(InformationBullet inf, ItemStack itemStack) {
+	public boolean doesReload(InformationBullet inf, ItemStack itemStack) {
 		return (inf.isReloading && inf.getDeltaTick() >= this.reloadTime);
 	}
 
@@ -129,25 +144,24 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 	 * 
 	 * @return If the jam method should be called in this tick or not.
 	 */
-	public Boolean doesJam(InformationBullet inf, ItemStack itemStack) {
+	public boolean doesJam(InformationBullet inf, EntityPlayer player,
+			ItemStack itemStack) {
 		Boolean canUse;
-		canUse = (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1 > 0);
-		return (jamTime != 0 && inf.isShooting && !canUse && inf.getDeltaTick() > jamTime);
+		canUse = canShoot(player, itemStack);
+		return (jamTime != 0 && !canUse && inf.getDeltaTick() > jamTime);
 	}
 
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer player, InformationBullet information) {
-		
-		player.setItemInUse(par1ItemStack,
-				this.getMaxItemUseDuration(par1ItemStack));
+
 		BulletManager.Shoot(par1ItemStack, player, par2World);
-		if (!par2World.isRemote) {
-			if (!(player.capabilities.isCreativeMode))
-				par1ItemStack.damageItem(1, player);
-		}
+		if (!(player.capabilities.isCreativeMode))
+			par1ItemStack.damageItem(1, player);
 		par2World.playSoundAtEntity(player,
 				this.getSoundShoot(this.getMode(par1ItemStack)), 0.5F, 1.0F);
 		doUplift(information, player);
+		player.setItemInUse(par1ItemStack,
+				this.getMaxItemUseDuration(par1ItemStack));
 		information.setLastTick();
 	}
 
@@ -159,7 +173,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 	}
 
 	public boolean onSetReload(ItemStack itemStack, EntityPlayer player) {
-
 		InformationBullet inf = loadInformation(itemStack, player);
 		int mode = getMode(itemStack);
 		if (itemStack.getItemDamage() <= 0)
@@ -195,22 +208,45 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer, int par4) {
-		InformationBullet inf = getInformation(par1ItemStack, par2World);
-		inf.isShooting = false;
+	public InformationBullet getInformation(ItemStack itemStack, World world) {
+		InformationSet set = CBCWeaponInformation.getInformation(itemStack);
+		return set == null ? null : set.getProperBullet(world);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.add(StatCollector.translateToLocal("ammocap.name")
-				+ ": "
-				+ (par1ItemStack.getMaxDamage()
-						- par1ItemStack.getItemDamageForDisplay() - 1) + "/"
-				+ (par1ItemStack.getMaxDamage() - 1));
+	public InformationBullet loadInformation(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer) {
+
+		InformationBullet inf = getInformation(par1ItemStack,
+				par2EntityPlayer.worldObj);
+
+		if (inf != null)
+			return inf;
+
+		double uniqueID = Math.random() * 65535D;
+		inf = CBCWeaponInformation.addToList(uniqueID,
+				createInformation(par1ItemStack, par2EntityPlayer))
+				.getProperBullet(par2EntityPlayer.worldObj);
+
+		if (par1ItemStack.stackTagCompound == null)
+			par1ItemStack.stackTagCompound = new NBTTagCompound();
+		par1ItemStack.getTagCompound().setDouble("uniqueID", uniqueID);
+		return inf;
+
 	}
+
+	private InformationSet createInformation(ItemStack is, EntityPlayer player) {
+		InformationBullet inf = new InformationBullet(is);
+		InformationBullet inf2 = new InformationBullet(is);
+		return new InformationSet(inf, inf2);
+	}
+
+	@Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
+		return 2 * this.getShootTime(getMode(par1ItemStack));
+	}
+
+	// -------------------Interfaces-------------------
 
 	/**
 	 * Get the shoot sound path corresponding to the mode.
@@ -266,45 +302,18 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5);
 
+	// ------------------Client-----------------------
+	@SideOnly(Side.CLIENT)
 	@Override
-	public InformationBullet getInformation(ItemStack itemStack, World world) {
-		InformationSet set = CBCWeaponInformation.getInformation(itemStack);
-		return set == null ? null : set.getProperBullet(world);
+	public void addInformation(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		par3List.add(StatCollector.translateToLocal("ammocap.name")
+				+ ": "
+				+ (par1ItemStack.getMaxDamage()
+						- par1ItemStack.getItemDamageForDisplay() - 1) + "/"
+				+ (par1ItemStack.getMaxDamage() - 1));
 	}
 
-	@Override
-	public InformationBullet loadInformation(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer) {
-
-		InformationBullet inf = getInformation(par1ItemStack,
-				par2EntityPlayer.worldObj);
-
-		if (inf != null)
-			return inf;
-
-		double uniqueID = Math.random() * 65535D;
-		inf = CBCWeaponInformation.addToList(uniqueID,
-				createInformation(par1ItemStack, par2EntityPlayer))
-				.getProperBullet(par2EntityPlayer.worldObj);
-
-		if (par1ItemStack.stackTagCompound == null)
-			par1ItemStack.stackTagCompound = new NBTTagCompound();
-		par1ItemStack.getTagCompound().setDouble("uniqueID", uniqueID);
-		return inf;
-
-	}
-
-	@Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-		return 100;
-	}
-
-	private InformationSet createInformation(ItemStack is, EntityPlayer player) {
-		InformationBullet inf = new InformationBullet(is);
-		InformationBullet inf2 = new InformationBullet(is);
-		return new InformationSet(inf, inf2);
-	}
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
@@ -314,7 +323,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 			@Override
 			public Icon getRenderingIcon(ItemStack itemStack,
 					EntityPlayer player) {
-				if(Item.itemsList[ammoID] != null){
+				if (Item.itemsList[ammoID] != null) {
 					return Item.itemsList[ammoID].getIconIndex(itemStack);
 				}
 				return null;
@@ -322,14 +331,16 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 
 			@Override
 			public String getTip(ItemStack itemStack, EntityPlayer player) {
-				return (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1) + "|" + AmmoManager.getAmmoCapacity(ammoID, player.inventory);
+				return (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1)
+						+ "|"
+						+ AmmoManager.getAmmoCapacity(ammoID, player.inventory);
 			}
 
 			@Override
 			public int getTextureSheet(ItemStack itemStack) {
 				return itemStack.getItemSpriteNumber();
 			}
-			
+
 		};
 		return tips;
 	}
