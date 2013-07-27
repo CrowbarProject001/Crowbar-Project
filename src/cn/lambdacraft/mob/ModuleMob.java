@@ -51,8 +51,9 @@ public class ModuleMob {
 	 * 放置时临时采用的映射表。
 	 */
 	public static HashMap<EntityPlayer, TileSentryRay> tileMap = new HashMap();
+	
 	/**
-	 * 放置着对应方块位置的映射表。
+	 * 放置者对应方块位置的映射表。
 	 */
 	public static HashMap<BlockPos, EntityPlayer> playerMap = new HashMap();
 
@@ -79,26 +80,25 @@ public class ModuleMob {
 		EntityRegistry.addSpawn(EntityBarnacle.class, 10, 0, 65,
 				EnumCreatureType.monster, barnacleGen);
 
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER,
-				new NetSentrySync());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER, new NetSentrySync());
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark",
-				GeneralProps.ENT_ID_SNARK, CBCMod.instance, 64, 3, true);
+				GeneralProps.ENT_ID_SNARK, CBCMod.instance, 48, 3, true);
 		EntityRegistry.registerModEntity(EntityHeadcrab.class, "headcrab",
-				GeneralProps.ENT_ID_HEADCRAB, CBCMod.instance, 64, 3, true);
+				GeneralProps.ENT_ID_HEADCRAB, CBCMod.instance, 48, 3, true);
 		EntityRegistry.registerModEntity(EntityBarnacle.class, "barnacle",
-				GeneralProps.ENT_ID_BARNACLE, CBCMod.instance, 64, 5, false);
+				GeneralProps.ENT_ID_BARNACLE, CBCMod.instance, 84, 5, false);
 		EntityRegistry.registerModEntity(EntityHLZombie.class, "hlzombie",
-				GeneralProps.ENT_ID_ZOMBIE, CBCMod.instance, 64, 3, true);
+				GeneralProps.ENT_ID_ZOMBIE, CBCMod.instance, 48, 3, true);
 		EntityRegistry.registerModEntity(EntitySentry.class, "turret",
 				GeneralProps.ENT_ID_TURRET, CBCMod.instance, 48, 3, true);
 		EntityRegistry.registerModEntity(EntityHoundeye.class, "houndeye",
-				GeneralProps.ENT_ID_HOUNDEYE, CBCMod.instance, 64, 3, true);
+				GeneralProps.ENT_ID_HOUNDEYE, CBCMod.instance, 48, 3, true);
 		EntityRegistry.registerModEntity(EntityShockwave.class, "shockwave",
 				GeneralProps.ENT_ID_SHOCKWAVE, CBCMod.instance, 32, 3, false);
 		EntityRegistry.registerModEntity(EntityAlienSlave.class, "vortigaunt",
-				GeneralProps.ENT_ID_VORTIGAUNT, CBCMod.instance, 64, 3, true);
+				GeneralProps.ENT_ID_VORTIGAUNT, CBCMod.instance, 48, 3, true);
 		EntityRegistry.registerModEntity(EntityVortigauntRay.class, "vor_ray",
-				GeneralProps.ENT_ID_VOR_RAY, CBCMod.instance, 48, 3, false);
+				GeneralProps.ENT_ID_VOR_RAY, CBCMod.instance, 32, 3, false);
 		proxy.init();
 	}
 

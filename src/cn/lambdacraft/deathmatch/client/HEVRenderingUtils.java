@@ -14,17 +14,21 @@
  */
 package cn.lambdacraft.deathmatch.client;
 
+import java.util.HashMap;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
+import cn.lambdacraft.api.hud.IHudIconProvider;
 import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.api.hud.ISpecialCrosshair;
@@ -41,6 +45,8 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class HEVRenderingUtils {
 
+	@SideOnly(Side.CLIENT)
+	private static HashMap<IHudTipProvider, IHudTip[]> tipPool = new HashMap();
 	
 	@SideOnly(Side.CLIENT)
 	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution) {
@@ -171,7 +177,11 @@ public class HEVRenderingUtils {
 		if(item == null)
 			return;
 		if(item.getItem() instanceof IHudTipProvider) {
-			IHudTip[] st = ((IHudTipProvider)item.getItem()).getHudTip(item, player);
+			IHudTip[] st = tipPool.get(item.getItem());
+			if(st == null) {
+				st = ((IHudTipProvider)item.getItem()).getHudTip(item, player);
+				tipPool.put((IHudTipProvider) item.getItem(), st);
+			}
 			drawTips(st, renderEngine, item, player, k, l);
 		}
 	}
@@ -281,80 +291,5 @@ public class HEVRenderingUtils {
         tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, (double)par3Icon.getMinU(), (double)par3Icon.getMinV());
         tessellator.draw();
     }
-	
-	public static Icon getHudSheetIcon(final int x, final int y, final String name) {
-		return new Icon() {
-
-			private int texU = x, texV = y;
-			private String iconName = name;
-			
-			@Override
-			@SideOnly(Side.CLIENT)
-			public int getOriginX() {
-				return texU;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public int getOriginY() {
-				return texV;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getMinU() {
-				return texU;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getMaxU() {
-				return texU + 16;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getInterpolatedU(double d0) {
-				return x + (float) d0;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getMinV() {
-				return texV;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getMaxV() {
-				return texV + 16;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getInterpolatedV(double d0) {
-				return texV + (float) d0;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public String getIconName() {
-				return name;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public int getSheetWidth() {
-				return 16;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public int getSheetHeight() {
-				return 16;
-			}
-			
-		};
-	}
 
 }

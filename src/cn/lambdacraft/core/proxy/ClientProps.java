@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Properties;
+import java.util.Random;
 import java.util.logging.Level;
 
 import com.google.common.base.Charsets;
@@ -62,6 +63,9 @@ public class ClientProps {
 	public static int xHairB = 255;
 
 	public static Properties crosshairProps;
+	
+	private static final Random RNG = new Random();
+	
 
 	public static final String GAUSS_BEAM_PATH = "/mods/lambdacraft/textures/entities/gaussbeam.png",
 			TRIPMINE_FRONT_PATH = "/mods/lambdacraft/textures/blocks/tripmine_front.png",
@@ -152,7 +156,7 @@ public class ClientProps {
 	 * @return 贴图路径
 	 */
 	public static String getRandomMuzzleFlash() {
-		int random = (int) (Math.random() * 7) + 1;
+		int random = (int) (RNG.nextFloat() * 7F) + 1;
 		String path = "/mods/lambdacraft/textures/muz/muz" + random + ".png";
 		return path;
 	}
@@ -169,11 +173,9 @@ public class ClientProps {
 			crosshairProps.load(new InputStreamReader(langStream,
 					Charsets.UTF_8));
 		} catch (IOException e) {
-			CBCMod.log.log(Level.SEVERE,
-					"Unable to load crossfire props from file %s", src);
+			CBCMod.log.log(Level.SEVERE,"Unable to load crossfire props from file %s", src);
 		} catch (NullPointerException e) {
-			CBCMod.log
-					.log(Level.SEVERE, "Unable to find crossfire props file.");
+			CBCMod.log.log(Level.SEVERE, "Unable to find crossfire props file.");
 		} finally {
 			try {
 				if (langStream != null) {

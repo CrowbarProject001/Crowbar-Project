@@ -209,8 +209,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 
 	@Override
 	public InformationBullet getInformation(ItemStack itemStack, World world) {
-		InformationSet set = CBCWeaponInformation.getInformation(itemStack);
-		return set == null ? null : set.getProperBullet(world);
+		InformationSet<InformationBullet> set = CBCWeaponInformation.getInformation(itemStack);
+		return set == null ? null : set.getProperInf(world);
 	}
 
 	@Override
@@ -223,10 +223,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 		if (inf != null)
 			return inf;
 
-		double uniqueID = Math.random() * 65535D;
-		inf = CBCWeaponInformation.addToList(uniqueID,
-				createInformation(par1ItemStack, par2EntityPlayer))
-				.getProperBullet(par2EntityPlayer.worldObj);
+		double uniqueID = itemRand.nextDouble() * 65535D;
+		inf = (InformationBullet) CBCWeaponInformation.addToList(uniqueID, createInformation(par1ItemStack, par2EntityPlayer))
+				.getProperInf(par2EntityPlayer.worldObj);
 
 		if (par1ItemStack.stackTagCompound == null)
 			par1ItemStack.stackTagCompound = new NBTTagCompound();
@@ -235,10 +234,10 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 
 	}
 
-	private InformationSet createInformation(ItemStack is, EntityPlayer player) {
+	private InformationSet<InformationBullet> createInformation(ItemStack is, EntityPlayer player) {
 		InformationBullet inf = new InformationBullet(is);
 		InformationBullet inf2 = new InformationBullet(is);
-		return new InformationSet(inf, inf2);
+		return new InformationSet<InformationBullet>(inf, inf2);
 	}
 
 	@Override

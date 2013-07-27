@@ -16,14 +16,5 @@ public class Ammo_bow extends ItemAmmo {
 		setIAndU("ammo_bow");
 		setMaxDamage(6);
 	}
-
-	@Override
-	public Icon getHudIcon() {
-		return HEVRenderingUtils.getHudSheetIcon(48, 32, "bow");
-	}
-
-	@Override
-	public int getIconSheetIndex(ItemStack stack) {
-		return 5;
-	}
+	
 }

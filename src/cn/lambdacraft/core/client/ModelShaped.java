@@ -18,7 +18,7 @@ import net.minecraft.client.model.ModelBase;
 
 /**
  * @author WeAthFolD
- *
+ * 
  */
 public class ModelShaped extends ModelBase {
 

@@ -145,9 +145,9 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 
 		double uniqueID = itemRand.nextDouble() * 65535D;
 
-		inf = CBCWeaponInformation.addToList(uniqueID,
+		inf = (InformationEnergy) CBCWeaponInformation.addToList(uniqueID,
 				createInformation(par1ItemStack, par2EntityPlayer))
-				.getProperEnergy(par2EntityPlayer.worldObj);
+				.getProperInf(par2EntityPlayer.worldObj);
 
 		if (par1ItemStack.stackTagCompound == null)
 			par1ItemStack.stackTagCompound = new NBTTagCompound();
@@ -158,8 +158,8 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 
 	@Override
 	public InformationEnergy getInformation(ItemStack itemStack, World world) {
-		InformationSet set = CBCWeaponInformation.getInformation(itemStack);
-		return set == null ? null : set.getProperEnergy(world);
+		InformationSet<InformationEnergy> set = CBCWeaponInformation.getInformation(itemStack);
+		return set == null ? null : set.getProperInf(world);
 	}
 
 	private InformationSet createInformation(ItemStack is, EntityPlayer player) {

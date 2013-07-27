@@ -16,11 +16,13 @@ package cn.lambdacraft.mob.items;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.core.utils.BlockPos;
 import cn.lambdacraft.mob.ModuleMob;
+import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
 
 /**
@@ -34,7 +36,7 @@ public class ItemSentrySyncer extends CBCGenericItem {
 	 */
 	public ItemSentrySyncer(int par1) {
 		super(par1);
-		this.setIAndU("sentrySync");
+		this.setIAndU("syncer");
 	}
 	
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5,
@@ -42,13 +44,18 @@ public class ItemSentrySyncer extends CBCGenericItem {
     {
     	if(ModuleMob.syncMap.containsKey(par2EntityPlayer)) {
     		if(!par3World.isRemote) {
-    			--par1ItemStack.stackSize;
-    			ForgeDirection dir = ForgeDirection.values()[par7];
-    			par4 += dir.offsetX;
-    			par5 += dir.offsetY;
-    			par6 += dir.offsetZ;
-    			ModuleMob.playerMap.put(new BlockPos(par4, par5, par6, CBCMobBlocks.sentryRay.blockID), par2EntityPlayer);
-    			par3World.setBlock(par4, par5, par6, CBCMobBlocks.sentryRay.blockID, par7, 0x03);
+    			EntitySentry sentry = ModuleMob.syncMap.get(par2EntityPlayer);
+    			if(sentry.worldObj != null && par3World.equals(sentry.worldObj)) {
+    				--par1ItemStack.stackSize;
+    				ForgeDirection dir = ForgeDirection.values()[par7];
+    				par4 += dir.offsetX;
+    				par5 += dir.offsetY;
+    				par6 += dir.offsetZ;
+    				ModuleMob.playerMap.put(new BlockPos(par4, par5, par6, CBCMobBlocks.sentryRay.blockID), par2EntityPlayer);
+    				par3World.setBlock(par4, par5, par6, CBCMobBlocks.sentryRay.blockID, par7, 0x03);
+    			} else {
+    				par2EntityPlayer.sendChatToPlayer(StatCollector.translateToLocal("sentry.diffdim.name"));
+    			}
     		}
     		return true;
     	}

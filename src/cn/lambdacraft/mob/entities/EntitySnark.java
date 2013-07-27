@@ -154,7 +154,7 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> 
 	 */
 	@Override
 	protected String getLivingSound() {
-		int random = (int) Math.round(Math.random() * 3);
+		int random = (int) Math.round(rand.nextFloat() * 3);
 		return random < 1 ? "cbc.mobs.sqk_hunta"
 				: (random < 2 ? "cbc.mobs.sqk_huntb" : "cbc.mobs.sqk_huntc");
 	}

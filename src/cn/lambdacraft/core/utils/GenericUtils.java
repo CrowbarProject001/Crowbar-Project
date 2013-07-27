@@ -17,6 +17,7 @@ package cn.lambdacraft.core.utils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.command.IEntitySelector;
@@ -31,6 +32,8 @@ public class GenericUtils {
 	public static IEntitySelector selectorLiving = new EntitySelectorLiving(),
 			selectorPlayer = new EntitySelectorPlayer();
 
+	private static Random rand = new Random();
+	
 	/**
 	 * 获取Entity到一个点距离的平方。
 	 * @param ent
@@ -82,7 +85,7 @@ public class GenericUtils {
 	 * @return
 	 */
 	public static String getRandomSound(String sndPath, int countSounds) {
-		int a = (int) (Math.random() * countSounds);
+		int a = (int) (rand.nextFloat() * countSounds);
 		return sndPath.concat(String.valueOf((char)('a' + a)));
 	}
 

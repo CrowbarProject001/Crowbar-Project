@@ -57,6 +57,9 @@ public class RenderBarnacle extends Render {
 		if(barnacle.getHealth() <= 0)
 			GL11.glRotatef(barnacle.deathTime * 6.5F, 1.0F, 0.0F, -1.0F);
 		GL11.glTranslatef(0.0F, -1.5F, 0.0F);
+		if(barnacle.hurtResistantTime > 10)
+			GL11.glColor3f(1.0F, 0.5F, 0.5F);
+		
 		this.model.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F,
 				0.0625F);
 	
@@ -73,8 +76,7 @@ public class RenderBarnacle extends Render {
 					 v7 = RenderUtils.newV3(WIDTH, h2, WIDTH),
 					 v8 = RenderUtils.newV3(WIDTH, h2, -WIDTH);
 			this.loadTexture(ClientProps.BARNACLE_TENTACLE_PATH);
-			if(barnacle.hurtResistantTime > 10)
-				GL11.glColor3f(1.0F, 0.5F, 0.5F);
+			
 			t.startDrawingQuads();
 			RenderUtils.addVertex(v1, 0.0, 0.0);
 			RenderUtils.addVertex(v5, 0.0, length);

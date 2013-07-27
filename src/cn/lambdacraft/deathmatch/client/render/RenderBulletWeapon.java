@@ -18,8 +18,7 @@ import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
 
 public class RenderBulletWeapon implements IItemRenderer {
-
-	Tessellator t = Tessellator.instance;
+	
 	Minecraft mc = Minecraft.getMinecraft();
 	float tx = 0F, ty = 0F, tz = 0F;
 	float width = 0.05F;
@@ -79,6 +78,8 @@ public class RenderBulletWeapon implements IItemRenderer {
 
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLiving entity) {
+		Tessellator t = Tessellator.instance;
+		
 		int mode = 0;
 		if (item.stackTagCompound != null)
 			mode = item.getTagCompound().getInteger("mode");
@@ -87,8 +88,7 @@ public class RenderBulletWeapon implements IItemRenderer {
 
 		RenderUtils.renderItemIn2d(entity, item, width);
 		if(entity instanceof EntityPlayer) {
-			InformationBullet inf = weaponType
-					.getInformation(item, entity.worldObj);
+			InformationBullet inf = weaponType.getInformation(item, entity.worldObj);
 			WeaponGeneralBullet wpn = (WeaponGeneralBullet) item.getItem();
 			EntityPlayer ep = (EntityPlayer) entity;
 			if(ep.isUsingItem() && item.equals(ep.getCurrentEquippedItem()) && wpn.canShoot(ep, item) && (inf != null && inf.getDeltaTick() < 3))

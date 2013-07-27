@@ -18,8 +18,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
+ * 实现它令一个武器可以切换模式。（自带的V键）
  * @author WeAthFolD
- *
  */
 public interface IModdable {
 	

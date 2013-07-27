@@ -32,6 +32,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 /**
@@ -47,6 +48,7 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 	public int activationCounter = 0;
 	public int tickSinceLastAttack = 0;
 	public float rotationYawSearch;
+	public boolean attackPlayer = false;
 	public static final float TURNING_SPEED = 5.0F;
 	
 	protected IEntitySelector selector = new IEntitySelector() {
@@ -55,10 +57,10 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 		public boolean isEntityApplicable(Entity entity) {
 			if(entity instanceof EntityPlayer) {
 				EntityPlayer ep = (EntityPlayer) entity;
-				if(ep.username.equals(placerName))
+				if(!attackPlayer || ep.username.equals(placerName))
 					return false;
 			} else if(entity instanceof EntitySentry)
-				return !((EntitySentry)entity).placerName.equals(placerName);
+				return attackPlayer && !((EntitySentry)entity).placerName.equals(placerName);
 			return GenericUtils.selectorLiving.isEntityApplicable(entity);
 		}
 		
@@ -105,17 +107,28 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 		//this.rotationYaw = lastRotationYaw;
 		if(this.isActivated) {
 			++activationCounter;
-			if(this.isSearching()) {
+			if(this.isSearching() && !worldObj.isRemote) {
 				this.rotationYawHead = MathHelper.sin(ticksExisted * 0.06F) * 50 + this.rotationYawSearch;
 				this.rotationYawHead = GenericUtils.wrapYawAngle(rotationYawHead);
 			}
 			if(currentTarget == null){
-				if(!worldObj.isRemote && ticksExisted % 10 == 0)
+				if(!worldObj.isRemote && ticksExisted % 10 == 0) {
+					if(ticksExisted % 30 == 0)
+						this.playSound("cbc.mobs.tu_ping", 0.5F, 1.0F);
 					searchForTarget();
+				}
 			} else attemptAttack();
 		}
 		this.sync();
 	}
+	
+    protected void onDeathUpdate()
+    {
+    	super.onDeathUpdate();
+    	if(this.deathTime == 2) {
+    		this.playSound(GenericUtils.getRandomSound("cbc.mobs.tu_die", 3), 0.5F, 1.0F);
+    	}
+    }
 	
 	public void sync() {
 		if(worldObj.isRemote) {
@@ -133,6 +146,8 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 	}
 	
 	protected void searchForTarget() {
+		if(worldObj.isRemote)
+			return;
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - 10, posY - 6, posZ - 10, posX + 10, posY + 6, posZ + 10);
 		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, this.selector);
 		double lastDistance = 10000.0;
@@ -147,6 +162,8 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 			}
 		}
 		if(targetEntity != null) {
+			if(this.rand.nextFloat() < 0.2)
+				this.playSound("cbc.mobs.tu_spinup", 0.5F, 1.0F);
 			currentTarget = targetEntity;
 		}
 	}
@@ -207,6 +224,7 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 				- this.posZ;
 		if(!isSearching())
 			this.setSentryHeading(dx, dy, dz, 1.0F);
+		
 		if(++tickSinceLastAttack > 5) {
 			tickSinceLastAttack = 0;
 			if(!canEntityBeSeen(currentTarget)) {
@@ -215,6 +233,7 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 				rotationSet = true;
 			} else { 
 				rotationSet = false;
+				this.playSound("cbc.mobs.tu_fire", 0.5F, 1.0F);
 				BulletManager.Shoot(3, this, worldObj);
 			}
 			if(currentTarget.getDistanceSqToEntity(this) > 400) {
@@ -222,7 +241,8 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 				return;
 			}
 		}
-		if(currentTarget.isDead || currentTarget.isEntityInvulnerable())
+		
+		if(currentTarget.isDead || currentTarget.isEntityInvulnerable() || rand.nextFloat() <= 0.01)
 			this.currentTarget = null;
 	}
 	
@@ -246,6 +266,7 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 		activationCounter = nbt.getInteger("activationTime");
 		rotationYawSearch = nbt.getFloat("searchYaw");
 		placerName = nbt.getString("placer");
+		attackPlayer = nbt.getBoolean("attackPlayer");
 	}
 	
 	public void activate() {
@@ -255,18 +276,39 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 	@Override
 	public boolean interact(EntityPlayer player)
     {
+		if(worldObj.isRemote)
+			return true;
+		if(!player.username.equals(placerName)) {
+			player.sendChatToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.deny.name"));
+			return false;
+		}
 		ItemStack currentItem = player.getCurrentEquippedItem();
 		if(currentItem != null && currentItem.itemID == CBCMobItems.sentrySyncer.itemID) {
 			ModuleMob.syncMap.put(player, this);
-			if(worldObj.isRemote)
-				return true;
-			StringBuilder b = new StringBuilder("---------HECU Marine Force Automatic Sentry---------\n");
-			b.append(EnumChatFormatting.RED).append("Sentry ID : ").append(EnumChatFormatting.WHITE).append(this.entityId).append("\n");
-			b.append(EnumChatFormatting.DARK_RED).append("The Sentry has successfully linked to your syncer.");
+			StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
+			b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ").append(EnumChatFormatting.RED).append(this.entityId).append("\n");
+			b.append(EnumChatFormatting.DARK_RED).append(StatCollector.translateToLocal("sentry.linksuccess.name"));
 			player.sendChatToPlayer(b.toString());
 			return true;
+		} else {
+			if(!worldObj.isRemote) {
+				if(player.isSneaking()) {
+					attackPlayer = !attackPlayer;
+					StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
+					b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ").append(EnumChatFormatting.RED).append(this.entityId).append("\n");
+					b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.attackstat.name")).append(" : ").append(EnumChatFormatting.RED).append(StatCollector.translateToLocal("sentry.attacktype" + (attackPlayer ? 1 : 0) + ".name")).append("\n");
+					player.sendChatToPlayer(b.toString());
+				} else {
+					this.isActivated = !isActivated;
+					StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
+					b.append(StatCollector.translateToLocal("sentry.status" + (isActivated ? 1 : 0) + ".name"));
+					player.sendChatToPlayer(b.toString());
+					String s = isActivated ? "cbc.mobs.tu_deploy" : "cbc.mobs.tu_spindown";
+					this.playSound(s, 0.5F, 1.0F);
+				}
+			}
 		}
-		return false;
+		return true;
     }
 
 	/* (non-Javadoc)
@@ -281,6 +323,7 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 		nbt.setInteger("activationTime", activationCounter);
 		nbt.setFloat("searchYaw", rotationYawSearch);
 		nbt.setString("placer", placerName);
+		nbt.setBoolean("attackPlayer", attackPlayer);
 	}
 
 	@Override

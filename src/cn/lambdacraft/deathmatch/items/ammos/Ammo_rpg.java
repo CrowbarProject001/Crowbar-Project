@@ -16,14 +16,5 @@ public class Ammo_rpg extends ItemAmmo {
 		setIAndU("ammo_rpg");
 		setMaxStackSize(10);
 	}
-
-	@Override
-	public Icon getHudIcon() {
-		return HEVRenderingUtils.getHudSheetIcon(64, 32, "rocket");
-	}
-
-	@Override
-	public int getIconSheetIndex(ItemStack stack) {
-		return 5;
-	}
+	
 }

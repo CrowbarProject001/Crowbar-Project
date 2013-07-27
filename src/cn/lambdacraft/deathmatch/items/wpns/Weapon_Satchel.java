@@ -122,7 +122,7 @@ public class Weapon_Satchel extends CBCGenericItem implements IHudTipProvider, I
 			@Override
 			public Icon getRenderingIcon(ItemStack itemStack,
 					EntityPlayer player) {
-				return HEVRenderingUtils.getHudSheetIcon(32, 48, "satchel");
+				return Weapon_Satchel.this.itemIcon;
 			}
 
 			@Override

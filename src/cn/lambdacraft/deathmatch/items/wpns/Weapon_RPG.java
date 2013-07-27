@@ -161,7 +161,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 		if (inf != null)
 			return inf;
 
-		double uniqueID = Math.random() * 65535D;
+		double uniqueID = itemRand.nextDouble() * 65535D;
 		inf = (InformationRPG) CBCWeaponInformation.addToList(uniqueID,
 				createInformation(par1ItemStack, par2EntityPlayer))
 				.getProperInf(par2EntityPlayer.worldObj);

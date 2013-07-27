@@ -2,6 +2,11 @@ package cn.lambdacraft.api.weapon;
 
 import net.minecraft.item.ItemStack;
 
+/**
+ * 弹药武器的附加信息。
+ * @author WeAthFolD
+ *
+ */
 public class InformationBullet extends InformationWeapon {
 	// 357,9mmAR,9mmhandgun等的辅助类
 

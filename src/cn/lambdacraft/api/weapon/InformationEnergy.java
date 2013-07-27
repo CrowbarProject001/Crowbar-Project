@@ -3,6 +3,11 @@ package cn.lambdacraft.api.weapon;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+/**
+ * 能量武器的附加信息。
+ * @author WeAthFolD
+ *
+ */
 public class InformationEnergy extends InformationWeapon {
 
 	public int charge, chargeTime;

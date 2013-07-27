@@ -17,7 +17,7 @@ package cn.lambdacraft.api.client;
 import net.minecraft.item.ItemStack;
 
 /**
- * 物品用模型的？
+ * 物品适用的模型接口。
  * @author WeAthFolD
  */
 public interface IItemModel {

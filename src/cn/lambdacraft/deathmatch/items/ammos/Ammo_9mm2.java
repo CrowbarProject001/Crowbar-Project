@@ -16,14 +16,5 @@ public class Ammo_9mm2 extends ItemAmmo {
 		setIAndU("ammo_9mmar");
 		setMaxDamage(51);
 	}
-
-	@Override
-	public Icon getHudIcon() {
-		return HEVRenderingUtils.getHudSheetIcon(0, 32, "9mm");
-	}
-
-	@Override
-	public int getIconSheetIndex(ItemStack stack) {
-		return 5;
-	}
+	
 }

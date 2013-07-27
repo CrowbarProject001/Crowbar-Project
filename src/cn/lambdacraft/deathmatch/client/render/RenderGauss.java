@@ -24,6 +24,7 @@ import cn.lambdacraft.deathmatch.register.DMItems;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.IItemRenderer;
@@ -45,7 +46,7 @@ public class RenderGauss implements IItemRenderer {
 		// TODO Auto-generated method stub
 		switch (type) {
 		case EQUIPPED:
-		//case ENTITY:
+		case ENTITY:
 			return true;
 
 		default:
@@ -74,12 +75,27 @@ public class RenderGauss implements IItemRenderer {
 		case EQUIPPED:
 			renderEquipped(item, (RenderBlocks) data[0], (EntityLiving) data[1]);
 			break;
-
+		case ENTITY:
+			renderEntityItem((RenderBlocks)data[0], (EntityItem) data[1]);
+			break;
 		default:
 			break;
 
 		}
 
+	}
+	
+	private void renderEntityItem(RenderBlocks render, EntityItem ent) {
+		GL11.glPushMatrix();
+		RenderUtils.loadTexture(ClientProps.HECHARGER_BACK_PATH);
+		float scale = 0.0625F;
+		GL11.glTranslatef(0F, 0.5F, 0F);
+		GL11.glRotatef(90F, 0, -1, 0);
+		GL11.glRotatef(30F, 1, 0, 0);
+		GL11.glScalef(-1F, -1F, 1F);
+		GL11.glTranslatef(0F, -1.5F, 0F);
+		model.render(ent.getEntityItem(), scale, 0.0F);
+		GL11.glPopMatrix();
 	}
 
 	public void renderEquipped(ItemStack item, RenderBlocks render,

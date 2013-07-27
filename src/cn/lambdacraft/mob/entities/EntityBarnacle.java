@@ -114,7 +114,7 @@ public class EntityBarnacle extends EntityLiving {
 							startPullingEntity(e);
 						}
 					}
-					if(ticksExisted % 80 == 0 && Math.random() < 0.4) {
+					if(ticksExisted % 80 == 0 && this.rand.nextFloat() < 0.4) {
 						this.playSound("cbc.mobs.bcl_tongue", 0.5F, 1.0F);
 					}
 				}
@@ -160,8 +160,8 @@ public class EntityBarnacle extends EntityLiving {
 				health = 0;
 				detach = true;
 				motionY = 0.0;
-				motionX = (Math.random() - 0.5) * 0.2F;
-				motionZ = (Math.random() - 0.5) * 0.2F;
+				motionX = (rand.nextDouble() - 0.5) * 0.2F;
+				motionZ = (rand.nextDouble() - 0.5) * 0.2F;
 			}
 		} else detach = false;
 		if(worldObj.difficultySetting == 0)

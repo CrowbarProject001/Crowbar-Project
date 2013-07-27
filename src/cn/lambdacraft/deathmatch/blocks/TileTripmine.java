@@ -71,10 +71,10 @@ public class TileTripmine extends TileEntity {
 				maxX, maxY, maxZ);
 		List list = worldObj.getEntitiesWithinAABBExcludingEntity(null, box,
 				GenericUtils.selectorLiving);
-		if (list != null && list.size() > 0 && list.size() < 3) {
+		if (list != null && list.size() == 1) {
 			blockType.breakBlock(worldObj, xCoord, yCoord, zCoord, meta, 0);
 		}
-		if (worldObj.getWorldTime() % 5 == 0)
+		else if (worldObj.getWorldTime() % 5 == 0)
 			blockType.updateRayRange(worldObj, xCoord, yCoord, zCoord);
 	}
 

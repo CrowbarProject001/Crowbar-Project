@@ -101,7 +101,8 @@ public class ClientProxy extends Proxy {
 			"gauss_charge", "gauss_windupa", "gauss_windupb", "gauss_windupc",
 			"gauss_windupd", "rocketfirea", "xbow_fire", "xbow_reload",
 			"egon_run", "egon_windup", "egon_off", "rocket", "rocketfire",
-			"glauncher", "glauncherb", "ag_firea", "ag_fireb", "ag_firec"
+			"glauncher", "glauncherb", "ag_firea", "ag_fireb", "ag_firec",
+			"mine_activate"
 
 	};
 

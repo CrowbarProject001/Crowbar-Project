@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
+ * 实现它以使一个武器有头戴显示提示。
  * @author WeAthFolD
  *
  */

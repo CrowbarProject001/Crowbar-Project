@@ -54,7 +54,7 @@ public class EntityBulletEgon extends EntityBullet {
 			int damage = (int) (7.0 / distance);
 			e.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), damage);
 		}
-		if(Math.random() < 0.1)  {
+		if(rand.nextFloat() < 0.1)  {
 			int blockID = worldObj.getBlockId(result.blockX, result.blockY, result.blockZ);
 			//检查以防破坏基岩等重要方块
 			if(Block.blocksList[blockID] != null) {

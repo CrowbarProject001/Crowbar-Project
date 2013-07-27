@@ -109,7 +109,7 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 
 	@Override
 	public String getSoundShoot(int mode) {
-		int random = (int) (Math.random() * 3);
+		int random = (int) (itemRand.nextFloat() * 3);
 		return random == 0 ? "cbc.weapons.ag_firea"
 				: (random == 1 ? "cbc.weapons.ag_fireb"
 						: "cbc.weapons.ag_firec");

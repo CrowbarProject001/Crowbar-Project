@@ -91,7 +91,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	@Override
 	public String getSoundShoot(int mode) {
 		return mode == 0 ? "cbc.weapons.hksa"
-				: (Math.random() * 2 > 1 ? "cbc.weapons.glauncher"
+				: (itemRand.nextFloat() * 2 > 1 ? "cbc.weapons.glauncher"
 						: "cbc.weapons.glauncherb");
 	}
 

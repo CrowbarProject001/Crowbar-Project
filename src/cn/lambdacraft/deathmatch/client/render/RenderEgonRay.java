@@ -38,8 +38,7 @@ public class RenderEgonRay extends RenderEntity {
 		if (!egon.draw)
 			return;
 		MotionXYZ motion = new MotionXYZ(egon);
-		MovingObjectPosition trace = egon.worldObj.rayTraceBlocks(motion
-				.asVec3(egon.worldObj),
+		MovingObjectPosition trace = egon.worldObj.rayTraceBlocks(motion.asVec3(egon.worldObj), 
 				motion.updateMotion(100.0F).asVec3(egon.worldObj));
 		Vec3 end = (trace == null) ? motion.asVec3(egon.worldObj)
 				: trace.hitVec;
@@ -50,7 +49,8 @@ public class RenderEgonRay extends RenderEntity {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
+		
 		double dx = end.xCoord - egon.posX;
 		double dy = end.yCoord - egon.posY;
 		double dz = end.zCoord - egon.posZ;
@@ -81,7 +81,7 @@ public class RenderEgonRay extends RenderEntity {
 		GL11.glTranslatef((float) par2, (float) par4, (float) par6);
 		GL11.glRotatef(270.0F - egon.rotationYaw, 0.0F, 1.0F, 0.0F); // 左右旋转
 		GL11.glRotatef(egon.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
-		// GL11.glRotatef(angle, 1.0F, 0, 0);
+		
 		this.loadTexture(ClientProps.EGON_BEAM_PATH1);
 		tessellator.startDrawingQuads();
 		tessellator.setColorRGBA(204, 204, 204, 110);
@@ -100,7 +100,6 @@ public class RenderEgonRay extends RenderEntity {
 		
 		int rnd = (int) (rand.nextFloat() * 3);
 		this.loadTexture(ClientProps.EGON_BEAM_PATH[rnd]);
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		tessellator.startDrawingQuads();
 		tessellator.setColorRGBA(160, 141, 204, 150);
 		tessellator.setBrightness(15728880);

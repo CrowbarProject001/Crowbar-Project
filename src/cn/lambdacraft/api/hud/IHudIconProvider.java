@@ -18,9 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
 /**
+ * 在Item类中继承它，以提供自定义的头戴显示图标。
  * @author WeAthFolD
- *
  */
+@Deprecated
 public interface IHudIconProvider {
 	
 	public Icon getHudIcon();

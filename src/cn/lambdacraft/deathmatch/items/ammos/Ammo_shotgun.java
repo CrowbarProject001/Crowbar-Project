@@ -16,14 +16,5 @@ public class Ammo_shotgun extends ItemAmmo {
 		setMaxStackSize(64);
 		setIAndU("ammo_shotgun");
 	}
-
-	@Override
-	public Icon getHudIcon() {
-		return HEVRenderingUtils.getHudSheetIcon(32, 32, "shotgun");
-	}
-
-	@Override
-	public int getIconSheetIndex(ItemStack stack) {
-		return 5;
-	}
+	
 }

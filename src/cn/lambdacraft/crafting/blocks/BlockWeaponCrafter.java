@@ -120,7 +120,6 @@ public class BlockWeaponCrafter extends CBCBlockContainer {
 	}
 
 	private void dropItems(World world, int x, int y, int z) {
-		Random rand = new Random();
 
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 		if (!(tileEntity instanceof IInventory)) {

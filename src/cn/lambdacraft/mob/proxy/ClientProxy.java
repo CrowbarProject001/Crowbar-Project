@@ -73,6 +73,8 @@ public class ClientProxy extends Proxy {
 		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_hunt", "/mods/lambdacraft/sounds/houndeye/he_hunt", 4);
 		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_idle", "/mods/lambdacraft/sounds/houndeye/he_idle", 4);
 		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_pain", "/mods/lambdacraft/sounds/houndeye/he_pain", 5);
+		CBCSoundEvents.addSoundWithVariety("cbc/mobs/tu_die", "/mods/lambdacraft/sounds/entities/tu_die", 3);
+		CBCSoundEvents.addSoundWithVariety("cbc/mobs/tu_active", "/mods/lambdacraft/sounds/entities/tu_active", 2);
 	}
 	
 	public static final String SND_MOBS[] = { "sqk_blast", "sqk_hunta",
@@ -82,6 +84,7 @@ public class ClientProxy extends Proxy {
 		"bcl_tongue", "bcl_chewa", "bcl_chewb", "bcl_chewc", "bcl_alert", "bcl_bite", "zo_alerta",
 		"zo_alertb", "zo_alertc", "zo_attacka", "zo_attackb", "zo_claw_missa", "zo_claw_missb", 
 		"zo_claw_strikea", "zo_claw_strikeb", "zo_claw_strikec", "zo_idlea", "zo_idleb", "zo_idlec",
-		"zo_paina", "zo_painb", "zo_moan_loopa", "zo_moan_loopb", "zo_moan_loopc", "zo_moan_loopd", "zo_diea", "zo_dieb", "zo_diec"};
+		"zo_paina", "zo_painb", "zo_moan_loopa", "zo_moan_loopb", "zo_moan_loopc", "zo_moan_loopd", "zo_diea", "zo_dieb", "zo_diec", "tu_spinup",
+		"tu_spindown", "tu_ping", "tu_fire", "tu_deploy", "tu_alert" };
 	
 }

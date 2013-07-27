@@ -191,13 +191,18 @@ public class CBCMod implements ITickHandler {
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
 		if (type.contains(TickType.WORLD)) {
+			
+			proxy.profilerStartSection("LambdaCraft");
 			World world = (World) tickData[0];
+			
 			proxy.profilerEndStartSection("EnergyNet");
 			EnergyNet.onTick(world);
+			
 			proxy.profilerEndStartSection("TickCallbacks");
 			processTickCallbacks(world);
-
+			
 			proxy.profilerEndSection();
+			
 		}
 	}
 

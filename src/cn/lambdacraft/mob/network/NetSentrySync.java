@@ -76,7 +76,6 @@ public class NetSentrySync implements IChannelProcess {
 			World world = Minecraft.getMinecraft().theWorld;
 			TileEntity te = world.getBlockTileEntity(x, y, z);
 			if (te == null || !(te instanceof TileSentryRay)) {
-				Proxy.logExceptionMessage(te, "Didn't find right instance of TileEntity though server has required update");
 				return;
 			}
 			TileSentryRay ray = (TileSentryRay) te;

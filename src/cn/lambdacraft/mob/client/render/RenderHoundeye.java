@@ -14,6 +14,8 @@
  */
 package cn.lambdacraft.mob.client.render;
 
+import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.mob.client.models.ModelHoundeye;
@@ -29,6 +31,7 @@ import net.minecraft.entity.EntityLiving;
 public class RenderHoundeye extends RenderLiving {
 
 	protected static ModelHoundeye model = new ModelHoundeye();
+	protected Random rand = new Random();
 	/**
 	 * @param par1ModelBase
 	 * @param par2
@@ -44,9 +47,9 @@ public class RenderHoundeye extends RenderLiving {
     	float yOffset = ent.prevLimbYaw + (ent.limbYaw - ent.prevLimbYaw) * par9;
     	float xOffset = 0.0F, zOffset = 0.0F;
     	if(((EntityHoundeye)ent).isCharging) {
-    		xOffset = (float)Math.random() * 0.3F;
-    		zOffset = (float)Math.random() * 0.3F;
-    		yOffset += Math.random() * 0.3F;
+    		xOffset = rand.nextFloat() * 0.3F;
+    		zOffset = rand.nextFloat() * 0.3F;
+    		yOffset += rand.nextFloat() * 0.3F;
     	}
     	if(yOffset > 1.0F)
     		yOffset = 1.0F;

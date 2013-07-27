@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityBullet;
 import cn.lambdacraft.deathmatch.entities.EntityBulletSG;
@@ -139,14 +140,7 @@ public class Weapon_Shotgun extends WeaponGeneralBullet {
 
 	@Override
 	public String getSoundReload(int mode) {
-
-		int index = (int) (3 * Math.random());
-		if (index == 0)
-			return "cbc.weapons.reloada";
-		if (index == 1)
-			return "cbc.weapons.reloadb";
-		return "cbc.weapons.reloadc";
-
+		return GenericUtils.getRandomSound("cbc.weapons.reload", 3);
 	}
 
 	@Override

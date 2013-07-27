@@ -18,7 +18,6 @@ import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.api.weapon.IModdable;
 import cn.lambdacraft.core.client.RenderUtils;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -64,7 +63,7 @@ public class RenderItemElCrowbar implements IItemRenderer {
 	}
 	
 	private void renderInventory(ItemStack item) {
-		RenderUtils.renderItemInventory(item, Tessellator.instance);
+		RenderUtils.renderItemInventory(item);
 		if(((IModdable)item.getItem()).getMode(item) == 0 && item.getItemDamage() < item.getMaxDamage() - 1)
 			RenderUtils.renderShadow_Inventory();
 		
@@ -73,7 +72,7 @@ public class RenderItemElCrowbar implements IItemRenderer {
 	private void renderEquipped(EntityLiving ent, ItemStack item) {
 		RenderUtils.renderItemIn2d(ent, item, 0.0625);
 		if(((IModdable)item.getItem()).getMode(item) == 0 && item.getItemDamage() < item.getMaxDamage() - 1)
-			RenderUtils.renderShadow();
+			RenderUtils.renderShadow_Held();
 	}
 
 }

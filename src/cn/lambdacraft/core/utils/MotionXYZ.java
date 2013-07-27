@@ -2,6 +2,7 @@ package cn.lambdacraft.core.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -12,6 +13,7 @@ import net.minecraft.world.World;
 
 public class MotionXYZ {
 
+	private static final Random RNG = new Random();
 	public double motionX, motionY, motionZ;
 	public double posX, posY, posZ;
 	public static final double SCALE = 0.5D;
@@ -77,9 +79,9 @@ public class MotionXYZ {
 
 	public MotionXYZ setMotionOffset(double par1) {
 
-		this.motionX += (Math.random() - 1) * par1 * SCALE;
-		this.motionY += (Math.random() - 1) * par1 * SCALE;
-		this.motionZ += (Math.random() - 1) * par1 * SCALE;
+		this.motionX += (RNG.nextDouble() - 1) * par1 * SCALE;
+		this.motionY += (RNG.nextDouble() - 1) * par1 * SCALE;
+		this.motionZ += (RNG.nextDouble() - 1) * par1 * SCALE;
 		return this;
 
 	}
