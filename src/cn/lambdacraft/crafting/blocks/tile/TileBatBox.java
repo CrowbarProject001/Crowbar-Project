@@ -20,8 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.IEnergySink;
 import cn.lambdacraft.api.energy.item.ICustomEnItem;
+import cn.lambdacraft.api.energy.tile.IEnergySink;
 import cn.lambdacraft.core.utils.EnergyUtils;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 

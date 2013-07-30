@@ -1,4 +1,4 @@
-﻿package cn.lambdacraft.api.energy;
+﻿package cn.lambdacraft.api.energy.tile;
 
 import net.minecraft.tileentity.TileEntity;
 import cn.lambdacraft.api.LCDirection;

@@ -1,15 +1,15 @@
 ﻿package cn.lambdacraft.core.energy;
 
 import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.EnergyTileLoadEvent;
-import cn.lambdacraft.api.energy.EnergyTileSourceEvent;
-import cn.lambdacraft.api.energy.EnergyTileUnLoadEvent;
-import cn.lambdacraft.api.energy.IEnergyAcceptor;
-import cn.lambdacraft.api.energy.IEnergyConductor;
-import cn.lambdacraft.api.energy.IEnergyEmitter;
-import cn.lambdacraft.api.energy.IEnergySink;
-import cn.lambdacraft.api.energy.IEnergySource;
-import cn.lambdacraft.api.energy.IEnergyTile;
+import cn.lambdacraft.api.energy.event.EnergyTileLoadEvent;
+import cn.lambdacraft.api.energy.event.EnergyTileSourceEvent;
+import cn.lambdacraft.api.energy.event.EnergyTileUnLoadEvent;
+import cn.lambdacraft.api.energy.tile.IEnergyAcceptor;
+import cn.lambdacraft.api.energy.tile.IEnergyConductor;
+import cn.lambdacraft.api.energy.tile.IEnergyEmitter;
+import cn.lambdacraft.api.energy.tile.IEnergySink;
+import cn.lambdacraft.api.energy.tile.IEnergySource;
+import cn.lambdacraft.api.energy.tile.IEnergyTile;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.energy.EnergyNet.EnergyPath;
 import cn.lambdacraft.core.world.WorldData;
