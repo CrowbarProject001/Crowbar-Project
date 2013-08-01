@@ -17,7 +17,7 @@ package cn.lambdacraft.crafting.blocks.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.IEnergySource;
+import cn.lambdacraft.api.energy.tile.IEnergySource;
 import cn.lambdacraft.core.block.TileElectrical;
 
 /**

@@ -1,4 +1,4 @@
-package cn.lambdacraft.api;
+﻿package cn.lambdacraft.api;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

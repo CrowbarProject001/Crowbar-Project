@@ -4,7 +4,6 @@ import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.api.weapon.InformationEnergy;
 import cn.lambdacraft.api.weapon.WeaponGeneralEnergy;
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityBulletGaussSec.EnumGaussRayType;
@@ -133,7 +132,6 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 		if (inf.chargeTime > OVER_CHARGE_LIMIT) {
 			inf.resetState();
 			player.stopUsingItem();
-			player.playSound(GenericUtils.getRandomSound("cbc.weapons.electro", 3), 0.5F, 1.0F);
 			player.attackEntityFrom(DamageSource.causeMobDamage(player), 15);
 		}
 

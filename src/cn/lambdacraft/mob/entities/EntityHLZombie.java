@@ -88,6 +88,7 @@ public class EntityHLZombie extends EntityMob {
 		super.onUpdate();
 		updateStats();
 		if(isAttacking()) {
+			System.out.println(worldObj.isRemote + " Attacking " + tickCountAttack);
 			if(--tickCountAttack <= 0)
 				doRealAttack();
 		}
@@ -123,15 +124,10 @@ public class EntityHLZombie extends EntityMob {
 	
 	protected void doRealAttack() {
 		if(!worldObj.isRemote) {
-			double distance = this.getDistanceSqToEntity(entityToAttack);
-			String sndPath;
-			if(distance <= 3.0) {
-				entityToAttack.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-				sndPath = GenericUtils.getRandomSound("cbc.mobs.zo_claw_strike", 3);
-			} else 
-				sndPath = GenericUtils.getRandomSound("cbc.mobs.zo_claw_miss", 2);
-			this.playSound(sndPath, 0.5F, 1.0F);
+			System.out.println(this + " " + entityToAttack.hurtResistantTime);
+			entityToAttack.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
 		}
+		this.entityToAttack = null;
 		this.tickCountAttack = 0;
 	}
 
@@ -161,7 +157,7 @@ public class EntityHLZombie extends EntityMob {
 	
 	public void onBuring() {
 		if(playtick >= 40) {
-			//this.worldObj.playSoundAtEntity(this, GenericUtils.getRandomSound("cbc.mobs.zo_moan_loop", 3), 0.5F, 1.0F);
+			this.worldObj.playSoundAtEntity(this, GenericUtils.getRandomSound("cbc.mobs.zo_moan_loop", 3), 0.5F, 1.0F);
 			playtick = 0;
 		}
 		++playtick;

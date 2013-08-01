@@ -47,7 +47,7 @@ public class BlockPos {
 	
 	@Override
 	public int hashCode() {
-		return x << 20 + y << 10 + z;
+		return x*100 + y * 10 + z;
 	}
 
 	public BlockPos copy() {

@@ -16,14 +16,12 @@ package cn.lambdacraft.mob.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.client.render.RenderEgonRay;
 import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 import cn.lambdacraft.mob.entities.EntityVortigauntRay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
@@ -34,9 +32,9 @@ import net.minecraft.util.Vec3;
  * @author WeAthFolD
  *
  */
-public class RenderVortigauntRay extends Render {
+public class RenderVortigauntRay extends RenderEgonRay {
 
-	public static final double WIDTH = 0.3F;
+	public static final double WIDTH = 0.2F;
 	
 	/* (non-Javadoc)
 	 * @see net.minecraft.client.renderer.entity.Render#doRender(net.minecraft.entity.Entity, double, double, double, float, float)
@@ -46,7 +44,7 @@ public class RenderVortigauntRay extends Render {
 			float f, float f1) {
 		EntityVortigauntRay ray = (EntityVortigauntRay)entity;
 
-		Tessellator tessellator = Tessellator.instance;
+		tessellator = Tessellator.instance;
 
 		GL11.glPushMatrix();
 
@@ -55,13 +53,17 @@ public class RenderVortigauntRay extends Render {
 		double dz = ray.destZ - ray.startZ;
 		double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
 		float angle = ray.ticksExisted;
-		double tx = 0.0, tz = 0.0;
-		double ty = -0.63;
-		
-		Vec3 v1 = RenderUtils.newV3(0, 0, -WIDTH), v2 = RenderUtils.newV3(0, 0,
-				WIDTH),
+		float du = -ray.ticksExisted * 0.05F;
+		double tx = 0.1, tz = 0.2;
 
-		v5 = RenderUtils.newV3(0, WIDTH, 0), v6 = RenderUtils.newV3(0, -WIDTH, 0);
+		double ty = -0.63;
+		Vec3 v1 = newV3(0, 0, -WIDTH).addVector(tx, ty, tz), v2 = newV3(0, 0,
+				WIDTH).addVector(tx, ty, tz), v3 = newV3(d, 0, -WIDTH), v4 = newV3(
+				d, 0, WIDTH),
+
+		v5 = newV3(0, WIDTH, 0).addVector(tx, ty, tz), v6 = newV3(0, -WIDTH, 0)
+				.addVector(tx, ty, tz), v7 = newV3(d, -WIDTH, 0), v8 = newV3(d,
+				WIDTH, 0);
 
 		// Translations and rotations
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -69,26 +71,25 @@ public class RenderVortigauntRay extends Render {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		GL11.glTranslatef((float) d0, (float) d1, (float) d2);
+		GL11.glTranslatef((float) d0, (float) d1 + 0.3F, (float) d2);
+		GL11.glRotatef(270.0F - ray.rotationYaw, 0.0F, 1.0F, 0.0F); // 左右旋转
+		GL11.glRotatef(ray.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
 		// GL11.glRotatef(angle, 1.0F, 0, 0);
-		int rand = RenderUtils.rand.nextInt(3);
+		int rand = (int) (Math.random() * 3.0);
 		this.loadTexture(ClientProps.VORTIGAUNT_RAY_PATH[rand]);
 
-		
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		tessellator.startDrawingQuads();
-		tessellator.setBrightness(15728880);
-		tessellator.setColorRGBA(50, 200, 50, 200);
+		tessellator.setColorRGBA(255, 255, 255, 200);
 		
-		RenderUtils.addVertex(v1.addVector(tx, ty, tz), 0, 0);
-		RenderUtils.addVertex(v2.addVector(tx, ty, tz), 1, 0);
-		RenderUtils.addVertex(v2.addVector(dx, dy, dz), 1, d);
-		RenderUtils.addVertex(v1.addVector(dx, dy, dz), 0, d);
+		addVertex(v1, 0 + du, 0);
+		addVertex(v2, 0 + du, 1);
+		addVertex(v3, d + du, 1);
+		addVertex(v4, d + du, 0);
 
-		RenderUtils.addVertex(v5.addVector(tx, ty, tz), 0, d);
-		RenderUtils.addVertex(v6.addVector(tx, ty, tz), 1, d);
-		RenderUtils.addVertex(v6.addVector(dx, dy, dz), 1, 0);
-		RenderUtils.addVertex(v5.addVector(dx, dy, dz), 0, 0);
+		addVertex(v5, 0 + du, 0);
+		addVertex(v6, 0 + du, 1);
+		addVertex(v7, d + du, 1);
+		addVertex(v8, d + du, 0);
 
 		tessellator.draw();
 

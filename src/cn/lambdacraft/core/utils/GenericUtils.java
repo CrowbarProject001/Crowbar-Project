@@ -15,7 +15,6 @@
 package cn.lambdacraft.core.utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
@@ -23,9 +22,6 @@ import java.util.Set;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 
 /**
  * 通用效用工具？
@@ -61,23 +57,6 @@ public class GenericUtils {
 		return f;
 	}
 	
-	public static Set<BlockPos> getBlocksWithinAABB(World world, AxisAlignedBB box) {
-		Set<BlockPos> set = new HashSet();
-		int minX = MathHelper.floor_double(box.minX), minY = MathHelper.floor_double(box.minY), minZ = MathHelper.floor_double(box.minZ),
-			maxX = MathHelper.ceiling_double_int(box.maxX), maxY = MathHelper.ceiling_double_int(box.maxY), maxZ = MathHelper.ceiling_double_int(box.maxZ);
-		for(int x = minX; x <= maxX; x++) {
-			for(int y = minY; y <= maxY; y++) {
-				for(int z = minZ; z <= maxZ; z++) {
-					int id = world.getBlockId(x, y, z);
-					if(id != 0) {
-						set.add(new BlockPos(x, y, z, id));
-					}
-				}
-			}
-		}
-		return set;
-	}
-	
 	/**
 	 * 获取Entity的体积。
 	 * @param e
@@ -106,7 +85,7 @@ public class GenericUtils {
 	 * @return
 	 */
 	public static String getRandomSound(String sndPath, int countSounds) {
-		int a = rand.nextInt(countSounds);
+		int a = (int) (rand.nextFloat() * countSounds);
 		return sndPath.concat(String.valueOf((char)('a' + a)));
 	}
 

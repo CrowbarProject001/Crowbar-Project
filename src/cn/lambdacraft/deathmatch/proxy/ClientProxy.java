@@ -126,7 +126,6 @@ public class ClientProxy extends Proxy {
 		for (String s : SND_HEV)
 			CBCSoundEvents.addSoundPath("cbc/hev/" + s,
 					"/mods/lambdacraft/sounds/hev/" + s);
-		CBCSoundEvents.addSoundWithVariety("cbc/weapons/electro", "/mods/lambdacraft/sounds/weapons/electro", 3);
 		CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R),
 				false, new KeyReload());
 		CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V),

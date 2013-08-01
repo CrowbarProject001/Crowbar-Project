@@ -14,7 +14,6 @@
  */
 package cn.lambdacraft.deathmatch.register;
 
-import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
@@ -43,19 +42,28 @@ public class DMEventHandler {
 	public void onRenderGameOverlay(RenderGameOverlayEvent event) {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft().gameSettings, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
 		if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR || event.type == ElementType.CROSSHAIRS) {
-			if (CBCPlayer.armorStat[2] && CBCPlayer.armorStat[3]) {
-				event.setCanceled(true);
-				if(event.type == ElementType.HEALTH)
-					HEVRenderingUtils.drawPlayerHud(player, event.resolution, player.ticksExisted);
-				if(event.type == ElementType.CROSSHAIRS)
-					HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
+			ItemStack chest = player.inventory.armorInventory[2];
+			ItemStack helmet = player.inventory.armorInventory[3];
+			if (chest != null && helmet != null) {
+				if (chest.getItem() instanceof ArmorHEV
+						&& helmet.itemID == DMItems.armorHEVHelmet.itemID) {
+					ArmorHEV hev = (ArmorHEV) chest.getItem();
+					if(hev.getItemCharge(chest) > 0 && hev.getItemCharge(helmet) > 0) {
+						event.setCanceled(true);
+						if(event.type == ElementType.HEALTH)
+							HEVRenderingUtils.drawPlayerHud(player, rs);
+						if(event.type == ElementType.CROSSHAIRS)
+							HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), rs.getScaledWidth(), rs.getScaledHeight());
+					}
+				}
 			}
 			return;
 		}
 		
 		if(ClientProps.alwaysCustomCrossHair && event.type == ElementType.CROSSHAIRS) {
-			HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
+			HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), rs.getScaledWidth(), rs.getScaledHeight());
 		}
 	}
 	

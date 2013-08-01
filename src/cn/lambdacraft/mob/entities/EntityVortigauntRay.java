@@ -14,13 +14,10 @@
  */
 package cn.lambdacraft.mob.entities;
 
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cn.lambdacraft.api.weapon.InformationEnergy;
@@ -30,15 +27,15 @@ import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Egon;
 
 /**
- * 腹地刚的绿色Bilibili！
+ * 腹地刚！的绿色Bilibili！
  * 
  * @author WeAthFolD
  */
-@SideOnly(Side.CLIENT)
-public class EntityVortigauntRay extends Entity {
+public class EntityVortigauntRay extends EntityBullet {
 
 	public double startX, startY, startZ;
 	public double destX, destY, destZ;
+	private int updateTick = 0;
 
 	/**
 	 * @param par1World
@@ -46,35 +43,66 @@ public class EntityVortigauntRay extends Entity {
 	 * @param par3itemStack
 	 */
 	public EntityVortigauntRay(World par1World, EntityLiving ent, Entity target) {
-		super(par1World);
-		setSize(1.0F, 1.0F);
+		super(par1World, ent, 10);
 		setPosition(ent.posX, ent.posY + ent.height, ent.posZ);
 		startX = ent.posX;
 		startY = ent.posY + ent.height;
 		startZ = ent.posZ;
 		destX = target.posX;
-		destY = target.posY + target.height - ent.height;
+		destY = target.posY + target.height / 2;
 		destZ = target.posZ;
+		this.setThrowableHeading(destX - startX, destY - startY, destZ - startZ, this.func_70182_d(), 0.0F);
+		motion = new MotionXYZ(this);
+		dataWatcher.updateObject(20, String.valueOf((float)startX));
+		dataWatcher.updateObject(21, String.valueOf((float)startY));
+		dataWatcher.updateObject(22, String.valueOf((float)startZ));
+
+		dataWatcher.updateObject(24, String.valueOf((float)destX));
+		dataWatcher.updateObject(25, String.valueOf((float)destY));
+		dataWatcher.updateObject(26, String.valueOf((float)destZ));
 		this.ignoreFrustumCheck = true;
+	}
+	
+	public EntityVortigauntRay(World par1World){
+		super(par1World);
 	}
 
 	@Override
 	public void entityInit() {
+		super.entityInit();
+		// Start XYZ
+		dataWatcher.addObject(20, String.valueOf(0));
+		dataWatcher.addObject(21, String.valueOf(0));
+		dataWatcher.addObject(22, String.valueOf(0));
+
+		// Dest XYZ
+		dataWatcher.addObject(24, String.valueOf(0));
+		dataWatcher.addObject(25, String.valueOf(0));
+		dataWatcher.addObject(26, String.valueOf(0));
 	}
 	
 	@Override
 	public void onUpdate() {
-		if(++ticksExisted > 15)
-			setDead();
-	}
+		super.onUpdate();
+		if (--updateTick <= 0) {
+			updateTick = 5;
+			if (worldObj.isRemote) {
+				startX = Float.valueOf(dataWatcher.getWatchableObjectString(20));
+				startY = Float.valueOf(dataWatcher.getWatchableObjectString(21));
+				startZ = Float.valueOf(dataWatcher.getWatchableObjectString(22));
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		setDead();
-	}
+				destX = Float.valueOf(dataWatcher.getWatchableObjectString(24));
+				destY = Float.valueOf(dataWatcher.getWatchableObjectString(25));
+				destZ = Float.valueOf(dataWatcher.getWatchableObjectString(26));
+			} else {
+				dataWatcher.updateObject(20, String.valueOf((float)startX));
+				dataWatcher.updateObject(21, String.valueOf((float)startY));
+				dataWatcher.updateObject(22, String.valueOf((float)startZ));
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {
-		setDead();
+				dataWatcher.updateObject(24, String.valueOf((float)destX));
+				dataWatcher.updateObject(25, String.valueOf((float)destY));
+				dataWatcher.updateObject(26, String.valueOf((float)destZ));
+			}
+		}
 	}
 }

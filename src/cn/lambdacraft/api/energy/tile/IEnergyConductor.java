@@ -1,4 +1,4 @@
-package cn.lambdacraft.api.energy;
+﻿package cn.lambdacraft.api.energy.tile;
 
 public abstract interface IEnergyConductor extends IEnergyAcceptor,
 		IEnergyEmitter {

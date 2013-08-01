@@ -121,7 +121,7 @@ public class EntityRocket extends EntityThrowable {
 	}
 
 	private void Explode() {
-		BulletManager.Explode(worldObj, this, 4.5F, 5.0F, posX, posY, posZ, 35);
+		BulletManager.Explode(worldObj, this, 5.0F, 5.0F, posX, posY, posZ, 50);
 		this.setDead();
 	}
 

@@ -1,4 +1,6 @@
-package cn.lambdacraft.api.energy;
+﻿package cn.lambdacraft.api.energy.event;
+
+import cn.lambdacraft.api.energy.tile.IEnergyTile;
 
 public class EnergyTileSourceEvent extends EnergyTileEvent{
 	

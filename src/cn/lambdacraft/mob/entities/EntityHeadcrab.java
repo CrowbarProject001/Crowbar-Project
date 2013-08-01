@@ -85,7 +85,6 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityPlaye
 		boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), i);
 		this.motionX = 0.0;
 		this.motionZ = 0.0;
-		//Attaching on
 		if(par1Entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) par1Entity;
 			ItemStack armorStack = player.inventory.armorInventory[3];

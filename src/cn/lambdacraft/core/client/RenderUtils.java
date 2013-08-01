@@ -1,7 +1,5 @@
 package cn.lambdacraft.core.client;
 
-import java.util.Random;
-
 import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.core.client.shape.*;
@@ -27,7 +25,7 @@ public class RenderUtils {
 	public static ShapeCircle shapeCircle = new ShapeCircle();
 	public static ShapeSphere shapeSphere = new ShapeSphere();
 	private static Tessellator t = Tessellator.instance;
-	public static Random rand = new Random();
+	
 	
 	public static void renderShadow_Held() {
 		GL11.glDepthFunc(GL11.GL_EQUAL);

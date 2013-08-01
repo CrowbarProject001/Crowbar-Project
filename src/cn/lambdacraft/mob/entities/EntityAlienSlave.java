@@ -14,16 +14,7 @@
  */
 package cn.lambdacraft.mob.entities;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.utils.BlockPos;
-import cn.lambdacraft.core.utils.GenericUtils;
-import cn.lambdacraft.deathmatch.entities.EntityBullet;
-import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -39,40 +30,46 @@ import net.minecraft.entity.ai.EntityAIRestrictSun;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
  * @author WeAthFolD
  *
  */
-public class EntityAlienSlave extends EntityMob {
+public class EntityAlienSlave extends EntityMob implements IRangedAttackMob {
 
 	public boolean isCharging;
 	public int chargeTick;
 	private int lastAttackTick;
 	
-	boolean lastTickFleeing = false;
-	
-	public HashSet<Vec3> electrolyze_left = new HashSet(), electrolyze_right = new HashSet();
-	
+    private EntityAIArrowAttack aiArrowAttack = new EntityAIArrowAttack(this, 0.55F, 20, 60, 15.0F);
+    private EntityAIAttackOnCollide aiAttackOnCollide = new EntityAIAttackOnCollide(this, EntityPlayer.class, 0.31F, false);
+    
 	/**
 	 * @param par1World
 	 */
 	public EntityAlienSlave(World par1World) {
 		super(par1World);
         this.texture = ClientProps.VORTIGAUNT_PATH;
-        this.moveSpeed = 0.65F;
+        this.moveSpeed = 0.55F;
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(6, new EntityAILookIdle(this));
+        this.tasks.addTask(4, new EntityAIWander(this, this.moveSpeed));
+        this.tasks.addTask(4, this.aiArrowAttack);
+        this.tasks.addTask(4, this.aiAttackOnCollide);
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityHeadcrab.class, 16.0F, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityCreeper.class, 16.0F, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityZombie.class, 16.0F, 0, true));
 	}
 	
 	@Override
@@ -81,102 +78,29 @@ public class EntityAlienSlave extends EntityMob {
 		this.setSize(1.5F, 1.8F);
 		dataWatcher.addObject(20, Byte.valueOf((byte) 0));
 		dataWatcher.addObject(21, Short.valueOf((short) 0));
-		dataWatcher.addObject(22, Integer.valueOf(0));
 	}
 	
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
 		
-		//Sync&Calculate Charging
 		if(worldObj.isRemote) {
-			boolean preisCharging = isCharging;
-			if(!preisCharging) {
-				chargeTick = dataWatcher.getWatchableObjectShort(21);
-				isCharging = dataWatcher.getWatchableObjectByte(20) == 1;
-				if(isCharging) {
-					this.updateElectrolyzes();
-				}
-			} else isCharging = dataWatcher.getWatchableObjectByte(20) == 1;
-			entityToAttack = worldObj.getEntityByID(dataWatcher.getWatchableObjectInt(22));
+			isCharging = dataWatcher.getWatchableObjectByte(20) == 1;
+			chargeTick = dataWatcher.getWatchableObjectShort(21);
 		} else {
 			dataWatcher.updateObject(20, isCharging? (byte)1 : (byte)0);
 			dataWatcher.updateObject(21, (short)chargeTick);
-			dataWatcher.updateObject(22, entityToAttack == null ? 0 : entityToAttack.entityId);
-			
-			//Path movement
-			if(this.entityToAttack != null ) {
-				double distanceSq = this.getDistanceSqToEntity(entityToAttack);
-				if(distanceSq > 25.0) {
-					//original pathNavigate
-					lastTickFleeing = false;
-					if(lastTickFleeing || rand.nextInt(20) == 0)
-						this.setPathToEntity(worldObj.getPathEntityToEntity(this, entityToAttack, 16.0F, true, false, false, true));
-				} else if(!lastTickFleeing || rand.nextInt(20) == 0){
-					//else try to get away from the player
-					lastTickFleeing = true;
-					int x = (int) (3 * posX - 2 * entityToAttack.posX), y = (int) (3 * posY - 2 * entityToAttack.posY), z = (int) (3 * posZ - 2 * entityToAttack.posZ);
-					x += rand.nextInt(5) - 2;
-					y += rand.nextInt(3) - 1;
-					z += rand.nextInt(5) - 2;
-					this.setPathToEntity(worldObj.getEntityPathToXYZ(this, x , y, z, 16.0F, true, false, false, true));
-				}
-			} else {
-				if(this.rand.nextInt(30) == 0 || this.fleeingTick > 0) {
-					this.updateWanderPath();
+			if(isCharging && this.entityToAttack != null) {
+				System.out.println("Charging "+ chargeTick);
+				if(++chargeTick >= 55) {
+					isCharging = false;
+					EntityVortigauntRay ray = new EntityVortigauntRay(worldObj, this, entityToAttack);
+					worldObj.spawnEntityInWorld(ray);
+					lastAttackTick = ticksExisted;
 				}
 			}
 		}
-		
-		if(isCharging && this.entityToAttack != null) {
-			if(++chargeTick >= 30) {
-				isCharging = false;
-				Entity ray = worldObj.isRemote ? new EntityVortigauntRay(worldObj, this, entityToAttack) : new EntityBullet(worldObj, this, entityToAttack, 6);
-				worldObj.spawnEntityInWorld(ray);
-				this.playSound("cbc.mobs.zapa", 0.5F, 1.0F);
-				this.playSound(GenericUtils.getRandomSound("cbc.weapons.electro", 3), 0.5F, 1.0F);
-				lastAttackTick = ticksExisted;
-				electrolyze_left.clear();
-				electrolyze_right.clear();
-			}
-		}
-		
 	}
-	
-	private void updateElectrolyzes() {
-		Set<BlockPos> set_left = GenericUtils.getBlocksWithinAABB(worldObj, AxisAlignedBB.getBoundingBox(posX - 2, posY - 1, posZ - 2, posX + 2, posY + 2, posZ + 2));
-		Iterator<BlockPos> iterator = set_left.iterator();
-		int cnt = 0;
-		while(iterator.hasNext() && ++cnt < 10) {
-			BlockPos bp = iterator.next();
-			HashSet set = cnt < 5 ? electrolyze_left : electrolyze_right;
-			set.add(Vec3.createVectorHelper
-					(bp.x + rand.nextDouble() - 0.5 - posX, bp.y + rand.nextDouble() - 0.5 - posY, bp.z + rand.nextDouble() - 0.5 - posZ));
-		}
-	}
-
-	@Override
-	protected void attackEntity(Entity par1Entity, float par2) {
-		if(par2 >= 3.0F && par2 <= 16.0F && ticksExisted - lastAttackTick > 40 && rand.nextInt(5) == 0 && !isCharging) {
-			this.playSound("cbc.mobs.zapd", 0.5F, 1.0F);
-			isCharging = true;
-			chargeTick = 0;
-		} else {
-			super.attackEntity(par1Entity, par2);
-		}
-	}
-	
-	@Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
-    {
-    	if(super.attackEntityFrom(par1DamageSource, par2)) {
-    		this.electrolyze_left.clear();
-    		this.electrolyze_right.clear();
-    		this.isCharging = false;
-    		lastAttackTick = ticksExisted;
-    		return true;
-    	} else return false;
-    }
 	
     /**
      * Disables a mob's ability to move on its own while true.
@@ -184,62 +108,29 @@ public class EntityAlienSlave extends EntityMob {
 	@Override
     protected boolean isMovementCeased()
     {
-        return true;
+        return !isCharging;
     }
 	
-	@Override
-	protected boolean isMovementBlocked()
-	{
-		return isCharging;
-	}
-	
-    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
-    {
-        return this.entityDropItem(new ItemStack(par1, par2, 4), par3);
-    }
-    
-    @Override
-    public int getDropItemId() {
-    	return CBCMobItems.bioTissue.itemID;
-    }
-	
-	@Override
-    protected Entity findPlayerToAttack()
-    {
-    	Entity e = super.findPlayerToAttack();
-    	if(e != null && rand.nextInt(3) == 0) {
-    		this.playSound(GenericUtils.getRandomSound("cbc.mobs.slv_alert", 3), 0.5F, 1.0F);
-    	}
-    	return e;
-    }
-	
-	@Override
-    protected String getLivingSound()
-    {
-    	return GenericUtils.getRandomSound("cbc.mobs.slv_word", 8);
-    }
-    
     /**
-     * Returns the sound this mob makes when it is hurt.
+     * Attack the specified entity using a ranged attack.
      */
 	@Override
-    protected String getHurtSound()
+    public void attackEntityWithRangedAttack(EntityLiving par1EntityLiving, float par2)
     {
-        return GenericUtils.getRandomSound("cbc.mobs.slv_pain", 2);
+    	System.out.println("attacking");
+    	if(!isCharging && ticksExisted - lastAttackTick > 90) {
+    		isCharging = true;
+    		chargeTick = 0;
+    	}
+    	entityToAttack = par1EntityLiving;
     }
-    
-	@Override
-    protected String getDeathSound()
-    {
-        return GenericUtils.getRandomSound("cbc.mobs.slv_die", 2);
-    }
-	
+
 	/* (non-Javadoc)
 	 * @see net.minecraft.entity.EntityLiving#getMaxHealth()
 	 */
 	@Override
 	public int getMaxHealth() {
-		return 16;
+		return 20;
 	}
 	
 	@Override
@@ -247,4 +138,13 @@ public class EntityAlienSlave extends EntityMob {
     {
     	return 5;
     }
+	
+    /**
+     * Returns true if the newer Entity AI code should be run
+     */
+    public boolean isAIEnabled()
+    {
+        return true;
+    }
+
 }

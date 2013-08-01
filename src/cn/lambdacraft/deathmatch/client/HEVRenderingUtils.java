@@ -49,7 +49,7 @@ public class HEVRenderingUtils {
 	private static HashMap<IHudTipProvider, IHudTip[]> tipPool = new HashMap();
 	
 	@SideOnly(Side.CLIENT)
-	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution, float partialTickTime) {
+	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution) {
 		int k = resolution.getScaledWidth();
         int l = resolution.getScaledHeight();
         int i2 = k / 2 - 91;
@@ -94,7 +94,7 @@ public class HEVRenderingUtils {
         drawArmorTip(player, engine, k, l);
         if(CBCPlayer.drawArmorTip)
         	drawWeaponTip(player, engine, k, l);
-        drawStatusHud(player, engine, k, l, partialTickTime);
+        drawStatusHud(player, engine, k, l);
         
         
         engine.bindTexture("/gui/icons.png");
@@ -139,10 +139,10 @@ public class HEVRenderingUtils {
 	}
 	
 	@SideOnly(Side.CLIENT) 
-	private static void drawStatusHud(EntityPlayer player, RenderEngine engine, int k, int l, float tickTime) {
+	private static void drawStatusHud(EntityPlayer player, RenderEngine engine, int k, int l) {
 		int x = 3, y = l / 2 - 100;
 		EnumStatus stat = CBCPlayer.playerStat;
-		float alpha = MathHelper.sin(tickTime * 0.3F) + 0.6F;
+		float alpha = MathHelper.sin(player.ticksExisted * 0.3F) + 0.6F;
 		GL11.glColor4f(1.0F, 0.5F, 0.0F, alpha);
 		drawTexturedModalRect(x, y, stat.u, stat.v, 32, 32);
 	}
