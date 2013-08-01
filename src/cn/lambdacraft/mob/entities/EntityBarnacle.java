@@ -123,7 +123,7 @@ public class EntityBarnacle extends EntityLiving {
 				this.playSound(GenericUtils.getRandomSound("cbc.mobs.bcl_chew", 3), 0.5F, 1.0F);
 			}
 		} else {
-			//Moving pulling entity
+			//Move pulling entity
 			pullingEntity.moveEntity(0.0, -pullingEntity.motionY, 0.0);
 			pullingEntity.motionY = 0.07;
 			pullingEntity.setPosition(posX, posY - tentacleLength, posZ);
@@ -148,12 +148,13 @@ public class EntityBarnacle extends EntityLiving {
 			if(pullingEntity != null && pullingEntity.isDead)
 				stopPullingEntity();
 		}
+		
 		//Check if barnacle could still exist
 		if(worldObj.getBlockId(MathHelper.floor_double(posX), (int)posY + 1, MathHelper.floor_double(posZ)) == 0) {
 			if(ticksExisted < 10) {
 				MotionXYZ mo = new MotionXYZ(this);
 				MovingObjectPosition result = worldObj.rayTraceBlocks(mo.asVec3(worldObj), mo.asVec3(worldObj).addVector(0.0, 40.0, 0.0));
-				if(result != null) {
+				if(result != null && worldObj.isBlockSolidOnSide(result.blockX, result.blockY, result.blockZ, ForgeDirection.DOWN)) {
 					this.setPosition(result.blockX + 0.5, result.blockY - 1.0, result.blockZ + 0.5);
 				} else this.setDead();
 			} else {
@@ -164,6 +165,8 @@ public class EntityBarnacle extends EntityLiving {
 				motionZ = (rand.nextDouble() - 0.5) * 0.2F;
 			}
 		} else detach = false;
+		
+		//Disappear if in peaceful
 		if(worldObj.difficultySetting == 0)
 			this.setDead();
 	}

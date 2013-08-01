@@ -47,6 +47,7 @@ public class ModuleMob {
 	 * 玩家对应当前选定的Sentry的映射表。
 	 */
 	public static HashMap<EntityPlayer, EntitySentry> syncMap = new HashMap();
+	
 	/**
 	 * 放置时临时采用的映射表。
 	 */
@@ -74,11 +75,11 @@ public class ModuleMob {
 		CBCMobBlocks.init();
 
 		EntityRegistry.addSpawn(EntityHeadcrab.class, 7, 0, 50,
-				EnumCreatureType.monster, genericGen);
+				EnumCreatureType.monster, GENERIC_GEN);
 		EntityRegistry.addSpawn(EntityHoundeye.class, 15, 0, 70,
-				EnumCreatureType.monster, genericGen);
+				EnumCreatureType.monster, GENERIC_GEN);
 		EntityRegistry.addSpawn(EntityBarnacle.class, 10, 0, 65,
-				EnumCreatureType.monster, barnacleGen);
+				EnumCreatureType.monster, BARNACLE_GEN);
 
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER, new NetSentrySync());
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark",
@@ -97,17 +98,15 @@ public class ModuleMob {
 				GeneralProps.ENT_ID_SHOCKWAVE, CBCMod.instance, 32, 3, false);
 		EntityRegistry.registerModEntity(EntityAlienSlave.class, "vortigaunt",
 				GeneralProps.ENT_ID_VORTIGAUNT, CBCMod.instance, 48, 3, true);
-		EntityRegistry.registerModEntity(EntityVortigauntRay.class, "vor_ray",
-				GeneralProps.ENT_ID_VOR_RAY, CBCMod.instance, 32, 3, false);
 		proxy.init();
 	}
 
-	private static BiomeGenBase genericGen[] = { BiomeGenBase.beach,
+	private static final BiomeGenBase GENERIC_GEN[] = { BiomeGenBase.beach,
 			BiomeGenBase.desert, BiomeGenBase.desertHills,
 			BiomeGenBase.extremeHills, BiomeGenBase.forest,
 			BiomeGenBase.forestHills, BiomeGenBase.frozenOcean,
 			BiomeGenBase.frozenRiver, BiomeGenBase.jungle,
-			BiomeGenBase.swampland, BiomeGenBase.plains }, barnacleGen[] = {
+			BiomeGenBase.swampland, BiomeGenBase.plains }, BARNACLE_GEN[] = {
 			BiomeGenBase.beach, BiomeGenBase.desert, BiomeGenBase.desertHills,
 			BiomeGenBase.extremeHills, BiomeGenBase.forest,
 			BiomeGenBase.forestHills, BiomeGenBase.frozenOcean,

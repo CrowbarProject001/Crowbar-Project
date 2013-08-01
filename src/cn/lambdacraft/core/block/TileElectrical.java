@@ -53,8 +53,10 @@ public abstract class TileElectrical extends CBCTileEntity implements
 	@Override
 	public void onTileUnload() {
 		super.onTileUnload();
-		MinecraftForge.EVENT_BUS
-				.post(new EnergyTileUnLoadEvent(this));
+	    if ((CBCMod.proxy.isSimulating()) && (this.addedToNet)) {
+	        MinecraftForge.EVENT_BUS.post(new EnergyTileUnLoadEvent(this));
+	        this.addedToNet = true;
+	     }
 		this.addedToNet = false;
 	}
 

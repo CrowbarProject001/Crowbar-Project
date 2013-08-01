@@ -186,11 +186,11 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 						: charge) : 0);
 	}
 
-	public int getItemCharge(ItemStack stack) {
+	public static int getItemCharge(ItemStack stack) {
 		return loadCompound(stack).getInteger("charge");
 	}
 
-	private NBTTagCompound loadCompound(ItemStack stack) {
+	private static NBTTagCompound loadCompound(ItemStack stack) {
 		if (stack.stackTagCompound == null)
 			stack.stackTagCompound = new NBTTagCompound();
 		return stack.stackTagCompound;

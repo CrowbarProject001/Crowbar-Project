@@ -1,4 +1,4 @@
-﻿package cn.lambdacraft.api.energy;
+package cn.lambdacraft.api.energy;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.world.WorldEvent;

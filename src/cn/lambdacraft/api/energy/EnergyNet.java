@@ -1,4 +1,4 @@
-﻿package cn.lambdacraft.api.energy;
+package cn.lambdacraft.api.energy;
 
 import cn.lambdacraft.api.energy.IEnergySource;
 import java.lang.reflect.Method;

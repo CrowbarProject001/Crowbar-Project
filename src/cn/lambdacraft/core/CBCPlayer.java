@@ -61,13 +61,10 @@ public class CBCPlayer extends PlayerBase {
 		
 		//Update Armor Status
 		for(int i = 0; i < 4; i ++) {
-			boolean b = player.inventory.armorInventory[i] != null && 
-				player.inventory.armorInventory[i].getItem() instanceof ArmorHEV;
+			boolean b = player.inventory.armorInventory[i] != null && player.inventory.armorInventory[i].getItem() instanceof ArmorHEV;
 			if(b) {
-				ArmorHEV hev = (ArmorHEV) player.inventory.armorInventory[i].getItem();
-				if(hev.getItemCharge(player.inventory.armorInventory[i]) <= 0) {
+				if(ArmorHEV.getItemCharge(player.inventory.armorInventory[i]) <= 0) 
 					b = false;
-				}
 			}
 			armorStat[i] = b;
 		}
@@ -76,7 +73,6 @@ public class CBCPlayer extends PlayerBase {
 			drawArmorTip = hevLeggings.hasAttach(player.inventory.armorInventory[3], EnumAttachment.WPNMANAGE);
 		} else drawArmorTip = false;
 		
-		ItemStack chest = player.inventory.armorInventory[2], helmet = player.inventory.armorInventory[3];
 		//putting HEV on at this tick
 		if(!preOnHEV && (armorStat[2] && armorStat[3])) {
 			mc.sndManager.playSoundFX("cbc.hev.hev_logon", 0.5F, 1.0F);
@@ -122,7 +118,6 @@ public class CBCPlayer extends PlayerBase {
 	 */
 	@Override
 	public void jump() {
-		jumpIgnoringMotion();
 		
 		ItemStack slotChestplate = player.inventory.armorInventory[2];
 		if (slotChestplate != null && player.isSneaking()) {
@@ -144,16 +139,7 @@ public class CBCPlayer extends PlayerBase {
 			
 		}
 		
-		
-		ItemStack slotLeggings = player.inventory.armorInventory[1];
-		if(slotLeggings == null || !(slotLeggings.getItem() instanceof ArmorHEV)) {
-			if (player.isSprinting())
-	        {
-	            float var1 = player.rotationYaw * 0.017453292F;
-	            player.motionX -= (double)(MathHelper.sin(var1) * 0.2F);
-	            player.motionZ += (double)(MathHelper.cos(var1) * 0.2F);
-	        }
-		}
+		player.localJump();
 		
 	}
 	
@@ -224,10 +210,7 @@ public class CBCPlayer extends PlayerBase {
 	//-----------------------效用函数----------------------------
 	
 	private boolean useBhop() {
-		EnumSet<EnumAttachment> attach = ArmorHEV.getAttachments(player.inventory.armorInventory[1]);
-		if(attach == null)
-			return false;
-		return armorStat[1] && attach.contains(EnumAttachment.BHOP) && 
+		return armorStat[1] && ArmorHEV.hasAttach(player.getCurrentArmor(1), EnumAttachment.BHOP) && 
 				!(player.handleLavaMovement() || player.handleWaterMovement() || player.isOnLadder() || player.capabilities.isCreativeMode);
 	}
 	
@@ -239,27 +222,6 @@ public class CBCPlayer extends PlayerBase {
 		par3 /= f2;
 		par5 /= f2;
 		return (float) (Math.atan2(par1, par5) * 180.0D / Math.PI);
-	}
-	
-	private void jumpIgnoringMotion() {
-		player.motionY = 0.41999998688697815D;
-
-        if (player.isPotionActive(Potion.jump))
-        {
-        	player.motionY += (double)((float)(player.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
-        }
-
-        player.isAirBorne = true;
-        player.addStat(StatList.jumpStat, 1);
-
-        if (player.isSprinting())
-        {
-        	player.addExhaustion(0.8F);
-        }
-        else
-        {
-        	player.addExhaustion(0.2F);
-        }
 	}
 	
 	//----------------Sounds-----------------

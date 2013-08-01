@@ -79,7 +79,6 @@ public class ModuleCrafting {
 				CBCSoundEvents.addSoundPath("cbc/entities/" + s,
 						"/mods/lambdacraft/sounds/entities/" + s);
 			}
-			MinecraftForge.EVENT_BUS.register(this);
 		}
 		
 	}

@@ -57,7 +57,7 @@ public class Proxy {
 		return !isSimulating();
 	}
 
-	private static boolean isSimulating() {
+	public static boolean isSimulating() {
 		return !FMLCommonHandler.instance().getEffectiveSide().isClient();
 	}
 

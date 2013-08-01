@@ -68,10 +68,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(modid = "LambdaCraft", name = "LambdaCraft Core", version = CBCMod.VERSION)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_CLIENT }, packetHandler = CBCNetHandler.class), serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, 
+clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_CLIENT }, packetHandler = CBCNetHandler.class), 
+serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler {
 
-	public static final String VERSION = "1.1.0 dev";
+	public static final String VERSION = "1.5.0alpha2";
 
 	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@"
 			+ VERSION,
@@ -137,8 +139,7 @@ public class CBCMod implements ITickHandler {
 
 		if (FMLCommonHandler.instance().getSide().isClient()) {
 			MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
-			CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F),
-					true, new KeyUse());
+			CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
 		}
 
 	}
