@@ -295,7 +295,7 @@ public class TileArmorCharger extends TileElectricStorage implements IInventory 
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
+	public boolean acceptEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
 		return !(currentBehavior == EnumBehavior.RECEIVEONLY && !this.isRSActivated);
 	}

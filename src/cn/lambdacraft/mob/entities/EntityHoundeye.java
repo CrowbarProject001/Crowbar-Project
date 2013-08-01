@@ -41,19 +41,10 @@ import net.minecraft.world.World;
  */
 public class EntityHoundeye extends EntityMob implements IEntityLink<EntityLiving> {
 
-	protected String throwerName;
+	protected String throwerName = "";
 	public boolean isCharging = false;
 	public int chargeTick = 0;
 	protected int lastShockTick = 0;
-	
-	public IEntitySelector selector = new IEntitySelector() {
-
-		@Override
-		public boolean isEntityApplicable(Entity entity) {
-			return GenericUtils.selectorLiving.isEntityApplicable(entity) && !(entity instanceof EntityHoundeye) && !throwerName.equals(entity.getEntityName());
-		}
-		
-	};
 	
 	/**
 	 * @param par1World
@@ -69,6 +60,14 @@ public class EntityHoundeye extends EntityMob implements IEntityLink<EntityLivin
 		super.entityInit();
 		dataWatcher.addObject(20, Byte.valueOf((byte) 0));
 	}
+	@Override
+    protected Entity findPlayerToAttack()
+    {
+		Entity e = super.findPlayerToAttack();
+		if(e != null && e.getEntityName().equals(throwerName))
+			return null;
+		return e;
+    }
 	
 	@Override
 	public void onUpdate() {
@@ -133,35 +132,6 @@ public class EntityHoundeye extends EntityMob implements IEntityLink<EntityLivin
         return isCharging;
     }
 	
-	/**
-	 * 自定义的寻路函数，
-	 */
-	@Override
-	protected Entity findPlayerToAttack() {
-		AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(posX - 8.0,
-				posY - 8.0, posZ - 8.0, posX + 8.0, posY + 8.0, posZ + 8.0);
-		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox,
-						selector);
-		EntityLiving entity = null;
-		double distance = 10000.0F;
-		for (EntityLiving s : list) {
-			if(s instanceof EntityPlayer && throwerName.equals(s.getEntityName()))
-				continue;
-			double dx = s.posX - posX, dy = s.posY - posY, dz = s.posZ - posZ;
-			double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-			if (d < distance) {
-				entity = s;
-				distance = d;
-			}
-		}
-		if (entity == null)
-			return null;
-		this.playSound(GenericUtils.getRandomSound("cbc.mobs.he_alert", 3), 0.5F, 1.0F);
-		return entity;
-	}
-	
-	
-	
 	
     public EntityItem dropItemWithOffset(int par1, int par2, float par3)
     {
@@ -211,7 +181,8 @@ public class EntityHoundeye extends EntityMob implements IEntityLink<EntityLivin
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
     	super.writeEntityToNBT(nbt);
-    	nbt.setString("thrower", throwerName);
+    	if(throwerName != null && throwerName.equals(""))
+    		nbt.setString("thrower", throwerName);
     }
 	
 	@Override

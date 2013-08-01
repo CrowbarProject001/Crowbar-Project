@@ -40,28 +40,28 @@ public class ClientProxy extends Proxy {
 		ClientProps.loadProps(CBCMod.config);
 	}
 
-	public static void profilerStartSection(String section) {
+	public void profilerStartSection(String section) {
 		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.startSection(section);
 		} else {
-			Proxy.profilerStartSection(section);
+			super.profilerStartSection(section);
 		}
 	}
 
-	public static void profilerEndSection() {
+	public void profilerEndSection() {
 		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.endSection();
 		} else {
-			Proxy.profilerEndSection();
+			super.profilerEndSection();
 		}
 
 	}
 
-	public static void profilerEndStartSection(String section) {
+	public void profilerEndStartSection(String section) {
 		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.endStartSection(section);
 		}
-		Proxy.profilerEndStartSection(section);
+		super.profilerEndStartSection(section);
 	}
 
 }

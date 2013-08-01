@@ -37,7 +37,6 @@ public class BlockRadioactiveFlow extends BlockFlowing {
 	 */
 	public BlockRadioactiveFlow(int id) {
         super(id, Material.water);
-        setCreativeTab(CBCMod.cct);
         blockHardness = 100.0F;
         setLightOpacity(3);
 	}

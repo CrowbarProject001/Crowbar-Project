@@ -60,14 +60,9 @@ public class KeyUse implements IKeyProcess {
 		if (player == null)
 			return;
 		NetKeyUsing.sendUsingPacket(false);
-		ItemStack armorStack = null;
-		try {
-			if (player.inventory.armorInventory[3] == null)
-				return;
-			armorStack = player.inventory.armorInventory[3];
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		ItemStack armorStack = player.inventory.armorInventory[3];
+		if (armorStack == null)
+			return;
 		if (Minecraft.getMinecraft().theWorld.isRemote) {
 			ClientProxy.cth.flag = !ClientProxy.cth.flag;
 			if (armorStack.itemID == DMItems.armorHEVHelmet.itemID)

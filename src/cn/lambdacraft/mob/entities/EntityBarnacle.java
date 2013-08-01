@@ -23,6 +23,7 @@ import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -113,7 +114,7 @@ public class EntityBarnacle extends EntityLiving {
 							startPullingEntity(e);
 						}
 					}
-					if(ticksExisted % 80 == 0 && Math.random() < 0.4) {
+					if(ticksExisted % 80 == 0 && this.rand.nextFloat() < 0.4) {
 						this.playSound("cbc.mobs.bcl_tongue", 0.5F, 1.0F);
 					}
 				}
@@ -122,7 +123,7 @@ public class EntityBarnacle extends EntityLiving {
 				this.playSound(GenericUtils.getRandomSound("cbc.mobs.bcl_chew", 3), 0.5F, 1.0F);
 			}
 		} else {
-			//Moving pulling entity
+			//Move pulling entity
 			pullingEntity.moveEntity(0.0, -pullingEntity.motionY, 0.0);
 			pullingEntity.motionY = 0.07;
 			pullingEntity.setPosition(posX, posY - tentacleLength, posZ);
@@ -147,14 +148,27 @@ public class EntityBarnacle extends EntityLiving {
 			if(pullingEntity != null && pullingEntity.isDead)
 				stopPullingEntity();
 		}
+		
 		//Check if barnacle could still exist
 		if(worldObj.getBlockId(MathHelper.floor_double(posX), (int)posY + 1, MathHelper.floor_double(posZ)) == 0) {
-			health = 0;
-			detach = true;
-			motionY = 0.0;
-			motionX = (Math.random() - 0.5) * 0.2F;
-			motionZ = (Math.random() - 0.5) * 0.2F;
+			if(ticksExisted < 10) {
+				MotionXYZ mo = new MotionXYZ(this);
+				MovingObjectPosition result = worldObj.rayTraceBlocks(mo.asVec3(worldObj), mo.asVec3(worldObj).addVector(0.0, 40.0, 0.0));
+				if(result != null && worldObj.isBlockSolidOnSide(result.blockX, result.blockY, result.blockZ, ForgeDirection.DOWN)) {
+					this.setPosition(result.blockX + 0.5, result.blockY - 1.0, result.blockZ + 0.5);
+				} else this.setDead();
+			} else {
+				health = 0;
+				detach = true;
+				motionY = 0.0;
+				motionX = (rand.nextDouble() - 0.5) * 0.2F;
+				motionZ = (rand.nextDouble() - 0.5) * 0.2F;
+			}
 		} else detach = false;
+		
+		//Disappear if in peaceful
+		if(worldObj.difficultySetting == 0)
+			this.setDead();
 	}
 	
 	private void updateTentacle() {
@@ -240,5 +254,10 @@ public class EntityBarnacle extends EntityLiving {
 	public int getMaxHealth() {
 		return 20;
 	}
+	
+    public EnumCreatureAttribute getCreatureAttribute()
+    {
+        return EnumCreatureAttribute.ARTHROPOD;
+    }
 
 }

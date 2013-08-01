@@ -26,15 +26,15 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public final class CBCWeaponInformation {
 
-	private static HashMap<Double, InformationSet> map = new HashMap();
+	private static HashMap<Double, InformationSet> infPool = new HashMap();
 
 	public static InformationSet addToList(double uniqueID, InformationSet inf) {
-		map.put(uniqueID, inf);
+		infPool.put(uniqueID, inf);
 		return inf;
 	}
 
 	public static InformationSet getInformation(double uniqueID) {
-		return map.get(uniqueID);
+		return infPool.get(uniqueID);
 	}
 
 	public static InformationSet getInformation(ItemStack itemStack) {
@@ -43,7 +43,7 @@ public final class CBCWeaponInformation {
 			return null;
 		}
 		double uniqueID = itemStack.getTagCompound().getDouble("uniqueID");
-		return map.get(uniqueID);
+		return infPool.get(uniqueID);
 	}
 
 }

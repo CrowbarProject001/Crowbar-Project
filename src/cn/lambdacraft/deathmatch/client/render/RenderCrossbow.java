@@ -3,7 +3,10 @@ package cn.lambdacraft.deathmatch.client.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
@@ -31,8 +34,8 @@ public class RenderCrossbow implements IItemRenderer {
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		switch (type) {
 		case EQUIPPED:
+		case ENTITY:
 			return true;
-
 		default:
 			return false;
 		}
@@ -61,13 +64,24 @@ public class RenderCrossbow implements IItemRenderer {
 			RenderBlocks render = (RenderBlocks) data[0];
 			EntityLiving ent = (EntityLiving) data[1];
 			doRender(render, ent, item);
+			break;
+		case ENTITY:
+			RenderBlocks brender = (RenderBlocks) data[0];
+			EntityItem bitem = (EntityItem) data[1];
+			renderEntity(brender, bitem);
+			break;
 		default:
 			break;
 		}
 		return;
 	}
+	
+	private void renderEntity(RenderBlocks render, EntityItem item) {
+		GL11.glTranslatef(-1.0F, 0.0F, 0.0F);
+		doRender(render, item, item.getEntityItem());
+	}
 
-	public void doRender(RenderBlocks render, EntityLiving ent, ItemStack item) {
+	public void doRender(RenderBlocks render, Entity ent, ItemStack item) {
 
 		Minecraft mc = Minecraft.getMinecraft();
 		t = Tessellator.instance;

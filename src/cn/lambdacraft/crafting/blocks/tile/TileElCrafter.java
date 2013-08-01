@@ -16,20 +16,19 @@ package cn.lambdacraft.crafting.blocks.tile;
 
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
 import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.events.EnergyTileLoadEvent;
-import cn.lambdacraft.api.energy.events.EnergyTileSourceEvent;
-import cn.lambdacraft.api.energy.tile.IEnergySink;
+import cn.lambdacraft.api.energy.EnergyTileLoadEvent;
+import cn.lambdacraft.api.energy.EnergyTileSourceEvent;
+import cn.lambdacraft.api.energy.IEnergySink;
 import cn.lambdacraft.core.utils.EnergyUtils;
 import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cn.lambdacraft.crafting.items.ItemMaterial;
 import cn.lambdacraft.crafting.recipes.RecipeCrafter;
 import cn.lambdacraft.crafting.recipes.RecipeWeapons;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
 
 /**
  * @author WeAthFolD, Rikka
@@ -97,8 +96,7 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 	}
 	
 	protected void onECNetLoad() {
-		MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(worldObj,
-				this));
+		MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 	}
 
 	@Override
@@ -196,14 +194,14 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 	}
 
 	public int sendEnergy(int amm) {
-		EnergyTileSourceEvent event = new EnergyTileSourceEvent(worldObj, this,
+		EnergyTileSourceEvent event = new EnergyTileSourceEvent(this,
 				amm);
 		MinecraftForge.EVENT_BUS.post(event);
 		return event.amount;
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
+	public boolean acceptEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
 		return true;
 	}

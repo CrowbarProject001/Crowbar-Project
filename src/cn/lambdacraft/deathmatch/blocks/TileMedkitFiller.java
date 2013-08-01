@@ -247,7 +247,7 @@ public class TileMedkitFiller extends TileElectricStorage implements IInventory 
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
+	public boolean acceptEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
 		return this.currentEnergy < maxEnergy;
 	}

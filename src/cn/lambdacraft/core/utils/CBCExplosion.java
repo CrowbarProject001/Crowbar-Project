@@ -52,7 +52,7 @@ public class CBCExplosion {
 	/** whether or not this explosion spawns smoke particles */
 	public boolean isSmoking = true;
 	private int field_77289_h = 16;
-	private Random explosionRNG = new Random();
+	private static Random explosionRNG = new Random();
 	private World worldObj;
 	public double explosionX;
 	public double explosionY;

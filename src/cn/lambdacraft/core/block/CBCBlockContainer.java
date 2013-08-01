@@ -38,6 +38,7 @@ public abstract class CBCBlockContainer extends BlockContainer {
 
 	private String iconName;
 	protected int guiId = -1;
+	protected static final Random rand = new Random();
 
 	/**
 	 * @param par1

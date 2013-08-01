@@ -26,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.utils.BlockPos;
@@ -71,6 +72,7 @@ public class TileSentryRay extends TileEntity {
 	}
 
 	public void noticeSentry() {
+		worldObj.playSound(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "cbc.weapons.mine_activate", 0.5F, 1.0F, false);
 		linkedSentry.activate();
 	}
 
@@ -196,12 +198,11 @@ public class TileSentryRay extends TileEntity {
 	protected void sendChatToPlayer(EntityPlayer player, EntitySentry sentry) {
 		if (worldObj.isRemote)
 			return;
-		StringBuilder sb = new StringBuilder(
-				"---------HECU Special Force---------\n");
-		sb.append(EnumChatFormatting.RED).append("Sentry ID : ")
+		StringBuilder sb = new StringBuilder(StatCollector.translateToLocal("sentry.head.name"));
+		sb.append(EnumChatFormatting.RED).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ")
 				.append(EnumChatFormatting.RED).append(sentry.entityId)
 				.append("\n").append(EnumChatFormatting.GREEN)
-				.append("Sentry Ray Successfully Deployed.");
+				.append(StatCollector.translateToLocal("sentry.raydep.name"));
 		player.sendChatToPlayer(sb.toString());
 	}
 

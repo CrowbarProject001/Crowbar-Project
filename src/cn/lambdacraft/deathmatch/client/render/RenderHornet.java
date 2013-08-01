@@ -29,8 +29,10 @@ public class RenderHornet extends Render {
 		GL11.glRotatef(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
 		GL11.glRotatef(entity.rotationPitch, -1.0F, 0.0F, 0.0F);
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
+		
 		t.startDrawing(GL11.GL_TRIANGLES);
 		t.setColorRGBA(115, 11, 11, 255);
+		
 		RenderUtils.addVertex(v1);
 		RenderUtils.addVertex(v2);
 		RenderUtils.addVertex(v3);

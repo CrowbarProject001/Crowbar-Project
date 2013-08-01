@@ -14,8 +14,18 @@
  */
 package cn.lambdacraft.core.utils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 /**
  * 通用效用工具？
@@ -26,6 +36,8 @@ public class GenericUtils {
 	public static IEntitySelector selectorLiving = new EntitySelectorLiving(),
 			selectorPlayer = new EntitySelectorPlayer();
 
+	private static Random rand = new Random();
+	
 	/**
 	 * 获取Entity到一个点距离的平方。
 	 * @param ent
@@ -47,6 +59,23 @@ public class GenericUtils {
 		else if(f < -180.0F)
 			f = 360.0F - f;
 		return f;
+	}
+	
+	public static Set<BlockPos> getBlocksWithinAABB(World world, AxisAlignedBB box) {
+		Set<BlockPos> set = new HashSet();
+		int minX = MathHelper.floor_double(box.minX), minY = MathHelper.floor_double(box.minY), minZ = MathHelper.floor_double(box.minZ),
+			maxX = MathHelper.ceiling_double_int(box.maxX), maxY = MathHelper.ceiling_double_int(box.maxY), maxZ = MathHelper.ceiling_double_int(box.maxZ);
+		for(int x = minX; x <= maxX; x++) {
+			for(int y = minY; y <= maxY; y++) {
+				for(int z = minZ; z <= maxZ; z++) {
+					int id = world.getBlockId(x, y, z);
+					if(id != 0) {
+						set.add(new BlockPos(x, y, z, id));
+					}
+				}
+			}
+		}
+		return set;
 	}
 	
 	/**
@@ -77,9 +106,23 @@ public class GenericUtils {
 	 * @return
 	 */
 	public static String getRandomSound(String sndPath, int countSounds) {
-		int a = (int) (Math.random() * countSounds);
-		System.out.println(sndPath.concat(String.valueOf(String.valueOf((char)('a' + a)))));
+		int a = rand.nextInt(countSounds);
 		return sndPath.concat(String.valueOf((char)('a' + a)));
 	}
 
+	public static <T, U> T getKeyByValueFromMap(Map<T, U>map, Object value) {
+        T o = null;  
+        ArrayList all = new ArrayList(); // 建一个数组用来存放符合条件的KEY值  
+        Set set = map.entrySet();  
+        Iterator it = set.iterator();  
+        while (it.hasNext()) {  
+            Map.Entry<T, U> entry = (Map.Entry) it.next();  
+            if (entry.getValue().equals(value)) {  
+                o = entry.getKey();  
+                return o;
+            }  
+        }
+		return null; 
+	}
+	
 }

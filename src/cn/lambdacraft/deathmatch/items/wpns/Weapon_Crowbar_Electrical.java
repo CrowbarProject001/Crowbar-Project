@@ -87,7 +87,7 @@ public class Weapon_Crowbar_Electrical extends Weapon_Crowbar implements ICustom
         if(getMode(par1ItemStack) == 0 && discharge(par1ItemStack, 400, 2, true, false) == 400){
         	attackedEntity.hurtResistantTime = -1;
         	attackedEntity.attackEntityFrom(DamageSource.causeMobDamage(par3EntityLiving), 5);
-        	if(attackedEntity instanceof EntityCreeper && Math.random() >= 0.9) {
+        	if(attackedEntity instanceof EntityCreeper && itemRand.nextFloat() >= 0.9) {
         		EntityLightningBolt bolt = new EntityLightningBolt(attackedEntity.worldObj, attackedEntity.posX, attackedEntity.posY, attackedEntity.posZ);
         		if(!attackedEntity.worldObj.isDaytime())
         			attackedEntity.worldObj.spawnEntityInWorld(bolt);

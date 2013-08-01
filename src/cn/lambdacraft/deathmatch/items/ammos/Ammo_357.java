@@ -16,14 +16,4 @@ public class Ammo_357 extends ItemAmmo {
 		setMaxStackSize(64);
 		setIAndU("ammo_357");
 	}
-
-	@Override
-	public Icon getHudIcon() {
-		return HEVRenderingUtils.getHudSheetIcon(0, 32, "357");
-	}
-
-	@Override
-	public int getIconSheetIndex(ItemStack stack) {
-		return 5;
-	} 
 }

@@ -21,6 +21,7 @@ import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
@@ -72,11 +73,20 @@ public class EntityBullet extends EntityThrowable {
 		this.motion = new MotionXYZ(this);
 		this.damage = dmg;
 	}
+	
+	public EntityBullet(World par1World, EntityLiving ent, Entity target, int dmg) {
+		super(par1World, ent);
+		motionX = target.posX  - ent.posX;
+		motionY = (target.posY + target.height / 2.0) - ent.posY - ent.getEyeHeight();
+		motionZ = target.posZ - ent.posZ;	
+		this.setThrowableHeading(motionX, motionY, motionZ, func_70182_d(), 1.0F);
+		damage = dmg;
+		motion = new MotionXYZ(this);
+	}
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		this.ticksExisted++;
 		if (ticksExisted > 50)
 			this.setDead();
 	}

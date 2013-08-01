@@ -14,13 +14,10 @@
  */
 package cn.lambdacraft.intergration.ic2.tile;
 
-import cn.lambdacraft.api.energy.events.EnergyTileLoadEvent;
-import cn.lambdacraft.api.energy.events.EnergyTileUnloadEvent;
-import cn.lambdacraft.crafting.blocks.tile.TileElCrafter;
-import cn.lambdacraft.deathmatch.blocks.TileArmorCharger;
 import ic2.api.Direction;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
+import cn.lambdacraft.deathmatch.blocks.TileArmorCharger;
 
 /**
  * @author WeAthFolD
@@ -35,8 +32,9 @@ public class TileArmorChargerIC2 extends TileArmorCharger implements ic2.api.ene
 		super();
 	}
 
-	public void onElectricTileLoad() {
-		MinecraftForge.EVENT_BUS.post(new ic2.api.energy.event.EnergyTileLoadEvent(this));
+	@Override
+	public boolean onElectricTileLoad() {
+		return MinecraftForge.EVENT_BUS.post(new ic2.api.energy.event.EnergyTileLoadEvent(this));
 	}
 
 	@Override

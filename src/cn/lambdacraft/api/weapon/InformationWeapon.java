@@ -6,7 +6,7 @@ public class InformationWeapon {
 
 	public ItemStack itemStack;
 	public int ticksExisted, lastTick, recoverTick;
-	public Boolean isRecovering;
+	public boolean isRecovering;
 	public float originPitch;
 
 	public InformationWeapon(ItemStack i) {

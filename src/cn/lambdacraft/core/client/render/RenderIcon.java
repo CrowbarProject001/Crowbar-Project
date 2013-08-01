@@ -29,6 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class RenderIcon extends Render {
+	
 	String icon;
 	private boolean renderBlend = false;
 	protected float alpha = 1.0F;
@@ -74,26 +75,24 @@ public class RenderIcon extends Render {
 	@Override
 	public void doRender(Entity par1Entity, double par2, double par4,
 			double par6, float par8, float par9) {
-
 		if (icon != null) {
 			GL11.glPushMatrix();
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			if(!enableDepth) {
+			if(!enableDepth) 
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
-			}
 			if(!hasLight)
 				GL11.glDisable(GL11.GL_LIGHTING);
+			
 			GL11.glTranslatef((float) par2, (float) par4, (float) par6);
 			GL11.glScalef(size, size, size);
 			this.loadTexture(icon);
+			
 			Tessellator tessellator = Tessellator.instance;
 			this.func_77026_a(tessellator);
+			
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-			if (renderBlend) {
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			}
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -102,7 +101,7 @@ public class RenderIcon extends Render {
 		}
 	}
 
-	private void func_77026_a(Tessellator par1Tessellator) {
+	private void func_77026_a(Tessellator tessllator) {
 		float f4 = 1.0F;
 		float f5 = 0.5F;
 		float f6 = 0.25F;
@@ -111,15 +110,15 @@ public class RenderIcon extends Render {
 		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 		if(!hasLight) 
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
-		par1Tessellator.startDrawingQuads();
+		tessllator.startDrawingQuads();
 		if(!hasLight) 
-			par1Tessellator.setBrightness(15728880);
-		par1Tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, alpha);
-		par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		par1Tessellator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, 0, 0);
-		par1Tessellator.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, 0, 1);
-		par1Tessellator.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, 1, 1);
-		par1Tessellator.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, 1, 0);
-		par1Tessellator.draw();
+			tessllator.setBrightness(15728880);
+		tessllator.setColorRGBA_F(1.0F, 1.0F, 1.0F, alpha);
+		tessllator.setNormal(0.0F, 1.0F, 0.0F);
+		tessllator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, 0, 0);
+		tessllator.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, 0, 1);
+		tessllator.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, 1, 1);
+		tessllator.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, 1, 0);
+		tessllator.draw();
 	}
 }

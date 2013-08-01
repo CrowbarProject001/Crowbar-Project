@@ -79,14 +79,15 @@ public class ModuleCrafting {
 				CBCSoundEvents.addSoundPath("cbc/entities/" + s,
 						"/mods/lambdacraft/sounds/entities/" + s);
 			}
-			MinecraftForge.EVENT_BUS.register(this);
 		}
+		
 	}
 
 	@Init
 	public void init(FMLInitializationEvent Init) {
 		CBCBlocks.init(CBCMod.config);
 		CBCItems.init(CBCMod.config);
+		
 		LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getOrCreateLiquid(CBCBlocks.radioActiveStill.getLocalizedName(),
 				new LiquidStack(CBCBlocks.radioActiveStill.blockID,1000,0)), new ItemStack(CBCItems.bucketRadioactive.itemID,1, 0), new ItemStack(Item.bucketEmpty)));
 		CBCAchievements.init(CBCMod.config);
@@ -104,9 +105,7 @@ public class ModuleCrafting {
 				new CRGuiElements.ElementElCrafter());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER_CL,
 				new NetCrafterClient());
-		EntityRegistry.registerModEntity(EntitySpray.class, "entityart", GeneralProps.ENT_ID_ART,
-				CBCMod.instance, 250, 5, true);
-
+		EntityRegistry.registerModEntity(EntitySpray.class, "entityart", GeneralProps.ENT_ID_ART, CBCMod.instance, 64, 10, false);
 		proxy.init();
 	}
 
@@ -196,7 +195,7 @@ public class ModuleCrafting {
 						CBCItems.materials.newStack(2, EnumMaterial.TECH),
 						CBCItems.materials.newStack(4, EnumMaterial.LIGHT),
 						CBCItems.materials.newStack(2, EnumMaterial.ARMOR)),
-				new RecipeCrafter(new ItemStack(DMItems.longjump), 3000,
+				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 0), 3000,
 						CBCItems.materials.newStack(2, EnumMaterial.TECH),
 						CBCItems.materials.newStack(2, EnumMaterial.ARMOR)),
 				new RecipeCrafter(new ItemStack(DMItems.medkit, 3), 2000,

@@ -15,16 +15,38 @@
 package cn.lambdacraft.api;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.src.ModLoader;
 
 /**
  * TODO:谁来帮我填下这个坑吧……
  */
 public class LCItems {
 
-	public static ItemStack itemxxx;
-	
-	public static void init() {
-		
+	public static ItemStack getCBCItem(String var0) {
+		if (ModLoader.isModLoaded("LambdaCraft")) {
+			try {
+				Object var2 = Class.forName("cn.lambdacraft.crafting.register.CBCItems").getField(var0)
+						.get((Object) null);
+				return var2 instanceof ItemStack ? (ItemStack) var2 : null;
+			} catch (Exception var3) {
+				System.out.println("[LambdaCraft]:getMod Item bad! because:" + var3);
+				return null;
+			}
+		}
+		return null;
 	}
-
+	
+	public static ItemStack getDMItem(String var0) {
+		if (ModLoader.isModLoaded("LambdaCraft")) {
+			try {
+				Object var2 = Class.forName("cn.lambdacraft.crafting.register.DMItems").getField(var0)
+						.get((Object) null);
+				return var2 instanceof ItemStack ? (ItemStack) var2 : null;
+			} catch (Exception var3) {
+				System.out.println("[LambdaCraft]:getMod Item bad! because:" + var3);
+				return null;
+			}
+		}
+		return null;
+	}
 }

@@ -16,14 +16,5 @@ public class Ammo_uranium extends ItemAmmo {
 		setIAndU("ammo_uranium");
 		setMaxDamage(100);
 	}
-
-	@Override
-	public Icon getHudIcon() {
-		return HEVRenderingUtils.getHudSheetIcon(0, 48, "uranium");
-	}
-
-	@Override
-	public int getIconSheetIndex(ItemStack stack) {
-		return 5;
-	}
+	
 }

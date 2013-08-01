@@ -1,5 +1,6 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.api.weapon.InformationEnergy;
 import cn.lambdacraft.api.weapon.WeaponGeneralEnergy;
 import cn.lambdacraft.core.CBCMod;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public class Weapon_Egon extends WeaponGeneralEnergy {
+public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshair {
 
 	public static String SND_WINDUP = "cbc.weapons.egon_windup",
 			SND_RUN = "cbc.weapons.egon_run", SND_OFF = "cbc.weapons.egon_off";
@@ -49,10 +50,8 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer, int par4) {
-		InformationEnergy inf = getInformation(par1ItemStack, par2World);
-		if (inf.isShooting && canShoot(par3EntityPlayer, par1ItemStack))
+		if (canShoot(par3EntityPlayer, par1ItemStack))
 			par2World.playSoundAtEntity(par3EntityPlayer, SND_OFF, 0.5F, 1.0F);
-		inf.isShooting = false;
 	}
 
 	@Override
@@ -60,40 +59,43 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 			Entity par3Entity, int par4, boolean par5) {
 		InformationEnergy inf = onEnergyWpnUpdate(par1ItemStack, par2World,
 				par3Entity, par4, par5);
-		if (inf == null)
-			return;
-		int dTick = inf.getDeltaTick();
-		if (inf.isShooting) {
-			if (inf.ticksExisted > 79 && (dTick - 79) % 42 == 0)
-				par2World.playSoundAtEntity(par3Entity, SND_RUN, 0.5F, 1.0F);
+	}
+	
+	@Override
+    public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count)
+    {
+    	super.onUsingItemTick(stack, player, count);
+    	World world = player.worldObj;
+    	InformationEnergy inf = loadInformation(stack, player);
+    	int dTick = inf.getDeltaTick();
+    	
+    	if (inf.ticksExisted > 79 && (dTick - 79) % 42 == 0)
+    		world.playSoundAtEntity(player, SND_RUN, 0.5F, 1.0F);
 
-			if (dTick % 3 == 0 && !par2World.isRemote) {
-				EntityPlayer player = (EntityPlayer) par3Entity;
-				AmmoManager.consumeAmmo((EntityPlayer) par3Entity, this, 1);
-				if (!canShoot((EntityPlayer) par3Entity, par1ItemStack)) {
-					par2World.playSoundAtEntity(par3Entity, SND_OFF, 0.5F, 1.0F);
-					inf.isShooting = false;
-				}
+		if (dTick % 3 == 0 && !world.isRemote) {
+			if(!player.capabilities.isCreativeMode)
+				AmmoManager.consumeAmmo(player, this, 1);
+			if (!canShoot(player, stack)) {
+				world.playSoundAtEntity(player, SND_OFF, 0.5F, 1.0F);
 			}
 		}
-	}
+    }
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
+			EntityPlayer player) {
 
-		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(inf, par1ItemStack, par2World, par3EntityPlayer);
-		if (inf.isShooting && canShoot(par3EntityPlayer, par1ItemStack)) {
+		InformationEnergy inf = loadInformation(par1ItemStack, player);
+		processRightClick(inf, par1ItemStack, par2World, player);
+		if (player.isUsingItem() && canShoot(player, par1ItemStack)) {
 			if (par2World.isRemote)
 				par2World.spawnEntityInWorld(new EntityEgonRay(par2World,
-						par3EntityPlayer, par1ItemStack));
+						player, par1ItemStack));
 			else {
-				par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, par3EntityPlayer, par1ItemStack));
-			par2World.playSoundAtEntity(par3EntityPlayer, SND_WINDUP, 0.5F,
-					1.0F);
+				par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, player, par1ItemStack));
+				par2World.playSoundAtEntity(player, SND_WINDUP, 0.5F, 1.0F);
 			}
-		} else par2World.playSoundAtEntity(par3EntityPlayer, SND_OFF, 0.5F, 1.0F);
+		} else par2World.playSoundAtEntity(player, SND_OFF, 0.5F, 1.0F);
 
 		inf.ticksExisted = inf.lastTick = 0;
 
@@ -107,8 +109,7 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 		if(!par2World.isRemote)
 			par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, player, par1ItemStack));
 		doUplift(information, player);
-		player.setItemInUse(par1ItemStack,
-				this.getMaxItemUseDuration(par1ItemStack));
+		player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		return;
 	}
 
@@ -150,6 +151,11 @@ public class Weapon_Egon extends WeaponGeneralEnergy {
 	@Override
 	public String getModeDescription(int mode) {
 		return "mode.egon";
+	}
+
+	@Override
+	public int getHalfWidth() {
+		return 8;
 	}
 
 }

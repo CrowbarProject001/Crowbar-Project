@@ -41,15 +41,15 @@ public class Proxy {
 		languages.add("zh_TW");
 	}
 
-	public static void profilerStartSection(String section) {
+	public void profilerStartSection(String section) {
 
 	}
 
-	public static void profilerEndSection() {
+	public void profilerEndSection() {
 
 	}
 
-	public static void profilerEndStartSection(String section) {
+	public void profilerEndStartSection(String section) {
 
 	}
 
@@ -57,35 +57,47 @@ public class Proxy {
 		return !isSimulating();
 	}
 
-	private static boolean isSimulating() {
+	public static boolean isSimulating() {
 		return !FMLCommonHandler.instance().getEffectiveSide().isClient();
 	}
 
 	public void init() {
 		for (String lang : languages) {
 			LanguageRegistry.instance().loadLocalization(
-					"/mods/lambdacraft/lang/" + lang + ".properties", lang, false);
+					"/mods/lambdacraft/lang/" + lang + ".properties", lang,
+					false);
 		}
 	}
-	
+
 	public static void logExceptionMessage(TileEntity te, String... addition) {
-		StringBuilder sb = new StringBuilder("LambdaCraft has caught a exception during runtime. \n");
-		sb.append("TileEntity : ").append(te == null ? "null" : te.toString()).append("\n");
+		StringBuilder sb = new StringBuilder(
+				"LambdaCraft has caught a exception during runtime. \n");
+		sb.append("TileEntity : ").append(te == null ? "null" : te.toString())
+				.append("\n");
 		sb.append("Additional Information : \n");
-		for(String s : addition) {
+		for (String s : addition) {
 			sb.append(s).append("\n");
 		}
 		CBCMod.log.severe(sb.toString());
 	}
-	
+
 	public static void logExceptionMessage(Entity entity, String... addition) {
-		StringBuilder sb = new StringBuilder("LambdaCraft has caught a exception during runtime. \n");
-		sb.append("Entity : ").append(entity == null ? "null" : entity.toString()).append("\n");
+		StringBuilder sb = new StringBuilder(
+				"LambdaCraft has caught a exception during runtime. \n");
+		sb.append("Entity : ")
+				.append(entity == null ? "null" : entity.toString())
+				.append("\n");
 		sb.append("Additional Information : \n");
-		for(String s : addition) {
+		for (String s : addition) {
 			sb.append(s).append("\n");
 		}
 		CBCMod.log.severe(sb.toString());
+	}
+
+	public void displayError(String error) {
+		throw new RuntimeException(
+				("LambdaCraft Error\n\n=== LambdaCraft Error ===\n\n" + error + "\n\n===============================\n")
+						.replace("\n", System.getProperty("line.separator")));
 	}
 
 }

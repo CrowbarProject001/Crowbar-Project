@@ -16,6 +16,8 @@ package cn.lambdacraft.crafting.entities;
 
 import java.util.List;
 
+import cn.lambdacraft.core.utils.Color4I;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +41,7 @@ public class EntitySpray extends Entity {
 	public int block_pos_y;
 	public int block_pos_z;
 	public int title_id;
+	public Color4I color;
 
 	private EntityPlayer player;
 
@@ -49,8 +52,7 @@ public class EntitySpray extends Entity {
 	}
 
 	// 被 Item 调用
-	public EntitySpray(World world, int x, int y, int z, int direction,
-			int title_id, EntityPlayer thePlayer) {
+	public EntitySpray(World world, int x, int y, int z, int direction, int title_id, EntityPlayer thePlayer) {
 		this(world);
 
 		this.block_pos_x = x;
@@ -64,6 +66,41 @@ public class EntitySpray extends Entity {
 
 		this.player = thePlayer;
 	}
+	
+	public EntitySpray(World world, int x, int y, int z, int direction, int title_id, EntityPlayer thePlayer, Color4I color) {
+		this(world);
+
+		this.block_pos_x = x;
+		this.block_pos_y = y;
+		this.block_pos_z = z;
+		this.hanging_direction = direction;
+		this.title_id = title_id;
+		this.color = color;
+
+		this.save_params2();
+		this.init_params();
+
+		this.player = thePlayer;
+	}
+
+
+	/**
+	 * @param color2
+	 */
+	private void save_params2() {
+		this.dataWatcher.updateObject(18, this.hanging_direction);
+		this.dataWatcher.updateObject(19, this.block_pos_x);
+		this.dataWatcher.updateObject(20, this.block_pos_y);
+		this.dataWatcher.updateObject(21, this.block_pos_z);
+		this.dataWatcher.updateObject(22, this.title_id);
+		this.dataWatcher.updateObject(23, this.color.red);
+		this.dataWatcher.updateObject(24, this.color.green);
+		this.dataWatcher.updateObject(25, this.color.blue);
+	}
+	
+	public void loadColor() {
+		this.color = new Color4I(this.dataWatcher.getWatchableObjectInt(23), this.dataWatcher.getWatchableObjectInt(24), this.dataWatcher.getWatchableObjectInt(25));
+	}
 
 	@Override
 	protected void entityInit() {
@@ -72,6 +109,10 @@ public class EntitySpray extends Entity {
 		this.dataWatcher.addObject(20, 0);
 		this.dataWatcher.addObject(21, 0);
 		this.dataWatcher.addObject(22, 0);
+		this.dataWatcher.addObject(23, 0);
+		this.dataWatcher.addObject(24, 0);
+		this.dataWatcher.addObject(25, 0);
+			
 	}
 
 	private void save_params() {
@@ -117,8 +158,16 @@ public class EntitySpray extends Entity {
 	public void init_params() {
 		int direction = this.hanging_direction;
 
-		float half_width = GRIDS_WIDTHS[this.title_id] / 2.0F;
-		float half_height = GRIDS_HEIGHTS[this.title_id] / 2.0F;
+		float half_width;
+		float half_height;
+
+		if (title_id >= 2) {
+			half_width = 1 / 2.0F;
+			half_height = 1 / 2.0F;
+		} else {
+			half_width = GRIDS_WIDTHS[this.title_id] / 2.0F;
+			half_height = GRIDS_HEIGHTS[this.title_id] / 2.0F;
+		}
 
 		float entity_pos_x;
 		float entity_pos_y = this.block_pos_y + half_height;
@@ -132,10 +181,7 @@ public class EntitySpray extends Entity {
 
 			this.rotationYaw = this.prevRotationYaw = 180;
 			this.setPosition(entity_pos_x, entity_pos_y, entity_pos_z);
-			this.boundingBox.setBounds(entity_pos_x - half_width, entity_pos_y
-					- half_height, entity_pos_z - horizontal_off, entity_pos_x
-					+ half_width, entity_pos_y + half_height, entity_pos_z
-					+ horizontal_off);
+			this.boundingBox.setBounds(entity_pos_x - half_width, entity_pos_y - half_height, entity_pos_z - horizontal_off, entity_pos_x + half_width, entity_pos_y + half_height, entity_pos_z + horizontal_off);
 			return;
 		}
 
@@ -145,10 +191,7 @@ public class EntitySpray extends Entity {
 
 			this.rotationYaw = this.prevRotationYaw = 270;
 			this.setPosition(entity_pos_x, entity_pos_y, entity_pos_z);
-			this.boundingBox.setBounds(entity_pos_x - horizontal_off,
-					entity_pos_y - half_height, entity_pos_z - half_width,
-					entity_pos_x + horizontal_off, entity_pos_y + half_height,
-					entity_pos_z + half_width);
+			this.boundingBox.setBounds(entity_pos_x - horizontal_off, entity_pos_y - half_height, entity_pos_z - half_width, entity_pos_x + horizontal_off, entity_pos_y + half_height, entity_pos_z + half_width);
 			return;
 		}
 
@@ -158,10 +201,7 @@ public class EntitySpray extends Entity {
 
 			this.rotationYaw = this.prevRotationYaw = 0;
 			this.setPosition(entity_pos_x, entity_pos_y, entity_pos_z);
-			this.boundingBox.setBounds(entity_pos_x - half_width, entity_pos_y
-					- half_height, entity_pos_z - horizontal_off, entity_pos_x
-					+ half_width, entity_pos_y + half_height, entity_pos_z
-					+ horizontal_off);
+			this.boundingBox.setBounds(entity_pos_x - half_width, entity_pos_y - half_height, entity_pos_z - horizontal_off, entity_pos_x + half_width, entity_pos_y + half_height, entity_pos_z + horizontal_off);
 			return;
 		}
 
@@ -171,10 +211,7 @@ public class EntitySpray extends Entity {
 
 			this.rotationYaw = this.prevRotationYaw = 90;
 			this.setPosition(entity_pos_x, entity_pos_y, entity_pos_z);
-			this.boundingBox.setBounds(entity_pos_x - horizontal_off,
-					entity_pos_y - half_height, entity_pos_z - half_width,
-					entity_pos_x + horizontal_off, entity_pos_y + half_height,
-					entity_pos_z + half_width);
+			this.boundingBox.setBounds(entity_pos_x - horizontal_off, entity_pos_y - half_height, entity_pos_z - half_width, entity_pos_x + horizontal_off, entity_pos_y + half_height, entity_pos_z + half_width);
 			return;
 		}
 	}
@@ -182,8 +219,7 @@ public class EntitySpray extends Entity {
 	// 判断被放置界面是否可用
 	public boolean onValidSurface() {
 		// 如果碰撞箱不是空的返回false
-		if (!this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox)
-				.isEmpty()) {
+		if (!this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()) {
 			return false;
 		}
 
@@ -192,8 +228,16 @@ public class EntitySpray extends Entity {
 		int z = this.block_pos_z;
 		int direction = this.hanging_direction;
 
-		float half_width = GRIDS_WIDTHS[this.title_id] / 2.0F; // 宽度一半
-		float half_height = GRIDS_HEIGHTS[this.title_id] / 2.0F; // 高度一半
+		float half_width;
+		float half_height;
+
+		if (title_id >= 2) {
+			half_width = 1 / 2.0F;
+			half_height = 1 / 2.0F;
+		} else {
+			half_width = GRIDS_WIDTHS[this.title_id] / 2.0F;
+			half_height = GRIDS_HEIGHTS[this.title_id] / 2.0F;
+		}
 
 		if (direction == 2) {
 			x = MathHelper.floor_double(this.posX - half_width);
@@ -213,42 +257,59 @@ public class EntitySpray extends Entity {
 
 		y = MathHelper.floor_double(this.posY - half_height);
 
-		for (int i = 0; i < GRIDS_WIDTHS[this.title_id]; ++i) {
-			for (int j = 0; j < GRIDS_HEIGHTS[this.title_id]; ++j) {
-				Material material, material2;
+		if (title_id >= 2) {
+			for (int i = 0; i < 1; ++i) {
+				for (int j = 0; j < 1; ++j) {
+					Material material, material2;
 
-				if (direction == 1 || direction == 3) {
-					material = this.worldObj.getBlockMaterial(this.block_pos_x,
-							y + j, z + i);
-					material2 = this.worldObj.getBlockMaterial(
-							this.block_pos_x + 1, y + j, z + i);
-				} else {
-					material = this.worldObj.getBlockMaterial(x + i, y + j,
-							this.block_pos_z);
-					material2 = this.worldObj.getBlockMaterial(x + i, y + j,
-							this.block_pos_z + 1);
-				}
-				if (!material.isSolid()) {
-					sendMessage(StatCollector.translateToLocal("spary.nospace"));
-					return false;
-				}
-				if (material2.isLiquid()) {
-					sendMessage(StatCollector
-							.translateToLocal("spary.haswater"));
-					return false;
+					if (direction == 1 || direction == 3) {
+						material = this.worldObj.getBlockMaterial(this.block_pos_x, y + j, z + i);
+						material2 = this.worldObj.getBlockMaterial(this.block_pos_x + 1, y + j, z + i);
+					} else {
+						material = this.worldObj.getBlockMaterial(x + i, y + j, this.block_pos_z);
+						material2 = this.worldObj.getBlockMaterial(x + i, y + j, this.block_pos_z + 1);
+					}
+					if (!material.isSolid()) {
+						sendMessage(StatCollector.translateToLocal("spary.nospace"));
+						return false;
+					}
+					if (material2.isLiquid()) {
+						sendMessage(StatCollector.translateToLocal("spary.haswater"));
+						return false;
+					}
 				}
 			}
+		} else {
+			for (int i = 0; i < GRIDS_WIDTHS[this.title_id]; ++i) {
+				for (int j = 0; j < GRIDS_HEIGHTS[this.title_id]; ++j) {
+					Material material, material2;
 
+					if (direction == 1 || direction == 3) {
+						material = this.worldObj.getBlockMaterial(this.block_pos_x, y + j, z + i);
+						material2 = this.worldObj.getBlockMaterial(this.block_pos_x + 1, y + j, z + i);
+					} else {
+						material = this.worldObj.getBlockMaterial(x + i, y + j, this.block_pos_z);
+						material2 = this.worldObj.getBlockMaterial(x + i, y + j, this.block_pos_z + 1);
+					}
+					if (!material.isSolid()) {
+						sendMessage(StatCollector.translateToLocal("spary.nospace"));
+						return false;
+					}
+					if (material2.isLiquid()) {
+						sendMessage(StatCollector.translateToLocal("spary.haswater"));
+						return false;
+					}
+				}
+
+			}
 		}
 
 		// 判断碰装箱内是否出现EntitySpray的实例
-		List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this,
-				this.boundingBox);
+		List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox);
 		for (Object entity : list) {
 			if (!(entity instanceof EntitySpray))
 				continue;
-			sendMessage(StatCollector.translateToLocal("spary.beenblocked"),
-					entity.toString());
+			sendMessage(StatCollector.translateToLocal("spary.beenblocked"), entity.toString());
 			return false;
 		}
 
@@ -258,9 +319,7 @@ public class EntitySpray extends Entity {
 	// 让玩家可以击落画像为Item-----------------
 	@Override
 	public boolean func_85031_j(Entity par1Entity) {
-		return par1Entity instanceof EntityPlayer ? this.attackEntityFrom(
-				DamageSource.causePlayerDamage((EntityPlayer) par1Entity), 0)
-				: false;
+		return par1Entity instanceof EntityPlayer ? this.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) par1Entity), 0) : false;
 	}
 
 	@Override

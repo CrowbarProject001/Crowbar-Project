@@ -14,9 +14,9 @@
  */
 package cn.lambdacraft.core.block;
 
-import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.tile.IEnergySink;
 import net.minecraft.nbt.NBTTagCompound;
+import cn.lambdacraft.api.LCDirection;
+import cn.lambdacraft.api.energy.IEnergySink;
 
 /**
  * @author WeAthFolD, Rikka

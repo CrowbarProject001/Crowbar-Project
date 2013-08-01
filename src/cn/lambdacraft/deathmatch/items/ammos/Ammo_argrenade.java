@@ -16,14 +16,5 @@ public class Ammo_argrenade extends ItemAmmo {
 		setIAndU("ammo_argrenade");
 		setMaxStackSize(10);
 	}
-
-	@Override
-	public Icon getHudIcon() {
-		return HEVRenderingUtils.getHudSheetIcon(16, 32, "grenade");
-	}
-
-	@Override
-	public int getIconSheetIndex(ItemStack stack) {
-		return 5;
-	}
+	
 }

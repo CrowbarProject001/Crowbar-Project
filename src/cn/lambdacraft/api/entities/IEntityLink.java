@@ -21,8 +21,7 @@ import net.minecraft.entity.Entity;
  * 
  * @author WeAthFolD
  * @see  cn.lambdacraft.mob.utils.MobSpawnHandler#spawnCreature
- * @param <T>
- *            Entity类型
+ * @param <T> Entity类型
  */
 public interface IEntityLink<T extends Entity> {
 

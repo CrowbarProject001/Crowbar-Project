@@ -98,13 +98,11 @@ public class RenderTileTripmine extends RendererSidedCube {
 			v7 = RenderUtils.newV3(maxX, minY, z + 0.5);
 			v8 = RenderUtils.newV3(minX, minY, z + 0.5);
 			break;
-
 		default:
 			v5 = RenderUtils.newV3(x + 0.5, maxY, minZ);
 			v6 = RenderUtils.newV3(x + 0.5, maxY, maxZ);
 			v7 = RenderUtils.newV3(x + 0.5, minY, maxZ);
 			v8 = RenderUtils.newV3(x + 0.5, minY, minZ);
-
 			break;
 		}
 

@@ -14,6 +14,8 @@
  */
 package cn.lambdacraft.deathmatch.items.wpns;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;
@@ -52,8 +54,7 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 			return;
 		int dt = inf.ticksExisted;
 		EntityPlayer player = (EntityPlayer) par3Entity;
-		if (dt % RECOVER_TIME == 0
-				&& !(this.canShoot(player, par1ItemStack) && inf.isShooting)) {
+		if (dt % RECOVER_TIME == 0 && !(this.canShoot(player, par1ItemStack) && player.isUsingItem())) {
 			if (par1ItemStack.getItemDamage() > 0)
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
 		}
@@ -89,8 +90,7 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 
 	@Override
 	public void onBulletWpnReload(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3Entity, InformationBullet information) {
-	}
+			EntityPlayer par3Entity, InformationBullet information) {}
 
 	@Override
 	public double getPushForce(int mode) {
@@ -109,7 +109,7 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 
 	@Override
 	public String getSoundShoot(int mode) {
-		int random = (int) (Math.random() * 3);
+		int random = (int) (itemRand.nextFloat() * 3);
 		return random == 0 ? "cbc.weapons.ag_firea"
 				: (random == 1 ? "cbc.weapons.ag_fireb"
 						: "cbc.weapons.ag_firec");

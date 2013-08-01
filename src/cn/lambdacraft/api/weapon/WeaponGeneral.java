@@ -59,21 +59,16 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 	public InformationWeapon onWpnUpdate(ItemStack par1ItemStack,
 			World par2World, Entity par3Entity, int par4, boolean par5) {
 
-		if (!(par3Entity instanceof EntityPlayer))
+		if (!(par3Entity instanceof EntityPlayer) || !par5)
 			return null;
 
 		InformationWeapon information = loadInformation(par1ItemStack,
 				(EntityPlayer) par3Entity);
-
-		ItemStack currentItem = ((EntityPlayer) par3Entity).inventory
-				.getCurrentItem();
-		if (currentItem == null || !currentItem.equals(par1ItemStack))
+		if (information == null) 
 			return null;
-
-		if (information == null) {
-			return null;
-		}
-
+		
+		information.updateTick();
+		
 		if (information.isRecovering) {
 			par3Entity.rotationPitch += recoverRadius;
 			information.recoverTick++;

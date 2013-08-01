@@ -47,6 +47,7 @@ public class BlockRadioactiveStill extends BlockStationary {
 	 */
 	public BlockRadioactiveStill(int id) {
 		super(id, Material.water);
+		setUnlocalizedName("radioactive");
         setCreativeTab(CBCMod.cctMisc);
         blockHardness = 100.0F;
         setLightOpacity(3);
@@ -59,7 +60,8 @@ public class BlockRadioactiveStill extends BlockStationary {
         theIcon = new Icon[] {
                 iconRegister.registerIcon("lambdacraft:radioactive_still"),
                 iconRegister.registerIcon("lambdacraft:radioactive_flow") };
-        LiquidDictionary.getCanonicalLiquid(new LiquidStack(blockID, 1000, 0)).setRenderingIcon(theIcon[0]).setTextureSheet("/gui/items.png");
+        LiquidDictionary.getCanonicalLiquid(new LiquidStack(blockID, 1000, 0))
+        	.setRenderingIcon(theIcon[0]).setTextureSheet("/gui/items.png");
     }
 	
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {

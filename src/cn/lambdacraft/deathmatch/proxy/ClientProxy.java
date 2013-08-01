@@ -14,6 +14,10 @@
  */
 package cn.lambdacraft.deathmatch.proxy;
 
+import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.client.MinecraftForgeClient;
+
 import org.lwjgl.input.Keyboard;
 
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
@@ -21,6 +25,7 @@ import cn.lambdacraft.core.client.render.RenderCrossedProjectile;
 import cn.lambdacraft.core.client.render.RenderEmpty;
 import cn.lambdacraft.core.client.render.RenderIcon;
 import cn.lambdacraft.core.client.render.RenderModel;
+import cn.lambdacraft.core.client.render.RenderModelProjectile;
 import cn.lambdacraft.core.network.NetExplosion;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.proxy.GeneralProps;
@@ -33,11 +38,14 @@ import cn.lambdacraft.deathmatch.blocks.TileTripmine;
 import cn.lambdacraft.deathmatch.client.keys.KeyMode;
 import cn.lambdacraft.deathmatch.client.keys.KeyReload;
 import cn.lambdacraft.deathmatch.client.models.ModelBattery;
+import cn.lambdacraft.deathmatch.client.models.ModelGrenade;
 import cn.lambdacraft.deathmatch.client.models.ModelMedkit;
+import cn.lambdacraft.deathmatch.client.models.ModelRocket;
 import cn.lambdacraft.deathmatch.client.render.RenderBulletWeapon;
 import cn.lambdacraft.deathmatch.client.render.RenderCrossbow;
 import cn.lambdacraft.deathmatch.client.render.RenderEgon;
 import cn.lambdacraft.deathmatch.client.render.RenderEgonRay;
+import cn.lambdacraft.deathmatch.client.render.RenderGauss;
 import cn.lambdacraft.deathmatch.client.render.RenderGaussRay;
 import cn.lambdacraft.deathmatch.client.render.RenderGlow;
 import cn.lambdacraft.deathmatch.client.render.RenderHornet;
@@ -69,11 +77,6 @@ import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
-import cn.lambdacraft.mob.client.render.RenderSentryRay;
-import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -98,13 +101,18 @@ public class ClientProxy extends Proxy {
 			"gauss_charge", "gauss_windupa", "gauss_windupb", "gauss_windupc",
 			"gauss_windupd", "rocketfirea", "xbow_fire", "xbow_reload",
 			"egon_run", "egon_windup", "egon_off", "rocket", "rocketfire",
-			"glauncher", "glauncherb", "ag_firea", "ag_fireb", "ag_firec"
+			"glauncher", "glauncherb", "ag_firea", "ag_fireb", "ag_firec",
+			"mine_activate"
 
 	};
 
 	public static final String SND_ENTITIES[] = { "medkit", "battery",
 			"suitcharge", "suitchargeno", "suitchargeok", "medshot",
 			"medshotno", "medcharge" };
+	
+	public static final String SND_HEV[] = {"hev_logon", "health_critical",
+		"health_dropping", "heat_damage", "hev_shutdown", "major_fracture",
+		"morphine_shot", "radiation_detected" };
 
 	
 	@Override
@@ -115,6 +123,10 @@ public class ClientProxy extends Proxy {
 		for (String s : SND_ENTITIES)
 			CBCSoundEvents.addSoundPath("cbc/entities/" + s,
 					"/mods/lambdacraft/sounds/entities/" + s);
+		for (String s : SND_HEV)
+			CBCSoundEvents.addSoundPath("cbc/hev/" + s,
+					"/mods/lambdacraft/sounds/hev/" + s);
+		CBCSoundEvents.addSoundWithVariety("cbc/weapons/electro", "/mods/lambdacraft/sounds/weapons/electro", 3);
 		CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R),
 				false, new KeyReload());
 		CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V),
@@ -130,9 +142,9 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay(false));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRayColored.class, new RenderGaussRay(true));
 		RenderingRegistry.registerEntityRenderingHandler(EntitySatchel.class,new RenderSatchel());
-		RenderingRegistry.registerEntityRenderingHandler(EntityARGrenade.class,new RenderCrossedProjectile(0.4, 0.1235,ClientProps.AR_GRENADE_PATH));
+		RenderingRegistry.registerEntityRenderingHandler(EntityARGrenade.class,new RenderModelProjectile(new ModelGrenade(), ClientProps.AR_GRENADE_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityEgonRay.class,	new RenderEgonRay());
-		RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class,new RenderCrossedProjectile(0.8, 0.27,ClientProps.RPG_ROCKET_PATH));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class,new RenderModelProjectile(new ModelRocket(), ClientProps.RPG_ROCKET_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowArrow.class, new RenderCrossedProjectile(0.6,0.12, ClientProps.CROSSBOW_BOW_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowStill.class, new RenderCrossedProjectile(0.6,0.12, ClientProps.CROSSBOW_BOW_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class,new RenderIcon(ClientProps.RED_DOT_PATH).setBlend(0.8F).setEnableDepth(false));
@@ -148,6 +160,7 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletSG.class, new RenderCrossedProjectile(0.5, 0.015, 1.0F, 1.0F, 1.0F).setIgnoreLight(true));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_egon.itemID,new RenderEgon());
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_gauss.itemID,new RenderGauss());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmhandgun.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmhandgun,0.08F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_357, 0.08F));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmAR, 0.10F));

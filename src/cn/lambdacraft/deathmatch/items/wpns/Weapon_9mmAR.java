@@ -27,25 +27,20 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	public Weapon_9mmAR(int par1) {
 
 		super(par1, CBCItems.ammo_9mm2.itemID, 2);
-		setUnlocalizedName("weapon_9mmar");
-		setIconName("weapon_9mmar");
+		setIAndU("weapon_9mmar");
 		setCreativeTab(CBCMod.cct);
-		setMaxStackSize(1);
 		setMaxDamage(51);
-		setNoRepair(); // 涓嶅彲淇ˉ
 
 		setReloadTime(60);
 		setJamTime(10);
 		setLiftProps(8, 2);
-
 	}
 
 	@Override
-	public Boolean canShoot(EntityPlayer player, ItemStack is) {
+	public boolean canShoot(EntityPlayer player, ItemStack is) {
 		InformationBullet inf = this.getInformation(is, player.worldObj);
 		int mode = getMode(is);
-		return mode == 0 ? super.canShoot(player, is) : AmmoManager.hasAmmo(
-				CBCItems.ammo_argrenade.itemID, player);
+		return mode == 0 ? super.canShoot(player, is) : (player.capabilities.isCreativeMode || AmmoManager.hasAmmo(CBCItems.ammo_argrenade.itemID, player));
 	}
 
 	@Override
@@ -70,17 +65,16 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		if (mode == 0) {
 			super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
 		} else {
-			if (!par2World.isRemote)
-				if (par3Entity.capabilities.isCreativeMode
-						|| AmmoManager.tryConsume(par3Entity,
-								CBCItems.ammo_argrenade.itemID, 1) == 0) {
-					par2World.spawnEntityInWorld(new EntityARGrenade(par2World,
-							par3Entity));
+			if (par3Entity.capabilities.isCreativeMode || AmmoManager.tryConsume(par3Entity,
+					CBCItems.ammo_argrenade.itemID, 1) == 0) {
+				if(!par2World.isRemote) {
+					par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
 					par2World.playSoundAtEntity(par3Entity,
 							getSoundShoot(mode), 0.5F, 1.0F);
 				}
+			}	
 		}
-
+		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		information.setLastTick();
 		return;
 	}
@@ -97,7 +91,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	@Override
 	public String getSoundShoot(int mode) {
 		return mode == 0 ? "cbc.weapons.hksa"
-				: (Math.random() * 2 > 1 ? "cbc.weapons.glauncher"
+				: (itemRand.nextFloat() * 2 > 1 ? "cbc.weapons.glauncher"
 						: "cbc.weapons.glauncherb");
 	}
 
@@ -187,5 +181,4 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 		};
 		return tips;
 	}
-
 }

@@ -14,6 +14,8 @@
  */
 package cn.lambdacraft.deathmatch.register;
 
+import cn.lambdacraft.core.CBCPlayer;
+import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
@@ -41,18 +43,19 @@ public class DMEventHandler {
 	public void onRenderGameOverlay(RenderGameOverlayEvent event) {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-		ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft().gameSettings, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-		if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR) {
-			ItemStack slotChestplate = player.inventory.armorInventory[2];
-			ItemStack slotHelmet = player.inventory.armorInventory[3];
-			if (slotChestplate != null && slotHelmet != null) {
-				if (slotChestplate.getItem() instanceof ArmorHEV
-						&& slotHelmet.itemID == DMItems.armorHEVHelmet.itemID) {
-					event.setCanceled(true);
-					if(event.type == ElementType.HEALTH)
-						HEVRenderingUtils.drawPlayerHud(player, rs);
-				}
+		if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR || event.type == ElementType.CROSSHAIRS) {
+			if (CBCPlayer.armorStat[2] && CBCPlayer.armorStat[3]) {
+				event.setCanceled(true);
+				if(event.type == ElementType.HEALTH)
+					HEVRenderingUtils.drawPlayerHud(player, event.resolution, player.ticksExisted);
+				if(event.type == ElementType.CROSSHAIRS)
+					HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
 			}
+			return;
+		}
+		
+		if(ClientProps.alwaysCustomCrossHair && event.type == ElementType.CROSSHAIRS) {
+			HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
 		}
 	}
 	

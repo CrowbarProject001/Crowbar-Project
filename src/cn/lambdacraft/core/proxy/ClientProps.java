@@ -14,16 +14,28 @@
  */
 package cn.lambdacraft.core.proxy;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Properties;
+import java.util.Random;
+import java.util.logging.Level;
+
+import com.google.common.base.Charsets;
+
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.register.Configurable;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
 /**
  * 客户端的一些信息。（贴图和渲染器)
+ * 
  * @author WeAthFolD
  */
 @SideOnly(Side.CLIENT)
@@ -32,12 +44,28 @@ public class ClientProps {
 	@Configurable(category = "graphics", key = "HUD_drawInLeftCorner", comment = "Draws the HEV hud in the left corner, like the Half-Life does.", defValue = "false")
 	public static boolean HUD_drawInLeftCorner = false;
 	
+	@Configurable(category = "graphics", key = "alwaysCustomCrosshair", comment = "Always draw custom crosshair regardless of player wearing HEV or not.", defValue = "false")
+	public static boolean alwaysCustomCrossHair = false;
+
 	public static final int RENDER_TYPE_TRIPMINE = RenderingRegistry
 			.getNextAvailableRenderId();
 	public static final int RENDER_TYPE_EMPTY = RenderingRegistry
-			.getNextAvailableRenderId(), 
-			RENDER_ID_XENPORTAL = RenderingRegistry
-					.getNextAvailableRenderId();;
+			.getNextAvailableRenderId(),
+			RENDER_ID_XENPORTAL = RenderingRegistry.getNextAvailableRenderId();;
+
+	@Configurable(category = "graphics", key = "CrossHair_R", comment = "The R color value of your custom crosshair.", defValue = "255")
+	public static int xHairR = 255;
+
+	@Configurable(category = "graphics", key = "CrossHair_G", comment = "The G color value of your custom crosshair.", defValue = "255")
+	public static int xHairG = 255;
+
+	@Configurable(category = "graphics", key = "CrossHair_B", comment = "The B color value of your custom crosshair.", defValue = "255")
+	public static int xHairB = 255;
+
+	public static Properties crosshairProps;
+	
+	private static final Random RNG = new Random();
+	
 
 	public static final String GAUSS_BEAM_PATH = "/mods/lambdacraft/textures/entities/gaussbeam.png",
 			TRIPMINE_FRONT_PATH = "/mods/lambdacraft/textures/blocks/tripmine_front.png",
@@ -52,8 +80,8 @@ public class ClientProps {
 			SATCHEL_BOTTOM_PATH = "/mods/lambdacraft/textures/entities/satchel_bottom.png",
 			SATCHEL_SIDE_PATH = "/mods/lambdacraft/textures/entities/satchel_side.png",
 			SATCHEL_SIDE2_PATH = "/mods/lambdacraft/textures/entities/satchel_side2.png",
-			AR_GRENADE_PATH = "/mods/lambdacraft/textures/entities/argrenade.png",
-			RPG_ROCKET_PATH = "/mods/lambdacraft/textures/entities/rpg_rocket.png",
+			AR_GRENADE_PATH = "/mods/lambdacraft/textures/entities/grenade.png",
+			RPG_ROCKET_PATH = "/mods/lambdacraft/textures/entities/rpgrocket.png",
 			SHOTGUN_SHELL_PATH = "/mods/lambdacraft/textures/entities/shotgun_shell.png",
 			CROSSBOW_BOW_PATH = "/mods/lambdacraft/textures/entities/steelbow.png",
 			RED_DOT_PATH = "/mods/lambdacraft/textures/entities/reddot.png",
@@ -90,8 +118,16 @@ public class ClientProps {
 			ZOMBIE_MOB_PATH = "/mods/lambdacraft/textures/entities/zombie.png",
 			TURRET_PATH = "/mods/lambdacraft/textures/entities/turret.png",
 			SHOCKWAVE_PATH = "/mods/lambdacraft/textures/entities/shockwave.png",
-			SS_SIDE_PATH[] = {"/mods/lambdacraft/textures/blocks/ss_side0.png", "/mods/lambdacraft/textures/blocks/ss_side1.png"},
-			SS_MAIN_PATH[] = {"/mods/lambdacraft/textures/blocks/ss_0.png", "/mods/lambdacraft/textures/blocks/ss_1.png"},
+			VORTIGAUNT_PATH = "/mods/lambdacraft/textures/entities/vortigaunt.png",
+			HLSPRAY_DIC_PATH = "/spray/",
+			EGON_BEAM_PATH[] = {"/mods/lambdacraft/textures/entities/plasma0.png", 
+		"/mods/lambdacraft/textures/entities/plasma1.png", 
+		"/mods/lambdacraft/textures/entities/plasma2.png"},
+			SS_SIDE_PATH[] = {
+					"/mods/lambdacraft/textures/blocks/ss_side0.png",
+					"/mods/lambdacraft/textures/blocks/ss_side1.png" },
+			SS_MAIN_PATH[] = { "/mods/lambdacraft/textures/blocks/ss_0.png",
+					"/mods/lambdacraft/textures/blocks/ss_1.png" },
 			SPRY_PATH[] = { "/mods/lambdacraft/textures/sprays/spry0.png",
 					"/mods/lambdacraft/textures/sprays/spry1.png" },
 			ITEM_SATCHEL_PATH[] = {
@@ -100,19 +136,19 @@ public class ClientProps {
 			CROSSBOW_FRONT_PATH[] = {
 					"/mods/lambdacraft/textures/items/crossbow_front0.png",
 					"/mods/lambdacraft/textures/items/crossbow_front1.png" },
-			EGON_BEAM_PATH[] = {
-					"/mods/lambdacraft/textures/entities/egon_beam.png",
-					"/mods/lambdacraft/textures/entities/egon_ray2.png" },
+			EGON_BEAM_PATH1 = "/mods/lambdacraft/textures/entities/egon_ray2.png",
 			HEV_ARMOR_PATH[] = { "/mods/lambdacraft/textures/armor/hev_1.png",
 					"/mods/lambdacraft/textures/armor/hev_2.png" },
 			RPG_TRAIL_PATH[] = {
 					"/mods/lambdacraft/textures/entities/rpg_trail.png",
 					"/mods/lambdacraft/textures/entities/rpg_trail_tail.png" },
-			VORTIGAUNT_RAY_PATH[] = { 
+			VORTIGAUNT_RAY_PATH[] = {
 					"/mods/lambdacraft/textures/entities/ltn0.png",
 					"/mods/lambdacraft/textures/entities/ltn1.png",
-					"/mods/lambdacraft/textures/entities/ltn2.png"
-					};
+					"/mods/lambdacraft/textures/entities/ltn2.png" };
+
+	public static final String xhair_path = "/crosshairs/",
+			DEFAULT_XHAIR_PATH = xhair_path + "xhair1.png";
 
 	/**
 	 * 获取随机的一个火光贴图。
@@ -120,13 +156,46 @@ public class ClientProps {
 	 * @return 贴图路径
 	 */
 	public static String getRandomMuzzleFlash() {
-		int random = (int) (Math.random() * 7) + 1;
+		int random = (int) (RNG.nextFloat() * 7F) + 1;
 		String path = "/mods/lambdacraft/textures/muz/muz" + random + ".png";
 		return path;
 	}
-	
+
 	public static void loadProps(Config config) {
 		GeneralRegistry.loadConfigurableClass(CBCMod.config, ClientProps.class);
+		crosshairProps = new Properties();
+		URL src = ClientProps.class.getResource(xhair_path
+				+ "crosshairs.properties");
+		InputStream langStream = null;
+
+		try {
+			langStream = src.openStream();
+			crosshairProps.load(new InputStreamReader(langStream,
+					Charsets.UTF_8));
+		} catch (IOException e) {
+			CBCMod.log.log(Level.SEVERE,"Unable to load crossfire props from file %s", src);
+		} catch (NullPointerException e) {
+			CBCMod.log.log(Level.SEVERE, "Unable to find crossfire props file.");
+		} finally {
+			try {
+				if (langStream != null) {
+					langStream.close();
+				}
+			} catch (IOException ex) {
+				// HUSH
+			}
+		}
+	}
+
+	public static String getCrosshairPath(String wpnName) {
+		try {
+			String s = crosshairProps.getProperty(wpnName);
+			if (s == null)
+				return null;
+			return xhair_path + s + ".png";
+		} catch (NullPointerException e) {
+		}
+		return null;
 	}
 
 }

@@ -14,21 +14,30 @@
  */
 package cn.lambdacraft.deathmatch.client;
 
-import org.lwjgl.opengl.GL11;
+import java.util.HashMap;
 
-import cn.lambdacraft.api.hud.IHudTip;
-import cn.lambdacraft.api.hud.IHudTipProvider;
-import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.items.ArmorHEV;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
+
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.api.hud.IHudIconProvider;
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
+import cn.lambdacraft.api.hud.ISpecialCrosshair;
+import cn.lambdacraft.core.CBCPlayer;
+import cn.lambdacraft.core.CBCPlayer.EnumStatus;
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.deathmatch.items.ArmorHEV;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author WeAthFolD
@@ -36,9 +45,11 @@ import net.minecraft.util.Icon;
  */
 public class HEVRenderingUtils {
 
+	@SideOnly(Side.CLIENT)
+	private static HashMap<IHudTipProvider, IHudTip[]> tipPool = new HashMap();
 	
 	@SideOnly(Side.CLIENT)
-	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution) {
+	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution, float partialTickTime) {
 		int k = resolution.getScaledWidth();
         int l = resolution.getScaledHeight();
         int i2 = k / 2 - 91;
@@ -46,30 +57,31 @@ public class HEVRenderingUtils {
         RenderEngine engine = Minecraft.getMinecraft().renderEngine;
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
+        GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
         engine.bindTexture(ClientProps.HEV_HUD_PATH);
         
         //Health Section
         int xOffset = -90, yOffset = -45;
         if(ClientProps.HUD_drawInLeftCorner) {
-        	xOffset = -k / 2 + 13;
-        	yOffset = -25;
+        	xOffset = -k / 2 + 8;
+        	yOffset = -20;
+        	drawTexturedModalRect(k / 2 - 74, l - 50, 0, 64, 75, 21, 112, 32);
         }
-        GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.9F);
+        GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.6F);
         drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 0, 16, 16, 16);
-        GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
+        GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
         int h = player.getHealth() * 16 / 20;
         drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 16 - h, 0, 32 - h, 16, h);
         if(player.getHealth() <= 5)
-        	GL11.glColor4f(0.9F, 0.1F, 0.1F, 0.9F);
+        	GL11.glColor4f(0.9F, 0.1F, 0.1F, 0.6F);
         drawNumberAt((byte) (player.getHealth() * 5), k / 2 + xOffset + 18, l + yOffset);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
         
         //Armor Section
         xOffset += 48;
-        GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.9F);
+        GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.6F);
         drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 16, 16, 16, 16);
-        GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
+        GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
         h = player.getTotalArmorValue() * 16 / 20;
         if(h > 16)
         	h = 16;
@@ -78,12 +90,61 @@ public class HEVRenderingUtils {
         drawNumberAt(player.getTotalArmorValue() * 5, k / 2 + xOffset + 18, l + yOffset);
         
         //Other section
+        
         drawArmorTip(player, engine, k, l);
-        drawWeaponTip(player, engine, k, l);
+        if(CBCPlayer.drawArmorTip)
+        	drawWeaponTip(player, engine, k, l);
+        drawStatusHud(player, engine, k, l, partialTickTime);
+        
         
         engine.bindTexture("/gui/icons.png");
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void drawCrosshair(ItemStack item, int k, int l) {
+		String xhairPath;
+		RenderEngine engine = Minecraft.getMinecraft().renderEngine;
+		int h = 12;
+		if(item != null) {
+			if(item.getItem() instanceof ISpecialCrosshair)
+				h = ((ISpecialCrosshair)item.getItem()).getHalfWidth();
+			xhairPath = ClientProps.getCrosshairPath(item.getItemName());
+			
+			if(xhairPath == null)
+				xhairPath = ClientProps.DEFAULT_XHAIR_PATH;
+		} else {
+			xhairPath = ClientProps.DEFAULT_XHAIR_PATH;
+		}
+		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND);
+	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		int par1 = k / 2 - h, par2 = l / 2 - h;
+		engine.bindTexture(xhairPath);
+		Tessellator t = Tessellator.instance;
+        t.startDrawingQuads();
+        t.setColorRGBA(ClientProps.xHairR, ClientProps.xHairG, ClientProps.xHairB, 255);
+        t.addVertexWithUV((double)(par1 + 0), (double)(par2 + 2*h), (double)-90, 0, 1);
+        t.addVertexWithUV((double)(par1 + 2*h), (double)(par2 + 2*h), (double)-90, 1, 1);
+        t.addVertexWithUV((double)(par1 + 2*h), (double)(par2 + 0), (double)-90, 1, 0);
+        t.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, 0, 0);
+        t.draw();
+        
+        engine.bindTexture("/gui/icons.png");
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
+        GL11.glPopMatrix();
+	}
+	
+	@SideOnly(Side.CLIENT) 
+	private static void drawStatusHud(EntityPlayer player, RenderEngine engine, int k, int l, float tickTime) {
+		int x = 3, y = l / 2 - 100;
+		EnumStatus stat = CBCPlayer.playerStat;
+		float alpha = MathHelper.sin(tickTime * 0.3F) + 0.6F;
+		GL11.glColor4f(1.0F, 0.5F, 0.0F, alpha);
+		drawTexturedModalRect(x, y, stat.u, stat.v, 32, 32);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -101,10 +162,10 @@ public class HEVRenderingUtils {
 				} else {
 					renderEngine.bindTexture("/gui/items.png");
 				}
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
 				drawTexturedModelRectFromIcon(5, height, hev.getIcon(is, 0), 16, 16);
 				renderEngine.bindTexture(ClientProps.HEV_HUD_PATH);
-				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
+				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
 				drawTexturedModalRect(24, height + 16 - heightToDraw, 32, 32 - heightToDraw, 16, heightToDraw);
 			}
 		}
@@ -116,7 +177,11 @@ public class HEVRenderingUtils {
 		if(item == null)
 			return;
 		if(item.getItem() instanceof IHudTipProvider) {
-			IHudTip[] st = ((IHudTipProvider)item.getItem()).getHudTip(item, player);
+			IHudTip[] st = tipPool.get(item.getItem());
+			if(st == null) {
+				st = ((IHudTipProvider)item.getItem()).getHudTip(item, player);
+				tipPool.put((IHudTipProvider) item.getItem(), st);
+			}
 			drawTips(st, renderEngine, item, player, k, l);
 		}
 	}
@@ -136,9 +201,9 @@ public class HEVRenderingUtils {
 					engine.bindTexture("/terrain.png");
 				else if(sheetIndex != 5)
 					engine.bindTexture("/gui/items.png");
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.7F);
 				drawTexturedModelRectFromIcon(k - 30, startHeight, icon, 16, 16);
-				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
+				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
 				engine.bindTexture(ClientProps.HEV_HUD_PATH);
 			}
 			drawTipStringAt(s, width, startHeight);
@@ -152,7 +217,7 @@ public class HEVRenderingUtils {
 		for(char c : s.toCharArray()) {
 			if(Character.isDigit(c))
 				count += 9;
-			else count += 3;
+			else count += 5;
 		}
 		return count;
 	}
@@ -173,9 +238,9 @@ public class HEVRenderingUtils {
 				int number = Integer.valueOf(String.valueOf(c));
 				drawSingleNumberAt(number, x + lastLength, y);
 			} else {
-				drawTexturedModalRect(x + lastLength, y, 48, 16, 3, 16);
+				drawTexturedModalRect(x + lastLength, y, 48, 16, 5, 16);
 			}
-			lastLength += b? 9 : 3; 
+			lastLength += b? 9 : 5; 
 		}
 	}
 	
@@ -200,6 +265,22 @@ public class HEVRenderingUtils {
         tessellator.draw();
     }
     
+    /**
+     * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height, texWidth, texHeight
+     */
+    public static void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6, int par7, int par8)
+    {
+        float f = 0.00390625F;
+        float f1 = 0.00390625F;
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), (double)-90, (double)((float)(par3 + 0) * f), (double)((float)(par4 + par8) * f1));
+        tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), (double)-90, (double)((float)(par3 + par7) * f), (double)((float)(par4 + par8) * f1));
+        tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), (double)-90, (double)((float)(par3 + par7) * f), (double)((float)(par4 + 0) * f1));
+        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, (double)((float)(par3 + 0) * f), (double)((float)(par4 + 0) * f1));
+        tessellator.draw();
+    }
+    
     public static void drawTexturedModelRectFromIcon(int par1, int par2, Icon par3Icon, int par4, int par5)
     {
         Tessellator tessellator = Tessellator.instance;
@@ -210,80 +291,5 @@ public class HEVRenderingUtils {
         tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, (double)par3Icon.getMinU(), (double)par3Icon.getMinV());
         tessellator.draw();
     }
-	
-	public static Icon getHudSheetIcon(final int x, final int y, final String name) {
-		return new Icon() {
-
-			private int texU = x, texV = y;
-			private String iconName = name;
-			
-			@Override
-			@SideOnly(Side.CLIENT)
-			public int getOriginX() {
-				return texU;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public int getOriginY() {
-				return texV;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getMinU() {
-				return texU;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getMaxU() {
-				return texU + 16;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getInterpolatedU(double d0) {
-				return x + (float) d0;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getMinV() {
-				return texV;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getMaxV() {
-				return texV + 16;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public float getInterpolatedV(double d0) {
-				return texV + (float) d0;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public String getIconName() {
-				return name;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public int getSheetWidth() {
-				return 16;
-			}
-
-			@Override
-			@SideOnly(Side.CLIENT)
-			public int getSheetHeight() {
-				return 16;
-			}
-			
-		};
-	}
 
 }

@@ -11,14 +11,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
 
 public class RenderBulletWeapon implements IItemRenderer {
-
-	Tessellator t = Tessellator.instance;
+	
 	Minecraft mc = Minecraft.getMinecraft();
 	float tx = 0F, ty = 0F, tz = 0F;
 	float width = 0.05F;
@@ -78,25 +78,24 @@ public class RenderBulletWeapon implements IItemRenderer {
 
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLiving entity) {
-
-		if (item.stackTagCompound == null)
-			item.stackTagCompound = new NBTTagCompound();
-		int mode = item.getTagCompound().getInteger("mode");
+		Tessellator t = Tessellator.instance;
+		
+		int mode = 0;
+		if (item.stackTagCompound != null)
+			mode = item.getTagCompound().getInteger("mode");
+		
 		GL11.glPushMatrix();
 
 		RenderUtils.renderItemIn2d(entity, item, width);
-
-		boolean rendMuz = false;
-		InformationBullet inf = weaponType
-				.getInformation(item, entity.worldObj);
-		if (inf != null) {
-			if (inf.isShooting && inf.getDeltaTick() < 3)
-				rendMuz = true;
+		if(entity instanceof EntityPlayer) {
+			InformationBullet inf = weaponType.getInformation(item, entity.worldObj);
+			WeaponGeneralBullet wpn = (WeaponGeneralBullet) item.getItem();
+			EntityPlayer ep = (EntityPlayer) entity;
+			if(ep.isUsingItem() && item.equals(ep.getCurrentEquippedItem()) && wpn.canShoot(ep, item) && (inf != null && inf.getDeltaTick() < 3))
+				RenderMuzzleFlash.renderItemIn2d(t, tx, ty, tz);
 		}
-		if (rendMuz)
-			RenderMuzzleFlash.renderItemIn2d(t, tx, ty, tz);
+			
 		GL11.glPopMatrix();
-
 	}
 
 	protected void addVertex(Vec3 vec3, double texU, double texV) {

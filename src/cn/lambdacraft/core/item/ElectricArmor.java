@@ -186,11 +186,11 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 						: charge) : 0);
 	}
 
-	protected int getItemCharge(ItemStack stack) {
+	public static int getItemCharge(ItemStack stack) {
 		return loadCompound(stack).getInteger("charge");
 	}
 
-	private NBTTagCompound loadCompound(ItemStack stack) {
+	private static NBTTagCompound loadCompound(ItemStack stack) {
 		if (stack.stackTagCompound == null)
 			stack.stackTagCompound = new NBTTagCompound();
 		return stack.stackTagCompound;
@@ -242,6 +242,8 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	public void damageArmor(EntityLiving entity, ItemStack stack,
 			DamageSource source, int damage, int slot) {
 		this.discharge(stack, damage * this.energyPerDamage, 2, true, false);
+		if(getItemCharge(stack) < this.energyPerDamage)
+			this.setItemCharge(stack, 0);
 	}
 
 }

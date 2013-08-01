@@ -14,6 +14,7 @@
  */
 package cn.lambdacraft.crafting.items;
 
+import cn.lambdacraft.core.CBCMod;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
@@ -32,6 +33,7 @@ public class CBCBucket extends ItemBucket {
 	 */
 	public CBCBucket(int par1, int flowLiquidID, String unlocalizedName) {
 		super(par1, flowLiquidID);
+		this.setCreativeTab(CBCMod.cctMisc);
 		this.setContainerItem(Item.bucketEmpty);
 		this.setUnlocalizedName(unlocalizedName);
 		name = unlocalizedName;

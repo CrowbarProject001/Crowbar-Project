@@ -19,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 
 /**
+ * 实现它以提供一个武器有头戴显示提示。
+ * @see cn.lambdacraft.deathmatch.items.ArmorHEV
  * @author WeAthFolD
  *
  */
@@ -28,6 +30,12 @@ public interface IHudTip {
 	
 	public int getTextureSheet(ItemStack itemStack);
 	
+	/**
+	 * 只能使用0~9的数字和"|"作为tip。
+	 * @param itemStack
+	 * @param player
+	 * @return
+	 */
 	public String getTip(ItemStack itemStack, EntityPlayer player);
 	
 }
