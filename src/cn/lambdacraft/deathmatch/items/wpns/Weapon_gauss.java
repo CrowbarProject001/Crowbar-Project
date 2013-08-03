@@ -10,6 +10,7 @@ import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityBulletGaussSec.EnumGaussRayType;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cn.lambdacraft.deathmatch.utils.GaussBulletManager;
+import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -17,6 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -36,7 +38,7 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 			SND_SHOOT_PATH = "cbc.weapons.gaussb";
 
 	public Weapon_Gauss(int par1) {
-		super(par1, CBCItems.ammo_uranium.itemID, 2);
+		super(par1, CBCItems.ammo_uranium.itemID);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_gauss");
 		setJamTime(20);
@@ -47,7 +49,28 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 	public void registerIcons(IconRegister par1IconRegister) {
 		this.itemIcon = par1IconRegister.registerIcon("lambdacraft:weapon_gauss");
 	}
+	
+	@Override
+	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
+		super.onItemClick(world, player, stack, left);
+		InformationEnergy inf = loadInformation(stack, player);
+		if (left) {
+			inf.rotationVelocity = 15.0F;
+		} else {
+			inf.resetState();
+			if (canShoot(player, stack))
+				world.playSoundAtEntity(player, SND_CHARGEA_PATH[0], 0.5F, 1.0F);
+		}
+	}
+	
 
+	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft) {
+    	InformationEnergy inf = loadInformation(stack, player);
+    	super.onItemUsingTick(world, player, stack, type, tickLeft);
+		if(!type)
+			onChargeModeUpdate(inf, stack, player.worldObj, player, 0, true);
+	}
+	
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
@@ -61,47 +84,14 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 		if(!player.isUsingItem() && inf.rotationVelocity > 0)
 			inf.rotationVelocity -= 0.5;
 		inf.rotationAngle += inf.rotationVelocity;
-		int mode = getMode(par1ItemStack);
 	}
 
 	@Override
 	public boolean doesShoot(InformationEnergy inf, ItemStack itemStack,
 			EntityPlayer player) {
-		int mode = getMode(itemStack);
-		return mode == 0 && super.doesShoot(inf, itemStack, player);
+		boolean left = getUsingSide(itemStack);
+		return left && super.doesShoot(inf, itemStack, player);
 	}
-
-	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
-
-		InformationEnergy inf = loadInformation(par1ItemStack, par3EntityPlayer);
-		processRightClick(inf, par1ItemStack, par2World, par3EntityPlayer);
-		int mode = getMode(par1ItemStack);
-		if (mode == 0) {
-			inf.rotationVelocity = 15.0F;
-			return par1ItemStack;
-		}
-
-		if (mode == 1) {
-			inf.resetState();
-			if (canShoot(par3EntityPlayer, par1ItemStack))
-				par2World.playSoundAtEntity(par3EntityPlayer,
-						SND_CHARGEA_PATH[0], 0.5F, 1.0F);
-		}
-		return par1ItemStack;
-
-	}
-	
-	@Override
-    public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count)
-    {
-		super.onUsingItemTick(stack, player, count);
-		InformationEnergy inf = loadInformation(stack, player);
-		int mode = getMode(stack);
-		if(mode == 1)
-			onChargeModeUpdate(inf, stack, player.worldObj, player, 0, true);
-    }
 
 	public void onChargeModeUpdate(InformationEnergy inf,
 			ItemStack par1ItemStack, World par2World, EntityPlayer player,
@@ -158,11 +148,11 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer, int par4) {
 		InformationEnergy inf = getInformation(par1ItemStack, par2World);
-		int mode = getMode(par1ItemStack);
+		boolean left = getUsingSide(par1ItemStack);
 		if (inf == null)
 			return;
 
-		if (mode == 0) {
+		if (left) {
 			super.onPlayerStoppedUsing(par1ItemStack, par2World,
 					par3EntityPlayer, par4);
 			return;
@@ -191,11 +181,11 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 	@Override
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer player, InformationEnergy information) {
-		int mode = getMode(par1ItemStack);
+		boolean left = getUsingSide(par1ItemStack);
 		if(!par2World.isRemote)
 		GaussBulletManager.Shoot2(EnumGaussRayType.NORMAL, par2World, player,
-				par1ItemStack, null, null, getDamage(mode));
-		par2World.playSoundAtEntity(player, getSoundShoot(mode), 0.5F, 1.0F);
+				par1ItemStack, null, null, getDamage(left));
+		par2World.playSoundAtEntity(player, getSoundShoot(left), 0.5F, 1.0F);
 		AmmoManager.consumeAmmo(player, this, 2);
 		information.setLastTick();
 		return;
@@ -217,38 +207,33 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 	}
 
 	@Override
-	public int getShootTime(int mode) {
+	public int getShootTime(boolean left) {
 		return 5;
 	}
 
 	@Override
-	public String getSoundShoot(int mode) {
-		return mode == 0 ? SND_SHOOT_PATH : "";
+	public String getSoundShoot(boolean left) {
+		return left ? SND_SHOOT_PATH : "";
 	}
 
 	@Override
-	public String getSoundJam(int mode) {
+	public String getSoundJam(boolean left) {
 		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
-	public int getDamage(int mode) {
+	public int getDamage(boolean left) {
 		return 8;
 	}
 
 	@Override
-	public double getPushForce(int mode) {
+	public double getPushForce(boolean left) {
 		return 1;
 	}
 
 	@Override
-	public int getOffset(int mode) {
+	public int getOffset(boolean left) {
 		return 0;
-	}
-
-	@Override
-	public String getModeDescription(int mode) {
-		return mode == 0 ? "mode.gauss1" : "mode.gauss2";
 	}
 
 	@Override

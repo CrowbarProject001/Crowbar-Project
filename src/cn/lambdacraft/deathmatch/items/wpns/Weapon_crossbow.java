@@ -28,7 +28,7 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 	public Icon[] sideIcons = new Icon[6];
 
 	public Weapon_Crossbow(int par1) {
-		super(par1, CBCItems.ammo_bow.itemID, 2);
+		super(par1, CBCItems.ammo_bow.itemID);
 
 		setUnlocalizedName("weapon_crossbow");
 		setCreativeTab(CBCMod.cct);
@@ -59,21 +59,12 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
-		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
-		return par1ItemStack;
-	}
-
-	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3Entity, InformationBullet information) {
+			EntityPlayer par3Entity, InformationBullet information, boolean left) {
 
-		int mode = getMode(par1ItemStack);
-
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(left), 0.5F, 1.0F);
 		if (!par2World.isRemote)
-			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World,par3Entity, mode == 1));
+			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World,par3Entity, !left));
 		information.setLastTick();
 		if (par3Entity instanceof EntityPlayer) {
 			doUplift(information, par3Entity);
@@ -92,45 +83,40 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 	}
 
 	@Override
-	public String getSoundShoot(int mode) {
+	public String getSoundShoot(boolean left) {
 		return "cbc.weapons.xbow_fire";
 	}
 
 	@Override
-	public String getSoundJam(int mode) {
+	public String getSoundJam(boolean left) {
 		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
-	public String getSoundReload(int mode) {
+	public String getSoundReload(boolean left) {
 		return "cbc.weapons.xbow_reload";
 	}
 
 	@Override
-	public int getShootTime(int mode) {
+	public int getShootTime(boolean left) {
 		return 30;
 	}
 
 	@Override
-	public double getPushForce(int mode) {
+	public double getPushForce(boolean left) {
 		return 1.5;
 	}
 
 	@Override
-	public int getDamage(int mode) {
+	public int getDamage(boolean left) {
 		return 20;
 	}
 
 	@Override
-	public int getOffset(int mode) {
+	public int getOffset(boolean left) {
 		return 0;
 	}
-
-	@Override
-	public String getModeDescription(int mode) {
-		return mode == 0 ? "mode.bow1" : "mode.bow2";
-	}
-
+	
 	public boolean isBowPulling(ItemStack item) {
 		InformationSet inf = CBCWeaponInformation.getInformation(item);
 		InformationBullet information = (InformationBullet) (inf == null ? null

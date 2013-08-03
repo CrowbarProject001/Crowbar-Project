@@ -19,9 +19,13 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.WrongUsageException;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
+import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 /**
@@ -29,41 +33,83 @@ import cpw.mods.fml.common.TickType;
  * 
  * @author WeAthFolD
  */
-public class CBCKeyProcess extends KeyHandler {
+public class CBCKeyProcess implements ITickHandler {
 
-	private static HashMap<KeyBinding, IKeyProcess> keyProcesses = new HashMap();
-	private static List<KeyBinding> keyCodes = new ArrayList();
-	private static List<Boolean> isRepeating = new ArrayList();
-
+	private static List<KeyBinding> bindings = new ArrayList();
+	private static List<IKeyProcess> processes = new ArrayList();
+	private static List<Boolean> repeats = new ArrayList();
+	
+	private KeyBinding[] bindingArray;
+	private IKeyProcess[] processArray;
+	private Boolean[] repeatArray;
+	private boolean[] keyDown;
+	
 	public static CBCKeyProcess instance;
+	public static final int MOUSE_LEFT = -100, MOUSE_MIDDLE = -98, MOUSE_RIGHT = -99;
 
 	public CBCKeyProcess() {
-		super(toKeyBindingArray(), toBooleanArray());
 		if (instance == null)
 			instance = this;
+		bindingArray = bindings.toArray(new KeyBinding[0]);
+		processArray = processes.toArray(new IKeyProcess[0]);
+		repeatArray = repeats.toArray(new Boolean[0]);
+		bindings = null;
+		processes = null;
+		repeats = null;
+		keyDown = new boolean[bindingArray.length];
+		System.gc();
 	}
 
 	@Override
 	public String getLabel() {
 		return "LambdaCraft Keys";
 	}
+	
+    /**
+     * Not to be overridden - KeyBindings are tickhandlers under the covers
+     */
+    @Override
+    public final void tickStart(EnumSet<TickType> type, Object... tickData)
+    {
+        keyTick(type, false);
+    }
 
-	@Override
-	public void keyDown(EnumSet<TickType> types, KeyBinding kb,
-			boolean tickEnd, boolean isRepeat) {
-		if (tickEnd)
-			return;
-		if (keyProcesses.containsKey(kb))
-			keyProcesses.get(kb).onKeyDown();
-	}
+    /**
+     * Not to be overridden - KeyBindings are tickhandlers under the covers
+     */
+    @Override
+    public final void tickEnd(EnumSet<TickType> type, Object... tickData)
+    {
+        keyTick(type, true);
+    }
 
-	@Override
-	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {
-		if (tickEnd)
-			return;
-		if (keyProcesses.containsKey(kb))
-			keyProcesses.get(kb).onKeyUp();
-	}
+    private void keyTick(EnumSet<TickType> type, boolean tickEnd)
+    {
+        for (int i = 0; i < bindingArray.length; i++)
+        {
+            KeyBinding keyBinding = bindingArray[i];
+            int keyCode = keyBinding.keyCode;
+            boolean state = (keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode));
+            if (state != keyDown[i] || (state && repeatArray[i]))
+            {
+            	IKeyProcess proc = processArray[i];
+            	
+                if (state)
+                {
+                    proc.onKeyDown(tickEnd);
+                }
+                else
+                {
+                   proc.onKeyUp(tickEnd);
+                }
+                if (tickEnd)
+                {
+                    keyDown[i] = state;
+                }
+            }
+
+        }
+    }
 
 	@Override
 	public EnumSet<TickType> ticks() {
@@ -82,28 +128,11 @@ public class CBCKeyProcess extends KeyHandler {
 	 */
 	public static void addKey(KeyBinding key, boolean isRep, IKeyProcess process) {
 		if (instance != null)
-			throw new WrongUsageException(
-					"Trying to add a key after the process is instanted.");
+			throw new WrongUsageException("Trying to add a key after the process is instanted.");
 
-		keyCodes.add(key);
-		isRepeating.add(isRep);
-		keyProcesses.put(key, process);
-	}
-
-	private static boolean[] toBooleanArray() {
-		boolean[] b = new boolean[isRepeating.size()];
-		for (int i = 0; i < b.length; i++) {
-			b[i] = isRepeating.get(i);
-		}
-		return b;
-	}
-
-	private static KeyBinding[] toKeyBindingArray() {
-		KeyBinding kb[] = new KeyBinding[keyCodes.size()];
-		for (int i = 0; i < kb.length; i++) {
-			kb[i] = keyCodes.get(i);
-		}
-		return kb;
+		bindings.add(key);
+		processes.add(process);
+		repeats.add(isRep);
 	}
 
 }

@@ -41,7 +41,9 @@ public class KeyUse implements IKeyProcess {
 	 * @see cn.lambdacraft.core.register.IKeyProcess#onKeyDown()
 	 */
 	@Override
-	public void onKeyDown() {
+	public void onKeyDown(boolean isEnd) {
+		if(isEnd)
+			return;
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		if (player == null)
 			return;
@@ -55,7 +57,9 @@ public class KeyUse implements IKeyProcess {
 	 * @see cn.lambdacraft.core.register.IKeyProcess#onKeyUp()
 	 */
 	@Override
-	public void onKeyUp() {
+	public void onKeyUp(boolean isEnd) {
+		if(isEnd)
+			return;
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		if (player == null)
 			return;

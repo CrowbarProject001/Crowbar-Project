@@ -26,7 +26,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 
 
 	public Weapon_RPG(int par1) {
-		super(par1, CBCItems.ammo_rpg.itemID, 2);
+		super(par1, CBCItems.ammo_rpg.itemID);
 
 		setIAndU("weapon_rpg");
 		setCreativeTab(CBCMod.cct);
@@ -43,7 +43,7 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 				par1ItemStack, par2World, par3Entity, par4, par5);
 		if (par2World.isRemote || inf == null)
 			return;
-		int mode = getMode(par1ItemStack);
+		int mode = 0;
 		if (mode == 0)
 			return;
 		EntityPlayer player = (EntityPlayer) par3Entity;
@@ -54,25 +54,17 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 			this.setRPGDot(inf, dot);
 		}
 	}
-
-	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
-		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
-		return par1ItemStack;
-	}
-
+	
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3Entity, InformationBullet information) {
+			EntityPlayer par3Entity, InformationBullet information, boolean left) {
 		information.setLastTick();
-		int mode = getMode(par1ItemStack);
 		par3Entity.setItemInUse(par1ItemStack,
 				this.getMaxItemUseDuration(par1ItemStack));
 		if (par2World.isRemote)
 			return;
 		if (this.canShoot(par3Entity, par1ItemStack)) {
-			par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F,
+			par2World.playSoundAtEntity(par3Entity, getSoundShoot(left), 0.5F,
 					1.0F);
 			par2World.spawnEntityInWorld(new EntityRocket(par2World,
 					par3Entity, par1ItemStack));
@@ -106,43 +98,38 @@ public class Weapon_RPG extends WeaponGeneralBullet {
 	}
 
 	@Override
-	public String getSoundShoot(int mode) {
+	public String getSoundShoot(boolean side) {
 		return "cbc.weapons.rocketfire";
 	}
 
 	@Override
-	public String getSoundJam(int mode) {
+	public String getSoundJam(boolean side) {
 		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
-	public String getSoundReload(int mode) {
+	public String getSoundReload(boolean side) {
 		return "";
 	}
 
 	@Override
-	public int getShootTime(int mode) {
+	public int getShootTime(boolean side) {
 		return 40;
 	}
 
 	@Override
-	public double getPushForce(int mode) {
+	public double getPushForce(boolean side) {
 		return 0;
 	}
 
 	@Override
-	public int getDamage(int mode) {
+	public int getDamage(boolean side) {
 		return 0;
 	}
 
 	@Override
-	public int getOffset(int mode) {
+	public int getOffset(boolean side) {
 		return 0;
-	}
-
-	@Override
-	public String getModeDescription(int mode) {
-		return (mode == 0) ? "mode.rpg" : "mode.rpg1";
 	}
 
 	@Override

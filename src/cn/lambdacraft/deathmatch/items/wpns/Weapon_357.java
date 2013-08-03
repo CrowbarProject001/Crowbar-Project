@@ -21,7 +21,7 @@ public class Weapon_357 extends WeaponGeneralBullet {
 
 	public Weapon_357(int par1) {
 
-		super(par1, CBCItems.ammo_357.itemID, 1);
+		super(par1, CBCItems.ammo_357.itemID);
 
 		setUnlocalizedName("weapon_357");
 		setCreativeTab(CBCMod.cct);
@@ -49,52 +49,38 @@ public class Weapon_357 extends WeaponGeneralBullet {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
-		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
-		return par1ItemStack;
+	public String getSoundShoot(boolean side) {
+		return itemRand.nextInt(2) == 0 ? "cbc.weapons.pyt_shota" : "cbc.weapons.pyt_shotb";
 	}
 
 	@Override
-	public String getSoundShoot(int mode) {
-		String[] shoot = { "cbc.weapons.pyt_shota", "cbc.weapons.pyt_shotb" };
-		int index = (int) (itemRand.nextFloat() * 2);
-		return shoot[index];
+	public String getSoundJam(boolean side) {
+		return side ? "cbc.weapon.gunjam_a" : "";
 	}
 
 	@Override
-	public String getSoundJam(int mode) {
-		return "cbc.weapon.gunjam_a";
-	}
-
-	@Override
-	public String getSoundReload(int mode) {
+	public String getSoundReload(boolean side) {
 		return "cbc.weapons.pyt_reloada";
 	}
 
 	@Override
-	public int getShootTime(int mode) {
-		return 20;
+	public int getShootTime(boolean side) {
+		return side ? 20 : 0;
 	}
 
 	@Override
-	public double getPushForce(int mode) {
+	public double getPushForce(boolean side) {
 		return 1;
 	}
 
 	@Override
-	public int getDamage(int mode) {
+	public int getDamage(boolean side) {
 		return 7;
 	}
 
 	@Override
-	public int getOffset(int mode) {
+	public int getOffset(boolean side) {
 		return 1;
-	}
-
-	@Override
-	public String getModeDescription(int mode) {
-		return "mode.357";
 	}
 
 }

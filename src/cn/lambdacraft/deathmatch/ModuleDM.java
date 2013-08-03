@@ -31,10 +31,12 @@ import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRayColored;
 import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.network.NetChargerClient;
 import cn.lambdacraft.deathmatch.network.NetDeathmatch;
+import cn.lambdacraft.deathmatch.network.NetClicking;
 import cn.lambdacraft.deathmatch.network.NetMedFillerClient;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMEventHandler;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.lambdacraft.deathmatch.utils.ItemHelper;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -50,6 +52,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = "LambdaCraft|DeathMatch", name = "LambdaCraft DeathMatch", version = CBCMod.VERSION, dependencies = CBCMod.DEPENCY_CRAFTING)
@@ -65,17 +68,18 @@ public class ModuleDM {
 	@PreInit
 	public void preInit(FMLPreInitializationEvent Init) {
 		MinecraftForge.EVENT_BUS.register(new DMEventHandler());
+		TickRegistry.registerTickHandler(new ItemHelper(), Side.CLIENT);
+		TickRegistry.registerTickHandler(new ItemHelper(), Side.SERVER);
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL,
-				new NetChargerClient());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL, new NetChargerClient());
+		CBCNetHandler.addChannel(GeneralProps.NET_ID_PRIMSHOOT, new NetClicking());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_MEDFILLER_CL,
 				new NetMedFillerClient());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER,
 				new DMGuiElements.ElementArmorCharger());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_HEALTH,
 				new DMGuiElements.ElementHealthCharger());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_MEDFILLER,
-				new DMGuiElements.ElementMedFiller());
+		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_MEDFILLER, new DMGuiElements.ElementMedFiller());
 		proxy.preInit();
 	}
 

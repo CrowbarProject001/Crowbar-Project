@@ -9,6 +9,7 @@ import cn.lambdacraft.deathmatch.entities.EntityBulletEgon;
 import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
+import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -32,7 +33,7 @@ public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshai
 	public Icon iconEquipped;
 
 	public Weapon_Egon(int par1) {
-		super(par1, CBCItems.ammo_uranium.itemID, 1);
+		super(par1, CBCItems.ammo_uranium.itemID);
 		setCreativeTab(CBCMod.cct);
 		setUnlocalizedName("weapon_egon");
 		setIconName("weapon_egon");
@@ -62,10 +63,8 @@ public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshai
 	}
 	
 	@Override
-    public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count)
+	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft)
     {
-    	super.onUsingItemTick(stack, player, count);
-    	World world = player.worldObj;
     	InformationEnergy inf = loadInformation(stack, player);
     	int dTick = inf.getDeltaTick();
     	
@@ -80,27 +79,22 @@ public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshai
 			}
 		}
     }
-
+	
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer player) {
-
-		InformationEnergy inf = loadInformation(par1ItemStack, player);
-		processRightClick(inf, par1ItemStack, par2World, player);
-		if (player.isUsingItem() && canShoot(player, par1ItemStack)) {
-			if (par2World.isRemote)
-				par2World.spawnEntityInWorld(new EntityEgonRay(par2World,
-						player, par1ItemStack));
+	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
+		super.onItemClick(world, player, stack, left);
+		InformationEnergy inf = loadInformation(stack, player);
+		if (ItemHelper.getUsingTickLeft(player) > 0 && canShoot(player, stack)) {
+			if (world.isRemote)
+				world.spawnEntityInWorld(new EntityEgonRay(world,
+						player, stack));
 			else {
-				par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, player, par1ItemStack));
-				par2World.playSoundAtEntity(player, SND_WINDUP, 0.5F, 1.0F);
+				world.spawnEntityInWorld(new EntityBulletEgon(world, player, stack));
+				world.playSoundAtEntity(player, SND_WINDUP, 0.5F, 1.0F);
 			}
-		} else par2World.playSoundAtEntity(player, SND_OFF, 0.5F, 1.0F);
+		} else world.playSoundAtEntity(player, SND_OFF, 0.5F, 1.0F);
 
 		inf.ticksExisted = inf.lastTick = 0;
-
-		return par1ItemStack;
-
 	}
 
 	@Override
@@ -109,7 +103,6 @@ public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshai
 		if(!par2World.isRemote)
 			par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, player, par1ItemStack));
 		doUplift(information, player);
-		player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		return;
 	}
 
@@ -119,38 +112,33 @@ public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshai
 	}
 
 	@Override
-	public double getPushForce(int mode) {
+	public double getPushForce(boolean left) {
 		return 0;
 	}
 
 	@Override
-	public int getDamage(int mode) {
+	public int getDamage(boolean lefte) {
 		return 10;
 	}
 
 	@Override
-	public int getOffset(int mode) {
+	public int getOffset(boolean left) {
 		return 2;
 	}
 
 	@Override
-	public int getShootTime(int mode) {
+	public int getShootTime(boolean left) {
 		return 4;
 	}
 
 	@Override
-	public String getSoundShoot(int mode) {
+	public String getSoundShoot(boolean left) {
 		return "";
 	}
 
 	@Override
-	public String getSoundJam(int mode) {
+	public String getSoundJam(boolean left) {
 		return "cbc.weapons.gunjam_a";
-	}
-
-	@Override
-	public String getModeDescription(int mode) {
-		return "mode.egon";
 	}
 
 	@Override

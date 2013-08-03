@@ -15,6 +15,7 @@
 package cn.lambdacraft.core;
 
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.logging.Logger;
 
 import net.minecraft.client.Minecraft;
@@ -85,6 +86,8 @@ public class CBCMod implements ITickHandler {
 
 	@SideOnly(Side.CLIENT)
 	private Minecraft mc;
+	
+	protected static HashSet<ITickCallback> constCallbacks = new HashSet();
 
 	/**
 	 * 日志
@@ -133,14 +136,9 @@ public class CBCMod implements ITickHandler {
 
 		config = new Config(event.getSuggestedConfigurationFile());
 		EnergyNet.initialize();
-
+		proxy.preInit();
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
-
-		if (FMLCommonHandler.instance().getSide().isClient()) {
-			MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
-			CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
-		}
 
 	}
 
@@ -219,7 +217,7 @@ public class CBCMod implements ITickHandler {
 			tickCallback.tickCallback(world);
 			proxy.profilerEndSection();
 		}
-
+		
 		proxy.profilerEndStartSection("ContTickCallback");
 
 		worldData.continuousTickCallbacksInUse = true;
@@ -240,7 +238,16 @@ public class CBCMod implements ITickHandler {
 				.removeAll(worldData.continuousTickCallbacksToRemove);
 		worldData.continuousTickCallbacksToRemove.clear();
 
+		proxy.profilerEndStartSection("ConstTickCallback");
+		for(ITickCallback cb : constCallbacks) {
+			cb.tickCallback(world);
+		}
 		proxy.profilerEndSection();
+	}
+	
+	public static void addConstCallbacks(ITickCallback... callbacks) {
+		for(ITickCallback c : callbacks)
+			constCallbacks.add(c);
 	}
 
 	@Override

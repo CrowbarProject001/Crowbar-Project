@@ -9,6 +9,7 @@ import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityARGrenade;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
+import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -26,7 +27,7 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 
 	public Weapon_9mmAR(int par1) {
 
-		super(par1, CBCItems.ammo_9mm2.itemID, 2);
+		super(par1, CBCItems.ammo_9mm2.itemID);
 		setIAndU("weapon_9mmar");
 		setCreativeTab(CBCMod.cct);
 		setMaxDamage(51);
@@ -39,8 +40,8 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	@Override
 	public boolean canShoot(EntityPlayer player, ItemStack is) {
 		InformationBullet inf = this.getInformation(is, player.worldObj);
-		int mode = getMode(is);
-		return mode == 0 ? super.canShoot(player, is) : (player.capabilities.isCreativeMode || AmmoManager.hasAmmo(CBCItems.ammo_argrenade.itemID, player));
+		boolean side = getUsingSide(is);
+		return side ? super.canShoot(player, is) : (player.capabilities.isCreativeMode || AmmoManager.hasAmmo(CBCItems.ammo_argrenade.itemID, player));
 	}
 
 	@Override
@@ -51,30 +52,21 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
-		processRightClick(par1ItemStack, par2World, par3EntityPlayer);
-		return par1ItemStack;
-	}
-
-	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3Entity, InformationBullet information) {
+			EntityPlayer par3Entity, InformationBullet information, boolean left) {
 
-		int mode = getMode(par1ItemStack);
-		if (mode == 0) {
-			super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information);
+		if (left) {
+			super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information, left);
 		} else {
 			if (par3Entity.capabilities.isCreativeMode || AmmoManager.tryConsume(par3Entity,
 					CBCItems.ammo_argrenade.itemID, 1) == 0) {
 				if(!par2World.isRemote) {
 					par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
 					par2World.playSoundAtEntity(par3Entity,
-							getSoundShoot(mode), 0.5F, 1.0F);
+							getSoundShoot(left), 0.5F, 1.0F);
 				}
 			}	
 		}
-		par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 		information.setLastTick();
 		return;
 	}
@@ -89,45 +81,40 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 	}
 
 	@Override
-	public String getSoundShoot(int mode) {
-		return mode == 0 ? "cbc.weapons.hksa"
+	public String getSoundShoot(boolean left) {
+		return left ? "cbc.weapons.hksa"
 				: (itemRand.nextFloat() * 2 > 1 ? "cbc.weapons.glauncher"
 						: "cbc.weapons.glauncherb");
 	}
 
 	@Override
-	public String getSoundJam(int mode) {
+	public String getSoundJam(boolean left) {
 		return "cbc.weapons.gunjam_a";
 	}
 
 	@Override
-	public String getSoundReload(int mode) {
+	public String getSoundReload(boolean left) {
 		return "cbc.weapons.nmmarr";
 	}
 
 	@Override
-	public int getShootTime(int mode) {
-		return mode == 0 ? 4 : 20;
+	public int getShootTime(boolean left) {
+		return left ? 4 : 20;
 	}
 
 	@Override
-	public double getPushForce(int mode) {
+	public double getPushForce(boolean left) {
 		return 0;
 	}
 
 	@Override
-	public int getDamage(int mode) {
+	public int getDamage(boolean left) {
 		return 4;
 	}
 
 	@Override
-	public int getOffset(int mode) {
+	public int getOffset(boolean left) {
 		return 0;
-	}
-
-	@Override
-	public String getModeDescription(int mode) {
-		return mode == 0 ? "mode.9mmar1" : "mode.9mmar2";
 	}
 	
 	@Override

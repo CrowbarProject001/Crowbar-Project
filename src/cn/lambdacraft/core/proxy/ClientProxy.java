@@ -14,14 +14,22 @@
  */
 package cn.lambdacraft.core.proxy;
 
+import org.lwjgl.input.Keyboard;
+
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.CBCPlayer;
+import cn.lambdacraft.core.client.keys.KeyUse;
 import cn.lambdacraft.core.register.CBCKeyProcess;
+import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.deathmatch.client.render.RenderEmptyBlock;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.src.PlayerAPI;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * 客户端代理加载。
@@ -36,8 +44,14 @@ public class ClientProxy extends Proxy {
 		super.init();
 		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
 		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
-		KeyBindingRegistry.registerKeyBinding(new CBCKeyProcess());
+		TickRegistry.registerTickHandler(new CBCKeyProcess(), Side.CLIENT);
 		ClientProps.loadProps(CBCMod.config);
+	}
+	
+	@Override
+	public void preInit() {
+		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
 	}
 
 	public void profilerStartSection(String section) {

@@ -34,15 +34,10 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 	public static final int RECOVER_TIME = 10;
 
 	public Weapon_Hornet(int par1) {
-		super(par1, 0, 2);
+		super(par1, 0);
 		setMaxDamage(9);
 		setCreativeTab(CBCMod.cct);
 		setIAndU("weapon_hornet");
-	}
-
-	@Override
-	public String getModeDescription(int mode) {
-		return mode == 0 ? "mode.hornet1" : "mode.hornet2";
 	}
 
 	@Override
@@ -60,30 +55,18 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 		}
 	}
 
-	/**
-	 * Called whenever this item is equipped and the right mouse button is
-	 * pressed. Args: itemStack, world, entityPlayer
-	 */
-	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer) {
-		this.processRightClick(par1ItemStack, par2World, par3EntityPlayer);
-		return par1ItemStack;
-	}
-
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
-			EntityPlayer player, InformationBullet information) {
+			EntityPlayer player, InformationBullet information, boolean left) {
 
 		if (!(player.capabilities.isCreativeMode))
 			par1ItemStack.damageItem(1, player);
 		player.setItemInUse(par1ItemStack,
 				this.getMaxItemUseDuration(par1ItemStack));
 		if (!par2World.isRemote)
-			par2World.spawnEntityInWorld(new EntityHornet(par2World, player,
-					this.getMode(par1ItemStack) == 0 ? true : false));
+			par2World.spawnEntityInWorld(new EntityHornet(par2World, player, left));
 		par2World.playSoundAtEntity(player,
-				this.getSoundShoot(this.getMode(par1ItemStack)), 0.5F, 1.0F);
+				this.getSoundShoot(left), 0.5F, 1.0F);
 		information.setLastTick();
 		return;
 	}
@@ -93,22 +76,22 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 			EntityPlayer par3Entity, InformationBullet information) {}
 
 	@Override
-	public double getPushForce(int mode) {
+	public double getPushForce(boolean left) {
 		return 0;
 	}
 
 	@Override
-	public int getDamage(int mode) {
+	public int getDamage(boolean left) {
 		return 4;
 	}
 
 	@Override
-	public int getOffset(int mode) {
+	public int getOffset(boolean left) {
 		return 0;
 	}
 
 	@Override
-	public String getSoundShoot(int mode) {
+	public String getSoundShoot(boolean left) {
 		int random = (int) (itemRand.nextFloat() * 3);
 		return random == 0 ? "cbc.weapons.ag_firea"
 				: (random == 1 ? "cbc.weapons.ag_fireb"
@@ -116,18 +99,18 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 	}
 
 	@Override
-	public String getSoundJam(int mode) {
+	public String getSoundJam(boolean left) {
 		return "";
 	}
 
 	@Override
-	public String getSoundReload(int mode) {
+	public String getSoundReload(boolean left) {
 		return "";
 	}
 
 	@Override
-	public int getShootTime(int mode) {
-		return mode == 0 ? 5 : 2;
+	public int getShootTime(boolean left) {
+		return left ? 5 : 2;
 	}
 
 }

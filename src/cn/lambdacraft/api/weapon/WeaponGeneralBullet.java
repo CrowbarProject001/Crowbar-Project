@@ -16,6 +16,7 @@ import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
+import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,16 +26,14 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author WeAthFolD
  * 
  */
-public abstract class WeaponGeneralBullet extends WeaponGeneral implements
-		IHudTipProvider {
+public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudTipProvider {
 
 	public int reloadTime;
 	public int jamTime;
 
-	public WeaponGeneralBullet(int par1, int par2ammoID, int par3maxModes) {
+	public WeaponGeneralBullet(int par1, int par2ammoID) {
 
-		super(par1, par2ammoID, par3maxModes);
-		maxModes = par3maxModes;
+		super(par1, par2ammoID);
 
 		upLiftRadius = 10;
 		recoverRadius = 2;
@@ -42,31 +41,33 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 
 	}
 
-	/**
-	 * Generally do the itemRightClick processing.
-	 */
-	public InformationBullet processRightClick(ItemStack par1ItemStack,
-			World par2World, EntityPlayer par3EntityPlayer) {
-
-		InformationBullet information = loadInformation(par1ItemStack,
-				par3EntityPlayer);
-		Boolean canUse = canShoot(par3EntityPlayer, par1ItemStack);
-		int mode = getMode(par1ItemStack);
-
+	
+	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
+		InformationBullet information = loadInformation(stack, player);
+		Boolean canUse = canShoot(player, stack);
+		this.setUsingSide(stack, left);
 		if (canUse) {
 			if (!information.isReloading) {
-				if (information.getDeltaTick() >= getShootTime(mode)) {
-					this.onBulletWpnShoot(par1ItemStack, par2World,
-							par3EntityPlayer, information);
+				if(this.doesShoot(information, player, stack)) {
+					this.onBulletWpnShoot(stack, world, player, information, left);
 				}
-				par3EntityPlayer.setItemInUse(par1ItemStack,
-						getMaxItemUseDuration(par1ItemStack));
+				ItemHelper.setItemInUse(player, stack, this.getMaxItemUseDuration(stack), left);
 			}
 		} else {
-			onSetReload(par1ItemStack, par3EntityPlayer);
+			onSetReload(stack, player);
 		}
 
-		return information;
+		return;
+	}
+	
+	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft) {
+		InformationBullet information = loadInformation(stack, player);
+
+		if (doesShoot(information, player, stack))
+			this.onBulletWpnShoot(stack, world, player, information, type);
+
+		else if (doesJam(information, player, stack))
+			this.onBulletWpnJam(stack, world, player, information);
 	}
 
 	public InformationBullet onBulletWpnUpdate(ItemStack par1ItemStack,
@@ -92,19 +93,6 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 	}
 
 	@Override
-	public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count) {
-		InformationBullet information = loadInformation(stack, player);
-		World world = player.worldObj;
-
-		if (doesShoot(information, player, stack))
-			this.onBulletWpnShoot(stack, world, player, information);
-
-		else if (doesJam(information, player, stack))
-			this.onBulletWpnJam(stack, world, player, information);
-
-	}
-
-	@Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3EntityPlayer, int par4) {
 	}
@@ -124,10 +112,10 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 	public boolean doesShoot(InformationBullet inf, EntityPlayer player,
 			ItemStack itemStack) {
 		boolean canUse;
-		int mode = getMode(itemStack);
+		boolean side = this.getUsingSide(itemStack);
 		canUse = canShoot(player, itemStack);
-		return getShootTime(mode) != 0 && canUse
-				&& inf.getDeltaTick() >= getShootTime(mode) && !inf.isReloading;
+		return getShootTime(side) != 0 && canUse
+				&& inf.getDeltaTick() >= getShootTime(side) && !inf.isReloading;
 	}
 
 	/**
@@ -152,33 +140,30 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 	}
 
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
-			EntityPlayer player, InformationBullet information) {
+			EntityPlayer player, InformationBullet information, boolean left) {
 
 		BulletManager.Shoot(par1ItemStack, player, par2World);
 		if (!(player.capabilities.isCreativeMode))
 			par1ItemStack.damageItem(1, player);
-		par2World.playSoundAtEntity(player,
-				this.getSoundShoot(this.getMode(par1ItemStack)), 0.5F, 1.0F);
+		par2World.playSoundAtEntity(player,this.getSoundShoot(this.getUsingSide(par1ItemStack)), 0.5F, 1.0F);
 		doUplift(information, player);
-		player.setItemInUse(par1ItemStack,
-				this.getMaxItemUseDuration(par1ItemStack));
 		information.setLastTick();
 	}
 
 	public void onBulletWpnJam(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3Entity, InformationBullet information) {
-		int mode = getMode(par1ItemStack);
-		par2World.playSoundAtEntity(par3Entity, getSoundJam(mode), 0.5F, 1.0F);
+		boolean side = this.getUsingSide(par1ItemStack);
+		par2World.playSoundAtEntity(par3Entity, getSoundJam(side), 0.5F, 1.0F);
 		information.setLastTick();
 	}
 
 	public boolean onSetReload(ItemStack itemStack, EntityPlayer player) {
 		InformationBullet inf = loadInformation(itemStack, player);
-		int mode = getMode(itemStack);
+		boolean side = this.getUsingSide(itemStack);
 		if (itemStack.getItemDamage() <= 0)
 			return false;
 		if (!inf.isReloading && itemStack.getItemDamage() > 0) {
-			player.worldObj.playSoundAtEntity(player, getSoundReload(mode),
+			player.worldObj.playSoundAtEntity(player, getSoundReload(side),
 					0.5F, 1.0F);
 			inf.isReloading = true;
 			inf.setLastTick();
@@ -242,7 +227,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-		return 2 * this.getShootTime(getMode(par1ItemStack));
+		return 600;
 	}
 
 	// -------------------Interfaces-------------------
@@ -253,7 +238,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 	 * @param mode
 	 * @return sound path
 	 */
-	public abstract String getSoundShoot(int mode);
+	public abstract String getSoundShoot(boolean left);
 
 	/**
 	 * Get the gun jamming sound path corresponding to the mode.
@@ -261,7 +246,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 	 * @param mode
 	 * @return sound path
 	 */
-	public abstract String getSoundJam(int mode);
+	public abstract String getSoundJam(boolean left);
 
 	/**
 	 * Get the reload sound path corresponding to the mode.
@@ -269,7 +254,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 	 * @param mode
 	 * @return sound path
 	 */
-	public abstract String getSoundReload(int mode);
+	public abstract String getSoundReload(boolean left);
 
 	/**
 	 * Get the shoot time corresponding to the mode.
@@ -277,7 +262,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements
 	 * @param mode
 	 * @return shoot time
 	 */
-	public abstract int getShootTime(int mode);
+	public abstract int getShootTime(boolean left);
 
 	/**
 	 * Set the reload time.

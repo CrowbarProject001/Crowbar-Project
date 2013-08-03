@@ -100,4 +100,9 @@ public class Proxy {
 						.replace("\n", System.getProperty("line.separator")));
 	}
 
+	public void preInit() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

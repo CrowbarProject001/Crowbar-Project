@@ -24,10 +24,10 @@ public interface IKeyProcess {
 	/**
 	 * 处理键位被按下时的行为。
 	 */
-	public void onKeyDown();
+	public void onKeyDown(boolean tickEnd);
 
 	/**
 	 * 处理键位被松开时的行为。
 	 */
-	public void onKeyUp();
+	public void onKeyUp(boolean tickEnd);
 }

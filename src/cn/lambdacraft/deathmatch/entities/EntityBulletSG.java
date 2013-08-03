@@ -63,7 +63,7 @@ public class EntityBulletSG extends EntityBullet {
 
 	protected void doEntityCollision(Entity ent) {
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
-		int damage = item.getDamage(item.getMode(itemStack));
+		int damage = item.getDamage(item.getUsingSide(itemStack));
 		ent.hurtResistantTime = -1;
 		BulletManager.doEntityAttack(ent, DamageSource.causeMobDamage(getThrower()), damage);
 	}

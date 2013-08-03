@@ -78,8 +78,9 @@ public class ModuleMob {
 				EnumCreatureType.monster, GENERIC_GEN);
 		EntityRegistry.addSpawn(EntityHoundeye.class, 15, 0, 70,
 				EnumCreatureType.monster, GENERIC_GEN);
-		EntityRegistry.addSpawn(EntityBarnacle.class, 10, 0, 65,
-				EnumCreatureType.monster, BARNACLE_GEN);
+		EntityRegistry.addSpawn(EntityAlienSlave.class, 15, 0, 70,
+				EnumCreatureType.monster, GENERIC_GEN);
+		EntityRegistry.addSpawn(EntityBarnacle.class, 5, 0, 65, EnumCreatureType.monster, BARNACLE_GEN);
 
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER, new NetSentrySync());
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark",

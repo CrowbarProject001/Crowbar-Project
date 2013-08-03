@@ -53,11 +53,11 @@ public class EntityBullet extends EntityThrowable {
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		double f1 = par1World.isRemote ? 0.06 : 0.3;
 		motion = new MotionXYZ(this).setMotionOffset(f1 * item.getOffset(item
-				.getMode(itemStack)));
+				.getUsingSide(itemStack)));
 		this.motionX = motion.motionX;
 		this.motionY = motion.motionY;
 		this.motionZ = motion.motionZ;
-		int mode = item.getMode(itemStack);
+		boolean mode = item.getUsingSide(itemStack);
 		this.damage = item.getDamage(mode);
 		this.pushForce = item.getPushForce(mode);
 	}

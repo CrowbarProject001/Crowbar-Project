@@ -6,6 +6,7 @@ import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
+import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,31 +19,35 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 
 	public int jamTime;
 
-	public WeaponGeneralEnergy(int par1, int par2AmmoID, int par3MaxModes) {
-		super(par1, par2AmmoID, par3MaxModes);
+	public WeaponGeneralEnergy(int par1, int par2AmmoID) {
+		super(par1, par2AmmoID);
 		type = 1;
 	}
 
 	@Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,EntityPlayer par3EntityPlayer, int par4) {}
 	
-	/**
-	 * Generally do the itemRightClick processing.
-	 */
-	public void processRightClick(InformationEnergy inf,
-			ItemStack stack, World world,
-			EntityPlayer player) {
-
-		if (stack.stackTagCompound == null)
-			stack.stackTagCompound = new NBTTagCompound();
-		int mode = this.getMode(stack);
-
+	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
+		this.setUsingSide(stack, left);
+		
+		boolean side = this.getUsingSide(stack);
+		
 		Boolean canUse = canShoot(player, stack);
+		InformationEnergy inf = loadInformation(stack, player);
 		if(canUse) {
 			if (doesShoot(inf, stack, player))
-				onEnergyWpnShoot(stack, world, player,inf);
+				onEnergyWpnShoot(stack, world, player, inf);
+			ItemHelper.setItemInUse(player, stack, this.getMaxItemUseDuration(stack), left);
 		}
-		player.setItemInUse(stack, getMaxItemUseDuration(stack));
+	}
+	
+	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft) {
+    	InformationEnergy inf = loadInformation(stack, player);
+    	if (doesJam(inf, stack, player)) 
+			this.onEnergyWpnJam(stack, world, player, inf);
+		
+    	if (doesShoot(inf, stack, player)) 
+			this.onEnergyWpnShoot(stack, world, player, inf);
 	}
 
 	public InformationEnergy onEnergyWpnUpdate(ItemStack par1ItemStack,
@@ -53,24 +58,6 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 		return information;
 
 	}
-	
-    /**
-     * Called each tick while using an item.
-     * @param stack The Item being used
-     * @param player The Player using the item
-     * @param count The amount of time in tick the item has been used for continuously
-     */
-    public void onUsingItemTick(ItemStack stack, EntityPlayer player, int count)
-    {
-    	World world = player.worldObj;
-    	InformationEnergy inf = loadInformation(stack, player);
-    	if (doesJam(inf, stack, player)) 
-			this.onEnergyWpnJam(stack, world, player, inf);
-		
-    	if (doesShoot(inf, stack, player)) 
-			this.onEnergyWpnShoot(stack, world, player, inf);
-    }
-
 	/**
 	 * Determine if the shoot method should be called this tick.
 	 * 
@@ -79,8 +66,8 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 	public boolean doesShoot(InformationEnergy inf, ItemStack itemStack,
 			EntityPlayer player) {
 		boolean canUse = canShoot(player, itemStack);
-		int mode = getMode(itemStack);
-		return getShootTime(mode) > 0 && canUse && inf.getDeltaTick() >= getShootTime(mode);
+		boolean side = this.getUsingSide(itemStack);
+		return getShootTime(side) > 0 && canUse && inf.getDeltaTick() >= getShootTime(side);
 	}
 
 	/**
@@ -100,9 +87,9 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3Entity, InformationEnergy information) {
 
-		int mode = getMode(par1ItemStack);
+		boolean side = this.getUsingSide(par1ItemStack);
 
-		par2World.playSoundAtEntity(par3Entity, getSoundShoot(mode), 0.5F, 1.0F);
+		par2World.playSoundAtEntity(par3Entity, getSoundShoot(side), 0.5F, 1.0F);
 		BulletManager.Shoot(par1ItemStack, par3Entity, par2World);
 		information.setLastTick();
 
@@ -121,16 +108,20 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 			EntityPlayer par3Entity, InformationEnergy information) {
 
 		int maxDmg = par1ItemStack.getMaxDamage();
-		int mode = getMode(par1ItemStack);
+		boolean side = this.getUsingSide(par1ItemStack);
 
 		if (par1ItemStack.getItemDamage() < maxDmg) {
 			return;
 		}
 
-		par2World.playSoundAtEntity(par3Entity, getSoundJam(mode), 0.5F,
+		par2World.playSoundAtEntity(par3Entity, getSoundJam(side), 0.5F,
 				0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 		information.setLastTick();
 
+	}
+	
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return 600;
 	}
 	
 	//----------------------Utilitiies------------------
@@ -188,7 +179,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 	 * @param mode
 	 * @return shootTime
 	 */
-	public abstract int getShootTime(int mode);
+	public abstract int getShootTime(boolean side);
 	
 	@Override
 	public abstract void onUpdate(ItemStack par1ItemStack, World par2World,
@@ -201,7 +192,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 	 * @return damage
 	 */
 	@Override
-	public abstract int getDamage(int mode);
+	public abstract int getDamage(boolean side);
 
 	/**
 	 * Get the shoot sound path corresponding to the mode.
@@ -209,7 +200,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 	 * @param mode
 	 * @return sound path
 	 */
-	public abstract String getSoundShoot(int mode);
+	public abstract String getSoundShoot(boolean side);
 
 	/**
 	 * Get the jam sound path corresponding to the mode.
@@ -217,7 +208,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 	 * @param mode
 	 * @return sound path
 	 */
-	public abstract String getSoundJam(int mode);
+	public abstract String getSoundJam(boolean side);
 	
 	//--------------------CLIENT------------------
 	@Override

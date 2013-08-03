@@ -18,6 +18,7 @@ import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.entities.fx.EntityCrossbowStill;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
@@ -68,12 +69,17 @@ public class EntityCrossbowArrow extends EntityThrowable {
 					damage *= 0.6;
 				}
 				else {
-					worldObj.spawnEntityInWorld(
+					int blockId = worldObj.getBlockId(var1.blockX, var1.blockY, var1.blockZ);
+					if(blockId == Block.thinGlass.blockID || blockId == Block.glass.blockID) {
+						worldObj.destroyBlock(var1.blockX, var1.blockY, var1.blockZ, false);
+					} else { 
+						this.setDead();
+						worldObj.spawnEntityInWorld(
 							new EntityCrossbowStill(worldObj, new MotionXYZ(var1.hitVec.xCoord, var1.hitVec.yCoord, var1.hitVec.zCoord, motionX, motionY, motionZ),
 									this.rotationYaw, this.rotationPitch));
+					}
 				}
 			}
-			this.setDead();
 		}
 	}
 

@@ -6,6 +6,7 @@ import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.core.proxy.GeneralProps;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,11 +18,16 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public abstract class WeaponGeneral extends CBCGenericItem implements IModdable {
+public abstract class WeaponGeneral extends CBCGenericItem implements ISpecialUseable {
 
-	public int maxModes, type;
+	public int type;
 	public int ammoID;
 	public double upLiftRadius, recoverRadius;
+	
+	/**
+	 * 撤销左键射击的动作，为了左键射击的方便使用而设计。
+	 */
+	public boolean abortAnim = true;
 
 	/**
 	 * 
@@ -32,11 +38,10 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 	 * @param par3MaxModes
 	 *            最大模式数。（不一定被使用）
 	 */
-	public WeaponGeneral(int par1, int par2AmmoID, int par3MaxModes) {
+	public WeaponGeneral(int par1, int par2AmmoID) {
 		super(par1);
 		setMaxStackSize(1);
 		this.setFull3D();
-		maxModes = par3MaxModes;
 		ammoID = par2AmmoID;
 	}
 
@@ -62,8 +67,7 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 		if (!(par3Entity instanceof EntityPlayer) || !par5)
 			return null;
 
-		InformationWeapon information = loadInformation(par1ItemStack,
-				(EntityPlayer) par3Entity);
+		InformationWeapon information = loadInformation(par1ItemStack, (EntityPlayer) par3Entity);
 		if (information == null) 
 			return null;
 		
@@ -75,9 +79,28 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 			if (information.recoverTick >= (upLiftRadius / recoverRadius))
 				information.isRecovering = false;
 		}
+		if(par3Entity instanceof EntityLiving && abortAnim) {
+			((EntityLiving)par3Entity).isSwingInProgress = false;
+		}
+		
 		return information;
 
 	}
+	
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
+    {
+    	return abortAnim;
+    }
+    
+    public boolean onBlockStartBreak(ItemStack itemstack, int i, int j, int k, EntityPlayer player)
+    {
+    	return abortAnim;
+    }
+    
+    public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving)
+    {
+    	return abortAnim;
+    }
 
 	/**
 	 * 进行射击时枪口上抬。
@@ -94,15 +117,6 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 		information.recoverTick = 0;
 
 	}
-
-	/**
-	 * 获取武器模式说明。(Unlocalized)
-	 * 
-	 * @param mode
-	 *            武器模式
-	 * @return mode 说明
-	 */
-	public abstract String getModeDescription(int mode);
 
 	/**
 	 * 加载武器信息。
@@ -128,7 +142,7 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 	 * @param mode
 	 *            当前武器模式
 	 */
-	public abstract double getPushForce(int mode);
+	public abstract double getPushForce(boolean left);
 
 	/**
 	 * 获得武器对生物的伤害。
@@ -136,7 +150,7 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 	 * @param mode
 	 *            当前武器模式
 	 */
-	public abstract int getDamage(int mode);
+	public abstract int getDamage(boolean left);
 
 	/**
 	 * 获得武器射击的位置偏移。
@@ -144,32 +158,20 @@ public abstract class WeaponGeneral extends CBCGenericItem implements IModdable 
 	 * @param mode
 	 *            当前武器模式
 	 */
-	public abstract int getOffset(int mode);
+	public abstract int getOffset(boolean left);
 
 	/**
 	 * 在切换模式时调用这个函数。
 	 */
-	public void onModeChange(ItemStack item, EntityPlayer player, int newMode) {
+	public void setUsingSide(ItemStack item, boolean side) {
 		if (item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();
-		item.getTagCompound().setInteger("mode", newMode);
-	}
-
-	/**
-	 * 获取武器的模式。
-	 * 
-	 * @param item
-	 * @return
-	 */
-	public int getMode(ItemStack item) {
-		if (item.stackTagCompound == null)
-			item.stackTagCompound = new NBTTagCompound();
-		return item.getTagCompound().getInteger("mode");
+		item.getTagCompound().setBoolean("side", side);
 	}
 	
-	@Override
-	public int getMaxModes() {
-		return maxModes;
+	public boolean getUsingSide(ItemStack item) {
+		if (item.stackTagCompound == null)
+			item.stackTagCompound = new NBTTagCompound();
+		return item.stackTagCompound.getBoolean("side");
 	}
-
 }

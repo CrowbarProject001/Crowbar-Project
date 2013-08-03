@@ -155,7 +155,9 @@ public class EntityBarnacle extends EntityLiving {
 				MotionXYZ mo = new MotionXYZ(this);
 				MovingObjectPosition result = worldObj.rayTraceBlocks(mo.asVec3(worldObj), mo.asVec3(worldObj).addVector(0.0, 40.0, 0.0));
 				if(result != null && worldObj.isBlockSolidOnSide(result.blockX, result.blockY, result.blockZ, ForgeDirection.DOWN)) {
-					this.setPosition(result.blockX + 0.5, result.blockY - 1.0, result.blockZ + 0.5);
+					if(worldObj.isBlockNormalCube(result.blockX, result.blockY + 1, result.blockZ)) {
+						this.setPosition(result.blockX + 0.5, result.blockY - 1.0, result.blockZ + 0.5);
+					} else this.setDead();
 				} else this.setDead();
 			} else {
 				health = 0;
@@ -167,7 +169,7 @@ public class EntityBarnacle extends EntityLiving {
 		} else detach = false;
 		
 		//Disappear if in peaceful
-		if(worldObj.difficultySetting == 0)
+		if(!worldObj.isRemote && worldObj.difficultySetting == 0)
 			this.setDead();
 	}
 	

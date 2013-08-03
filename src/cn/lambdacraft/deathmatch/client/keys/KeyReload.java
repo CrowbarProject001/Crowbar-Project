@@ -11,8 +11,9 @@ import net.minecraft.item.ItemStack;
 public class KeyReload implements IKeyProcess {
 
 	@Override
-	public void onKeyDown() {
-
+	public void onKeyDown(boolean isEnd) {
+		if(isEnd)
+			return;
 		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
 		if (player == null)
 			return;
@@ -28,7 +29,9 @@ public class KeyReload implements IKeyProcess {
 	}
 
 	@Override
-	public void onKeyUp() {
+	public void onKeyUp(boolean isEnd) {
+		if(isEnd)
+			return;
 	}
 
 	private void onReload(ItemStack is, InformationBullet inf,

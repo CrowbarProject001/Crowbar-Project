@@ -66,7 +66,7 @@ public class EntityRPGDot extends EntityThrowable {
 			setDead();
 			return;
 		} else {
-			int mode = DMItems.weapon_RPG.getMode(currentItem);
+			int mode = 0;
 			if (mode == 0)
 				this.setDead();
 		}

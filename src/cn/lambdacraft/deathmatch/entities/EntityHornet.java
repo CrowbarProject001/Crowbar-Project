@@ -152,7 +152,7 @@ public class EntityHornet extends EntityThrowable {
 				return;
 			BulletManager.doEntityAttack(m.entityHit,
 					DamageSource.causeMobDamage(getThrower()),
-					DMItems.weapon_hornet.getDamage(0));
+					DMItems.weapon_hornet.getDamage(searchForPlayer));
 			this.setDead();
 		}
 	}

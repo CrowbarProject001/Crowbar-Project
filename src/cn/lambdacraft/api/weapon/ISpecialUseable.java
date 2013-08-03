@@ -16,17 +16,25 @@ package cn.lambdacraft.api.weapon;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 /**
- * 实现它令一个武器可以切换模式。（自带的V键）
+ * 对于物品的主攻击键提供支持。
+ * @see cn.lambdacraft.deathmatch.client.keys.KeyClicking
  * @author WeAthFolD
+ *
  */
-@Deprecated
-public interface IModdable {
+public interface ISpecialUseable {
 	
-	public void onModeChange(ItemStack item, EntityPlayer player, int newMode);
-	public int getMode(ItemStack item);
-	public int getMaxModes();
-	public String getModeDescription(int mode);
+	/**
+	 * Fired both client and server side, called to update clicking action.
+	 * @see cn.lambdacraft.deathmatch.utils.ItemHelper#setItemInUse(EntityPlayer, ItemStack, int, boolean)
+	 * @param world
+	 * @param player
+	 * @param stack
+	 * @param left
+	 */
+	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left);
+	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft);
 	
 }

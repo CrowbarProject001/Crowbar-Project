@@ -14,10 +14,13 @@
  */
 package cn.lambdacraft.deathmatch.register;
 
+import cn.lambdacraft.api.weapon.WeaponGeneral;
+import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
+import cn.lambdacraft.deathmatch.items.wpns.Weapon_9mmhandgun;
 import cn.lambdacraft.mob.entities.EntityBarnacle;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,6 +33,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.CanUpdate;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
 /**
  * 统一的Forge事件处理。
@@ -58,5 +62,15 @@ public class DMEventHandler {
 			HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
 		}
 	}
+	
+	  @ForgeSubscribe
+	  public void onInteract(EntityInteractEvent event)
+	  {
+		  ItemStack curItem = event.entityPlayer.getCurrentEquippedItem();
+		  if(curItem != null && curItem.getItem() instanceof WeaponGeneral) {
+                  if(((WeaponGeneral)curItem.getItem()).abortAnim)
+                	  event.setCanceled(true);
+		  }
+	  }
 	
 }
