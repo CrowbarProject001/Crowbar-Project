@@ -5,34 +5,25 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import scala.Char;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import cn.lambdacraft.api.hud.IHudTip;
-import cn.lambdacraft.api.hud.IHudTipProvider;
-import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.item.ElectricArmor;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
 import cn.lambdacraft.deathmatch.register.DMItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.EnumHelper;
 
@@ -81,7 +72,7 @@ public class ArmorHEV extends ElectricArmor {
 			DamageSource source, double damage, int slot) {
 		if (getItemCharge(armor) <= this.energyPerDamage)
 			return propNone;
-		EnumSet<EnumAttachment> attaches = this.getAttachments(armor);
+		EnumSet<EnumAttachment> attaches = ArmorHEV.getAttachments(armor);
 		if(attaches.contains(EnumAttachment.DEFENSE)) {
 			if (source == DamageSource.fall) {
 				if (slot == 0 && attaches.contains(EnumAttachment.FALLING))
@@ -280,7 +271,7 @@ public class ArmorHEV extends ElectricArmor {
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		EnumSet<EnumAttachment> attaches = getAttachments(par1ItemStack);
-		par3List.add(EnumChatFormatting.RED + "Mark " + this.hevMark);
+		par3List.add(EnumChatFormatting.RED + "Mark " + ArmorHEV.hevMark);
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
 		if(attaches != null)
 			for(EnumAttachment a : attaches)

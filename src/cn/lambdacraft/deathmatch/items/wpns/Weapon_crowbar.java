@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.world.World;
 
-public class Weapon_Crowbar extends ItemSword implements ISpecialUseable {
+public class Weapon_Crowbar extends ItemSword {
 
 	public Weapon_Crowbar(int item_id) {
 		super(item_id, EnumToolMaterial.IRON);
@@ -25,20 +25,6 @@ public class Weapon_Crowbar extends ItemSword implements ISpecialUseable {
 	public void registerIcons(IconRegister par1IconRegister) {
 		this.itemIcon = par1IconRegister
 				.registerIcon("lambdacraft:weapon_crowbar");
-	}
-
-	@Override
-	public void onItemClick(World world, EntityPlayer player,
-			ItemStack stack, boolean left) {
-		if(ItemHelper.getUsingTickLeft(player) == 0) 
-			ItemHelper.setItemInUse(player, stack, 100, left);
-		System.out.println("OnItemLClick in " + left + " " + world.isRemote);
-	}
-
-	@Override
-	public void onItemUsingTick(World world, EntityPlayer player,
-			ItemStack stack, boolean type, int tickLeft) {
-		System.out.println("UsingTick: " + (type ? "left" : "right") + ", " + tickLeft + " in " + world.isRemote);
 	}
 
 }

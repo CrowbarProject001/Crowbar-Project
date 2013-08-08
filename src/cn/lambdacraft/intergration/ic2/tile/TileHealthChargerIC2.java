@@ -32,6 +32,7 @@ public class TileHealthChargerIC2 extends TileHealthCharger implements ic2.api.e
 		super();
 	}
 	
+	@Override
 	public boolean onElectricTileLoad() {
 		return MinecraftForge.EVENT_BUS.post(new ic2.api.energy.event.EnergyTileLoadEvent(this));
 	}

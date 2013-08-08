@@ -2,8 +2,6 @@ package cn.lambdacraft.api.weapon;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -42,6 +40,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 	}
 
 	
+	@Override
 	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
 		InformationBullet information = loadInformation(stack, player);
 		Boolean canUse = canShoot(player, stack);
@@ -60,6 +59,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IHudT
 		return;
 	}
 	
+	@Override
 	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft) {
 		InformationBullet information = loadInformation(stack, player);
 

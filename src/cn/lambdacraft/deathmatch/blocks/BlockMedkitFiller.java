@@ -19,8 +19,6 @@ import java.util.Random;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.block.CBCBlockContainer;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.intergration.ic2.tile.TileMedkitFillerIC2;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;

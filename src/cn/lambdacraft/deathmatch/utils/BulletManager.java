@@ -89,7 +89,7 @@ public class BulletManager {
             if (entity1.canBeCollidedWith() && b)
             {
                 float f = 0.3F;
-                AxisAlignedBB axisalignedbb = entity1.boundingBox.expand((double)f, (double)f, (double)f);
+                AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f, f, f);
                 MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec1, vec2);
 
                 if (movingobjectposition1 != null)

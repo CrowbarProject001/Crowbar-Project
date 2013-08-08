@@ -14,10 +14,6 @@
  */
 package cn.lambdacraft.deathmatch.entities.fx;
 
-import cn.lambdacraft.deathmatch.register.DMItems;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;

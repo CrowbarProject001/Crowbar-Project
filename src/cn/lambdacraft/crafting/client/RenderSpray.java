@@ -24,12 +24,6 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL21;
-import org.lwjgl.opengl.GL31;
-import org.lwjgl.opengl.GL33;
-
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.crafting.entities.EntitySpray;
@@ -58,7 +52,7 @@ public class RenderSpray extends Render {
 	private void loadTexture(int title_id) {
 		if (title_id >= 2) {
 			// 从custom文件夹下载入制定文件名的bitmap
-			loadTexture(ClientProps.HLSPRAY_DIC_PATH + (String) GenericUtils.getKeyByValueFromMap(HLSpray.listOfLogos, title_id - 2) + ".bmp");
+			loadTexture(ClientProps.HLSPRAY_DIC_PATH + GenericUtils.getKeyByValueFromMap(HLSpray.listOfLogos, title_id - 2) + ".bmp");
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 		}
 		else

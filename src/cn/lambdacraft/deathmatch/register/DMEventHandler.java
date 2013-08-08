@@ -15,24 +15,18 @@
 package cn.lambdacraft.deathmatch.register;
 
 import cn.lambdacraft.api.weapon.WeaponGeneral;
-import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
-import cn.lambdacraft.deathmatch.items.ArmorHEV;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_9mmhandgun;
-import cn.lambdacraft.mob.entities.EntityBarnacle;
+import cn.lambdacraft.deathmatch.items.wpns.Weapon_Satchel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.EntityEvent.CanUpdate;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
 /**
@@ -67,9 +61,14 @@ public class DMEventHandler {
 	  public void onInteract(EntityInteractEvent event)
 	  {
 		  ItemStack curItem = event.entityPlayer.getCurrentEquippedItem();
-		  if(curItem != null && curItem.getItem() instanceof WeaponGeneral) {
+		  if(curItem == null)
+			  return;
+		  if(curItem.getItem() instanceof WeaponGeneral) {
                   if(((WeaponGeneral)curItem.getItem()).abortAnim)
                 	  event.setCanceled(true);
+		  }
+		  else if(curItem.getItem() instanceof Weapon_Satchel) {
+			  event.setCanceled(true);
 		  }
 	  }
 	

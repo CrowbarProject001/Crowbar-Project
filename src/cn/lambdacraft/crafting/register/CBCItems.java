@@ -13,7 +13,6 @@ import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.crafting.items.*;
 import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
-import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
 import cn.lambdacraft.deathmatch.items.ItemAttachment;
 import cn.lambdacraft.deathmatch.items.ItemBattery;
 import cn.lambdacraft.deathmatch.items.ammos.*;
@@ -57,7 +56,7 @@ public class CBCItems {
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
 	public static HLSpray spray;
-	public static Item tin, copper, chip, bucketRadioactive;
+	public static Item tin, copper, chip;
 
 	public static ItemBattery battery;
 
@@ -112,7 +111,6 @@ public class CBCItems {
 				GeneralProps.CAT_MISC)).setIAndU("copper");
 		chip = new CBCGenericItem(GeneralRegistry.getItemId("chip",
 				GeneralProps.CAT_MISC)).setIAndU("chip");
-		bucketRadioactive = new CBCBucket(GeneralRegistry.getItemId("bucket0",0), CBCBlocks.radioActiveStill.blockID, "bucketRadioactive");
 		if(!CBCMod.ic2Installed)
 			battery = new ItemBattery(GeneralRegistry.getItemId("battery", 3));
 	}

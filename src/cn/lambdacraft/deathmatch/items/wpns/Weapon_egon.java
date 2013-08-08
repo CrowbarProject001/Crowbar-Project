@@ -8,7 +8,6 @@ import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityBulletEgon;
 import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
-import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -67,6 +66,7 @@ public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshai
     {
     	InformationEnergy inf = loadInformation(stack, player);
     	int dTick = inf.getDeltaTick();
+    	super.onItemUsingTick(world, player, stack, type, tickLeft);
     	
     	if (inf.ticksExisted > 79 && (dTick - 79) % 42 == 0)
     		world.playSoundAtEntity(player, SND_RUN, 0.5F, 1.0F);
@@ -89,7 +89,6 @@ public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshai
 				world.spawnEntityInWorld(new EntityEgonRay(world,
 						player, stack));
 			else {
-				world.spawnEntityInWorld(new EntityBulletEgon(world, player, stack));
 				world.playSoundAtEntity(player, SND_WINDUP, 0.5F, 1.0F);
 			}
 		} else world.playSoundAtEntity(player, SND_OFF, 0.5F, 1.0F);
@@ -128,7 +127,7 @@ public class Weapon_Egon extends WeaponGeneralEnergy implements ISpecialCrosshai
 
 	@Override
 	public int getShootTime(boolean left) {
-		return 4;
+		return left ? 4 : 0;
 	}
 
 	@Override

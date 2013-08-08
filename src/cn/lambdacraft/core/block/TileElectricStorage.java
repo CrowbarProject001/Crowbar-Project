@@ -16,13 +16,12 @@ package cn.lambdacraft.core.block;
 
 import net.minecraft.nbt.NBTTagCompound;
 import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.IEnergySink;
+import cn.lambdacraft.api.energy.tile.IEnergySink;
 
 /**
  * @author WeAthFolD, Rikka
  */
-public abstract class TileElectricStorage extends TileElectrical implements
-		IEnergySink {
+public abstract class TileElectricStorage extends TileElectrical implements IEnergySink {
 
 	public int maxEnergy;
 	public int currentEnergy;

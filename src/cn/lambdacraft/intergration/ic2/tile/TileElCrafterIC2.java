@@ -48,7 +48,7 @@ public class TileElCrafterIC2 extends TileElCrafter implements ic2.api.energy.ti
 	public int injectEnergy(Direction directionFrom, int amount) {
 		this.currentEnergy += amount;
 		int var3 = 0;
-		if (this.currentEnergy > this.MAX_STORAGE) {
+		if (this.currentEnergy > TileElCrafter.MAX_STORAGE) {
 			var3 = this.currentEnergy - TileElCrafter.MAX_STORAGE;
 			this.currentEnergy = TileElCrafter.MAX_STORAGE;
 		}

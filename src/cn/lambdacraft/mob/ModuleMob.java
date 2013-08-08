@@ -8,9 +8,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.mob.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.core.utils.BlockPos;
 import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 import cn.lambdacraft.mob.entities.EntityAlienSlave;
@@ -21,7 +19,6 @@ import cn.lambdacraft.mob.entities.EntityHoundeye;
 import cn.lambdacraft.mob.entities.EntitySentry;
 import cn.lambdacraft.mob.entities.EntityShockwave;
 import cn.lambdacraft.mob.entities.EntitySnark;
-import cn.lambdacraft.mob.entities.EntityVortigauntRay;
 import cn.lambdacraft.mob.network.NetSentrySync;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
 import cn.lambdacraft.mob.register.CBCMobItems;

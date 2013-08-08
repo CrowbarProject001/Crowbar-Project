@@ -21,14 +21,12 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.api.hud.IHudIconProvider;
 import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.api.hud.ISpecialCrosshair;
@@ -126,10 +124,10 @@ public class HEVRenderingUtils {
 		Tessellator t = Tessellator.instance;
         t.startDrawingQuads();
         t.setColorRGBA(ClientProps.xHairR, ClientProps.xHairG, ClientProps.xHairB, 255);
-        t.addVertexWithUV((double)(par1 + 0), (double)(par2 + 2*h), (double)-90, 0, 1);
-        t.addVertexWithUV((double)(par1 + 2*h), (double)(par2 + 2*h), (double)-90, 1, 1);
-        t.addVertexWithUV((double)(par1 + 2*h), (double)(par2 + 0), (double)-90, 1, 0);
-        t.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, 0, 0);
+        t.addVertexWithUV(par1 + 0, par2 + 2*h, -90, 0, 1);
+        t.addVertexWithUV(par1 + 2*h, par2 + 2*h, -90, 1, 1);
+        t.addVertexWithUV(par1 + 2*h, par2 + 0, -90, 1, 0);
+        t.addVertexWithUV(par1 + 0, par2 + 0, -90, 0, 0);
         t.draw();
         
         engine.bindTexture("/gui/icons.png");
@@ -258,10 +256,10 @@ public class HEVRenderingUtils {
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), (double)-90, (double)((float)(par3 + 0) * f), (double)((float)(par4 + par6) * f1));
-        tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), (double)-90, (double)((float)(par3 + par5) * f), (double)((float)(par4 + par6) * f1));
-        tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), (double)-90, (double)((float)(par3 + par5) * f), (double)((float)(par4 + 0) * f1));
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, (double)((float)(par3 + 0) * f), (double)((float)(par4 + 0) * f1));
+        tessellator.addVertexWithUV(par1 + 0, par2 + par6, -90, (par3 + 0) * f, (par4 + par6) * f1);
+        tessellator.addVertexWithUV(par1 + par5, par2 + par6, -90, (par3 + par5) * f, (par4 + par6) * f1);
+        tessellator.addVertexWithUV(par1 + par5, par2 + 0, -90, (par3 + par5) * f, (par4 + 0) * f1);
+        tessellator.addVertexWithUV(par1 + 0, par2 + 0, -90, (par3 + 0) * f, (par4 + 0) * f1);
         tessellator.draw();
     }
     
@@ -274,10 +272,10 @@ public class HEVRenderingUtils {
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), (double)-90, (double)((float)(par3 + 0) * f), (double)((float)(par4 + par8) * f1));
-        tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), (double)-90, (double)((float)(par3 + par7) * f), (double)((float)(par4 + par8) * f1));
-        tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), (double)-90, (double)((float)(par3 + par7) * f), (double)((float)(par4 + 0) * f1));
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, (double)((float)(par3 + 0) * f), (double)((float)(par4 + 0) * f1));
+        tessellator.addVertexWithUV(par1 + 0, par2 + par6, -90, (par3 + 0) * f, (par4 + par8) * f1);
+        tessellator.addVertexWithUV(par1 + par5, par2 + par6, -90, (par3 + par7) * f, (par4 + par8) * f1);
+        tessellator.addVertexWithUV(par1 + par5, par2 + 0, -90, (par3 + par7) * f, (par4 + 0) * f1);
+        tessellator.addVertexWithUV(par1 + 0, par2 + 0, -90, (par3 + 0) * f, (par4 + 0) * f1);
         tessellator.draw();
     }
     
@@ -285,10 +283,10 @@ public class HEVRenderingUtils {
     {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par5), (double)-90, (double)par3Icon.getMinU(), (double)par3Icon.getMaxV());
-        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + par5), (double)-90, (double)par3Icon.getMaxU(), (double)par3Icon.getMaxV());
-        tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + 0), (double)-90, (double)par3Icon.getMaxU(), (double)par3Icon.getMinV());
-        tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)-90, (double)par3Icon.getMinU(), (double)par3Icon.getMinV());
+        tessellator.addVertexWithUV(par1 + 0, par2 + par5, -90, par3Icon.getMinU(), par3Icon.getMaxV());
+        tessellator.addVertexWithUV(par1 + par4, par2 + par5, -90, par3Icon.getMaxU(), par3Icon.getMaxV());
+        tessellator.addVertexWithUV(par1 + par4, par2 + 0, -90, par3Icon.getMaxU(), par3Icon.getMinV());
+        tessellator.addVertexWithUV(par1 + 0, par2 + 0, -90, par3Icon.getMinU(), par3Icon.getMinV());
         tessellator.draw();
     }
 

@@ -29,7 +29,6 @@ import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.register.Configurable;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 
@@ -119,6 +118,7 @@ public class ClientProps {
 			TURRET_PATH = "/mods/lambdacraft/textures/entities/turret.png",
 			SHOCKWAVE_PATH = "/mods/lambdacraft/textures/entities/shockwave.png",
 			VORTIGAUNT_PATH = "/mods/lambdacraft/textures/entities/vortigaunt.png",
+			GAUSS_ITEM_PATH = "/mods/lambdacraft/textures/entities/gauss.png",
 			HLSPRAY_DIC_PATH = "/spray/",
 			EGON_BEAM_PATH[] = {"/mods/lambdacraft/textures/entities/plasma0.png", 
 		"/mods/lambdacraft/textures/entities/plasma1.png", 

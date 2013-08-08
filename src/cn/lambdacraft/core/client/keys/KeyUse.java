@@ -16,14 +16,12 @@ package cn.lambdacraft.core.client.keys;
 
 import cn.lambdacraft.core.network.NetKeyUsing;
 import cn.lambdacraft.core.register.IKeyProcess;
-import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
 import cn.lambdacraft.deathmatch.proxy.ClientProxy;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 /**
  * 使用按键的处理类，负责发包和功能性函数。

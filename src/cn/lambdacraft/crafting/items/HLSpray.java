@@ -14,10 +14,8 @@
  */
 package cn.lambdacraft.crafting.items;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -25,7 +23,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cn.lambdacraft.core.item.CBCGenericItem;
-import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.Color4I;
 import cn.lambdacraft.crafting.entities.EntitySpray;
 

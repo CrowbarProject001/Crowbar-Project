@@ -1,7 +1,5 @@
 package cn.lambdacraft.api.weapon;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.core.proxy.GeneralProps;
 
@@ -57,6 +55,13 @@ public abstract class WeaponGeneral extends CBCGenericItem implements ISpecialUs
 		upLiftRadius = uplift;
 		recoverRadius = recover;
 	}
+	
+    @Override
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+    {
+        return true;
+    }
+
 
 	/**
 	 * 进行武器的Tick相关计算和主要功能，请在子类的onUpdate(...)中调用它。
@@ -87,17 +92,20 @@ public abstract class WeaponGeneral extends CBCGenericItem implements ISpecialUs
 
 	}
 	
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
+    @Override
+	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
     	return abortAnim;
     }
     
-    public boolean onBlockStartBreak(ItemStack itemstack, int i, int j, int k, EntityPlayer player)
+    @Override
+	public boolean onBlockStartBreak(ItemStack itemstack, int i, int j, int k, EntityPlayer player)
     {
     	return abortAnim;
     }
     
-    public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving)
+    @Override
+	public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving)
     {
     	return abortAnim;
     }

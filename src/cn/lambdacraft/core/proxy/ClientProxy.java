@@ -26,7 +26,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.src.PlayerAPI;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -54,6 +53,7 @@ public class ClientProxy extends Proxy {
 		CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
 	}
 
+	@Override
 	public void profilerStartSection(String section) {
 		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.startSection(section);
@@ -62,6 +62,7 @@ public class ClientProxy extends Proxy {
 		}
 	}
 
+	@Override
 	public void profilerEndSection() {
 		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.endSection();
@@ -71,6 +72,7 @@ public class ClientProxy extends Proxy {
 
 	}
 
+	@Override
 	public void profilerEndStartSection(String section) {
 		if (isRendering()) {
 			Minecraft.getMinecraft().mcProfiler.endStartSection(section);

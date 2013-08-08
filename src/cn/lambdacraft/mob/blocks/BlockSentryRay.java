@@ -14,10 +14,6 @@
  */
 package cn.lambdacraft.mob.blocks;
 
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.WEST;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 import cpw.mods.fml.relauncher.Side;
@@ -27,7 +23,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 
 /**
  * @author WeAthFolD

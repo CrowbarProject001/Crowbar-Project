@@ -20,7 +20,7 @@ import net.minecraft.entity.Entity;
  * 在Entity中链接另外一个Entity（一般为玩家）的实用类。
  * 
  * @author WeAthFolD
- * @see  cn.lambdacraft.mob.utils.MobSpawnHandler#spawnCreature
+ * @see  cn.lambdacraft.mob.utils.MobHelper#spawnCreature
  * @param <T> Entity类型
  */
 public interface IEntityLink<T extends Entity> {

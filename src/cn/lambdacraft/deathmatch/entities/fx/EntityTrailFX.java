@@ -4,10 +4,6 @@ import java.util.LinkedList;
 
 import cn.lambdacraft.core.utils.SamplePoint;
 
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
-
-
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;

@@ -369,7 +369,7 @@ public class TileHealthCharger extends TileElectricStorage implements
 	}
 
 	@Override
-	public boolean acceptEnergyFrom(TileEntity paramTileEntity,
+	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
 		return !(getCurrentBehavior() == EnumBehavior.RECEIVEONLY && !this.isRSActivated);
 	}

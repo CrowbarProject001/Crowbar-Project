@@ -33,7 +33,14 @@ import net.minecraft.util.StatCollector;
 public class ItemDNAFragment extends Item {
 
 	Icon[] icons = new Icon[6];
-	protected static final String[] descriptions = ItemBioTissue.descriptions;
+	public static final String[] descriptions = new String[] {
+		"headcrab",
+		"barnacle",
+		"houndeye",
+		"snark",
+		"vortigaunt",
+		"tentacle"
+	};	
 	
 	/**
 	 * @param par1

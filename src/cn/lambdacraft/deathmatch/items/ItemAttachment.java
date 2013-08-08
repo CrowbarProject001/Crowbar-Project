@@ -46,7 +46,8 @@ public class ItemAttachment extends Item {
 		this.hasSubtypes = true;
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister ir)
     {
         for(int i = 0; i < icons.length; i++) {
@@ -54,7 +55,8 @@ public class ItemAttachment extends Item {
         }
     }
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * Gets an icon index based on an item's damage value
@@ -74,7 +76,8 @@ public class ItemAttachment extends Item {
     	list.add(StatCollector.translateToLocal("hev.attach" + dmg + ".description"));
     }
     
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
 
     /**
      * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)

@@ -14,28 +14,22 @@
  */
 package cn.lambdacraft.mob.entities;
 
-import java.util.List;
-
 import cn.lambdacraft.api.entities.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.mob.register.CBCMobItems;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 /**
- * TODO:待坑
+ * TODO:坑完了
  * @author WeAt3hFolD
  *
  */
@@ -122,25 +116,27 @@ public class EntityHoundeye extends EntityMob implements IEntityLink<EntityLivin
 	@Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-    	isCharging = false;
+		if(par2 >= 10 || rand.nextInt(4) == 0)
+			isCharging = false;
     	return super.attackEntityFrom(par1DamageSource, par2);
     }
 	
 	@Override
-    protected boolean isMovementCeased()
-    {
-        return isCharging;
-    }
+	protected boolean isMovementBlocked()
+	{
+		return isCharging;
+	}
 	
 	
-    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+    @Override
+	public EntityItem dropItemWithOffset(int par1, int par2, float par3)
     {
         return this.entityDropItem(new ItemStack(par1, par2, 2), par3);
     }
     
     @Override
     public int getDropItemId() {
-    	return CBCMobItems.bioTissue.itemID;
+    	return CBCMobItems.dna.itemID;
     }
 	
 	/**

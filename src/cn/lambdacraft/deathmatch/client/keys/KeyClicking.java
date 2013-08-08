@@ -16,12 +16,12 @@ package cn.lambdacraft.deathmatch.client.keys;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cn.lambdacraft.api.weapon.ISpecialUseable;
 import cn.lambdacraft.core.register.IKeyProcess;
+import cn.lambdacraft.deathmatch.network.NetClicking;
 import cn.lambdacraft.deathmatch.utils.ItemHelper;
 
 /**
@@ -29,6 +29,8 @@ import cn.lambdacraft.deathmatch.utils.ItemHelper;
  * 
  */
 public class KeyClicking implements IKeyProcess {
+	
+	private KeyMode keyMode = new KeyMode();
 	
 	private boolean isLeft;
 	
@@ -38,28 +40,33 @@ public class KeyClicking implements IKeyProcess {
 
 	@Override
 	public void onKeyDown(boolean isEnd) {
+		if(!isLeft)
+			keyMode.onKeyDown(isEnd);
 		if(isEnd)
 			return;
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityClientPlayerMP player = mc.thePlayer;
-		if (player == null)
+		if (player == null || mc.currentScreen != null)
 			return;
 		ItemStack stack = player.getCurrentEquippedItem();
 		if (stack != null) {
 			Item item = stack.getItem();
 			if (item instanceof ISpecialUseable) {
 				((ISpecialUseable) item).onItemClick(mc.theWorld, player, stack, isLeft);
+				NetClicking.sendPacketData(isLeft ? 1 : -1);
 			}
 		}
 	}
 
 	@Override
 	public void onKeyUp(boolean isEnd) {
+		if(!isLeft)
+			keyMode.onKeyUp(isEnd);
 		if(!isEnd)
 			return;
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = mc.thePlayer;
-		if (player == null)
+		if (player == null || mc.currentScreen != null)
 			return;
 		ItemHelper.stopUsingItem(player);
 	}

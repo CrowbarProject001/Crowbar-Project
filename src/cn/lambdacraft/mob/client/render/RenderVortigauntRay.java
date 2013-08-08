@@ -18,16 +18,11 @@ import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.utils.MotionXYZ;
-import cn.lambdacraft.deathmatch.client.render.RenderEgonRay;
-import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
 import cn.lambdacraft.mob.entities.EntityVortigauntRay;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
 /**

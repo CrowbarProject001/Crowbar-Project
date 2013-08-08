@@ -1,6 +1,5 @@
 package cn.lambdacraft.deathmatch.client.render;
 
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Vec3;
 

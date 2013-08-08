@@ -77,12 +77,20 @@ public class Weapon_Crowbar_Electrical extends Weapon_Crowbar implements ICustom
 		return 2;
 	}
 
-    public int getDamageVsEntity(Entity par1Entity)
+    @Override
+	public int getDamageVsEntity(Entity par1Entity)
     {
         return 6;
     }
     
-    public boolean hitEntity(ItemStack par1ItemStack, EntityLiving attackedEntity, EntityLiving par3EntityLiving)
+    @Override
+    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+    	return par1ItemStack;
+    }
+    
+    @Override
+	public boolean hitEntity(ItemStack par1ItemStack, EntityLiving attackedEntity, EntityLiving par3EntityLiving)
     {
         if(getMode(par1ItemStack) == 0 && discharge(par1ItemStack, 400, 2, true, false) == 400){
         	attackedEntity.hurtResistantTime = -1;

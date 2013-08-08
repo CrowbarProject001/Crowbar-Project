@@ -320,7 +320,7 @@ public class CBCExplosion {
 				int i1 = this.worldObj.getBlockId(i, j - 1, k);
 
 				if (l == 0 && Block.opaqueCubeLookup[i1]
-						&& this.explosionRNG.nextInt(3) == 0) {
+						&& CBCExplosion.explosionRNG.nextInt(3) == 0) {
 					this.worldObj.setBlock(i, j, k, Block.fire.blockID);
 				}
 			}

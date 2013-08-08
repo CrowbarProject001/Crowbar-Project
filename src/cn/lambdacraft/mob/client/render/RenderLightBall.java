@@ -16,7 +16,6 @@ package cn.lambdacraft.mob.client.render;
 
 import cn.lambdacraft.core.client.render.RenderIcon;
 import cn.lambdacraft.core.proxy.ClientProps;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 
 /**

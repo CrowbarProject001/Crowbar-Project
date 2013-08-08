@@ -19,33 +19,20 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.input.Keyboard;
-
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.lambdacraft.core.client.keys.KeyUse;
 import cn.lambdacraft.core.energy.EnergyNet;
-import cn.lambdacraft.core.energy.ITickCallback;
 import cn.lambdacraft.core.misc.CBCCreativeTab;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.network.NetExplosion;
 import cn.lambdacraft.core.network.NetKeyUsing;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCGuiHandler;
-import cn.lambdacraft.core.register.CBCKeyProcess;
 import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.core.world.WorldData;
 import cn.lambdacraft.crafting.recipes.RecipeWeapons;
 import cn.lambdacraft.intergration.ic2.IC2Module;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -74,21 +61,19 @@ clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHAN
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler {
 
-	public static final String VERSION = "1.5.0alpha2";
+	public static final String VERSION = "1.5.0alpha4";
 
-	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@"
-			+ VERSION,
+	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + VERSION,
 			DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION,
-			DEPENDENCY_DEATHMATCH = "required-after:LambdaCraft|DeathMatch@"
-					+ VERSION,
+			DEPENDENCY_DEATHMATCH = "required-after:LambdaCraft|DeathMatch@" + VERSION,
 			DEPENDENCY_MOB = "required-after:LambdaCraft|Living@" + VERSION,
 			DEPENCY_XEN = "required-after:LambdaCraft|Xen@" + VERSION;
 
 	@SideOnly(Side.CLIENT)
 	private Minecraft mc;
-	
-	protected static HashSet<ITickCallback> constCallbacks = new HashSet();
 
+	public static EnergyNet energyNet = new EnergyNet();
+	
 	/**
 	 * 日志
 	 */
@@ -130,7 +115,7 @@ public class CBCMod implements ITickHandler {
 	public void preInit(FMLPreInitializationEvent event) {
 
 		log.setParent(FMLLog.getLogger());
-		log.info("Starting LambdaCraft " + this.VERSION);
+		log.info("Starting LambdaCraft " + CBCMod.VERSION);
 		log.info("Copyright (c) Lambda Innovation, 2013");
 		log.info("http://www.lambdacraft.cn");
 
@@ -192,62 +177,16 @@ public class CBCMod implements ITickHandler {
 		if (type.contains(TickType.WORLD)) {
 			
 			proxy.profilerStartSection("LambdaCraft");
+			
 			World world = (World) tickData[0];
 			
 			proxy.profilerEndStartSection("EnergyNet");
-			EnergyNet.onTick(world);
-			
-			proxy.profilerEndStartSection("TickCallbacks");
-			processTickCallbacks(world);
+			if(!ic2Installed)
+				EnergyNet.onTick(world);
 			
 			proxy.profilerEndSection();
 			
 		}
-	}
-
-	public void processTickCallbacks(World world) {
-		WorldData worldData = WorldData.get(world);
-
-		proxy.profilerStartSection("SingleTickCallback");
-
-		for (ITickCallback tickCallback = (ITickCallback) worldData.singleTickCallbacks
-				.poll(); tickCallback != null; tickCallback = (ITickCallback) worldData.singleTickCallbacks
-				.poll()) {
-			proxy.profilerStartSection(tickCallback.getClass().getName());
-			tickCallback.tickCallback(world);
-			proxy.profilerEndSection();
-		}
-		
-		proxy.profilerEndStartSection("ContTickCallback");
-
-		worldData.continuousTickCallbacksInUse = true;
-
-		for (ITickCallback tickCallback : worldData.continuousTickCallbacks) {
-			proxy.profilerStartSection(tickCallback.getClass().getName());
-			tickCallback.tickCallback(world);
-			proxy.profilerEndSection();
-		}
-
-		worldData.continuousTickCallbacksInUse = false;
-
-		worldData.continuousTickCallbacks
-				.addAll(worldData.continuousTickCallbacksToAdd);
-		worldData.continuousTickCallbacksToAdd.clear();
-
-		worldData.continuousTickCallbacks
-				.removeAll(worldData.continuousTickCallbacksToRemove);
-		worldData.continuousTickCallbacksToRemove.clear();
-
-		proxy.profilerEndStartSection("ConstTickCallback");
-		for(ITickCallback cb : constCallbacks) {
-			cb.tickCallback(world);
-		}
-		proxy.profilerEndSection();
-	}
-	
-	public static void addConstCallbacks(ITickCallback... callbacks) {
-		for(ITickCallback c : callbacks)
-			constCallbacks.add(c);
 	}
 
 	@Override

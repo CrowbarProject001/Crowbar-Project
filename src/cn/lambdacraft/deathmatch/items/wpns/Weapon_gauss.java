@@ -10,7 +10,6 @@ import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityBulletGaussSec.EnumGaussRayType;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cn.lambdacraft.deathmatch.utils.GaussBulletManager;
-import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -18,9 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 /**
@@ -64,6 +61,7 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 	}
 	
 
+	@Override
 	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft) {
     	InformationEnergy inf = loadInformation(stack, player);
     	super.onItemUsingTick(world, player, stack, type, tickLeft);
@@ -121,10 +119,10 @@ public class Weapon_Gauss extends WeaponGeneralEnergy implements ISpecialCrossha
 
 		// OverCharge!
 		if (inf.chargeTime > OVER_CHARGE_LIMIT) {
-			inf.resetState();
 			player.stopUsingItem();
 			player.playSound(GenericUtils.getRandomSound("cbc.weapons.electro", 3), 0.5F, 1.0F);
-			player.attackEntityFrom(DamageSource.causeMobDamage(player), 15);
+			player.attackEntityFrom(DamageSource.causeMobDamage(player), 10);
+			inf.resetState();
 		}
 
 		int i = -1;

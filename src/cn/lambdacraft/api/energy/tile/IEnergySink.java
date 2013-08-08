@@ -12,31 +12,14 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cn.lambdacraft.mob.blocks.container;
+package cn.lambdacraft.api.energy.tile;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import cn.lambdacraft.api.LCDirection;
 
-/**
- * @author WeAthFolD
- *
- */
-public class ContainerTissueAnalyzer extends Container {
+public abstract interface IEnergySink extends IEnAcceptor {
+	public abstract int demandsEnergy();
 
-	/**
-	 * 
-	 */
-	public ContainerTissueAnalyzer() {
-		// TODO Auto-generated constructor stub
-	}
+	public abstract int injectEnergy(LCDirection paramDirection, int paramInt);
 
-	/* (non-Javadoc)
-	 * @see net.minecraft.inventory.Container#canInteractWith(net.minecraft.entity.player.EntityPlayer)
-	 */
-	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	public abstract int getMaxSafeInput();
 }

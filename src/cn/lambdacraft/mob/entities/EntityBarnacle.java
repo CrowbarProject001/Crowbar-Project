@@ -19,7 +19,6 @@ import java.util.List;
 
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.core.utils.MotionXYZ;
-import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -109,7 +108,7 @@ public class EntityBarnacle extends EntityLiving {
 					List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, GenericUtils.selectorLiving);
 					if(list != null && list.size() == 1) {
 						Entity e = list.get(0);
-						if(GenericUtils.getEntitySize(e) <= 6.0 && !(e instanceof EntityPlayer && ((EntityPlayer)e).capabilities.isCreativeMode)) {
+						if(GenericUtils.getEntitySize(e) <= 6.0) {
 							this.playSound("cbc.mobs.bcl_alert", 0.5F, 1.0F);
 							startPullingEntity(e);
 						}
@@ -214,14 +213,15 @@ public class EntityBarnacle extends EntityLiving {
 		dataWatcher.updateObject(12, Integer.valueOf(0));
 	}
 	
-    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+    @Override
+	public EntityItem dropItemWithOffset(int par1, int par2, float par3)
     {
         return this.entityDropItem(new ItemStack(par1, par2, 1), par3);
     }
     
     @Override
     public int getDropItemId() {
-    	return CBCMobItems.bioTissue.itemID;
+    	return CBCMobItems.dna.itemID;
     }
 
 	/* (non-Javadoc)
@@ -242,12 +242,14 @@ public class EntityBarnacle extends EntityLiving {
 		nbt.setDouble("tentacle", tentacleLength);
 	}
 	
-    public boolean canBeCollidedWith()
+    @Override
+	public boolean canBeCollidedWith()
     {
         return true;
     }
 	
-    public boolean isEntityInvulnerable()
+    @Override
+	public boolean isEntityInvulnerable()
     {
     	return false;
     }
@@ -257,7 +259,8 @@ public class EntityBarnacle extends EntityLiving {
 		return 20;
 	}
 	
-    public EnumCreatureAttribute getCreatureAttribute()
+    @Override
+	public EnumCreatureAttribute getCreatureAttribute()
     {
         return EnumCreatureAttribute.ARTHROPOD;
     }

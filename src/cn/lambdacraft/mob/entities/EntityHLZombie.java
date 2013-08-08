@@ -105,6 +105,7 @@ public class EntityHLZombie extends EntityMob {
 		return (worldObj.isRemote && tickCountAttack > 0) || this.entityToAttack != null;
 	}
 
+	@Override
 	public boolean attackEntityAsMob(Entity par1Entity) {
 		if(this.isBurning())
 			return false;
@@ -133,6 +134,7 @@ public class EntityHLZombie extends EntityMob {
 			this.playSound(sndPath, 0.5F, 1.0F);
 		}
 		this.tickCountAttack = 0;
+		this.entityToAttack = null;
 	}
 
 	@Override
@@ -177,7 +179,8 @@ public class EntityHLZombie extends EntityMob {
     /**
      * Returns true if the newer Entity AI code should be run
      */
-    protected boolean isAIEnabled()
+    @Override
+	protected boolean isAIEnabled()
     {
         return true;
     }

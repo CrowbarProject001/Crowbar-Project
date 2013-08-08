@@ -17,7 +17,6 @@ package cn.lambdacraft.crafting.blocks.tile;
 import java.util.List;
 
 import cn.lambdacraft.core.block.CBCTileEntity;
-import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter;
 import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cn.lambdacraft.crafting.recipes.RecipeCrafter;
 import cn.lambdacraft.crafting.recipes.RecipeRepair;

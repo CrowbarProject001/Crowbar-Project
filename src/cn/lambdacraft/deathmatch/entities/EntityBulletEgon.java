@@ -16,11 +16,7 @@ package cn.lambdacraft.deathmatch.entities;
 
 import java.util.List;
 
-import cn.lambdacraft.api.weapon.InformationWeapon;
-import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.utils.GenericUtils;
-import cn.lambdacraft.deathmatch.utils.BulletManager;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -45,6 +41,7 @@ public class EntityBulletEgon extends EntityBullet {
 		super(world);
 	}
 	
+	@Override
 	protected void doBlockCollision(MovingObjectPosition result) {
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(result.hitVec.xCoord - 2, result.hitVec.yCoord - 2, result.hitVec.zCoord - 2,
 				result.hitVec.xCoord + 2, result.hitVec.yCoord + 2, result.hitVec.zCoord + 2);

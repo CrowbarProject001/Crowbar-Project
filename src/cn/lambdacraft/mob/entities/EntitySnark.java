@@ -74,14 +74,15 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> 
 		this.experienceValue = 0;
 	}
 	
-    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+    @Override
+	public EntityItem dropItemWithOffset(int par1, int par2, float par3)
     {
         return this.entityDropItem(new ItemStack(par1, par2, 3), par3);
     }
     
     @Override
     public int getDropItemId() {
-    	return CBCMobItems.bioTissue.itemID;
+    	return CBCMobItems.dna.itemID;
     }
 
 	@Override
@@ -154,7 +155,7 @@ public class EntitySnark extends EntityMob implements IEntityLink<EntityPlayer> 
 	 */
 	@Override
 	protected String getLivingSound() {
-		int random = (int) Math.round(rand.nextFloat() * 3);
+		int random = Math.round(rand.nextFloat() * 3);
 		return random < 1 ? "cbc.mobs.sqk_hunta"
 				: (random < 2 ? "cbc.mobs.sqk_huntb" : "cbc.mobs.sqk_huntc");
 	}

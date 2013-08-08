@@ -18,23 +18,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import cn.lambdacraft.api.weapon.InformationEnergy;
-import cn.lambdacraft.core.utils.MotionXYZ;
-import cn.lambdacraft.deathmatch.entities.EntityBullet;
-import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_Egon;
 
 /**
  * 腹地刚的绿色Bilibili！
  * 
  * @author WeAthFolD
  */
-@SideOnly(Side.CLIENT)
 public class EntityVortigauntRay extends Entity {
 
 	public double startX, startY, startZ;

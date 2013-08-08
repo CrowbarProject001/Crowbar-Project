@@ -15,15 +15,9 @@
 package cn.lambdacraft.mob.client.render;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.mob.client.models.ModelTurret;
 import cn.lambdacraft.mob.entities.EntitySentry;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

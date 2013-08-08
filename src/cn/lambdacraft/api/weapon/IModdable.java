@@ -18,10 +18,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**
- * 实现它令一个武器可以切换模式。（自带的V键）
+ * 实现它令一个武器可以切换模式。（右键）
  * @author WeAthFolD
  */
-@Deprecated
 public interface IModdable {
 	
 	public void onModeChange(ItemStack item, EntityPlayer player, int newMode);

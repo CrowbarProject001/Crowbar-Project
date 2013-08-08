@@ -18,8 +18,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.IEnergyConductor;
-import cn.lambdacraft.api.energy.IEnergyTile;
+import cn.lambdacraft.api.energy.tile.IEnConductor;
+import cn.lambdacraft.api.energy.tile.IEnergyTile;
 import cn.lambdacraft.core.block.TileElectrical;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author WeAthFolD, Rikka
  * 
  */
-public class TileWire extends TileElectrical implements IEnergyConductor {
+public class TileWire extends TileElectrical implements IEnConductor {
 
 	public boolean[] renderSides = new boolean[6];
 
@@ -59,7 +59,7 @@ public class TileWire extends TileElectrical implements IEnergyConductor {
 	}
 
 	@Override
-	public boolean acceptEnergyFrom(TileEntity emitter, LCDirection direction) {
+	public boolean acceptsEnergyFrom(TileEntity emitter, LCDirection direction) {
 		return true;
 	}
 
@@ -92,7 +92,8 @@ public class TileWire extends TileElectrical implements IEnergyConductor {
 		this.onTileUnload();
 	}
 	
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         AxisAlignedBB bb = INFINITE_EXTENT_AABB;
@@ -101,7 +102,7 @@ public class TileWire extends TileElectrical implements IEnergyConductor {
     }
 
 	@Override
-	public boolean emitsEnergyTo(TileEntity paramTileEntity,
+	public boolean emitEnergyTo(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
 		return true;
 	}

@@ -14,14 +14,12 @@
  */
 package cn.lambdacraft.crafting.blocks.tile;
 
-import cn.lambdacraft.api.LCDirection;
 import cn.lambdacraft.api.energy.item.ICustomEnItem;
 import cn.lambdacraft.api.energy.item.IEnItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author WeAthFolD

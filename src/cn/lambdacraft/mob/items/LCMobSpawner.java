@@ -3,9 +3,8 @@ package cn.lambdacraft.mob.items;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.mob.entities.EntitySnark;
-import cn.lambdacraft.mob.utils.MobSpawnHandler;
+import cn.lambdacraft.mob.utils.MobHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -39,7 +38,7 @@ public class LCMobSpawner extends CBCGenericItem {
 //		MobSpawnHandler.spawnCreature(par2World, entClass,
 //				par3EntityPlayer);
 		if(!par3World.isRemote)
-			MobSpawnHandler.spawnCreature(par3World, par2EntityPlayer, entClass, (double)par4 + 0.5d, (double)par2EntityPlayer.posY, (double)par6 + 0.5d);
+			MobHelper.spawnCreature(par3World, par2EntityPlayer, entClass, par4 + 0.5d, par2EntityPlayer.posY, par6 + 0.5d);
 		if (!(par2EntityPlayer.capabilities.isCreativeMode)) {
 			par1ItemStack.stackSize--;
 		}

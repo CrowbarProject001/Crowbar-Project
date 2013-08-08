@@ -21,6 +21,7 @@ import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.crafting.blocks.tile.TileWire;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
@@ -38,7 +39,7 @@ public class BlockWire extends BlockElectricalBase {
 	public BlockWire(int par1) {
 		super(par1, Material.cake);
 		this.setIconName("wire");
-		this.setStepSound(this.soundClothFootstep);
+		this.setStepSound(Block.soundClothFootstep);
 		this.setUnlocalizedName("wire");
 		this.setHardness(1.0F);
 		this.setGuiId(-1);
@@ -61,7 +62,8 @@ public class BlockWire extends BlockElectricalBase {
 		return false;
 	}
 	
-    public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
+    @Override
+	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
     {
     	super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
     	TileWire tile = (TileWire) par1World.getBlockTileEntity(par2, par3, par4);
@@ -107,7 +109,8 @@ public class BlockWire extends BlockElectricalBase {
     	}
     }
     
-    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+    @Override
+	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
     	minX = 0.5 - WIDTH;
     	minY = 0.5 - WIDTH;
     	minZ = 0.5 - WIDTH;

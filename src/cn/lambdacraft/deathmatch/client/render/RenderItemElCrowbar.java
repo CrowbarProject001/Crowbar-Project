@@ -14,8 +14,6 @@
  */
 package cn.lambdacraft.deathmatch.client.render;
 
-import org.lwjgl.opengl.GL11;
-
 import cn.lambdacraft.api.weapon.IModdable;
 import cn.lambdacraft.core.client.RenderUtils;
 import net.minecraft.entity.EntityLiving;

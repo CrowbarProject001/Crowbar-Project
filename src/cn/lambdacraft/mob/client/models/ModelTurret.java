@@ -109,6 +109,7 @@ public class ModelTurret extends ModelBase {
 		setRotation(gun1, 0F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3,
 			float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -136,6 +137,7 @@ public class ModelTurret extends ModelBase {
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float f, float f1, float f2, float f3,
 			float f4, float f5, Entity e) {
 		EntitySentry sentry = (EntitySentry) e;

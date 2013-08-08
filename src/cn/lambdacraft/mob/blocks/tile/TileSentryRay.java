@@ -66,6 +66,7 @@ public class TileSentryRay extends TileEntity {
 		}
 		
 	};
+	private int tickSinceLastActivate = 0;
 
 	public void connectWith(TileSentryRay another) {
 		this.linkedBlock = another;
@@ -87,6 +88,8 @@ public class TileSentryRay extends TileEntity {
 		}
 		if (worldObj.isRemote)
 			return;
+		
+		++tickSinceLastActivate;
 		if (linkedX != 0 || linkedY != 0 || linkedZ != 0) {
 			TileEntity te = worldObj.getBlockTileEntity(linkedX, linkedY,
 					linkedZ);
@@ -106,7 +109,6 @@ public class TileSentryRay extends TileEntity {
 				senZ = 0;
 				sentryId = 0L;
 			}
-			System.out.println("Looping search...");
 		}
 		// TODO:Check if touched, and notice the entity to activate
 		if (!isLoaded) {
@@ -142,9 +144,11 @@ public class TileSentryRay extends TileEntity {
 			MovingObjectPosition result = BulletManager.rayTraceEntities(
 					GenericUtils.selectorLiving, worldObj, vec0, vec1);
 			if (result != null) {
-				if (linkedSentry != null)
-					this.linkedSentry.activate();
-				else
+				if (linkedSentry != null) {
+					if(tickSinceLastActivate  > 40)
+						tickSinceLastActivate = 0;
+						this.linkedSentry.activate();
+				} else
 					CBCMod.log.severe("Why didn't I find my target?");
 			}
 		}
@@ -206,6 +210,7 @@ public class TileSentryRay extends TileEntity {
 		player.sendChatToPlayer(sb.toString());
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		AxisAlignedBB bb = INFINITE_EXTENT_AABB;

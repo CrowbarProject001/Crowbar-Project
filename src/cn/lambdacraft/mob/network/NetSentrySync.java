@@ -18,15 +18,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
-import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCNetHandler;
@@ -73,7 +71,7 @@ public class NetSentrySync implements IChannelProcess {
 		try {
 			int x = stream.readInt(), y = stream.readShort(), z = stream
 					.readInt();
-			World world = Minecraft.getMinecraft().theWorld;
+			World world = ((EntityPlayer)player).worldObj;
 			TileEntity te = world.getBlockTileEntity(x, y, z);
 			if (te == null || !(te instanceof TileSentryRay)) {
 				return;
@@ -86,8 +84,7 @@ public class NetSentrySync implements IChannelProcess {
 				z = stream.readInt();
 				te = world.getBlockTileEntity(x, y, z);
 				if (te == null || !(te instanceof TileSentryRay)) {
-					Proxy.logExceptionMessage(te,
-							"Couldn't find the right partner TileEntity.");
+					Proxy.logExceptionMessage(te, "Couldn't find the right partner TileEntity.");
 					return;
 				}
 				ray.linkedBlock = (TileSentryRay) te;

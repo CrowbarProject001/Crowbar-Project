@@ -14,8 +14,6 @@
  */
 package cn.lambdacraft.core.utils;
 
-import java.util.Formatter;
-
 /**
  * @author mkpoli
  *

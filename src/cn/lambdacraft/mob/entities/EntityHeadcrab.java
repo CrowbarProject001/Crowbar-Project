@@ -20,7 +20,7 @@ import cn.lambdacraft.api.entities.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.mob.register.CBCMobItems;
-import cn.lambdacraft.mob.utils.MobSpawnHandler;
+import cn.lambdacraft.mob.utils.MobHelper;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -53,7 +53,8 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityPlaye
 
 		@Override
 		public boolean isEntityApplicable(Entity entity) {
-			return entity instanceof EntityPlayer || entity instanceof EntityVillager;
+			return GenericUtils.selectorLiving.isEntityApplicable(entity) &&
+					( entity instanceof EntityPlayer || entity instanceof EntityVillager );
 		}
 		
 	};
@@ -122,7 +123,7 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityPlaye
 					
 					if(health <= 0 && !worldObj.isRemote) {
 						attacher = null;
-						MobSpawnHandler.spawnCreature(worldObj, EntityHLZombie.class, this, false);
+						MobHelper.spawnCreature(worldObj, EntityHLZombie.class, this, false);
 						dataWatcher.updateObject(20, Integer.valueOf(0));
 						this.setDead();
 					}
@@ -165,8 +166,8 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityPlaye
 			if (entity != this) {
 				this.entityToAttack = entity;
 			}
-	        this.motionX += (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.2F);
-	        this.motionZ += (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.2F);
+	        this.motionX += -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.2F;
+	        this.motionZ += MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.2F;
 	        
 			return true;
 		}
@@ -246,14 +247,15 @@ public class EntityHeadcrab extends EntityMob implements IEntityLink<EntityPlaye
 		}
 	}
 	
-    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+    @Override
+	public EntityItem dropItemWithOffset(int par1, int par2, float par3)
     {
         return this.entityDropItem(new ItemStack(par1, par2, 0), par3);
     }
     
     @Override
     public int getDropItemId() {
-    	return CBCMobItems.bioTissue.itemID;
+    	return CBCMobItems.dna.itemID;
     }
 
 	/**

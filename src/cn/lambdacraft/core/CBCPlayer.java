@@ -1,18 +1,13 @@
 package cn.lambdacraft.core;
 
-import java.util.EnumSet;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.src.PlayerAPI;
 import net.minecraft.src.PlayerBase;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import cn.lambdacraft.core.item.ElectricArmor;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.deathmatch.items.ArmorHEV;
 import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
@@ -63,14 +58,14 @@ public class CBCPlayer extends PlayerBase {
 		for(int i = 0; i < 4; i ++) {
 			boolean b = player.inventory.armorInventory[i] != null && player.inventory.armorInventory[i].getItem() instanceof ArmorHEV;
 			if(b) {
-				if(ArmorHEV.getItemCharge(player.inventory.armorInventory[i]) <= 0) 
+				if(ElectricArmor.getItemCharge(player.inventory.armorInventory[i]) <= 0) 
 					b = false;
 			}
 			armorStat[i] = b;
 		}
 		
 		if(armorStat[3]) {
-			drawArmorTip = hevLeggings.hasAttach(player.inventory.armorInventory[3], EnumAttachment.WPNMANAGE);
+			drawArmorTip = ArmorHEV.hasAttach(player.inventory.armorInventory[3], EnumAttachment.WPNMANAGE);
 		} else drawArmorTip = false;
 		
 		//putting HEV on at this tick
@@ -124,7 +119,7 @@ public class CBCPlayer extends PlayerBase {
 			Item item = slotChestplate.getItem();
 			if (item instanceof ArmorHEV) {
 				ArmorHEV hev = (ArmorHEV) item;
-				if (hev.hasAttach(slotChestplate, EnumAttachment.LONGJUMP))
+				if (ArmorHEV.hasAttach(slotChestplate, EnumAttachment.LONGJUMP))
 					if (hev.discharge(slotChestplate, 200, 2, true, false) == 200) {
 						player.motionX = -MathHelper.sin(player.rotationYaw / 180.0F
 								* (float) Math.PI)

@@ -17,13 +17,9 @@ package cn.lambdacraft.core.client.render;
 import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.core.utils.MotionXYZ;
-import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Vec3;
 
 /**
  * @author WeAthFolD

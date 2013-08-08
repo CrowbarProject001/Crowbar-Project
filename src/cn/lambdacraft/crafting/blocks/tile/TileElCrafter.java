@@ -21,9 +21,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.EnergyTileLoadEvent;
-import cn.lambdacraft.api.energy.EnergyTileSourceEvent;
-import cn.lambdacraft.api.energy.IEnergySink;
+import cn.lambdacraft.api.energy.events.EnergyTileLoadEvent;
+import cn.lambdacraft.api.energy.events.EnergyTileSourceEvent;
+import cn.lambdacraft.api.energy.tile.IEnergySink;
 import cn.lambdacraft.core.utils.EnergyUtils;
 import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cn.lambdacraft.crafting.items.ItemMaterial;
@@ -194,14 +194,14 @@ public class TileElCrafter extends TileWeaponCrafter implements IEnergySink {
 	}
 
 	public int sendEnergy(int amm) {
-		EnergyTileSourceEvent event = new EnergyTileSourceEvent(this,
+		EnergyTileSourceEvent event = new EnergyTileSourceEvent(worldObj, this,
 				amm);
 		MinecraftForge.EVENT_BUS.post(event);
 		return event.amount;
 	}
 
 	@Override
-	public boolean acceptEnergyFrom(TileEntity paramTileEntity,
+	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
 		return true;
 	}

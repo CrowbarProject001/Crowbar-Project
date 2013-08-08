@@ -24,7 +24,6 @@ import cn.lambdacraft.core.client.gui.CBCGuiButton;
 import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
-import cn.lambdacraft.core.client.gui.CBCGuiButton.ButtonState;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
 import cn.lambdacraft.crafting.blocks.container.ContainerWeaponCrafter;

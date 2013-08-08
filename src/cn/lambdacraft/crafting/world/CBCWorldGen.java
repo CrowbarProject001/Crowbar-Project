@@ -22,7 +22,6 @@ import cn.lambdacraft.crafting.register.CBCBlocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraft.world.gen.structure.MapGenVillage;
 import cpw.mods.fml.common.IWorldGenerator;
 
 /**
@@ -75,12 +74,6 @@ public class CBCWorldGen implements IWorldGenerator {
 			(new WorldGenMinable(CBCBlocks.oreCopper.blockID, 3)).generate(
 					world, random, copperOreXCoord, copperOreYCoord,
 					copperOreZCoord);
-		}
-		for (int k = 0; k < 50; k++) {
-			int copperOreXCoord = i + random.nextInt(16);
-			int copperOreYCoord = random.nextInt(128);
-			int copperOreZCoord = j + random.nextInt(16);
-			(new MapGenVillage()).generateStructuresInChunk(world, random, i, j);
 		}
 	}
 

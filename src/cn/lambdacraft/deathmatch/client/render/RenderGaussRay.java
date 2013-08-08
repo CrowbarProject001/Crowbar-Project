@@ -3,7 +3,6 @@ package cn.lambdacraft.deathmatch.client.render;
 import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
 
 import cpw.mods.fml.client.FMLClientHandler;
@@ -12,7 +11,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import static cn.lambdacraft.core.client.RenderUtils.newV3;
 

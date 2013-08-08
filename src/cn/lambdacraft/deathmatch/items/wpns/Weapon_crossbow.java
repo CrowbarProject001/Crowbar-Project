@@ -4,16 +4,17 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import cn.lambdacraft.api.weapon.CBCWeaponInformation;
+import cn.lambdacraft.api.weapon.IModdable;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.InformationSet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityCrossbowArrow;
-import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  * @author WeAthFolD
  */
-public class Weapon_Crossbow extends WeaponGeneralBullet {
+public class Weapon_Crossbow extends WeaponGeneralBullet implements IModdable {
 
 	public Icon[] sideIcons = new Icon[6];
 
@@ -56,6 +57,15 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 			Entity par3Entity, int par4, boolean par5) {
 		super.onBulletWpnUpdate(par1ItemStack, par2World, par3Entity, par4,
 				par5);
+		/*
+		if(par5 && getMode(par1ItemStack) == 1) {
+			//RenderTickHandler.isZooming = true;
+		}
+		if(!par5) {
+			NBTTagCompound nbt = loadCompound(par1ItemStack);
+			nbt.setInteger("mode", 0);
+		}
+		*/
 	}
 
 	@Override
@@ -64,13 +74,12 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 
 		par2World.playSoundAtEntity(par3Entity, getSoundShoot(left), 0.5F, 1.0F);
 		if (!par2World.isRemote)
-			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World,par3Entity, !left));
+			par2World.spawnEntityInWorld(new EntityCrossbowArrow(par2World,par3Entity, getMode(par1ItemStack) == 1));
 		information.setLastTick();
 		if (par3Entity instanceof EntityPlayer) {
 			doUplift(information, par3Entity);
 			if (!par3Entity.capabilities.isCreativeMode) {
 					par1ItemStack.damageItem(1, par3Entity);
-				par3Entity.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
 			}
 		}
 	}
@@ -99,7 +108,7 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 
 	@Override
 	public int getShootTime(boolean left) {
-		return 30;
+		return left ? 30 : 0;
 	}
 
 	@Override
@@ -124,5 +133,32 @@ public class Weapon_Crossbow extends WeaponGeneralBullet {
 		if (information == null)
 			return false;
 		return !(information.getDeltaTick() < 17);
+	}
+
+	@Override
+	public void onModeChange(ItemStack item, EntityPlayer player, int newMode) {
+		NBTTagCompound nbt = loadCompound(item);
+		nbt.setInteger("mode", newMode);
+	}
+
+	@Override
+	public int getMode(ItemStack item) {
+		return loadCompound(item).getInteger("mode");
+	}
+
+	@Override
+	public int getMaxModes() {
+		return 2;
+	}
+
+	@Override
+	public String getModeDescription(int mode) {
+		return "mode.crossbow" + mode;
+	}
+	
+	private NBTTagCompound loadCompound(ItemStack itemStack) {
+		if(itemStack.stackTagCompound == null)
+			itemStack.stackTagCompound = new NBTTagCompound();
+		return itemStack.stackTagCompound;
 	}
 }

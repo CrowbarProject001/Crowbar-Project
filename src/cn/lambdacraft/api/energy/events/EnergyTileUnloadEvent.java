@@ -12,34 +12,25 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cn.lambdacraft.mob.blocks;
+package cn.lambdacraft.api.energy.events;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
+import cn.lambdacraft.api.energy.tile.IEnergyTile;
 import net.minecraft.world.World;
-import cn.lambdacraft.core.block.CBCBlockContainer;
-import cn.lambdacraft.mob.blocks.tile.TileTissueAnalyzer;
 
 /**
- * @author WeAthFolD
- *
+ * 能量TileEntity摧毁时发出的事件。
+ * 
+ * @author HopeAsd
+ * 
  */
-public class BlockTissueAnalyzer extends CBCBlockContainer {
+public class EnergyTileUnloadEvent extends EnergyTileEvent {
 
-	/**
-	 * @param par1
-	 * @param mat
-	 */
-	public BlockTissueAnalyzer(int par1) {
-		super(par1, Material.rock);
-	}
+	public World world;
 
-	/* (non-Javadoc)
-	 * @see net.minecraft.block.ITileEntityProvider#createNewTileEntity(net.minecraft.world.World)
-	 */
-	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TileTissueAnalyzer();
+	public EnergyTileUnloadEvent(World theWorld, IEnergyTile energyTile) {
+		super(theWorld, energyTile);
+		this.world = theWorld;
+
 	}
 
 }

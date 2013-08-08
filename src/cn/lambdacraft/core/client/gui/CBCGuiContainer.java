@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import cn.lambdacraft.core.client.gui.CBCGuiButton.ButtonState;
 
 

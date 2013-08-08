@@ -7,7 +7,6 @@ import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.entities.EntityBulletGaussSec.EnumGaussRayType;
 import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
-import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_Gauss;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.deathmatch.utils.GaussBulletManager;

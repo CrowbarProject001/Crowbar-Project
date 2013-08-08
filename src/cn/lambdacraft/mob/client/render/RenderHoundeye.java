@@ -20,7 +20,6 @@ import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.mob.client.models.ModelHoundeye;
 import cn.lambdacraft.mob.entities.EntityHoundeye;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
 
@@ -41,7 +40,8 @@ public class RenderHoundeye extends RenderLiving {
 		// TODO Auto-generated constructor stub
 	}
 	
-    public void doRenderLiving(EntityLiving ent, double par2, double par4, double par6, float par8, float par9)
+    @Override
+	public void doRenderLiving(EntityLiving ent, double par2, double par4, double par6, float par8, float par9)
     {
     	GL11.glPushMatrix();
     	float yOffset = ent.prevLimbYaw + (ent.limbYaw - ent.prevLimbYaw) * par9;

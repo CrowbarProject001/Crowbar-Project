@@ -35,7 +35,7 @@ public class TileGeneratorMugen extends TileGeneratorBase {
 	}
 
 	@Override
-	public boolean emitsEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
+	public boolean emitEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
 		return true;
 	}
 

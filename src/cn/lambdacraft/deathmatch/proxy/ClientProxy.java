@@ -38,7 +38,6 @@ import cn.lambdacraft.deathmatch.blocks.TileArmorCharger;
 import cn.lambdacraft.deathmatch.blocks.TileHealthCharger;
 import cn.lambdacraft.deathmatch.blocks.TileTripmine;
 import cn.lambdacraft.deathmatch.client.keys.KeyClicking;
-import cn.lambdacraft.deathmatch.client.keys.KeyMode;
 import cn.lambdacraft.deathmatch.client.keys.KeyReload;
 import cn.lambdacraft.deathmatch.client.models.ModelBattery;
 import cn.lambdacraft.deathmatch.client.models.ModelGrenade;
@@ -132,8 +131,6 @@ public class ClientProxy extends Proxy {
 		CBCSoundEvents.addSoundWithVariety("cbc/weapons/electro", "/mods/lambdacraft/sounds/weapons/electro", 3);
 		CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R),
 				false, new KeyReload());
-		CBCKeyProcess.addKey(new KeyBinding("key.mode", Keyboard.KEY_V),
-				false, new KeyMode());
 		GameSettings gs = Minecraft.getMinecraft().gameSettings;
 		CBCKeyProcess.addKey(gs.keyBindAttack, false, new KeyClicking(true));
 		CBCKeyProcess.addKey(gs.keyBindUseItem, false, new KeyClicking(false));

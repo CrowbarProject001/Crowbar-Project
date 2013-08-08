@@ -20,8 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import cn.lambdacraft.api.LCDirection;
-import cn.lambdacraft.api.energy.IEnergySink;
 import cn.lambdacraft.api.energy.item.ICustomEnItem;
+import cn.lambdacraft.api.energy.tile.IEnergySink;
 import cn.lambdacraft.core.utils.EnergyUtils;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 
@@ -150,6 +150,7 @@ public class TileBatBox extends TileGeneratorBase implements IInventory,
 		return maxStorage;
 	}
 	
+	@Override
 	public int getMaxEnergyOutput() {
 		return type == 0 ? 32 : 128;
 	}
@@ -220,7 +221,7 @@ public class TileBatBox extends TileGeneratorBase implements IInventory,
 	}
 
 	@Override
-	public boolean emitsEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
+	public boolean emitEnergyTo(TileEntity emTileEntity, LCDirection emDirection) {
 		return emDirection.toForgeDirection().ordinal() == this.blockMetadata;
 	}
 
@@ -236,7 +237,7 @@ public class TileBatBox extends TileGeneratorBase implements IInventory,
 	}
 
 	@Override
-	public boolean acceptEnergyFrom(TileEntity paramTileEntity,
+	public boolean acceptsEnergyFrom(TileEntity paramTileEntity,
 			LCDirection paramDirection) {
 		return currentEnergy < maxStorage
 				&& paramDirection.toForgeDirection().ordinal() != this.blockMetadata;

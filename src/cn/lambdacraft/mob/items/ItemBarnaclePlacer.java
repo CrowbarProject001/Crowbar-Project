@@ -15,7 +15,6 @@
 package cn.lambdacraft.mob.items;
 
 import cn.lambdacraft.mob.entities.EntityBarnacle;
-import cn.lambdacraft.mob.utils.MobSpawnHandler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

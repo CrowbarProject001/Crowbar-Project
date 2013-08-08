@@ -5,7 +5,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 import cn.lambdacraft.api.weapon.IModdable;
-import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCNetHandler;

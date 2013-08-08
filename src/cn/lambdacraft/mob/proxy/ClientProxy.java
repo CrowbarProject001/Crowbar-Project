@@ -18,7 +18,6 @@ import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
 import cn.lambdacraft.mob.client.models.ModelHLZombie;
 import cn.lambdacraft.mob.client.models.ModelHeadcrab;
-import cn.lambdacraft.mob.client.models.ModelHoundeye;
 import cn.lambdacraft.mob.client.models.ModelSnark;
 import cn.lambdacraft.mob.client.render.RenderAlienSlave;
 import cn.lambdacraft.mob.client.render.RenderBarnacle;

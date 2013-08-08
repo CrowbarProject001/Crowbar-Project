@@ -16,7 +16,6 @@ package cn.lambdacraft.deathmatch.entities;
 
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.deathmatch.items.wpns.Weapon_RPG;
-import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -66,7 +65,7 @@ public class EntityRPGDot extends EntityThrowable {
 			setDead();
 			return;
 		} else {
-			int mode = 0;
+			int mode = currentItem.getItemDamage();
 			if (mode == 0)
 				this.setDead();
 		}

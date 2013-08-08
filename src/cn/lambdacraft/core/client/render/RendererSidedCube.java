@@ -20,12 +20,10 @@ import cn.lambdacraft.core.client.RenderUtils;
 
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.IBlockAccess;
 
 /**
  * 特殊的Block渲染类，如果你需要贴图比例不是1:1的多面贴图渲染，请使用它。(TileEntity version)

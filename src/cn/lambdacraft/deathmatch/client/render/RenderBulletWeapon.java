@@ -6,6 +6,7 @@ import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.deathmatch.utils.ItemHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -91,7 +92,7 @@ public class RenderBulletWeapon implements IItemRenderer {
 			InformationBullet inf = weaponType.getInformation(item, entity.worldObj);
 			WeaponGeneralBullet wpn = (WeaponGeneralBullet) item.getItem();
 			EntityPlayer ep = (EntityPlayer) entity;
-			if(ep.isUsingItem() && item.equals(ep.getCurrentEquippedItem()) && wpn.canShoot(ep, item) && (inf != null && inf.getDeltaTick() < 3))
+			if(ItemHelper.getUsingTickLeft(ep) > 0 && wpn.canShoot(ep, item) && (inf != null && inf.getDeltaTick() < 3))
 				RenderMuzzleFlash.renderItemIn2d(t, tx, ty, tz);
 		}
 			

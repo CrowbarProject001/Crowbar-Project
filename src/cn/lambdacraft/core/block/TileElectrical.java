@@ -14,12 +14,12 @@
  */
 package cn.lambdacraft.core.block;
 
-import cn.lambdacraft.api.energy.EnergyTileLoadEvent;
-import cn.lambdacraft.api.energy.EnergyTileSourceEvent;
-import cn.lambdacraft.api.energy.EnergyTileUnLoadEvent;
-import cn.lambdacraft.api.energy.IEnergyTile;
-import cn.lambdacraft.core.CBCMod;
 import net.minecraftforge.common.MinecraftForge;
+import cn.lambdacraft.api.energy.events.EnergyTileLoadEvent;
+import cn.lambdacraft.api.energy.events.EnergyTileSourceEvent;
+import cn.lambdacraft.api.energy.events.EnergyTileUnloadEvent;
+import cn.lambdacraft.api.energy.tile.IEnergyTile;
+import cn.lambdacraft.core.CBCMod;
 
 /**
  * @author WeAthFolD
@@ -54,7 +54,7 @@ public abstract class TileElectrical extends CBCTileEntity implements
 	public void onTileUnload() {
 		super.onTileUnload();
 	    if ((CBCMod.proxy.isSimulating()) && (this.addedToNet)) {
-	        MinecraftForge.EVENT_BUS.post(new EnergyTileUnLoadEvent(this));
+	        MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(worldObj, this));
 	        this.addedToNet = true;
 	     }
 		this.addedToNet = false;
@@ -67,8 +67,7 @@ public abstract class TileElectrical extends CBCTileEntity implements
 
 	public int sendEnergy(int amm) {
 		int amount = 0;
-		EnergyTileSourceEvent event = new EnergyTileSourceEvent(this,
-				amm);
+		EnergyTileSourceEvent event = new EnergyTileSourceEvent(worldObj, this, amm);
 		MinecraftForge.EVENT_BUS.post(event);
 		amount += event.amount;
 		return amount;

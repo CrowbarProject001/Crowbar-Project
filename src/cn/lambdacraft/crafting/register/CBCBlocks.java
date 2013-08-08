@@ -1,5 +1,9 @@
 package cn.lambdacraft.crafting.register;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.src.ModLoader;
+import net.minecraftforge.common.MinecraftForge;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.block.BlockElectricalBase;
 import cn.lambdacraft.core.misc.Config;
@@ -11,8 +15,6 @@ import cn.lambdacraft.crafting.blocks.BlockElectricCrafter;
 import cn.lambdacraft.crafting.blocks.BlockGeneratorFire;
 import cn.lambdacraft.crafting.blocks.BlockGeneratorLava;
 import cn.lambdacraft.crafting.blocks.BlockGeneratorSolar;
-import cn.lambdacraft.crafting.blocks.BlockRadioactiveFlow;
-import cn.lambdacraft.crafting.blocks.BlockRadioactiveStill;
 import cn.lambdacraft.crafting.blocks.BlockRefined;
 import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter;
 import cn.lambdacraft.crafting.blocks.BlockWire;
@@ -24,14 +26,7 @@ import cn.lambdacraft.crafting.blocks.tile.TileGeneratorMugen;
 import cn.lambdacraft.crafting.blocks.tile.TileGeneratorSolar;
 import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
 import cn.lambdacraft.crafting.blocks.tile.TileWire;
-import cn.lambdacraft.crafting.items.CBCBucket;
 import cn.lambdacraft.intergration.ic2.tile.ItemBlockIC2;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlowing;
-import net.minecraft.block.BlockStationary;
-import net.minecraft.block.material.Material;
-import net.minecraft.src.ModLoader;
-import net.minecraftforge.common.MinecraftForge;
 
 /**
  * 方块注册类，包括了所有crafting包中的方块。
@@ -43,8 +38,6 @@ public class CBCBlocks {
 	public static Block weaponCrafter, blockRefined, uraniumOre, advCrafter,
 			genFire, genLava, genSolar, genMugen, wire, storageS, storageL;
 	public static Block oreTin, oreCopper, elCrafter;
-	public static BlockStationary radioActiveStill;
-	public static BlockFlowing radioActiveFlowing;
 
 	/**
 	 * 在这里进行实际的方块加载。请在Init中调用它。
@@ -80,8 +73,6 @@ public class CBCBlocks {
 				0));
 		genFire = new BlockGeneratorFire(GeneralRegistry.getBlockId("genFire",
 				0));
-		radioActiveStill = new BlockRadioactiveStill(GeneralRegistry.getBlockId("radioActiveStill",0) + 1);
-		radioActiveFlowing = new BlockRadioactiveFlow(radioActiveStill.blockID - 1);
 		
 		ModLoader.registerBlock(weaponCrafter);
 		ModLoader.registerBlock(blockRefined);
@@ -89,8 +80,6 @@ public class CBCBlocks {
 		ModLoader.registerBlock(advCrafter);
 		ModLoader.registerBlock(oreTin);
 		ModLoader.registerBlock(oreCopper);
-		ModLoader.registerBlock(radioActiveStill);
-		ModLoader.registerBlock(radioActiveFlowing);
 		
 		if(!CBCMod.ic2Installed) {
 			

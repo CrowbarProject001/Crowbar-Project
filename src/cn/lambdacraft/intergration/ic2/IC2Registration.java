@@ -4,8 +4,6 @@ import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 import cn.lambdacraft.crafting.register.CBCItems;
-import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_Crowbar_Electrical;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.intergration.ic2.item.ArmorHEVIC2;

@@ -14,13 +14,8 @@
  */
 package cn.lambdacraft.deathmatch.client.render;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.client.render.RenderIcon;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;

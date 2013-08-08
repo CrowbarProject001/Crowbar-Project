@@ -37,11 +37,6 @@ import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.liquids.LiquidContainerData;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidDictionary;
-import net.minecraftforge.liquids.LiquidStack;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -88,8 +83,6 @@ public class ModuleCrafting {
 		CBCBlocks.init(CBCMod.config);
 		CBCItems.init(CBCMod.config);
 		
-		LiquidContainerRegistry.registerLiquid(new LiquidContainerData(LiquidDictionary.getOrCreateLiquid(CBCBlocks.radioActiveStill.getLocalizedName(),
-				new LiquidStack(CBCBlocks.radioActiveStill.blockID,1000,0)), new ItemStack(CBCItems.bucketRadioactive.itemID,1, 0), new ItemStack(Item.bucketEmpty)));
 		CBCAchievements.init(CBCMod.config);
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CRAFTER,
 				new CRGuiElements.ElementCrafter());

@@ -12,42 +12,60 @@
  * LambdaCraft是完全开源的。它的发布遵从《LambdaCraft开源协议》。你允许阅读，修改以及调试运行
  * 源代码， 然而你不允许将源代码以另外任何的方式发布，除非你得到了版权所有者的许可。
  */
-package cn.lambdacraft.mob.client.gui;
+package cn.lambdacraft.core.client;
 
-import net.minecraft.inventory.Container;
-import cn.lambdacraft.core.client.gui.CBCGuiButton;
-import cn.lambdacraft.core.client.gui.CBCGuiContainer;
+import java.util.EnumSet;
+
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.TickType;
 
 /**
  * @author WeAthFolD
  *
  */
-public class GuiTissueAnalyzer extends CBCGuiContainer {
+public class RenderTickHandler implements ITickHandler {
 
+	private boolean isZooming = false;
+	
 	/**
-	 * @param par1Container
+	 * 
 	 */
-	public GuiTissueAnalyzer(Container par1Container) {
-		super(par1Container);
+	public RenderTickHandler() {
 		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
-	 * @see cn.lambdacraft.core.client.gui.CBCGuiContainer#onButtonClicked(cn.lambdacraft.core.client.gui.CBCGuiButton)
+	 * @see cpw.mods.fml.common.ITickHandler#tickStart(java.util.EnumSet, java.lang.Object[])
 	 */
 	@Override
-	public void onButtonClicked(CBCGuiButton button) {
-		// TODO Auto-generated method stub
-
+	public void tickStart(EnumSet<TickType> type, Object... tickData) {
+		if(isZooming) {
+			
+		}
+	}
+	
+	public void setZooming(boolean b) {
+		isZooming = b;
 	}
 
 	/* (non-Javadoc)
-	 * @see net.minecraft.client.gui.inventory.GuiContainer#drawGuiContainerBackgroundLayer(float, int, int)
+	 * @see cpw.mods.fml.common.ITickHandler#tickEnd(java.util.EnumSet, java.lang.Object[])
 	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		// TODO Auto-generated method stub
+	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+	}
 
+	/* (non-Javadoc)
+	 * @see cpw.mods.fml.common.ITickHandler#ticks()
+	 */
+	@Override
+	public EnumSet<TickType> ticks() {
+		return EnumSet.of(TickType.RENDER);
+	}
+
+	@Override
+	public String getLabel() {
+		return "LambdaCraft renderTick Handler";
 	}
 
 }

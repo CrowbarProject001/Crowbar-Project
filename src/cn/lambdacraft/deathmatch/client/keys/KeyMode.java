@@ -1,6 +1,5 @@
 package cn.lambdacraft.deathmatch.client.keys;
 
-import cn.lambdacraft.api.weapon.InformationWeapon;
 import cn.lambdacraft.api.weapon.IModdable;
 import cn.lambdacraft.core.register.IKeyProcess;
 import cn.lambdacraft.deathmatch.network.NetDeathmatch;

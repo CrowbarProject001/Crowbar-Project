@@ -14,7 +14,6 @@
  */
 package cn.lambdacraft.mob.entities;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -24,28 +23,12 @@ import cn.lambdacraft.core.utils.BlockPos;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.deathmatch.entities.EntityBullet;
 import cn.lambdacraft.mob.register.CBCMobItems;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
+import cn.lambdacraft.mob.utils.MobHelper;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIFleeSun;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIRestrictSun;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -71,7 +54,7 @@ public class EntityAlienSlave extends EntityMob {
 	 */
 	public EntityAlienSlave(World par1World) {
 		super(par1World);
-        this.texture = ClientProps.VORTIGAUNT_PATH;
+		this.texture = ClientProps.HECHARGER_BACK_PATH;
         this.moveSpeed = 0.65F;
 	}
 	
@@ -169,7 +152,12 @@ public class EntityAlienSlave extends EntityMob {
 	@Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
-    	if(super.attackEntityFrom(par1DamageSource, par2)) {
+		boolean b = super.attackEntityFrom(par1DamageSource, par2);
+		if(entityToAttack != null && entityToAttack instanceof EntityAlienSlave) {
+			this.entityToAttack = this.findPlayerToAttack();
+		}
+		
+    	if(b && (par2 > 6 || rand.nextInt(4) == 0)) {
     		this.electrolyze_left.clear();
     		this.electrolyze_right.clear();
     		this.isCharging = false;
@@ -193,20 +181,21 @@ public class EntityAlienSlave extends EntityMob {
 		return isCharging;
 	}
 	
-    public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+    @Override
+	public EntityItem dropItemWithOffset(int par1, int par2, float par3)
     {
         return this.entityDropItem(new ItemStack(par1, par2, 4), par3);
     }
     
     @Override
     public int getDropItemId() {
-    	return CBCMobItems.bioTissue.itemID;
+    	return CBCMobItems.dna.itemID;
     }
 	
 	@Override
     protected Entity findPlayerToAttack()
     {
-    	Entity e = super.findPlayerToAttack();
+    	Entity e = MobHelper.getNearestTargetWithinAABB(worldObj, posX, posY, posZ, 16.0F, GenericUtils.selectorPlayer, this);
     	if(e != null && rand.nextInt(3) == 0) {
     		this.playSound(GenericUtils.getRandomSound("cbc.mobs.slv_alert", 3), 0.5F, 1.0F);
     	}

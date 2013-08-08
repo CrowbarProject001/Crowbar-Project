@@ -27,6 +27,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 	@Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,EntityPlayer par3EntityPlayer, int par4) {}
 	
+	@Override
 	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
 		this.setUsingSide(stack, left);
 		
@@ -41,6 +42,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 		}
 	}
 	
+	@Override
 	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft) {
     	InformationEnergy inf = loadInformation(stack, player);
     	if (doesJam(inf, stack, player)) 
@@ -120,6 +122,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 
 	}
 	
+	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return 600;
 	}
@@ -160,7 +163,7 @@ public abstract class WeaponGeneralEnergy extends WeaponGeneral implements IHudT
 	}
 	
 	public boolean canShoot(EntityPlayer player, ItemStack is) {
-		return  player.capabilities.isCreativeMode || AmmoManager.hasAmmo(this, player);
+		return  (player.capabilities.isCreativeMode || AmmoManager.hasAmmo(this, player)) && getShootTime(getUsingSide(is)) > 0;
 	}
 	
 	//----------------------------Interfaces---------------------------

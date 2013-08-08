@@ -20,9 +20,8 @@ import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.mob.client.models.ModelVortigaunt;
 import cn.lambdacraft.mob.entities.EntityAlienSlave;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelCreeper;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -44,10 +43,11 @@ public class RenderAlienSlave extends RenderLiving {
 	 * @param par2
 	 */
 	public RenderAlienSlave() {
-		super(new ModelCreeper(), 0.5F);
+		super(new ModelVortigaunt(), 0.5F);
 	}
 
-    public void doRender(Entity entity, double x, double y, double z, float par8, float par9)
+    @Override
+	public void doRender(Entity entity, double x, double y, double z, float par8, float par9)
     {
     	this.doRenderLiving((EntityLiving) entity, x, y, z, par8, par9);
     	EntityAlienSlave slave = (EntityAlienSlave) entity;

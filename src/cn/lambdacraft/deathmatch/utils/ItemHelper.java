@@ -22,7 +22,6 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 import cn.lambdacraft.api.weapon.ISpecialUseable;
-import cn.lambdacraft.core.energy.ITickCallback;
 import cn.lambdacraft.deathmatch.network.NetClicking;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,11 +57,13 @@ public class ItemHelper implements ITickHandler {
 		}
 		
 		public boolean handleUpdate(EntityPlayer player) {
-			return --useDurationLeft > 0 && stack != null && stack == player.getCurrentEquippedItem();
+			ItemStack curItem = player.getCurrentEquippedItem(); 
+			return --useDurationLeft > 0 && stack != null && curItem != null && stack.itemID == curItem.itemID;
 		}
 		
 		public boolean isUsing(EntityPlayer player) {
-			return useDurationLeft > 0 && stack != null && stack == player.getCurrentEquippedItem();
+			ItemStack curItem = player.getCurrentEquippedItem(); 
+			return useDurationLeft > 0 && stack != null && curItem != null && stack.itemID == curItem.itemID;
 		}
 		
 		public void resetStatus(int maxUse, boolean side, ItemStack is) {
@@ -95,11 +96,6 @@ public class ItemHelper implements ITickHandler {
 			usingPlayerMap.put(player, stat);
 		} else stat = usingPlayerMap.get(player);
 		stat.resetStatus(maxCount, side, currentStack);
-		if(!player.worldObj.isRemote)
-			System.out.println("Recieved Start Message from Client");
-		if(player.worldObj.isRemote) {
-			NetClicking.sendPacketData(side ? 1 : -1);
-		}
 	}
 
 	
@@ -132,8 +128,6 @@ public class ItemHelper implements ITickHandler {
 	public static void stopUsingItem(EntityPlayer player) {
 		Map<EntityPlayer, UsingStatus> usingPlayerMap = player.worldObj.isRemote ? usingPlayerMap_client : usingPlayerMap_server;
 		UsingStatus stat = usingPlayerMap.get(player);
-		if(!player.worldObj.isRemote)
-			System.out.println("Recieved Stop Message from Client");
 		if(stat != null) {
 			stat.stopUsing(player);
 			if(player.worldObj.isRemote)
@@ -155,7 +149,6 @@ public class ItemHelper implements ITickHandler {
 				} else {
 					Item item = stat.stack.getItem();
 					if(item instanceof ISpecialUseable) {
-						System.out.println("Handling update in side " + world.isRemote);
 						((ISpecialUseable)item).onItemUsingTick(world, player, stat.stack, stat.usingSide, stat.useDurationLeft);
 					}
 				}

@@ -1,8 +1,6 @@
-package cn.lambdacraft.api.energy;
+package cn.lambdacraft.api.energy.tile;
 
-public abstract interface IEnergyConductor extends IEnergyAcceptor,
-		IEnergyEmitter {
-
+public interface IEnConductor extends IEnAcceptor, IEnEmitter {
 	public abstract double getConductionLoss();
 
 	public abstract int getInsulationEnergyAbsorption();

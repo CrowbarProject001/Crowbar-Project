@@ -14,27 +14,6 @@
  */
 package cn.lambdacraft.intergration.ic2;
 
-import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.GeneralRegistry;
-import cn.lambdacraft.crafting.register.CBCBlocks;
-import cn.lambdacraft.crafting.register.CBCItems;
-import cn.lambdacraft.deathmatch.blocks.BlockMedkitFiller;
-import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
-import cn.lambdacraft.deathmatch.register.DMBlocks;
-import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.lambdacraft.intergration.ic2.item.ArmorHEVIC2;
-import cn.lambdacraft.intergration.ic2.item.ItemBatteryIC2;
-import cn.lambdacraft.intergration.ic2.tile.BlockArmorChargerIC2;
-import cn.lambdacraft.intergration.ic2.tile.BlockElCrafterIC2;
-import cn.lambdacraft.intergration.ic2.tile.BlockHealthChargerIC2;
-import cn.lambdacraft.intergration.ic2.tile.BlockMedkitFillerIC2;
-import cn.lambdacraft.intergration.ic2.tile.TileArmorChargerIC2;
-import cn.lambdacraft.intergration.ic2.tile.TileElCrafterIC2;
-import cn.lambdacraft.intergration.ic2.tile.TileHealthChargerIC2;
-import cn.lambdacraft.intergration.ic2.tile.TileMedkitFillerIC2;
-import net.minecraft.src.ModLoader;
-import net.minecraft.tileentity.TileEntity;
-
 /**
  * @author WeAthFolD
  *

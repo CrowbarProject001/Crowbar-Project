@@ -21,7 +21,6 @@ import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
 import cn.lambdacraft.mob.ModuleMob;
 import cn.lambdacraft.mob.register.CBCMobItems;
-import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -122,7 +121,8 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 		this.sync();
 	}
 	
-    protected void onDeathUpdate()
+    @Override
+	protected void onDeathUpdate()
     {
     	super.onDeathUpdate();
     	if(this.deathTime == 2) {
@@ -174,7 +174,8 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 		return b;
 	}
 	
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
+    @Override
+	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2)
     {
     	boolean b = super.attackEntityFrom(par1DamageSource, par2);
     	if(b) {
@@ -270,6 +271,7 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 	}
 	
 	public void activate() {
+		this.playSound("cbc.mobs.tu_spinup", 0.5F, 1.0F);
 		isActivated = true;
 	}
 	

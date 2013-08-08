@@ -28,8 +28,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
 /**
  * @author WeAthFolD
@@ -87,7 +85,7 @@ public class RenderGauss implements IItemRenderer {
 	
 	private void renderEntityItem(RenderBlocks render, EntityItem ent) {
 		GL11.glPushMatrix();
-		RenderUtils.loadTexture(ClientProps.HECHARGER_BACK_PATH);
+		RenderUtils.loadTexture(ClientProps.GAUSS_ITEM_PATH);
 		float scale = 0.0625F;
 		GL11.glTranslatef(0F, 0.5F, 0F);
 		GL11.glRotatef(90F, 0, -1, 0);
@@ -105,7 +103,7 @@ public class RenderGauss implements IItemRenderer {
 			item.stackTagCompound = new NBTTagCompound();
 
 		GL11.glPushMatrix();
-		RenderUtils.loadTexture(ClientProps.HECHARGER_BACK_PATH);
+		RenderUtils.loadTexture(ClientProps.GAUSS_ITEM_PATH);
 		float scale = 0.0625F;
 		GL11.glTranslatef(1.0F, 0.5F, 0F);
 		GL11.glRotatef(90F, 0, -1, 0);

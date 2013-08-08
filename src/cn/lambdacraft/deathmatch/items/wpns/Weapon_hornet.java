@@ -14,12 +14,11 @@
  */
 package cn.lambdacraft.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.api.weapon.InformationBullet;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.deathmatch.entities.EntityHornet;
+import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -49,7 +48,7 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 			return;
 		int dt = inf.ticksExisted;
 		EntityPlayer player = (EntityPlayer) par3Entity;
-		if (dt % RECOVER_TIME == 0 && !(this.canShoot(player, par1ItemStack) && player.isUsingItem())) {
+		if (dt % RECOVER_TIME == 0 && !(this.canShoot(player, par1ItemStack) && ItemHelper.getUsingTickLeft(player) > 0)) {
 			if (par1ItemStack.getItemDamage() > 0)
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
 		}
@@ -61,12 +60,9 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 
 		if (!(player.capabilities.isCreativeMode))
 			par1ItemStack.damageItem(1, player);
-		player.setItemInUse(par1ItemStack,
-				this.getMaxItemUseDuration(par1ItemStack));
 		if (!par2World.isRemote)
 			par2World.spawnEntityInWorld(new EntityHornet(par2World, player, left));
-		par2World.playSoundAtEntity(player,
-				this.getSoundShoot(left), 0.5F, 1.0F);
+		par2World.playSoundAtEntity(player, this.getSoundShoot(left), 0.5F, 1.0F);
 		information.setLastTick();
 		return;
 	}
@@ -110,7 +106,7 @@ public class Weapon_Hornet extends WeaponGeneralBullet {
 
 	@Override
 	public int getShootTime(boolean left) {
-		return left ? 5 : 2;
+		return left ? 5 : 3;
 	}
 
 }

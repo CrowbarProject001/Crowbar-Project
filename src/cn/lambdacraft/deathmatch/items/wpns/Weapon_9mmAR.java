@@ -9,7 +9,6 @@ import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityARGrenade;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
-import cn.lambdacraft.deathmatch.utils.ItemHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -23,18 +22,10 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public class Weapon_9mmAR extends WeaponGeneralBullet {
+public class Weapon_9mmAR extends Weapon_9mmAR_Raw {
 
 	public Weapon_9mmAR(int par1) {
-
-		super(par1, CBCItems.ammo_9mm2.itemID);
-		setIAndU("weapon_9mmar");
-		setCreativeTab(CBCMod.cct);
-		setMaxDamage(51);
-
-		setReloadTime(60);
-		setJamTime(10);
-		setLiftProps(8, 2);
+		super(par1);
 	}
 
 	@Override
@@ -82,90 +73,12 @@ public class Weapon_9mmAR extends WeaponGeneralBullet {
 
 	@Override
 	public String getSoundShoot(boolean left) {
-		return left ? "cbc.weapons.hksa"
-				: (itemRand.nextFloat() * 2 > 1 ? "cbc.weapons.glauncher"
-						: "cbc.weapons.glauncherb");
-	}
-
-	@Override
-	public String getSoundJam(boolean left) {
-		return "cbc.weapons.gunjam_a";
-	}
-
-	@Override
-	public String getSoundReload(boolean left) {
-		return "cbc.weapons.nmmarr";
+		return left ? "cbc.weapons.hksa" : (itemRand.nextFloat() * 2 > 1 ? "cbc.weapons.glauncher" : "cbc.weapons.glauncherb");
 	}
 
 	@Override
 	public int getShootTime(boolean left) {
 		return left ? 4 : 20;
 	}
-
-	@Override
-	public double getPushForce(boolean left) {
-		return 0;
-	}
-
-	@Override
-	public int getDamage(boolean left) {
-		return 4;
-	}
-
-	@Override
-	public int getOffset(boolean left) {
-		return 0;
-	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
-		IHudTip[] tips = new IHudTip[2];
-		tips[1] = new IHudTip() {
-
-			@Override
-			public Icon getRenderingIcon(ItemStack itemStack,
-					EntityPlayer player) {
-				if(Item.itemsList[ammoID] != null){
-					return Item.itemsList[ammoID].getIconIndex(itemStack);
-				}
-				return null;
-			}
-
-			@Override
-			public String getTip(ItemStack itemStack, EntityPlayer player) {
-				return (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1) + "|" + AmmoManager.getAmmoCapacity(ammoID, player.inventory);
-			}
-
-			@Override
-			public int getTextureSheet(ItemStack itemStack) {
-				return itemStack.getItemSpriteNumber();
-			}
-			
-		};
-		
-		tips[0] = new IHudTip() {
-
-			@Override
-			public Icon getRenderingIcon(ItemStack itemStack,
-					EntityPlayer player) {
-				if(Item.itemsList[ammoID] != null){
-					return CBCItems.ammo_argrenade.getIconIndex(itemStack);
-				}
-				return null;
-			}
-
-			@Override
-			public String getTip(ItemStack itemStack, EntityPlayer player) {
-				return String.valueOf(AmmoManager.getAmmoCapacity(CBCItems.ammo_argrenade.itemID, player.inventory));
-			}
-
-			@Override
-			public int getTextureSheet(ItemStack itemStack) {
-				return itemStack.getItemSpriteNumber();
-			}
-			
-		};
-		return tips;
-	}
 }
