@@ -20,7 +20,6 @@ import cn.lambdacraft.api.energy.tile.IEnergySink;
 import cn.lambdacraft.api.energy.tile.IEnergySource;
 import cn.lambdacraft.api.energy.tile.IEnergyTile;
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.world.WorldData;
 
 

@@ -12,7 +12,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class MobHelper {
+public final class MobHelper {
 
 	/**
 	 * 把一个奇怪的生物生成到世界中。

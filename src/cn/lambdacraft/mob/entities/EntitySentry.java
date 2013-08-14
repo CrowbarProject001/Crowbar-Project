@@ -19,13 +19,10 @@ import java.util.List;
 import cn.lambdacraft.api.entities.IEntityLink;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
-import cn.lambdacraft.mob.ModuleMob;
-import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -271,43 +268,33 @@ public class EntitySentry extends EntityLiving implements IEntityLink {
 	}
 	
 	public void activate() {
-		this.playSound("cbc.mobs.tu_spinup", 0.5F, 1.0F);
-		isActivated = true;
+		if(!isActivated) {
+			this.playSound("cbc.weapons.mine_activate", 0.5F, 1.0F);
+			isActivated = true;
+		}
 	}
 	
 	@Override
 	public boolean interact(EntityPlayer player)
     {
-		if(worldObj.isRemote)
-			return true;
-		if(!player.username.equals(placerName)) {
-			player.sendChatToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.deny.name"));
-			return false;
-		}
-		ItemStack currentItem = player.getCurrentEquippedItem();
-		if(currentItem != null && currentItem.itemID == CBCMobItems.sentrySyncer.itemID) {
-			ModuleMob.syncMap.put(player, this);
-			StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
-			b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ").append(EnumChatFormatting.RED).append(this.entityId).append("\n");
-			b.append(EnumChatFormatting.DARK_RED).append(StatCollector.translateToLocal("sentry.linksuccess.name"));
-			player.sendChatToPlayer(b.toString());
-			return true;
-		} else {
-			if(!worldObj.isRemote) {
-				if(player.isSneaking()) {
-					attackPlayer = !attackPlayer;
-					StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
-					b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ").append(EnumChatFormatting.RED).append(this.entityId).append("\n");
-					b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.attackstat.name")).append(" : ").append(EnumChatFormatting.RED).append(StatCollector.translateToLocal("sentry.attacktype" + (attackPlayer ? 1 : 0) + ".name")).append("\n");
-					player.sendChatToPlayer(b.toString());
-				} else {
-					this.isActivated = !isActivated;
-					StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
-					b.append(StatCollector.translateToLocal("sentry.status" + (isActivated ? 1 : 0) + ".name"));
-					player.sendChatToPlayer(b.toString());
-					String s = isActivated ? "cbc.mobs.tu_deploy" : "cbc.mobs.tu_spindown";
-					this.playSound(s, 0.5F, 1.0F);
-				}
+		if(!worldObj.isRemote) {
+			if(!player.username.equals(placerName)) {
+				player.sendChatToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.deny.name"));
+				return false;
+			}
+			if(player.isSneaking()) {
+				attackPlayer = !attackPlayer;
+				StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
+				b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ").append(EnumChatFormatting.RED).append(this.entityId).append("\n");
+				b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.attackstat.name")).append(" : ").append(EnumChatFormatting.RED).append(StatCollector.translateToLocal("sentry.attacktype" + (attackPlayer ? 1 : 0) + ".name")).append("\n");
+				player.sendChatToPlayer(b.toString());
+			} else {
+				this.isActivated = !isActivated;
+				StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
+				b.append((isActivated ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)).append(StatCollector.translateToLocal("sentry.status" + (isActivated ? 1 : 0) + ".name"));
+				player.sendChatToPlayer(b.toString());
+				String s = isActivated ? "cbc.mobs.tu_deploy" : "cbc.mobs.tu_spindown";
+				this.playSound(s, 0.5F, 1.0F);
 			}
 		}
 		return true;

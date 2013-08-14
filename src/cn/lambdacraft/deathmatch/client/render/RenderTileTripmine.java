@@ -107,13 +107,14 @@ public class RenderTileTripmine extends RendererSidedCube {
 		}
 
 		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		RenderUtils.loadTexture(ClientProps.TRIPMINE_RAY_PATH);
-		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA_F(1, 1, 1, 0.7F);
+		tessellator.setColorRGBA_F(1F, 1F, 1F, 0.6F);
 		tessellator.setBrightness(15728880);
 		addVertex(v1, 0, 1);
 		addVertex(v2, du, 1);
@@ -128,6 +129,7 @@ public class RenderTileTripmine extends RendererSidedCube {
 
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glPopMatrix();
 
 	}

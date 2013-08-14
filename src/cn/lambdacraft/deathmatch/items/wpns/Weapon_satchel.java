@@ -116,12 +116,14 @@ public class Weapon_Satchel extends CBCGenericItem implements IHudTipProvider, I
     /**
      * Called when a player right clicks an entity with an item.
      */
-    public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving)
+    @Override
+	public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving)
     {
         return true;
     }
     
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
+    @Override
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
     {
     	return true;
     }

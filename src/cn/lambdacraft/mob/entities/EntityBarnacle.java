@@ -20,11 +20,11 @@ import java.util.List;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.core.utils.MotionXYZ;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -49,6 +49,15 @@ public class EntityBarnacle extends EntityLiving {
 	public Entity pullingEntity;
 	private int tickBeforeLastAttack = 0, timesEaten = 0;
 	private int tickBreaking = 0;
+	
+	private IEntitySelector selectorMyself = new IEntitySelector() {
+
+		@Override
+		public boolean isEntityApplicable(Entity entity) {
+			return GenericUtils.selectorLiving.isEntityApplicable(entity) && entity instanceof EntityBarnacle;
+		}
+		
+	};
 	
 	public EntityBarnacle(World world, int blockX, int blockY, int blockZ) {
 		super(world);
@@ -156,6 +165,9 @@ public class EntityBarnacle extends EntityLiving {
 				if(result != null && worldObj.isBlockSolidOnSide(result.blockX, result.blockY, result.blockZ, ForgeDirection.DOWN)) {
 					if(worldObj.isBlockNormalCube(result.blockX, result.blockY + 1, result.blockZ)) {
 						this.setPosition(result.blockX + 0.5, result.blockY - 1.0, result.blockZ + 0.5);
+						AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB(posX - 2, posY - 2, posZ - 2, posX + 2, posY + 2, posZ + 2);
+						if(null != worldObj.getEntitiesWithinAABBExcludingEntity(this, box, selectorMyself))
+							this.setDead();
 					} else this.setDead();
 				} else this.setDead();
 			} else {

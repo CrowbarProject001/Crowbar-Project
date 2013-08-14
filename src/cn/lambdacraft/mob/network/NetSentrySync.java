@@ -42,8 +42,7 @@ public class NetSentrySync implements IChannelProcess {
 		ByteArrayOutputStream bos = CBCNetHandler.getStream(
 				GeneralProps.NET_ID_SENTRYSYNCER, dataSize);
 		DataOutputStream outputStream = new DataOutputStream(bos);
-		boolean isVaild = tile.isActivated && tile.linkedSentry != null
-				&& tile.linkedBlock != null;
+		boolean isVaild = tile.isActivated && tile.linkedBlock != null;
 		try {
 			outputStream.writeInt(tile.xCoord);
 			outputStream.writeShort(tile.yCoord);
@@ -90,7 +89,6 @@ public class NetSentrySync implements IChannelProcess {
 				ray.linkedBlock = (TileSentryRay) te;
 			} else {
 				ray.linkedBlock = null;
-				ray.linkedSentry = null;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

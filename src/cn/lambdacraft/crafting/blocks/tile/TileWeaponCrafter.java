@@ -436,7 +436,7 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 			boolean flag = is != null;
 			if (flag) {
 				for (int j = 0; j < r.input.length; j++) {
-					if (r.input[j].itemID == is.itemID) {
+					if (r.input[j].itemID == is.itemID && r.input[j].getItemDamage() == is.getItemDamage()) {
 						if (left[j] < is.stackSize)
 							left[j] = 0;
 						else
@@ -466,7 +466,8 @@ public class TileWeaponCrafter extends CBCTileEntity implements IInventory {
 		for (int i = 2; i < 20; i++) {
 			for (int j = 0; j < r.input.length; j++) {
 				boolean flag = inventory[i] != null;
-				if (flag && inventory[i].itemID == r.input[j].itemID) {
+				//both id and damage
+				if (flag && inventory[i].itemID == r.input[j].itemID && (inventory[i].getItemDamage() == r.input[j].getItemDamage())) {
 					if (inventory[i].stackSize > left[j]) {
 						inventory[i].splitStack(left[j]);
 						left[j] = 0;

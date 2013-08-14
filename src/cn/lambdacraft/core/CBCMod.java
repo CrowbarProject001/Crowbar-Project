@@ -15,7 +15,6 @@
 package cn.lambdacraft.core;
 
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.logging.Logger;
 
 import net.minecraft.client.Minecraft;
@@ -30,7 +29,6 @@ import cn.lambdacraft.core.network.NetKeyUsing;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.world.WorldData;
 import cn.lambdacraft.crafting.recipes.RecipeWeapons;
 import cn.lambdacraft.intergration.ic2.IC2Module;
 import cpw.mods.fml.common.FMLLog;
@@ -61,7 +59,7 @@ clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHAN
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler {
 
-	public static final String VERSION = "1.5.0alpha4";
+	public static final String VERSION = "1.5.0.10fix1";
 
 	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + VERSION,
 			DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION,

@@ -1,11 +1,7 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
-import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
-import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.crafting.register.CBCItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 

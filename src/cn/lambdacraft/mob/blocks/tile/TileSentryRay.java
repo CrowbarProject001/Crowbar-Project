@@ -28,7 +28,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
-import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.utils.BlockPos;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.deathmatch.utils.BulletManager;
@@ -42,7 +41,6 @@ import cn.lambdacraft.mob.network.NetSentrySync;
  */
 public class TileSentryRay extends TileEntity {
 
-	public EntitySentry linkedSentry;
 	public TileSentryRay linkedBlock;
 	public boolean isLoaded;
 
@@ -51,21 +49,21 @@ public class TileSentryRay extends TileEntity {
 	public boolean isActivated;
 
 	private int linkedX = 0, linkedY = 0, linkedZ = 0;
-
-	private long sentryId;
-	private double senX, senY, senZ;
 	
+	private String placerName = "";
+
 	public IEntitySelector selector = new IEntitySelector() {
 
 		@Override
 		public boolean isEntityApplicable(Entity entity) {
 			boolean b = entity instanceof EntitySentry;
 			if(b) {
-				return entity.getPersistentID().getLeastSignificantBits() == sentryId;
+				return ((EntitySentry)entity).placerName.equals(placerName);
 			} else return false;
 		}
 		
 	};
+	
 	private int tickSinceLastActivate = 0;
 
 	public void connectWith(TileSentryRay another) {
@@ -73,19 +71,19 @@ public class TileSentryRay extends TileEntity {
 	}
 
 	public void noticeSentry() {
-		worldObj.playSound(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, "cbc.weapons.mine_activate", 0.5F, 1.0F, false);
-		linkedSentry.activate();
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(xCoord - 7.5, yCoord - 7.5, zCoord - 7.5, xCoord + 8.5, yCoord + 8.5, zCoord + 8.5);
+		List<EntitySentry> list = worldObj.getEntitiesWithinAABBExcludingEntity(null, box, selector);
+		for(EntitySentry e : list) {
+			e.activate();
+		}
 	}
 
 	@Override
 	public void updateEntity() {
-		if (linkedSentry != null && linkedSentry.isDead) {
-			isActivated = false;
-			linkedSentry = null;
-		}
 		if (linkedBlock != null && linkedBlock.isInvalid()) {
 			linkedBlock = null;
 		}
+		
 		if (worldObj.isRemote)
 			return;
 		
@@ -99,57 +97,53 @@ public class TileSentryRay extends TileEntity {
 			}
 			linkedX = linkedY = linkedZ = 0;
 		}
-		if (sentryId != 0) {
-			AxisAlignedBB box = AxisAlignedBB.getBoundingBox(senX - 1.0, senY - 1.0, senZ -1.0, senX + 1.0, senY + 1.0, senZ + 1.0);
-			List<EntitySentry> list = worldObj.getEntitiesWithinAABBExcludingEntity(null, box, selector);
-			if(list != null && list.size() == 1) {
-				linkedSentry = list.get(0);
-				senX = 0;
-				senY = 0;
-				senZ = 0;
-				sentryId = 0L;
-			}
-		}
+		
 		// TODO:Check if touched, and notice the entity to activate
-		if (!isLoaded) {
-			EntityPlayer player = ModuleMob.playerMap.get(new BlockPos(this));
-			if (player != null) {
-				TileSentryRay another = ModuleMob.tileMap.get(player);
-				if (another == null || another.isInvalid())
+		if(!isLoaded) {
+			BlockPos bp = new BlockPos(this);
+			if(ModuleMob.placeMap.containsKey(bp)) {
+				EntityPlayer player = ModuleMob.placeMap.get(bp);
+				placerName = player.username;
+				TileSentryRay t = ModuleMob.tileMap.get(player);
+				if(t == null) {
 					ModuleMob.tileMap.put(player, this);
-				else {
-					linkedBlock = another;
-					linkedSentry = ModuleMob.syncMap.get(player);
-					ModuleMob.syncMap.remove(player);
-					ModuleMob.tileMap.remove(player);
-					sendChatToPlayer(player, linkedSentry);
-					NetSentrySync.sendSyncPacket(this);
-					isActivated = true;
+					isActivated = false;
+					player.sendChatToPlayer(EnumChatFormatting.GREEN + StatCollector.translateToLocal("sentry.another.name"));
+				} else {
+					if(t.worldObj.equals(worldObj)) {
+						if(t.getDistanceFrom(xCoord, yCoord, zCoord) <= 400.0) {
+							linkedBlock = t;
+							ModuleMob.tileMap.remove(player);
+							player.sendChatToPlayer(EnumChatFormatting.GREEN + StatCollector.translateToLocal("sentry.successful.name"));
+							NetSentrySync.sendSyncPacket(this);
+							isActivated = true;
+						} else {
+							player.sendChatToPlayer(EnumChatFormatting.RED +StatCollector.translateToLocal( "sentry.toofar.name"));
+							ModuleMob.tileMap.remove(player);
+						}
+					} else {
+						ModuleMob.tileMap.put(player, this);
+						player.sendChatToPlayer(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.diffdim.name"));
+					}
 				}
-			} else
+			} else {
 				isActivated = false;
+			}
 			isLoaded = true;
 		}
+
 		if (linkedBlock != null) {
 			Vec3 offset = getRayOffset();
-			Vec3 vec0 = worldObj.getWorldVec3Pool()
-					.getVecFromPool(xCoord, yCoord, zCoord)
-					.addVector(offset.xCoord, offset.yCoord, offset.zCoord);
+			Vec3 vec0 = worldObj.getWorldVec3Pool().getVecFromPool(xCoord, yCoord, zCoord).addVector(offset.xCoord, offset.yCoord, offset.zCoord);
 			offset = linkedBlock.getRayOffset();
 			Vec3 vec1 = worldObj
 					.getWorldVec3Pool()
 					.getVecFromPool(linkedBlock.xCoord, linkedBlock.yCoord,
 							linkedBlock.zCoord)
 					.addVector(offset.xCoord, offset.yCoord, offset.zCoord);
-			MovingObjectPosition result = BulletManager.rayTraceEntities(
-					GenericUtils.selectorLiving, worldObj, vec0, vec1);
+			MovingObjectPosition result = BulletManager.rayTraceEntities( GenericUtils.selectorLiving, worldObj, vec0, vec1);
 			if (result != null) {
-				if (linkedSentry != null) {
-					if(tickSinceLastActivate  > 40)
-						tickSinceLastActivate = 0;
-						this.linkedSentry.activate();
-				} else
-					CBCMod.log.severe("Why didn't I find my target?");
+				this.noticeSentry();
 			}
 		}
 		if (++tickSinceLastUpdate > 20) {
@@ -196,7 +190,7 @@ public class TileSentryRay extends TileEntity {
 		default:
 			break;
 		}
-		return Vec3.createVectorHelper(x, y, z);
+		return worldObj.getWorldVec3Pool().getVecFromPool(x, y, z);
 	}
 
 	protected void sendChatToPlayer(EntityPlayer player, EntitySentry sentry) {
@@ -218,8 +212,7 @@ public class TileSentryRay extends TileEntity {
 		bb = AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord,
 				xCoord + 1, yCoord + 1, zCoord + 1);
 		else
-			bb = AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord,
-					linkedBlock.xCoord + 1, linkedBlock.yCoord + 1, linkedBlock.zCoord + 1);
+			bb = BulletManager.getBoundingBox(xCoord, yCoord, zCoord, linkedBlock.xCoord + 1, linkedBlock.yCoord + 1, linkedBlock.zCoord + 1);
 		return bb;
 	}
 
@@ -230,17 +223,12 @@ public class TileSentryRay extends TileEntity {
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 
-		sentryId = nbt.getInteger("sentry");
 		linkedX = nbt.getInteger("linkX");
 		linkedY = nbt.getInteger("linkY");
 		linkedZ = nbt.getInteger("linkZ");
 		isLoaded = nbt.getBoolean("isLoaded");
 		isActivated = nbt.getBoolean("isActivated");
-		
-		senX = nbt.getDouble("sentryX");
-		senY = nbt.getDouble("sentryY");
-		senZ = nbt.getDouble("sentryZ");
-		sentryId = nbt.getLong("sentryID");
+		placerName = nbt.getString("placerName");
 	}
 
 	/**
@@ -249,28 +237,14 @@ public class TileSentryRay extends TileEntity {
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		if (linkedSentry != null) {
-			nbt.setLong("sentryID", linkedSentry.getPersistentID().getLeastSignificantBits());
-			nbt.setDouble("sentryX", linkedSentry.posX);
-			nbt.setDouble("sentryY", linkedSentry.posY);
-			nbt.setDouble("sentryZ", linkedSentry.posZ);
-		} else {
-			nbt.setLong("sentryID", 0L);
-			nbt.setDouble("sentryX", 0.0);
-			nbt.setDouble("sentryY", 0.0);
-			nbt.setDouble("sentryZ", 0.0);
-		}
 		if (linkedBlock != null) {
 			nbt.setInteger("linkX", linkedBlock.xCoord);
 			nbt.setInteger("linkY", linkedBlock.yCoord);
 			nbt.setInteger("linkZ", linkedBlock.zCoord);
-		} else {
-			nbt.setInteger("linkX", 0);
-			nbt.setInteger("linkY", 0);
-			nbt.setInteger("linkZ", 0);
 		}
 		nbt.setBoolean("isLoaded", isLoaded);
 		nbt.setBoolean("isActivated", isActivated);
+		nbt.setString("placerName", placerName);
 	}
 
 }

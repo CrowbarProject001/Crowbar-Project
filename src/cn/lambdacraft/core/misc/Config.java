@@ -93,6 +93,13 @@ public class Config {
 		}
 		return config.getBlock("ID." + blockName, defaultID).getInt();
 	}
+	
+	public int getSpecialBlockID(String name, Integer defaultValue) throws Exception {
+		if (this == null) {
+			throw new NullPointerException();
+		}
+		return config.get("gen", name, defaultValue).getInt();
+	}
 
 	public void SaveConfig() {
 		config.save();

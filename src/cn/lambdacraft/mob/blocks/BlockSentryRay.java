@@ -14,11 +14,14 @@
  */
 package cn.lambdacraft.mob.blocks;
 
+import java.util.Random;
+
+import cn.lambdacraft.core.block.CBCBlockContainer;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
+import cn.lambdacraft.mob.register.CBCMobItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -28,7 +31,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  *
  */
-public class BlockSentryRay extends BlockContainer {
+public class BlockSentryRay extends CBCBlockContainer {
 
 	public static final float HEIGHT = 0.1F, WIDTH = 0.2F;
 			
@@ -38,6 +41,8 @@ public class BlockSentryRay extends BlockContainer {
 	 */
 	public BlockSentryRay(int par1) {
 		super(par1, Material.rock);
+		this.setCreativeTab(null);
+		setIconName("ss_1");
 	}
 	
 	@Override
@@ -72,6 +77,11 @@ public class BlockSentryRay extends BlockContainer {
 					0.5F + var7, 1.0F, 0.5F + var7);
 		}
 	}
+	
+    public int idDropped(int par1, Random par2Random, int par3)
+    {
+    	return CBCMobItems.sentrySyncer.itemID;
+    }
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.block.ITileEntityProvider#createNewTileEntity(net.minecraft.world.World)

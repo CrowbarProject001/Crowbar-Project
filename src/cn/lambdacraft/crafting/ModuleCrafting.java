@@ -22,6 +22,8 @@ import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.crafting.blocks.container.CRGuiElements;
+import cn.lambdacraft.crafting.commands.CommandSpray;
+import cn.lambdacraft.crafting.commands.CommandXHairColor;
 import cn.lambdacraft.crafting.entities.EntitySpray;
 import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
 import cn.lambdacraft.crafting.network.NetCrafterClient;
@@ -34,7 +36,6 @@ import cn.lambdacraft.crafting.world.CBCWorldGen;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.mob.register.CBCMobItems;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
@@ -142,11 +143,10 @@ public class ModuleCrafting {
 				new RecipeCrafter(new ItemStack(DMItems.weapon_gauss), 4800,
 						CBCItems.materials.newStack(8, EnumMaterial.LIGHT),
 						CBCItems.materials.newStack(3, EnumMaterial.TECH),
-						new ItemStack(Block.glass, 5)),
+						new ItemStack(CBCItems.xenCrystal, 5)),
 				new RecipeCrafter(new ItemStack(DMItems.weapon_egon), 5600,
 						CBCItems.materials.newStack(5, EnumMaterial.HEAVY),
-						CBCItems.materials
-								.newStack(3, EnumMaterial.ACCESSORIES),
+						new ItemStack(CBCItems.xenCrystal, 8),
 						CBCItems.materials.newStack(4, EnumMaterial.TECH)),
 				new RecipeCrafter(new ItemStack(DMItems.weapon_crossbow), 3000,
 						CBCItems.materials.newStack(6, EnumMaterial.LIGHT),
@@ -182,7 +182,7 @@ public class ModuleCrafting {
 						CBCItems.materials.newStack(3, EnumMaterial.ARMOR)),
 				new RecipeCrafter(new ItemStack(DMItems.armorHEVChestplate),7000,
 						CBCItems.materials.newStack(4, EnumMaterial.TECH),
-						CBCItems.materials.newStack(7, EnumMaterial.LIGHT),
+						CBCItems.materials.newStack(7, EnumMaterial.HEAVY),
 						CBCItems.materials.newStack(4, EnumMaterial.ARMOR)),
 				new RecipeCrafter(new ItemStack(DMItems.armorHEVHelmet), 6000,
 						CBCItems.materials.newStack(2, EnumMaterial.TECH),
@@ -191,11 +191,15 @@ public class ModuleCrafting {
 				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 0), 3000,
 						CBCItems.materials.newStack(2, EnumMaterial.TECH),
 						CBCItems.materials.newStack(2, EnumMaterial.ARMOR)),
-				new RecipeCrafter(new ItemStack(DMItems.medkit, 3), 2000,
-						CBCItems.materials
-								.newStack(2, EnumMaterial.ACCESSORIES),
-						CBCItems.materials.newStack(2, EnumMaterial.LIGHT),
-						new ItemStack(CBCItems.lambdaChip, 1)), };
+				new RecipeCrafter(new ItemStack(CBCMobItems.turret, 1), 4500, CBCItems.materials.newStack(2, EnumMaterial.TECH), CBCItems.materials.newStack(2, EnumMaterial.AMMUNITION), CBCItems.materials.newStack(2, EnumMaterial.HEAVY)),
+				new RecipeCrafter(new ItemStack(DMItems.medkit, 3), 2000, CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES), CBCItems.materials.newStack(2, EnumMaterial.LIGHT), new ItemStack(CBCItems.lambdaChip, 1)),
+				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 0), 3000, CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(1, EnumMaterial.ARMOR), CBCItems.materials.newStack(2, EnumMaterial.ACCESSORIES)),
+				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 1), 3000, CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(1, EnumMaterial.ARMOR), new ItemStack(CBCItems.lambdaChip, 1)),
+				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 2), 3000, CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(1, EnumMaterial.ARMOR), CBCItems.materials.newStack(2, EnumMaterial.LIGHT)),
+				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 3), 3000, CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(2, EnumMaterial.ARMOR), CBCItems.materials.newStack(2, EnumMaterial.HEAVY)),
+				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 4), 3000, CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(1, EnumMaterial.ARMOR), CBCItems.materials.newStack(3, EnumMaterial.LIGHT)),
+				new RecipeCrafter(new ItemStack(DMItems.attach, 1, 5), 3000, CBCItems.materials.newStack(1, EnumMaterial.TECH), CBCItems.materials.newStack(1, EnumMaterial.ARMOR), new ItemStack(CBCItems.lambdaChip, 2))
+		};
 
 		RecipeWeapons.addNormalRecipe(0, wpnRecipes);
 		RecipeWeapons.addNormalRecipe(1, ammoRecipes);
@@ -208,6 +212,8 @@ public class ModuleCrafting {
 
 	@ServerStarting
 	public void serverStarting(FMLServerStartingEvent event) {
+		event.registerServerCommand(new CommandSpray());
+		event.registerServerCommand(new CommandXHairColor());
 	}
 
 	public static final String SND_ENTITIES[] = { "sprayer" };

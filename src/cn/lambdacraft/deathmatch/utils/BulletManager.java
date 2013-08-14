@@ -86,7 +86,7 @@ public class BulletManager {
             	if(e == entity1)
             		b = false;
             }
-            if (entity1.canBeCollidedWith() && b)
+            if (b && entity1.canBeCollidedWith())
             {
                 float f = 0.3F;
                 AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f, f, f);
@@ -112,7 +112,7 @@ public class BulletManager {
         return null;
 	}
 	
-	private static AxisAlignedBB getBoundingBox(Vec3 vec1, Vec3 vec2) {
+	public static AxisAlignedBB getBoundingBox(Vec3 vec1, Vec3 vec2) {
 		double minX = 0.0, minY = 0.0, minZ = 0.0, maxX = 0.0, maxY = 0.0, maxZ = 0.0;
 		if(vec1.xCoord < vec2.xCoord) {
 			minX = vec1.xCoord;
@@ -134,6 +134,26 @@ public class BulletManager {
 		} else {
 			minZ = vec2.zCoord;
 			maxZ = vec1.zCoord;
+		}
+		return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+	}
+	
+	public static AxisAlignedBB getBoundingBox(double minX, double minY,double minZ,double maxX,double maxY, double maxZ) {
+		double i;
+		if(minX > maxX) {
+			i = maxX;
+			maxX = minX;
+			minX = i;
+		}
+		if(minY > maxY) {
+			i = maxY;
+			maxY = minY;
+			minY = i;
+		}
+		if(minZ > maxZ) {
+			i = maxZ;
+			maxZ = minZ;
+			minZ = i;
 		}
 		return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 	}

@@ -22,6 +22,8 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 
+import net.minecraftforge.common.Property;
+
 import com.google.common.base.Charsets;
 
 import cn.lambdacraft.core.CBCMod;
@@ -46,11 +48,9 @@ public class ClientProps {
 	@Configurable(category = "graphics", key = "alwaysCustomCrosshair", comment = "Always draw custom crosshair regardless of player wearing HEV or not.", defValue = "false")
 	public static boolean alwaysCustomCrossHair = false;
 
-	public static final int RENDER_TYPE_TRIPMINE = RenderingRegistry
-			.getNextAvailableRenderId();
-	public static final int RENDER_TYPE_EMPTY = RenderingRegistry
-			.getNextAvailableRenderId(),
-			RENDER_ID_XENPORTAL = RenderingRegistry.getNextAvailableRenderId();;
+	public static final int RENDER_TYPE_TRIPMINE = RenderingRegistry.getNextAvailableRenderId();
+	public static final int RENDER_TYPE_EMPTY = RenderingRegistry.getNextAvailableRenderId(),
+			RENDER_ID_XENPORTAL = RenderingRegistry.getNextAvailableRenderId();
 
 	@Configurable(category = "graphics", key = "CrossHair_R", comment = "The R color value of your custom crosshair.", defValue = "255")
 	public static int xHairR = 255;
@@ -60,8 +60,24 @@ public class ClientProps {
 
 	@Configurable(category = "graphics", key = "CrossHair_B", comment = "The B color value of your custom crosshair.", defValue = "255")
 	public static int xHairB = 255;
+	
+	@Configurable(category = "graphics", key = "Spray_R", comment = "The R color value of your custom spray.", defValue = "255")
+	public static int sprayR = 255;
 
+	@Configurable(category = "graphics", key = "Spray_G", comment = "The G color value of your custom spray.", defValue = "255")
+	public static int sprayG = 255;
+
+	@Configurable(category = "graphics", key = "Spray_B", comment = "The B color value of your custom spray.", defValue = "255")
+	public static int sprayB = 255;
+	
+	@Configurable(category = "graphics", key = "Spray_A", comment = "The alpha value of your custom spray.", defValue = "255")
+	public static int sprayA = 255;
+
+	@Configurable(category = "graphics", key = "Spray_ID", comment = "The id value of your custom spray, ranging from 0-9.", defValue = "0")
+	private static int sprayID = 255;
+	
 	public static Properties crosshairProps;
+	public static Properties sprayProps;
 	
 	private static final Random RNG = new Random();
 	
@@ -120,6 +136,9 @@ public class ClientProps {
 			VORTIGAUNT_PATH = "/mods/lambdacraft/textures/entities/vortigaunt.png",
 			GAUSS_ITEM_PATH = "/mods/lambdacraft/textures/entities/gauss.png",
 			HLSPRAY_DIC_PATH = "/spray/",
+			SKYBOX_PATH = "/mods/lambdacraft/textures/sky/xen%s.png",
+			AMETHYST_PATH = "/mods/lambdacraft/textures/blocks/amethyst_model.png", 
+			XENLIGHT_PATH = "/mods/lambdacraft/textures/blocks/xenlight_model.png", 
 			EGON_BEAM_PATH[] = {"/mods/lambdacraft/textures/entities/plasma0.png", 
 		"/mods/lambdacraft/textures/entities/plasma1.png", 
 		"/mods/lambdacraft/textures/entities/plasma2.png"},
@@ -149,7 +168,16 @@ public class ClientProps {
 
 	public static final String xhair_path = "/crosshairs/",
 			DEFAULT_XHAIR_PATH = xhair_path + "xhair1.png";
+	
+	public static final String spry_path = "/spray/";
 
+	public static String PORTAL_PATH[] = new String[10];
+	static {
+		for(int i = 0; i < 10; i++) {
+			PORTAL_PATH[i] = "/mods/lambdacraft/textures/blocks/xen_portal" + (i + 1) + ".png";
+		}
+	}
+	
 	/**
 	 * 获取随机的一个火光贴图。
 	 * 
@@ -163,19 +191,24 @@ public class ClientProps {
 
 	public static void loadProps(Config config) {
 		GeneralRegistry.loadConfigurableClass(CBCMod.config, ClientProps.class);
+		
 		crosshairProps = new Properties();
-		URL src = ClientProps.class.getResource(xhair_path
-				+ "crosshairs.properties");
+		URL src = ClientProps.class.getResource(xhair_path + "crosshairs.properties");
 		InputStream langStream = null;
+		
+		sprayProps = new Properties();
+		URL src2 = ClientProps.class.getResource(spry_path + "sprays.properties");
+		InputStream langStream2 = null;
 
 		try {
 			langStream = src.openStream();
-			crosshairProps.load(new InputStreamReader(langStream,
-					Charsets.UTF_8));
+			langStream2 = src2.openStream();
+			crosshairProps.load(new InputStreamReader(langStream, Charsets.UTF_8));
+			sprayProps.load(new InputStreamReader(langStream2, Charsets.UTF_8));
 		} catch (IOException e) {
-			CBCMod.log.log(Level.SEVERE,"Unable to load crossfire props from file %s", src);
+			CBCMod.log.log(Level.SEVERE,"Unable to load crossfire/spray props from file %s", src);
 		} catch (NullPointerException e) {
-			CBCMod.log.log(Level.SEVERE, "Unable to find crossfire props file.");
+			CBCMod.log.log(Level.SEVERE, "Unable to find crossfire/spray props file.");
 		} finally {
 			try {
 				if (langStream != null) {
@@ -196,6 +229,82 @@ public class ClientProps {
 		} catch (NullPointerException e) {
 		}
 		return null;
+	}
+	
+	public static String getSprayPath(int id) {
+		try {
+			String s = sprayProps.getProperty(String.valueOf(id));
+			if (s == null)
+				return null;
+			return spry_path + s;
+		} catch (NullPointerException e) {
+		}
+		return null;
+	}
+	
+	public static void setSprayId(int id) {
+		Property prop;
+		try {
+			prop = CBCMod.config.getProperty("graphics", "Spray_ID", "0");
+			prop.set(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		sprayID = id;
+	}
+	
+	public static void setSprayColor(int r, int g, int b, int a) {
+		r = r > 255 ? 255 : (r < 0 ? 0 : r);
+		g = g > 255 ? 255 : (g < 0 ? 0 : g);
+		b = b > 255 ? 255 : (b < 0 ? 0 : b);
+		a = a > 255 ? 255 : (a < 0 ? 0 : a);
+		sprayR = r;
+		sprayG = g;
+		sprayB = b;
+		sprayA = a;
+		Property prop;
+		try {
+			prop = CBCMod.config.getProperty("graphics", "Spray_R", "255");
+			prop.set(r);
+			
+			prop = CBCMod.config.getProperty("graphics", "Spray_G", "255");
+			prop.set(g);
+			
+			prop = CBCMod.config.getProperty("graphics", "Spray_B", "255");
+			prop.set(b);
+			
+			prop = CBCMod.config.getProperty("graphics", "Spray_A", "255");
+			prop.set(a);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void setCrosshairColor(int r, int g, int b) {
+		r = r > 255 ? 255 : (r < 0 ? 0 : r);
+		g = g > 255 ? 255 : (g < 0 ? 0 : g);
+		b = b > 255 ? 255 : (b < 0 ? 0 : b);
+		xHairR = r;
+		xHairG = g;
+		xHairB = b;
+		Property prop;
+		try {
+			prop = CBCMod.config.getProperty("graphics", "CrossHair_R", "255");
+			prop.set(r);
+			
+			prop = CBCMod.config.getProperty("graphics", "CrossHair_G", "255");
+			prop.set(g);
+			
+			prop = CBCMod.config.getProperty("graphics", "CrossHair_B", "255");
+			prop.set(b);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static int getSprayId() {
+		return sprayID > 9 ? 9 : (sprayID < 0 ? 0 : sprayID);
 	}
 
 }

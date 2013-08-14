@@ -62,8 +62,7 @@ public abstract class CBCBlockContainer extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("lambdacraft:"
-				+ iconName);
+		this.blockIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
 	}
 
 	@Override

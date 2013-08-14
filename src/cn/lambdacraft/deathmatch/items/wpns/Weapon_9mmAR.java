@@ -1,19 +1,12 @@
 package cn.lambdacraft.deathmatch.items.wpns;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.weapon.InformationBullet;
-import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
-import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityARGrenade;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 
 /**

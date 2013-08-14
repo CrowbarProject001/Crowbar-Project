@@ -65,11 +65,9 @@ public class KeyUse implements IKeyProcess {
 		ItemStack armorStack = player.inventory.armorInventory[3];
 		if (armorStack == null)
 			return;
-		if (Minecraft.getMinecraft().theWorld.isRemote) {
-			ClientProxy.cth.flag = !ClientProxy.cth.flag;
-			if (armorStack.itemID == DMItems.armorHEVHelmet.itemID)
-				player.sendChatToPlayer(StatCollector.translateToLocal("flashlight.status.name") + (ClientProxy.cth.flag ? StatCollector.translateToLocal("flashlight.status.on.name") : StatCollector.translateToLocal("flashlight.status.off.name")));
-		}
+		ClientProxy.cth.flag = !ClientProxy.cth.flag;
+		//if (armorStack.itemID == DMItems.armorHEVHelmet.itemID)
+		//	player.sendChatToPlayer(StatCollector.translateToLocal("flashlight.status.name") + (ClientProxy.cth.flag ? StatCollector.translateToLocal("flashlight.status.on.name") : StatCollector.translateToLocal("flashlight.status.off.name")));
 	}
 
 }

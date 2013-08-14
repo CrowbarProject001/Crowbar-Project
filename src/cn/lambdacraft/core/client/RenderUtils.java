@@ -198,7 +198,6 @@ public class RenderUtils {
 		Tessellator t;
 		t = Tessellator.instance;
 		GL11.glPushMatrix();
-
 		t.startDrawingQuads();
 		t.setNormal(0.0F, 0.0F, 1.0F);
 		addVertex(a1, u2, v2);

@@ -86,8 +86,7 @@ public class CBCBlocks {
 			elCrafter = new BlockElectricCrafter(GeneralRegistry.getBlockId(
 					"elCrafter", 0));
 			ModLoader.registerBlock(elCrafter);
-			ModLoader.registerTileEntity(TileElCrafter.class,
-					"tile_entity_elcrafter");
+			ModLoader.registerTileEntity(TileElCrafter.class, "tile_entity_elcrafter");
 			
 			ModLoader.registerBlock(wire);
 			ModLoader.registerBlock(storageS);
@@ -113,20 +112,13 @@ public class CBCBlocks {
 		MinecraftForge.setBlockHarvestLevel(advCrafter, "pickaxe", 2);
 		MinecraftForge.setBlockHarvestLevel(oreTin, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(oreCopper, "pickaxe", 1);
-		ModLoader.registerTileEntity(TileWeaponCrafter.class,
-				"tile_entity_weapon_crafter");
-		ModLoader.registerTileEntity(TileGeneratorMugen.class,
-				"tile_entity_mugen");
-		ModLoader.registerTileEntity(TileGeneratorSolar.class,
-				"tile_entity_solar");
-		ModLoader.registerTileEntity(TileGeneratorFire.class,
-				"tile_entity_genfire");
-		ModLoader.registerTileEntity(TileGeneratorLava.class,
-				"tile_entity_genlava");
-		ModLoader.registerTileEntity(TileBatBox.TileBoxSmall.class,
-				"tile_entity_batbox1");
-		ModLoader.registerTileEntity(TileBatBox.TileBoxLarge.class,
-				"tile_entity_batbox2");
+		ModLoader.registerTileEntity(TileWeaponCrafter.class, "tile_entity_weapon_crafter");
+		ModLoader.registerTileEntity(TileGeneratorMugen.class, "tile_entity_mugen");
+		ModLoader.registerTileEntity(TileGeneratorSolar.class, "tile_entity_solar");
+		ModLoader.registerTileEntity(TileGeneratorFire.class, "tile_entity_genfire");
+		ModLoader.registerTileEntity(TileGeneratorLava.class, "tile_entity_genlava");
+		ModLoader.registerTileEntity(TileBatBox.TileBoxSmall.class, "tile_entity_batbox1");
+		ModLoader.registerTileEntity(TileBatBox.TileBoxLarge.class, "tile_entity_batbox2");
 		ModLoader.registerTileEntity(TileWire.class, "tile_entity_wire");
 		
 		return;

@@ -73,7 +73,7 @@ public class ItemAttachment extends Item {
      */
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     	int dmg = par1ItemStack.getItemDamage();
-    	list.add(StatCollector.translateToLocal("hev.attach" + dmg + ".description"));
+    	list.add(StatCollector.translateToLocal(attaches[dmg].toString()));
     }
     
     @Override

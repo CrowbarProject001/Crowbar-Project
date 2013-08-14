@@ -41,19 +41,11 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 public class ModuleMob {
 
 	/**
-	 * 玩家对应当前选定的Sentry的映射表。
-	 */
-	public static HashMap<EntityPlayer, EntitySentry> syncMap = new HashMap();
-	
-	/**
 	 * 放置时临时采用的映射表。
 	 */
 	public static HashMap<EntityPlayer, TileSentryRay> tileMap = new HashMap();
+	public static HashMap<BlockPos, EntityPlayer> placeMap = new HashMap();
 	
-	/**
-	 * 放置者对应方块位置的映射表。
-	 */
-	public static HashMap<BlockPos, EntityPlayer> playerMap = new HashMap();
 
 	@SidedProxy(clientSide = "cn.lambdacraft.mob.proxy.ClientProxy", serverSide = "cn.lambdacraft.mob.proxy.Proxy")
 	public static cn.lambdacraft.mob.proxy.Proxy proxy;
@@ -73,9 +65,9 @@ public class ModuleMob {
 
 		EntityRegistry.addSpawn(EntityHeadcrab.class, 7, 0, 50,
 				EnumCreatureType.monster, GENERIC_GEN);
-		EntityRegistry.addSpawn(EntityHoundeye.class, 15, 0, 70,
+		EntityRegistry.addSpawn(EntityHoundeye.class, 10, 0, 70,
 				EnumCreatureType.monster, GENERIC_GEN);
-		EntityRegistry.addSpawn(EntityAlienSlave.class, 15, 0, 70,
+		EntityRegistry.addSpawn(EntityAlienSlave.class, 1, 0, 70,
 				EnumCreatureType.monster, GENERIC_GEN);
 		EntityRegistry.addSpawn(EntityBarnacle.class, 5, 0, 65, EnumCreatureType.monster, BARNACLE_GEN);
 

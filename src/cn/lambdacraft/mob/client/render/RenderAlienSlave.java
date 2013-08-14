@@ -82,7 +82,7 @@ public class RenderAlienSlave extends RenderLiving {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		t.startDrawingQuads();
 		t.setBrightness(15728880);
-		t.setColorRGBA_F(0.1F, 0.9F, 0.1F, 0.8F);
+		t.setColorRGBA_F(0.1F, 0.9F, 0.1F, 0.7F);
     	RenderUtils.addVertex(v1 , 0, 0);
     	RenderUtils.addVertex(v2 , 1, 0);
     	RenderUtils.addVertex(v2.addVector(dx, dy, dz) , 1, d);

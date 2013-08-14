@@ -16,9 +16,11 @@ package cn.lambdacraft.crafting.entities;
 
 import java.util.List;
 
+import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.utils.Color4I;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -40,7 +42,7 @@ public class EntitySpray extends Entity {
 	public int block_pos_x;
 	public int block_pos_y;
 	public int block_pos_z;
-	public int title_id;
+	public int title_id = -1;
 	public Color4I color;
 
 	private EntityPlayer player;
@@ -61,12 +63,47 @@ public class EntitySpray extends Entity {
 		this.hanging_direction = direction;
 		this.title_id = title_id;
 
+		color = new Color4I(ClientProps.sprayR, ClientProps.sprayG, ClientProps.sprayB);
+		
 		this.save_params();
-		this.init_params();
+		this.initParams();
 
 		this.player = thePlayer;
 	}
 	
+	@Override
+	protected void entityInit() {
+		this.dataWatcher.addObject(18, 0);
+		this.dataWatcher.addObject(19, 0);
+		this.dataWatcher.addObject(20, 0);
+		this.dataWatcher.addObject(21, 0);
+		this.dataWatcher.addObject(22, 0);
+		this.dataWatcher.addObject(23, 0);
+		this.dataWatcher.addObject(24, 0);
+		this.dataWatcher.addObject(25, 0);
+	}
+	
+    @Override
+	public void onUpdate()
+    {
+    	double preX = posX, preY = posY, preZ = posZ;
+    	posX = preX;
+    	posY = preY;
+    	posZ = preZ;
+    	if(worldObj.isRemote) {
+    		this.hanging_direction = this.dataWatcher.getWatchableObjectInt(18);
+			this.block_pos_x = this.dataWatcher.getWatchableObjectInt(19);
+			this.block_pos_y = this.dataWatcher.getWatchableObjectInt(20);
+			this.block_pos_z = this.dataWatcher.getWatchableObjectInt(21);
+			this.title_id = this.dataWatcher.getWatchableObjectInt(22);
+			this.loadColor();
+			this.initParams();
+    	} else {
+    		save_params2();
+    	}
+    }
+	
+	/*
 	public EntitySpray(World world, int x, int y, int z, int direction, int title_id, EntityPlayer thePlayer, Color4I color) {
 		this(world);
 
@@ -78,12 +115,12 @@ public class EntitySpray extends Entity {
 		this.color = color;
 
 		this.save_params2();
-		this.init_params();
+		this.initParams();
 
 		this.player = thePlayer;
 	}
-
-
+	*/
+	
 	/**
 	 * @param color2
 	 */
@@ -93,26 +130,19 @@ public class EntitySpray extends Entity {
 		this.dataWatcher.updateObject(20, this.block_pos_y);
 		this.dataWatcher.updateObject(21, this.block_pos_z);
 		this.dataWatcher.updateObject(22, this.title_id);
-		this.dataWatcher.updateObject(23, this.color.red);
-		this.dataWatcher.updateObject(24, this.color.green);
-		this.dataWatcher.updateObject(25, this.color.blue);
-	}
-	
-	public void loadColor() {
-		this.color = new Color4I(this.dataWatcher.getWatchableObjectInt(23), this.dataWatcher.getWatchableObjectInt(24), this.dataWatcher.getWatchableObjectInt(25));
+		if(color != null) {
+			this.dataWatcher.updateObject(23, this.color.red);
+			this.dataWatcher.updateObject(24, this.color.green);
+			this.dataWatcher.updateObject(25, this.color.blue);
+		}
 	}
 
-	@Override
-	protected void entityInit() {
-		this.dataWatcher.addObject(18, 0);
-		this.dataWatcher.addObject(19, 0);
-		this.dataWatcher.addObject(20, 0);
-		this.dataWatcher.addObject(21, 0);
-		this.dataWatcher.addObject(22, 0);
-		this.dataWatcher.addObject(23, 0);
-		this.dataWatcher.addObject(24, 0);
-		this.dataWatcher.addObject(25, 0);
-			
+	public void loadColor() {
+		if(color == null)
+			this.color = new Color4I(this.dataWatcher.getWatchableObjectInt(23), this.dataWatcher.getWatchableObjectInt(24), this.dataWatcher.getWatchableObjectInt(25)); 
+		else {
+			color.setValue(this.dataWatcher.getWatchableObjectInt(23), this.dataWatcher.getWatchableObjectInt(24), this.dataWatcher.getWatchableObjectInt(25), 255);
+		}
 	}
 
 	private void save_params() {
@@ -124,16 +154,16 @@ public class EntitySpray extends Entity {
 	}
 
 	// 为渲染器载入方向， x， y， z， title_id 等参数
-	public void load_params() {
+	public void loadParams() {
 		this.hanging_direction = this.dataWatcher.getWatchableObjectInt(18);
 		this.block_pos_x = this.dataWatcher.getWatchableObjectInt(19);
 		this.block_pos_y = this.dataWatcher.getWatchableObjectInt(20);
 		this.block_pos_z = this.dataWatcher.getWatchableObjectInt(21);
 		this.title_id = this.dataWatcher.getWatchableObjectInt(22);
 
-		this.init_params();
+		this.initParams();
 	}
-
+	
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound var1) {
 		this.hanging_direction = var1.getInteger("hanging_direction");
@@ -142,8 +172,16 @@ public class EntitySpray extends Entity {
 		this.block_pos_z = var1.getInteger("block_pos_z");
 		this.title_id = var1.getInteger("title_id");
 
-		init_params();
-		save_params();
+		if (title_id >= 2) {
+			this.color = new Color4I(var1.getInteger("color_r"), var1.getInteger("color_g"), var1.getInteger("color_b"));
+		}
+
+		initParams();
+
+		if (title_id >= 2)
+			save_params2();
+		else
+			save_params();
 	}
 
 	@Override
@@ -153,17 +191,23 @@ public class EntitySpray extends Entity {
 		var1.setInteger("block_pos_y", this.block_pos_y);
 		var1.setInteger("block_pos_z", this.block_pos_z);
 		var1.setInteger("title_id", this.title_id);
+
+		if (title_id >= 2) {
+			var1.setInteger("color_r", this.color.red);
+			var1.setInteger("color_g", this.color.green);
+			var1.setInteger("color_b", this.color.blue);
+		}
 	}
 
-	public void init_params() {
+	public void initParams() {
 		int direction = this.hanging_direction;
 
 		float half_width;
 		float half_height;
 
 		if (title_id >= 2) {
-			half_width = 1 / 2.0F;
-			half_height = 1 / 2.0F;
+			half_width = 0.5F;
+			half_height = 0.5F;
 		} else {
 			half_width = GRIDS_WIDTHS[this.title_id] / 2.0F;
 			half_height = GRIDS_HEIGHTS[this.title_id] / 2.0F;
@@ -218,6 +262,9 @@ public class EntitySpray extends Entity {
 
 	// 判断被放置界面是否可用
 	public boolean onValidSurface() {
+		if (player == null)
+			player = Minecraft.getMinecraft().thePlayer;
+		
 		// 如果碰撞箱不是空的返回false
 		if (!this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty()) {
 			return false;
@@ -258,26 +305,22 @@ public class EntitySpray extends Entity {
 		y = MathHelper.floor_double(this.posY - half_height);
 
 		if (title_id >= 2) {
-			for (int i = 0; i < 1; ++i) {
-				for (int j = 0; j < 1; ++j) {
 					Material material, material2;
 
 					if (direction == 1 || direction == 3) {
-						material = this.worldObj.getBlockMaterial(this.block_pos_x, y + j, z + i);
-						material2 = this.worldObj.getBlockMaterial(this.block_pos_x + 1, y + j, z + i);
+						material = this.worldObj.getBlockMaterial(this.block_pos_x, y, z);
+						material2 = this.worldObj.getBlockMaterial(this.block_pos_x + 1, y, z);
 					} else {
-						material = this.worldObj.getBlockMaterial(x + i, y + j, this.block_pos_z);
-						material2 = this.worldObj.getBlockMaterial(x + i, y + j, this.block_pos_z + 1);
+						material = this.worldObj.getBlockMaterial(x, y, this.block_pos_z);
+						material2 = this.worldObj.getBlockMaterial(x , y, this.block_pos_z + 1);
 					}
 					if (!material.isSolid()) {
-						sendMessage(StatCollector.translateToLocal("spary.nospace"));
+						player.sendChatToPlayer(StatCollector.translateToLocal("spary.nospace"));
 						return false;
 					}
 					if (material2.isLiquid()) {
-						sendMessage(StatCollector.translateToLocal("spary.haswater"));
+						player.sendChatToPlayer(StatCollector.translateToLocal("spary.haswater"));
 						return false;
-					}
-				}
 			}
 		} else {
 			for (int i = 0; i < GRIDS_WIDTHS[this.title_id]; ++i) {
@@ -292,11 +335,11 @@ public class EntitySpray extends Entity {
 						material2 = this.worldObj.getBlockMaterial(x + i, y + j, this.block_pos_z + 1);
 					}
 					if (!material.isSolid()) {
-						sendMessage(StatCollector.translateToLocal("spary.nospace"));
+						player.sendChatToPlayer(StatCollector.translateToLocal("spary.nospace"));
 						return false;
 					}
 					if (material2.isLiquid()) {
-						sendMessage(StatCollector.translateToLocal("spary.haswater"));
+						player.sendChatToPlayer(StatCollector.translateToLocal("spary.haswater"));
 						return false;
 					}
 				}
@@ -309,7 +352,9 @@ public class EntitySpray extends Entity {
 		for (Object entity : list) {
 			if (!(entity instanceof EntitySpray))
 				continue;
-			sendMessage(StatCollector.translateToLocal("spary.beenblocked"), entity.toString());
+			if (entity instanceof EntitySpray && ((EntitySpray) entity).block_pos_x == this.block_pos_x && ((EntitySpray) entity).block_pos_y == this.block_pos_y && ((EntitySpray) entity).block_pos_z == this.block_pos_z)
+				continue;
+			player.sendChatToPlayer(StatCollector.translateToLocal("spary.beenblocked") + entity.getClass().getName());
 			return false;
 		}
 
@@ -332,12 +377,6 @@ public class EntitySpray extends Entity {
 			this.setBeenAttacked();
 		}
 		return true;
-	}
-
-	private void sendMessage(String... str) {
-		for (String s : str) {
-			player.sendChatToPlayer(s);
-		}
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package cn.lambdacraft.deathmatch.items.wpns;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import cn.lambdacraft.api.weapon.WeaponGeneralBullet;

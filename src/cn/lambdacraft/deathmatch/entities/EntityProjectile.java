@@ -41,11 +41,9 @@ public abstract class EntityProjectile extends Entity {
 		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY
 				+ par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ,
 				par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
-		this.posX -= MathHelper
-				.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.posY -= 0.10000000149011612D;
-		this.posZ -= MathHelper
-				.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
+		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.yOffset = 0.0F;
 		float f = 0.4F;

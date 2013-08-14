@@ -3,7 +3,8 @@ package cn.lambdacraft.deathmatch.client.keys;
 import cn.lambdacraft.api.weapon.IModdable;
 import cn.lambdacraft.core.register.IKeyProcess;
 import cn.lambdacraft.deathmatch.network.NetDeathmatch;
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -13,8 +14,9 @@ public class KeyMode implements IKeyProcess {
 	public void onKeyDown(boolean isEnd) {
 		if(isEnd)
 			return;
-		EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-		if (player == null)
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityClientPlayerMP player = mc.thePlayer;
+		if (player == null || mc.currentScreen != null)
 			return;
 		ItemStack currentItem = player.inventory.getCurrentItem();
 		if (currentItem != null && currentItem.getItem() instanceof IModdable) {
@@ -25,8 +27,6 @@ public class KeyMode implements IKeyProcess {
 
 	@Override
 	public void onKeyUp(boolean isEnd) {
-		if(isEnd)
-			return;
 	}
 
 	private void onModeChange(ItemStack itemStack, EntityPlayer player, int maxModes) {

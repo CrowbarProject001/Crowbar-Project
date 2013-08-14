@@ -116,6 +116,29 @@ public class GeneralRegistry {
 		}
 		return -1;
 	}
+	
+	public static int getFixedBlockId(String name, int def) {
+		config = CBCMod.config;
+		try {
+			return config.GetBlockID(name, def);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public static int getFixedBlockId(String name, int def, int max) {
+		config = CBCMod.config;
+		try {
+			int id =  config.getSpecialBlockID(name, def);
+			if(id >= max)
+				throw new IllegalArgumentException("Block id has been set as a value too large : " + name + "as id + " + id + " , it must be below the value of " + max);
+			return id;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
 
 	private static int getEmptyItemId(int cat) {
 		int begin = 5200;

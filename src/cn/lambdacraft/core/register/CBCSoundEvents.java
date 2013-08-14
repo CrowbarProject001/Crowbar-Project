@@ -38,14 +38,13 @@ public class CBCSoundEvents {
 			for (String[] path : pathSounds) {
 				snd = event.manager.soundPoolSounds.addSound(path[0],
 						CBCMod.class.getResource(path[1]));
-				System.out.println("AddSound : " + snd.soundName + " URL: " +
-				 snd.soundUrl);
+				//System.out.println("AddSound : " + snd.soundName + " URL: " +
+				 //snd.soundUrl);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		CBCMod.log.fine("LambdaCraft successfully loaded " + pathSounds.size()
-				+ " sound files");
+		CBCMod.log.fine("LambdaCraft successfully loaded " + pathSounds.size() + " sound files");
 	}
 
 	/**

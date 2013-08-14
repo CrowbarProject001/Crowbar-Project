@@ -32,14 +32,14 @@ public class ArmorHEV extends ElectricArmor {
 	public static int reductionAmount[] = { 5, 8, 5, 4 };
 	protected static EnumArmorMaterial material = EnumHelper.addArmorMaterial(
 			"armorHEV", 100000, reductionAmount, 0);
-	private static ArmorProperties propChest = new ArmorProperties(3, 0.5,
-			200), propDefault = new ArmorProperties(2, 0.4, 150),
+	private static ArmorProperties propChest = new ArmorProperties(3, 0.4,
+			200), propDefault = new ArmorProperties(2, 0.3, 150),
 			propNone = new ArmorProperties(2, 0.0, 0),
-			propShoe = new ArmorProperties(2, 0.35, 125),
+			propShoe = new ArmorProperties(2, 0.26, 125),
 			propShoeFalling = new ArmorProperties(4, 100.0, 2500),
-			propChest_defense = new ArmorProperties(3, 0.55,
-					200) , propDefault_defense = new ArmorProperties(2, 0.5, 150),
-					propShoe_defense = new ArmorProperties(2, 0.45, 125);
+			propChest_defense = new ArmorProperties(3, 0.5,
+					200) , propDefault_defense = new ArmorProperties(2, 0.4, 150),
+					propShoe_defense = new ArmorProperties(2, 0.35, 125);
 	protected static String hevMark = "IV";
 	
 	public ArmorHEV(int par1, int armorType) {

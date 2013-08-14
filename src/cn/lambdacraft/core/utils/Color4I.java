@@ -40,6 +40,13 @@ public class Color4I {
 		this.alpha = 255;
 	}
 	
+	public void setValue(int r, int g, int b, int a) {
+		red = r;
+		green = g;
+		blue = b;
+		alpha = a;
+	}
+	
 
 	private int formatColorFloat(int source) {
 		int result;

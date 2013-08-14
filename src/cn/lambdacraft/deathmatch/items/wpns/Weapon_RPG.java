@@ -3,15 +3,8 @@ package cn.lambdacraft.deathmatch.items.wpns;
 import java.util.List;
 
 import cn.lambdacraft.api.hud.IHudTip;
-import cn.lambdacraft.api.weapon.CBCWeaponInformation;
 import cn.lambdacraft.api.weapon.IModdable;
-import cn.lambdacraft.api.weapon.InformationBullet;
-import cn.lambdacraft.api.weapon.InformationSet;
-import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
-import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entities.EntityRPGDot;
-import cn.lambdacraft.deathmatch.entities.EntityRocket;
 import cn.lambdacraft.deathmatch.utils.AmmoManager;
 import cn.lambdacraft.deathmatch.utils.InformationRPG;
 import cpw.mods.fml.relauncher.Side;
@@ -20,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 

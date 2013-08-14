@@ -23,12 +23,9 @@ import cn.lambdacraft.core.utils.BlockPos;
 import cn.lambdacraft.core.utils.GenericUtils;
 import cn.lambdacraft.deathmatch.entities.EntityBullet;
 import cn.lambdacraft.mob.register.CBCMobItems;
-import cn.lambdacraft.mob.utils.MobHelper;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -54,7 +51,7 @@ public class EntityAlienSlave extends EntityMob {
 	 */
 	public EntityAlienSlave(World par1World) {
 		super(par1World);
-		this.texture = ClientProps.HECHARGER_BACK_PATH;
+		this.texture = ClientProps.VORTIGAUNT_PATH;
         this.moveSpeed = 0.65F;
 	}
 	
@@ -195,7 +192,7 @@ public class EntityAlienSlave extends EntityMob {
 	@Override
     protected Entity findPlayerToAttack()
     {
-    	Entity e = MobHelper.getNearestTargetWithinAABB(worldObj, posX, posY, posZ, 16.0F, GenericUtils.selectorPlayer, this);
+    	Entity e = super.findPlayerToAttack();
     	if(e != null && rand.nextInt(3) == 0) {
     		this.playSound(GenericUtils.getRandomSound("cbc.mobs.slv_alert", 3), 0.5F, 1.0F);
     	}

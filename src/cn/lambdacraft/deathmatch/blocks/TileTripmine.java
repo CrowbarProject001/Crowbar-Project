@@ -15,7 +15,8 @@ import net.minecraft.util.AxisAlignedBB;
 public class TileTripmine extends TileEntity {
 
 	public int endX, endY, endZ;
-
+	private int ticksExisted;
+	
 	public TileTripmine() {
 	}
 
@@ -27,7 +28,9 @@ public class TileTripmine extends TileEntity {
 
 	@Override
 	public void updateEntity() {
-
+		System.out.println(ticksExisted);
+		if(++ticksExisted < 20 || worldObj.isRemote)
+			return;
 		BlockTripmine blockType = (BlockTripmine) DMBlocks.blockTripmine;
 		MotionXYZ begin = new MotionXYZ(xCoord, yCoord, zCoord, 0, 0, 0);
 		int meta = this.blockMetadata;
@@ -74,7 +77,7 @@ public class TileTripmine extends TileEntity {
 		if (list != null && list.size() == 1) {
 			blockType.breakBlock(worldObj, xCoord, yCoord, zCoord, meta, 0);
 		}
-		else if (worldObj.getWorldTime() % 5 == 0)
+		else if (ticksExisted % 5 == 0)
 			blockType.updateRayRange(worldObj, xCoord, yCoord, zCoord);
 	}
 

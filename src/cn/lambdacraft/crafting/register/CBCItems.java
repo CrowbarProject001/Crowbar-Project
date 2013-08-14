@@ -18,6 +18,8 @@ import cn.lambdacraft.deathmatch.items.ItemBattery;
 import cn.lambdacraft.deathmatch.items.ammos.*;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.lambdacraft.xen.register.XENBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.WrongUsageException;
@@ -26,9 +28,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.src.ModLoader;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -55,8 +60,9 @@ public class CBCItems {
 	public static SteelBar ironBar;
 	public static IngotUranium ingotUranium;
 	public static LCRecord halfLife01, halfLife02, halfLife03;
+	public static ItemSpray spray1, spray2;
 	public static HLSpray spray;
-	public static Item tin, copper, chip;
+	public static Item tin, copper, chip, xenCrystal;
 
 	public static ItemBattery battery;
 
@@ -74,11 +80,9 @@ public class CBCItems {
 		ammo_357 = new Ammo_357(GeneralRegistry.getItemId("itemAmmo_357", 0));
 		ammo_bow = new Ammo_bow(GeneralRegistry.getItemId("itemAmmo_bow", 0));
 		ammo_rpg = new Ammo_rpg(GeneralRegistry.getItemId("itemAmmo_RPG", 0));
-		ammo_argrenade = new Ammo_argrenade(GeneralRegistry.getItemId(
-				"itemAmmo_ARGrenade", 0));
-
-		ammo_shotgun = new Ammo_shotgun(GeneralRegistry.getItemId(
-				"itemBullet_Shotgun", 0));
+		ammo_argrenade = new Ammo_argrenade(GeneralRegistry.getItemId("itemAmmo_ARGrenade", 0));
+		ammo_shotgun = new Ammo_shotgun(GeneralRegistry.getItemId("itemBullet_Shotgun", 0));
+		
 		bullet_9mm = new Bullet_9mm(GeneralRegistry.getItemId("itemBullet_9mm",
 				0));
 		bullet_steelbow = new Bullet_steelbow(GeneralRegistry.getItemId(
@@ -87,32 +91,28 @@ public class CBCItems {
 		materials = new ItemMaterial(GeneralRegistry.getItemId("mat_a", 0));
 
 		ironBar = new SteelBar(GeneralRegistry.getItemId("ironBar", 0));
-		lambdaChip = new CBCGenericItem(GeneralRegistry.getItemId("lambdachip",
-				0)).setIAndU("lambdachip");
-		;
-		ingotUranium = new IngotUranium(GeneralRegistry.getItemId(
-				"ingotUranium", 0));
-		ingotSteel = new CBCGenericItem(GeneralRegistry.getItemId(
-				"itemRefinedIronIngot", 0)).setIAndU("steel");
+		lambdaChip = new CBCGenericItem(GeneralRegistry.getItemId("lambdachip", 0)).setIAndU("lambdachip");
+		
+		ingotUranium = new IngotUranium(GeneralRegistry.getItemId("ingotUranium", 0));
+		ingotSteel = new CBCGenericItem(GeneralRegistry.getItemId("itemRefinedIronIngot", 0)).setIAndU("steel");
 
-		halfLife01 = new LCRecord(GeneralRegistry.getItemId("halfLife01",
-				GeneralProps.CAT_MISC), "hla", 0);
-		halfLife02 = new LCRecord(GeneralRegistry.getItemId("halfLife02",
-				GeneralProps.CAT_MISC), "hlb", 1);
-		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03",
-				GeneralProps.CAT_MISC), "hlc", 2);
+		halfLife01 = new LCRecord(GeneralRegistry.getItemId("halfLife01", GeneralProps.CAT_MISC), "hla", 0);
+		halfLife02 = new LCRecord(GeneralRegistry.getItemId("halfLife02", GeneralProps.CAT_MISC), "hlb", 1);
+		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03", GeneralProps.CAT_MISC), "hlc", 2);
+		
+		spray1 = new ItemSpray(GeneralRegistry.getItemId("spray1", GeneralProps.CAT_MISC), 0);
+		spray2 = new ItemSpray(GeneralRegistry.getItemId("spray2", GeneralProps.CAT_MISC), 1);
+		
+		spray = new HLSpray(GeneralRegistry.getItemId("spray", GeneralProps.CAT_MISC));
 
-		spray = new HLSpray(GeneralRegistry.getItemId("spray",
-				GeneralProps.CAT_MISC));
-
-		tin = new CBCGenericItem(GeneralRegistry.getItemId("tin",
-				GeneralProps.CAT_MISC)).setIAndU("tin");
-		copper = new CBCGenericItem(GeneralRegistry.getItemId("copper",
-				GeneralProps.CAT_MISC)).setIAndU("copper");
-		chip = new CBCGenericItem(GeneralRegistry.getItemId("chip",
-				GeneralProps.CAT_MISC)).setIAndU("chip");
-		if(!CBCMod.ic2Installed)
+		tin = new CBCGenericItem(GeneralRegistry.getItemId("tin", GeneralProps.CAT_MISC)).setIAndU("tin");
+		copper = new CBCGenericItem(GeneralRegistry.getItemId("copper", GeneralProps.CAT_MISC)).setIAndU("copper");
+		chip = new CBCGenericItem(GeneralRegistry.getItemId("chip", GeneralProps.CAT_MISC)).setIAndU("chip");
+		xenCrystal = new CBCGenericItem(GeneralRegistry.getItemId("xencrystal", GeneralProps.CAT_MISC)).setIAndU("xencrystal");
+		
+		if(!CBCMod.ic2Installed) {
 			battery = new ItemBattery(GeneralRegistry.getItemId("battery", 3));
+		}
 	}
 
 	/**
@@ -125,9 +125,12 @@ public class CBCItems {
 		OreDictionary.registerOre("ingotUranium", CBCItems.ingotUranium);
 		OreDictionary.registerOre("ingotRefinedIron", CBCItems.ingotSteel);
 		OreDictionary.registerOre("blockRefinedIron", CBCBlocks.blockRefined);
+		OreDictionary.registerOre("blockMFE", CBCBlocks.storageS);
+		OreDictionary.registerOre("blockMFSU", CBCBlocks.storageL);
 		OreDictionary.registerOre("ingotTin", tin);
-		OreDictionary.registerOre("ingotcopper", copper);
+		OreDictionary.registerOre("ingotCopper", copper);
 
+		//Resources
 		ItemStack iSmaterials_1_0 = new ItemStack(CBCItems.materials, 1, 0), iSmaterials_1_1 = new ItemStack(
 				CBCItems.materials, 1, 1), iSmaterials_1_2 = new ItemStack(
 				CBCItems.materials, 1, 2), iSmaterials_1_3 = new ItemStack(
@@ -163,91 +166,88 @@ public class CBCItems {
 
 		Object input[][] = {
 				{ "ABA", "AAA", 'A', "ingotTin", 'B', iSglass },
-				{ "ABA", "CCC", "DED", 'A', "ingotcopper", 'B', iSlambdaChip,
-						'C', "ingotRefinedIron", 'D', iSglass, 'E',
-						iSmaterials_1_0 },
-				{ "ABA", "CCC", "DED", 'A', iScoal, 'B', iSlightStoneDust, 'C',
-						"ingotcopper", 'D', iSglass, 'E', iSmaterials_1_0 },
-				{ "ABA", "CBC", "DED", 'A', "ingotRefinedIron", 'B', iStnt,
-						'C', iSgunpowder, 'D', iSglass, 'E', iSmaterials_1_0 },
-				{ "ABA", "CCC", "DED", 'A', iSblazePowder, 'B', iSblockLapis,
-						'C', "ingotRefinedIron", 'D', iSglass, 'E',
-						iSmaterials_1_0 },
-				{ "ABA", "CCC", "DED", 'A', iSingotGold, 'B', iSlightStoneDust,
-						'C', "ingotRefinedIron", 'D', iSglass, 'E',
-						iSmaterials_1_0 },
-				{ "ABA", "CCC", "DED", 'A', "ingotcopper", 'B', iSredstone,
-						'C', "ingotRefinedIron", 'D', iSglass, 'E',
-						iSmaterials_1_0 },
-				{ "ACA", "DFD", "EBE", 'A', srotten, 'B', iSmaterials_1_0, 'C',
-						smagma, 'D', sfspieye, 'E', iSglass, 'F', sendereye },
-				{ "ACA", "DFD", "EBE", 'A', iSlightStoneDust, 'B',
-						iSmaterials_1_0, 'C', iSblockRedstone, 'D', iSdiamond,
-						'E', iSglass, 'F', iSlambdaChip },
-				{ "AAA", "BCB", "DED", 'A', iSglass, 'B', iSblockRedstone, 'C',
-						"blockRefinedIron", 'D', iSfurnace, 'E', iSchest },
-				{ "AAA", "BCB", "DED", 'A', iSglass, 'B', iSdiamond, 'C',
-						iSweaponCrafter, 'D', "ingotcopper", 'E',
-						"blockRefinedIron" },
-				{ "ABA", "ABA", "ABA", 'A', Block.cloth, 'B', "ingotcopper" },
-				{ "ABA", "CDC", "AEA", 'A', iSlightStoneDust, 'B', iSemerald,
-						'C', iSdiamond, 'D', iSchip, 'E', iSglass },
-				{ "ABA", "CDC", "EAE", 'A', iSglass, 'B', iSwire, 'C',
-						iSlambdaChip, 'D', iSadvCrafter, 'E', iSlightStoneDust },
-				{ "ABA", "ACA", "ACA", 'A', "ingotTin", 'B', iSwire, 'C',
-						iSlightStoneDust },
-				{ " A ", "BCB", "DED", 'A', iSstorageS, 'B', iSglass, 'C',
-						"blockRefinedIron", 'D', iSblockLapis, 'E', iSfurnace },
-				{ " A ", "BCB", "DED", 'A', iSglass, 'B', iSblazePowder, 'C',
-						iSbucketEmpty, 'D', "ingotRefinedIron", 'E', iSgenFire },
-				{ "AAA", "BCB", "DED", 'A', iSglass, 'B', iSnetherQuartz, 'C',
-						iSchip, 'D', "ingotRefinedIron", 'E', iSgenFire },
-				{ "AAA", "BCB", "DED", 'A', iSglass, 'B', battery, 'C',
-						iSredstone, 'D', iSchip, 'E', "blockRefinedIron" },
-				{ "AAA", "ABA", "CDC", 'A', iSgunpowder, 'B', iSredstone, 'C',
-						iSglass, 'D', iSmaterials_1_0 },
-				{ "ABA", "CDC", "ABA", 'A', iSwire, 'B', iSnetherQuartz, 'C',
-						iSredstone, 'D', "ingotRefinedIron" },
-				{ "ABA", "CDC", "AEA", 'A', iSglass, 'B', smedkit, 'C',
-						iSlambdaChip, 'D', iSstorageS, 'E',
-						"blockRefinedIron" },
-				{ "AAA", "CDC", "BEB", 'A', iSglass, 'B', smedkit, 'C',
-						iSlambdaChip, 'D', iSstorageS, 'E',
-						"blockRefinedIron" },
-				{ "AAA", "CDC", "BEB", 'A', iSglass, 'B', iSlambdaChip, 'C',
-						battery, 'D', iSstorageL, 'E', "blockRefinedIron" },
+				{ "AAA", "BCB", "DED", 'A', iSglass, 'B', iSblockRedstone, 'C', "blockRefinedIron", 'D', iSfurnace, 'E', iSchest },
+				{ "AAA", "BCB", "DED", 'A', iSglass, 'B', iSdiamond, 'C', iSweaponCrafter, 'D', "ingotCopper", 'E', "blockRefinedIron" },
+				{ "ABA", "ABA", "ABA", 'A', Block.cloth, 'B', "ingotCopper" },
+				{ "ABA", "CDC", "AEA", 'A', iSlightStoneDust, 'B', iSemerald, 'C', iSdiamond, 'D', iSchip, 'E', iSglass },
+				{ "ABA", "CDC", "EAE", 'A', iSglass, 'B', iSwire, 'C', iSlambdaChip, 'D', iSadvCrafter, 'E', iSlightStoneDust },
+				{ "ABA", "ACA", "ACA", 'A', "ingotTin", 'B', iSwire, 'C', iSlightStoneDust },
+				{ "AAA", "BCB", "DED", 'A', iSglass, 'B', battery, 'C', iSredstone, 'D', iSchip, 'E', "blockRefinedIron" },
+				{ "ABA", "CDC", "ABA", 'A', iSwire, 'B', iSnetherQuartz, 'C', iSredstone, 'D', "ingotRefinedIron" },
+				{ "ABA", "CDC", "AEA", 'A', iSglass, 'B', smedkit, 'C', iSlambdaChip, 'D', "blockMFE", 'E', "blockRefinedIron" },
+				{ "AAA", "CDC", "BEB", 'A', iSglass, 'B', smedkit, 'C', iSlambdaChip, 'D', "blockMFE", 'E', "blockRefinedIron" },
+				{ "AAA", "CDC", "BEB", 'A', iSglass, 'B', iSlambdaChip, 'C', battery, 'D', "blockMFSU", 'E', "blockRefinedIron" },
 				{ "AAA", "AAA", "AAA", 'A', "ingotRefinedIron" } ,
-				{"A  ", "A  ", 'A', "ingotRefinedIron"} };
+				{"A  ", "A  ", 'A', "ingotRefinedIron"},
+				{ "ABA", "CDC", "AEA", 'A', iSglass, 'B', iSdiamond, 'C', "blockMFSU", 'D', iSlambdaChip, 'E', iSemerald},
+				{" A ", "BCB", 'A', iSglass, 'B', iSwire, 'C', iSchip},
+				{" AA", "ABA", "ABA", 'A', "ingotCopper", 'B', iSredstone},
+				{" AA", "ABA", "ABA", 'A', "ingotTin", 'B', iSredstone},
+				{" AA", "ABA", "ABA", 'A', "ingotTin", 'B', iSlightStoneDust}
+		};
 
-		ItemStack output[] = { materials.newStack(5, EnumMaterial.BOX),
-				materials.newStack(2, EnumMaterial.ARMOR),
-				materials.newStack(2, EnumMaterial.ACCESSORIES),
-				materials.newStack(2, EnumMaterial.EXPLOSIVE),
-				materials.newStack(1, EnumMaterial.HEAVY),
-				materials.newStack(1, EnumMaterial.LIGHT),
-				materials.newStack(1, EnumMaterial.PISTOL),
-				materials.newStack(1, EnumMaterial.BIO),
-				materials.newStack(1, EnumMaterial.TECH), iSweaponCrafter,
-				iSadvCrafter, new ItemStack(CBCBlocks.wire, 6),
-				new ItemStack(lambdaChip, 2), iSelectricCrafter, iSbattery,
-				iSgenFire, iSgenLava, iSgenSolar, iSstorageS, iSmaterials_1_1, iSchip,
+		ItemStack output[] = { 
+				materials.newStack(10, EnumMaterial.BOX),
+				iSweaponCrafter,
+				iSadvCrafter, 
+				new ItemStack(CBCBlocks.wire, 6),
+				new ItemStack(lambdaChip, 2),
+				iSelectricCrafter, 
+				iSbattery,
+				iSstorageS, iSchip,
 				new ItemStack(DMBlocks.medkitFiller),
 				new ItemStack(DMBlocks.healthCharger),
 				new ItemStack(DMBlocks.armorCharger),
 				new ItemStack(CBCBlocks.blockRefined),
-				new ItemStack(CBCItems.ironBar, 5)};
-
+				new ItemStack(CBCItems.ironBar, 5),
+				new ItemStack(XENBlocks.portal),
+				new ItemStack(CBCMobItems.sentrySyncer, 2),
+				new ItemStack(spray1),
+				new ItemStack(spray2),
+				new ItemStack(spray)
+		};
+		
+		if(!CBCMod.ic2Installed) {
+			//Add LC Only Recipes
+			Object[][] input2 = {
+					{ " A ", "BCB", "DED", 'A', iSstorageS, 'B', iSglass, 'C', "blockRefinedIron", 'D', iSblockLapis, 'E', iSfurnace },
+					{ " A ", "BCB", "DED", 'A', iSglass, 'B', iSblazePowder, 'C', iSbucketEmpty, 'D', "ingotRefinedIron", 'E', iSgenFire },
+					{ "AAA", "BCB", "DED", 'A', iSglass, 'B', iSnetherQuartz, 'C', iSchip, 'D', "ingotRefinedIron", 'E', iSgenFire },
+			};
+			
+			ItemStack[] output2 = { iSgenFire, iSgenLava, iSgenSolar };
+			addOreRecipes(output2, input2);
+		}
 		addOreRecipes(output, input);
-		GameRegistry.addShapelessRecipe(new ItemStack(halfLife01), lambdaChip,
-				Item.diamond);
-		GameRegistry.addShapelessRecipe(new ItemStack(halfLife02), lambdaChip,
-				Item.emerald);
-		GameRegistry.addShapelessRecipe(new ItemStack(halfLife03), lambdaChip,
-				Item.eyeOfEnder);
-		GameRegistry.addShapelessRecipe(iSstorageL, CBCBlocks.storageS,
-				lambdaChip);
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(halfLife01), lambdaChip, Item.diamond);
+		GameRegistry.addShapelessRecipe(new ItemStack(halfLife02), lambdaChip, Item.emerald);
+		GameRegistry.addShapelessRecipe(new ItemStack(halfLife03), lambdaChip, Item.eyeOfEnder);
+		GameRegistry.addShapelessRecipe(new ItemStack(DMItems.weapon_crowbar_el), lambdaChip, new ItemStack(DMItems.weapon_crowbar));
+		GameRegistry.addShapelessRecipe(iSstorageL, CBCBlocks.storageS, lambdaChip);
 		GameRegistry.addRecipe(new RecipeHEVAttach());
+		
+		//Materials
+		IRecipe recipes[] = {
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.ARMOR), iSmaterials_1_0, "blockRefinedIron", iSdiamond, iSlambdaChip),
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.AMMUNITION), iSmaterials_1_0, "ingotCopper", iSredstone, iSgunpowder),
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.ACCESSORIES), iSmaterials_1_0, "ingotCopper", iSredstone, iScoal),
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.EXPLOSIVE), iSmaterials_1_0, "ingotRefinedIron", iStnt, iSgunpowder),
+				new ShapelessOreRecipe(materials.newStack(1, EnumMaterial.HEAVY), iSmaterials_1_0, "blockRefinedIron", iSblockLapis, iSblazePowder),
+				new ShapelessOreRecipe(materials.newStack(1, EnumMaterial.LIGHT), iSmaterials_1_0, "ingotRefinedIron", "ingotCopper", iSlightStoneDust),
+				new ShapelessOreRecipe(materials.newStack(1, EnumMaterial.PISTOL), iSmaterials_1_0, "ingotRefinedIron", "ingotCopper", "ingotRefinedIron"),
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.BIO), iSmaterials_1_0, srotten, sendereye, CBCMobItems.dna),
+				new ShapelessOreRecipe(materials.newStack(1, EnumMaterial.TECH), iSmaterials_1_0, iSdiamond, iSlambdaChip, iSlightStoneDust),
+				new RecipeRepair(spray1, iSredstone),
+				new RecipeRepair(spray2, iSredstone),
+				new RecipeRepair(spray, iSlightStoneDust)
+		};
+		for(IRecipe r : recipes)
+			GameRegistry.addRecipe(r);
+		
+		
 
+		//Smelting
 		ModLoader.addSmelting(Item.ingotIron.itemID, new ItemStack(
 				ingotSteel.itemID, 1, 0));
 		ModLoader.addSmelting(CBCBlocks.uraniumOre.blockID, new ItemStack(
@@ -255,7 +255,35 @@ public class CBCItems {
 		ModLoader.addSmelting(CBCBlocks.oreCopper.blockID,
 				new ItemStack(copper), 2);
 		ModLoader.addSmelting(CBCBlocks.oreTin.blockID, new ItemStack(tin), 2);
-
+		ModLoader.addSmelting(XENBlocks.crystal.blockID, new ItemStack(xenCrystal), 3);
+		
+		//ChestGen
+		WeightedRandomChestContent gens_dungeon[] = {
+				new WeightedRandomChestContent(new ItemStack(halfLife01), 1, 1, 5),
+				new WeightedRandomChestContent(new ItemStack(halfLife02), 1, 1, 5),
+				new WeightedRandomChestContent(new ItemStack(halfLife03), 1, 1, 5),
+				new WeightedRandomChestContent(new ItemStack(ironBar), 3, 8, 50),
+				new WeightedRandomChestContent(new ItemStack(DMItems.physCalibur), 1, 1, 1),
+				new WeightedRandomChestContent(new ItemStack(DMItems.weapon_crowbar_el), 1, 1, 10)
+		};
+		for(WeightedRandomChestContent gen : gens_dungeon) {
+			ChestGenHooks.addItem("dungeonChest", gen);
+			ChestGenHooks.addItem("villageBlacksmith", gen);
+		}
+		
+		WeightedRandomChestContent gens_desert[] = {
+				new WeightedRandomChestContent(new ItemStack(ironBar), 3, 8, 50),
+				new WeightedRandomChestContent(new ItemStack(DMItems.physCalibur), 1, 1, 1),
+				new WeightedRandomChestContent(new ItemStack(DMItems.weapon_crowbar_el), 1, 1, 10),
+				new WeightedRandomChestContent(new ItemStack(spray), 1, 1, 4),
+				new WeightedRandomChestContent(new ItemStack(lambdaChip), 2, 5, 3)
+		};
+		for(WeightedRandomChestContent gen : gens_desert) {
+			ChestGenHooks.addItem("pyramidDesertyChest", gen);
+			ChestGenHooks.addItem("pyramidJungleChest", gen);
+		}
+			
+		
 	}
 
 	private static class RecipeElectricShapeless implements IRecipe {
