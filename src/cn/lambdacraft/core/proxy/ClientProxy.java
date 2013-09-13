@@ -16,15 +16,16 @@ package cn.lambdacraft.core.proxy;
 
 import org.lwjgl.input.Keyboard;
 
+import api.player.client.ClientPlayerAPI;
+
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.CBCPlayer;
-import cn.lambdacraft.core.client.keys.KeyUse;
+import cn.lambdacraft.core.client.key.KeyUse;
 import cn.lambdacraft.core.register.CBCKeyProcess;
 import cn.lambdacraft.core.register.CBCSoundEvents;
-import cn.lambdacraft.deathmatch.client.render.RenderEmptyBlock;
+import cn.lambdacraft.deathmatch.client.renderer.RenderEmptyBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.src.PlayerAPI;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -41,7 +42,7 @@ public class ClientProxy extends Proxy {
 	@Override
 	public void init() {
 		super.init();
-		PlayerAPI.register("CBCPlayer", CBCPlayer.class);
+		ClientPlayerAPI.register("CBCPlayer", CBCPlayer.class);
 		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
 		TickRegistry.registerTickHandler(new CBCKeyProcess(), Side.CLIENT);
 		ClientProps.loadProps(CBCMod.config);

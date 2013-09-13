@@ -32,8 +32,8 @@ import net.minecraft.world.World;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.xen.ModuleXen;
-import cn.lambdacraft.xen.block.tile.TileEntityXenPortal;
 import cn.lambdacraft.xen.register.XENBlocks;
+import cn.lambdacraft.xen.tileentity.TileEntityXenPortal;
 import cn.lambdacraft.xen.world.TeleporterXen;
 
 /**

@@ -20,7 +20,7 @@ import net.minecraft.util.Icon;
 
 /**
  * 实现它以提供一个武器有头戴显示提示。
- * @see cn.lambdacraft.deathmatch.items.ArmorHEV
+ * @see cn.lambdacraft.deathmatch.item.ArmorHEV
  * @author WeAthFolD
  *
  */

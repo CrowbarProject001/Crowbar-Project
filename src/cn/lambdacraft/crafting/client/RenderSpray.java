@@ -19,12 +19,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.entities.EntitySpray;
+import cn.lambdacraft.crafting.entity.EntitySpray;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -47,16 +48,22 @@ public class RenderSpray extends Render {
 		this.renderEntity((EntitySpray) entity, pos_x, pos_y, pos_z); // 调用renderEntity，忽略rotationYaw和partucalTickTime
 	}
 
+	/* 取得贴图 By Rikka0_0 */
+	private ResourceLocation getTexture(int title_id){
+		if (title_id >= 2) {
+			// 从custom文件夹下载入制定文件名的bitmap
+			return (new ResourceLocation(ClientProps.getSprayPath(title_id - 2)));
+		} else
+			// 普通喷漆
+			return (new ResourceLocation((ClientProps.SPRY_PATH[title_id])));
+	}
+	
+	
 	/*
 	 * 载入Texture
 	 */
 	private void loadTexture(int title_id) {
-		if (title_id >= 2) {
-			// 从custom文件夹下载入制定文件名的bitmap
-			loadTexture(ClientProps.getSprayPath(title_id - 2));
-		} else
-			// 普通喷漆
-			loadTexture(ClientProps.SPRY_PATH[title_id]);
+		func_110776_a(getTexture(title_id));
 	}
 
 	/**
@@ -199,5 +206,10 @@ public class RenderSpray extends Render {
 		int var9 = light / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var8, var9);
 		glColor3f(1.0F, 1.0F, 1.0F);
+	}
+
+	@Override
+	protected ResourceLocation func_110775_a(Entity entity) {
+		return getTexture(((EntitySpray)entity).title_id);
 	}
 }

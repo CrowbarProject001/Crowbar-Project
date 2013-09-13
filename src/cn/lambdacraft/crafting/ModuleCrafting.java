@@ -21,15 +21,15 @@ import cn.lambdacraft.core.register.CBCAchievements;
 import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
-import cn.lambdacraft.crafting.blocks.container.CRGuiElements;
-import cn.lambdacraft.crafting.commands.CommandSpray;
-import cn.lambdacraft.crafting.commands.CommandXHairColor;
-import cn.lambdacraft.crafting.entities.EntitySpray;
-import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
+import cn.lambdacraft.crafting.block.container.CRGuiElements;
+import cn.lambdacraft.crafting.command.CommandSpray;
+import cn.lambdacraft.crafting.command.CommandXHairColor;
+import cn.lambdacraft.crafting.entity.EntitySpray;
+import cn.lambdacraft.crafting.item.ItemMaterial.EnumMaterial;
 import cn.lambdacraft.crafting.network.NetCrafterClient;
-import cn.lambdacraft.crafting.recipes.RecipeCrafter;
-import cn.lambdacraft.crafting.recipes.RecipeRepair;
-import cn.lambdacraft.crafting.recipes.RecipeWeapons;
+import cn.lambdacraft.crafting.recipe.RecipeCrafter;
+import cn.lambdacraft.crafting.recipe.RecipeRepair;
+import cn.lambdacraft.crafting.recipe.RecipeWeapons;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.crafting.world.CBCWorldGen;
@@ -39,10 +39,9 @@ import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -67,19 +66,18 @@ public class ModuleCrafting {
 	@Instance("LambdaCraft|World")
 	public static ModuleCrafting instance;
 
-	@PreInit
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent Init) {
 		GameRegistry.registerWorldGenerator(new CBCWorldGen());
 		if (Proxy.isRendering()) {
 			for (String s : SND_ENTITIES) {
-				CBCSoundEvents.addSoundPath("cbc/entities/" + s,
-						"/mods/lambdacraft/sounds/entities/" + s);
+				CBCSoundEvents.addSoundPath("entities/" + s);
 			}
 		}
 		
 	}
 
-	@Init
+	@EventHandler
 	public void init(FMLInitializationEvent Init) {
 		CBCBlocks.init(CBCMod.config);
 		CBCItems.init(CBCMod.config);
@@ -103,12 +101,12 @@ public class ModuleCrafting {
 		proxy.init();
 	}
 
-	@PostInit
+	@EventHandler
 	public void postInit(FMLPostInitializationEvent Init) {
 
 		CBCItems.addItemRecipes();
 
-		// TODO:在这里添加武器合成机的合成表
+		// 在这里添加武器合成机的合成表
 		// 普通武器合成机：十字弩以下级别的所有武器和弹药
 		// 高级武器合成机：十字弩以上级别的所有武器和弹药
 		// 以上两个都会自动加入电力合成机的列表中
@@ -157,7 +155,8 @@ public class ModuleCrafting {
 						CBCItems.materials.newStack(4, EnumMaterial.BIO),
 						CBCItems.materials
 								.newStack(3, EnumMaterial.ACCESSORIES)),
-				new RecipeCrafter(new ItemStack(CBCMobItems.weapon_snark, 5),0, CBCItems.materials.newStack(1, EnumMaterial.BIO)) },
+				new RecipeCrafter(new ItemStack(CBCMobItems.weapon_snark, 5),0, CBCItems.materials.newStack(1, EnumMaterial.BIO))
+				},
 		// 高级武器合成机 弹药合成表
 		advAmmos[] = {
 				new RecipeCrafter(new ItemStack(CBCItems.bullet_steelbow, 10),650, new ItemStack(CBCItems.ironBar, 10),
@@ -210,7 +209,7 @@ public class ModuleCrafting {
 		RecipeWeapons.close();
 	}
 
-	@ServerStarting
+	@EventHandler()
 	public void serverStarting(FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandSpray());
 		event.registerServerCommand(new CommandXHairColor());

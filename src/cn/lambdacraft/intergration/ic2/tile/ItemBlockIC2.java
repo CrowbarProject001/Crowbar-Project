@@ -25,12 +25,8 @@ import net.minecraft.world.World;
  */
 public class ItemBlockIC2 extends ItemBlock {
 
-	/**
-	 * @param par1
-	 */
 	public ItemBlockIC2(int par1) {
 		super(par1);
-		// TODO Auto-generated constructor stub
 	}
 	
     @Override

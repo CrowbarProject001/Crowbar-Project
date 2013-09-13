@@ -18,18 +18,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
-import cn.lambdacraft.core.client.keys.UsingUtils;
-import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.register.IChannelProcess;
-import cn.lambdacraft.core.utils.BlockPos;
-import cn.lambdacraft.core.utils.MotionXYZ;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-
+import cn.lambdacraft.core.client.key.UsingUtils;
+import cn.lambdacraft.core.proxy.GeneralProps;
+import cn.lambdacraft.core.register.CBCNetHandler;
+import cn.lambdacraft.core.register.IChannelProcess;
+import cn.lambdacraft.core.util.BlockPos;
+import cn.weaponmod.util.MotionXYZ;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
@@ -70,7 +68,7 @@ public class NetKeyUsing implements IChannelProcess {
 		if (isUsing) {
 			MotionXYZ begin = new MotionXYZ(thePlayer), end = new MotionXYZ(
 					thePlayer).updateMotion(8.0);
-			MovingObjectPosition mop = world.rayTraceBlocks(
+			MovingObjectPosition mop = world.clip(
 					begin.asVec3(world), end.asVec3(world));
 			if (mop == null || mop.sideHit == -1)
 				return;

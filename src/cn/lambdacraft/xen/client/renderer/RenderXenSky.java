@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IRenderHandler;
 
 /**
@@ -159,6 +160,6 @@ public class RenderXenSky extends IRenderHandler {
 	}
 
 	private void fomartAndBind(String s) {
-		mc.renderEngine.bindTexture(String.format(cn.lambdacraft.core.proxy.ClientProps.SKYBOX_PATH, s));
+		mc.renderEngine.func_110577_a(new ResourceLocation(String.format(cn.lambdacraft.core.proxy.ClientProps.SKYBOX_PATH, s)));
 	}
 }

@@ -78,103 +78,104 @@ public class ClientProps {
 	
 	public static Properties crosshairProps;
 	public static Properties sprayProps;
+	public static final String NAMESPACE = "lambdacraft:";
 	
 	private static final Random RNG = new Random();
 	
 
-	public static final String GAUSS_BEAM_PATH = "/mods/lambdacraft/textures/entities/gaussbeam.png",
-			TRIPMINE_FRONT_PATH = "/mods/lambdacraft/textures/blocks/tripmine_front.png",
-			TRIPMINE_SIDE_PATH = "/mods/lambdacraft/textures/blocks/tripmine_side.png",
-			TRIPMINE_TOP_PATH = "/mods/lambdacraft/textures/blocks/tripmine_top.png",
-			TRIPMINE_RAY_PATH = "/mods/lambdacraft/textures/blocks/tripmine_beam.png",
-			HEVCHARGER_MAIN = "/mods/lambdacraft/textures/blocks/ac_main.png",
-			HEVCHARGER_SIDE = "/mods/lambdacraft/textures/blocks/ac_side.png",
-			HEVCHARGER_TD = "/mods/lambdacraft/textures/blocks/ac_td.png",
-			HEVCHARGER_BACK = "/mods/lambdacraft/textures/blocks/ac_back.png",
-			SATCHEL_TOP_PATH = "/mods/lambdacraft/textures/entities/satchel_top.png",
-			SATCHEL_BOTTOM_PATH = "/mods/lambdacraft/textures/entities/satchel_bottom.png",
-			SATCHEL_SIDE_PATH = "/mods/lambdacraft/textures/entities/satchel_side.png",
-			SATCHEL_SIDE2_PATH = "/mods/lambdacraft/textures/entities/satchel_side2.png",
-			AR_GRENADE_PATH = "/mods/lambdacraft/textures/entities/grenade.png",
-			RPG_ROCKET_PATH = "/mods/lambdacraft/textures/entities/rpgrocket.png",
-			SHOTGUN_SHELL_PATH = "/mods/lambdacraft/textures/entities/shotgun_shell.png",
-			CROSSBOW_BOW_PATH = "/mods/lambdacraft/textures/entities/steelbow.png",
-			RED_DOT_PATH = "/mods/lambdacraft/textures/entities/reddot.png",
-			GUI_ARMORCHARGER_PATH = "/mods/lambdacraft/textures/gui/armor_charger.png",
-			GUI_WEAPONCRAFTER_PATH = "/mods/lambdacraft/textures/gui/crafter.png",
-			GUI_MEDFILLER_PATH = "/mods/lambdacraft/textures/gui/medfiller.png",
-			GUI_GENFIRE_PATH = "/mods/lambdacraft/textures/gui/genfire.png",
-			GUI_GENSOLAR_PATH = "/mods/lambdacraft/textures/gui/gensolar.png",
-			GUI_GENLAVA_PATH = "/mods/lambdacraft/textures/gui/genlava.png",
-			GUI_HECHARGER_PATH = "/mods/lambdacraft/textures/gui/hecharger.png",
-			GUI_BATBOX_PATH = "/mods/lambdacraft/textures/gui/batbox.png",
-			GUI_ELCRAFTER_PATH = "/mods/lambdacraft/textures/gui/elcrafter.png",
-			HORNET_TRAIL_PATH = "/mods/lambdacraft/textures/entities/ag_trail.png",
-			BATTERY_PATH = "/mods/lambdacraft/textures/entities/battery.png",
-			SQUEAK_MOB_PATH = "/mods/lambdacraft/textures/entities/squeak.png",
-			WIRE_SIDE_PATH = "/mods/lambdacraft/textures/blocks/wire_side.png",
-			WIRE_MAIN_PATH = "/mods/lambdacraft/textures/blocks/wire_main.png",
-			WIRE_SIDE_PATH2 = "/mods/lambdacraft/textures/blocks/wire_side2.png",
-			HECHARGER_MAIN_PATH = "/mods/lambdacraft/textures/blocks/hecharger_main.png",
-			HECHARGER_SIDE_PATH = "/mods/lambdacraft/textures/blocks/hecharger_side.png",
-			HECHARGER_TD_PATH = "/mods/lambdacraft/textures/blocks/hecharger_td.png",
-			HECHARGER_BACK_PATH = "/mods/lambdacraft/textures/blocks/hecharger_back.png",
-			AC_NOENERGY = "/mods/lambdacraft/textures/blocks/ac_noenergy.png",
-			LONGJUMP_ARMOR_PATH = "/mods/lambdacraft/textures/armor/longjump.png",
-			HOUNDEYE_PATH = "/mods/lambdacraft/textures/entities/houndeye.png",
-			MEDKIT_ENT_PATH = "/mods/lambdacraft/textures/entities/medkit.png",
-			GLOW_PATH = "/mods/lambdacraft/textures/entities/glow.png",
-			HEV_MASK_PATH = "/mods/lambdacraft/textures/gui/hud_mask.png",
-			HEV_HUD_PATH = "/mods/lambdacraft/textures/gui/hev_hud.png",
-			HEADCRAB_MOB_PATH = "/mods/lambdacraft/textures/entities/headcrab.png",
-			BARNACLE_PATH = "/mods/lambdacraft/textures/entities/barnacle.png",
-			BARNACLE_TENTACLE_PATH = "/mods/lambdacraft/textures/entities/barnacle_tentacle.png",
-			LIGHT_BALL_PATH = "/mods/lambdacraft/textures/entities/lightball.png",
-			ZOMBIE_MOB_PATH = "/mods/lambdacraft/textures/entities/zombie.png",
-			TURRET_PATH = "/mods/lambdacraft/textures/entities/turret.png",
-			SHOCKWAVE_PATH = "/mods/lambdacraft/textures/entities/shockwave.png",
-			VORTIGAUNT_PATH = "/mods/lambdacraft/textures/entities/vortigaunt.png",
-			GAUSS_ITEM_PATH = "/mods/lambdacraft/textures/entities/gauss.png",
-			HLSPRAY_DIC_PATH = "/spray/",
-			SKYBOX_PATH = "/mods/lambdacraft/textures/sky/xen%s.png",
-			AMETHYST_PATH = "/mods/lambdacraft/textures/blocks/amethyst_model.png", 
-			XENLIGHT_PATH = "/mods/lambdacraft/textures/blocks/xenlight_model.png", 
-			EGON_BEAM_PATH[] = {"/mods/lambdacraft/textures/entities/plasma0.png", 
-		"/mods/lambdacraft/textures/entities/plasma1.png", 
-		"/mods/lambdacraft/textures/entities/plasma2.png"},
+	public static final String GAUSS_BEAM_PATH = "lambdacraft:textures/entities/gaussbeam.png",
+			TRIPMINE_FRONT_PATH = "lambdacraft:textures/blocks/tripmine_front.png",
+			TRIPMINE_SIDE_PATH = "lambdacraft:textures/blocks/tripmine_side.png",
+			TRIPMINE_TOP_PATH = "lambdacraft:textures/blocks/tripmine_top.png",
+			TRIPMINE_RAY_PATH = "lambdacraft:textures/blocks/tripmine_beam.png",
+			HEVCHARGER_MAIN = "lambdacraft:textures/blocks/ac_main.png",
+			HEVCHARGER_SIDE = "lambdacraft:textures/blocks/ac_side.png",
+			HEVCHARGER_TD = "lambdacraft:textures/blocks/ac_td.png",
+			HEVCHARGER_BACK = "lambdacraft:textures/blocks/ac_back.png",
+			SATCHEL_TOP_PATH = "lambdacraft:textures/entities/satchel_top.png",
+			SATCHEL_BOTTOM_PATH = "lambdacraft:textures/entities/satchel_bottom.png",
+			SATCHEL_SIDE_PATH = "lambdacraft:textures/entities/satchel_side.png",
+			SATCHEL_SIDE2_PATH = "lambdacraft:textures/entities/satchel_side2.png",
+			AR_GRENADE_PATH = "lambdacraft:textures/entities/grenade.png",
+			RPG_ROCKET_PATH = "lambdacraft:textures/entities/rpgrocket.png",
+			SHOTGUN_SHELL_PATH = "lambdacraft:textures/entities/shotgun_shell.png",
+			CROSSBOW_BOW_PATH = "lambdacraft:textures/entities/steelbow.png",
+			RED_DOT_PATH = "lambdacraft:textures/entities/reddot.png",
+			GUI_ARMORCHARGER_PATH = "lambdacraft:textures/gui/armor_charger.png",
+			GUI_WEAPONCRAFTER_PATH = "lambdacraft:textures/gui/crafter.png",
+			GUI_MEDFILLER_PATH = "lambdacraft:textures/gui/medfiller.png",
+			GUI_GENFIRE_PATH = "lambdacraft:textures/gui/genfire.png",
+			GUI_GENSOLAR_PATH = "lambdacraft:textures/gui/gensolar.png",
+			GUI_GENLAVA_PATH = "lambdacraft:textures/gui/genlava.png",
+			GUI_HECHARGER_PATH = "lambdacraft:textures/gui/hecharger.png",
+			GUI_BATBOX_PATH = "lambdacraft:textures/gui/batbox.png",
+			GUI_ELCRAFTER_PATH = "lambdacraft:textures/gui/elcrafter.png",
+			HORNET_TRAIL_PATH = "lambdacraft:textures/entities/ag_trail.png",
+			BATTERY_PATH = "lambdacraft:textures/entities/battery.png",
+			SQUEAK_MOB_PATH = "lambdacraft:textures/entities/squeak.png",
+			WIRE_SIDE_PATH = "lambdacraft:textures/blocks/wire_side.png",
+			WIRE_MAIN_PATH = "lambdacraft:textures/blocks/wire_main.png",
+			WIRE_SIDE_PATH2 = "lambdacraft:textures/blocks/wire_side2.png",
+			HECHARGER_MAIN_PATH = "lambdacraft:textures/blocks/hecharger_main.png",
+			HECHARGER_SIDE_PATH = "lambdacraft:textures/blocks/hecharger_side.png",
+			HECHARGER_TD_PATH = "lambdacraft:textures/blocks/hecharger_td.png",
+			HECHARGER_BACK_PATH = "lambdacraft:textures/blocks/hecharger_back.png",
+			AC_NOENERGY = "lambdacraft:textures/blocks/ac_noenergy.png",
+			LONGJUMP_ARMOR_PATH = "lambdacraft:textures/armor/longjump.png",
+			HOUNDEYE_PATH = "lambdacraft:textures/entities/houndeye.png",
+			MEDKIT_ENT_PATH = "lambdacraft:textures/entities/medkit.png",
+			GLOW_PATH = "lambdacraft:textures/entities/glow.png",
+			HEV_MASK_PATH = "lambdacraft:textures/gui/hud_mask.png",
+			HEV_HUD_PATH = "lambdacraft:textures/gui/hev_hud.png",
+			HEADCRAB_MOB_PATH = "lambdacraft:textures/entities/headcrab.png",
+			BARNACLE_PATH = "lambdacraft:textures/entities/barnacle.png",
+			BARNACLE_TENTACLE_PATH = "lambdacraft:textures/entities/barnacle_tentacle.png",
+			LIGHT_BALL_PATH = "lambdacraft:textures/entities/lightball.png",
+			ZOMBIE_MOB_PATH = "lambdacraft:textures/entities/zombie.png",
+			TURRET_PATH = "lambdacraft:textures/entities/turret.png",
+			SHOCKWAVE_PATH = "lambdacraft:textures/entities/shockwave.png",
+			VORTIGAUNT_PATH = "lambdacraft:textures/entities/vortigaunt.png",
+			GAUSS_ITEM_PATH = "lambdacraft:textures/entities/gauss.png",
+			HLSPRAY_DIC_PATH = "lambdacraft:spray/",
+			SKYBOX_PATH = "lambdacraft:textures/sky/xen%s.png",
+			AMETHYST_PATH = "lambdacraft:textures/blocks/amethyst_model.png", 
+			XENLIGHT_PATH = "lambdacraft:textures/blocks/xenlight_model.png", 
+			EGON_BEAM_PATH[] = {"lambdacraft:textures/entities/plasma0.png", 
+		"lambdacraft:textures/entities/plasma1.png", 
+		"lambdacraft:textures/entities/plasma2.png"},
 			SS_SIDE_PATH[] = {
-					"/mods/lambdacraft/textures/blocks/ss_side0.png",
-					"/mods/lambdacraft/textures/blocks/ss_side1.png" },
-			SS_MAIN_PATH[] = { "/mods/lambdacraft/textures/blocks/ss_0.png",
-					"/mods/lambdacraft/textures/blocks/ss_1.png" },
-			SPRY_PATH[] = { "/mods/lambdacraft/textures/sprays/spry0.png",
-					"/mods/lambdacraft/textures/sprays/spry1.png" },
+					"lambdacraft:textures/blocks/ss_side0.png",
+					"lambdacraft:textures/blocks/ss_side1.png" },
+			SS_MAIN_PATH[] = { "lambdacraft:textures/blocks/ss_0.png",
+					"lambdacraft:textures/blocks/ss_1.png" },
+			SPRY_PATH[] = { "lambdacraft:textures/sprays/spry0.png",
+					"lambdacraft:textures/sprays/spry1.png" },
 			ITEM_SATCHEL_PATH[] = {
-					"/mods/lambdacraft/textures/items/weapon_satchel1.png",
-					"/mods/lambdacraft/textures/items/weapon_satchel2.png" },
+					"lambdacraft:textures/items/weapon_satchel1.png",
+					"lambdacraft:textures/items/weapon_satchel2.png" },
 			CROSSBOW_FRONT_PATH[] = {
-					"/mods/lambdacraft/textures/items/crossbow_front0.png",
-					"/mods/lambdacraft/textures/items/crossbow_front1.png" },
-			EGON_BEAM_PATH1 = "/mods/lambdacraft/textures/entities/egon_ray2.png",
-			HEV_ARMOR_PATH[] = { "/mods/lambdacraft/textures/armor/hev_1.png",
-					"/mods/lambdacraft/textures/armor/hev_2.png" },
+					"lambdacraft:textures/items/crossbow_front0.png",
+					"lambdacraft:textures/items/crossbow_front1.png" },
+			EGON_BEAM_PATH1 = "lambdacraft:textures/entities/egon_ray2.png",
+			HEV_ARMOR_PATH[] = { "lambdacraft:textures/armor/hev_1.png",
+					"lambdacraft:textures/armor/hev_2.png" },
 			RPG_TRAIL_PATH[] = {
-					"/mods/lambdacraft/textures/entities/rpg_trail.png",
-					"/mods/lambdacraft/textures/entities/rpg_trail_tail.png" },
+					"lambdacraft:textures/entities/rpg_trail.png",
+					"lambdacraft:textures/entities/rpg_trail_tail.png" },
 			VORTIGAUNT_RAY_PATH[] = {
-					"/mods/lambdacraft/textures/entities/ltn0.png",
-					"/mods/lambdacraft/textures/entities/ltn1.png",
-					"/mods/lambdacraft/textures/entities/ltn2.png" };
+					"lambdacraft:textures/entities/ltn0.png",
+					"lambdacraft:textures/entities/ltn1.png",
+					"lambdacraft:textures/entities/ltn2.png" };
 
-	public static final String xhair_path = "/crosshairs/",
+	public static final String xhair_path = "lambdacraft:crosshairs/",
 			DEFAULT_XHAIR_PATH = xhair_path + "xhair1.png";
 	
-	public static final String spry_path = "/spray/";
+	public static final String spry_path = "lambdacraft:spray/";
 
 	public static String PORTAL_PATH[] = new String[10];
 	static {
 		for(int i = 0; i < 10; i++) {
-			PORTAL_PATH[i] = "/mods/lambdacraft/textures/blocks/xen_portal" + (i + 1) + ".png";
+			PORTAL_PATH[i] = "lambdacraft:textures/blocks/xen_portal" + (i + 1) + ".png";
 		}
 	}
 	
@@ -185,7 +186,7 @@ public class ClientProps {
 	 */
 	public static String getRandomMuzzleFlash() {
 		int random = (int) (RNG.nextFloat() * 7F) + 1;
-		String path = "/mods/lambdacraft/textures/muz/muz" + random + ".png";
+		String path = "lambdacraft:textures/muz/muz" + random + ".png";
 		return path;
 	}
 

@@ -3,15 +3,15 @@ package cn.lambdacraft.mob.register;
 import net.minecraft.item.Item;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.register.GeneralRegistry;
-import cn.lambdacraft.mob.entities.EntityAlienSlave;
-import cn.lambdacraft.mob.entities.EntityHLZombie;
-import cn.lambdacraft.mob.entities.EntityHeadcrab;
-import cn.lambdacraft.mob.entities.EntityHoundeye;
-import cn.lambdacraft.mob.entities.EntitySentry;
-import cn.lambdacraft.mob.items.ItemBarnaclePlacer;
-import cn.lambdacraft.mob.items.ItemDNAFragment;
-import cn.lambdacraft.mob.items.ItemSentrySyncer;
-import cn.lambdacraft.mob.items.LCMobSpawner;
+import cn.lambdacraft.mob.entity.EntityAlienSlave;
+import cn.lambdacraft.mob.entity.EntityHLZombie;
+import cn.lambdacraft.mob.entity.EntityHeadcrab;
+import cn.lambdacraft.mob.entity.EntityHoundeye;
+import cn.lambdacraft.mob.entity.EntitySentry;
+import cn.lambdacraft.mob.item.ItemBarnaclePlacer;
+import cn.lambdacraft.mob.item.ItemDNAFragment;
+import cn.lambdacraft.mob.item.ItemSentrySyncer;
+import cn.lambdacraft.mob.item.LCMobSpawner;
 
 public class CBCMobItems {
 

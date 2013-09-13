@@ -25,7 +25,7 @@ import cpw.mods.fml.common.TickType;
  */
 public class RenderTickHandler implements ITickHandler {
 
-	private boolean isZooming = false;
+	public static boolean isZooming = false;
 	
 	/**
 	 * 

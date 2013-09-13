@@ -22,6 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemStack;
@@ -69,7 +70,8 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	}
 
 	@Override
-	public int getItemMaxDamageFromStack(ItemStack is) {
+	//public int getItemMaxDamageFromStack(ItemStack is) {
+	public int getMaxDamage(ItemStack stack){
 		return maxCharge;
 	}
 
@@ -83,8 +85,9 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	 * @return the damage value
 	 */
 	@Override
-	public int getItemDamageFromStack(ItemStack stack) {
-		return getItemMaxDamageFromStack(stack) - getItemCharge(stack);
+	//public int getItemDamageFromStack(ItemStack stack) {
+	public int getDamage(ItemStack stack) {
+		return getMaxDamage(stack) - getItemCharge(stack);
 	}
 
 	/**
@@ -95,7 +98,9 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	 * @return the damage value
 	 */
 	@Override
-	public int getItemDamageFromStackForDisplay(ItemStack stack) {
+	//public int getItemDamageFromStackForDisplay(ItemStack stack) {
+	public int getDisplayDamage(ItemStack stack)
+	{
 		return getMaxCharge(stack) - getItemCharge(stack);
 	}
 
@@ -137,7 +142,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	public int charge(ItemStack itemStack, int amount, int tier,
 			boolean ignoreTransferLimit, boolean simulate) {
 
-		int en = getItemMaxDamageFromStack(itemStack) - getItemCharge(itemStack) - 1;
+		int en = getMaxDamage(itemStack) - getItemCharge(itemStack) - 1;
 		if (en == 0)
 			return 0;
 		if (!ignoreTransferLimit)
@@ -161,7 +166,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 		if (this.canShowChargeToolTip(par1ItemStack))
 			par3List.add(StatCollector.translateToLocal("gui.curenergy.name")
 					+ " : " + getItemCharge(par1ItemStack) + "/"
-					+ getItemMaxDamageFromStack(par1ItemStack) + " EU");
+					+ getMaxDamage(par1ItemStack) + " EU");
 	}
 
 	@Override
@@ -182,7 +187,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	protected void setItemCharge(ItemStack stack, int charge) {
 		loadCompound(stack).setInteger(
 				"charge",
-				(charge > 0) ? (charge > getItemMaxDamageFromStack(stack) ? getItemMaxDamageFromStack(stack)
+				(charge > 0) ? (charge > getMaxDamage(stack) ? getMaxDamage(stack)
 						: charge) : 0);
 	}
 
@@ -206,7 +211,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	 *            the new damage value
 	 */
 	@Override
-	public void setItemDamageForStack(ItemStack stack, int damage) {
+	public void setDamage(ItemStack stack, int damage) {
 		setItemCharge(stack, damage);
 	}
 
@@ -219,7 +224,8 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	 * @return if the stack is damaged
 	 */
 	@Override
-	public boolean isItemStackDamaged(ItemStack stack) {
+	//public boolean isItemStackDamaged(ItemStack stack) {
+	public boolean isDamaged(ItemStack stack){
 		return getItemCharge(stack) < getMaxDamage();
 	}
 
@@ -239,7 +245,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	}
 
 	@Override
-	public void damageArmor(EntityLiving entity, ItemStack stack,
+	public void damageArmor(EntityLivingBase entity, ItemStack stack,
 			DamageSource source, int damage, int slot) {
 		this.discharge(stack, damage * this.energyPerDamage, 2, true, false);
 		if(getItemCharge(stack) < this.energyPerDamage)

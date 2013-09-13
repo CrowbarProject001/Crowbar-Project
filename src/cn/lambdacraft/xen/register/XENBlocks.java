@@ -19,9 +19,6 @@ import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.register.GeneralRegistry;
-import cn.lambdacraft.xen.block.tile.TileEntityXenAmethyst;
-import cn.lambdacraft.xen.block.tile.TileEntityXenLight;
-import cn.lambdacraft.xen.block.tile.TileEntityXenPortal;
 import cn.lambdacraft.xen.block.BlockBlackPillar;
 import cn.lambdacraft.xen.block.BlockSlimeFlow;
 import cn.lambdacraft.xen.block.BlockSlimeStill;
@@ -36,6 +33,9 @@ import cn.lambdacraft.xen.block.BlockXenDirt;
 import cn.lambdacraft.xen.block.BlockXenPortal;
 import cn.lambdacraft.xen.block.BlockXenWaterFlow;
 import cn.lambdacraft.xen.block.BlockXenWaterStill;
+import cn.lambdacraft.xen.tileentity.TileEntityXenAmethyst;
+import cn.lambdacraft.xen.tileentity.TileEntityXenLight;
+import cn.lambdacraft.xen.tileentity.TileEntityXenPortal;
 
 /**
  * 由于特殊原因，Xen方块暂时注册255以下的ID，不让GeneralRegistry自动分配。

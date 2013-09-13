@@ -23,12 +23,13 @@ import cn.lambdacraft.core.client.gui.CBCGuiButton.ButtonState;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author WeAthFolD LambdaCraft的GUI Container，目前具有： 按钮功能 区域Tip功能
  */
 public abstract class CBCGuiContainer extends GuiContainer {
-
+	
 	/**
 	 * GUI元素列表。
 	 */
@@ -39,6 +40,13 @@ public abstract class CBCGuiContainer extends GuiContainer {
 		elements = new HashSet<CBCGuiPart>();
 	}
 
+	
+	/**绑定贴图 By Rikka0_0*/
+	protected void bindTexture(String texture){
+		mc.renderEngine.func_110577_a(new ResourceLocation(texture));
+	}
+	
+	
 	/**
 	 * 添加一个按钮。
 	 * 

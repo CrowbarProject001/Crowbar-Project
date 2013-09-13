@@ -115,6 +115,7 @@ public class ClientTickHandler implements ITickHandler {
 				if (var3 instanceof EntityPlayer) {
 					EntityLiving var4 = (EntityLiving) var3;
 					TODO:你偷懒了⑨，这里的效果是你一开灯所有玩家都开灯啊>. <
+					卧槽不会吧？
 					if (flag && CBCPlayer.armorStat[3] && var4.rayTrace(200.0D, 1.0F) != null) {
 						var5 = var4.rayTrace(200.0D, 1.0F).blockX;
 						int var6 = var4.rayTrace(200.0D, 1.0F).blockY;

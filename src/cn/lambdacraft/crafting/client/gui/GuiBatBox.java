@@ -21,11 +21,12 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.container.ContainerBatBox;
-import cn.lambdacraft.crafting.blocks.tile.TileBatBox;
+import cn.lambdacraft.crafting.block.container.ContainerBatBox;
+import cn.lambdacraft.crafting.block.tile.TileBatBox;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 /**
@@ -90,7 +91,7 @@ public class GuiBatBox extends CBCGuiContainer {
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glPushMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(ClientProps.GUI_BATBOX_PATH);
+		mc.renderEngine.func_110577_a(new ResourceLocation(ClientProps.GUI_BATBOX_PATH));
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		int x = (width - xSize) / 2;

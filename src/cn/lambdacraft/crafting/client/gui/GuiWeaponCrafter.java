@@ -25,11 +25,11 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.BlockWeaponCrafter.CrafterIconType;
-import cn.lambdacraft.crafting.blocks.container.ContainerWeaponCrafter;
-import cn.lambdacraft.crafting.blocks.tile.TileWeaponCrafter;
+import cn.lambdacraft.crafting.block.BlockWeaponCrafter.CrafterIconType;
+import cn.lambdacraft.crafting.block.container.ContainerWeaponCrafter;
+import cn.lambdacraft.crafting.block.tile.TileWeaponCrafter;
 import cn.lambdacraft.crafting.network.NetCrafterClient;
-import cn.lambdacraft.crafting.recipes.RecipeWeapons;
+import cn.lambdacraft.crafting.recipe.RecipeWeapons;
 
 
 /**
@@ -134,7 +134,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 		if (!this.te.isLoad)
 			return;
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(ClientProps.GUI_WEAPONCRAFTER_PATH);
+		bindTexture(ClientProps.GUI_WEAPONCRAFTER_PATH);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

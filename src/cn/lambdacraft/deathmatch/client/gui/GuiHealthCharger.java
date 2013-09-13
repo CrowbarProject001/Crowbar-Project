@@ -16,6 +16,7 @@ package cn.lambdacraft.deathmatch.client.gui;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -25,7 +26,7 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.blocks.TileHealthCharger;
+import cn.lambdacraft.deathmatch.block.TileHealthCharger;
 
 
 /**
@@ -124,7 +125,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		mc.renderEngine.bindTexture(ClientProps.GUI_HECHARGER_PATH);
+		mc.renderEngine.func_110577_a(new ResourceLocation(ClientProps.GUI_HECHARGER_PATH));
 		if (te.currentEnergy == 0) {
 			this.drawTexturedModalRect(9, 7, 190, 0, 60, 72);
 		} else super.drawGuiContainerForegroundLayer(par1, par2);
@@ -139,7 +140,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(ClientProps.GUI_HECHARGER_PATH);
+		mc.renderEngine.func_110577_a(new ResourceLocation(ClientProps.GUI_HECHARGER_PATH));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

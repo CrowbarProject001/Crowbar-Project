@@ -18,12 +18,13 @@ import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
@@ -32,8 +33,9 @@ import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.CBCPlayer.EnumStatus;
+import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.items.ArmorHEV;
+import cn.lambdacraft.deathmatch.item.ArmorHEV;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -52,11 +54,11 @@ public class HEVRenderingUtils {
         int l = resolution.getScaledHeight();
         int i2 = k / 2 - 91;
         int k2 = l - 32 + 3;
-        RenderEngine engine = Minecraft.getMinecraft().renderEngine;
+        TextureManager engine = Minecraft.getMinecraft().renderEngine;
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
-        engine.bindTexture(ClientProps.HEV_HUD_PATH);
+        engine.func_110577_a(new ResourceLocation(ClientProps.HEV_HUD_PATH));
         
         //Health Section
         int xOffset = -90, yOffset = -45;
@@ -68,11 +70,11 @@ public class HEVRenderingUtils {
         GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.6F);
         drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 0, 16, 16, 16);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
-        int h = player.getHealth() * 16 / 20;
+        int h = (int) (player.func_110143_aJ() * 16 / 20);
         drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 16 - h, 0, 32 - h, 16, h);
-        if(player.getHealth() <= 5)
+        if(player.func_110143_aJ() <= 5)
         	GL11.glColor4f(0.9F, 0.1F, 0.1F, 0.6F);
-        drawNumberAt((byte) (player.getHealth() * 5), k / 2 + xOffset + 18, l + yOffset);
+        drawNumberAt((byte) (player.func_110143_aJ() * 5), k / 2 + xOffset + 18, l + yOffset);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
         
         //Armor Section
@@ -95,7 +97,7 @@ public class HEVRenderingUtils {
         drawStatusHud(player, engine, k, l, partialTickTime);
         
         
-        engine.bindTexture("/gui/icons.png");
+        engine.func_110577_a(engine.func_130087_a(1)); 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
 	}
@@ -103,7 +105,7 @@ public class HEVRenderingUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawCrosshair(ItemStack item, int k, int l) {
 		String xhairPath;
-		RenderEngine engine = Minecraft.getMinecraft().renderEngine;
+		TextureManager engine = Minecraft.getMinecraft().renderEngine;
 		int h = 12;
 		if(item != null) {
 			if(item.getItem() instanceof ISpecialCrosshair)
@@ -120,7 +122,7 @@ public class HEVRenderingUtils {
 	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int par1 = k / 2 - h, par2 = l / 2 - h;
-		engine.bindTexture(xhairPath);
+		RenderUtils.loadTexture(xhairPath);
 		Tessellator t = Tessellator.instance;
         t.startDrawingQuads();
         t.setColorRGBA(ClientProps.xHairR, ClientProps.xHairG, ClientProps.xHairB, 255);
@@ -130,14 +132,15 @@ public class HEVRenderingUtils {
         t.addVertexWithUV(par1 + 0, par2 + 0, -90, 0, 0);
         t.draw();
         
-        engine.bindTexture("/gui/icons.png");
+        //TODO: maybe buggy here
+    	engine.func_110577_a(engine.func_130087_a(2)); 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
         GL11.glPopMatrix();
 	}
 	
 	@SideOnly(Side.CLIENT) 
-	private static void drawStatusHud(EntityPlayer player, RenderEngine engine, int k, int l, float tickTime) {
+	private static void drawStatusHud(EntityPlayer player, TextureManager engine, int k, int l, float tickTime) {
 		int x = 3, y = l / 2 - 100;
 		EnumStatus stat = CBCPlayer.playerStat;
 		float alpha = MathHelper.sin(tickTime * 0.3F) + 0.6F;
@@ -146,7 +149,7 @@ public class HEVRenderingUtils {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	private static void drawArmorTip(EntityPlayer player,RenderEngine renderEngine, int k, int l) {
+	private static void drawArmorTip(EntityPlayer player,TextureManager renderEngine, int k, int l) {
 		for(int i = 0; i < 4 ; i ++) {
 			ItemStack is = player.inventory.armorInventory[i];
 			ArmorHEV hev;
@@ -156,13 +159,13 @@ public class HEVRenderingUtils {
 				int heightToDraw = energy * 16 / is.getMaxDamage();
 				int height = l - 50 - i * 16;
 				if (is.getItemSpriteNumber() == 0) {
-					renderEngine.bindTexture("/terrain.png");
+					renderEngine.func_110577_a(renderEngine.func_130087_a(0)); 
 				} else {
-					renderEngine.bindTexture("/gui/items.png");
+					renderEngine.func_110577_a(renderEngine.func_130087_a(1)); 
 				}
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
 				drawTexturedModelRectFromIcon(5, height, hev.getIcon(is, 0), 16, 16);
-				renderEngine.bindTexture(ClientProps.HEV_HUD_PATH);
+				renderEngine.func_110577_a(new ResourceLocation(ClientProps.HEV_HUD_PATH));
 				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
 				drawTexturedModalRect(24, height + 16 - heightToDraw, 32, 32 - heightToDraw, 16, heightToDraw);
 			}
@@ -170,7 +173,7 @@ public class HEVRenderingUtils {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	private static void drawWeaponTip(EntityPlayer player,RenderEngine renderEngine, int k, int l) {
+	private static void drawWeaponTip(EntityPlayer player,TextureManager renderEngine, int k, int l) {
 		ItemStack item = player.getCurrentEquippedItem();
 		if(item == null)
 			return;
@@ -185,7 +188,7 @@ public class HEVRenderingUtils {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	private static void drawTips(IHudTip[] tips, RenderEngine engine, ItemStack itemStack, EntityPlayer player, int k, int l) {
+	private static void drawTips(IHudTip[] tips, TextureManager engine, ItemStack itemStack, EntityPlayer player, int k, int l) {
 		int startHeight = l - 18 - 18 * tips.length;
 		if(ClientProps.HUD_drawInLeftCorner)
 			startHeight += 13;
@@ -196,13 +199,14 @@ public class HEVRenderingUtils {
 			if(icon != null) {
 				int sheetIndex = tips[i].getTextureSheet(itemStack);
 				if (sheetIndex == 0)
-					engine.bindTexture("/terrain.png");
+					engine.func_110577_a(engine.func_130087_a(0)); 
 				else if(sheetIndex != 5)
-					engine.bindTexture("/gui/items.png");
+					engine.func_110577_a(engine.func_130087_a(1)); 
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.7F);
 				drawTexturedModelRectFromIcon(k - 30, startHeight, icon, 16, 16);
 				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
-				engine.bindTexture(ClientProps.HEV_HUD_PATH);
+				//Bind the texture by Rikka0_0
+				engine.func_110577_a(new ResourceLocation(ClientProps.HEV_HUD_PATH));
 			}
 			drawTipStringAt(s, width, startHeight);
 			startHeight += 18;

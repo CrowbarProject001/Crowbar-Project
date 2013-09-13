@@ -1,18 +1,17 @@
 package cn.lambdacraft.core;
 
+import api.player.client.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.src.PlayerAPI;
-import net.minecraft.src.PlayerBase;
 import net.minecraft.util.MathHelper;
 import cn.lambdacraft.core.item.ElectricArmor;
-import cn.lambdacraft.core.utils.GenericUtils;
-import cn.lambdacraft.deathmatch.items.ArmorHEV;
-import cn.lambdacraft.deathmatch.items.ArmorHEV.EnumAttachment;
+import cn.lambdacraft.core.util.GenericUtils;
+import cn.lambdacraft.deathmatch.item.ArmorHEV;
+import cn.lambdacraft.deathmatch.item.ArmorHEV.EnumAttachment;
 import cn.lambdacraft.deathmatch.register.DMItems;
-public class CBCPlayer extends PlayerBase {
+public class CBCPlayer extends ClientPlayerBase {
 
 	public static final float LJ_VEL_RADIUS = 1.5F, BHOP_VEL_SCALE = 0.003F, SPEED_REDUCE_SCALE = 0.0005F;
 	private float lastTickRotationYaw;
@@ -20,14 +19,14 @@ public class CBCPlayer extends PlayerBase {
 	private Minecraft mc = Minecraft.getMinecraft();
 	private int fallingTick;
 	private int tickSinceLastSound = 0;
-	private int lastHealth = 0;
+	private float lastHealth = 0;
 	public static boolean drawArmorTip = false;
 	public static boolean armorStat[] = new boolean[4];
 	
 	ArmorHEV hevHead = DMItems.armorHEVHelmet, hevChest = DMItems.armorHEVChestplate,
 			hevBoots = DMItems.armorHEVBoot, hevLeggings = DMItems.armorHEVLeggings;
 	
-	public CBCPlayer(PlayerAPI var1) {
+	public CBCPlayer(ClientPlayerAPI var1) {
 		super(var1);
 		gameSettings = Minecraft.getMinecraft().gameSettings;
 	}
@@ -96,14 +95,14 @@ public class CBCPlayer extends PlayerBase {
 	public void afterOnUpdate() {
 		++tickSinceLastSound;
 		if((armorStat[2] &&  armorStat[3])) {
-			if(player.getHealth() - lastHealth < 0 && player.getHealth() <= 5) {
+			if(player.func_110143_aJ() - lastHealth < 0 && player.func_110143_aJ() <= 5) {
 				if(tickSinceLastSound > 30) {
 					mc.sndManager.playSoundFX("cbc.hev.health_critical", 0.5F, 1.0F);
 					tickSinceLastSound = 0;
 				}
 			}
 		}
-		lastHealth = player.getHealth();
+		lastHealth = player.func_110143_aJ();
 	}
 	
 	

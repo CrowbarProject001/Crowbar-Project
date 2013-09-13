@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.intergration.ic2.item;
 
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_Crowbar_Electrical;
+import cn.lambdacraft.deathmatch.item.weapon.Weapon_Crowbar_Electrical;
 import ic2.api.item.ICustomElectricItem;
 
 /**

@@ -1,36 +1,32 @@
 package cn.lambdacraft.deathmatch;
 
 import net.minecraftforge.common.MinecraftForge;
-
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.deathmatch.blocks.container.DMGuiElements;
-import cn.lambdacraft.deathmatch.entities.EntityARGrenade;
-import cn.lambdacraft.deathmatch.entities.EntityBattery;
-import cn.lambdacraft.deathmatch.entities.EntityCrossbowArrow;
-import cn.lambdacraft.deathmatch.entities.EntityHGrenade;
-import cn.lambdacraft.deathmatch.entities.EntityHornet;
-import cn.lambdacraft.deathmatch.entities.EntityMedkit;
-import cn.lambdacraft.deathmatch.entities.EntityRPGDot;
-import cn.lambdacraft.deathmatch.entities.EntityRocket;
-import cn.lambdacraft.deathmatch.entities.EntitySatchel;
-import cn.lambdacraft.deathmatch.entities.fx.EntityCrossbowStill;
-import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
-import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
-import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRayColored;
-import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
+import cn.lambdacraft.deathmatch.block.container.DMGuiElements;
+import cn.lambdacraft.deathmatch.entity.EntityARGrenade;
+import cn.lambdacraft.deathmatch.entity.EntityBattery;
+import cn.lambdacraft.deathmatch.entity.EntityCrossbowArrow;
+import cn.lambdacraft.deathmatch.entity.EntityHGrenade;
+import cn.lambdacraft.deathmatch.entity.EntityHornet;
+import cn.lambdacraft.deathmatch.entity.EntityMedkit;
+import cn.lambdacraft.deathmatch.entity.EntityRPGDot;
+import cn.lambdacraft.deathmatch.entity.EntityRocket;
+import cn.lambdacraft.deathmatch.entity.EntitySatchel;
+import cn.lambdacraft.deathmatch.entity.fx.EntityCrossbowStill;
+import cn.lambdacraft.deathmatch.entity.fx.EntityEgonRay;
+import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
+import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRayColored;
+import cn.lambdacraft.deathmatch.entity.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.network.NetChargerClient;
-import cn.lambdacraft.deathmatch.network.NetDeathmatch;
-import cn.lambdacraft.deathmatch.network.NetClicking;
 import cn.lambdacraft.deathmatch.network.NetMedFillerClient;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMEventHandler;
 import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.lambdacraft.deathmatch.utils.ItemHelper;
-
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
@@ -43,8 +39,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = "LambdaCraft|DeathMatch", name = "LambdaCraft DeathMatch", version = CBCMod.VERSION, dependencies = CBCMod.DEPENCY_CRAFTING)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
@@ -56,14 +50,10 @@ public class ModuleDM {
 	@SidedProxy(clientSide = "cn.lambdacraft.deathmatch.proxy.ClientProxy", serverSide = "cn.lambdacraft.deathmatch.proxy.Proxy")
 	public static cn.lambdacraft.deathmatch.proxy.Proxy proxy;
 
-	@PreInit
+	@EventHandler()
 	public void preInit(FMLPreInitializationEvent Init) {
 		MinecraftForge.EVENT_BUS.register(new DMEventHandler());
-		TickRegistry.registerTickHandler(new ItemHelper(), Side.CLIENT);
-		TickRegistry.registerTickHandler(new ItemHelper(), Side.SERVER);
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_DM, new NetDeathmatch());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL, new NetChargerClient());
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_PRIMSHOOT, new NetClicking());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_MEDFILLER_CL, new NetMedFillerClient());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new DMGuiElements.ElementArmorCharger());
 		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_HEALTH, new DMGuiElements.ElementHealthCharger());
@@ -71,7 +61,7 @@ public class ModuleDM {
 		proxy.preInit();
 	}
 
-	@Init
+	@EventHandler()
 	public void init(FMLInitializationEvent Init) {
 		DMItems.init(CBCMod.config);
 		DMBlocks.init(CBCMod.config);
@@ -108,11 +98,11 @@ public class ModuleDM {
 		proxy.init();
 	}
 
-	@PostInit
+	@EventHandler()
 	public void postInit(FMLPostInitializationEvent Init) {
 	}
 
-	@ServerStarting
+	@EventHandler()
 	public void serverStarting(FMLServerStartingEvent event) {
 	}
 

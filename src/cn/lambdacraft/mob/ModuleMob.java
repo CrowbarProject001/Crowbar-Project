@@ -9,20 +9,21 @@ import net.minecraft.world.biome.BiomeGenBase;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.utils.BlockPos;
-import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
-import cn.lambdacraft.mob.entities.EntityAlienSlave;
-import cn.lambdacraft.mob.entities.EntityBarnacle;
-import cn.lambdacraft.mob.entities.EntityHLZombie;
-import cn.lambdacraft.mob.entities.EntityHeadcrab;
-import cn.lambdacraft.mob.entities.EntityHoundeye;
-import cn.lambdacraft.mob.entities.EntitySentry;
-import cn.lambdacraft.mob.entities.EntityShockwave;
-import cn.lambdacraft.mob.entities.EntitySnark;
+import cn.lambdacraft.core.util.BlockPos;
+import cn.lambdacraft.mob.block.tile.TileSentryRay;
+import cn.lambdacraft.mob.entity.EntityAlienSlave;
+import cn.lambdacraft.mob.entity.EntityBarnacle;
+import cn.lambdacraft.mob.entity.EntityHLZombie;
+import cn.lambdacraft.mob.entity.EntityHeadcrab;
+import cn.lambdacraft.mob.entity.EntityHoundeye;
+import cn.lambdacraft.mob.entity.EntitySentry;
+import cn.lambdacraft.mob.entity.EntityShockwave;
+import cn.lambdacraft.mob.entity.EntitySnark;
 import cn.lambdacraft.mob.network.NetSentrySync;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
@@ -53,22 +54,19 @@ public class ModuleMob {
 	@Instance("LambdaCraft|Living")
 	public static ModuleMob instance;
 
-	@PreInit
+	@EventHandler()
 	public void preInit(FMLPreInitializationEvent Init) {
 		proxy.preInit();
 	}
 
-	@Init
+	@EventHandler()
 	public void init(FMLInitializationEvent Init) {
 		CBCMobItems.init(CBCMod.config);
 		CBCMobBlocks.init();
 
-		EntityRegistry.addSpawn(EntityHeadcrab.class, 7, 0, 50,
-				EnumCreatureType.monster, GENERIC_GEN);
-		EntityRegistry.addSpawn(EntityHoundeye.class, 10, 0, 70,
-				EnumCreatureType.monster, GENERIC_GEN);
-		EntityRegistry.addSpawn(EntityAlienSlave.class, 1, 0, 70,
-				EnumCreatureType.monster, GENERIC_GEN);
+		EntityRegistry.addSpawn(EntityHeadcrab.class, 7, 0, 50, EnumCreatureType.monster, GENERIC_GEN);
+		EntityRegistry.addSpawn(EntityHoundeye.class, 10, 0, 70, EnumCreatureType.monster, GENERIC_GEN);
+		EntityRegistry.addSpawn(EntityAlienSlave.class, 1, 0, 70, EnumCreatureType.monster, GENERIC_GEN);
 		EntityRegistry.addSpawn(EntityBarnacle.class, 5, 0, 65, EnumCreatureType.monster, BARNACLE_GEN);
 
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER, new NetSentrySync());
@@ -103,11 +101,11 @@ public class ModuleMob {
 			BiomeGenBase.frozenRiver, BiomeGenBase.jungle,
 			BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.hell };
 
-	@PostInit
+	@EventHandler()
 	public void postInit(FMLPostInitializationEvent Init) {
 	}
 
-	@ServerStarting
+	@EventHandler()
 	public void serverStarting(FMLServerStartingEvent event) {
 	}
 

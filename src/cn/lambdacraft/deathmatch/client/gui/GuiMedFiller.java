@@ -16,6 +16,7 @@ package cn.lambdacraft.deathmatch.client.gui;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -25,7 +26,7 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.blocks.TileMedkitFiller;
+import cn.lambdacraft.deathmatch.block.TileMedkitFiller;
 import cn.lambdacraft.deathmatch.network.NetMedFillerClient;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 
@@ -136,7 +137,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 	protected void drawGuiContainerBackgroundLayer(float f, int a, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		mc.renderEngine.bindTexture(ClientProps.GUI_MEDFILLER_PATH);
+		mc.renderEngine.func_110577_a(new ResourceLocation(ClientProps.GUI_MEDFILLER_PATH));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

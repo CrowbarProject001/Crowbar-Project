@@ -15,15 +15,15 @@
 package cn.lambdacraft.xen.proxy;
 
 import net.minecraftforge.client.MinecraftForgeClient;
-import cn.lambdacraft.core.client.render.RenderTileEntityModel;
-import cn.lambdacraft.xen.block.tile.TileEntityXenAmethyst;
-import cn.lambdacraft.xen.block.tile.TileEntityXenLight;
-import cn.lambdacraft.xen.block.tile.TileEntityXenPortal;
-import cn.lambdacraft.xen.client.models.ModelXenLight;
+import cn.lambdacraft.core.client.renderer.RenderTileEntityModel;
+import cn.lambdacraft.xen.client.model.ModelXenLight;
 import cn.lambdacraft.xen.client.renderer.RenderItemPortal;
 import cn.lambdacraft.xen.client.renderer.RenderTileXenAmethyst;
 import cn.lambdacraft.xen.client.renderer.RenderXenPortal;
 import cn.lambdacraft.xen.register.XENBlocks;
+import cn.lambdacraft.xen.tileentity.TileEntityXenAmethyst;
+import cn.lambdacraft.xen.tileentity.TileEntityXenLight;
+import cn.lambdacraft.xen.tileentity.TileEntityXenPortal;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 /**

@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.intergration.ic2.tile;
 
-import cn.lambdacraft.deathmatch.blocks.BlockArmorCharger;
+import cn.lambdacraft.deathmatch.block.BlockArmorCharger;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 

@@ -1,18 +1,25 @@
 package cn.lambdacraft.core.client;
 
+import java.util.Map;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
+
+import com.google.common.collect.Maps;
 
 import cn.lambdacraft.core.client.shape.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.LongHashMap;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -29,13 +36,15 @@ public class RenderUtils {
 	private static Tessellator t = Tessellator.instance;
 	public static Random rand = new Random();
 	
+	private static Map<String, ResourceLocation> srcMap  = Maps.newHashMap();
+	
 	public static void renderShadow_Held() {
 		GL11.glDepthFunc(GL11.GL_EQUAL);
     	GL11.glDisable(GL11.GL_LIGHTING);
-    	Minecraft.getMinecraft().renderEngine.bindTexture("%blur%/misc/glint.png");
+    	Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(("textures/misc/enchanted_item_glint.png")));
     	GL11.glEnable(GL11.GL_BLEND);
     	GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
-    	float f7 = 0.76F;
+    	float f7 = 1.00F;
     	GL11.glColor4f(0.5F * f7, 0.25F * f7, 0.8F * f7, 1.0F);
     	GL11.glMatrixMode(GL11.GL_TEXTURE);
     	GL11.glPushMatrix();
@@ -62,7 +71,7 @@ public class RenderUtils {
 	public static void renderShadow_Inventory() {
 		GL11.glDepthFunc(GL11.GL_EQUAL);
     	GL11.glDisable(GL11.GL_LIGHTING);
-    	Minecraft.getMinecraft().renderEngine.bindTexture("%blur%/misc/glint.png");
+    	Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(("textures/misc/enchanted_item_glint.png")));
     	GL11.glEnable(GL11.GL_BLEND);
     	GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
     	float f7 = 0.76F;
@@ -138,10 +147,12 @@ public class RenderUtils {
 	 *            贴图路径
 	 * @return
 	 */
-	public static int getTexture(String path) {
-		return FMLClientHandler.instance().getClient().renderEngine
-				.getTexture(path);
-	}
+	//public static int getTexture(String path) {
+	//	ResourceLocation r=new ResourceLocation(path);
+	//	TextureObject a=Minecraft.getMinecraft().renderEngine
+	//			.func_110581_b(r);
+	//	return a.func_110552_b();
+	//}
 
 	/**
 	 * 获取并加载一个贴图。
@@ -150,12 +161,17 @@ public class RenderUtils {
 	 *            贴图路径
 	 */
 	public static void loadTexture(String path) {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexture(path));
+		ResourceLocation src = srcMap.get(path);
+		if(src == null) {
+			src = new ResourceLocation(path);
+			srcMap.put(path, src);
+		}
+		Minecraft.getMinecraft().renderEngine.func_110577_a(src);
 	}
 
-	public static void renderItemIn2d(EntityLiving par1EntityLiving,
+	public static void renderItemIn2d(EntityLivingBase entity,
 			ItemStack stackToRender, double w) {
-		renderItemIn2d(par1EntityLiving, stackToRender, w, null);
+		renderItemIn2d(entity, stackToRender, w, null);
 	}
 
 	/**
@@ -165,7 +181,7 @@ public class RenderUtils {
 	 * @param w
 	 *            宽度
 	 */
-	public static void renderItemIn2d(Entity par1EntityLiving,
+	public static void renderItemIn2d(Entity par1EntityLivingBase,
 			ItemStack stackToRender, double w, Icon specialIcon) {
 
 		Vec3 a1 = newV3(0, 0, w), a2 = newV3(1, 0, w), a3 = newV3(1, 1, w), a4 = newV3(
@@ -183,11 +199,13 @@ public class RenderUtils {
 			return;
 		}
 
-		if (stackToRender.getItemSpriteNumber() == 0) {
-			mc.renderEngine.bindTexture("/terrain.png");
-		} else {
-			mc.renderEngine.bindTexture("/gui/items.png");
-		}
+		mc.renderEngine.func_110577_a(mc.renderEngine.func_130087_a(stackToRender.getItemSpriteNumber()));
+		
+		//if (stackToRender.getItemSpriteNumber() == 0) {
+		//	mc.renderEngine.bindTexture("/terrain.png");
+		//} else {
+		//	mc.renderEngine.bindTexture("/gui/items.png");
+		//}
 
 		float u1 = 0.0F, v1 = 0.0F, u2 = 0.0F, v2 = 0.0F;
 		u1 = icon.getMinU();

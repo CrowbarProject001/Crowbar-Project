@@ -20,14 +20,15 @@ import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.register.Configurable;
 import cn.lambdacraft.core.register.GeneralRegistry;
-import cn.lambdacraft.mob.entities.EntityAlienSlave;
-import cn.lambdacraft.mob.entities.EntityBarnacle;
-import cn.lambdacraft.mob.entities.EntityHeadcrab;
-import cn.lambdacraft.mob.entities.EntityHoundeye;
+import cn.lambdacraft.mob.entity.EntityAlienSlave;
+import cn.lambdacraft.mob.entity.EntityBarnacle;
+import cn.lambdacraft.mob.entity.EntityHeadcrab;
+import cn.lambdacraft.mob.entity.EntityHoundeye;
 import cn.lambdacraft.xen.register.XENBlocks;
 import cn.lambdacraft.xen.world.WorldProviderXen;
 import cn.lambdacraft.xen.world.biome.MainBiomes;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
@@ -62,29 +63,29 @@ public class ModuleXen {
 	@Instance("LambdaCraft|Xen")
 	public static ModuleXen instance;
 	
-	@PreInit
+	@EventHandler()
 	public void preInit(FMLPreInitializationEvent Init) {
 	}
 	
-	@Init
+	@EventHandler()
 	public void Init(FMLInitializationEvent Init) {
 		loadProps(CBCMod.config);
 		XENBlocks.init(conf);
 		proxy.init();
 		DimensionManager.registerProviderType(dimensionId, WorldProviderXen.class, true);
 		DimensionManager.registerDimension(dimensionId, dimensionId);
-		EntityRegistry.addSpawn(EntityHoundeye.class, 50, 15, 15, EnumCreatureType.monster, MainBiomes.xenHill, MainBiomes.xenPlain);
-		EntityRegistry.addSpawn(EntityHeadcrab.class, 50, 15, 15, EnumCreatureType.monster, MainBiomes.xenHill,  MainBiomes.xenPlain);
+		EntityRegistry.addSpawn(EntityHoundeye.class, 25, 15, 15, EnumCreatureType.monster, MainBiomes.xenHill, MainBiomes.xenPlain);
+		EntityRegistry.addSpawn(EntityHeadcrab.class, 25, 15, 15, EnumCreatureType.monster, MainBiomes.xenHill,  MainBiomes.xenPlain);
 		EntityRegistry.addSpawn(EntityAlienSlave.class, 10, 15, 15, EnumCreatureType.monster, MainBiomes.xenHill);
-		EntityRegistry.addSpawn(EntityBarnacle.class, 1, 15, 15, EnumCreatureType.monster, MainBiomes.xenHill,  MainBiomes.xenPlain);
+		EntityRegistry.addSpawn(EntityBarnacle.class, 6, 15, 15, EnumCreatureType.monster, MainBiomes.xenHill,  MainBiomes.xenPlain);
 	}
 	
-	@PostInit
+	@EventHandler()
 	public void postInit(FMLPostInitializationEvent event) {
 		
 	}
 	
-	@ServerStarting
+	@EventHandler()
 	public void serverStarting(FMLServerStartingEvent event) {
 	}
 	

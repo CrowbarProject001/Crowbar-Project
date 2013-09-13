@@ -21,8 +21,8 @@ import java.io.DataOutputStream;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.IChannelProcess;
-import cn.lambdacraft.deathmatch.blocks.TileMedkitFiller;
-import cn.lambdacraft.deathmatch.blocks.TileMedkitFiller.EnumMedFillerBehavior;
+import cn.lambdacraft.deathmatch.block.TileMedkitFiller;
+import cn.lambdacraft.deathmatch.block.TileMedkitFiller.EnumMedFillerBehavior;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet250CustomPayload;

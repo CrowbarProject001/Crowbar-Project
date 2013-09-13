@@ -21,7 +21,7 @@ import java.io.DataOutputStream;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.IChannelProcess;
-import cn.lambdacraft.deathmatch.blocks.TileArmorCharger;
+import cn.lambdacraft.deathmatch.block.TileArmorCharger;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;

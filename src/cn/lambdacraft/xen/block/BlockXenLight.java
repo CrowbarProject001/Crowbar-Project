@@ -23,8 +23,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.block.*;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.xen.block.tile.TileEntityXenLight;
 import cn.lambdacraft.xen.register.XENBlocks;
+import cn.lambdacraft.xen.tileentity.TileEntityXenLight;
 
 /**
  * @author WeAthFolD

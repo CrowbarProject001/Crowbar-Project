@@ -14,71 +14,57 @@
  */
 package cn.lambdacraft.deathmatch.proxy;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.MinecraftForgeClient;
-
-import org.lwjgl.input.Keyboard;
-
-import cn.lambdacraft.api.weapon.WeaponGeneralBullet;
-import cn.lambdacraft.core.client.render.RenderCrossedProjectile;
-import cn.lambdacraft.core.client.render.RenderEmpty;
-import cn.lambdacraft.core.client.render.RenderIcon;
-import cn.lambdacraft.core.client.render.RenderModel;
-import cn.lambdacraft.core.client.render.RenderModelProjectile;
-import cn.lambdacraft.core.network.NetExplosion;
+import cn.lambdacraft.core.client.renderer.RenderCrossedProjectile;
+import cn.lambdacraft.core.client.renderer.RenderEmpty;
+import cn.lambdacraft.core.client.renderer.RenderIcon;
+import cn.lambdacraft.core.client.renderer.RenderModel;
+import cn.lambdacraft.core.client.renderer.RenderModelProjectile;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.CBCKeyProcess;
-import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.CBCSoundEvents;
-import cn.lambdacraft.deathmatch.blocks.TileArmorCharger;
-import cn.lambdacraft.deathmatch.blocks.TileHealthCharger;
-import cn.lambdacraft.deathmatch.blocks.TileTripmine;
-import cn.lambdacraft.deathmatch.client.keys.KeyClicking;
-import cn.lambdacraft.deathmatch.client.keys.KeyReload;
-import cn.lambdacraft.deathmatch.client.models.ModelBattery;
-import cn.lambdacraft.deathmatch.client.models.ModelGrenade;
-import cn.lambdacraft.deathmatch.client.models.ModelMedkit;
-import cn.lambdacraft.deathmatch.client.models.ModelRocket;
-import cn.lambdacraft.deathmatch.client.render.RenderBulletWeapon;
-import cn.lambdacraft.deathmatch.client.render.RenderCrossbow;
-import cn.lambdacraft.deathmatch.client.render.RenderEgon;
-import cn.lambdacraft.deathmatch.client.render.RenderEgonRay;
-import cn.lambdacraft.deathmatch.client.render.RenderGauss;
-import cn.lambdacraft.deathmatch.client.render.RenderGaussRay;
-import cn.lambdacraft.deathmatch.client.render.RenderGlow;
-import cn.lambdacraft.deathmatch.client.render.RenderHornet;
-import cn.lambdacraft.deathmatch.client.render.RenderItemElCrowbar;
-import cn.lambdacraft.deathmatch.client.render.RenderSatchel;
-import cn.lambdacraft.deathmatch.client.render.RenderTileCharger;
-import cn.lambdacraft.deathmatch.client.render.RenderTileHeCharger;
-import cn.lambdacraft.deathmatch.client.render.RenderTileTripmine;
-import cn.lambdacraft.deathmatch.client.render.RenderTrail;
-import cn.lambdacraft.deathmatch.entities.EntityARGrenade;
-import cn.lambdacraft.deathmatch.entities.EntityBattery;
-import cn.lambdacraft.deathmatch.entities.EntityBullet;
-import cn.lambdacraft.deathmatch.entities.EntityBulletGauss;
-import cn.lambdacraft.deathmatch.entities.EntityBulletGaussSec;
-import cn.lambdacraft.deathmatch.entities.EntityBulletSG;
-import cn.lambdacraft.deathmatch.entities.EntityCrossbowArrow;
-import cn.lambdacraft.deathmatch.entities.EntityHGrenade;
-import cn.lambdacraft.deathmatch.entities.EntityHornet;
-import cn.lambdacraft.deathmatch.entities.EntityMedkit;
-import cn.lambdacraft.deathmatch.entities.EntityRPGDot;
-import cn.lambdacraft.deathmatch.entities.EntityRocket;
-import cn.lambdacraft.deathmatch.entities.EntitySatchel;
-import cn.lambdacraft.deathmatch.entities.fx.EntityCrossbowStill;
-import cn.lambdacraft.deathmatch.entities.fx.EntityEgonRay;
-import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRay;
-import cn.lambdacraft.deathmatch.entities.fx.EntityGaussRayColored;
-import cn.lambdacraft.deathmatch.entities.fx.EntityTrailFX;
-import cn.lambdacraft.deathmatch.entities.fx.GaussParticleFX;
+import cn.lambdacraft.deathmatch.block.TileArmorCharger;
+import cn.lambdacraft.deathmatch.block.TileHealthCharger;
+import cn.lambdacraft.deathmatch.block.TileTripmine;
+import cn.lambdacraft.deathmatch.client.model.ModelBattery;
+import cn.lambdacraft.deathmatch.client.model.ModelGrenade;
+import cn.lambdacraft.deathmatch.client.model.ModelMedkit;
+import cn.lambdacraft.deathmatch.client.model.ModelRocket;
+import cn.lambdacraft.deathmatch.client.renderer.RenderCrossbow;
+import cn.lambdacraft.deathmatch.client.renderer.RenderEgon;
+import cn.lambdacraft.deathmatch.client.renderer.RenderEgonRay;
+import cn.lambdacraft.deathmatch.client.renderer.RenderGauss;
+import cn.lambdacraft.deathmatch.client.renderer.RenderGaussRay;
+import cn.lambdacraft.deathmatch.client.renderer.RenderGlow;
+import cn.lambdacraft.deathmatch.client.renderer.RenderHornet;
+import cn.lambdacraft.deathmatch.client.renderer.RenderItemElCrowbar;
+import cn.lambdacraft.deathmatch.client.renderer.RenderSatchel;
+import cn.lambdacraft.deathmatch.client.renderer.RenderTileCharger;
+import cn.lambdacraft.deathmatch.client.renderer.RenderTileHeCharger;
+import cn.lambdacraft.deathmatch.client.renderer.RenderTileTripmine;
+import cn.lambdacraft.deathmatch.client.renderer.RenderTrail;
+import cn.lambdacraft.deathmatch.entity.EntityARGrenade;
+import cn.lambdacraft.deathmatch.entity.EntityBattery;
+import cn.lambdacraft.deathmatch.entity.EntityBulletGauss;
+import cn.lambdacraft.deathmatch.entity.EntityBulletGaussSec;
+import cn.lambdacraft.deathmatch.entity.EntityCrossbowArrow;
+import cn.lambdacraft.deathmatch.entity.EntityHGrenade;
+import cn.lambdacraft.deathmatch.entity.EntityHornet;
+import cn.lambdacraft.deathmatch.entity.EntityMedkit;
+import cn.lambdacraft.deathmatch.entity.EntityRPGDot;
+import cn.lambdacraft.deathmatch.entity.EntityRocket;
+import cn.lambdacraft.deathmatch.entity.EntitySatchel;
+import cn.lambdacraft.deathmatch.entity.fx.EntityCrossbowStill;
+import cn.lambdacraft.deathmatch.entity.fx.EntityEgonRay;
+import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
+import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRayColored;
+import cn.lambdacraft.deathmatch.entity.fx.EntityTrailFX;
+import cn.lambdacraft.deathmatch.entity.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.weaponmod.api.client.render.RenderBulletWeapon;
+import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -120,26 +106,16 @@ public class ClientProxy extends Proxy {
 	@Override
 	public void preInit() {
 		for (String s : SOUND_WEAPONS)
-			CBCSoundEvents.addSoundPath("cbc/weapons/" + s,
-					"/mods/lambdacraft/sounds/weapons/" + s);
+			CBCSoundEvents.addSoundPath("weapons/" + s);
 		for (String s : SND_ENTITIES)
-			CBCSoundEvents.addSoundPath("cbc/entities/" + s,
-					"/mods/lambdacraft/sounds/entities/" + s);
+			CBCSoundEvents.addSoundPath("entities/" + s);
 		for (String s : SND_HEV)
-			CBCSoundEvents.addSoundPath("cbc/hev/" + s,
-					"/mods/lambdacraft/sounds/hev/" + s);
-		CBCSoundEvents.addSoundWithVariety("cbc/weapons/electro", "/mods/lambdacraft/sounds/weapons/electro", 3);
-		CBCKeyProcess.addKey(new KeyBinding("key.reload", Keyboard.KEY_R),
-				false, new KeyReload());
-		GameSettings gs = Minecraft.getMinecraft().gameSettings;
-		CBCKeyProcess.addKey(gs.keyBindAttack, false, new KeyClicking(true));
-		CBCKeyProcess.addKey(gs.keyBindUseItem, false, new KeyClicking(false));
+			CBCSoundEvents.addSoundPath("hev/" + s);
+		CBCSoundEvents.addSoundWithVariety("cbc/weapons/electro", 3);
 	}
 	
 	@Override
 	public void init() {
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION,
-				new NetExplosion());
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityHGrenade.class, new RenderSnowball(DMItems.weapon_hgrenade));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGaussRay.class, new RenderGaussRay(false));
@@ -151,7 +127,6 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowArrow.class, new RenderCrossedProjectile(0.6,0.12, ClientProps.CROSSBOW_BOW_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityCrossbowStill.class, new RenderCrossedProjectile(0.6,0.12, ClientProps.CROSSBOW_BOW_PATH));
 		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class,new RenderIcon(ClientProps.RED_DOT_PATH).setBlend(0.8F).setEnableDepth(false));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class,new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGauss.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGaussSec.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityTrailFX.class, new RenderTrail());
@@ -159,8 +134,6 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityBattery.class,new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH,0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityMedkit.class,new RenderModel(new ModelMedkit(), ClientProps.MEDKIT_ENT_PATH,1.0F));
 		RenderingRegistry.registerEntityRenderingHandler(GaussParticleFX.class, new RenderGlow());
-		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderCrossedProjectile(0.5, 0.015, 1.0F, 1.0F, 1.0F).setIgnoreLight(true));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBulletSG.class, new RenderCrossedProjectile(0.5, 0.015, 1.0F, 1.0F, 1.0F).setIgnoreLight(true));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_egon.itemID,new RenderEgon());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_gauss.itemID,new RenderGauss());

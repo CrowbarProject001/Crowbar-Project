@@ -15,26 +15,27 @@
 package cn.lambdacraft.mob.proxy;
 
 import cn.lambdacraft.core.register.CBCSoundEvents;
-import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
-import cn.lambdacraft.mob.client.models.ModelHLZombie;
-import cn.lambdacraft.mob.client.models.ModelHeadcrab;
-import cn.lambdacraft.mob.client.models.ModelSnark;
-import cn.lambdacraft.mob.client.render.RenderAlienSlave;
-import cn.lambdacraft.mob.client.render.RenderBarnacle;
-import cn.lambdacraft.mob.client.render.RenderHoundeye;
-import cn.lambdacraft.mob.client.render.RenderSentryRay;
-import cn.lambdacraft.mob.client.render.RenderShockwave;
-import cn.lambdacraft.mob.client.render.RenderTurret;
-import cn.lambdacraft.mob.client.render.RenderVortigauntRay;
-import cn.lambdacraft.mob.entities.EntityAlienSlave;
-import cn.lambdacraft.mob.entities.EntityBarnacle;
-import cn.lambdacraft.mob.entities.EntityHLZombie;
-import cn.lambdacraft.mob.entities.EntityHeadcrab;
-import cn.lambdacraft.mob.entities.EntityHoundeye;
-import cn.lambdacraft.mob.entities.EntitySentry;
-import cn.lambdacraft.mob.entities.EntityShockwave;
-import cn.lambdacraft.mob.entities.EntitySnark;
-import cn.lambdacraft.mob.entities.EntityVortigauntRay;
+import cn.lambdacraft.mob.block.tile.TileSentryRay;
+import cn.lambdacraft.mob.client.model.ModelHLZombie;
+import cn.lambdacraft.mob.client.model.ModelHeadcrab;
+import cn.lambdacraft.mob.client.model.ModelSnark;
+import cn.lambdacraft.mob.client.renderer.RenderAlienSlave;
+import cn.lambdacraft.mob.client.renderer.RenderBarnacle;
+import cn.lambdacraft.mob.client.renderer.RenderHoundeye;
+import cn.lambdacraft.mob.client.renderer.RenderSentryRay;
+import cn.lambdacraft.mob.client.renderer.RenderShockwave;
+import cn.lambdacraft.mob.client.renderer.RenderTurret;
+import cn.lambdacraft.mob.client.renderer.RenderVortigauntRay;
+import cn.lambdacraft.mob.entity.EntityAlienSlave;
+import cn.lambdacraft.mob.entity.EntityBarnacle;
+import cn.lambdacraft.mob.entity.EntityHLZombie;
+import cn.lambdacraft.mob.entity.EntityHeadcrab;
+import cn.lambdacraft.mob.entity.EntityHoundeye;
+import cn.lambdacraft.mob.entity.EntitySentry;
+import cn.lambdacraft.mob.entity.EntityShockwave;
+import cn.lambdacraft.mob.entity.EntitySnark;
+import cn.lambdacraft.mob.entity.EntityVortigauntRay;
+import cn.lambdacraft.mob.util.CBCRenderMob;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -48,11 +49,11 @@ public class ClientProxy extends Proxy {
 	@Override
 	public void init() {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySnark.class,
-				new RenderLiving(new ModelSnark(), 0.2F));
+				new CBCRenderMob(new ModelSnark(), 0.2F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityHeadcrab.class,
-				new RenderLiving(new ModelHeadcrab(), 0.4F));
+				new CBCRenderMob(new ModelHeadcrab(), 0.4F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityBarnacle.class, new RenderBarnacle());
-		RenderingRegistry.registerEntityRenderingHandler(EntityHLZombie.class, new RenderLiving(new ModelHLZombie(), 0.5F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityHLZombie.class, new CBCRenderMob(new ModelHLZombie(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityHoundeye.class, new RenderHoundeye());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, new RenderTurret());
 		RenderingRegistry.registerEntityRenderingHandler(EntityShockwave.class, new RenderShockwave());
@@ -65,24 +66,23 @@ public class ClientProxy extends Proxy {
 	@Override
 	public void preInit() {
 		for (String s : SND_MOBS) {
-			CBCSoundEvents.addSoundPath("cbc/mobs/" + s,
-					"/mods/lambdacraft/sounds/mobs/" + s);
+			CBCSoundEvents.addSoundPath("mobs/" + s);
 		}
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_alert", "/mods/lambdacraft/sounds/houndeye/he_alert", 3);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_attack", "/mods/lambdacraft/sounds/houndeye/he_attack", 3);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_blast", "/mods/lambdacraft/sounds/houndeye/he_blast", 3);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_die", "/mods/lambdacraft/sounds/houndeye/he_die", 3);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_hunt", "/mods/lambdacraft/sounds/houndeye/he_hunt", 4);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_idle", "/mods/lambdacraft/sounds/houndeye/he_idle", 4);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/he_pain", "/mods/lambdacraft/sounds/houndeye/he_pain", 5);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/tu_die", "/mods/lambdacraft/sounds/entities/tu_die", 3);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/tu_active", "/mods/lambdacraft/sounds/entities/tu_active", 2);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/slv_alert", "/mods/lambdacraft/sounds/aslave/slv_alert", 3);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/slv_die", "/mods/lambdacraft/sounds/aslave/slv_die", 2);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/slv_pain", "/mods/lambdacraft/sounds/aslave/slv_pain", 2);
-		CBCSoundEvents.addSoundWithVariety("cbc/mobs/slv_word", "/mods/lambdacraft/sounds/aslave/slv_word", 8);
-		CBCSoundEvents.addSoundPath("cbc/mobs/zapa", "/mods/lambdacraft/sounds/aslave/zapa");
-		CBCSoundEvents.addSoundPath("cbc/mobs/zapd", "/mods/lambdacraft/sounds/aslave/zapd");
+		CBCSoundEvents.addSoundWithVariety("mobs/he_alert", 3);
+		CBCSoundEvents.addSoundWithVariety("mobs/he_attack", 3);
+		CBCSoundEvents.addSoundWithVariety("mobs/he_blast", 3);
+		CBCSoundEvents.addSoundWithVariety("mobs/he_die", 3);
+		CBCSoundEvents.addSoundWithVariety("mobs/he_hunt", 4);
+		CBCSoundEvents.addSoundWithVariety("mobs/he_idle", 4);
+		CBCSoundEvents.addSoundWithVariety("mobs/he_pain", 5);
+		CBCSoundEvents.addSoundWithVariety("mobs/tu_die", 3);
+		CBCSoundEvents.addSoundWithVariety("mobs/tu_active", 2);
+		CBCSoundEvents.addSoundWithVariety("mobs/slv_alert", 3);
+		CBCSoundEvents.addSoundWithVariety("mobs/slv_die", 2);
+		CBCSoundEvents.addSoundWithVariety("mobs/slv_pain", 2);
+		CBCSoundEvents.addSoundWithVariety("mobs/slv_word", 8);
+		CBCSoundEvents.addSoundPath("mobs/zapa");
+		CBCSoundEvents.addSoundPath("mobs/zapd");
 	}
 	
 	public static final String SND_MOBS[] = { "sqk_blast", "sqk_hunta",

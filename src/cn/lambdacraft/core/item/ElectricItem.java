@@ -65,7 +65,8 @@ public abstract class ElectricItem extends CBCGenericItem implements
 	}
 
 	@Override
-	public int getItemMaxDamageFromStack(ItemStack is) {
+	//public int getItemMaxDamageFromStack(ItemStack is) {
+	public int getMaxDamage(ItemStack stack){
 		return maxCharge;
 	}
 
@@ -79,7 +80,9 @@ public abstract class ElectricItem extends CBCGenericItem implements
 	 * @return the damage value
 	 */
 	@Override
-	public int getItemDamageFromStack(ItemStack stack) {
+	//public int getItemDamageFromStack(ItemStack stack) {
+	public int getDamage(ItemStack stack)
+	{
 		return maxCharge - getItemCharge(stack);
 	}
 
@@ -91,7 +94,9 @@ public abstract class ElectricItem extends CBCGenericItem implements
 	 * @return the damage value
 	 */
 	@Override
-	public int getItemDamageFromStackForDisplay(ItemStack stack) {
+	//public int getItemDamageFromStackForDisplay(ItemStack stack) {
+	public int getDisplayDamage(ItemStack stack)
+	{
 		return maxCharge - getItemCharge(stack);
 	}
 
@@ -202,7 +207,8 @@ public abstract class ElectricItem extends CBCGenericItem implements
 	 *            the new damage value
 	 */
 	@Override
-	public void setItemDamageForStack(ItemStack stack, int damage) {
+	//public void setItemDamageForStack(ItemStack stack, int damage) {
+	public void setDamage(ItemStack stack, int damage){
 		setItemCharge(stack, damage);
 	}
 
@@ -215,7 +221,9 @@ public abstract class ElectricItem extends CBCGenericItem implements
 	 * @return if the stack is damaged
 	 */
 	@Override
-	public boolean isItemStackDamaged(ItemStack stack) {
+	//public boolean isItemStackDamaged(ItemStack stack) {
+	public boolean isDamaged(ItemStack stack)
+	{
 		return getItemCharge(stack) < maxCharge;
 	}
 

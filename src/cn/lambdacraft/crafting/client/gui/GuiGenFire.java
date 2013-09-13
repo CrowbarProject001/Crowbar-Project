@@ -21,8 +21,8 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.container.ContainerGenerator;
-import cn.lambdacraft.crafting.blocks.tile.TileGeneratorFire;
+import cn.lambdacraft.crafting.block.container.ContainerGenerator;
+import cn.lambdacraft.crafting.block.tile.TileGeneratorFire;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -79,7 +79,7 @@ public class GuiGenFire extends CBCGuiContainer {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(ClientProps.GUI_GENFIRE_PATH);
+		bindTexture(ClientProps.GUI_GENFIRE_PATH);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

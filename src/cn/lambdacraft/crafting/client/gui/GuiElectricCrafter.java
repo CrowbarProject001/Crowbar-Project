@@ -21,13 +21,14 @@ import cn.lambdacraft.core.client.gui.CBCGuiContainer;
 import cn.lambdacraft.core.client.gui.CBCGuiPart;
 import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.crafting.blocks.container.ContainerElCrafter;
-import cn.lambdacraft.crafting.blocks.tile.TileElCrafter;
+import cn.lambdacraft.crafting.block.container.ContainerElCrafter;
+import cn.lambdacraft.crafting.block.tile.TileElCrafter;
 import cn.lambdacraft.crafting.network.NetCrafterClient;
-import cn.lambdacraft.crafting.recipes.RecipeWeapons;
+import cn.lambdacraft.crafting.recipe.RecipeWeapons;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 /**
@@ -133,7 +134,7 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(ClientProps.GUI_ELCRAFTER_PATH);
+		bindTexture(ClientProps.GUI_ELCRAFTER_PATH);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

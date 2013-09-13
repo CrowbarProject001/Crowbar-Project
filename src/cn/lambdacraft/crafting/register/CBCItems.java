@@ -10,12 +10,12 @@ import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.GeneralRegistry;
-import cn.lambdacraft.crafting.items.*;
-import cn.lambdacraft.crafting.items.ItemMaterial.EnumMaterial;
-import cn.lambdacraft.deathmatch.items.ArmorHEV;
-import cn.lambdacraft.deathmatch.items.ItemAttachment;
-import cn.lambdacraft.deathmatch.items.ItemBattery;
-import cn.lambdacraft.deathmatch.items.ammos.*;
+import cn.lambdacraft.crafting.item.*;
+import cn.lambdacraft.crafting.item.ItemMaterial.EnumMaterial;
+import cn.lambdacraft.deathmatch.item.ArmorHEV;
+import cn.lambdacraft.deathmatch.item.ItemAttachment;
+import cn.lambdacraft.deathmatch.item.ItemBattery;
+import cn.lambdacraft.deathmatch.item.ammos.*;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.mob.register.CBCMobItems;
@@ -116,7 +116,6 @@ public class CBCItems {
 	}
 
 	/**
-	 * TODO:请务必进行一次完成的合成检查，恰当调整平衡性 添加基础合成表
 	 */
 	public static void addItemRecipes() {
 		// Recipes
@@ -141,8 +140,9 @@ public class CBCItems {
 				CBCItems.materials, 1, 7), iSmaterials_1_8 = new ItemStack(
 				CBCItems.materials, 1, 8), iSmaterials_1_9 = new ItemStack(
 				CBCItems.materials, 1, 9), iSredstone = new ItemStack(
-				Item.redstone), iSlightStoneDust = new ItemStack(
-				Item.lightStoneDust), iStnt = new ItemStack(Block.tnt), iSblockLapis = new ItemStack(
+				Item.redstone), 
+				iSlightStoneDust = new ItemStack(Item.glowstone),
+				iStnt = new ItemStack(Block.tnt), iSblockLapis = new ItemStack(
 				Block.blockLapis), iSdiamond = new ItemStack(Item.diamond), iSblazePowder = new ItemStack(
 				Item.blazePowder), iSglass = new ItemStack(Block.glass), iSlambdaChip = new ItemStack(
 				CBCItems.lambdaChip), iScoal = new ItemStack(Item.coal), iSgunpowder = new ItemStack(

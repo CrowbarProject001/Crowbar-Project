@@ -14,11 +14,23 @@
  */
 package cn.lambdacraft.api;
 
+import java.util.logging.Level;
+
+import cn.lambdacraft.core.CBCMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.ModLoader;
 
 /**
- * TODO:谁来帮我填下这个坑吧……
+ * 
+ * WeAthFolD: 谁来帮我填下这个坑吧……
+ * 
+ * mkpoli: 这坑填不起(·ω<)
+ * 
+ * 好吧我填了一点 喵呜~
+ * 
+ * 其实我已经填完了233
+ * 
+ * @author WeAthFold mkpoli
  */
 public class LCItems {
 
@@ -29,7 +41,7 @@ public class LCItems {
 						.get((Object) null);
 				return var2 instanceof ItemStack ? (ItemStack) var2 : null;
 			} catch (Exception var3) {
-				System.out.println("[LambdaCraft]:getMod Item bad! because:" + var3);
+				CBCMod.log.log(Level.ALL, "Exception occurred while getting mod's item, info:" + var3);
 				return null;
 			}
 		}
@@ -39,11 +51,25 @@ public class LCItems {
 	public static ItemStack getDMItem(String var0) {
 		if (ModLoader.isModLoaded("LambdaCraft")) {
 			try {
-				Object var2 = Class.forName("cn.lambdacraft.crafting.register.DMItems").getField(var0)
+				Object var2 = Class.forName("cn.lambdacraft.deathmatch.register.DMItems").getField(var0)
 						.get((Object) null);
 				return var2 instanceof ItemStack ? (ItemStack) var2 : null;
 			} catch (Exception var3) {
-				System.out.println("[LambdaCraft]:getMod Item bad! because:" + var3);
+				CBCMod.log.log(Level.ALL, "Exception occurred while getting mod's item, info:" + var3);
+				return null;
+			}
+		}
+		return null;
+	}
+	
+	public static ItemStack getMobItem(String var0) {
+		if (ModLoader.isModLoaded("LambdaCraft")) {
+			try {
+				Object var2 = Class.forName("cn.lambdacraft.mob.register.CBCMobItems").getField(var0)
+						.get((Object) null);
+				return var2 instanceof ItemStack ? (ItemStack) var2 : null;
+			} catch (Exception var3) {
+				CBCMod.log.log(Level.ALL, "Exception occurred while getting mod's item, info:" + var3);
 				return null;
 			}
 		}

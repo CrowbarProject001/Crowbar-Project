@@ -10,23 +10,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 
 public class RenderXenPortal extends TileEntitySpecialRenderer {
 
-	private static Random rng = new Random();
+	private static Random rand = new Random();
 	
 	@Override
 	public void renderTileEntityAt(TileEntity te, double x, double y,
 			double z, float f) {
 		Tessellator t = Tessellator.instance;
-		EntityLiving living = Minecraft.getMinecraft().thePlayer;
+		EntityLivingBase living = Minecraft.getMinecraft().thePlayer;
 		
 		GL11.glPushMatrix();
 		int textureID = (int) ((te.worldObj.getWorldTime() % 20) / 2);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, RenderUtils.getTexture(ClientProps.PORTAL_PATH[textureID]));
+		RenderUtils.loadTexture(ClientProps.PORTAL_PATH[textureID]);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glTranslated(x, y, z);	
 		

@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.intergration.ic2.tile;
 
-import cn.lambdacraft.deathmatch.blocks.BlockMedkitFiller;
+import cn.lambdacraft.deathmatch.block.BlockMedkitFiller;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 

@@ -24,16 +24,16 @@ import net.minecraft.world.World;
 import cn.lambdacraft.core.energy.EnergyNet;
 import cn.lambdacraft.core.misc.CBCCreativeTab;
 import cn.lambdacraft.core.misc.Config;
-import cn.lambdacraft.core.network.NetExplosion;
 import cn.lambdacraft.core.network.NetKeyUsing;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.register.CBCGuiHandler;
 import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.crafting.recipes.RecipeWeapons;
+import cn.lambdacraft.crafting.recipe.RecipeWeapons;
 import cn.lambdacraft.intergration.ic2.IC2Module;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
@@ -59,7 +59,7 @@ clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHAN
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler {
 
-	public static final String VERSION = "1.5.0.10fix1";
+	public static final String VERSION = "1.6.0dev0";
 
 	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + VERSION,
 			DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION,
@@ -109,7 +109,7 @@ public class CBCMod implements ITickHandler {
 	 * 
 	 * @param event
 	 */
-	@PreInit
+	@EventHandler()
 	public void preInit(FMLPreInitializationEvent event) {
 
 		log.setParent(FMLLog.getLogger());
@@ -130,7 +130,7 @@ public class CBCMod implements ITickHandler {
 	 * 
 	 * @param Init
 	 */
-	@Init
+	@EventHandler()
 	public void init(FMLInitializationEvent Init) {
 		ic2Installed = IC2Module.init();
 		log.fine("LambdaCraft IC2 Intergration Module STATE : " + ic2Installed);
@@ -141,8 +141,6 @@ public class CBCMod implements ITickHandler {
 				"LambdaCraft");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMisc",
 				"LambdaCraft:Misc");
-		CBCNetHandler.addChannel(GeneralProps.NET_ID_EXPLOSION,
-				new NetExplosion());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
 		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
@@ -153,7 +151,7 @@ public class CBCMod implements ITickHandler {
 	 * 
 	 * @param Init
 	 */
-	@PostInit
+	@EventHandler()
 	public void postInit(FMLPostInitializationEvent Init) {
 		config.SaveConfig();
 
@@ -164,7 +162,7 @@ public class CBCMod implements ITickHandler {
 	 * 
 	 * @param event
 	 */
-	@ServerStarting
+	@EventHandler()
 	public void serverStarting(FMLServerStartingEvent event) {
 		CommandHandler commandManager = (CommandHandler) event.getServer()
 				.getCommandManager();

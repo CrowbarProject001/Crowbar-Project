@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.intergration.ic2.item;
 
-import cn.lambdacraft.deathmatch.items.ItemBattery;
+import cn.lambdacraft.deathmatch.item.ItemBattery;
 import ic2.api.item.ICustomElectricItem;
 
 /**
@@ -22,13 +22,8 @@ import ic2.api.item.ICustomElectricItem;
  *
  */
 public class ItemBatteryIC2 extends ItemBattery implements ICustomElectricItem{
-
-	/**
-	 * @param par1
-	 */
 	public ItemBatteryIC2(int par1) {
 		super(par1);
-		// TODO Auto-generated constructor stub
 	}
 
 }

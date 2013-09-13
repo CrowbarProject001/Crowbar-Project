@@ -51,7 +51,6 @@ public class CBCWorldGen implements IWorldGenerator {
 	}
 
 	private void generateSurface(World world, Random random, int i, int j) {
-		// TODO Auto-generated method stub
 		for (int k = 0; k < 10; k++) {
 			int uraniumOreXCoord = i + random.nextInt(16);
 			int uraniumOreYCoord = random.nextInt(35);

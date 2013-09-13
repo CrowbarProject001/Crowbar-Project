@@ -29,7 +29,7 @@ import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
 import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.core.register.IChannelProcess;
-import cn.lambdacraft.mob.blocks.tile.TileSentryRay;
+import cn.lambdacraft.mob.block.tile.TileSentryRay;
 
 /**
  * @author WeAthFolD
@@ -61,7 +61,7 @@ public class NetSentrySync implements IChannelProcess {
 		packet.channel = GeneralProps.NET_CHANNEL_CLIENT;
 		packet.data = bos.toByteArray();
 		packet.length = bos.size();
-		int dimension = tile.worldObj.getWorldInfo().getDimension();
+		int dimension = tile.worldObj.getWorldInfo().getVanillaDimension();
 		PacketDispatcher.sendPacketToAllInDimension(packet, dimension);
 	}
 

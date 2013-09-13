@@ -14,10 +14,15 @@
  */
 package cn.lambdacraft.crafting.proxy;
 
-import cn.lambdacraft.crafting.blocks.tile.TileWire;
+import net.minecraftforge.client.MinecraftForgeClient;
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.crafting.block.tile.TileWire;
 import cn.lambdacraft.crafting.client.RenderSpray;
 import cn.lambdacraft.crafting.client.RenderWire;
-import cn.lambdacraft.crafting.entities.EntitySpray;
+import cn.lambdacraft.crafting.entity.EntitySpray;
+import cn.lambdacraft.crafting.register.CBCItems;
+import cn.lambdacraft.deathmatch.client.model.ModelBattery;
+import cn.weaponmod.api.client.render.RenderModelItem;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -33,5 +38,7 @@ public class ClientProxy extends Proxy {
 				new RenderWire());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpray.class,
 				new RenderSpray());
+		MinecraftForgeClient.registerItemRenderer(CBCItems.battery.itemID, new RenderModelItem(new ModelBattery(), ClientProps.BATTERY_PATH).setInventorySpin(false).setEquipForward(0.4F).setScale(.6F).setInvScale(1.5F).setOffset(-0.25F, 1.5F, -0.25F).setInvOffset(5.0F, 7.0F).disableInvRotation());
 	}
+	
 }

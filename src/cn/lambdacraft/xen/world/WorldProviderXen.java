@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import cn.lambdacraft.xen.ModuleXen;
 import cn.lambdacraft.xen.client.renderer.RenderXenSky;
-import cn.lambdacraft.xen.world.biome.WorldChunkManagerXen;
+import cn.lambdacraft.xen.world.chunk.WorldChunkManagerXen;
 import cn.lambdacraft.xen.world.gen.ChunkProviderXen;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;

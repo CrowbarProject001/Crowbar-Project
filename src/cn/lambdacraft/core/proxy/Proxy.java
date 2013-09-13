@@ -64,7 +64,7 @@ public class Proxy {
 	public void init() {
 		for (String lang : languages) {
 			LanguageRegistry.instance().loadLocalization(
-					"/mods/lambdacraft/lang/" + lang + ".properties", lang,
+					"/assets/lambdacraft/lang/" + lang + ".properties", lang,
 					false);
 		}
 	}
@@ -101,8 +101,6 @@ public class Proxy {
 	}
 
 	public void preInit() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

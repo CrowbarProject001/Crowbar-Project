@@ -18,6 +18,7 @@ import java.util.HashSet;
 
 import cn.lambdacraft.core.CBCMod;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -29,19 +30,20 @@ import net.minecraftforge.event.ForgeSubscribe;
  */
 public class CBCSoundEvents {
 
-	private static HashSet<String[]> pathSounds = new HashSet();
+	private static HashSet<String> pathSounds = new HashSet<String>();
 
 	@ForgeSubscribe
 	public void onSound(SoundLoadEvent event) {
 		try {
 			SoundPoolEntry snd;
-			for (String[] path : pathSounds) {
-				snd = event.manager.soundPoolSounds.addSound(path[0],
-						CBCMod.class.getResource(path[1]));
-				//System.out.println("AddSound : " + snd.soundName + " URL: " +
-				 //snd.soundUrl);
+			for (String path : pathSounds) {
+				//Edited by rikka0_0 for 1.6.2 updates
+				event.manager.addSound(path);
+				//System.out.println(path[0]+" - "+path[1]);
+				//System.out.println("AddSound : " + snd.func_110458_a() + " URL: " +
+				 //snd.func_110457_b());
 			}
-		} catch (Exception e) {
+ 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		CBCMod.log.fine("LambdaCraft successfully loaded " + pathSounds.size() + " sound files");
@@ -51,19 +53,22 @@ public class CBCSoundEvents {
 	 * 请在preInit中使用这个函数 || 两个参数的末尾都自动被加上了 .wav 后缀。
 	 * 
 	 * @param name
-	 *            : 声音名字. i.e. "cbc/weapons/rocket"
-	 * @param absPath
-	 *            : 声音的绝对路径。 i.e."/cn/lambdacraft/gfx/weapons/glauncherb"
+	 *            : 声音名字. i.e. "weapons/rocket"
 	 */
-	public static void addSoundPath(String name, String absPath) {
-		String[] s = { name + ".wav", absPath + ".wav" };
-		pathSounds.add(s);
+	public static void addSoundPath(String name) {
+		pathSounds.add(name + ".wav");
 	}
 	
-	public static void addSoundWithVariety(String name, String absPath, int cnt) {
+	/**
+	 * @see addSoundPath
+	 * @param name
+	 * @param absPath
+	 * @param cnt
+	 */
+	public static void addSoundWithVariety(String name, int cnt) {
 		for(int i = 0; i < cnt; i ++) {
 			char ch = (char) ('a' + i);
-			addSoundPath(name + ch, absPath + ch);
+			addSoundPath(name + ch);
 		}
 	}
 

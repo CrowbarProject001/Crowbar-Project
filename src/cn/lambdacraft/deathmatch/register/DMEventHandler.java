@@ -14,11 +14,10 @@
  */
 package cn.lambdacraft.deathmatch.register;
 
-import cn.lambdacraft.api.weapon.WeaponGeneral;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
-import cn.lambdacraft.deathmatch.items.wpns.Weapon_Satchel;
+import cn.lambdacraft.deathmatch.item.weapon.Weapon_Satchel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -63,11 +62,7 @@ public class DMEventHandler {
 		  ItemStack curItem = event.entityPlayer.getCurrentEquippedItem();
 		  if(curItem == null)
 			  return;
-		  if(curItem.getItem() instanceof WeaponGeneral) {
-                  if(((WeaponGeneral)curItem.getItem()).abortAnim)
-                	  event.setCanceled(true);
-		  }
-		  else if(curItem.getItem() instanceof Weapon_Satchel) {
+		  if(curItem.getItem() instanceof Weapon_Satchel) {
 			  event.setCanceled(true);
 		  }
 	  }

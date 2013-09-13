@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.intergration.ic2.item;
 
-import cn.lambdacraft.deathmatch.items.ArmorHEV;
+import cn.lambdacraft.deathmatch.item.ArmorHEV;
 import ic2.api.item.ICustomElectricItem;
 
 /**
