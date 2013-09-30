@@ -29,7 +29,7 @@ import net.minecraft.item.ItemStack;
 /**
  * LambdaCraft通用物品类。
  * 
- * @author WeAthFolD
+ * @author WeAthFolD, mkpoli
  * 
  */
 public class CBCGenericItem extends Item {

@@ -17,6 +17,7 @@ package cn.lambdacraft.deathmatch.client;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -43,12 +44,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author WeAthFolD
  *
  */
+@SideOnly((Side.CLIENT))
 public class HEVRenderingUtils {
 
-	@SideOnly(Side.CLIENT)
 	private static HashMap<IHudTipProvider, IHudTip[]> tipPool = new HashMap();
 	
-	@SideOnly(Side.CLIENT)
 	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution, float partialTickTime) {
 		int k = resolution.getScaledWidth();
         int l = resolution.getScaledHeight();
@@ -102,7 +102,6 @@ public class HEVRenderingUtils {
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
 	}
 	
-	@SideOnly(Side.CLIENT)
 	public static void drawCrosshair(ItemStack item, int k, int l) {
 		String xhairPath;
 		TextureManager engine = Minecraft.getMinecraft().renderEngine;
@@ -133,13 +132,12 @@ public class HEVRenderingUtils {
         t.draw();
         
         //TODO: maybe buggy here
-    	engine.func_110577_a(engine.func_130087_a(2)); 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
         GL11.glPopMatrix();
+        engine.func_110577_a(Gui.field_110324_m);
 	}
 	
-	@SideOnly(Side.CLIENT) 
 	private static void drawStatusHud(EntityPlayer player, TextureManager engine, int k, int l, float tickTime) {
 		int x = 3, y = l / 2 - 100;
 		EnumStatus stat = CBCPlayer.playerStat;
@@ -148,7 +146,6 @@ public class HEVRenderingUtils {
 		drawTexturedModalRect(x, y, stat.u, stat.v, 32, 32);
 	}
 	
-	@SideOnly(Side.CLIENT)
 	private static void drawArmorTip(EntityPlayer player,TextureManager renderEngine, int k, int l) {
 		for(int i = 0; i < 4 ; i ++) {
 			ItemStack is = player.inventory.armorInventory[i];
@@ -172,7 +169,6 @@ public class HEVRenderingUtils {
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
 	private static void drawWeaponTip(EntityPlayer player,TextureManager renderEngine, int k, int l) {
 		ItemStack item = player.getCurrentEquippedItem();
 		if(item == null)
@@ -187,7 +183,6 @@ public class HEVRenderingUtils {
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
 	private static void drawTips(IHudTip[] tips, TextureManager engine, ItemStack itemStack, EntityPlayer player, int k, int l) {
 		int startHeight = l - 18 - 18 * tips.length;
 		if(ClientProps.HUD_drawInLeftCorner)
@@ -213,7 +208,6 @@ public class HEVRenderingUtils {
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
 	private static int getStringLength(String s) {
 		int count = 0;
 		for(char c : s.toCharArray()) {
@@ -224,13 +218,11 @@ public class HEVRenderingUtils {
 		return count;
 	}
 	
-	@SideOnly(Side.CLIENT)
 	private static void drawNumberAt(int number, int x, int y) {
 		String s = String.valueOf(number);
 		drawTipStringAt(s, x, y);
 	}
-	
-	@SideOnly(Side.CLIENT)
+
 	private static void drawTipStringAt(String s, int x, int y) {
 		int lastLength = 0;
 		for(int i = 0; i < s.length(); i++) {
@@ -246,7 +238,6 @@ public class HEVRenderingUtils {
 		}
 	}
 	
-	@SideOnly(Side.CLIENT)
 	private static void drawSingleNumberAt(int number, int x, int y) {
 		drawTexturedModalRect(x, y, 16 * number, 0, 16, 16);
 	}

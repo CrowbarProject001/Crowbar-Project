@@ -8,11 +8,11 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public final class MobHelper {
@@ -37,19 +37,10 @@ public final class MobHelper {
 		if (entity != null && entity instanceof EntityLivingBase) {
 			EntityLiving entityliving = (EntityLiving) entity;
 			float f = 0.4F;
-			double motionX = -MathHelper.sin(thrower.rotationYaw / 180.0F
-					* (float) Math.PI)
-					* MathHelper.cos(thrower.rotationPitch / 180.0F
-							* (float) Math.PI) * f;
-			motionX = motionX + 0.5f;
-			double motionZ = MathHelper.cos(thrower.rotationYaw / 180.0F
-					* (float) Math.PI)
-					* MathHelper.cos(thrower.rotationPitch / 180.0F
-							* (float) Math.PI) * f;
-			motionZ = motionZ + 0.5f;
+			Vec3 lookVec = thrower.getLookVec();
 			if(front)
-			entityliving.setLocationAndAngles(thrower.posX + motionX * 2,
-					thrower.posY, thrower.posZ + motionZ * 2,
+			entityliving.setLocationAndAngles(thrower.posX + lookVec.xCoord * 2,
+					thrower.posY, thrower.posZ + lookVec.zCoord * 2,
 					thrower.rotationYawHead, 0.0F);
 			else entityliving.setLocationAndAngles(thrower.posX,
 					thrower.posY, thrower.posZ,

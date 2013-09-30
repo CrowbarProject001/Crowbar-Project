@@ -20,7 +20,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import cn.lambdacraft.api.hud.IHudTip;
@@ -31,7 +30,6 @@ import cn.lambdacraft.deathmatch.util.InformationRPG;
 import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.information.InformationBullet;
-import cn.weaponmod.api.information.InformationSet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -91,12 +89,12 @@ public class Weapon_RPG_Raw extends WeaponGeneralBullet_LC {
 
 	@Override
 	public String getSoundShoot(boolean side) {
-		return "cbc.weapons.rocketfire";
+		return "lambdacraft:weapons.rocketfire";
 	}
 
 	@Override
 	public String getSoundJam(boolean side) {
-		return "cbc.weapons.gunjam_a";
+		return "lambdacraft:weapons.gunjam_a";
 	}
 
 	@Override
@@ -110,12 +108,7 @@ public class Weapon_RPG_Raw extends WeaponGeneralBullet_LC {
 	}
 
 	@Override
-	public double getPushForce(boolean side) {
-		return 0;
-	}
-
-	@Override
-	public int getDamage(boolean side) {
+	public int getWeaponDamage(boolean side) {
 		return 0;
 	}
 
@@ -126,36 +119,20 @@ public class Weapon_RPG_Raw extends WeaponGeneralBullet_LC {
 
 	@Override
 	public InformationRPG getInformation(ItemStack itemStack, World world) {
-		InformationSet set = WMInformation.getInformation(itemStack);
-		return (InformationRPG) (set == null ? null : set.getProperInf(world));
+		return (InformationRPG)WMInformation.getInformation(itemStack, world);
 	}
 
 	@Override
-	public InformationRPG loadInformation(ItemStack par1ItemStack,
-			EntityPlayer par2EntityPlayer) {
+	public InformationRPG loadInformation(ItemStack stack,
+			EntityPlayer player) {
 
-		InformationRPG inf = getInformation(par1ItemStack,
-				par2EntityPlayer.worldObj);
-
+		InformationRPG inf = getInformation(stack, player.worldObj);
 		if (inf != null)
 			return inf;
-
-		double uniqueID = itemRand.nextDouble() * 65535D;
-		inf = (InformationRPG) WMInformation.addToList(uniqueID,
-				createInformation(par1ItemStack, par2EntityPlayer))
-				.getProperInf(par2EntityPlayer.worldObj);
-
-		if (par1ItemStack.stackTagCompound == null)
-			par1ItemStack.stackTagCompound = new NBTTagCompound();
-		par1ItemStack.getTagCompound().setDouble("uniqueID", uniqueID);
+		inf = new InformationRPG(stack);
+		WMInformation.register(stack, inf, player.worldObj);
 		return inf;
 
-	}
-
-	private InformationSet createInformation(ItemStack is, EntityPlayer player) {
-		InformationRPG inf = new InformationRPG(is);
-		InformationRPG inf2 = new InformationRPG(is);
-		return new InformationSet(inf, inf2);
 	}
 	
 	@Override

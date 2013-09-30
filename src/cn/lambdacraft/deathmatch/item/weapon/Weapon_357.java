@@ -47,17 +47,17 @@ public class Weapon_357 extends WeaponGeneralBullet_LC {
 
 	@Override
 	public String getSoundShoot(boolean side) {
-		return itemRand.nextInt(2) == 0 ? "cbc.weapons.pyt_shota" : "cbc.weapons.pyt_shotb";
+		return itemRand.nextInt(2) == 0 ? "lambdacraft:weapons.pyt_shota" : "lambdacraft:weapons.pyt_shotb";
 	}
 
 	@Override
 	public String getSoundJam(boolean side) {
-		return side ? "cbc.weapon.gunjam_a" : "";
+		return side ? "lambdacraft:weapons.gunjam_a" : "";
 	}
 
 	@Override
 	public String getSoundReload() {
-		return "cbc.weapons.pyt_reloada";
+		return "lambdacraft:weapons.pyt_reloada";
 	}
 
 	@Override
@@ -66,12 +66,7 @@ public class Weapon_357 extends WeaponGeneralBullet_LC {
 	}
 
 	@Override
-	public double getPushForce(boolean side) {
-		return 1;
-	}
-
-	@Override
-	public int getDamage(boolean side) {
+	public int getWeaponDamage(boolean side) {
 		return 7;
 	}
 

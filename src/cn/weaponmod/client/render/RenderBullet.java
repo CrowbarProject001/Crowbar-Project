@@ -24,7 +24,6 @@ import org.lwjgl.opengl.GL11;
 
 import cn.weaponmod.entities.EntityBullet;
 import cn.weaponmod.util.MotionXYZ;
-import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * @author WeAthFolD

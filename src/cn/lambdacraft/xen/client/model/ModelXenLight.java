@@ -20,6 +20,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import cn.lambdacraft.api.client.ITileEntityModel;
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
@@ -90,10 +91,18 @@ public class ModelXenLight extends ModelBase implements ITileEntityModel {
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
 		RenderUtils.loadTexture(ClientProps.XENLIGHT_PATH);
 		Shape1.render(scale);
+		//说好的伸缩~
+		GL11.glRotated(12.5 * MathHelper.sin(tile.ticksExisted * 0.07F), 0.1, 1, -0.1);
 		if(tile.isLighting) {
-			Shape2.render(scale);
-			Shape3.render(scale);
+			if(tile.tickSinceChange < 15)
+				GL11.glTranslatef(0.0F, 0.0166F * (15 - tile.tickSinceChange), 0.0F);
+		} else { 
+			if(tile.tickSinceChange < 5) 
+				GL11.glTranslatef(0.0F, 0.05F * tile.tickSinceChange, 0.0F);
+			else GL11.glTranslatef(0.0F, 0.25F, 0.0F);
 		}
+		Shape2.render(scale);
+		Shape3.render(scale);
 		GL11.glPopMatrix();
 	}
 }

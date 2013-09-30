@@ -42,7 +42,7 @@ public class Weapon_9mmAR_Raw extends WeaponGeneralBullet_LC {
 
 		setReloadTime(60);
 		setJamTime(10);
-		setLiftProps(5, .7F);
+		setLiftProps(3, .5F);
 	}
 	
 	@Override
@@ -63,31 +63,26 @@ public class Weapon_9mmAR_Raw extends WeaponGeneralBullet_LC {
 
 	@Override
 	public String getSoundShoot(boolean left) {
-		return "cbc.weapons.hksa";
+		return "lambdacraft:weapons.hksa";
 	}
 
 	@Override
 	public String getSoundJam(boolean left) {
-		return "cbc.weapons.gunjam_a";
+		return "lambdacraft:weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload() {
-		return "cbc.weapons.nmmarr";
+		return "lambdacraft:weapons.nmmarr";
 	}
 
 	@Override
 	public int getShootTime(boolean left) {
-		return left ? 4 : 0;
+		return left ? 3 : 0;
 	}
 
 	@Override
-	public double getPushForce(boolean left) {
-		return 0;
-	}
-
-	@Override
-	public int getDamage(boolean left) {
+	public int getWeaponDamage(boolean left) {
 		return 4;
 	}
 

@@ -20,6 +20,7 @@ public abstract class CBCEntityMob extends EntityMob {
 	/**
 	 * Change attributes
 	 */
+	@Override
 	protected void func_110147_ax() {
 		super.func_110147_ax();
 		this.func_110148_a(SharedMonsterAttributes.field_111267_a)

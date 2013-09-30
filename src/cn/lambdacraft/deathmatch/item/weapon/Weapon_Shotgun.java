@@ -3,29 +3,26 @@ package cn.lambdacraft.deathmatch.item.weapon;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.crafting.register.CBCItems;
+import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.entities.EntityBullet;
+import cn.weaponmod.proxy.WMClientProxy;
 
 public class Weapon_Shotgun extends WeaponGeneralBullet_LC {
-
-	public static int BUCKSHOT_COUNT[] = { 8, 16 };
 
 	public Weapon_Shotgun(int par1) {
 
 		super(par1, CBCItems.ammo_shotgun.itemID);
 
-		setUnlocalizedName("weapon_shotgun");
-		iconName = "weapon_shotgun";
-		setCreativeTab(CBCMod.cct);
-		setMaxStackSize(1);
+		setIAndU("weapon_shotgun");
 		setMaxDamage(9);
-		setNoRepair(); // 不可修补
-
+		setCreativeTab(CBCMod.cct);
 		setReloadTime(10);
 		setJamTime(20);
 		setLiftProps(18F, 1.5F);
@@ -49,23 +46,21 @@ public class Weapon_Shotgun extends WeaponGeneralBullet_LC {
 	@Override
 	public void onBulletWpnReload(ItemStack par1ItemStack, World par2World,
 			EntityPlayer player, InformationBullet information) {
-
-		int dmg = par1ItemStack.getItemDamage();
+		int dmg = getWpnStackDamage(par1ItemStack);
 		if (dmg <= 0) {
 			information.setLastTick(false);
 			information.isReloading = false;
 			return;
 		}
-		if (par2World.isRemote)
-			return;
 
-		if (WeaponHelper.consumeAmmo(player, this, 1) == 0) {
-			par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
-			par2World.playSoundAtEntity(player, getSoundReload(), 0.5F,
-					1.0F);
-		} else
+		this.setWpnStackDamage(par1ItemStack,dmg  - 1 + WeaponHelper.consumeAmmo(player, this, 1));
+		if(getWpnStackDamage(par1ItemStack) <= 0 || WeaponHelper.getAmmoCapacity(ammoID, player.inventory) == 0) {
 			information.isReloading = false;
-
+			player.playSound(this.getSoundReloadFinish(), 0.5F, 1.0F);
+		} else {
+			player.playSound(this.getSoundReload(), 0.5F, 1.0F);
+			information.isReloading = true;
+		}
 		information.setLastTick(false);
 		return;
 	}
@@ -73,49 +68,39 @@ public class Weapon_Shotgun extends WeaponGeneralBullet_LC {
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3Entity, InformationBullet information, boolean left) {
-
-		int maxDmg = par1ItemStack.getMaxDamage() - 1;
-		if (par1ItemStack.getItemDamage() >= maxDmg) {
-			information.setLastTick(left);
-			return;
-		}
 		int count = left ? 8 : 16;
 		for (int i = 0; i < count; i++) {
-			par2World.spawnEntityInWorld(new EntityBullet(par2World,
-					par3Entity, par1ItemStack, left));
+			par2World.spawnEntityInWorld(new EntityBullet(par2World, par3Entity, par1ItemStack, left));
 		}
 		if (!par2World.isRemote) {
-			par2World.playSoundAtEntity(par3Entity, getSoundShoot(left), 0.5F,
-					1.0F);
-		}
+			par2World.playSoundAtEntity(par3Entity, getSoundShoot(left), 0.5F, 1.0F);
+		} else 
+			WMClientProxy.cth.setUplift(left ? 1.8F : 3.0F);
 
 		if (par3Entity instanceof EntityPlayer) {
-			doUplift(information, par3Entity);
 			if (!par3Entity.capabilities.isCreativeMode) {
-				par1ItemStack.damageItem(left ? 1 : 2,
-						par3Entity);
+				int dmg = this.getWpnStackDamage(par1ItemStack) + (left ? 1 : 2);
+				this.setWpnStackDamage(par1ItemStack, dmg);
 			}
 		}
 
-		information.setLastTick(left);
-		par3Entity.setItemInUse(par1ItemStack,
-				this.getMaxItemUseDuration(par1ItemStack));
-
+		information.setLastTick_Shoot(left);
+		information.setMuzzleTick(left);
 	}
 
 	@Override
 	public String getSoundShoot(boolean left) {
-		return left ? "cbc.weapons.sbarrela" : "cbc.weapons.sbarrelb";
+		return left ? "lambdacraft:weapons.sbarrela" : "lambdacraft:weapons.sbarrelb";
 	}
 
 	@Override
 	public String getSoundJam(boolean left) {
-		return "cbc.weapons.scocka";
+		return "lambdacraft:weapons.scocka";
 	}
 
 	@Override
 	public String getSoundReload() {
-		return GenericUtils.getRandomSound("cbc.weapons.reload", 3);
+		return GenericUtils.getRandomSound("lambdacraft:weapons.reload", 3);
 	}
 
 	@Override
@@ -124,18 +109,28 @@ public class Weapon_Shotgun extends WeaponGeneralBullet_LC {
 	}
 
 	@Override
-	public double getPushForce(boolean left) {
-		return left ? 1.2 : 2;
-	}
-
-	@Override
-	public int getDamage(boolean left) {
+	public int getWeaponDamage(boolean left) {
 		return 3;
 	}
 
 	@Override
 	public int getOffset(boolean left) {
 		return left ? 8 : 17;
+	}
+	
+	@Override
+	public float getRotationForReload(ItemStack itemStack) {
+		InformationBullet inf = (InformationBullet)WMInformation.getInformation(itemStack, true);
+		int dt = inf.getDeltaTick(false), dt2 = inf.getDeltaTick(true);
+		float changeTime = reloadTime / 5F;
+		float rotation = 1.0F;
+		if(dt2 < 10 || dt2 > this.reloadTime * 7)
+		if(dt < changeTime) {
+			rotation = MathHelper.sin(dt / changeTime * (float)Math.PI * 0.5F);
+		} else if(dt > reloadTime - changeTime) {
+			rotation = MathHelper.sin((reloadTime - dt) / changeTime * (float)Math.PI * 0.5F);
+		}
+		return rotation;
 	}
 
 }

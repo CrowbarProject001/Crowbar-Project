@@ -18,7 +18,6 @@ import java.util.HashSet;
 
 import cn.lambdacraft.core.CBCMod;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -26,7 +25,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 /**
  * 统一的声音注册类，请使用addSoundPath加入声音（详见方法说明）
  * 
- * @author WeAthFolD
+ * @author WeAthFolD, Rikka
  */
 public class CBCSoundEvents {
 
@@ -37,11 +36,8 @@ public class CBCSoundEvents {
 		try {
 			SoundPoolEntry snd;
 			for (String path : pathSounds) {
-				//Edited by rikka0_0 for 1.6.2 updates
-				event.manager.addSound(path);
-				//System.out.println(path[0]+" - "+path[1]);
-				//System.out.println("AddSound : " + snd.func_110458_a() + " URL: " +
-				 //snd.func_110457_b());
+				//Edited by rikka0_0&WeAthFolD for 1.6.2 updates
+				event.manager.soundPoolSounds.addSound(path);
 			}
  		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,7 +52,7 @@ public class CBCSoundEvents {
 	 *            : 声音名字. i.e. "weapons/rocket"
 	 */
 	public static void addSoundPath(String name) {
-		pathSounds.add(name + ".wav");
+		pathSounds.add("lambdacraft:" + name + ".wav");
 	}
 	
 	/**

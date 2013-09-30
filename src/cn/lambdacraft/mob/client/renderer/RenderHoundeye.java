@@ -21,7 +21,6 @@ import org.lwjgl.opengl.GL11;
 import cn.lambdacraft.mob.client.model.ModelHoundeye;
 import cn.lambdacraft.mob.entity.EntityHoundeye;
 import cn.lambdacraft.mob.util.CBCRenderMob;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.EntityLiving;
 
 /**

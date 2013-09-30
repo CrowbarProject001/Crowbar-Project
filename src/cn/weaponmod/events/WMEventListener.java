@@ -24,7 +24,6 @@ import cn.weaponmod.api.weapon.WeaponGeneral;
  */
 public class WMEventListener {
 
-
 	  @ForgeSubscribe
 	  public void onInteract(EntityInteractEvent event)
 	  {

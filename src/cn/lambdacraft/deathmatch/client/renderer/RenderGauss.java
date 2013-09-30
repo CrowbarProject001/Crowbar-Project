@@ -14,16 +14,9 @@
  */
 package cn.lambdacraft.deathmatch.client.renderer;
 
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
-import org.lwjgl.opengl.GL11;
-
-import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.model.ModelGauss;
 import cn.lambdacraft.deathmatch.register.DMItems;
@@ -49,6 +42,7 @@ public class RenderGauss extends RenderModelItem {
 		this.setEquipForward(.78F);
 	}
 	
+	@Override
 	protected float getModelAttribute(ItemStack item, EntityLivingBase entity) {
 		return DMItems.weapon_gauss.getRotationForStack(item, entity);
 	}

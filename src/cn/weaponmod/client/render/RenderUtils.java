@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -17,8 +16,6 @@ import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.collect.Maps;
-
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class RenderUtils {
 

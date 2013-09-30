@@ -18,7 +18,6 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -26,8 +25,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
-
-import codechicken.lib.math.MathHelper;
 
 import cn.weaponmod.api.client.IItemModel;
 import cn.weaponmod.client.render.RenderUtils;
@@ -81,6 +78,11 @@ public class RenderModelItem implements IItemRenderer {
 	public boolean renderInventory = true;
 	
 	/**
+	 * 是否渲染物品实体。
+	 */
+	public boolean renderEntityItem = true;
+	
+	/**
 	 * 是否让物品栏中的模型一直旋转。
 	 */
 	public boolean inventorySpin = true;
@@ -100,6 +102,11 @@ public class RenderModelItem implements IItemRenderer {
 	
 	public RenderModelItem setRenderInventory(boolean b) {
 		renderInventory = b;
+		return this;
+	}
+	
+	public RenderModelItem setRenderEntityItem(boolean b) {
+		renderEntityItem = b;
 		return this;
 	}
 	
@@ -184,8 +191,9 @@ public class RenderModelItem implements IItemRenderer {
 		switch (type) {
 		case EQUIPPED:
 		case EQUIPPED_FIRST_PERSON:
-		case ENTITY:
 			return true;
+		case ENTITY:
+			return renderEntityItem;
 		case INVENTORY:
 			return renderInventory;
 
@@ -214,7 +222,7 @@ public class RenderModelItem implements IItemRenderer {
 		switch (type) {
 		case EQUIPPED:
 		case EQUIPPED_FIRST_PERSON:
-			renderEquipped(item, (RenderBlocks) data[0], (EntityLivingBase) data[1]);
+			renderEquipped(item, (RenderBlocks) data[0], (EntityLivingBase) data[1], type);
 			break;
 		case ENTITY:
 			renderEntityItem((RenderBlocks)data[0], (EntityItem) data[1]);
@@ -239,7 +247,7 @@ public class RenderModelItem implements IItemRenderer {
 		GL11.glScalef(16F * invScale, 16F * invScale, 16F * invScale);
 		float rotation = 145F;
 		if(inventorySpin) {
-			rotation = (float) mc.getSystemTime() / 100F;
+			rotation = Minecraft.getSystemTime() / 100F;
 		}
 		GL11.glRotatef(rotation, 0, 1, 0);
 		if(helpRotation)
@@ -267,7 +275,7 @@ public class RenderModelItem implements IItemRenderer {
 	}
 	
 	public void renderEquipped(ItemStack item, RenderBlocks render,
-			EntityLivingBase entity) {
+			EntityLivingBase entity, ItemRenderType type) {
 
 		if (item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();

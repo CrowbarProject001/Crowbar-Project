@@ -40,17 +40,17 @@ public class Weapon_9mmhandgun_Raw extends WeaponGeneralBullet_LC {
 
 	@Override
 	public String getSoundShoot(boolean left) {
-		return "cbc.weapons.plgun_c";
+		return "lambdacraft:weapons.plgun_c";
 	}
 
 	@Override
 	public String getSoundJam(boolean left) {
-		return "cbc.weapons.gunjam_a";
+		return "lambdacraft:weapons.gunjam_a";
 	}
 
 	@Override
 	public String getSoundReload() {
-		return "cbc.weapons.nmmclipa";
+		return "lambdacraft:weapons.nmmclipa";
 	}
 
 	@Override
@@ -59,12 +59,7 @@ public class Weapon_9mmhandgun_Raw extends WeaponGeneralBullet_LC {
 	}
 
 	@Override
-	public double getPushForce(boolean left) {
-		return 0.5;
-	}
-
-	@Override
-	public int getDamage(boolean left) {
+	public int getWeaponDamage(boolean left) {
 		return 3;
 	}
 

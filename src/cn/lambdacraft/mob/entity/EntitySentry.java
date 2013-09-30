@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import cn.lambdacraft.api.entity.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.util.GenericUtils;
+import cn.lambdacraft.mob.register.CBCMobItems;
 import cn.weaponmod.api.WeaponHelper;
 
 /**
@@ -115,7 +116,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 			if(currentTarget == null){
 				if(!worldObj.isRemote && ticksExisted % 10 == 0) {
 					if(ticksExisted % 30 == 0)
-						this.playSound("cbc.mobs.tu_ping", 0.5F, 1.0F);
+						this.playSound("lambdacraft:mobs.tu_ping", 0.5F, 1.0F);
 					searchForTarget();
 				}
 			} else attemptAttack();
@@ -128,7 +129,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
     {
     	super.onDeathUpdate();
     	if(this.deathTime == 2) {
-    		this.playSound(GenericUtils.getRandomSound("cbc.mobs.tu_die", 3), 0.5F, 1.0F);
+    		this.playSound(GenericUtils.getRandomSound("lambdacraft:mobs.tu_die", 3), 0.5F, 1.0F);
     	}
     }
 	
@@ -136,8 +137,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 		if(worldObj.isRemote) {
 			int entityid = dataWatcher.getWatchableObjectInt(15);
 			Entity e = worldObj.getEntityByID(entityid);
-			if(e != null && e.isEntityAlive())
-				currentTarget = e;
+			currentTarget = e;
 			
 			this.isActivated = dataWatcher.getWatchableObjectByte(16) > 0;
 		} else {
@@ -165,7 +165,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 		}
 		if(targetEntity != null) {
 			if(this.rand.nextFloat() < 0.2)
-				this.playSound("cbc.mobs.tu_spinup", 0.5F, 1.0F);
+				this.playSound("lambdacraft:mobs.tu_spinup", 0.5F, 1.0F);
 			currentTarget = targetEntity;
 		}
 	}
@@ -182,6 +182,11 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
     	boolean b = super.attackEntityFrom(par1DamageSource, par2);
     	if(b) {
     		isActivated = true;
+    		Entity e = par1DamageSource.getEntity();
+    		if(e != null && e.getEntityName() == this.placerName) {
+    			dropItemWithOffset(CBCMobItems.turret.itemID, 1, 0.5F);
+    			setDead();
+    		} else
     		if(par1DamageSource.getEntity() != null && selector.isEntityApplicable(par1DamageSource.getEntity()))
     			currentTarget = par1DamageSource.getEntity();
     	}
@@ -236,7 +241,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 				rotationSet = true;
 			} else { 
 				rotationSet = false;
-				this.playSound("cbc.mobs.tu_fire", 0.5F, 1.0F);
+				this.playSound("lambdacraft:mobs.tu_fire", 0.5F, 1.0F);
 				WeaponHelper.Shoot(3, this, worldObj);
 			}
 			if(currentTarget.getDistanceSqToEntity(this) > 400) {
@@ -274,7 +279,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 	
 	public void activate() {
 		if(!isActivated) {
-			this.playSound("cbc.weapons.mine_activate", 0.5F, 1.0F);
+			this.playSound("lambdacraft:weapons.mine_activate", 0.5F, 1.0F);
 			isActivated = true;
 		}
 	}
@@ -298,7 +303,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 				StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
 				b.append((isActivated ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)).append(StatCollector.translateToLocal("sentry.status" + (isActivated ? 1 : 0) + ".name"));
 				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(b.toString()));
-				String s = isActivated ? "cbc.mobs.tu_deploy" : "cbc.mobs.tu_spindown";
+				String s = isActivated ? "lambdacraft:mobs.tu_deploy" : "lambdacraft:mobs.tu_spindown";
 				this.playSound(s, 0.5F, 1.0F);
 			}
 		}
@@ -338,25 +343,21 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 
 	@Override
 	protected double getFollowRange() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	protected double getMoveSpeed() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	protected double getKnockBackResistance() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	protected double getAttackDamage() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -174,8 +174,8 @@ public class BlockHealthCharger extends CBCBlockContainer implements IUseable {
 		if (te == null)
 			return;
 		TileHealthCharger te2 = (TileHealthCharger) te;
-		String path = te2.currentEnergy > 0 ? "cbc.entities.medshot"
-				: "cbc.entities.medshotno";
+		String path = te2.currentEnergy > 0 ? "lambdacraft:entities.medshot"
+				: "lambdacraft:entities.medshotno";
 		world.playSoundAtEntity(player, path, 0.5F, 1.0F);
 		UsingUtils.setBlockInUse(player, bx, by, bz);
 		if (te2.currentEnergy > 0)

@@ -37,6 +37,12 @@ public class GeneralProps {
 
 	@Configurable(key = "updateRate", defValue = "4", comment = "Update rate of tile entities & entities tracking. Make this value higher if you server runs slow.")
 	public static int updateRate;
+	
+	@Configurable(key = "KeyCode_UseBlocks", defValue = "33", comment = "Use Blocks Key.")
+	public static int keyCodeUse ;
+	
+	@Configurable(key = "KeyCode_Reload", defValue = "19", comment = "Reload Key.")
+	public static int keyCodeReload;
 
 	public static final int ENT_ID_GAUSS1 = 0, ENT_ID_EGON_RAY = 1,
 			ENT_ID_TRAIL = 2, ENT_ID_ARGRENADE = 3, ENT_ID_ARROW = 4,

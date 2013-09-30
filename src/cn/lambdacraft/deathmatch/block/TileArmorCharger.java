@@ -138,18 +138,18 @@ public class TileArmorCharger extends TileElectricStorage implements IInventory 
 				currentEnergy -= received;
 				if (received <= 0) {
 					worldObj.playSoundAtEntity(charger,
-							"cbc.entities.suitchargeno", 0.5F, 1.0F);
+							"lambdacraft:entities.suitchargeno", 0.5F, 1.0F);
 					this.stopUsing(charger);
 				}
 				if (worldObj.getWorldTime() % 40 == 0) {
 					worldObj.playSoundAtEntity(charger,
-							"cbc.entities.suitcharge", 0.3F, 1.0F);
+							"lambdacraft:entities.suitcharge", 0.3F, 1.0F);
 				}
 				if (currentEnergy <= 0) {
 					this.chargers.clear();
 					this.isUsing = false;
 					worldObj.playSoundAtEntity(charger,
-							"cbc.entities.suitchargeno", 0.5F, 1.0F);
+							"lambdacraft:entities.suitchargeno", 0.5F, 1.0F);
 				}
 			}
 

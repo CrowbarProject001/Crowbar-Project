@@ -27,11 +27,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCrosshair {
 
 	
-	public static String SND_CHARGE_PATH = "cbc.weapons.gauss_charge",
-			SND_CHARGEA_PATH[] = { "cbc.weapons.gauss_windupa",
-					"cbc.weapons.gauss_windupb", "cbc.weapons.gauss_windupc",
-					"cbc.weapons.gauss_windupd" },
-			SND_SHOOT_PATH = "cbc.weapons.gaussb";
+	public static String SND_CHARGE_PATH = "lambdacraft:weapons.gauss_charge",
+			SND_CHARGEA_PATH[] = { "lambdacraft:weapons.gauss_windupa",
+					"lambdacraft:weapons.gauss_windupb", "lambdacraft:weapons.gauss_windupc",
+					"lambdacraft:weapons.gauss_windupd" },
+			SND_SHOOT_PATH = "lambdacraft:weapons.gaussb";
 
 	public Weapon_Gauss(int par1) {
 		super(par1, CBCItems.ammo_uranium.itemID);
@@ -49,7 +49,7 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 	@Override
 	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
 		super.onItemClick(world, player, stack, left);
-		InformationEnergy inf = loadInformation(stack, player);
+		InformationEnergy inf = (InformationEnergy) loadInformation(stack, player);
 		if (left) {
 			inf.rotationVelocity = 15.0F;
 		} else {
@@ -177,7 +177,7 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 			EntityPlayer player, InformationEnergy information, boolean side) {
 		if(!par2World.isRemote)
 		GaussBulletManager.Shoot2(EnumGaussRayType.NORMAL, par2World, player,
-				par1ItemStack, null, null, getDamage(side));
+				par1ItemStack, null, null, getWeaponDamage(side));
 		par2World.playSoundAtEntity(player, getSoundShoot(side), 0.5F, 1.0F);
 		WeaponHelper.consumeAmmo(player, this, 2);
 		information.setLastTick(side);
@@ -211,17 +211,12 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 
 	@Override
 	public String getSoundJam(boolean left) {
-		return "cbc.weapons.gunjam_a";
+		return "lambdacraft:weapons.gunjam_a";
 	}
 
 	@Override
-	public int getDamage(boolean left) {
+	public int getWeaponDamage(boolean left) {
 		return 8;
-	}
-
-	@Override
-	public double getPushForce(boolean left) {
-		return 1;
 	}
 
 	@Override

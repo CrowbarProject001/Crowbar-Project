@@ -11,7 +11,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;

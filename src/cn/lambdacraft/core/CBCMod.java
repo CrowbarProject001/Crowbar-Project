@@ -34,11 +34,7 @@ import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -59,7 +55,7 @@ clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHAN
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler {
 
-	public static final String VERSION = "1.6.0dev0";
+	public static final String VERSION = "1.6.0beta";
 
 	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + VERSION,
 			DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION,
@@ -122,7 +118,7 @@ public class CBCMod implements ITickHandler {
 		proxy.preInit();
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
-
+		GeneralProps.loadProps(config);
 	}
 
 	/**
@@ -142,7 +138,6 @@ public class CBCMod implements ITickHandler {
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMisc",
 				"LambdaCraft:Misc");
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_USE, new NetKeyUsing());
-		GeneralProps.loadProps(CBCMod.config);
 		proxy.init();
 	}
 

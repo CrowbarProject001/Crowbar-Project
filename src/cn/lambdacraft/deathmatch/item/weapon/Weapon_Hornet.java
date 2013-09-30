@@ -41,42 +41,30 @@ public class Weapon_Hornet extends WeaponGeneralBullet_LC {
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
 			Entity par3Entity, int par4, boolean par5) {
-		InformationBullet inf = onWpnUpdate(par1ItemStack, par2World,
+		InformationBullet inf = (InformationBullet) onWpnUpdate(par1ItemStack, par2World,
 				par3Entity, par4, par5);
 		if (inf == null)
 			return;
 		int dt = inf.ticksExisted;
 		EntityPlayer player = (EntityPlayer) par3Entity;
 		if (dt % RECOVER_TIME == 0 && !(this.canShoot(player, par1ItemStack, true) && (ItemHelper.getUsingTickLeft(player, true) > 0) || ItemHelper.getUsingTickLeft(player, false) > 0)) {
-			if (par1ItemStack.getItemDamage() > 0)
-				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
+			if (this.getWpnStackDamage(par1ItemStack) > 0) {
+				this.setWpnStackDamage(par1ItemStack, this.getWpnStackDamage(par1ItemStack) - 1);
+			}
 		}
 	}
-
+	
 	@Override
-	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
-			EntityPlayer player, InformationBullet information, boolean left) {
-
-		if (!(player.capabilities.isCreativeMode))
-			par1ItemStack.damageItem(1, player);
-		if (!par2World.isRemote)
-			par2World.spawnEntityInWorld(new EntityHornet(par2World, player, left));
-		par2World.playSoundAtEntity(player, this.getSoundShoot(left), 0.5F, 1.0F);
-		information.setLastTick(left);
-		return;
+	protected Entity getBulletEntity(ItemStack is, World world, EntityPlayer player, boolean left) {
+		return world.isRemote ? null : new EntityHornet(world, player, left);
 	}
 
 	@Override
 	public void onBulletWpnReload(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3Entity, InformationBullet information) {}
-
+	
 	@Override
-	public double getPushForce(boolean left) {
-		return 0;
-	}
-
-	@Override
-	public int getDamage(boolean left) {
+	public int getWeaponDamage(boolean left) {
 		return 4;
 	}
 
@@ -88,9 +76,9 @@ public class Weapon_Hornet extends WeaponGeneralBullet_LC {
 	@Override
 	public String getSoundShoot(boolean left) {
 		int random = (int) (itemRand.nextFloat() * 3);
-		return random == 0 ? "cbc.weapons.ag_firea"
-				: (random == 1 ? "cbc.weapons.ag_fireb"
-						: "cbc.weapons.ag_firec");
+		return random == 0 ? "lambdacraft:weapons.ag_firea"
+				: (random == 1 ? "lambdacraft:weapons.ag_fireb"
+						: "lambdacraft:weapons.ag_firec");
 	}
 
 	@Override

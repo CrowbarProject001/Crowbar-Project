@@ -14,10 +14,13 @@
 package cn.weaponmod.api;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import cn.weaponmod.api.information.InformationSet;
+import net.minecraft.world.World;
+import cn.weaponmod.api.information.InformationWeapon;
 
 /**
  * @author WeAthFolD
@@ -25,24 +28,46 @@ import cn.weaponmod.api.information.InformationSet;
  */
 public class WMInformation {
 
-	private static HashMap<Double, InformationSet> infPool = new HashMap();
-
-	public static InformationSet addToList(double uniqueID, InformationSet inf) {
-		infPool.put(uniqueID, inf);
-		return inf;
+	private static HashMap<Integer, InformationWeapon> infPool_client = new HashMap<Integer, InformationWeapon>();
+	private static HashMap<Integer, InformationWeapon> infPool_server = new HashMap<Integer, InformationWeapon>();
+	private static final Random RNG = new Random();
+	
+	public static void register(ItemStack item, InformationWeapon information, World world) {
+		register(item, information, world.isRemote);
 	}
-
-	public static InformationSet getInformation(double uniqueID) {
-		return infPool.get(uniqueID);
+	
+	public static void register(ItemStack item, InformationWeapon information, boolean isClient) {
+		Map<Integer, InformationWeapon> map = isClient ? infPool_client : infPool_server;
+		Integer id = getUniqueID(item);
+		if(id == 0) id = RNG.nextInt();
+		map.put(id, information);
+		setUniqueID(item, id);
 	}
-
-	public static InformationSet getInformation(ItemStack itemStack) {
-		if (itemStack.getTagCompound() == null) {
-			itemStack.stackTagCompound = new NBTTagCompound();
-			return null;
-		}
-		double uniqueID = itemStack.getTagCompound().getDouble("uniqueID");
-		return infPool.get(uniqueID);
+	
+	public static InformationWeapon getInformation(ItemStack item, World world) {
+		return getInformation(item, world.isRemote);
+	}
+	
+	public static InformationWeapon getInformation(ItemStack item, boolean isClient) {
+		Map<Integer, InformationWeapon> map = isClient ? infPool_client : infPool_server;
+		Integer id = getUniqueID(item);
+		if(id != 0) 
+			return map.get(id);
+		return null;
+	}
+	
+	private static int getUniqueID(ItemStack is) {
+		NBTTagCompound nbt = is.stackTagCompound;
+		if(nbt == null)
+			return 0;
+		else return nbt.getInteger("uniqueID");
+	}
+	
+	private static void setUniqueID(ItemStack is, int id) {
+		if(is.stackTagCompound == null) 
+			is.stackTagCompound = new NBTTagCompound();
+		NBTTagCompound nbt = is.stackTagCompound;
+		nbt.setInteger("uniqueID", id);
 	}
 
 }

@@ -121,17 +121,17 @@ public class EntityBarnacle extends CBCEntityMob {
 					if(list != null && list.size() == 1) {
 						Entity e = list.get(0);
 						if(GenericUtils.getEntitySize(e) <= 6.0) {
-							this.playSound("cbc.mobs.bcl_alert", 0.5F, 1.0F);
+							this.playSound("lambdacraft:mobs.bcl_alert", 0.5F, 1.0F);
 							startPullingEntity(e);
 						}
 					}
 					if(ticksExisted % 80 == 0 && this.rand.nextFloat() < 0.4) {
-						this.playSound("cbc.mobs.bcl_tongue", 0.5F, 1.0F);
+						this.playSound("lambdacraft:mobs.bcl_tongue", 0.5F, 1.0F);
 					}
 				}
 			} else
 			if(ticksExisted % 45 == 0) {
-				this.playSound(GenericUtils.getRandomSound("cbc.mobs.bcl_chew", 3), 0.5F, 1.0F);
+				this.playSound(GenericUtils.getRandomSound("lambdacraft:mobs.bcl_chew", 3), 0.5F, 1.0F);
 			}
 		} else {
 			//Move pulling entity
@@ -148,7 +148,7 @@ public class EntityBarnacle extends CBCEntityMob {
 						stopPullingEntity();
 					} else {
 						pullingEntity.attackEntityFrom(DamageSource.causeMobDamage(this), 15);
-						this.playSound("cbc.mobs.bcl_bite", 0.5F, 1.0F);
+						this.playSound("lambdacraft:mobs.bcl_bite", 0.5F, 1.0F);
 						if(++timesEaten > 5) {
 							pullingEntity.fallDistance = 0.0F;
 							stopPullingEntity();

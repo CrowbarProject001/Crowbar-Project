@@ -19,9 +19,7 @@ import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.client.model.ModelTurret;
 import cn.lambdacraft.mob.entity.EntitySentry;
 import cn.lambdacraft.mob.util.CBCRenderMob;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 
 /**

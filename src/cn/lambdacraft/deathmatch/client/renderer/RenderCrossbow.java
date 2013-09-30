@@ -6,10 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -33,6 +32,7 @@ public class RenderCrossbow implements IItemRenderer {
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 		switch (type) {
 		case EQUIPPED:
+		case EQUIPPED_FIRST_PERSON:
 		case ENTITY:
 			return true;
 		default:
@@ -60,8 +60,9 @@ public class RenderCrossbow implements IItemRenderer {
 		Tessellator tesselator = Tessellator.instance;
 		switch (type) {
 		case EQUIPPED:
+		case EQUIPPED_FIRST_PERSON:
 			RenderBlocks render = (RenderBlocks) data[0];
-			EntityLiving ent = (EntityLiving) data[1];
+			EntityLivingBase ent = (EntityLivingBase) data[1];
 			doRender(render, ent, item);
 			break;
 		case ENTITY:
@@ -86,12 +87,12 @@ public class RenderCrossbow implements IItemRenderer {
 		t = Tessellator.instance;
 
 		Weapon_Crossbow wpn = (Weapon_Crossbow) item.getItem();
-		InformationBullet inf = wpn.getInformation(item, ent.worldObj);
+		InformationBullet inf = (InformationBullet) wpn.getInformation(item, ent.worldObj);
 		float w = 0.05F;
 		float w2 = 0.1F;
 		GL11.glPushMatrix();
 		RenderUtils.renderItemIn2d(ent, item, w,
-				DMItems.weapon_crossbow.sideIcons[5 - item.getItemDamage()]); // Vertical
+				DMItems.weapon_crossbow.sideIcons[5 - DMItems.weapon_crossbow.getWpnStackDamage(item)]); // Vertical
 																				// rendering
 
 		// Horizonal rendering
@@ -101,8 +102,7 @@ public class RenderCrossbow implements IItemRenderer {
 		b5 = newV3(w2, 0.0, -0.5), b6 = newV3(w2, 0.0, 0.5), b7 = newV3(
 				1.0 + w2, 1.0, 0.5), b8 = newV3(1.0 + w2, 1.0, -0.5);
 
-		mc.renderEngine.func_110577_a(new ResourceLocation(ClientProps.CROSSBOW_FRONT_PATH[wpn
-				.isBowPulling(item) ? 0 : 1]));
+		RenderUtils.loadTexture(ClientProps.CROSSBOW_FRONT_PATH[Weapon_Crossbow .isBowPulling(item) ? 0 : 1]);
 		t.startDrawingQuads();
 		t.setNormal(1.0F, 0.0F, 0.0F);
 		addVertex(b1, 1.0F, 1.0F);

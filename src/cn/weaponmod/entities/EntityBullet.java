@@ -15,14 +15,15 @@ package cn.weaponmod.entities;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import cn.weaponmod.api.weapon.WeaponGeneral;
+import cn.weaponmod.util.GenericUtils;
 import cn.weaponmod.util.MotionXYZ;
 
 /**
@@ -32,7 +33,6 @@ import cn.weaponmod.util.MotionXYZ;
 public class EntityBullet extends EntityThrowable {
 
 	protected MotionXYZ motion;
-	protected double pushForce;
 	protected int damage;
 	public boolean renderFromLeft = false;
 	
@@ -49,8 +49,7 @@ public class EntityBullet extends EntityThrowable {
 		this.motionY = motion.motionY;
 		this.motionZ = motion.motionZ;
 		boolean mode = left;
-		this.damage = item.getDamage(mode);
-		this.pushForce = item.getPushForce(mode);
+		this.damage = item.getWeaponDamage(mode);
 	}
 	
 	public EntityBullet setRenderFromLeft() {
@@ -60,11 +59,11 @@ public class EntityBullet extends EntityThrowable {
 	
 	public EntityBullet(World par1World, EntityLivingBase par2EntityLiving, int dmg) {
 		super(par1World, par2EntityLiving);
-		//this.rotationYaw = GenericUtils.wrapYawAngle(-par2EntityLiving.rotationYawHead);
-        //this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.4F;
-        //this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.4F;
-        //this.motionY = -MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * 0.4F;
-       // this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
+		this.rotationYaw = GenericUtils.wrapYawAngle(-par2EntityLiving.rotationYawHead);
+        this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.4F;
+        this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.4F;
+        this.motionY = -MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * 0.4F;
+        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
 		this.motion = new MotionXYZ(this);
 		this.damage = dmg;
 	}
@@ -122,11 +121,7 @@ public class EntityBullet extends EntityThrowable {
 	public void doEntityCollision(MovingObjectPosition result) {
 		if (result.entityHit == null)
 			return;
-		double pf = pushForce * 0.1;
-		double dx = motion.motionX * pf, dy = motion.motionY * pf, dz = motion.motionZ
-				* pf;
 		result.entityHit.attackEntityFrom(DamageSource.causeMobDamage(getThrower()), damage);
-		result.entityHit.addVelocity(dx, dy, dz);
 		result.entityHit.hurtResistantTime = -1;
 
 	}

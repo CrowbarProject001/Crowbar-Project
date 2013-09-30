@@ -15,10 +15,8 @@ package cn.weaponmod.api.client.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
 
 import cn.weaponmod.api.client.IItemModel;
@@ -41,12 +39,13 @@ public class RenderDualWieldWeapon extends RenderModelBulletWeapon {
 		super(mdl, type, texture, muzzleflashPath);
 	}
 	
+	@Override
 	public void renderEquipped(ItemStack item, RenderBlocks render,
-			EntityLivingBase entity) {
+			EntityLivingBase entity,  ItemRenderType type) {
 
 		GL11.glPushMatrix();
 		
-		super.doRenderEquipped(item, render, entity, false);
+		super.doRenderEquipped(item, render, entity, false, type);
 		
 		boolean firstPerson = (entity == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) && Minecraft.getMinecraft().currentScreen == null;
 		
@@ -54,7 +53,7 @@ public class RenderDualWieldWeapon extends RenderModelBulletWeapon {
 		GL11.glScalef(1.0F, 1.0F, -1.0F);
 		
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		super.doRenderEquipped(item, render, entity, true);
+		super.doRenderEquipped(item, render, entity, true, type);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		
 		GL11.glPopMatrix();

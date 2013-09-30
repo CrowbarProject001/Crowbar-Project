@@ -40,18 +40,17 @@ public class DMEventHandler {
 	public void onRenderGameOverlay(RenderGameOverlayEvent event) {
 
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		boolean hasHEV = CBCPlayer.armorStat[2] && CBCPlayer.armorStat[3];
 		if (event.type == ElementType.HEALTH || event.type == ElementType.ARMOR || event.type == ElementType.CROSSHAIRS) {
-			if (CBCPlayer.armorStat[2] && CBCPlayer.armorStat[3]) {
+			if (hasHEV) 
 				event.setCanceled(true);
-				if(event.type == ElementType.HEALTH)
-					HEVRenderingUtils.drawPlayerHud(player, event.resolution, player.ticksExisted);
-				if(event.type == ElementType.CROSSHAIRS)
-					HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
-			}
-			return;
 		}
-		
-		if(ClientProps.alwaysCustomCrossHair && event.type == ElementType.CROSSHAIRS) {
+		if(hasHEV && event.type == ElementType.EXPERIENCE) {
+				HEVRenderingUtils.drawPlayerHud(player, event.resolution, player.ticksExisted);
+				HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
+		}
+		else if(ClientProps.alwaysCustomCrossHair && event.type == ElementType.CROSSHAIRS) {
+			event.setCanceled(true);
 			HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
 		}
 	}

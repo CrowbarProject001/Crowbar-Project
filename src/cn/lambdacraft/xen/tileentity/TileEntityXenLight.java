@@ -30,6 +30,8 @@ public class TileEntityXenLight extends TileEntity {
 	private static final int TICKRATE = 4;
 	public boolean isLighting = false;
 	private int tickSinceLastUpdate;
+	public int tickSinceChange = 0;
+	public int ticksExisted = 0;
 	
     /**
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
@@ -38,6 +40,8 @@ public class TileEntityXenLight extends TileEntity {
     @Override
 	public void updateEntity() {
     	int blockId = worldObj.getBlockId(xCoord, yCoord, zCoord);
+    	++tickSinceChange;
+    	++ticksExisted;
     	if(blockId == XENBlocks.light_on.blockID) {
     		isLighting = true;
     		if(++tickSinceLastUpdate >= TICKRATE) {
@@ -46,16 +50,18 @@ public class TileEntityXenLight extends TileEntity {
     				getBoundingBox(xCoord - 2, yCoord - 2, zCoord - 2, xCoord + 3, yCoord + 3, zCoord + 3), GenericUtils.selectorPlayer);
     			if(list != null && list.size() > 0) {
     				worldObj.setBlock(xCoord, yCoord, zCoord, XENBlocks.light_off.blockID, 0, 3);
+    				tickSinceChange = 0;
     			}
     		}
     	} else {
     		isLighting = false;
-    		if(++tickSinceLastUpdate >= 120) {
+    		if(++tickSinceLastUpdate >= 80) {
     			tickSinceLastUpdate = 0;
     			List list = worldObj.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.
         				getBoundingBox(xCoord - 2, yCoord - 2, zCoord - 2, xCoord + 3, yCoord + 3, zCoord + 3), GenericUtils.selectorPlayer);
         		if(list == null || list.size() == 0) {
         			worldObj.setBlock(xCoord, yCoord, zCoord, XENBlocks.light_on.blockID, 0, 3);
+        			tickSinceChange = 0;
         		}
     		}
     	}

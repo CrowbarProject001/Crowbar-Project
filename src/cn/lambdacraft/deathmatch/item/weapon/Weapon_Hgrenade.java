@@ -66,7 +66,7 @@ public class Weapon_Hgrenade extends CBCGenericItem {
 			EntityPlayer par3EntityPlayer) {
 
 		par2World.playSoundAtEntity(par3EntityPlayer,
-				"cbc.weapons.hgrenadepin", 0.5F,
+				"lambdacraft:weapons.hgrenadepin", 0.5F,
 				0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
 		par3EntityPlayer.setItemInUse(par1ItemStack,

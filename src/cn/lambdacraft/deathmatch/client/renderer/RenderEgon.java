@@ -5,7 +5,7 @@ import cn.lambdacraft.deathmatch.register.DMItems;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.IItemRenderer;
@@ -22,6 +22,7 @@ public class RenderEgon implements IItemRenderer {
 		
 		switch (type) {
 		case EQUIPPED:
+		case EQUIPPED_FIRST_PERSON:
 			return true;
 
 		default:
@@ -48,7 +49,8 @@ public class RenderEgon implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		switch (type) {
 		case EQUIPPED:
-			renderEquipped(item, (RenderBlocks) data[0], (EntityLiving) data[1]);
+		case EQUIPPED_FIRST_PERSON:
+			renderEquipped(item, (RenderBlocks) data[0], (EntityLivingBase) data[1]);
 			break;
 
 		default:
@@ -59,7 +61,7 @@ public class RenderEgon implements IItemRenderer {
 	}
 
 	public void renderEquipped(ItemStack item, RenderBlocks render,
-			EntityLiving entity) {
+			EntityLivingBase entity) {
 
 		if (item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();

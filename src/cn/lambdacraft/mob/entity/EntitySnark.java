@@ -26,7 +26,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -105,7 +104,7 @@ public class EntitySnark extends CBCEntityMob implements IEntityLink<EntityPlaye
 		double i = this.getAttackDamage();
 		boolean flag = par1Entity.attackEntityFrom(
 				DamageSource.causeMobDamage(this), (float) i);
-		this.playSound("cbc.mobs.sqk_deploy", 0.5F, 1.0F);
+		this.playSound("lambdacraft:mobs.sqk_deploy", 0.5F, 1.0F);
 
 		return flag;
 	}
@@ -158,8 +157,8 @@ public class EntitySnark extends CBCEntityMob implements IEntityLink<EntityPlaye
 	@Override
 	protected String getLivingSound() {
 		int random = Math.round(rand.nextFloat() * 3);
-		return random < 1 ? "cbc.mobs.sqk_hunta"
-				: (random < 2 ? "cbc.mobs.sqk_huntb" : "cbc.mobs.sqk_huntc");
+		return random < 1 ? "lambdacraft:mobs.sqk_hunta"
+				: (random < 2 ? "lambdacraft:mobs.sqk_huntb" : "lambdacraft:mobs.sqk_huntc");
 	}
 
 	/**
@@ -175,7 +174,7 @@ public class EntitySnark extends CBCEntityMob implements IEntityLink<EntityPlaye
 	 */
 	@Override
 	protected String getDeathSound() {
-		return "cbc.mobs.sqk_die";
+		return "lambdacraft:mobs.sqk_die";
 	}
 
 	/**
@@ -202,7 +201,7 @@ public class EntitySnark extends CBCEntityMob implements IEntityLink<EntityPlaye
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
 		if (this.ticksExisted == 20)
-			this.playSound("cbc.mobs.sqk_blast", 0.5F, 1.0F);
+			this.playSound("lambdacraft:mobs.sqk_blast", 0.5F, 1.0F);
 	}
 
 	/**
@@ -235,7 +234,7 @@ public class EntitySnark extends CBCEntityMob implements IEntityLink<EntityPlaye
 	@Override
 	protected void func_110147_ax() {
 		super.func_110147_ax();
-		this.playSound("cbc.mobs.sqk_deploy", 0.5F, 1.0F);
+		this.playSound("lambdacraft:mobs.sqk_deploy", 0.5F, 1.0F);
 	}
 
 	@Override

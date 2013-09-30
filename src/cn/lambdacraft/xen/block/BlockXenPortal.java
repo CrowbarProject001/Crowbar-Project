@@ -31,6 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.core.util.LCParticles;
 import cn.lambdacraft.xen.ModuleXen;
 import cn.lambdacraft.xen.register.XENBlocks;
 import cn.lambdacraft.xen.tileentity.TileEntityXenPortal;
@@ -273,7 +274,7 @@ public class BlockXenPortal extends BlockContainer {
                 d5 = par5Random.nextFloat() * 2.0F * i1;
             }
 
-            par1World.spawnParticle("portal", d0, d1, d2, d3, d4, d5);
+            LCParticles.spawnParticle(par1World, "xenportal", d0, d1, d2, d3, d4, d5);
         }
     }
 

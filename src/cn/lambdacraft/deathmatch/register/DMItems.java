@@ -49,7 +49,8 @@ public class DMItems {
 
 		weapon_crowbar = new Weapon_Crowbar(GeneralRegistry.getItemId(
 				"weapon_crowbar", 1));
-
+		
+		weapon_shotgun = new Weapon_Shotgun(GeneralRegistry.getItemId("weapon_shotgun", 1));
 		weapon_hgrenade = new Weapon_Hgrenade(GeneralRegistry.getItemId(
 				"weapon_hgrenade", 1));
 		weapon_9mmhandgun = new Weapon_9mmhandgun(GeneralRegistry.getItemId(
@@ -57,8 +58,6 @@ public class DMItems {
 		weapon_9mmAR = new Weapon_9mmAR(GeneralRegistry.getItemId(
 				"weapon_nmmAR", 1));
 		weapon_357 = new Weapon_357(GeneralRegistry.getItemId("weapon_357", 1));
-		weapon_shotgun = new Weapon_Shotgun(GeneralRegistry.getItemId(
-				"weapon_shotgun", 1));
 		weapon_RPG = new Weapon_RPG(GeneralRegistry.getItemId("weapon_RPG", 1));
 		weapon_crossbow = new Weapon_Crossbow(GeneralRegistry.getItemId(
 				"weapon_crossbow", 1));

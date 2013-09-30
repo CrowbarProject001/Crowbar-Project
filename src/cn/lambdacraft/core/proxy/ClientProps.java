@@ -22,6 +22,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.Property;
 
 import com.google.common.base.Charsets;
@@ -179,6 +180,10 @@ public class ClientProps {
 		}
 	}
 	
+	private static String mf = "lambdacraft:textures/muz/muz";
+	public static final String MUZZLEFLASH[] = {
+		mf + "1.png", mf + "2.png", mf + "3.png"
+	};
 	/**
 	 * 获取随机的一个火光贴图。
 	 * 
@@ -194,11 +199,12 @@ public class ClientProps {
 		GeneralRegistry.loadConfigurableClass(CBCMod.config, ClientProps.class);
 		
 		crosshairProps = new Properties();
-		URL src = ClientProps.class.getResource(xhair_path + "crosshairs.properties");
+		final String absPath = "/assets/lambdacraft/";
+		URL src = Minecraft.class.getResource(absPath + "crosshairs/crosshairs.properties");
 		InputStream langStream = null;
 		
 		sprayProps = new Properties();
-		URL src2 = ClientProps.class.getResource(spry_path + "sprays.properties");
+		URL src2 = Minecraft.class.getResource(absPath + "spray/sprays.properties");
 		InputStream langStream2 = null;
 
 		try {

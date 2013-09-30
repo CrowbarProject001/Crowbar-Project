@@ -22,7 +22,7 @@ public class KeyReload implements IKeyProcess {
 		if (currentItem != null && currentItem.getItem() instanceof WeaponGeneralBullet) {
 			WeaponGeneralBullet wpn = (WeaponGeneralBullet) currentItem
 					.getItem();
-			InformationBullet inf = wpn.loadInformation(currentItem, player);
+			InformationBullet inf = (InformationBullet) wpn.loadInformation(currentItem, player);
 			onReload(currentItem, inf, player);
 		}
 
@@ -34,7 +34,6 @@ public class KeyReload implements IKeyProcess {
 
 	private void onReload(ItemStack is, InformationBullet inf,
 			EntityPlayer player) {
-		System.out.println("onReload");
 		WeaponGeneralBullet wpn = (WeaponGeneralBullet) is.getItem();
 		int stackInSlot = -1;
 		for (int i = 0; i < player.inventory.mainInventory.length; i++) {

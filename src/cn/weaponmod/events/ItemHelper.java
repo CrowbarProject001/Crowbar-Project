@@ -15,6 +15,10 @@ import cn.weaponmod.network.NetKeyClicking;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
+/**
+ * 左右键射击的底层支持。
+ * @author WeAthFolD
+ */
 public class ItemHelper implements ITickHandler {
 
 	protected static class UsingStatus {
@@ -95,6 +99,12 @@ public class ItemHelper implements ITickHandler {
 		if(stat == null)
 			return 0;
 		return stat.isUsing(player) ? stat.useDurationLeft : 0;
+	}
+	
+	public static boolean getUsingSide(EntityPlayer player) {
+		Map<EntityPlayer, UsingStatus> usingPlayerMap = getUsingPlayerMapFor(player.worldObj, true);
+		UsingStatus stat1 = usingPlayerMap.get(player);
+		return stat1 == null ? false : stat1.isUsing(player);
 	}
 	
 	public static void stopUsingItem(EntityPlayer player, boolean side) {

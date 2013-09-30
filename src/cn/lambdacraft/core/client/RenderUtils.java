@@ -12,16 +12,12 @@ import cn.lambdacraft.core.client.shape.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.LongHashMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * 一些有用的渲染器功能。
@@ -71,7 +67,7 @@ public class RenderUtils {
 	public static void renderShadow_Inventory() {
 		GL11.glDepthFunc(GL11.GL_EQUAL);
     	GL11.glDisable(GL11.GL_LIGHTING);
-    	Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(("textures/misc/enchanted_item_glint.png")));
+    	loadTexture("textures/misc/enchanted_item_glint.png");
     	GL11.glEnable(GL11.GL_BLEND);
     	GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
     	float f7 = 0.76F;
@@ -194,10 +190,8 @@ public class RenderUtils {
 
 		Minecraft mc = Minecraft.getMinecraft();
 
-		if (icon == null) {
-			GL11.glPopMatrix();
+		if (icon == null) 
 			return;
-		}
 
 		mc.renderEngine.func_110577_a(mc.renderEngine.func_130087_a(stackToRender.getItemSpriteNumber()));
 		

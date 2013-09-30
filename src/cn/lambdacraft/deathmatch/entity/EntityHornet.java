@@ -151,7 +151,7 @@ public class EntityHornet extends EntityThrowable {
 				return;
 			WeaponHelper.doEntityAttack(m.entityHit,
 					DamageSource.causeMobDamage(getThrower()),
-					DMItems.weapon_hornet.getDamage(searchForPlayer));
+					DMItems.weapon_hornet.getWeaponDamage(searchForPlayer));
 			this.setDead();
 		}
 	}

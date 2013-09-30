@@ -2,18 +2,14 @@ package cn.lambdacraft.deathmatch.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
-import codechicken.lib.data.MCDataInput;
-
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.entity.EntitySatchel;
 import cn.weaponmod.client.render.RenderUtils;
 
 
-import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 
 public class RenderSatchel extends RenderEntity {

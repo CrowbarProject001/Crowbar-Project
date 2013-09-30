@@ -20,8 +20,8 @@ import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -34,7 +34,7 @@ import net.minecraft.world.World;
  * @author WeAt3hFolD
  *
  */
-public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLiving> {
+public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLivingBase> {
 	public final static float MOVE_SPEED = 3.0f;
 	
 	
@@ -71,7 +71,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 		if(!worldObj.isRemote && isCharging) {
 			if(++chargeTick > 50) {
 				worldObj.spawnEntityInWorld(new EntityShockwave(worldObj, this, posX, posY, posZ));
-				this.playSound(GenericUtils.getRandomSound("cbc.mobs.he_blast", 3), 0.5F, 1.0F);
+				this.playSound(GenericUtils.getRandomSound("lambdacraft:mobs.he_blast", 3), 0.5F, 1.0F);
 				lastShockTick = ticksExisted;
 				isCharging = false;
 			}
@@ -109,7 +109,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 				this.motionY = 0.30;
 				isCharging = true;
 				chargeTick = 0;
-				this.playSound(GenericUtils.getRandomSound("cbc.mobs.he_attack", 3), 0.5F, 1.0F);
+				this.playSound(GenericUtils.getRandomSound("lambdacraft:mobs.he_attack", 3), 0.5F, 1.0F);
 			}
 		}
 	}
@@ -145,7 +145,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	 */
 	@Override
 	protected String getLivingSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.he_idle", 4);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.he_idle", 4);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	 */
 	@Override
 	protected String getHurtSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.he_pain", 5);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.he_pain", 5);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	 */
 	@Override
 	protected String getDeathSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.he_die", 3);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.he_die", 3);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	}
 
 	@Override
-	public void setLinkedEntity(EntityLiving entity) {
+	public void setLinkedEntity(EntityLivingBase entity) {
 		throwerName = entity.getEntityName();
 	}
 	

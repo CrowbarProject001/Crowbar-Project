@@ -25,12 +25,10 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMoveThroughVillage;
 import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -114,10 +112,10 @@ public class EntityHLZombie extends CBCEntityMob {
 			return false;
 		damagetype = this.worldObj.rand.nextInt(3);
 		if (damagetype == 0) {
-			this.worldObj.playSoundAtEntity(par1Entity, "cbc.mobs.zo_attacka", 0.5f, 1.0f);
+			this.worldObj.playSoundAtEntity(par1Entity, "lambdacraft:mobs.zo_attacka", 0.5f, 1.0f);
 			damage = 6;
 		} else {
-			this.worldObj.playSoundAtEntity(par1Entity, "cbc.mobs.zo_attackb", 0.5f, 1.0f);
+			this.worldObj.playSoundAtEntity(par1Entity, "lambdacraft:mobs.zo_attackb", 0.5f, 1.0f);
 			damage = 3;
 		}
 		this.entityToAttack = par1Entity;
@@ -131,9 +129,9 @@ public class EntityHLZombie extends CBCEntityMob {
 			String sndPath;
 			if(distance <= 3.0) {
 				entityToAttack.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-				sndPath = GenericUtils.getRandomSound("cbc.mobs.zo_claw_strike", 3);
+				sndPath = GenericUtils.getRandomSound("lambdacraft:mobs.zo_claw_strike", 3);
 			} else 
-				sndPath = GenericUtils.getRandomSound("cbc.mobs.zo_claw_miss", 2);
+				sndPath = GenericUtils.getRandomSound("lambdacraft:mobs.zo_claw_miss", 2);
 			this.playSound(sndPath, 0.5F, 1.0F);
 		}
 		this.tickCountAttack = 0;
@@ -166,7 +164,7 @@ public class EntityHLZombie extends CBCEntityMob {
 	
 	public void onBuring() {
 		if(playtick >= 40) {
-			//this.worldObj.playSoundAtEntity(this, GenericUtils.getRandomSound("cbc.mobs.zo_moan_loop", 3), 0.5F, 1.0F);
+			//this.worldObj.playSoundAtEntity(this, GenericUtils.getRandomSound("lambdacraft:mobs.zo_moan_loop", 3), 0.5F, 1.0F);
 			playtick = 0;
 		}
 		++playtick;
@@ -190,7 +188,7 @@ public class EntityHLZombie extends CBCEntityMob {
     
 	@Override
 	protected String getLivingSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.zo_idle", 3);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.zo_idle", 3);
 	}
 
 	/**
@@ -198,7 +196,7 @@ public class EntityHLZombie extends CBCEntityMob {
 	 */
 	@Override
 	protected String getHurtSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.zo_pain", 2);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.zo_pain", 2);
 	}
 
 	/**
@@ -206,7 +204,7 @@ public class EntityHLZombie extends CBCEntityMob {
 	 */
 	@Override
 	protected String getDeathSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.hc_die", 2);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.hc_die", 2);
 	}
     
 	/* (non-Javadoc)

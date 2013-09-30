@@ -14,11 +14,13 @@
  */
 package cn.lambdacraft.mob.client.model;
 
+import cn.weaponmod.api.client.IItemModel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
 /**
@@ -26,7 +28,7 @@ import net.minecraft.util.MathHelper;
  * 
  */
 @SideOnly(Side.CLIENT)
-public class ModelSnark extends ModelBase {
+public class ModelSnark extends ModelBase implements IItemModel {
 	ModelRenderer head;
 	ModelRenderer body1;
 	ModelRenderer body2;
@@ -123,5 +125,27 @@ public class ModelSnark extends ModelBase {
 		this.leg3.rotateAngleX = MathHelper.cos(par1 * 4.0F + (float) Math.PI)
 				* 0.5F * par2;
 		this.leg4.rotateAngleX = MathHelper.cos(par1 * 4.0F) * 0.5F * par2;
+	}
+
+	@Override
+	public void render(ItemStack is, float f5, float f) {
+		setRotationAngles(is, 0, 0, 0, f);
+		head.render(f5);
+		body1.render(f5);
+		body2.render(f5);
+		body3.render(f5);
+		leg1.render(f5);
+		leg2.render(f5);
+		leg3.render(f5);
+		leg4.render(f5);
+	}
+
+	@Override
+	public void setRotationAngles(ItemStack is, double posX, double posY,
+			double posZ, float f) {
+		this.head.rotateAngleY = .5F * MathHelper.sin(f + 0.25F * (float)Math.PI);
+		this.body1.rotateAngleY = .3F * MathHelper.sin(f + 0.25F * (float)Math.PI);
+		this.head.rotateAngleX = .5F * MathHelper.cos(f);
+		this.body1.rotateAngleX = .3F * MathHelper.cos(f);
 	}
 }

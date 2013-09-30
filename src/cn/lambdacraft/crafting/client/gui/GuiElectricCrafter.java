@@ -28,7 +28,6 @@ import cn.lambdacraft.crafting.recipe.RecipeWeapons;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 /**

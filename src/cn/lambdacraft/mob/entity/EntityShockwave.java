@@ -20,6 +20,7 @@ import cn.lambdacraft.core.util.GenericUtils;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -77,7 +78,7 @@ public class EntityShockwave extends Entity {
 			return;
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - 4.0, posY - 2.0, posZ - 4.0, posX + 4.0,  posY + 2.0, posZ + 4.0);
 		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, selector);
-		for(EntityLiving e : list) {
+		for(EntityLivingBase e : list) {
 			double distanceSq = e.getDistanceSqToEntity(this);
 			distanceSq = (33.0 - distanceSq) / 33.0;
 			int dmg = (int) Math.round(distanceSq * DAMAGE_SCALE);

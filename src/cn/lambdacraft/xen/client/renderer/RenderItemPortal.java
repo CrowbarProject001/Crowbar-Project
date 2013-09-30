@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.core.client.RenderUtils;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -92,7 +92,7 @@ public class RenderItemPortal implements IItemRenderer {
 			renderEntity(item, (RenderBlocks)data[0], (EntityItem) data[1]);
 			break;
 		case EQUIPPED:
-			renderEquipped(item, (RenderBlocks)data[0], (EntityLiving) data[1]);
+			renderEquipped(item, (RenderBlocks)data[0], (EntityLivingBase) data[1]);
 			break;
 		case INVENTORY:
 			renderInventory(item, (RenderBlocks)data[0]);
@@ -109,7 +109,7 @@ public class RenderItemPortal implements IItemRenderer {
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 	
-	private void renderEquipped(ItemStack is, RenderBlocks render, EntityLiving entity) {
+	private void renderEquipped(ItemStack is, RenderBlocks render, EntityLivingBase entity) {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
 		RenderUtils.renderItemIn2d(entity, is, 0.0625F);

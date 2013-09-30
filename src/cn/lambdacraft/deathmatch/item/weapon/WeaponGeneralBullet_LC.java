@@ -5,6 +5,7 @@ package cn.lambdacraft.deathmatch.item.weapon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -15,6 +16,7 @@ import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.weaponmod.api.WeaponHelper;
+import cn.weaponmod.api.weapon.WeaponGeneral;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 
 /**
@@ -23,9 +25,24 @@ import cn.weaponmod.api.weapon.WeaponGeneralBullet;
  */
 public class WeaponGeneralBullet_LC extends WeaponGeneralBullet implements IHudTipProvider {
 	
+	protected String iconName = "";
+	
 	public WeaponGeneralBullet_LC(int par1, int par2ammoID) {
 		super(par1, par2ammoID);
 	}
+	
+	public WeaponGeneral setIAndU(String name) {
+		iconName = name;
+		setUnlocalizedName(name);
+		return this;
+	}
+	
+    @Override
+	@SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister par1IconRegister)
+    {
+        this.itemIcon = par1IconRegister.registerIcon("lambdacraft:" + iconName);
+    }
 
 	/* (non-Javadoc)
 	 * @see cn.weaponmod.api.weapon.WeaponGeneralBullet#onUpdate(net.minecraft.item.ItemStack, net.minecraft.world.World, net.minecraft.entity.Entity, int, boolean)
@@ -37,18 +54,10 @@ public class WeaponGeneralBullet_LC extends WeaponGeneralBullet implements IHudT
 	}
 
 	/* (non-Javadoc)
-	 * @see cn.weaponmod.api.weapon.WeaponGeneral#getPushForce(boolean)
-	 */
-	@Override
-	public double getPushForce(boolean left) {
-		return 2;
-	}
-
-	/* (non-Javadoc)
 	 * @see cn.weaponmod.api.weapon.WeaponGeneral#getDamage(boolean)
 	 */
 	@Override
-	public int getDamage(boolean left) {
+	public int getWeaponDamage(boolean left) {
 		return 10;
 	}
 

@@ -51,8 +51,7 @@ public class EntityHGrenade extends EntityThrowable {
 			return;
 
 		if (ticksExisted - time > 5) { // 最小时间间隔0.3s
-			worldObj.playSound(posX, posY, posZ, "cbc.weapons.hgrenadebounce",
-					0.5F, (float) (Math.random() * 0.4F + 0.8F), true);
+			this.playSound("lambdacraft:weapons.hgrenadebounce", .5F, 1.0F);
 			time = ticksExisted;
 		}
 

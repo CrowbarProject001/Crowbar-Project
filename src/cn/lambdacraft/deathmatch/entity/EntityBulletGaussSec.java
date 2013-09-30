@@ -14,10 +14,7 @@
  */
 package cn.lambdacraft.deathmatch.entity;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
@@ -157,9 +154,6 @@ public class EntityBulletGaussSec extends EntityBullet {
 	public void doEntityCollision(MovingObjectPosition result) {
 
 		if (result.entityHit == null)
-			return;
-		if (!(result.entityHit instanceof EntityLiving
-				|| result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
 			return;
 
 		double var0 = damage / 20;

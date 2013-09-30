@@ -29,10 +29,6 @@ import cn.weaponmod.register.WMPacketHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -53,7 +49,7 @@ clientPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CH
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CHANNEL_SERVER }, packetHandler = WMPacketHandler.class))
 public class WeaponMod {
 
-	public static final String VERSION = "0.0.0.1";
+	public static final String VERSION = "1.0.0beta";
 	
 	public static final String DEPENDENCY = "required-after:Weaponry@" + VERSION;
 	
@@ -68,7 +64,6 @@ public class WeaponMod {
 	
 	/**
 	 * 预加载（设置、世界生成、注册Event）
-	 * 
 	 * @param event
 	 */
 	@EventHandler()

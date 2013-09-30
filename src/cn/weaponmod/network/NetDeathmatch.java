@@ -25,6 +25,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.StatCollector;
 import cn.weaponmod.api.feature.IModdable;
+import cn.weaponmod.api.weapon.IReloaddable;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 import cn.weaponmod.proxy.WMGeneralProps;
 import cn.weaponmod.register.IChannelProcess;
@@ -76,23 +77,20 @@ public class NetDeathmatch implements IChannelProcess {
 
 		if (is == null)
 			return;
-
 		Item item = is.getItem();
 		if (prop[1] == 1) {
-			if (!(item instanceof WeaponGeneralBullet))
+			if (!(item instanceof IReloaddable))
 				return;
-			((WeaponGeneralBullet)item).onSetReload(is, p);
+			((IReloaddable)item).onSetReload(is, p);
 		} else {
 			if(!(item instanceof IModdable))
 				return;
 			IModdable moddable = (IModdable) item;
 			moddable.onModeChange(is, p, prop[2]);
-			((EntityPlayer) player).sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector
-					.translateToLocal("mode.new")
+			((EntityPlayer) player).sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("mode.new")
 					+ ": \u00a74"
 					+ StatCollector.translateToLocal(moddable.getModeDescription(moddable.getMode(is)))));
 		}
 		return;
-
 	}
 }

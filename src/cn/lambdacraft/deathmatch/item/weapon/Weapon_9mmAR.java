@@ -24,7 +24,7 @@ public class Weapon_9mmAR extends Weapon_9mmAR_Raw {
 
 	@Override
 	public boolean canShoot(EntityPlayer player, ItemStack is, boolean side) {
-		InformationBullet inf = this.getInformation(is, player.worldObj);
+		InformationBullet inf = (InformationBullet) this.getInformation(is, player.worldObj);
 		return side ? super.canShoot(player, is, side) : (player.capabilities.isCreativeMode || WeaponHelper.hasAmmo(CBCItems.ammo_argrenade.itemID, player));
 	}
 
@@ -35,52 +35,13 @@ public class Weapon_9mmAR extends Weapon_9mmAR_Raw {
 	}
 	
 	@Override
-	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
-		InformationBullet information = loadInformation(stack, player);
-		Boolean canUse = canShoot(player, stack, left);
-		if (canUse) {
-			if(this.doesShoot(information, player, stack, left)) {
-				this.onBulletWpnShoot(stack, world, player, information, left);
-			}
-			information.isReloading = false;
-			ItemHelper.setItemInUse(player, stack, this.getMaxItemUseDuration(stack), left); 
-		} else if(left) {
-			onSetReload(stack, player);
-		}
-		return;
-	}
-
-	@Override
-	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3Entity, InformationBullet information, boolean left) {
-
-		if (left) {
-			super.onBulletWpnShoot(par1ItemStack, par2World, par3Entity, information, left);
-		} else {
-			if (par3Entity.capabilities.isCreativeMode || WeaponHelper.tryConsume(par3Entity, CBCItems.ammo_argrenade.itemID, 1) == 0) {
-				if(!par2World.isRemote) {
-					par2World.spawnEntityInWorld(new EntityARGrenade(par2World, par3Entity));
-					par2World.playSoundAtEntity(par3Entity,
-							getSoundShoot(left), 0.5F, 1.0F);
-				}
-			}	
-		}
-		information.setLastTick(left);
-		return;
-	}
-
-	@Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer, int par4) {
-
-		super.onPlayerStoppedUsing(par1ItemStack, par2World, par3EntityPlayer,
-				par4);
-
+	protected Entity getBulletEntity(ItemStack stack, World world, EntityPlayer player, boolean left) {
+		return left ? super.getBulletEntity(stack, world, player, left) : world.isRemote ? null : new EntityARGrenade(world, player);
 	}
 
 	@Override
 	public String getSoundShoot(boolean left) {
-		return left ? "cbc.weapons.hksa" : (itemRand.nextFloat() * 2 > 1 ? "cbc.weapons.glauncher" : "cbc.weapons.glauncherb");
+		return left ? "lambdacraft:weapons.hksa" : (itemRand.nextFloat() * 2 > 1 ? "lambdacraft:weapons.glauncher" : "lambdacraft:weapons.glauncherb");
 	}
 
 	@Override

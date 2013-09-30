@@ -25,9 +25,7 @@ import cn.lambdacraft.mob.entity.EntityAlienSlave;
 import cn.lambdacraft.mob.util.CBCRenderMob;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.Vec3;
 
 /**

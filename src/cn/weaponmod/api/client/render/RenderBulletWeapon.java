@@ -16,10 +16,10 @@ package cn.weaponmod.api.client.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -28,33 +28,34 @@ import org.lwjgl.opengl.GL11;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 import cn.weaponmod.client.render.RenderUtils;
+import cn.weaponmod.events.ItemHelper;
 
 /**
- * TODO:Muzzleflash显示需要大改
  * @author WeAthFolD
- *
+ * 
  */
 public class RenderBulletWeapon implements IItemRenderer {
 
 	Minecraft mc = Minecraft.getMinecraft();
 	float tx = 0F, ty = 0F, tz = 0F;
-	float width = 0.05F;
+	float width = 0.0625F;
 	private WeaponGeneralBullet weaponType;
-	private String texturePath;
+	public String[] muzzleflash = { "" };
+	public float recoilRatio = 0.02F, upliftRatio = 1.0F;
 	
-	public RenderBulletWeapon(WeaponGeneralBullet weapon, float w, String tex) {
+	public RenderBulletWeapon(WeaponGeneralBullet weapon, float w, String[] tex) {
 		weaponType = weapon;
 		width = w / 2F;
-		texturePath = tex;
+		muzzleflash = tex;
 	}
-	
+
 	public RenderBulletWeapon(WeaponGeneralBullet weapon, float w) {
 		weaponType = weapon;
 		width = w / 2F;
 	}
 
 	public RenderBulletWeapon(WeaponGeneralBullet weapon, float width, float x,
-			float y, float z, String texPath) {
+			float y, float z, String[] texPath) {
 		this(weapon, width, texPath);
 		tx = x;
 		ty = y;
@@ -66,6 +67,7 @@ public class RenderBulletWeapon implements IItemRenderer {
 		// TODO Auto-generated method stub
 		switch (type) {
 		case EQUIPPED:
+		case EQUIPPED_FIRST_PERSON:
 			return true;
 		default:
 			return false;
@@ -91,7 +93,9 @@ public class RenderBulletWeapon implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		switch (type) {
 		case EQUIPPED:
-			renderEquipped(item, (RenderBlocks) data[0], (EntityLivingBase) data[1]);
+		case EQUIPPED_FIRST_PERSON:
+			renderEquipped(item, (RenderBlocks) data[0],
+					(EntityLivingBase) data[1]);
 			break;
 		default:
 			break;
@@ -103,21 +107,50 @@ public class RenderBulletWeapon implements IItemRenderer {
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLivingBase entity) {
 		Tessellator t = Tessellator.instance;
-		
+
 		int mode = 0;
 		if (item.stackTagCompound != null)
 			mode = item.getTagCompound().getInteger("mode");
-		
+
 		GL11.glPushMatrix();
 
-		RenderUtils.renderItemIn2d(entity, item, width);
-		if(texturePath != null && entity instanceof EntityPlayer) {
-			InformationBullet inf = weaponType.getInformation(item, entity.worldObj);
-			EntityPlayer ep = (EntityPlayer) entity;
-			if(inf.lastTick_left > 0)
-				renderMuzzleflashIn2d(t, texturePath, tx, ty, tz);
+		InformationBullet inf = (InformationBullet) weaponType
+				.getInformation(item, entity.worldObj);
+		if (inf == null) {
+			RenderUtils.renderItemIn2d(entity, item, width);
+			return;
 		}
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entity;
+			boolean left = ItemHelper.getUsingTickLeft(player, false) == 0 ? true : ItemHelper.getUsingSide(player);
+			boolean firstPerson = (entity == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) && Minecraft.getMinecraft().currentScreen == null;
+			int mt = inf == null ? -1 : (left ? inf.muzzle_left : inf.muzzle_right);
+			if (left ? inf.lastShooting_left : inf.lastShooting_right) {
+				int dt = inf.getDeltaTick(left);
+				float recoverTime = 0.5F * weaponType.upLiftRadius
+						/ weaponType.recoverRadius;
+				if (dt < recoverTime) {
+					float uplift = 2.0F
+							* weaponType.upLiftRadius
+							* MathHelper
+									.cos(mt * (float) Math.PI / recoverTime);
+					GL11.glRotatef(uplift, 0.0F, 0.0F, 1.0F);
+				}
+			}
+
+			if (mt > 0) {
+				mt = 3 - mt;
+				RenderBulletWeapon.renderMuzzleflashIn2d(t,
+						muzzleflash[mt < muzzleflash.length ? mt
+								: muzzleflash.length - 1], tx, ty, tz);
+			}
 			
+			if(firstPerson && inf.isReloading) {
+				float rotation = weaponType.getRotationForReload(item);
+				GL11.glRotatef(upliftRatio * rotation * 90F, 0.0F, 1.0F, 0.0F);
+			}
+		}
+		RenderUtils.renderItemIn2d(entity, item, width);
 		GL11.glPopMatrix();
 	}
 
@@ -126,11 +159,13 @@ public class RenderBulletWeapon implements IItemRenderer {
 		tessellator.addVertexWithUV(vec3.xCoord, vec3.yCoord, vec3.zCoord,
 				texU, texV);
 	}
-	
-	public static void renderMuzzleflashIn2d(Tessellator t, String texture, double tx, double ty, double tz) {
 
-		Vec3 a1 = RenderUtils.newV3(1.2, -0.4, -0.5), a2 = RenderUtils.newV3(1.2, 0.4, -0.5), a3 = RenderUtils.newV3(
-				1.2, 0.4, 0.3), a4 = RenderUtils.newV3(1.2, -0.4, 0.3);
+	public static void renderMuzzleflashIn2d(Tessellator t, String texture,
+			double tx, double ty, double tz) {
+
+		Vec3 a1 = RenderUtils.newV3(1.2, -0.4, -0.5), a2 = RenderUtils.newV3(
+				1.2, 0.4, -0.5), a3 = RenderUtils.newV3(1.2, 0.4, 0.3), a4 = RenderUtils
+				.newV3(1.2, -0.4, 0.3);
 
 		float u1 = 0.0F, v1 = 0.0F, u2 = 1.0F, v2 = 1.0F;
 
@@ -139,13 +174,13 @@ public class RenderBulletWeapon implements IItemRenderer {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
 		RenderUtils.loadTexture(texture);
-		
+
 		GL11.glTranslated(tx, ty + 0.1F, tz + 0.1F);
 		GL11.glRotatef(45, 0.0F, 0.0F, 1.0F);
-		
+
 		t.startDrawingQuads();
 		t.setColorRGBA_F(0.8F, .8F, .8F, 1.0F);
 		t.setBrightness(15728880);
@@ -154,7 +189,7 @@ public class RenderBulletWeapon implements IItemRenderer {
 		addVertex(a3, u1, v1);
 		addVertex(a4, u1, v2);
 		t.draw();
-		
+
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_CULL_FACE);

@@ -11,6 +11,7 @@ import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.deathmatch.item.ArmorHEV;
 import cn.lambdacraft.deathmatch.item.ArmorHEV.EnumAttachment;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.lambdacraft.xen.ModuleXen;
 public class CBCPlayer extends ClientPlayerBase {
 
 	public static final float LJ_VEL_RADIUS = 1.5F, BHOP_VEL_SCALE = 0.003F, SPEED_REDUCE_SCALE = 0.0005F;
@@ -69,10 +70,10 @@ public class CBCPlayer extends ClientPlayerBase {
 		
 		//putting HEV on at this tick
 		if(!preOnHEV && (armorStat[2] && armorStat[3])) {
-			mc.sndManager.playSoundFX("cbc.hev.hev_logon", 0.5F, 1.0F);
+			mc.sndManager.playSoundFX("lambdacraft:hev.hev_logon", 0.5F, 1.0F);
 		} else if(preOnHEV && !(armorStat[2] && armorStat[3])) { //HEV 'Broke down' because player action or energy critical
 			if(player.inventory.armorInventory[2] != null && player.inventory.armorInventory[3] != null) {
-				mc.sndManager.playSoundFX("cbc.hev.hev_shutdown", 0.5F, 1.0F);
+				mc.sndManager.playSoundFX("lambdacraft:hev.hev_shutdown", 0.5F, 1.0F);
 			}
 		}
 		
@@ -97,7 +98,7 @@ public class CBCPlayer extends ClientPlayerBase {
 		if((armorStat[2] &&  armorStat[3])) {
 			if(player.func_110143_aJ() - lastHealth < 0 && player.func_110143_aJ() <= 5) {
 				if(tickSinceLastSound > 30) {
-					mc.sndManager.playSoundFX("cbc.hev.health_critical", 0.5F, 1.0F);
+					mc.sndManager.playSoundFX("lambdacraft:hev.health_critical", 0.5F, 1.0F);
 					tickSinceLastSound = 0;
 				}
 			}
@@ -139,10 +140,15 @@ public class CBCPlayer extends ClientPlayerBase {
 	
 	//--------------------Bhop-------------------
 	/**
-	 * Update函数，连跳支持。
+	 * Update函数，连跳支持，Xen支持。
 	 */
 	@Override
 	public void onLivingUpdate() {
+		if(player.worldObj.provider.dimensionId == ModuleXen.dimensionId) {
+			if(!player.onGround && !player.capabilities.isFlying && !(player.isOnLadder() || player.isInWater())) {
+				player.motionY += 0.036;
+			}
+		}
 		
 		if(!useBhop()) {
 			player.localOnLivingUpdate();
@@ -186,7 +192,6 @@ public class CBCPlayer extends ClientPlayerBase {
 		player.motionZ = MathHelper.cos(motionYaw / 180.0F * (float) Math.PI) * vel;
 		//调用原本的Update
 		player.localOnLivingUpdate();
-		
 	}
 	
 	@Override

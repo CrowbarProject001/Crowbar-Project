@@ -168,8 +168,8 @@ public class BlockArmorCharger extends CBCBlockContainer implements IUseable {
 		if (te == null)
 			return;
 		TileArmorCharger te2 = (TileArmorCharger) te;
-		String path = te2.currentEnergy > 0 ? "cbc.entities.suitchargeok"
-				: "cbc.entities.suitchargeno";
+		String path = te2.currentEnergy > 0 ? "lambdacraft:entities.suitchargeok"
+				: "lambdacraft:entities.suitchargeno";
 		world.playSoundAtEntity(player, path, 0.5F, 1.0F);
 		UsingUtils.setBlockInUse(player, bx, by, bz);
 		if (te2.currentEnergy > 0)

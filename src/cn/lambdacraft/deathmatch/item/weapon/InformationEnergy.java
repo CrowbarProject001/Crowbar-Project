@@ -1,7 +1,6 @@
 package cn.lambdacraft.deathmatch.item.weapon;
 
 import cn.weaponmod.api.information.InformationWeapon;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 /**

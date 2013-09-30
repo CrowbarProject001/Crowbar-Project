@@ -16,7 +16,7 @@ package cn.lambdacraft.deathmatch.client.renderer;
 
 import cn.lambdacraft.core.client.RenderUtils;
 import cn.weaponmod.api.feature.IModdable;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -55,7 +55,7 @@ public class RenderItemElCrowbar implements IItemRenderer {
 		if(type == ItemRenderType.INVENTORY) {
 			renderInventory(item);
 		} else {
-			renderEquipped((EntityLiving) data[1], item);
+			renderEquipped((EntityLivingBase) data[1], item);
 		}
 		
 	}
@@ -67,7 +67,7 @@ public class RenderItemElCrowbar implements IItemRenderer {
 		
 	}
 	
-	private void renderEquipped(EntityLiving ent, ItemStack item) {
+	private void renderEquipped(EntityLivingBase ent, ItemStack item) {
 		RenderUtils.renderItemIn2d(ent, item, 0.0625);
 		if(((IModdable)item.getItem()).getMode(item) == 0 && item.getItemDamage() < item.getMaxDamage() - 1)
 			RenderUtils.renderShadow_Held();

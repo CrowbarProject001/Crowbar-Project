@@ -26,6 +26,7 @@ import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.deathmatch.client.renderer.RenderEmptyBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -39,9 +40,12 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class ClientProxy extends Proxy {
 
+	CBCSoundEvents events = new CBCSoundEvents();
+	
 	@Override
 	public void init() {
 		super.init();
+		events.onSound(new SoundLoadEvent(Minecraft.getMinecraft().sndManager));
 		ClientPlayerAPI.register("CBCPlayer", CBCPlayer.class);
 		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
 		TickRegistry.registerTickHandler(new CBCKeyProcess(), Side.CLIENT);
@@ -50,7 +54,7 @@ public class ClientProxy extends Proxy {
 	
 	@Override
 	public void preInit() {
-		MinecraftForge.EVENT_BUS.register(new CBCSoundEvents());
+		MinecraftForge.EVENT_BUS.register(events);
 		CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
 	}
 

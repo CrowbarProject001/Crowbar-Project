@@ -16,7 +16,6 @@ package cn.weaponmod.api.client.render;
 import java.util.Random;
 
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -59,8 +58,8 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 	
 	@Override
 	public void renderEquipped(ItemStack item, RenderBlocks render,
-			EntityLivingBase entity) {
-		doRenderEquipped(item, render, entity, true);
+			EntityLivingBase entity, ItemRenderType type) {
+		doRenderEquipped(item, render, entity, true, type);
 	}
 	
 	@Override
@@ -75,11 +74,11 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 	}
 
 	public void doRenderEquipped(ItemStack item, RenderBlocks render,
-			EntityLivingBase entity, boolean left) {
+			EntityLivingBase entity, boolean left,  ItemRenderType type) {
 		
-		InformationBullet inf = weaponType.getInformation(item, entity.worldObj);
+		InformationBullet inf = (InformationBullet) weaponType.getInformation(item, entity.worldObj);
 		if(inf == null) {
-			super.renderEquipped(item, render, entity);
+			super.renderEquipped(item, render, entity, type);
 			return;
 		}
 		
@@ -94,7 +93,7 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 		}
 		
 		GL11.glRotatef(2.5F * MathHelper.sin(inf.getDeltaTick(left) * (float)Math.PI * 0.025F), 0.0F, 0.0F, 1.0F);
-		super.renderEquipped(item, render, entity);
+		super.renderEquipped(item, render, entity, type);
 		if(mt > 0) {
 			mt = 3 - mt;
 			RenderBulletWeapon.renderMuzzleflashIn2d(t, muzzleflash[mt < muzzleflash.length ? mt : muzzleflash.length - 1], tx, ty, tz);

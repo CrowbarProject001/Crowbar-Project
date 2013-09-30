@@ -6,7 +6,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.deathmatch.entity.EntityRPGDot;
@@ -108,7 +110,7 @@ public class Weapon_RPG extends Weapon_RPG_Raw implements IModdable {
 	@Override
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		
+		par3List.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("weapon.useinv.name"));
 	}
 
 }

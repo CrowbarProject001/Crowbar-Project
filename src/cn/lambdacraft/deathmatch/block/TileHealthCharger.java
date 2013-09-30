@@ -144,13 +144,13 @@ public class TileHealthCharger extends TileElectricStorage implements
 				this.doHealing(charger);
 				if (worldObj.getWorldTime() % 15 == 0) {
 					worldObj.playSoundAtEntity(charger,
-							"cbc.entities.medcharge", 0.3F, 1.0F);
+							"lambdacraft:entities.medcharge", 0.3F, 1.0F);
 				}
 				if (currentEnergy <= 0) {
 					this.chargers.clear();
 					this.isUsing = false;
 					worldObj.playSoundAtEntity(charger,
-							"cbc.entities.medshotno", 0.5F, 1.0F);
+							"lambdacraft:entities.medshotno", 0.5F, 1.0F);
 				}
 			}
 

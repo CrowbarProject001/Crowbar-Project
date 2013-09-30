@@ -91,7 +91,7 @@ public class EntityBattery extends Entity {
 			worldObj.spawnEntityInWorld(new EntityItem(worldObj, posX, posY,
 					posZ, newBattery));
 		}
-		this.playSound("cbc.entities.battery", 0.5F, 1.0F);
+		this.playSound("lambdacraft:entities.battery", 0.5F, 1.0F);
 		this.setDead();
 	}
 

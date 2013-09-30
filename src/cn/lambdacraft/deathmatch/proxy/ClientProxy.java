@@ -63,6 +63,7 @@ import cn.lambdacraft.deathmatch.entity.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.lambdacraft.xen.client.EntityXenPortalFX;
 import cn.weaponmod.api.client.render.RenderBulletWeapon;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -80,7 +81,7 @@ public class ClientProxy extends Proxy {
 
 	public final static String SOUND_WEAPONS[] = {
 
-	"hgrenadepin", "hgrenadebounce", "plgun_c", "nmmclipa", "explode_a",
+			"hgrenadepin", "hgrenadebounce", "plgun_c", "nmmclipa", "explode_a",
 			"explode_b", "g_bounceb", "gunjam_a", "hksa", "hksb", "hksc",
 			"nmmarr", "pyt_shota", "pyt_shotb", "pyt_cocka", "pyt_reloada",
 			"sbarrela", "sbarrela_a", "sbarrelb", "sbarrelb_a", "scocka",
@@ -98,9 +99,11 @@ public class ClientProxy extends Proxy {
 			"suitcharge", "suitchargeno", "suitchargeok", "medshot",
 			"medshotno", "medcharge" };
 	
-	public static final String SND_HEV[] = {"hev_logon", "health_critical",
+	public static final String SND_HEV[] = {
+		"hev_logon", "health_critical",
 		"health_dropping", "heat_damage", "hev_shutdown", "major_fracture",
-		"morphine_shot", "radiation_detected" };
+		"morphine_shot", "radiation_detected"
+		};
 
 	
 	@Override
@@ -111,7 +114,7 @@ public class ClientProxy extends Proxy {
 			CBCSoundEvents.addSoundPath("entities/" + s);
 		for (String s : SND_HEV)
 			CBCSoundEvents.addSoundPath("hev/" + s);
-		CBCSoundEvents.addSoundWithVariety("cbc/weapons/electro", 3);
+		CBCSoundEvents.addSoundWithVariety("weapons/electro", 3);
 	}
 	
 	@Override
@@ -137,11 +140,11 @@ public class ClientProxy extends Proxy {
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_egon.itemID,new RenderEgon());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_gauss.itemID,new RenderGauss());
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmhandgun.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmhandgun,0.08F));
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_357, 0.08F));
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmAR, 0.10F));
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID, new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun, 0.12F));
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmhandgun.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmhandgun,0.08F, ClientProps.MUZZLEFLASH));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_357, 0.08F, ClientProps.MUZZLEFLASH));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun,0.08F, ClientProps.MUZZLEFLASH));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmAR, 0.10F, ClientProps.MUZZLEFLASH));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F, ClientProps.MUZZLEFLASH));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crowbar_el.itemID, new RenderItemElCrowbar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTripmine.class,new RenderTileTripmine(DMBlocks.blockTripmine));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileArmorCharger.class,new RenderTileCharger(DMBlocks.armorCharger));

@@ -87,5 +87,15 @@ public class BlockXenLight extends CBCBlockContainer {
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
     	this.setBlockBounds(0.35F, 0.0F, 0.35F, 0.65F, isBright ? 1.0F : 0.4F, 0.65F);
     }
+    
+    /**
+     * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
+     * their own) Args: x, y, z, neighbor blockID
+     */
+    @Override
+    public void onNeighborBlockChange(World world, int par2, int par3, int par4, int par5) {
+    	if(world.getBlockId(par2, par3 - 1, par4) == 0)
+    		world.setBlockToAir(par2, par3, par4);
+    }
 
 }

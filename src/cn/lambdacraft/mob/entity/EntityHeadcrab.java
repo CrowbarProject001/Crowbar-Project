@@ -25,11 +25,7 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -93,7 +89,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 			EntityPlayer player = (EntityPlayer) par1Entity;
 			ItemStack armorStack = player.inventory.armorInventory[3];
 			if (armorStack == null) {
-				attacher = (EntityLivingBase) player;
+				attacher = player;
 				player.addPotionEffect(new PotionEffect(Potion.blindness
 						.getId(), 200));
 				player.addPotionEffect(new PotionEffect(Potion.confusion
@@ -225,7 +221,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 	 */
 	@Override
 	protected String getLivingSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.hc_idle", 5);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.hc_idle", 5);
 	}
 
 	/**
@@ -233,7 +229,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 	 */
 	@Override
 	protected String getHurtSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.hc_pain", 3);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.hc_pain", 3);
 	}
 
 	/**
@@ -241,7 +237,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 	 */
 	@Override
 	protected String getDeathSound() {
-		return GenericUtils.getRandomSound("cbc.mobs.hc_die", 2);
+		return GenericUtils.getRandomSound("lambdacraft:mobs.hc_die", 2);
 	}
 
 	/**
@@ -260,7 +256,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 				this.motionY = 0.50;
 				lastJumpTick = ticksExisted;
 				this.playSound(
-						GenericUtils.getRandomSound("cbc.mobs.hc_attack", 3),
+						GenericUtils.getRandomSound("lambdacraft:mobs.hc_attack", 3),
 						0.5F, 1.0F);
 			}
 		} else {
@@ -299,7 +295,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 	 */
 	// @Override
 	// public void initCreature() {
-	// this.playSound(GenericUtils.getRandomSound("cbc.mobs.hc_idle", 5),
+	// this.playSound(GenericUtils.getRandomSound("lambdacraft:mobs.hc_idle", 5),
 	// 0.5F, 1.0F);
 	// }
 
