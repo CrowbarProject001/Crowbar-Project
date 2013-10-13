@@ -114,8 +114,8 @@ public class EntityAlienSlave extends CBCEntityMob {
 				isCharging = false;
 				Entity ray = worldObj.isRemote ? new EntityVortigauntRay(worldObj, this, entityToAttack) : new EntityBullet(worldObj, this, entityToAttack, 6);
 				worldObj.spawnEntityInWorld(ray);
-				this.playSound("cbc.mobs.zapa", 0.5F, 1.0F);
-				this.playSound(GenericUtils.getRandomSound("cbc.weapons.electro", 3), 0.5F, 1.0F);
+				this.playSound("lambdacraft:mobs.zapa", 0.5F, 1.0F);
+				this.playSound(GenericUtils.getRandomSound("lambdacraft:weapons.electro", 3), 0.5F, 1.0F);
 				lastAttackTick = ticksExisted;
 				electrolyze_left.clear();
 				electrolyze_right.clear();
@@ -139,7 +139,7 @@ public class EntityAlienSlave extends CBCEntityMob {
 	@Override
 	protected void attackEntity(Entity par1Entity, float par2) {
 		if(par2 >= 3.0F && par2 <= 16.0F && ticksExisted - lastAttackTick > 40 && rand.nextInt(5) == 0 && !isCharging) {
-			this.playSound("cbc.mobs.zapd", 0.5F, 1.0F);
+			this.playSound("lambdacraft:mobs.zapd", 0.5F, 1.0F);
 			isCharging = true;
 			chargeTick = 0;
 		} else {
@@ -195,7 +195,7 @@ public class EntityAlienSlave extends CBCEntityMob {
     {
     	Entity e = super.findPlayerToAttack();
     	if(e != null && rand.nextInt(3) == 0) {
-    		this.playSound(GenericUtils.getRandomSound("cbc.mobs.slv_alert", 3), 0.5F, 1.0F);
+    		this.playSound(GenericUtils.getRandomSound("lambdacraft:mobs.slv_alert", 3), 0.5F, 1.0F);
     	}
     	return e;
     }
@@ -203,7 +203,7 @@ public class EntityAlienSlave extends CBCEntityMob {
 	@Override
     protected String getLivingSound()
     {
-    	return GenericUtils.getRandomSound("cbc.mobs.slv_word", 8);
+    	return GenericUtils.getRandomSound("lambdacraft:mobs.slv_word", 8);
     }
     
     /**
@@ -212,13 +212,13 @@ public class EntityAlienSlave extends CBCEntityMob {
 	@Override
     protected String getHurtSound()
     {
-        return GenericUtils.getRandomSound("cbc.mobs.slv_pain", 2);
+        return GenericUtils.getRandomSound("lambdacraft:mobs.slv_pain", 2);
     }
     
 	@Override
     protected String getDeathSound()
     {
-        return GenericUtils.getRandomSound("cbc.mobs.slv_die", 2);
+        return GenericUtils.getRandomSound("lambdacraft:mobs.slv_die", 2);
     }
 
 	@Override
@@ -228,7 +228,6 @@ public class EntityAlienSlave extends CBCEntityMob {
 
 	@Override
 	protected double getFollowRange() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -239,8 +238,7 @@ public class EntityAlienSlave extends CBCEntityMob {
 
 	@Override
 	protected double getKnockBackResistance() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 4;
 	}
 
 	@Override

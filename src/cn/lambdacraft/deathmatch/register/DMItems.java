@@ -31,9 +31,9 @@ public class DMItems {
 	public static Weapon_Gauss weapon_gauss;
 	public static Weapon_Satchel weapon_satchel;
 	public static Weapon_Egon weapon_egon;
-	public static Item weapon_9mmhandgun;
+	public static Weapon_9mmhandgun weapon_9mmhandgun;
 	public static Item weapon_9mmAR;
-	public static Item weapon_357;
+	public static Weapon_357 weapon_357;
 	public static Item weapon_shotgun;
 	public static Weapon_Hornet weapon_hornet;
 	public static Weapon_RPG weapon_RPG;

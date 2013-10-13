@@ -93,11 +93,11 @@ public class WMKeys implements ITickHandler {
             	
                 if (state)
                 {
-                    proc.onKeyDown(tickEnd);
+                    proc.onKeyDown(keyCode, tickEnd);
                 }
                 else
                 {
-                   proc.onKeyUp(tickEnd);
+                   proc.onKeyUp(keyCode, tickEnd);
                 }
                 if (tickEnd)
                 {

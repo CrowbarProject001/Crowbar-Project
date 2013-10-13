@@ -5,8 +5,19 @@ package cn.weaponmod.client;
 
 import java.util.EnumSet;
 
+import cn.weaponmod.WeaponMod;
+import cn.weaponmod.api.weapon.IZoomable;
+import cn.weaponmod.client.command.Command_SetMode;
+import cn.weaponmod.client.keys.Debug_KeyMoving;
+import cn.weaponmod.client.keys.Debug_MovingProcessor;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -26,6 +37,7 @@ public class WMClientTickHandler implements ITickHandler {
 	EntityPlayer player;
 	private float angleToLift = 0F;
 	private float totalUpliftAngle = 0F;
+	private boolean lastIsZooming = false, isZooming = false;
 	
 	public void setUplift() {
 		setUplift(DEFAULT_UPLIFT_RADIUS);
@@ -54,16 +66,45 @@ public class WMClientTickHandler implements ITickHandler {
 				player.rotationPitch += RECOVER_SPEED;
 				totalUpliftAngle -= RECOVER_SPEED;
 			} else totalUpliftAngle = 0F;
+			
+			ItemStack is = player.getCurrentEquippedItem();
+			if(is != null) {
+				Item item = is.getItem();
+				if(item instanceof IZoomable && ((IZoomable) item).isItemZooming(is, player.worldObj, player))
+					setZooming(true);
+				else setZooming(false);
+			} else setZooming(false);
+			
+			if(isZooming) {
+				player.capabilities.setPlayerWalkSpeed(10000F);
+			} else if(lastIsZooming) {
+				player.capabilities.setPlayerWalkSpeed(.1F);
+				lastIsZooming = false;
+			}
+		}
+		
+		if(WeaponMod.DEBUG) {
+			if(player != null)
+				doDebug(player);
 		}
 	}
 	
-	private void onTick() {
-		player = mc.thePlayer;
-		if(player != null) {
-			
-		}
+	private void setZooming(boolean b) {
+		lastIsZooming = isZooming;
+		isZooming = b;
 	}
-
+	
+	private void doDebug(EntityPlayer player) {
+		ItemStack item = player.getCurrentEquippedItem();
+		if(item != null) {
+			IItemRenderer render = MinecraftForgeClient.getItemRenderer(item, ItemRenderType.EQUIPPED_FIRST_PERSON);
+			if(render != null) {
+				Debug_MovingProcessor proc = Debug_KeyMoving.getProcessor(render);
+				Command_SetMode.setActiveProcessor(player, proc);
+			} else Command_SetMode.setActiveProcessor(player, null);
+		} else Command_SetMode.setActiveProcessor(player, null);
+	}
+	
 	/* (non-Javadoc)
 	 * @see cpw.mods.fml.common.ITickHandler#tickEnd(java.util.EnumSet, java.lang.Object[])
 	 */

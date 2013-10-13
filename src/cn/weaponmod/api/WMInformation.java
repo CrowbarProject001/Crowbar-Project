@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import cn.weaponmod.api.information.InformationWeapon;
 
 /**
+ * 感动吧，它终于把Client和Server漂亮的分开了！
  * @author WeAthFolD
  *
  */

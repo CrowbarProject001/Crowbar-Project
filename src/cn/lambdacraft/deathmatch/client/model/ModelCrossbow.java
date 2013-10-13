@@ -60,7 +60,7 @@ public class ModelCrossbow extends ModelBase implements IItemModel {
 		Shape4.setTextureSize(64, 32);
 		Shape4.mirror = true;
 		setRotation(Shape4, 0F, 0.2617994F, 0F);
-		Shape5.mirror = true;
+		
 		Shape5 = new ModelRenderer(this, 0, 30);
 		Shape5.addBox(0F, 0F, 0F, 4, 1, 0);
 		Shape5.setRotationPoint(3.8F, 0.5F, 0F);
@@ -68,60 +68,70 @@ public class ModelCrossbow extends ModelBase implements IItemModel {
 		Shape5.mirror = true;
 		setRotation(Shape5, 0F, -0.5235988F, 0F);
 		Shape5.mirror = false;
+		
 		Shape6 = new ModelRenderer(this, 0, 30);
 		Shape6.addBox(-5F, 0F, 0F, 4, 1, 0);
 		Shape6.setRotationPoint(-2.9F, 0.5F, -0.5F);
 		Shape6.setTextureSize(64, 32);
 		Shape6.mirror = true;
 		setRotation(Shape6, 0F, 0.5235988F, 0F);
+		
 		Shape7 = new ModelRenderer(this, 34, 14);
 		Shape7.addBox(0F, 0F, -3F, 1, 1, 9);
 		Shape7.setRotationPoint(0F, 0.5F, 8F);
 		Shape7.setTextureSize(64, 32);
 		Shape7.mirror = true;
 		setRotation(Shape7, -0.6283185F, 0.4363323F, 0.6981317F);
+		
 		Shape8 = new ModelRenderer(this, 46, 14);
 		Shape8.addBox(0F, 0F, 0F, 1, 2, 6);
 		Shape8.setRotationPoint(-0.5F, 2F, 9.5F);
 		Shape8.setTextureSize(64, 32);
 		Shape8.mirror = true;
 		setRotation(Shape8, 0.1396263F, 0F, 0F);
+		
 		Shape9 = new ModelRenderer(this, 43, 8);
 		Shape9.addBox(0F, 0F, 0F, 1, 1, 4);
 		Shape9.setRotationPoint(0F, -1F, 4F);
 		Shape9.setTextureSize(64, 32);
 		Shape9.mirror = true;
 		setRotation(Shape9, 0F, 0F, 0.7853982F);
+		
 		Shape10 = new ModelRenderer(this, 27, 23);
 		Shape10.addBox(0F, 0F, 0F, 1, 5, 2);
 		Shape10.setRotationPoint(-0.5F, 1F, 3.5F);
 		Shape10.setTextureSize(64, 32);
 		Shape10.mirror = true;
 		setRotation(Shape10, -0.2617994F, 0F, 0F);
+		
 		Shape11 = new ModelRenderer(this, 0, 31);
 		Shape11.addBox(-0.5F, 0F, 0F, 9, 0, 1);
 		Shape11.setRotationPoint(7F, 1F, 1.3F);
 		Shape11.setTextureSize(64, 32);
 		Shape11.mirror = true;
 		setRotation(Shape11, 3.141593F, 3.141593F, -0.0872665F);
+		
 		Shape12 = new ModelRenderer(this, 0, 31);
 		Shape12.addBox(0F, 0F, 0F, 9, 0, 1);
 		Shape12.setRotationPoint(-7.5F, 1F, 1.3F);
 		Shape12.setTextureSize(64, 32);
 		Shape12.mirror = true;
 		setRotation(Shape12, 0F, 0.0174533F, -0.0872665F);
+		
 		Shape13 = new ModelRenderer(this, 13, 6);
 		Shape13.addBox(0F, 0F, 0F, 0, 1, 8);
 		Shape13.setRotationPoint(0F, -0.2F, -3F);
 		Shape13.setTextureSize(64, 32);
 		Shape13.mirror = true;
 		setRotation(Shape13, 0F, 0F, 0F);
+		
 		Shape14 = new ModelRenderer(this, 0, 24);
 		Shape14.addBox(0F, 0F, 0F, 0, 2, 2);
 		Shape14.setRotationPoint(0F, 1.5F, 7F);
 		Shape14.setTextureSize(64, 32);
 		Shape14.mirror = true;
 		setRotation(Shape14, -0.2617994F, 0F, 0F);
+		
 		Shape15 = new ModelRenderer(this, 13, 6);
 		Shape15.addBox(0F, 0F, 0F, 0, 1, 8);
 		Shape15.setRotationPoint(0.5F, 0.3F, -3F);

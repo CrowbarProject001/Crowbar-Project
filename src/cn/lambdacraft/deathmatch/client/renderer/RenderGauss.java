@@ -39,6 +39,8 @@ public class RenderGauss extends RenderModelItem {
 		this.setOffset(0.0F, 1.5F);
 		this.setInvScale(0.8F);
 		this.setRotationY(180F);
+		this.setInvOffset(-0.588F, 0.114F);
+		this.setInvScale(0.618F);
 		this.setEquipForward(.78F);
 	}
 	

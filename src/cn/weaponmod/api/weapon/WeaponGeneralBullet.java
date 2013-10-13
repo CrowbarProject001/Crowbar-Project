@@ -158,9 +158,9 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 		Entity entity = this.getBulletEntity(par1ItemStack, par2World, player, left);
 		if(entity != null)
 			par2World.spawnEntityInWorld(entity);
-		if (!(player.capabilities.isCreativeMode))
-			this.setWpnStackDamage(par1ItemStack,
-					this.getWpnStackDamage(par1ItemStack) + 1);
+		if (!player.capabilities.isCreativeMode)
+			this.damageWeapon(par1ItemStack, 1);
+		//System.out.println("OnShoot in " + par2World.isRemote);
 		par2World.playSoundAtEntity(player, this.getSoundShoot(left), 0.5F, 1.0F);
 		information.setLastTick_Shoot(left);
 		information.setMuzzleTick(left);
@@ -254,6 +254,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 			information.isReloading = false;
 			return null;
 		}
+		
+		//System.out.println(par2World.isRemote + " : " + this.getWpnStackDamage(par1ItemStack));
 
 		EntityPlayer player = (EntityPlayer) par3Entity;
 		if (doesReload(information, par1ItemStack))

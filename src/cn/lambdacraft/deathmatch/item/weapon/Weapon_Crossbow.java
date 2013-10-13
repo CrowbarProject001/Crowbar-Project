@@ -13,6 +13,7 @@ import cn.lambdacraft.deathmatch.entity.EntityCrossbowArrow;
 import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.feature.IModdable;
 import cn.weaponmod.api.information.InformationBullet;
+import cn.weaponmod.api.weapon.IZoomable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -23,7 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author WeAthFolD
  */
 public class Weapon_Crossbow extends WeaponGeneralBullet_LC implements
-		IModdable {
+		IModdable, IZoomable {
 
 	public Icon[] sideIcons = new Icon[6];
 
@@ -52,10 +53,14 @@ public class Weapon_Crossbow extends WeaponGeneralBullet_LC implements
 	}
 
 	@Override
-	public void onUpdate(ItemStack par1ItemStack, World par2World,
+	public void onUpdate(ItemStack is, World par2World,
 			Entity entity, int par4, boolean par5) {
-		super.onWpnUpdate(par1ItemStack, par2World, entity, par4, par5);
-
+		super.onWpnUpdate(is, par2World, entity, par4, par5);
+		if(!par5) {
+			NBTTagCompound nbt = loadCompound(is);
+			if(nbt.getInteger("mode") == 1)
+				nbt.setInteger("mode", 0);
+		}
 		// TODO:Left to be finished
 		/*
 		if (entity instanceof EntityPlayer) {
@@ -156,5 +161,11 @@ public class Weapon_Crossbow extends WeaponGeneralBullet_LC implements
 		if (itemStack.stackTagCompound == null)
 			itemStack.stackTagCompound = new NBTTagCompound();
 		return itemStack.stackTagCompound;
+	}
+
+	@Override
+	public boolean isItemZooming(ItemStack stack, World world,
+			EntityPlayer player) {
+		return getMode(stack) == 1;
 	}
 }

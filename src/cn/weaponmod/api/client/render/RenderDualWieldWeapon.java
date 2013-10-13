@@ -47,7 +47,8 @@ public class RenderDualWieldWeapon extends RenderModelBulletWeapon {
 		
 		super.doRenderEquipped(item, render, entity, false, type);
 		
-		boolean firstPerson = (entity == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) && Minecraft.getMinecraft().currentScreen == null;
+		boolean firstPerson = (entity == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) && 
+				Minecraft.getMinecraft().currentScreen == null;
 		
 		GL11.glTranslatef(0.0F, 0.0F, firstPerson ? -1.7F : 0.8F);
 		GL11.glScalef(1.0F, 1.0F, -1.0F);

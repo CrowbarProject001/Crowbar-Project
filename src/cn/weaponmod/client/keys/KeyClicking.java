@@ -38,9 +38,9 @@ public class KeyClicking implements IKeyProcess {
 	}
 
 	@Override
-	public void onKeyDown(boolean isEnd) {
+	public void onKeyDown(int keyCode, boolean isEnd) {
 		if(!isLeft)
-			keyMode.onKeyDown(isEnd);
+			keyMode.onKeyDown(keyCode, isEnd);
 		if(isEnd)
 			return;
 		Minecraft mc = Minecraft.getMinecraft();
@@ -58,9 +58,9 @@ public class KeyClicking implements IKeyProcess {
 	}
 
 	@Override
-	public void onKeyUp(boolean isEnd) {
+	public void onKeyUp(int keyCode, boolean isEnd) {
 		if(!isLeft)
-			keyMode.onKeyUp(isEnd);
+			keyMode.onKeyUp(keyCode, isEnd);
 		if(!isEnd)
 			return;
 		Minecraft mc = Minecraft.getMinecraft();

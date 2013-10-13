@@ -27,6 +27,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import cn.weaponmod.api.client.IItemModel;
+import cn.weaponmod.api.debug.IItemRenderInfProvider;
 import cn.weaponmod.client.render.RenderUtils;
 
 /**
@@ -36,7 +37,7 @@ import cn.weaponmod.client.render.RenderUtils;
  * @author WeAthFolD
  *
  */
-public class RenderModelItem implements IItemRenderer {
+public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 
 	Tessellator t = Tessellator.instance;
 	IItemModel model;
@@ -47,6 +48,7 @@ public class RenderModelItem implements IItemRenderer {
 	 * 模型处于标准位置的旋转角度。
 	 */
 	public float rotationY = 0.0F, rotationX = 0.0F, rotationZ = 0.0F;
+	
 	/**
 	 * 模型处于标准位置的位移量。
 	 */
@@ -55,7 +57,7 @@ public class RenderModelItem implements IItemRenderer {
 	/**
 	 * 装备时模型向前移动的量。
 	 */
-	public float equip_forward = 0.0F;
+	public float equipOffsetX = 0.0F, equipOffsetY = 0.0F, equipOffsetZ = 0.0F;
 	
 	/**
 	 * 物品栏渲染的大小缩放比例。
@@ -116,7 +118,14 @@ public class RenderModelItem implements IItemRenderer {
 	}
 	
 	public RenderModelItem setEquipForward(float b) {
-		equip_forward = b;
+		equipOffsetX = b;
+		return this;
+	}
+	
+	public RenderModelItem setEquipOffset(float b0, float b1, float b2) {
+		equipOffsetX = b0;
+		equipOffsetY = b1;
+		equipOffsetZ = b2;
 		return this;
 	}
 	
@@ -187,7 +196,6 @@ public class RenderModelItem implements IItemRenderer {
 	
 	@Override
 	public final boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		// TODO Auto-generated method stub
 		switch (type) {
 		case EQUIPPED:
 		case EQUIPPED_FIRST_PERSON:
@@ -200,7 +208,6 @@ public class RenderModelItem implements IItemRenderer {
 		default:
 			return false;
 		}
-
 	}
 
 	@Override
@@ -234,7 +241,6 @@ public class RenderModelItem implements IItemRenderer {
 			break;
 
 		}
-
 	}
 	
 	public void renderInventory() {
@@ -279,16 +285,17 @@ public class RenderModelItem implements IItemRenderer {
 
 		if (item.stackTagCompound == null)
 			item.stackTagCompound = new NBTTagCompound();
-
+		
 		GL11.glPushMatrix();
 		RenderUtils.loadTexture(texturePath);
 		float sc2 = 0.0625F;
 		GL11.glRotatef(40F, 0, 0, 1);
-		GL11.glTranslatef(equip_forward, 0F, 0F);
+		GL11.glTranslatef(equipOffsetX, equipOffsetY, equipOffsetZ);
 		GL11.glRotatef(90, 0, -1, 0);
 		renderAtStdPosition(getModelAttribute(item, entity));
 		
 		GL11.glPopMatrix();
+		
 	}
 	
 	/**
@@ -303,7 +310,7 @@ public class RenderModelItem implements IItemRenderer {
 		GL11.glTranslatef(xOffset, yOffset, zOffset);
 		GL11.glScalef(-1F , -1F , 1F );
 		GL11.glRotatef(rotationZ, 0, 0, 1);
-		GL11.glRotatef(rotationY + 180F, 0, 1, 0);
+		GL11.glRotatef(rotationY + 180F, 0, 1, 0); //←特别注意
 		GL11.glRotatef(rotationX, 1, 0, 0);
 		model.render(null, 0.0625F, i);
 		GL11.glEnable(GL11.GL_CULL_FACE);
@@ -311,6 +318,21 @@ public class RenderModelItem implements IItemRenderer {
 	
 	protected float getModelAttribute(ItemStack item, EntityLivingBase entity) {
 		return 0.1F;
+	}
+
+	@Override
+	public String getFullInformation() {
+		StringBuilder sb =  new StringBuilder("[POSITION: " + formatNumber(xOffset, yOffset, zOffset) + "]\n");
+		sb.append( "[ROTATION : ").append(formatNumber(rotationX, rotationY, rotationZ)).append("]\n");
+		return sb.toString();
+	}
+
+	private <T> String formatNumber(T... nums) {
+		StringBuilder sb = new StringBuilder("(");
+		for(T n : nums) {
+			sb.append(n).append(", ");
+		}
+		return sb.append(")").toString();
 	}
 
 

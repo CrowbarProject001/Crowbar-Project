@@ -17,6 +17,7 @@ package cn.lambdacraft.deathmatch.register;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
+import cn.lambdacraft.deathmatch.client.model.ModelGauss;
 import cn.lambdacraft.deathmatch.item.weapon.Weapon_Satchel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,6 +25,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
@@ -35,6 +37,8 @@ import net.minecraftforge.event.entity.player.EntityInteractEvent;
  */
 public class DMEventHandler {
 
+	private ModelGauss model = new ModelGauss();
+	
 	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
 	public void onRenderGameOverlay(RenderGameOverlayEvent event) {
@@ -53,6 +57,13 @@ public class DMEventHandler {
 			event.setCanceled(true);
 			HEVRenderingUtils.drawCrosshair(player.getCurrentEquippedItem(), event.resolution.getScaledWidth(), event.resolution.getScaledHeight());
 		}
+	}
+	
+	@ForgeSubscribe
+	@SideOnly(Side.CLIENT)
+	public void onRenderPlayer(RenderPlayerEvent event) {
+		model.render(null, 1F, 1.0F);
+		System.out.println("Onrenderplayer");
 	}
 	
 	  @ForgeSubscribe

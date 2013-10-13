@@ -95,11 +95,11 @@ public class ClientTickHandler implements ITickHandler {
 				LightValue.addData(var9, var10, var11);
 				Minecraft.getMinecraft().theWorld.setLightValue(EnumSkyBlock.Block, var9, var10, var11, 15);
 				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10 + 1, var11);
-				/*Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10 - 1, var11);
+				//Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10 - 1, var11);
 				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9 - 1, var10, var11);
-				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9 + 1, var10, var11);
+				//Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9 + 1, var10, var11);
 				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10, var11 - 1);
-				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10, var11 + 1);*/
+				//Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10, var11 + 1);
 			}
 		}
 		/*TODO:注意效率问题……

@@ -11,7 +11,7 @@ import cn.weaponmod.network.NetDeathmatch;
 public class KeyReload implements IKeyProcess {
 
 	@Override
-	public void onKeyDown(boolean isEnd) {
+	public void onKeyDown(int keyCode, boolean isEnd) {
 		if(isEnd)
 			return;
 		Minecraft mc = Minecraft.getMinecraft();
@@ -29,7 +29,7 @@ public class KeyReload implements IKeyProcess {
 	}
 
 	@Override
-	public void onKeyUp(boolean isEnd) {
+	public void onKeyUp(int keyCode, boolean isEnd) {
 	}
 
 	private void onReload(ItemStack is, InformationBullet inf,

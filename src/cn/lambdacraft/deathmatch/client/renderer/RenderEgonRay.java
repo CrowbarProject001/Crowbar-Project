@@ -101,7 +101,7 @@ public class RenderEgonRay extends RenderEntity {
 		int rnd = (int) (rand.nextFloat() * 3);
 		Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(ClientProps.EGON_BEAM_PATH[rnd]));
 		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA(160, 141, 204, 150);
+		tessellator.setColorRGBA(160, 141, 204, 220);
 		tessellator.setBrightness(15728880);
 		
 		addVertex(v1, 0 + du, 0);

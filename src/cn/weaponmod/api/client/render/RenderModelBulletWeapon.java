@@ -17,14 +17,17 @@ import java.util.Random;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
+import cn.weaponmod.WeaponMod;
 import cn.weaponmod.api.client.IItemModel;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
+import cn.weaponmod.events.ItemHelper;
 
 /**
  * @author WeAthFolD
@@ -59,7 +62,10 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 	@Override
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLivingBase entity, ItemRenderType type) {
-		doRenderEquipped(item, render, entity, true, type);
+		boolean left = true;
+		if(entity instanceof EntityPlayer)
+			left = ItemHelper.getUsingTickLeft((EntityPlayer) entity, false) == 0 ? true : ItemHelper.getUsingSide((EntityPlayer) entity);
+		doRenderEquipped(item, render, entity, left, type);
 	}
 	
 	@Override
@@ -94,6 +100,8 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 		
 		GL11.glRotatef(2.5F * MathHelper.sin(inf.getDeltaTick(left) * (float)Math.PI * 0.025F), 0.0F, 0.0F, 1.0F);
 		super.renderEquipped(item, render, entity, type);
+		if(WeaponMod.DEBUG)
+			mt = 1;
 		if(mt > 0) {
 			mt = 3 - mt;
 			RenderBulletWeapon.renderMuzzleflashIn2d(t, muzzleflash[mt < muzzleflash.length ? mt : muzzleflash.length - 1], tx, ty, tz);

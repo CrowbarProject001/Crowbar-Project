@@ -84,7 +84,9 @@ public class ClientProps {
 	private static final Random RNG = new Random();
 	
 
-	public static final String GAUSS_BEAM_PATH = "lambdacraft:textures/entities/gaussbeam.png",
+	public static final String 
+			GAUSS_BEAM_PATH = "lambdacraft:textures/entities/gaussbeam.png",
+			CROSSBOW_PATH = "lambdacraft:textures/entities/crossbow.png",
 			TRIPMINE_FRONT_PATH = "lambdacraft:textures/blocks/tripmine_front.png",
 			TRIPMINE_SIDE_PATH = "lambdacraft:textures/blocks/tripmine_side.png",
 			TRIPMINE_TOP_PATH = "lambdacraft:textures/blocks/tripmine_top.png",
@@ -141,6 +143,9 @@ public class ClientProps {
 			SKYBOX_PATH = "lambdacraft:textures/sky/xen%s.png",
 			AMETHYST_PATH = "lambdacraft:textures/blocks/amethyst_model.png", 
 			XENLIGHT_PATH = "lambdacraft:textures/blocks/xenlight_model.png", 
+			HANDGUN_MDL_PATH = "lambdacraft:textures/entities/9mmhandgun.png",
+			PYTHON_MDL_PATH = "lambdacraft:textures/entities/357.png",
+			EGON_HEAD_PATH = "lambdacraft:textures/entities/egon_head.png",
 			EGON_BEAM_PATH[] = {"lambdacraft:textures/entities/plasma0.png", 
 		"lambdacraft:textures/entities/plasma1.png", 
 		"lambdacraft:textures/entities/plasma2.png"},
@@ -154,9 +159,6 @@ public class ClientProps {
 			ITEM_SATCHEL_PATH[] = {
 					"lambdacraft:textures/items/weapon_satchel1.png",
 					"lambdacraft:textures/items/weapon_satchel2.png" },
-			CROSSBOW_FRONT_PATH[] = {
-					"lambdacraft:textures/items/crossbow_front0.png",
-					"lambdacraft:textures/items/crossbow_front1.png" },
 			EGON_BEAM_PATH1 = "lambdacraft:textures/entities/egon_ray2.png",
 			HEV_ARMOR_PATH[] = { "lambdacraft:textures/armor/hev_1.png",
 					"lambdacraft:textures/armor/hev_2.png" },

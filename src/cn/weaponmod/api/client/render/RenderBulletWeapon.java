@@ -123,7 +123,8 @@ public class RenderBulletWeapon implements IItemRenderer {
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
 			boolean left = ItemHelper.getUsingTickLeft(player, false) == 0 ? true : ItemHelper.getUsingSide(player);
-			boolean firstPerson = (entity == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) && Minecraft.getMinecraft().currentScreen == null;
+			boolean firstPerson = (entity == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) 
+					&& Minecraft.getMinecraft().currentScreen == null;
 			int mt = inf == null ? -1 : (left ? inf.muzzle_left : inf.muzzle_right);
 			if (left ? inf.lastShooting_left : inf.lastShooting_right) {
 				int dt = inf.getDeltaTick(left);
@@ -178,8 +179,8 @@ public class RenderBulletWeapon implements IItemRenderer {
 		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
 		RenderUtils.loadTexture(texture);
 
-		GL11.glTranslated(tx, ty + 0.1F, tz + 0.1F);
 		GL11.glRotatef(45, 0.0F, 0.0F, 1.0F);
+		GL11.glTranslated(tx, ty + 0.1F, tz + 0.1F);
 
 		t.startDrawingQuads();
 		t.setColorRGBA_F(0.8F, .8F, .8F, 1.0F);

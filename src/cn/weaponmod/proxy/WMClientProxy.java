@@ -5,7 +5,11 @@ import net.minecraft.client.settings.KeyBinding;
 
 import org.lwjgl.input.Keyboard;
 
+import cn.weaponmod.WeaponMod;
 import cn.weaponmod.client.WMClientTickHandler;
+import cn.weaponmod.client.keys.Debug_KeyMoving;
+import cn.weaponmod.client.keys.Debug_ProcessorModel;
+import cn.weaponmod.client.keys.Debug_ProcessorWeapon;
 import cn.weaponmod.client.keys.KeyClicking;
 import cn.weaponmod.client.keys.KeyReload;
 import cn.weaponmod.client.render.RenderBullet;
@@ -30,6 +34,17 @@ public class WMClientProxy extends WMCommonProxy{
 		WMKeys.addKey(mc.gameSettings.keyBindAttack, false, new KeyClicking(true));
 		WMKeys.addKey(mc.gameSettings.keyBindUseItem, false, new KeyClicking(false));
 		WMKeys.addKey(new KeyBinding("reload", Keyboard.KEY_R), false, new KeyReload());
+		if(WeaponMod.DEBUG) {
+			Debug_KeyMoving key = new Debug_KeyMoving();
+			key.addProcess(new Debug_ProcessorModel());
+			key.addProcess(new Debug_ProcessorWeapon());
+			WMKeys.addKey(new KeyBinding("up", Keyboard.KEY_UP), true, key);
+			WMKeys.addKey(new KeyBinding("down", Keyboard.KEY_DOWN), true, key);
+			WMKeys.addKey(new KeyBinding("left", Keyboard.KEY_LEFT), true, key);
+			WMKeys.addKey(new KeyBinding("right", Keyboard.KEY_RIGHT), true, key);
+			WMKeys.addKey(new KeyBinding("forward", Keyboard.KEY_NUMPAD8), true, key);
+			WMKeys.addKey(new KeyBinding("back", Keyboard.KEY_NUMPAD2), true, key);
+		}
 		
 		TickRegistry.registerTickHandler(new WMKeys(), Side.CLIENT);
 		TickRegistry.registerTickHandler(cth, Side.CLIENT);

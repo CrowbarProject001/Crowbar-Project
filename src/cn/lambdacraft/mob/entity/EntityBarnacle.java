@@ -20,6 +20,7 @@ import java.util.List;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -101,10 +102,10 @@ public class EntityBarnacle extends CBCEntityMob {
 			super.onUpdate();
 			return;
 		}
+		
 		this.updateTentacle();
 		this.updatePullingEntity();
 		if(pullingEntity == null) {
-			
 			//Calculate tracking range
 			if(--tickBreaking <= 0) {
 				MotionXYZ begin = new MotionXYZ(posX, posY, posZ, 0.0, -1.0, 0.0);
@@ -144,7 +145,7 @@ public class EntityBarnacle extends CBCEntityMob {
 			} else {
 				if(++tickBeforeLastAttack >= 20) {
 					tickBeforeLastAttack = 0;
-					if(!(pullingEntity instanceof EntityLiving)) {
+					if(!(pullingEntity instanceof EntityLivingBase)) {
 						stopPullingEntity();
 					} else {
 						pullingEntity.attackEntityFrom(DamageSource.causeMobDamage(this), 15);
@@ -164,11 +165,9 @@ public class EntityBarnacle extends CBCEntityMob {
 		if(worldObj.getBlockId(MathHelper.floor_double(posX), (int)posY + 1, MathHelper.floor_double(posZ)) == 0) {
 			//TryAttach
 			if(ticksExisted < 10) {
-				
 				MotionXYZ mo = new MotionXYZ(this);
-				MovingObjectPosition result = worldObj.rayTraceBlocks_do_do(mo.asVec3(worldObj), mo.asVec3(worldObj).addVector(0.0, 40.0, 0.0), true, false);
+				MovingObjectPosition result = worldObj.clip(mo.asVec3(worldObj), mo.asVec3(worldObj).addVector(0.0, 40.0, 0.0));
 				if(result != null && worldObj.isBlockSolidOnSide(result.blockX, result.blockY, result.blockZ, ForgeDirection.DOWN)) {
-					
 					if(worldObj.isBlockNormalCube(result.blockX, result.blockY, result.blockZ)) {
 						this.setPosition(result.blockX + 0.5, result.blockY - 1.0, result.blockZ + 0.5);
 						AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB(posX - 2, posY - 2, posZ - 2, posX + 2, posY + 2, posZ + 2);
@@ -176,9 +175,7 @@ public class EntityBarnacle extends CBCEntityMob {
 						if(list == null || list.size() > 0)
 							this.setDead();
 					} else this.setDead();
-					
 				} else this.setDead();
-				
 			} else {
 				setHealth(0);
 				detach = true;
@@ -204,6 +201,8 @@ public class EntityBarnacle extends CBCEntityMob {
 		} else {
 			dataWatcher.updateObject(12, Byte.valueOf((byte)tentacleLength));
 			dataWatcher.updateObject(14, Byte.valueOf((byte)tickBreaking));
+			if(this.pullingEntity != null)
+				dataWatcher.updateObject(13, Integer.valueOf(pullingEntity.entityId));
 		}
 	}
 	
@@ -211,7 +210,8 @@ public class EntityBarnacle extends CBCEntityMob {
 		if(worldObj.isRemote) {
 			int id = dataWatcher.getWatchableObjectInt(13);
 			Entity e = worldObj.getEntityByID(id);
-			pullingEntity = e;
+			if(e == null || (e != null && e.isEntityAlive()))
+				pullingEntity = e;
 		}
 	}
 	
