@@ -110,7 +110,7 @@ public class GenericUtils {
 		return sndPath.concat(String.valueOf((char)('a' + a)));
 	}
 
-	public static <T, U> T getKeyByValueFromMap(Map<T, U>map, Object value) {
+	public static <T, U> T getKeyByValueFromMap(Map<T, U>map, U value) {
         T o = null;  
         ArrayList all = new ArrayList(); // 建一个数组用来存放符合条件的KEY值  
         Set set = map.entrySet();  

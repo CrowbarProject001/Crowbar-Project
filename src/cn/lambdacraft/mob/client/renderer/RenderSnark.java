@@ -21,10 +21,10 @@ public class RenderSnark extends RenderModelItem {
 	 */
 	public RenderSnark() {
 		super(new ModelSnark(), ClientProps.SQUEAK_MOB_PATH);
-		this.setRotationY(-195);
+		this.setRotation(0F, -195F, 0F);
 		this.setScale(1.4F);
 		this.setOffset(0F, 1.35F, -.15F);
-		this.setEquipForward(0.4F);
+		this.setEquipOffset(0.0F, 0.4F, 0.0F);
 		this.setRenderInventory(false);
 	}
 	

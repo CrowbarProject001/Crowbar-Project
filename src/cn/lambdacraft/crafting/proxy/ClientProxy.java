@@ -38,7 +38,8 @@ public class ClientProxy extends Proxy {
 				new RenderWire());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySpray.class,
 				new RenderSpray());
-		MinecraftForgeClient.registerItemRenderer(CBCItems.battery.itemID, new RenderModelItem(new ModelBattery(), ClientProps.BATTERY_PATH).setInventorySpin(false).setEquipForward(0.4F).setScale(.6F).setInvScale(1.5F).setOffset(-0.25F, 1.5F, -0.25F).setInvOffset(5.0F, 7.0F).disableInvRotation());
+		MinecraftForgeClient.registerItemRenderer(CBCItems.battery.itemID, new RenderModelItem(new ModelBattery(), ClientProps.BATTERY_PATH).setInventorySpin(false)
+				.setEquipOffset(0.4F, 0.0F, 0.0F).setScale(.6F).setInvScale(1.5F).setOffset(-0.25F, 1.5F, -0.25F).setInvOffset(5.0F, 7.0F));
 	}
 	
 }

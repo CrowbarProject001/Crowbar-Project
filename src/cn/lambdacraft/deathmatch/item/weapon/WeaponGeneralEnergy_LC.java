@@ -13,7 +13,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import cn.lambdacraft.api.hud.IHudTip;
+import cn.lambdacraft.api.hud.IHudTipProvider;
+import cn.lambdacraft.crafting.register.CBCItems;
 import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.information.InformationBullet;
@@ -26,7 +30,7 @@ import cn.weaponmod.events.ItemHelper;
  * @author Administrator
  *
  */
-public class WeaponGeneralEnergy_LC extends WeaponGeneral {
+public class WeaponGeneralEnergy_LC extends WeaponGeneral implements IHudTipProvider {
 
 	public int jamTime;
 	protected String iconName = "";
@@ -262,6 +266,32 @@ public class WeaponGeneralEnergy_LC extends WeaponGeneral {
 		WMInformation.register(par1ItemStack, inf, player.worldObj);
 		return inf;
 
+	}
+
+	@Override
+	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
+		return new IHudTip[] {
+				new IHudTip() {
+
+					@Override
+					public Icon getRenderingIcon(ItemStack itemStack,
+							EntityPlayer player) {
+						return CBCItems.ammo_uranium.getIconFromDamage(0);
+					}
+
+					@Override
+					public int getTextureSheet(ItemStack itemStack) {
+						return itemStack.getItemSpriteNumber();
+					}
+
+					@Override
+					public String getTip(ItemStack itemStack,
+							EntityPlayer player) {
+						return String.valueOf(WeaponHelper.getAmmoCapacity(CBCItems.ammo_uranium.itemID, player.inventory));
+					}
+					
+				}
+		};
 	}
 
 }

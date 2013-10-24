@@ -15,6 +15,8 @@ import net.minecraft.world.World;
  */
 @SideOnly(Side.CLIENT)
 public class EntityXenPortalFX extends EntityPortalFX {
+	
+	public boolean isGreen = false;
 
 	/**
 	 * @param par1World
@@ -33,6 +35,26 @@ public class EntityXenPortalFX extends EntityPortalFX {
 		this.particleBlue *= 0.3F;
         this.particleGreen *= 0.9F;
         this.particleRed *= 0.3F;
+        this.particleScale = (1.0F + rand.nextFloat() * 0.2F) * 0.14F;
+        this.particleAlpha = 0.0F;
+        isGreen = rand.nextBoolean();
 	}
+	
+    public void onUpdate()
+    {
+    	this.particleAlpha = (ticksExisted < 10 ? ticksExisted / 10F : 1F) * 0.5F;;
+    	if(this.ticksExisted >= this.particleMaxAge - 10) {
+    		this.particleAlpha = (this.particleMaxAge - this.ticksExisted) * 0.05F;
+    	}
+    	super.onUpdate();
+    }
+    
+    public float getParticleAlpha() {
+    	return this.particleAlpha;
+    }
+    
+    public float getParticleScale() {
+    	return this.particleScale;
+    }
 
 }

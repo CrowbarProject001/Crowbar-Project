@@ -63,7 +63,7 @@ public class HEVRenderingUtils {
         //Health Section
         int xOffset = -90, yOffset = -45;
         if(ClientProps.HUD_drawInLeftCorner) {
-        	xOffset = -k / 2 + 8;
+        	xOffset = -k / 2 + 16;
         	yOffset = -20;
         	drawTexturedModalRect(k / 2 - 74, l - 50, 0, 64, 75, 21, 112, 32);
         }
@@ -103,13 +103,17 @@ public class HEVRenderingUtils {
 	}
 	
 	public static void drawCrosshair(ItemStack item, int k, int l) {
-		String xhairPath;
+		String xhairPath = null;
 		TextureManager engine = Minecraft.getMinecraft().renderEngine;
 		int h = 12;
 		if(item != null) {
-			if(item.getItem() instanceof ISpecialCrosshair)
+			if(item.getItem() instanceof ISpecialCrosshair) {
 				h = ((ISpecialCrosshair)item.getItem()).getHalfWidth();
-			xhairPath = ClientProps.getCrosshairPath(item.getItemName());
+				int i = ((ISpecialCrosshair)item.getItem()).getCrosshairID(item);
+				if(i >= 0)
+					xhairPath = ClientProps.xhair_path + "xhair" +  i + ".png";
+			} else
+				xhairPath = ClientProps.getCrosshairPath(item.getItemName());
 			
 			if(xhairPath == null)
 				xhairPath = ClientProps.DEFAULT_XHAIR_PATH;
@@ -147,24 +151,27 @@ public class HEVRenderingUtils {
 	}
 	
 	private static void drawArmorTip(EntityPlayer player,TextureManager renderEngine, int k, int l) {
-		for(int i = 0; i < 4 ; i ++) {
+		boolean b = !ClientProps.HUD_drawInLeftCorner;
+		int tx = b ? 5 : k - 26, tx2 = b ? 21 : k - 10;
+		for(int i = 0, xOffset = b ? 10 : -10 ; i < 4; i ++) {
 			ItemStack is = player.inventory.armorInventory[i];
 			ArmorHEV hev;
 			if(is != null && is.getItem() instanceof ArmorHEV) {
 				hev = (ArmorHEV) is.getItem();
 				int energy = hev.discharge(is, Integer.MAX_VALUE, 0, true, true);
 				int heightToDraw = energy * 16 / is.getMaxDamage();
-				int height = l - 50 - i * 16;
+				int height = l - 65 - i * 16;
 				if (is.getItemSpriteNumber() == 0) {
 					renderEngine.func_110577_a(renderEngine.func_130087_a(0)); 
 				} else {
 					renderEngine.func_110577_a(renderEngine.func_130087_a(1)); 
 				}
+				xOffset = (int) (xOffset * 0.7);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
-				drawTexturedModelRectFromIcon(5, height, hev.getIcon(is, 0), 16, 16);
+				drawTexturedModelRectFromIcon(tx + xOffset, height, hev.getIcon(is, 0), 16, 16);
 				renderEngine.func_110577_a(new ResourceLocation(ClientProps.HEV_HUD_PATH));
 				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
-				drawTexturedModalRect(24, height + 16 - heightToDraw, 32, 32 - heightToDraw, 16, heightToDraw);
+				drawTexturedModalRect(tx2 + xOffset, height + 16 - heightToDraw, 32, 32 - heightToDraw, 16, heightToDraw);
 			}
 		}
 	}
@@ -201,7 +208,7 @@ public class HEVRenderingUtils {
 				drawTexturedModelRectFromIcon(k - 30, startHeight, icon, 16, 16);
 				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
 				//Bind the texture by Rikka0_0
-				engine.func_110577_a(new ResourceLocation(ClientProps.HEV_HUD_PATH));
+				RenderUtils.loadTexture(ClientProps.HEV_HUD_PATH);
 			}
 			drawTipStringAt(s, width, startHeight);
 			startHeight += 18;

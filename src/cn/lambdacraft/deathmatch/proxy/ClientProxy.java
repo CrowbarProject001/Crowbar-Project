@@ -16,6 +16,7 @@ package cn.lambdacraft.deathmatch.proxy;
 
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 import cn.lambdacraft.core.client.renderer.RenderCrossedProjectile;
 import cn.lambdacraft.core.client.renderer.RenderEmpty;
 import cn.lambdacraft.core.client.renderer.RenderIcon;
@@ -23,15 +24,19 @@ import cn.lambdacraft.core.client.renderer.RenderModel;
 import cn.lambdacraft.core.client.renderer.RenderModelProjectile;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.core.register.CBCSoundEvents;
+import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.block.TileArmorCharger;
 import cn.lambdacraft.deathmatch.block.TileHealthCharger;
 import cn.lambdacraft.deathmatch.block.TileTripmine;
+import cn.lambdacraft.deathmatch.client.DMClientEventHandler;
 import cn.lambdacraft.deathmatch.client.model.Model357;
+import cn.lambdacraft.deathmatch.client.model.ModelAR;
 import cn.lambdacraft.deathmatch.client.model.ModelBattery;
 import cn.lambdacraft.deathmatch.client.model.ModelGrenade;
 import cn.lambdacraft.deathmatch.client.model.ModelHandgun;
 import cn.lambdacraft.deathmatch.client.model.ModelMedkit;
 import cn.lambdacraft.deathmatch.client.model.ModelRocket;
+import cn.lambdacraft.deathmatch.client.model.ModelUranium;
 import cn.lambdacraft.deathmatch.client.renderer.RenderCrossbow;
 import cn.lambdacraft.deathmatch.client.renderer.RenderEgon;
 import cn.lambdacraft.deathmatch.client.renderer.RenderEgonRay;
@@ -68,6 +73,7 @@ import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.xen.client.EntityXenPortalFX;
 import cn.weaponmod.api.client.render.RenderBulletWeapon;
 import cn.weaponmod.api.client.render.RenderModelBulletWeapon;
+import cn.weaponmod.api.client.render.RenderModelItem;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -106,7 +112,7 @@ public class ClientProxy extends Proxy {
 		"hev_logon", "health_critical",
 		"health_dropping", "heat_damage", "hev_shutdown", "major_fracture",
 		"morphine_shot", "radiation_detected"
-		};
+	};
 
 	
 	@Override
@@ -118,6 +124,7 @@ public class ClientProxy extends Proxy {
 		for (String s : SND_HEV)
 			CBCSoundEvents.addSoundPath("hev/" + s);
 		CBCSoundEvents.addSoundWithVariety("weapons/electro", 3);
+		MinecraftForge.EVENT_BUS.register(new DMClientEventHandler());
 	}
 	
 	@Override
@@ -140,22 +147,29 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityBattery.class,new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH,0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityMedkit.class,new RenderModel(new ModelMedkit(), ClientProps.MEDKIT_ENT_PATH,1.0F));
 		RenderingRegistry.registerEntityRenderingHandler(GaussParticleFX.class, new RenderGlow());
-		RenderModelBulletWeapon handgun_render = new RenderModelBulletWeapon(new ModelHandgun(), DMItems.weapon_9mmhandgun, ClientProps.HANDGUN_MDL_PATH,
+		RenderModelBulletWeapon handgun_render = new RenderModelBulletWeapon(new ModelHandgun(), DMItems.weapon_9mmhandgun, ClientProps.HANDGUN_MDL_PATH, 
 				ClientProps.MUZZLEFLASH);
 		RenderModelBulletWeapon pyt_render = new RenderModelBulletWeapon(new Model357(), DMItems.weapon_357, ClientProps.PYTHON_MDL_PATH, ClientProps.MUZZLEFLASH);
-		pyt_render.setMuzzleflashOffset(0.484F, -0.07F, 0.0F).setRotationY(180F).setOffset(0.002F, 0.402F, -0.314F).setRotationY(181.13414F).setEquipOffset(1.06F, -0.278F, 0.016F).setInventorySpin(false).setScale(1.212F)
-			.setInvOffset(-2.148F, 3.462F).setInvScale(0.912F); //爱死debugger了
-		handgun_render.setMuzzleflashOffset(0.294F, -0.19F, 0.0620F).setInventorySpin(false).setRotationY(180F).setOffset(0.0F, 0.11F, -0.30F).setEquipOffset(0.91F, -0.12F, 0.132F)
-			.setScale(2.24F).setInvOffset(0.352F, 2.166F).setInvScale(1.164F);
+		RenderModelBulletWeapon ar_render = new RenderModelBulletWeapon(new ModelAR(), DMItems.weapon_9mmAR, ClientProps.NMMAR_MDL_PATH, ClientProps.MUZZLEFLASH);
+		RenderModelItem uranium_render = new RenderModelItem(new ModelUranium(), ClientProps.URANIUM_MDL_PATH);
+		pyt_render.setMuzzleflashOffset(0.484F, -0.07F, 0.0F).setRotation(0F, 180F, 0F).setOffset(0.002F, 0.402F, -0.314F).setRotation(0F, 181.13414F, 0F).setEquipOffset(1.06F, -0.278F, 0.016F)
+			.setInventorySpin(false).setScale(1.212F).setInvOffset(-2.45F, 3.04F).setInvScale(0.912F).setInvRotation(-35.796F, -94.770F, -3.452F); //爱死debugger了
+		handgun_render.setMuzzleflashOffset(0.294F, -0.19F, 0.0620F).setInventorySpin(false).setRotation(0F, 180F, 0F).setOffset(0.0F, 0.11F, -0.30F).setEquipOffset(0.91F, -0.12F, 0.132F)
+			.setScale(2.24F).setInvOffset(-0.422F, 1.90F).setInvScale(1.164F).setInvRotation(-40.54F, -66F, 8F);
+		ar_render.setMuzzleflashOffset(0.498F, -0.11F, -0.052F).setOffset(0.0F, 0.242F, -0.588F).setEquipOffset(0.852F, -0.118F, -0.01F)
+			.setScale(1.352F).setRotation(0F, -177.768F, 0F).setInventorySpin(false).setInvOffset(-0.408F, 2.75F).setInvScale(0.908F).setInvRotation(-42.78F, -65.428F, -11F);
+		uranium_render.setInventorySpin(false).setOffset(0F, -0.14F, 0F).setEquipRotation(-130.276F, -42.034F, -101.67F).setEquipOffset(0.562F, 0.118F, -0.248F).setRotation(0F, 0F, 0F)
+		.setInvRotation(0F, -45F, -26F).setInvOffset(0.01F, 2.318F).setScale(1.05F).setEntityItemRotation(0F, 0F, 0F).setInvScale(1.424F);
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_egon.itemID,new RenderEgon());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_gauss.itemID,new RenderGauss());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmhandgun.itemID, handgun_render);
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID, pyt_render);
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun,0.08F, ClientProps.MUZZLEFLASH));
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_9mmAR, 0.10F, ClientProps.MUZZLEFLASH));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID, ar_render);
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F, ClientProps.MUZZLEFLASH));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crowbar_el.itemID, new RenderItemElCrowbar());
+		MinecraftForgeClient.registerItemRenderer(CBCItems.ammo_uranium.itemID, uranium_render);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTripmine.class,new RenderTileTripmine(DMBlocks.blockTripmine));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileArmorCharger.class,new RenderTileCharger(DMBlocks.armorCharger));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileHealthCharger.class,new RenderTileHeCharger(DMBlocks.healthCharger));

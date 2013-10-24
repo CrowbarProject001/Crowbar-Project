@@ -36,10 +36,11 @@ public class RenderCrossbow extends RenderModelItem {
 		super(new ModelCrossbow(), ClientProps.CROSSBOW_PATH);
 		//教练用debugger实在是太方便了！
 		setOffset(-0.004F, 0.316F, -0.454F);
-		setRotationY(173.95F);
+		setRotation(0F, 173.95F, 0F);
 		setScale(1.65F);
 		this.setEquipOffset(0.906F, -0.364F, 0.058F);
-		this.setInvOffset(-0.024F, 3.662F);
+		this.setInvRotation(-43.450F, -40.556F, 25.936F);
+		this.setInvOffset(-2.45F, 3.8F);
 		this.setInvScale(.78F);
 		this.inventorySpin = false;
 	}

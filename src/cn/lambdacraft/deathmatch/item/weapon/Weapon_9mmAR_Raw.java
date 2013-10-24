@@ -90,57 +90,5 @@ public class Weapon_9mmAR_Raw extends WeaponGeneralBullet_LC {
 	public int getOffset(boolean left) {
 		return 0;
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
-		IHudTip[] tips = new IHudTip[2];
-		tips[1] = new IHudTip() {
-
-			@Override
-			public Icon getRenderingIcon(ItemStack itemStack,
-					EntityPlayer player) {
-				if(Item.itemsList[ammoID] != null){
-					return Item.itemsList[ammoID].getIconIndex(itemStack);
-				}
-				return null;
-			}
-
-			@Override
-			public String getTip(ItemStack itemStack, EntityPlayer player) {
-				return (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1) + "|" + WeaponHelper.getAmmoCapacity(ammoID, player.inventory);
-			}
-
-			@Override
-			public int getTextureSheet(ItemStack itemStack) {
-				return itemStack.getItemSpriteNumber();
-			}
-			
-		};
-		
-		tips[0] = new IHudTip() {
-
-			@Override
-			public Icon getRenderingIcon(ItemStack itemStack,
-					EntityPlayer player) {
-				if(Item.itemsList[ammoID] != null){
-					return CBCItems.ammo_argrenade.getIconIndex(itemStack);
-				}
-				return null;
-			}
-
-			@Override
-			public String getTip(ItemStack itemStack, EntityPlayer player) {
-				return String.valueOf(WeaponHelper.getAmmoCapacity(CBCItems.ammo_argrenade.itemID, player.inventory));
-			}
-
-			@Override
-			public int getTextureSheet(ItemStack itemStack) {
-				return itemStack.getItemSpriteNumber();
-			}
-			
-		};
-		return tips;
-	}
 
 }

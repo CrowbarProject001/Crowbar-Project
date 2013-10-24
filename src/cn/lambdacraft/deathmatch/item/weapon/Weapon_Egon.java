@@ -137,4 +137,9 @@ public class Weapon_Egon extends WeaponGeneralEnergy_LC implements ISpecialCross
 		return 8;
 	}
 
+	@Override
+	public int getCrosshairID(ItemStack is) {
+		return -1;
+	}
+
 }

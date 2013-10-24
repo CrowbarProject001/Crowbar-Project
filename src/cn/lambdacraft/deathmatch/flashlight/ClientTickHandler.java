@@ -125,7 +125,7 @@ public class ClientTickHandler implements ITickHandler {
 						if (var8 == 0) {
 							--var6;
 						} else if (var8 == 1) {
-							++var6;
+							++var6; 
 						} else {
 							if (var8 == 2) {
 								--var7;

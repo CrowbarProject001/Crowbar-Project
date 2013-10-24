@@ -3,6 +3,7 @@
  */
 package cn.weaponmod.client.keys;
 
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
 import cn.weaponmod.api.client.render.RenderModelBulletWeapon;
 import cn.weaponmod.api.client.render.RenderModelItem;
@@ -46,87 +47,54 @@ public class Debug_ProcessorModel<T extends RenderModelItem> implements
 		case 4:
 			s = onSetInvScale(render, key, amtToAdd);
 			break;
+		case 5:
+			s = "[INV ROTATION : " + stdSet(render.invRotation, key, amtToAdd) + "]";
+			break;
+		case 6:
+			s = "[EQUIP ROTATION : " + stdSet(render.equipRotation, key, amtToAdd) + "]";
+			break;
 		}
 		if(s != "")
 			System.out.println(s);
 		return s;
 	}
-
-	private String onSetOffset(RenderModelItem render, EnumKey key, float factor) {
+	
+	private String stdSet(Vec3 vec, EnumKey key, float factor) {
 		switch (key) {
 		case UP:
-			render.yOffset += factor;
+			vec.yCoord += factor;
 			break;
 		case DOWN:
-			render.yOffset -= factor;
+			vec.yCoord -= factor;
 			break;
 		case LEFT:
-			render.xOffset -= factor;
+			vec.xCoord -= factor;
 			break;
 		case RIGHT:
-			render.xOffset += factor;
+			vec.xCoord += factor;
 			break;
 		case FORWARD:
-			render.zOffset += factor;
+			vec.zCoord += factor;
 			break;
 		case BACK:
-			render.zOffset -= factor;
+			vec.zCoord -= factor;
 			break;
 		}
-		return "[OFFSET : (" + render.xOffset + ", " + render.yOffset + ", "
-				+ render.zOffset + ") ]";
+		return vec.toString();
+	}
+
+	private String onSetOffset(RenderModelItem render, EnumKey key, float factor) {
+		return "[OFFSET : " + stdSet(render.stdOffset, key, factor) + "]";
 	}
 
 	private String onSetEquipOffset(RenderModelItem render, EnumKey key,
 			float factor) {
-		switch (key) {
-		case UP:
-			render.equipOffsetY += factor;
-			break;
-		case DOWN:
-			render.equipOffsetY -= factor;
-			break;
-		case LEFT:
-			render.equipOffsetX -= factor;
-			break;
-		case RIGHT:
-			render.equipOffsetX += factor;
-			break;
-		case FORWARD:
-			render.equipOffsetZ += factor;
-			break;
-		case BACK:
-			render.equipOffsetZ -= factor;
-			break;
-		}
-		return "[EQUIP OFFSET : (" + render.equipOffsetX + ", "
-				+ render.equipOffsetY + ", " + render.equipOffsetZ + ") ]";
+		return "[EQUIP OFFSET : " + stdSet(render.equipOffset, key, factor) + "]";
 	}
 
 	private String onSetRotation(RenderModelItem render, EnumKey key,
 			float factor) {
-		switch (key) {
-		case UP:
-			render.rotationY += factor;
-			break;
-		case DOWN:
-			render.rotationY -= factor;
-			break;
-		case LEFT:
-			render.rotationX -= factor;
-			break;
-		case RIGHT:
-			render.rotationX += factor;
-			break;
-		case FORWARD:
-			render.rotationZ += factor;
-			break;
-		case BACK:
-			render.rotationZ -= factor;
-			break;
-		}
-		return "[ROTATION: " + "(" + render.rotationX + ", " + render.rotationY
-				+ ", " + render.rotationZ + ") ]";
+		return "[ROTATION: " + stdSet(render.stdRotation, key, factor) + ") ]";
 	}
 
 	private String onSetScale(RenderModelItem render, EnumKey key, float factor) {
@@ -149,16 +117,16 @@ public class Debug_ProcessorModel<T extends RenderModelItem> implements
 			float factor) {
 		switch (key) {
 		case UP:
-			render.invOffsetY += factor;
+			render.invOffset.y += factor;
 			break;
 		case DOWN:
-			render.invOffsetY -= factor;
+			render.invOffset.y -= factor;
 			break;
 		case LEFT:
-			render.invOffsetX -= factor;
+			render.invOffset.x -= factor;
 			break;
 		case RIGHT:
-			render.invOffsetX += factor;
+			render.invOffset.x += factor;
 			break;
 		case FORWARD:
 			render.invScale += factor;
@@ -167,8 +135,7 @@ public class Debug_ProcessorModel<T extends RenderModelItem> implements
 			render.invScale -= factor;
 			break;
 		}
-		return "[INV OFFSET : (" + render.invOffsetX + ", " + render.invOffsetY
-				+ ") + , SCALE : " + render.invScale + "]";
+		return "[INV OFFSET : " +  render.invOffset +", SCALE : " + render.invScale + "]";
 	}
 
 	@Override
@@ -184,6 +151,10 @@ public class Debug_ProcessorModel<T extends RenderModelItem> implements
 			return "Equipped Offset XYZ";
 		case 4:
 			return "Inventory Offset XY & invScale";
+		case 5:
+			return "Inventory Rotation";
+		case 6:
+			return "Equip Rotation";
 		default:
 			return null;
 		}

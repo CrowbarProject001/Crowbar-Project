@@ -32,7 +32,7 @@ public class DMItems {
 	public static Weapon_Satchel weapon_satchel;
 	public static Weapon_Egon weapon_egon;
 	public static Weapon_9mmhandgun weapon_9mmhandgun;
-	public static Item weapon_9mmAR;
+	public static Weapon_9mmAR weapon_9mmAR;
 	public static Weapon_357 weapon_357;
 	public static Item weapon_shotgun;
 	public static Weapon_Hornet weapon_hornet;

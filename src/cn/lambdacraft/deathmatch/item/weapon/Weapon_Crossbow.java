@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entity.EntityCrossbowArrow;
@@ -24,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author WeAthFolD
  */
 public class Weapon_Crossbow extends WeaponGeneralBullet_LC implements
-		IModdable, IZoomable {
+		IModdable, IZoomable, ISpecialCrosshair {
 
 	public Icon[] sideIcons = new Icon[6];
 
@@ -154,7 +155,7 @@ public class Weapon_Crossbow extends WeaponGeneralBullet_LC implements
 
 	@Override
 	public String getModeDescription(int mode) {
-		return "mode.crossbow" + (mode == 0 ? 1 : 0);
+		return null;
 	}
 
 	private NBTTagCompound loadCompound(ItemStack itemStack) {
@@ -167,5 +168,15 @@ public class Weapon_Crossbow extends WeaponGeneralBullet_LC implements
 	public boolean isItemZooming(ItemStack stack, World world,
 			EntityPlayer player) {
 		return getMode(stack) == 1;
+	}
+
+	@Override
+	public int getHalfWidth() {
+		return 12;
+	}
+
+	@Override
+	public int getCrosshairID(ItemStack is) {
+		return getMode(is) == 1 ? 15 : 0;
 	}
 }

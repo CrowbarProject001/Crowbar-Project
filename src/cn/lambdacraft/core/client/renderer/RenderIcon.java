@@ -32,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderIcon extends Render {
 	
-	String icon;
+	protected String icon;
 	private boolean renderBlend = false;
 	protected float alpha = 1.0F;
 	private float size = 0.5F;

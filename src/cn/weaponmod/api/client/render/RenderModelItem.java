@@ -22,9 +22,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector2f;
 
 import cn.weaponmod.api.client.IItemModel;
 import cn.weaponmod.api.debug.IItemRenderInfProvider;
@@ -47,17 +49,27 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 	/**
 	 * 模型处于标准位置的旋转角度。
 	 */
-	public float rotationY = 0.0F, rotationX = 0.0F, rotationZ = 0.0F;
+	public Vec3 stdRotation = initVec();
 	
 	/**
 	 * 模型处于标准位置的位移量。
 	 */
-	public float xOffset = 0.00F, yOffset = 0.0F, zOffset = 0.0F;
+	public Vec3 stdOffset = initVec();
+	
+	/**
+	 * 模型的标准缩放度。
+	 */
+	public float scale = 1.0F;
 	
 	/**
 	 * 装备时模型向前移动的量。
 	 */
-	public float equipOffsetX = 0.0F, equipOffsetY = 0.0F, equipOffsetZ = 0.0F;
+	public Vec3 equipOffset = initVec();
+	
+	/**
+	 * 装备时的特殊旋转角度。
+	 */
+	public Vec3 equipRotation = initVec();
 	
 	/**
 	 * 物品栏渲染的大小缩放比例。
@@ -67,12 +79,11 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 	/**
 	 * 物品栏渲染的位移。
 	 */
-	public float invOffsetX = 0.0F, invOffsetY = 0.0F;
+	public Vector2f invOffset = new Vector2f();
 	
-	/**
-	 * 是否在物品栏渲染时帮助旋转。（向上45度）
-	 */
-	public boolean helpRotation = true;
+	public Vec3 entityItemRotation = initVec();
+	
+	public Vec3 invRotation = initVec();
 	
 	/**
 	 * 是否渲染物品栏。
@@ -90,7 +101,6 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 	public boolean inventorySpin = true;
 	
 	protected static Random RNG = new Random();
-	public float scale = 1.0F;
 	
 	/**
 	 * 喜闻乐见的构造器。
@@ -117,29 +127,23 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 		return this;
 	}
 	
-	public RenderModelItem setEquipForward(float b) {
-		equipOffsetX = b;
+	public RenderModelItem setEntityItemRotation(float b0, float b1, float b2) {
+		initVec(entityItemRotation, b0, b1, b2);
 		return this;
 	}
 	
 	public RenderModelItem setEquipOffset(float b0, float b1, float b2) {
-		equipOffsetX = b0;
-		equipOffsetY = b1;
-		equipOffsetZ = b2;
+		initVec(equipOffset, b0, b1, b2);
 		return this;
 	}
 	
-	public RenderModelItem setRotationY(float ro) {
-		rotationY = ro;
+	public RenderModelItem setRotation(float x, float y, float z) {
+		initVec(stdRotation, x, y, z);
 		return this;
 	}
 	
-	public RenderModelItem setRotationX(float ro) {
-		rotationX = ro;
-		return this;
-	}
-	public RenderModelItem setRotationZ(float ro) {
-		rotationZ = ro;
+	public RenderModelItem setInvRotation(float x, float y, float z) {
+		initVec(invRotation, x, y, z);
 		return this;
 	}
 	
@@ -148,8 +152,8 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 		return this;
 	}
 	
-	public RenderModelItem disableInvRotation() {
-		helpRotation = false;
+	public RenderModelItem setEquipRotation(float x, float y, float z) {
+		initVec(equipRotation, x, y, z);
 		return this;
 	}
 	
@@ -158,37 +162,24 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 		return this;
 	}
 	
-	public RenderModelItem setOffset(float offsetX, float offsetY) {
-		xOffset = offsetX;
-		yOffset = offsetY;
-		return this;
-	}
-	
 	public RenderModelItem setOffset(float offsetX, float offsetY, float offsetZ) {
-		xOffset = offsetX;
-		yOffset = offsetY;
-		zOffset = offsetZ;
+		initVec(stdOffset, offsetX, offsetY, offsetZ);
 		return this;
 	}
 	
 	public RenderModelItem setInvOffset(float offsetX, float offsetY) {
-		invOffsetX = offsetX;
-		invOffsetY = offsetY;
+		this.invOffset.set(offsetX, offsetY);
 		return this;
 	}
 	
 	public RenderModelItem setInformationFrom(RenderModelItem a) {
 		
 		this.renderInventory = a.renderInventory;
-		this.invOffsetX = a.invOffsetX;
-		this.invOffsetY = a.invOffsetY;
-		this.helpRotation = a.helpRotation;
+		this.invOffset = a.invOffset;
 		this.setInvScale(a.invScale);
 		
-		this.setOffset(a.xOffset, a.yOffset, a.zOffset);
-		this.rotationY = a.rotationY;
-		this.rotationX = a.rotationX;
-		this.rotationZ = a.rotationZ;
+		this.stdOffset = a.stdOffset;
+		this.stdRotation = a.stdRotation;
 		
 		this.scale = a.scale;
 		return this;
@@ -249,15 +240,14 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		
 		RenderUtils.loadTexture(texturePath);
-		GL11.glTranslatef(invOffsetX + 8.0F, invOffsetY + 8.0F, 0.0F);
+		GL11.glTranslatef(8.0F + invOffset.x, 8.0F + invOffset.y, 0.0F);
 		GL11.glScalef(16F * invScale, 16F * invScale, 16F * invScale);
 		float rotation = 145F;
 		if(inventorySpin) {
 			rotation = Minecraft.getSystemTime() / 100F;
 		}
 		GL11.glRotatef(rotation, 0, 1, 0);
-		if(helpRotation)
-			GL11.glRotatef(37.5F, -1, 0, 0);
+		this.doRotation(invRotation);
 		GL11.glScalef(-1F, -1F, 1F);
 		
 		renderAtStdPosition();
@@ -272,9 +262,7 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 		RenderUtils.loadTexture(texturePath);
 		
 		//GL11.glTranslatef(0F , 0.5F , 0F);
-		GL11.glRotatef(90F, 0, -1, 0);
-		GL11.glRotatef(30F, 1, 0, 0);
-		
+		this.doRotation(entityItemRotation);
 		renderAtStdPosition();
 		
 		GL11.glPopMatrix();
@@ -290,10 +278,10 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 		RenderUtils.loadTexture(texturePath);
 		float sc2 = 0.0625F;
 		GL11.glRotatef(40F, 0, 0, 1);
-		GL11.glTranslatef(equipOffsetX, equipOffsetY, equipOffsetZ);
+		this.doTransformation(equipOffset);
+		this.doRotation(equipRotation);
 		GL11.glRotatef(90, 0, -1, 0);
 		renderAtStdPosition(getModelAttribute(item, entity));
-		
 		GL11.glPopMatrix();
 		
 	}
@@ -307,12 +295,15 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 	
 	protected final void renderAtStdPosition(float i) {
 		GL11.glScalef(scale, scale, scale);
-		GL11.glTranslatef(xOffset, yOffset, zOffset);
+		this.doTransformation(stdOffset);
 		GL11.glScalef(-1F , -1F , 1F );
-		GL11.glRotatef(rotationZ, 0, 0, 1);
-		GL11.glRotatef(rotationY + 180F, 0, 1, 0); //←特别注意
-		GL11.glRotatef(rotationX, 1, 0, 0);
+		
+		GL11.glRotated(stdRotation.yCoord + 180, 0.0F, 1.0F, 0.0F); //历史遗留问题，没什么必要改啦=w=
+		GL11.glRotated(stdRotation.zCoord, 0.0F, 0.0F, 1.0F);
+		GL11.glRotated(stdRotation.xCoord, 1.0F, 0.0F, 0.0F);
+		
 		model.render(null, 0.0625F, i);
+		
 		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
 	
@@ -322,8 +313,7 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 
 	@Override
 	public String getFullInformation() {
-		StringBuilder sb =  new StringBuilder("[POSITION: " + formatNumber(xOffset, yOffset, zOffset) + "]\n");
-		sb.append( "[ROTATION : ").append(formatNumber(rotationX, rotationY, rotationZ)).append("]\n");
+		StringBuilder sb =  new StringBuilder("[STD OFFSET: " + stdOffset + "]\n");
 		return sb.toString();
 	}
 
@@ -334,6 +324,36 @@ public class RenderModelItem implements IItemRenderer, IItemRenderInfProvider {
 		}
 		return sb.append(")").toString();
 	}
-
+	
+	private void doTransformation(Vec3 vec3) {
+		if(vec3 != null)
+			GL11.glTranslated(vec3.xCoord, vec3.yCoord, vec3.zCoord);
+	}
+	
+	private void doRotation(Vec3 vec3) {
+		if(vec3 != null) {
+			GL11.glRotated(vec3.yCoord, 0.0F, 1.0F, 0.0F);
+			GL11.glRotated(vec3.zCoord, 0.0F, 0.0F, 1.0F);
+			GL11.glRotated(vec3.xCoord, 1.0F, 0.0F, 0.0F);
+		}
+	}
+	
+	private static void initVec(Vec3 vec) {
+		vec = vec == null ?  Vec3.createVectorHelper(0D, 0D, 0D) : vec;
+	}
+	
+	private static Vec3 initVec() {
+		return Vec3.createVectorHelper(0D, 0D, 0D);
+	}
+	
+	private static void initVec(Vec3 vec, double x, double y, double z) {
+		if(vec == null)
+			vec = Vec3.createVectorHelper(x, y, z);
+		else {
+			vec.xCoord = x;
+			vec.yCoord = y;
+			vec.zCoord = z;
+		}
+	}
 
 }

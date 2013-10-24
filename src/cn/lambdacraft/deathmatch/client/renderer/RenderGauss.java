@@ -36,12 +36,13 @@ public class RenderGauss extends RenderModelItem {
 	public RenderGauss() {
 		super(model, ClientProps.GAUSS_ITEM_PATH);
 		this.setInventorySpin(false);
-		this.setOffset(0.0F, 1.5F);
+		this.setOffset(0.0F, 1.5F, 0.0F);
 		this.setInvScale(0.8F);
-		this.setRotationY(180F);
+		this.setRotation(0F, 180F, 0F);
 		this.setInvOffset(-0.588F, 0.114F);
 		this.setInvScale(0.618F);
-		this.setEquipForward(.78F);
+		this.setEquipOffset(.78F, .0F, 0F);
+		this.setInvRotation(-41.F, -76.744F, 0.0F);
 	}
 	
 	@Override

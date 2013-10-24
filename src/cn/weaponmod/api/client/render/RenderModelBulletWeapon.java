@@ -50,6 +50,7 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 		weaponType = type;
 		if(muzzleflashPath.length != 0)
 			muzzleflash = muzzleflashPath;
+		this.setInvRotation(0F, 0F, 37.5F);
 	}
 	
 	public RenderModelBulletWeapon setMuzzleflashOffset(float x, float y, float z) {

@@ -48,9 +48,9 @@ public class Command_SetMode extends CommandBase {
 	
 	private static void printProcessor(EntityPlayer player, Debug_MovingProcessor pr) {
 		if(pr != null) {
-			player.sendChatToPlayer(ChatMessageComponent.func_111066_d("--------------------ACTIVE DEBUGGER INF------------------"));
+			//player.sendChatToPlayer(ChatMessageComponent.func_111066_d("--------------------ACTIVE DEBUGGER INF------------------"));
 			for(int i = 0; pr.getDescription(i) != null; i++) {
-				player.sendChatToPlayer(ChatMessageComponent.func_111066_d(EnumChatFormatting.GREEN + "Mode " + i + " : " + EnumChatFormatting.WHITE + pr.getDescription(i)));
+				//player.sendChatToPlayer(ChatMessageComponent.func_111066_d(EnumChatFormatting.GREEN + "Mode " + i + " : " + EnumChatFormatting.WHITE + pr.getDescription(i)));
 			}
 		}
 	}

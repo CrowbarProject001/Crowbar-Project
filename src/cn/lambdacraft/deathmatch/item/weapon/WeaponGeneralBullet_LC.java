@@ -94,9 +94,7 @@ public class WeaponGeneralBullet_LC extends WeaponGeneralBullet implements IHudT
 
 			@Override
 			public String getTip(ItemStack itemStack, EntityPlayer player) {
-				return (itemStack.getMaxDamage() - itemStack.getItemDamage() - 1)
-						+ "|"
-						+ WeaponHelper.getAmmoCapacity(ammoID, player.inventory);
+				return (itemStack.getMaxDamage() - WeaponGeneralBullet_LC.this.getWpnStackDamage(itemStack) - 1) + "|" + WeaponHelper.getAmmoCapacity(ammoID, player.inventory);
 			}
 
 			@Override

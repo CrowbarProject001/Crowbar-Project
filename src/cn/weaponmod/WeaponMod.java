@@ -45,13 +45,13 @@ import cpw.mods.fml.relauncher.Side;
  * 自定义武器mod的主注册类。
  * @author WeAthFolD
  */
-@Mod(modid = "Weaponry", name = "MyWeaponry API", version = WeaponMod.VERSION)
+@Mod(modid = "LCWeaponAssist", name = "LambdaCraft Weapon API", version = WeaponMod.VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, 
 clientPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CHANNEL_CLIENT }, packetHandler = WMPacketHandler.class), 
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CHANNEL_SERVER }, packetHandler = WMPacketHandler.class))
 public class WeaponMod {
 
-	public static final String VERSION = "1.0.0pre0";
+	public static final String VERSION = "1.0.0";
 	
 	public static final String DEPENDENCY = "required-after:Weaponry@" + VERSION;
 	
@@ -63,7 +63,7 @@ public class WeaponMod {
 	@SidedProxy(serverSide = "cn.weaponmod.proxy.WMCommonProxy", clientSide = "cn.weaponmod.proxy.WMClientProxy")
 	public static WMCommonProxy proxy;
 	
-	public static final boolean DEBUG = true; //请在编译时设置为false
+	public static final boolean DEBUG = false; //请在编译时设置为false
 	
 	/**
 	 * 预加载（设置、世界生成、注册Event）

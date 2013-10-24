@@ -229,4 +229,9 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 		return 8;
 	}
 
+	@Override
+	public int getCrosshairID(ItemStack itemStack) {
+		return -1;
+	}
+
 }

@@ -55,6 +55,7 @@ public class EntityHLZombie extends CBCEntityMob {
 	public EntityHLZombie(World par1World) {
 		super(par1World);
 		this.experienceValue = 10;
+		/*
 		this.getNavigator().setBreakDoors(true);
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
@@ -70,7 +71,29 @@ public class EntityHLZombie extends CBCEntityMob {
         this.targetTasks.addTask(2, ai1);
         ai2 = new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false);
         this.targetTasks.addTask(2, ai2);
+        */
+		
+        this.tasks.addTask(0, new EntityAISwimming(this));
+        this.tasks.addTask(1, new EntityAIBreakDoor(this));
+        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1.0D));
+        this.tasks.addTask(5, new EntityAIMoveThroughVillage(this, 1.0D, false));
+        this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(7, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
 	}
+	
+    protected void func_110147_ax()
+    {
+        super.func_110147_ax();
+        this.func_110148_a(SharedMonsterAttributes.field_111265_b).func_111128_a(40.0D);
+        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.23000000417232513D);
+        this.func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(3.0D);
+    }
 	
 	@Override
 	public void entityInit() {
@@ -217,8 +240,7 @@ public class EntityHLZombie extends CBCEntityMob {
 
 	@Override
 	protected double getFollowRange() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 10;
 	}
 
 	@Override
@@ -228,13 +250,11 @@ public class EntityHLZombie extends CBCEntityMob {
 
 	@Override
 	protected double getKnockBackResistance() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	protected double getAttackDamage() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

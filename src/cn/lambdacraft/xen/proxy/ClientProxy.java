@@ -15,16 +15,21 @@
 package cn.lambdacraft.xen.proxy;
 
 import net.minecraftforge.client.MinecraftForgeClient;
+import cn.lambdacraft.core.client.renderer.RenderIcon;
 import cn.lambdacraft.core.client.renderer.RenderTileEntityModel;
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.xen.client.EntityXenPortalFX;
 import cn.lambdacraft.xen.client.model.ModelXenLight;
 import cn.lambdacraft.xen.client.renderer.RenderItemPortal;
 import cn.lambdacraft.xen.client.renderer.RenderTileXenAmethyst;
 import cn.lambdacraft.xen.client.renderer.RenderXenPortal;
+import cn.lambdacraft.xen.client.renderer.RenderXenPortalFX;
 import cn.lambdacraft.xen.register.XENBlocks;
 import cn.lambdacraft.xen.tileentity.TileEntityXenAmethyst;
 import cn.lambdacraft.xen.tileentity.TileEntityXenLight;
 import cn.lambdacraft.xen.tileentity.TileEntityXenPortal;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 /**
  * @author Administrator
@@ -36,6 +41,7 @@ public class ClientProxy extends Proxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityXenPortal.class, new RenderXenPortal());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityXenLight.class, new RenderTileEntityModel(new ModelXenLight()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityXenAmethyst.class, new RenderTileXenAmethyst());
+		RenderingRegistry.registerEntityRenderingHandler(EntityXenPortalFX.class, new RenderXenPortalFX());
 		MinecraftForgeClient.registerItemRenderer(XENBlocks.portal.blockID, new RenderItemPortal());
 	}
 }

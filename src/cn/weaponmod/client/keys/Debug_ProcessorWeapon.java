@@ -24,7 +24,7 @@ public class Debug_ProcessorWeapon extends Debug_ProcessorModel<RenderModelBulle
 			int ticks) {
 		String s = super.doProcess(render, key, mode, ticks);
 		float amtToAdd = ticks * ticks * 0.002F;
-		if(mode == 5) {
+		if(mode == 10) {
 			s = onSetMuzzleOffset(render, key, amtToAdd);
 			System.out.println(s);
 		}
@@ -57,9 +57,9 @@ public class Debug_ProcessorWeapon extends Debug_ProcessorModel<RenderModelBulle
 	
 	@Override
 	public String getDescription(int mode) {
-		if(mode <= 4)
+		if(mode < 10)
 			return super.getDescription(mode);
-		else if(mode == 5)
+		else if(mode == 10)
 			return "Muzzflash offset XYZ";
 		else return null;
 	}
