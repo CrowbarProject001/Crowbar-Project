@@ -37,7 +37,7 @@ public class RenderUtils {
 	public static void renderShadow_Held() {
 		GL11.glDepthFunc(GL11.GL_EQUAL);
     	GL11.glDisable(GL11.GL_LIGHTING);
-    	Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(("textures/misc/enchanted_item_glint.png")));
+    	Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(("textures/misc/enchanted_item_glint.png")));
     	GL11.glEnable(GL11.GL_BLEND);
     	GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
     	float f7 = 1.00F;
@@ -162,7 +162,7 @@ public class RenderUtils {
 			src = new ResourceLocation(path);
 			srcMap.put(path, src);
 		}
-		Minecraft.getMinecraft().renderEngine.func_110577_a(src);
+		Minecraft.getMinecraft().renderEngine.bindTexture(src);
 	}
 
 	public static void renderItemIn2d(EntityLivingBase entity,
@@ -193,7 +193,7 @@ public class RenderUtils {
 		if (icon == null) 
 			return;
 
-		mc.renderEngine.func_110577_a(mc.renderEngine.func_130087_a(stackToRender.getItemSpriteNumber()));
+		mc.renderEngine.bindTexture(mc.renderEngine.getResourceLocation(stackToRender.getItemSpriteNumber()));
 		
 		//if (stackToRender.getItemSpriteNumber() == 0) {
 		//	mc.renderEngine.bindTexture("/terrain.png");

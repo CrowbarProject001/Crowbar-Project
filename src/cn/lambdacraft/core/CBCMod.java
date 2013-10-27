@@ -55,7 +55,7 @@ clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHAN
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler {
 
-	public static final String VERSION = "1.7.1dev";
+	public static final String VERSION = "1.7.1";
 
 	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + VERSION,
 			DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION,
@@ -112,6 +112,7 @@ public class CBCMod implements ITickHandler {
 		log.info("Starting LambdaCraft " + CBCMod.VERSION);
 		log.info("Copyright (c) Lambda Innovation, 2013");
 		log.info("http://www.lambdacraft.cn");
+		
 
 		config = new Config(event.getSuggestedConfigurationFile());
 		EnergyNet.initialize();

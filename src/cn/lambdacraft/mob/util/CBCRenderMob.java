@@ -18,7 +18,7 @@ public class CBCRenderMob extends RenderLiving {
 
 	// getTexture
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
 		if (entity == null || !(entity instanceof CBCEntityMob)) {
 			return null;
 		}
@@ -27,6 +27,8 @@ public class CBCRenderMob extends RenderLiving {
 	}
 	
 	protected void loadTexture(String str) {
-		renderEngine.func_110577_a(new ResourceLocation(str));
+		renderEngine.bindTexture(new ResourceLocation(str));
 	}
+
+
 }

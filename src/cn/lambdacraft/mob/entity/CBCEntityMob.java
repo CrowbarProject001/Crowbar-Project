@@ -21,23 +21,23 @@ public abstract class CBCEntityMob extends EntityMob {
 	 * Change attributes
 	 */
 	@Override
-	protected void func_110147_ax() {
-		super.func_110147_ax();
-		this.func_110148_a(SharedMonsterAttributes.field_111267_a)
-				.func_111128_a(getMaxHealth()); // Max Health
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+				.setAttribute(getMaxHealth2()); // Max Health
 		if (getFollowRange() != 0)
-			this.func_110148_a(SharedMonsterAttributes.field_111265_b)
-					.func_111128_a(getFollowRange()); // Follow Range
+			this.getEntityAttribute(SharedMonsterAttributes.followRange)
+					.setAttribute(getFollowRange()); // Follow Range
 		if (getKnockBackResistance() != 0)
-			this.func_110148_a(SharedMonsterAttributes.field_111266_c)
-					.func_111128_a(getKnockBackResistance()); // knockbackResistance
-		this.func_110148_a(SharedMonsterAttributes.field_111263_d)
-				.func_111128_a(getMoveSpeed()); // Move Speed
-		this.func_110148_a(SharedMonsterAttributes.field_111264_e)
-				.func_111128_a(getAttackDamage()); // Attack Damage
+			this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance)
+					.setAttribute(getKnockBackResistance()); // knockbackResistance
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed)
+				.setAttribute(getMoveSpeed()); // Move Speed
+		this.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+				.setAttribute(getAttackDamage()); // Attack Damage
 	}
 
-	abstract protected double getMaxHealth();
+	abstract protected double getMaxHealth2();
 
 	abstract protected double getFollowRange();
 
@@ -49,11 +49,7 @@ public abstract class CBCEntityMob extends EntityMob {
 
 	public abstract ResourceLocation getTexture();
 
-	public float getHealth() {
-		return this.func_110143_aJ();
-	}
-
 	public void setHealth(float health) {
-		this.func_110149_m(health);
+		this.setAbsorptionAmount(health);
 	}
 }

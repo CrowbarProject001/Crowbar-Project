@@ -50,12 +50,12 @@ public class RenderBarnacle extends Render {
 		EntityBarnacle barnacle = (EntityBarnacle) entity;
 		Tessellator t = Tessellator.instance;
 		GL11.glPushMatrix();
-		Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(ClientProps.BARNACLE_PATH));
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.BARNACLE_PATH));
 		GL11.glTranslatef((float) par2, (float) par4 + 2 * entity.height,
 				(float) par6);
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
 		GL11.glTranslatef(0.0F, 1.5F, 0.0F);
-		if(barnacle.func_110143_aJ() <= 0)
+		if(barnacle.getHealth() <= 0)
 			GL11.glRotatef(barnacle.deathTime * 6.5F, 1.0F, 0.0F, -1.0F);
 		GL11.glTranslatef(0.0F, -1.5F, 0.0F);
 		if(barnacle.hurtResistantTime > 10)
@@ -64,7 +64,7 @@ public class RenderBarnacle extends Render {
 		this.model.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F,
 				0.0625F);
 	
-		if(barnacle.func_110143_aJ() > 0) {
+		if(barnacle.getHealth() > 0) {
 			//Barnacle Tentacle Render
 			double length = barnacle.tentacleLength;
 			double h1 = 0.5, h2 = length + 1.0;
@@ -76,7 +76,7 @@ public class RenderBarnacle extends Render {
 					 v6 = RenderUtils.newV3(-WIDTH, h2, WIDTH),
 					 v7 = RenderUtils.newV3(WIDTH, h2, WIDTH),
 					 v8 = RenderUtils.newV3(WIDTH, h2, -WIDTH);
-			Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(ClientProps.BARNACLE_TENTACLE_PATH));
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.BARNACLE_TENTACLE_PATH));
 			
 			t.startDrawingQuads();
 			RenderUtils.addVertex(v1, 0.0, 0.0);
@@ -110,8 +110,9 @@ public class RenderBarnacle extends Render {
 	}
 
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
 		return null;
 	}
+
 
 }

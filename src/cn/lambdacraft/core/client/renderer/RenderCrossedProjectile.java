@@ -70,7 +70,7 @@ public class RenderCrossedProjectile extends Render {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
 		if(renderTexture)
-			func_110776_a(new ResourceLocation(TEXTURE_PATH));
+			bindTexture(new ResourceLocation(TEXTURE_PATH));
 		else {
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glColor3f(colorR, colorG, colorB);
@@ -112,7 +112,8 @@ public class RenderCrossedProjectile extends Render {
 	}
 
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		// TODO 自动生成的方法存根
 		return new ResourceLocation(TEXTURE_PATH);
 	}
 }

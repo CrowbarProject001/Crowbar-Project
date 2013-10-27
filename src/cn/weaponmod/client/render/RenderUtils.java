@@ -138,7 +138,7 @@ public class RenderUtils {
 			src = new ResourceLocation(path);
 			srcMap.put(path, src);
 		}
-		Minecraft.getMinecraft().renderEngine.func_110577_a(src);
+		Minecraft.getMinecraft().renderEngine.bindTexture(src);
 	}
 
 
@@ -172,7 +172,7 @@ public class RenderUtils {
 			return;
 		}
 
-		mc.renderEngine.func_110577_a(mc.renderEngine.func_130087_a(stackToRender.getItemSpriteNumber()));
+		mc.renderEngine.bindTexture(mc.renderEngine.getResourceLocation(stackToRender.getItemSpriteNumber()));
 		
 		//if (stackToRender.getItemSpriteNumber() == 0) {
 		//	mc.renderEngine.bindTexture("/terrain.png");

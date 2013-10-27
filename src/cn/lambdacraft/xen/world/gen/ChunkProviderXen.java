@@ -805,7 +805,7 @@ public class ChunkProviderXen implements IChunkProvider
     }
 
     @Override
-	public void func_104112_b() {}
+	public void saveExtraData() {}
 
     /**
      * Unloads chunks that are marked to be unloaded. This is not guaranteed to unload every such chunk.
@@ -864,4 +864,5 @@ public class ChunkProviderXen implements IChunkProvider
     {
         if (this.mapFeaturesEnabled){}
     }
+
 }

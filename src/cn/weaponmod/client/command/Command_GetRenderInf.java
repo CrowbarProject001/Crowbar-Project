@@ -47,7 +47,7 @@ public class Command_GetRenderInf extends CommandBase {
 			if(item != null) {
 				IItemRenderer renderer = MinecraftForgeClient.getItemRenderer(item, ItemRenderType.EQUIPPED_FIRST_PERSON);
 				if(renderer != null && renderer instanceof IItemRenderInfProvider) {
-					ics.sendChatToPlayer(ChatMessageComponent.func_111066_d(((IItemRenderInfProvider)renderer).getFullInformation()));
+					ics.sendChatToPlayer(ChatMessageComponent.createFromText(((IItemRenderInfProvider)renderer).getFullInformation()));
 				}
 			}
 		}

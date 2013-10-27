@@ -109,22 +109,22 @@ public class TileSentryRay extends TileEntity {
 				if(t == null) {
 					ModuleMob.tileMap.put(player, this);
 					isActivated = false;
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(EnumChatFormatting.GREEN + StatCollector.translateToLocal("sentry.another.name")));
+					player.sendChatToPlayer(new ChatMessageComponent().addText(EnumChatFormatting.GREEN + StatCollector.translateToLocal("sentry.another.name")));
 				} else {
 					if(t.worldObj.equals(worldObj)) {
 						if(t.getDistanceFrom(xCoord, yCoord, zCoord) <= 400.0) {
 							linkedBlock = t;
 							ModuleMob.tileMap.remove(player);
-							player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(EnumChatFormatting.GREEN + StatCollector.translateToLocal("sentry.successful.name")));
+							player.sendChatToPlayer(new ChatMessageComponent().addText(EnumChatFormatting.GREEN + StatCollector.translateToLocal("sentry.successful.name")));
 							NetSentrySync.sendSyncPacket(this);
 							isActivated = true;
 						} else {
-							player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(EnumChatFormatting.RED +StatCollector.translateToLocal( "sentry.toofar.name")));
+							player.sendChatToPlayer(new ChatMessageComponent().addText(EnumChatFormatting.RED +StatCollector.translateToLocal( "sentry.toofar.name")));
 							ModuleMob.tileMap.remove(player);
 						}
 					} else {
 						ModuleMob.tileMap.put(player, this);
-						player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.diffdim.name")));
+						player.sendChatToPlayer(new ChatMessageComponent().addText(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.diffdim.name")));
 					}
 				}
 			} else {
@@ -202,7 +202,7 @@ public class TileSentryRay extends TileEntity {
 				.append(EnumChatFormatting.RED).append(sentry.entityId)
 				.append("\n").append(EnumChatFormatting.GREEN)
 				.append(StatCollector.translateToLocal("sentry.raydep.name"));
-		player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(sb.toString()));
+		player.sendChatToPlayer(new ChatMessageComponent().addText(sb.toString()));
 	}
 
 	@Override

@@ -87,12 +87,12 @@ public class EntityHLZombie extends CBCEntityMob {
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
 	}
 	
-    protected void func_110147_ax()
+    protected void applyEntityAttributes()
     {
-        super.func_110147_ax();
-        this.func_110148_a(SharedMonsterAttributes.field_111265_b).func_111128_a(40.0D);
-        this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(0.23000000417232513D);
-        this.func_110148_a(SharedMonsterAttributes.field_111264_e).func_111128_a(3.0D);
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(40.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.23000000417232513D);
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(3.0D);
     }
 	
 	@Override
@@ -102,7 +102,7 @@ public class EntityHLZombie extends CBCEntityMob {
 	}
 
 	@Override
-	public double getMaxHealth() {
+	public double getMaxHealth2() {
 		return MAX_HEALTH;
 	}
 	
@@ -168,7 +168,7 @@ public class EntityHLZombie extends CBCEntityMob {
 			EntityHeadcrab entityHeadcrab = new EntityHeadcrab(this.worldObj);
 			entityHeadcrab.setLocationAndAngles(this.posX, this.posY + this.height, this.posZ, MathHelper.wrapAngleTo180_float(this.worldObj.rand.nextFloat() * 360.0F), 0.0F);
 			this.worldObj.spawnEntityInWorld(entityHeadcrab);
-			entityHeadcrab.setEntityHealth(10);
+			entityHeadcrab.setHealth(10);
 		}
 	}
 	
@@ -191,7 +191,7 @@ public class EntityHLZombie extends CBCEntityMob {
 			playtick = 0;
 		}
 		++playtick;
-		this.func_110148_a(SharedMonsterAttributes.field_111263_d).func_111128_a(1.0f);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(1.0f);
 	}
 
 	@Override

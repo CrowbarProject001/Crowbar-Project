@@ -48,9 +48,9 @@ public class Command_SetMode extends CommandBase {
 	
 	private static void printProcessor(EntityPlayer player, Debug_MovingProcessor pr) {
 		if(pr != null) {
-			//player.sendChatToPlayer(ChatMessageComponent.func_111066_d("--------------------ACTIVE DEBUGGER INF------------------"));
+			//player.sendChatToPlayer(ChatMessageComponent.createFromText("--------------------ACTIVE DEBUGGER INF------------------"));
 			for(int i = 0; pr.getDescription(i) != null; i++) {
-				//player.sendChatToPlayer(ChatMessageComponent.func_111066_d(EnumChatFormatting.GREEN + "Mode " + i + " : " + EnumChatFormatting.WHITE + pr.getDescription(i)));
+				//player.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN + "Mode " + i + " : " + EnumChatFormatting.WHITE + pr.getDescription(i)));
 			}
 		}
 	}
@@ -61,16 +61,16 @@ public class Command_SetMode extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender ics, String[] astring) {
 		if(astring.length == 0) {
-			ics.sendChatToPlayer(ChatMessageComponent.func_111066_d("Current Mode : " + EnumChatFormatting.RED + mode));
+			ics.sendChatToPlayer(ChatMessageComponent.createFromText("Current Mode : " + EnumChatFormatting.RED + mode));
 			printProcessor(this.getCommandSenderAsPlayer(ics), activeProcessor);
 		} else if(astring.length == 1) {
 			int num = Integer.valueOf(astring[0]);
 			if(num >= 0) {
 				mode = num;
-				ics.sendChatToPlayer(ChatMessageComponent.func_111066_d("Current Mode : " + EnumChatFormatting.RED  + mode));
+				ics.sendChatToPlayer(ChatMessageComponent.createFromText("Current Mode : " + EnumChatFormatting.RED  + mode));
 				if(activeProcessor == null)
-					ics.sendChatToPlayer(ChatMessageComponent.func_111066_d("Debugger Unavailable"));
-				else ics.sendChatToPlayer(ChatMessageComponent.func_111066_d(activeProcessor.getDescription(mode)));
+					ics.sendChatToPlayer(ChatMessageComponent.createFromText("Debugger Unavailable"));
+				else ics.sendChatToPlayer(ChatMessageComponent.createFromText(activeProcessor.getDescription(mode)));
 			}
 		}
 	}

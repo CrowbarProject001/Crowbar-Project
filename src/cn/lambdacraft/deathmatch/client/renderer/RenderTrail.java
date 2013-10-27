@@ -34,9 +34,9 @@ public class RenderTrail extends Render {
 			GL11.glPushMatrix();
 
 			if (i == 0 && ent.doesRenderEnd())
-				func_110776_a(new ResourceLocation(ent.getTexEnd()));
+				bindTexture(new ResourceLocation(ent.getTexEnd()));
 			else
-				func_110776_a(new ResourceLocation(ent.getTexNormal()));
+				bindTexture(new ResourceLocation(ent.getTexNormal()));
 
 			SamplePoint sp1 = list.get(i), sp2 = list.get(i + 1);
 
@@ -103,7 +103,8 @@ public class RenderTrail extends Render {
 	}
 
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
 		return null;
 	}
+
 }

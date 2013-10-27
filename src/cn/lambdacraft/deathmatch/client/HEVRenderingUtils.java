@@ -22,6 +22,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
@@ -35,6 +36,7 @@ import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.CBCPlayer.EnumStatus;
 import cn.lambdacraft.core.client.RenderUtils;
+import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.item.ArmorHEV;
 import cpw.mods.fml.relauncher.Side;
@@ -58,7 +60,7 @@ public class HEVRenderingUtils {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
-        engine.func_110577_a(new ResourceLocation(ClientProps.HEV_HUD_PATH));
+        engine.bindTexture(new ResourceLocation(ClientProps.HEV_HUD_PATH));
         
         //Health Section
         int xOffset = -90, yOffset = -45;
@@ -70,11 +72,11 @@ public class HEVRenderingUtils {
         GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.6F);
         drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 0, 16, 16, 16);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
-        int h = (int) (player.func_110143_aJ() * 16 / 20);
+        int h = (int) (player.getHealth() * 16 / 20);
         drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 16 - h, 0, 32 - h, 16, h);
-        if(player.func_110143_aJ() <= 5)
+        if(player.getHealth() <= 5)
         	GL11.glColor4f(0.9F, 0.1F, 0.1F, 0.6F);
-        drawNumberAt((byte) (player.func_110143_aJ() * 5), k / 2 + xOffset + 18, l + yOffset);
+        drawNumberAt((byte) (player.getHealth() * 5), k / 2 + xOffset + 18, l + yOffset);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
         
         //Armor Section
@@ -97,7 +99,7 @@ public class HEVRenderingUtils {
         drawStatusHud(player, engine, k, l, partialTickTime);
         
         
-        engine.func_110577_a(engine.func_130087_a(1)); 
+        engine.bindTexture(engine.getResourceLocation(1)); 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
 	}
@@ -113,7 +115,7 @@ public class HEVRenderingUtils {
 				if(i >= 0)
 					xhairPath = ClientProps.xhair_path + "xhair" +  i + ".png";
 			} else
-				xhairPath = ClientProps.getCrosshairPath(item.getItemName());
+				xhairPath = ClientProps.getCrosshairPath(Item.itemsList[item.itemID].getUnlocalizedName(item));
 			
 			if(xhairPath == null)
 				xhairPath = ClientProps.DEFAULT_XHAIR_PATH;
@@ -139,7 +141,7 @@ public class HEVRenderingUtils {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
         GL11.glPopMatrix();
-        engine.func_110577_a(Gui.field_110324_m);
+        engine.bindTexture(Gui.icons);
 	}
 	
 	private static void drawStatusHud(EntityPlayer player, TextureManager engine, int k, int l, float tickTime) {
@@ -162,14 +164,14 @@ public class HEVRenderingUtils {
 				int heightToDraw = energy * 16 / is.getMaxDamage();
 				int height = l - 65 - i * 16;
 				if (is.getItemSpriteNumber() == 0) {
-					renderEngine.func_110577_a(renderEngine.func_130087_a(0)); 
+					renderEngine.bindTexture(renderEngine.getResourceLocation(0)); 
 				} else {
-					renderEngine.func_110577_a(renderEngine.func_130087_a(1)); 
+					renderEngine.bindTexture(renderEngine.getResourceLocation(1)); 
 				}
 				xOffset = (int) (xOffset * 0.7);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
 				drawTexturedModelRectFromIcon(tx + xOffset, height, hev.getIcon(is, 0), 16, 16);
-				renderEngine.func_110577_a(new ResourceLocation(ClientProps.HEV_HUD_PATH));
+				renderEngine.bindTexture(new ResourceLocation(ClientProps.HEV_HUD_PATH));
 				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
 				drawTexturedModalRect(tx2 + xOffset, height + 16 - heightToDraw, 32, 32 - heightToDraw, 16, heightToDraw);
 			}
@@ -201,9 +203,9 @@ public class HEVRenderingUtils {
 			if(icon != null) {
 				int sheetIndex = tips[i].getTextureSheet(itemStack);
 				if (sheetIndex == 0)
-					engine.func_110577_a(engine.func_130087_a(0)); 
+					engine.bindTexture(engine.getResourceLocation(0)); 
 				else if(sheetIndex != 5)
-					engine.func_110577_a(engine.func_130087_a(1)); 
+					engine.bindTexture(engine.getResourceLocation(1)); 
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.7F);
 				drawTexturedModelRectFromIcon(k - 30, startHeight, icon, 16, 16);
 				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);

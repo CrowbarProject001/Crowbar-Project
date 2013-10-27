@@ -229,7 +229,7 @@ public class TileHealthCharger extends TileElectricStorage implements
 	}
 
 	public void doHealing(EntityPlayer charger) {
-		if (mainEff > 0 && charger.func_110143_aJ() < 20) {
+		if (mainEff > 0 && charger.getHealth() < 20) {
 			if (worldObj.getWorldTime() % 10 == 0) {
 				charger.heal(1);
 				this.mainEff -= 1;

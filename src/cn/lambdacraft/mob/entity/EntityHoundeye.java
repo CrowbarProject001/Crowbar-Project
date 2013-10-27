@@ -89,7 +89,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	 * @see net.minecraft.entity.EntityLiving#getMaxHealth()
 	 */
 	@Override
-	public double getMaxHealth() {
+	public double getMaxHealth2() {
 		return 14.0f;
 	}
 	

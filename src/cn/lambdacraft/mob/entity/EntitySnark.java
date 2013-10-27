@@ -87,7 +87,7 @@ public class EntitySnark extends CBCEntityMob implements IEntityLink<EntityPlaye
     }
 
 	@Override
-	public double getMaxHealth() {
+	public double getMaxHealth2() {
 		return MAX_HEALTH;
 	}
 
@@ -232,8 +232,8 @@ public class EntitySnark extends CBCEntityMob implements IEntityLink<EntityPlaye
 	 * 
 	 */
 	@Override
-	protected void func_110147_ax() {
-		super.func_110147_ax();
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
 		this.playSound("lambdacraft:mobs.sqk_deploy", 0.5F, 1.0F);
 	}
 

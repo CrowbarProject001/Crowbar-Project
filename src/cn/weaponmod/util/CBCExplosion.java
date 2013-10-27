@@ -127,7 +127,7 @@ public class CBCExplosion {
 							if (k1 > 0) {
 								Block block = Block.blocksList[k1];
 								float f3 = this.exploder != null ? this.exploder
-										.func_82146_a(explosion, this.worldObj,
+										.getBlockExplosionResistance(explosion, this.worldObj,
 												l, i1, j1, block) : block
 										.getExplosionResistance(this.exploder,
 												worldObj, l, i1, j1,
@@ -138,7 +138,7 @@ public class CBCExplosion {
 
 							if (f1 > 0.0F
 									&& (this.exploder == null || this.exploder
-											.func_96091_a(explosion,
+											.shouldExplodeBlock(explosion,
 													this.worldObj, l, i1, j1,
 													k1, f1))) {
 								hashset.add(new ChunkPosition(l, i1, j1));

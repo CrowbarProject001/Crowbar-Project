@@ -44,16 +44,16 @@ public class CommandXHairColor extends CommandBase {
 	@Override
 	public void processCommand(ICommandSender ics, String[] astring) {
 		if(astring.length == 0) {
-			ics.sendChatToPlayer(ChatMessageComponent.func_111066_d(getCommandUsage(ics)));
+			ics.sendChatToPlayer(ChatMessageComponent.createFromText(getCommandUsage(ics)));
 			return;
 		}
 		if(astring[0].equals("color")) {
 			if(astring.length != 4) {
 				if(astring.length == 1) {
-					ics.sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("spray.color.name") + EnumChatFormatting.RED + ClientProps.sprayR + " " + 
+					ics.sendChatToPlayer(ChatMessageComponent.createFromText(StatCollector.translateToLocal("spray.color.name") + EnumChatFormatting.RED + ClientProps.sprayR + " " + 
 				EnumChatFormatting.GREEN + ClientProps.sprayG + " " + EnumChatFormatting.AQUA + ClientProps.sprayB));
 				} else 
-					ics.sendChatToPlayer(ChatMessageComponent.func_111066_d(EnumChatFormatting.RED + StatCollector.translateToLocal("spray.argument.name")));
+					ics.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.RED + StatCollector.translateToLocal("spray.argument.name")));
 			} else {
 				try {
 					int r = Integer.valueOf(astring[1]);
@@ -61,12 +61,12 @@ public class CommandXHairColor extends CommandBase {
 					int b = Integer.valueOf(astring[3]);
 					ClientProps.setCrosshairColor(r, g, b);
 				} catch(NumberFormatException e) {
-					ics.sendChatToPlayer(ChatMessageComponent.func_111066_d(EnumChatFormatting.RED + StatCollector.translateToLocal("spray.format.name")));
+					ics.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.RED + StatCollector.translateToLocal("spray.format.name")));
 				}
-				ics.sendChatToPlayer(ChatMessageComponent.func_111066_d(EnumChatFormatting.GREEN + StatCollector.translateToLocal("spray.successful.name")));
+				ics.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.GREEN + StatCollector.translateToLocal("spray.successful.name")));
 			}
 		} else {
-			ics.sendChatToPlayer(ChatMessageComponent.func_111066_d(EnumChatFormatting.RED + StatCollector.translateToLocal(getCommandUsage(ics))));
+			ics.sendChatToPlayer(ChatMessageComponent.createFromText(EnumChatFormatting.RED + StatCollector.translateToLocal(getCommandUsage(ics))));
 		}	
 	}
 

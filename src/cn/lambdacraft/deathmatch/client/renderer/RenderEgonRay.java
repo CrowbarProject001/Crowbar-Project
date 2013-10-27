@@ -82,7 +82,7 @@ public class RenderEgonRay extends RenderEntity {
 		GL11.glRotatef(270.0F - egon.rotationYaw, 0.0F, 1.0F, 0.0F); // 左右旋转
 		GL11.glRotatef(egon.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
 		
-		Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(ClientProps.EGON_BEAM_PATH1));
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.EGON_BEAM_PATH1));
 		tessellator.startDrawingQuads();
 		tessellator.setColorRGBA(204, 204, 204, 110);
 		tessellator.setBrightness(15728880);
@@ -99,7 +99,7 @@ public class RenderEgonRay extends RenderEntity {
 		tessellator.draw();
 		
 		int rnd = (int) (rand.nextFloat() * 3);
-		Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(ClientProps.EGON_BEAM_PATH[rnd]));
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.EGON_BEAM_PATH[rnd]));
 		tessellator.startDrawingQuads();
 		tessellator.setColorRGBA(160, 141, 204, 220);
 		tessellator.setBrightness(15728880);

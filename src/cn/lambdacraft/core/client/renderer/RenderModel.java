@@ -47,7 +47,7 @@ public class RenderModel extends Render {
 
 		GL11.glPushMatrix();
 		//Load Texture
-		func_110776_a(new ResourceLocation(texture));
+		bindTexture(new ResourceLocation(texture));
 		GL11.glTranslatef((float) par2, (float) par4 + 2 * entity.height,
 				(float) par6);
 		GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
@@ -59,8 +59,10 @@ public class RenderModel extends Render {
 	}
 
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
 		return new ResourceLocation(texture);
 	}
+
+
 
 }

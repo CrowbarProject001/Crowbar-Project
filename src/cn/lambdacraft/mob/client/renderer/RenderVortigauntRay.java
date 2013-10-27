@@ -69,7 +69,7 @@ public class RenderVortigauntRay extends Render {
 		GL11.glTranslatef((float) d0, (float) d1, (float) d2);
 		// GL11.glRotatef(angle, 1.0F, 0, 0);
 		int rand = RenderUtils.rand.nextInt(3);
-		Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(ClientProps.VORTIGAUNT_RAY_PATH[rand]));
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.VORTIGAUNT_RAY_PATH[rand]));
 
 		
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
@@ -95,8 +95,10 @@ public class RenderVortigauntRay extends Render {
 		GL11.glPopMatrix();
 	}
 
+
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		// TODO 自动生成的方法存根
 		return null;
 	}
 

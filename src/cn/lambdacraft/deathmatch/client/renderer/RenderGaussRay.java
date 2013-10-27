@@ -58,7 +58,7 @@ public class RenderGaussRay extends RenderEntity {
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		if (renderColor)
-			Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(ClientProps.GAUSS_BEAM_PATH));
+			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.GAUSS_BEAM_PATH));
 		else {
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 		}
@@ -101,7 +101,7 @@ public class RenderGaussRay extends RenderEntity {
 
 	protected int getTexture(String path) {
 		return FMLClientHandler.instance().getClient().renderEngine.
-				func_110581_b(new ResourceLocation(path)).func_110552_b();
+				getTexture(new ResourceLocation(path)).getGlTextureId();
 	}
 
 	protected void addVertex(Vec3 vec3, double texU, double texV) {

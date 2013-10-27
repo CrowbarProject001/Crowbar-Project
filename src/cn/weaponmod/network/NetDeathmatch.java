@@ -89,7 +89,7 @@ public class NetDeathmatch implements IChannelProcess {
 			moddable.onModeChange(is, p, prop[2]);
 			String s = moddable.getModeDescription(moddable.getMode(is));
 			if(s != null)
-			((EntityPlayer) player).sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("mode.new")
+			((EntityPlayer) player).sendChatToPlayer(ChatMessageComponent.createFromText(StatCollector.translateToLocal("mode.new")
 					+ ": \u00a74"
 					+ StatCollector.translateToLocal(s)));
 		}

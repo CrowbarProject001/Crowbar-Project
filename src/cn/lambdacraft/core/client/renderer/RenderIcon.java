@@ -89,7 +89,7 @@ public class RenderIcon extends Render {
 			
 			GL11.glTranslatef((float) par2, (float) par4, (float) par6);
 			GL11.glScalef(size, size, size);
-			func_110776_a(new ResourceLocation(icon));
+			bindTexture(new ResourceLocation(icon));
 			
 			Tessellator tessellator = Tessellator.instance;
 			this.func_77026_a(tessellator);
@@ -124,8 +124,10 @@ public class RenderIcon extends Render {
 		tessllator.draw();
 	}
 
+
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		// TODO 自动生成的方法存根
 		return new ResourceLocation(icon);
 	}
 }

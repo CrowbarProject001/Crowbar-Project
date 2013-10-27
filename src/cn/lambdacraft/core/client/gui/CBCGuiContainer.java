@@ -43,7 +43,7 @@ public abstract class CBCGuiContainer extends GuiContainer {
 	
 	/**绑定贴图 By Rikka0_0*/
 	protected void bindTexture(String texture){
-		mc.renderEngine.func_110577_a(new ResourceLocation(texture));
+		mc.renderEngine.bindTexture(new ResourceLocation(texture));
 	}
 	
 	

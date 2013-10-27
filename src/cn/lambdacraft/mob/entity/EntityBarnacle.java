@@ -276,7 +276,7 @@ public class EntityBarnacle extends CBCEntityMob {
     }
 
 	@Override
-	public double getMaxHealth() {
+	public double getMaxHealth2() {
 		return MAX_HEALTH;
 	}
 	

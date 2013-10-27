@@ -96,14 +96,14 @@ public class CBCPlayer extends ClientPlayerBase {
 	public void afterOnUpdate() {
 		++tickSinceLastSound;
 		if((armorStat[2] &&  armorStat[3])) {
-			if(player.func_110143_aJ() - lastHealth < 0 && player.func_110143_aJ() <= 5) {
+			if(player.getHealth() - lastHealth < 0 && player.getHealth() <= 5) {
 				if(tickSinceLastSound > 30) {
 					mc.sndManager.playSoundFX("lambdacraft:hev.health_critical", 0.5F, 1.0F);
 					tickSinceLastSound = 0;
 				}
 			}
 		}
-		lastHealth = player.func_110143_aJ();
+		lastHealth = player.getHealth();
 	}
 	
 	

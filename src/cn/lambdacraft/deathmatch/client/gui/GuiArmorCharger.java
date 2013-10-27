@@ -133,7 +133,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.func_110577_a(new ResourceLocation(ClientProps.GUI_ARMORCHARGER_PATH));
+		mc.renderEngine.bindTexture(new ResourceLocation(ClientProps.GUI_ARMORCHARGER_PATH));
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

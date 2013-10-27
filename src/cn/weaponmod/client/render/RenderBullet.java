@@ -129,8 +129,11 @@ public class RenderBullet extends Render {
 		return Vec3.createVectorHelper(x, y, z);
 	}
 
+
+
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		// TODO 自动生成的方法存根
 		return null;
 	}
 }

@@ -316,11 +316,11 @@ public class EntitySpray extends Entity {
 						material2 = this.worldObj.getBlockMaterial(x , y, this.block_pos_z + 1);
 					}
 					if (!material.isSolid()) {
-						player.sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("spary.nospace")));
+						player.sendChatToPlayer(ChatMessageComponent.createFromText(StatCollector.translateToLocal("spary.nospace")));
 						return false;
 					}
 					if (material2.isLiquid()) {
-						player.sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("spary.haswater")));
+						player.sendChatToPlayer(ChatMessageComponent.createFromText(StatCollector.translateToLocal("spary.haswater")));
 						return false;
 			}
 		} else {
@@ -336,11 +336,11 @@ public class EntitySpray extends Entity {
 						material2 = this.worldObj.getBlockMaterial(x + i, y + j, this.block_pos_z + 1);
 					}
 					if (!material.isSolid()) {
-						player.sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("spary.nospace")));
+						player.sendChatToPlayer(ChatMessageComponent.createFromText(StatCollector.translateToLocal("spary.nospace")));
 						return false;
 					}
 					if (material2.isLiquid()) {
-						player.sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("spary.haswater")));
+						player.sendChatToPlayer(ChatMessageComponent.createFromText(StatCollector.translateToLocal("spary.haswater")));
 						return false;
 					}
 				}
@@ -355,7 +355,7 @@ public class EntitySpray extends Entity {
 				continue;
 			if (entity instanceof EntitySpray && ((EntitySpray) entity).block_pos_x == this.block_pos_x && ((EntitySpray) entity).block_pos_y == this.block_pos_y && ((EntitySpray) entity).block_pos_z == this.block_pos_z)
 				continue;
-			player.sendChatToPlayer(ChatMessageComponent.func_111066_d(StatCollector.translateToLocal("spary.beenblocked") + entity.getClass().getName()));
+			player.sendChatToPlayer(ChatMessageComponent.createFromText(StatCollector.translateToLocal("spary.beenblocked") + entity.getClass().getName()));
 			return false;
 		}
 
@@ -364,7 +364,7 @@ public class EntitySpray extends Entity {
 
 	// 让玩家可以击落画像为Item-----------------
 	@Override
-	public boolean func_85031_j(Entity par1Entity) {
+	public boolean hitByEntity(Entity par1Entity) {
 		return par1Entity instanceof EntityPlayer ? this.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) par1Entity), 0) : false;
 	}
 

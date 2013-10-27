@@ -126,9 +126,9 @@ public class EntityHeadcrab extends CBCEntityMob implements
 				dataWatcher
 						.updateObject(20, Integer.valueOf(attacher.entityId));
 				tickSinceBite = 0;
-				float health = attacher.func_110143_aJ() - 1;
+				float health = attacher.getHealth() - 1;
 				if (!(attacher instanceof EntityPlayer && ((EntityPlayer) attacher).capabilities.isCreativeMode)) {
-					attacher.setEntityHealth(health);
+					attacher.setHealth(health);
 
 					if (health <= 0 && !worldObj.isRemote) {
 						attacher = null;
@@ -322,7 +322,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 	}
 
 	@Override
-	protected double getMaxHealth() {
+	protected double getMaxHealth2() {
 		return MAX_HEALTH;
 	}
 

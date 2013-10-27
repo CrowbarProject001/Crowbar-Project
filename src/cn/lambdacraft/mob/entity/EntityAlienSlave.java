@@ -222,7 +222,7 @@ public class EntityAlienSlave extends CBCEntityMob {
     }
 
 	@Override
-	protected double getMaxHealth() {
+	protected double getMaxHealth2() {
 		return MAX_HEALTH;
 	}
 
@@ -250,4 +250,6 @@ public class EntityAlienSlave extends CBCEntityMob {
 	public ResourceLocation getTexture() {
 		return new ResourceLocation(ClientProps.VORTIGAUNT_PATH);
 	}
+
+
 }

@@ -289,7 +289,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
     {
 		if(!worldObj.isRemote) {
 			if(!player.username.equals(placerName)) {
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.deny.name")));
+				player.sendChatToPlayer(new ChatMessageComponent().addText(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.deny.name")));
 				return false;
 			}
 			if(player.isSneaking()) {
@@ -297,12 +297,12 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 				StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
 				b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ").append(EnumChatFormatting.RED).append(this.entityId).append("\n");
 				b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.attackstat.name")).append(" : ").append(EnumChatFormatting.RED).append(StatCollector.translateToLocal("sentry.attacktype" + (attackPlayer ? 1 : 0) + ".name")).append("\n");
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(b.toString()));
+				player.sendChatToPlayer(new ChatMessageComponent().addText(b.toString()));
 			} else {
 				this.isActivated = !isActivated;
 				StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
 				b.append((isActivated ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)).append(StatCollector.translateToLocal("sentry.status" + (isActivated ? 1 : 0) + ".name"));
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(b.toString()));
+				player.sendChatToPlayer(new ChatMessageComponent().addText(b.toString()));
 				String s = isActivated ? "lambdacraft:mobs.tu_deploy" : "lambdacraft:mobs.tu_spindown";
 				this.playSound(s, 0.5F, 1.0F);
 			}
@@ -326,7 +326,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 	}
 
 	@Override
-	public double getMaxHealth() {
+	public double getMaxHealth2() {
 		return 20;
 	}
 

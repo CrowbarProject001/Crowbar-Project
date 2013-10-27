@@ -44,7 +44,7 @@ public class RenderHoundeye extends CBCRenderMob {
 	public void doRenderLiving(EntityLiving ent, double par2, double par4, double par6, float par8, float par9)
     {
     	GL11.glPushMatrix();
-    	float yOffset = ent.prevLimbYaw + (ent.limbYaw - ent.prevLimbYaw) * par9;
+    	float yOffset = ent.prevLimbSwingAmount + (ent.limbSwingAmount - ent.prevLimbSwingAmount) * par9;
     	float xOffset = 0.0F, zOffset = 0.0F;
     	if(((EntityHoundeye)ent).isCharging) {
     		xOffset = rand.nextFloat() * 0.3F;

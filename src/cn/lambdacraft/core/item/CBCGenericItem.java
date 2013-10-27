@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 /**
  * LambdaCraft通用物品类。
@@ -83,5 +84,9 @@ public class CBCGenericItem extends Item {
 		this.itemIcon = par1IconRegister
 				.registerIcon("lambdacraft:" + iconName);
 	}
-
+    public String getLocalizedName(ItemStack par1ItemStack)
+    {
+        String s = this.getUnlocalizedName(par1ItemStack);
+        return s == null ? "" : StatCollector.translateToLocal(s);
+    }
 }

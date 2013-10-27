@@ -45,7 +45,7 @@ public class RenderShockwave extends Render {
 			float f, float f1) {
 		Tessellator t = Tessellator.instance;
 		int tickTime = entity.ticksExisted;
-		Minecraft.getMinecraft().renderEngine.func_110577_a(new ResourceLocation(ClientProps.SHOCKWAVE_PATH));
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.SHOCKWAVE_PATH));
 		renderWave(t, x, y + 0.1, z, tickTime * 0.48F);
 		renderWave(t, x, y + 0.24, z, tickTime * 0.48F);
 		if(tickTime > 5) {
@@ -78,7 +78,8 @@ public class RenderShockwave extends Render {
 	}
 
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity) {
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		// TODO 自动生成的方法存根
 		return null;
 	}
 
