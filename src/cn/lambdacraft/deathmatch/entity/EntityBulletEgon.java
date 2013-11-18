@@ -16,7 +16,7 @@ package cn.lambdacraft.deathmatch.entity;
 
 import java.util.List;
 
-import cn.lambdacraft.core.util.GenericUtils;
+import cn.liutils.api.util.GenericUtils;
 import cn.weaponmod.entities.EntityBullet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;

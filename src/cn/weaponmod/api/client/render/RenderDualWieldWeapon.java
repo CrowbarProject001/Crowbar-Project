@@ -19,7 +19,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import cn.weaponmod.api.client.IItemModel;
+import cn.liutils.api.client.model.IItemModel;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 
 /**

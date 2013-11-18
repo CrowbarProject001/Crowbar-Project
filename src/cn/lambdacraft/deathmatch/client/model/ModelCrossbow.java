@@ -3,7 +3,7 @@
  */
 package cn.lambdacraft.deathmatch.client.model;
 
-import cn.weaponmod.api.client.IItemModel;
+import cn.liutils.api.client.model.IItemModel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -140,6 +140,7 @@ public class ModelCrossbow extends ModelBase implements IItemModel {
 		setRotation(Shape15, 0F, 0F, 1.570796F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3,
 			float f4, float f5) {
 		super.render(entity, f, f1, f2, f3, f4, f5);

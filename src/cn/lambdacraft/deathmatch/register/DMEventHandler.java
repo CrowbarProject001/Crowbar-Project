@@ -14,19 +14,8 @@
  */
 package cn.lambdacraft.deathmatch.register;
 
-import cn.lambdacraft.core.CBCPlayer;
-import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.client.HEVRenderingUtils;
-import cn.lambdacraft.deathmatch.client.model.ModelGauss;
 import cn.lambdacraft.deathmatch.item.weapon.Weapon_Satchel;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 

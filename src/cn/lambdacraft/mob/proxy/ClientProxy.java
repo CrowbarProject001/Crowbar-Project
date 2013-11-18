@@ -14,7 +14,6 @@
  */
 package cn.lambdacraft.mob.proxy;
 
-import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.mob.block.tile.TileSentryRay;
 import cn.lambdacraft.mob.client.model.ModelHLZombie;
 import cn.lambdacraft.mob.client.model.ModelHeadcrab;
@@ -38,6 +37,7 @@ import cn.lambdacraft.mob.entity.EntitySnark;
 import cn.lambdacraft.mob.entity.EntityVortigauntRay;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import cn.lambdacraft.mob.util.CBCRenderMob;
+import cn.liutils.core.client.register.LISoundRegistry;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -70,23 +70,23 @@ public class ClientProxy extends Proxy {
 	@Override
 	public void preInit() {
 		for (String s : SND_MOBS) {
-			CBCSoundEvents.addSoundPath("mobs/" + s);
+			LISoundRegistry.addSoundPath("mobs/" + s);
 		}
-		CBCSoundEvents.addSoundWithVariety("mobs/he_alert", 3);
-		CBCSoundEvents.addSoundWithVariety("mobs/he_attack", 3);
-		CBCSoundEvents.addSoundWithVariety("mobs/he_blast", 3);
-		CBCSoundEvents.addSoundWithVariety("mobs/he_die", 3);
-		CBCSoundEvents.addSoundWithVariety("mobs/he_hunt", 4);
-		CBCSoundEvents.addSoundWithVariety("mobs/he_idle", 4);
-		CBCSoundEvents.addSoundWithVariety("mobs/he_pain", 5);
-		CBCSoundEvents.addSoundWithVariety("mobs/tu_die", 3);
-		CBCSoundEvents.addSoundWithVariety("mobs/tu_active", 2);
-		CBCSoundEvents.addSoundWithVariety("mobs/slv_alert", 3);
-		CBCSoundEvents.addSoundWithVariety("mobs/slv_die", 2);
-		CBCSoundEvents.addSoundWithVariety("mobs/slv_pain", 2);
-		CBCSoundEvents.addSoundWithVariety("mobs/slv_word", 8);
-		CBCSoundEvents.addSoundPath("mobs/zapa");
-		CBCSoundEvents.addSoundPath("mobs/zapd");
+		LISoundRegistry.addSoundWithVariety("mobs/he_alert", 3);
+		LISoundRegistry.addSoundWithVariety("mobs/he_attack", 3);
+		LISoundRegistry.addSoundWithVariety("mobs/he_blast", 3);
+		LISoundRegistry.addSoundWithVariety("mobs/he_die", 3);
+		LISoundRegistry.addSoundWithVariety("mobs/he_hunt", 4);
+		LISoundRegistry.addSoundWithVariety("mobs/he_idle", 4);
+		LISoundRegistry.addSoundWithVariety("mobs/he_pain", 5);
+		LISoundRegistry.addSoundWithVariety("mobs/tu_die", 3);
+		LISoundRegistry.addSoundWithVariety("mobs/tu_active", 2);
+		LISoundRegistry.addSoundWithVariety("mobs/slv_alert", 3);
+		LISoundRegistry.addSoundWithVariety("mobs/slv_die", 2);
+		LISoundRegistry.addSoundWithVariety("mobs/slv_pain", 2);
+		LISoundRegistry.addSoundWithVariety("mobs/slv_word", 8);
+		LISoundRegistry.addSoundPath("mobs/zapa");
+		LISoundRegistry.addSoundPath("mobs/zapd");
 	}
 	
 	public static final String SND_MOBS[] = { "sqk_blast", "sqk_hunta",

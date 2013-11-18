@@ -9,13 +9,13 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entity.EntityBulletGaussSec.EnumGaussRayType;
 import cn.lambdacraft.deathmatch.util.GaussBulletManager;
+import cn.liutils.api.util.GenericUtils;
+import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.events.ItemHelper;
-import cn.weaponmod.util.MotionXYZ;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -49,7 +49,7 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 	@Override
 	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
 		super.onItemClick(world, player, stack, left);
-		InformationEnergy inf = (InformationEnergy) loadInformation(stack, player);
+		InformationEnergy inf = loadInformation(stack, player);
 		if (left) {
 			inf.rotationVelocity = 15.0F;
 		} else {
@@ -140,15 +140,15 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 	
 	@Override
 	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World,
-			EntityPlayer par3EntityPlayer, int par4) {
+			EntityPlayer player, int par4) {
 		InformationEnergy inf = getInformation(par1ItemStack, par2World);
-		boolean left = ItemHelper.getUsingTickLeft(par3EntityPlayer, true) > 0;
+		boolean left = ItemHelper.getUsingTickLeft(player, true) > 0;
 		if (inf == null)
 			return;
 
 		if (left) {
 			super.onPlayerStoppedUsing(par1ItemStack, par2World,
-					par3EntityPlayer, par4);
+					player, par4);
 			return;
 		}
 
@@ -159,15 +159,15 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 		int damage = charge * 2 / 3;
 		double vel = charge / 14.0;
 
-		MotionXYZ var0 = new MotionXYZ(par3EntityPlayer);
+		Motion3D var0 = new Motion3D(player, true);
 		double dx = var0.motionX * vel, dy = var0.motionY * vel, dz = var0.motionZ
 				* vel;
 
-		par3EntityPlayer.addVelocity(-dx, -dy, -dz);
+		player.addVelocity(-dx, -dy, -dz);
 		if (!par2World.isRemote) {
-			par2World.playSoundAtEntity(par3EntityPlayer, SND_SHOOT_PATH, 0.5F,
+			par2World.playSoundAtEntity(player, SND_SHOOT_PATH, 0.5F,
 					1.0F);
-			GaussBulletManager.Shoot(par1ItemStack, par3EntityPlayer, par2World);
+			GaussBulletManager.Shoot(par1ItemStack, player, par2World);
 		}
 
 	}

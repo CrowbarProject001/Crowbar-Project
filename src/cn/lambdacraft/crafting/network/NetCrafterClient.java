@@ -5,16 +5,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.register.IChannelProcess;
-import cn.lambdacraft.crafting.block.tile.TileWeaponCrafter;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
+import cn.lambdacraft.core.misc.CBCNetHandler;
+import cn.lambdacraft.core.proxy.GeneralProps;
+import cn.lambdacraft.crafting.block.tile.TileWeaponCrafter;
+import cn.liutils.api.register.IChannelProcess;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class NetCrafterClient implements IChannelProcess {
 

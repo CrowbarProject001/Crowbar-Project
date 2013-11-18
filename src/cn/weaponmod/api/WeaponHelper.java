@@ -28,10 +28,10 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import cn.liutils.api.util.LIExplosion;
 import cn.weaponmod.api.weapon.WeaponGeneral;
 import cn.weaponmod.entities.EntityBullet;
 import cn.weaponmod.network.NetExplosion;
-import cn.weaponmod.util.CBCExplosion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -318,7 +318,7 @@ public class WeaponHelper {
 			double radius, double posX, double posY, double posZ,
 			int additionalDamage, double velocityRadius, float soundRadius) {
 
-		CBCExplosion explosion = new CBCExplosion(world, entity, posX, posY,
+		LIExplosion explosion = new LIExplosion(world, entity, posX, posY,
 				posZ, strengh).setSoundFactor(soundRadius).setVelocityFactor(
 				velocityRadius);
 		explosion.isSmoking = true;
@@ -356,7 +356,7 @@ public class WeaponHelper {
 	@SideOnly(Side.CLIENT)
 	public static void clientExplode(World world, float strengh, double posX,
 			double posY, double posZ) {
-		CBCExplosion explosion = new CBCExplosion(world, null, posX, posY,
+		LIExplosion explosion = new LIExplosion(world, null, posX, posY,
 				posZ, strengh);
 		explosion.isSmoking = true;
 		explosion.isFlaming = false;

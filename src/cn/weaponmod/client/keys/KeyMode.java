@@ -17,8 +17,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import cn.liutils.api.client.register.IKeyProcess;
 import cn.weaponmod.api.feature.IModdable;
-import cn.weaponmod.events.IKeyProcess;
 import cn.weaponmod.network.NetDeathmatch;
 
 public class KeyMode implements IKeyProcess {

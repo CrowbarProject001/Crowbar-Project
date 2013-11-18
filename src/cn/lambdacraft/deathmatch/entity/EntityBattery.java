@@ -17,8 +17,8 @@ package cn.lambdacraft.deathmatch.entity;
 import java.util.List;
 
 import cn.lambdacraft.core.util.EnergyUtils;
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.crafting.register.CBCItems;
+import cn.liutils.api.util.GenericUtils;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;

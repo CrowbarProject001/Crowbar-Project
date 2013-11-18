@@ -22,8 +22,9 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
+import cn.liutils.api.client.util.RenderUtils;
+import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.entities.EntityBullet;
-import cn.weaponmod.util.MotionXYZ;
 
 /**
  * @author WeAthFolD
@@ -66,7 +67,7 @@ public class RenderBullet extends Render {
 	@Override
 	public void doRender(Entity entity, double par2, double par4,
 			double par6, float par8, float par9) {
-		MotionXYZ motion = new MotionXYZ(entity);
+		Motion3D motion = new Motion3D(entity);
 		Tessellator tessellator = Tessellator.instance;
 
 		GL11.glPushMatrix();

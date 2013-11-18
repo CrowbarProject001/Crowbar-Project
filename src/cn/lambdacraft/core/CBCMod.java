@@ -22,14 +22,13 @@ import net.minecraft.command.CommandHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.energy.EnergyNet;
-import cn.lambdacraft.core.misc.CBCCreativeTab;
-import cn.lambdacraft.core.misc.Config;
+import cn.lambdacraft.core.misc.CBCNetHandler;
 import cn.lambdacraft.core.network.NetKeyUsing;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.CBCGuiHandler;
-import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.crafting.recipe.RecipeWeapons;
 import cn.lambdacraft.intergration.ic2.IC2Module;
+import cn.liutils.api.register.LIGuiHandler;
+import cn.liutils.core.register.Config;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Mod;
@@ -55,7 +54,7 @@ clientPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHAN
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { GeneralProps.NET_CHANNEL_SERVER }, packetHandler = CBCNetHandler.class))
 public class CBCMod implements ITickHandler {
 
-	public static final String VERSION = "1.7.1";
+	public static final String VERSION = "1.7.6";
 
 	public static final String DEPENCY_CRAFTING = "required-after:LambdaCraft|World@" + VERSION,
 			DEPENDENCY_CORE = "required-after:LambdaCraft@" + VERSION,
@@ -99,6 +98,8 @@ public class CBCMod implements ITickHandler {
 	public static cn.lambdacraft.core.proxy.Proxy proxy;
 
 	public static boolean ic2Installed = true;
+	
+	public static LIGuiHandler guiHandler = new LIGuiHandler();
 
 	/**
 	 * 预加载（设置、世界生成、注册Event）
@@ -120,6 +121,7 @@ public class CBCMod implements ITickHandler {
 		TickRegistry.registerTickHandler(this, Side.CLIENT);
 		TickRegistry.registerTickHandler(this, Side.SERVER);
 		GeneralProps.loadProps(config);
+		
 	}
 
 	/**
@@ -132,8 +134,7 @@ public class CBCMod implements ITickHandler {
 		ic2Installed = IC2Module.init();
 		log.fine("LambdaCraft IC2 Intergration Module STATE : " + ic2Installed);
 		// Blocks, Items, GUI Handler,Key Process.
-		NetworkRegistry.instance()
-				.registerGuiHandler(this, new CBCGuiHandler());
+		NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMod",
 				"LambdaCraft");
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CBCMisc",
@@ -194,5 +195,6 @@ public class CBCMod implements ITickHandler {
 	public String getLabel() {
 		return "LambdaCraft ticks";
 	}
+
 
 }

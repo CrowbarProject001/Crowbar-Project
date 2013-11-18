@@ -1,0 +1,8 @@
+11.18
+-修复了藤壶怪在玩家死后仍然吸附的bug
+-修复了唱片无法播放
+-修复了遥控炸弹右击会破坏方块
+-spray和crossfire被拷贝到外界的assets，方便编辑。
+-脱离PlayerAPI支持，现在只需要Forge就可以运行。
+-完整的测试了Server/Client，修复了一些潜在的崩溃。
+by WeAthFolD

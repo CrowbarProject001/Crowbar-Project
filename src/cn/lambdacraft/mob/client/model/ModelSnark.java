@@ -14,7 +14,7 @@
  */
 package cn.lambdacraft.mob.client.model;
 
-import cn.weaponmod.api.client.IItemModel;
+import cn.liutils.api.client.model.IItemModel;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;

@@ -22,14 +22,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import cn.lambdacraft.core.misc.CBCNetHandler;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
-import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.register.IChannelProcess;
 import cn.lambdacraft.mob.block.tile.TileSentryRay;
+import cn.liutils.api.register.IChannelProcess;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 /**
  * @author WeAthFolD

@@ -2,9 +2,9 @@ package cn.lambdacraft.deathmatch.entity;
 
 import java.util.List;
 
-import cn.lambdacraft.core.util.EntitySelectorPlayer;
 import cn.lambdacraft.deathmatch.item.ItemMedkit;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.liutils.api.util.selector.EntitySelectorPlayer;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;

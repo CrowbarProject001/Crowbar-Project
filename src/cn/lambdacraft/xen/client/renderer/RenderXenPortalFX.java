@@ -4,9 +4,9 @@
 package cn.lambdacraft.xen.client.renderer;
 
 import net.minecraft.entity.Entity;
-import cn.lambdacraft.core.client.renderer.RenderIcon;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.xen.client.EntityXenPortalFX;
+import cn.liutils.api.client.render.RenderIcon;
 
 /**
  * @author Administrator

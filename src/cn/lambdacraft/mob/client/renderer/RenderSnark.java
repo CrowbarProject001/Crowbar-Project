@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.client.model.ModelSnark;
-import cn.weaponmod.api.client.render.RenderModelItem;
+import cn.liutils.api.client.render.RenderModelItem;
 
 /**
  * @author WeAthFolD

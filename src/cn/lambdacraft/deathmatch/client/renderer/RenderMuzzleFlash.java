@@ -5,14 +5,15 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
-
-import static cn.lambdacraft.core.client.RenderUtils.addVertex;
-import static cn.lambdacraft.core.client.RenderUtils.newV3;
+import cn.liutils.api.client.util.RenderUtils;
 
 public class RenderMuzzleFlash {
 
+	private static Vec3 newV3(double x, double y, double z) {
+		return RenderUtils.newV3(x, y, z);
+	}
+	
 	public static void renderItemIn2d(Tessellator t, double tx, double ty,
 			double tz) {
 
@@ -36,10 +37,10 @@ public class RenderMuzzleFlash {
 		t.startDrawingQuads();
 		t.setColorRGBA_F(0.8F, .8F, .8F, 1.0F);
 		t.setBrightness(15728880);
-		addVertex(a1, u2, v2);
-		addVertex(a2, u1, v2);
-		addVertex(a3, u1, v1);
-		addVertex(a4, u2, v1);
+		RenderUtils.addVertex(a1, u2, v2);
+		RenderUtils.addVertex(a2, u1, v2);
+		RenderUtils.addVertex(a3, u1, v1);
+		RenderUtils.addVertex(a4, u2, v1);
 		t.draw();
 		
 		GL11.glDisable(GL11.GL_BLEND);

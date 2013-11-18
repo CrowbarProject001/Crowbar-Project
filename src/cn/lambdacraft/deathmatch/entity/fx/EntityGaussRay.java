@@ -20,7 +20,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.util.Motion3D;
 
 /**
  * 高斯枪光束渲染的实用类。
@@ -30,9 +30,9 @@ import cn.weaponmod.util.MotionXYZ;
 public class EntityGaussRay extends Entity {
 
 	public double distanceToRender = 50;
-	private MotionXYZ motion = null;
+	private Motion3D motion = null;
 	
-	public EntityGaussRay(MotionXYZ begin, World par1World) {
+	public EntityGaussRay(Motion3D begin, World par1World) {
 
 		super(par1World);
 		this.posX = begin.posX;
@@ -79,10 +79,10 @@ public class EntityGaussRay extends Entity {
 	@Override
 	public void onUpdate() {
 		if(motion == null)
-			motion = new MotionXYZ(this);
+			motion = new Motion3D(this, true);
 		MovingObjectPosition trace = this.worldObj.clip(motion
 				.asVec3(this.worldObj),
-				motion.updateMotion(100.0F).asVec3(this.worldObj));
+				motion.move(100.0F).asVec3(this.worldObj));
 		Vec3 end = (trace == null) ? motion.asVec3(this.worldObj) : trace.hitVec;
 		double dx = end.xCoord - this.posX;
 		double dy = end.yCoord - this.posY;

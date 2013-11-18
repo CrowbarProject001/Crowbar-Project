@@ -5,16 +5,15 @@ import net.minecraft.client.settings.KeyBinding;
 
 import org.lwjgl.input.Keyboard;
 
+import cn.liutils.api.debug.KeyMoving;
+import cn.liutils.core.client.register.LIKeyProcess;
 import cn.weaponmod.WeaponMod;
 import cn.weaponmod.client.WMClientTickHandler;
-import cn.weaponmod.client.keys.Debug_KeyMoving;
-import cn.weaponmod.client.keys.Debug_ProcessorModel;
 import cn.weaponmod.client.keys.Debug_ProcessorWeapon;
 import cn.weaponmod.client.keys.KeyClicking;
 import cn.weaponmod.client.keys.KeyReload;
 import cn.weaponmod.client.render.RenderBullet;
 import cn.weaponmod.entities.EntityBullet;
-import cn.weaponmod.events.WMKeys;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -24,6 +23,7 @@ public class WMClientProxy extends WMCommonProxy{
 	Minecraft mc = Minecraft.getMinecraft();
 	public static WMClientTickHandler cth = new WMClientTickHandler();
 	
+	
 	@Override
 	public void preInit() { 
 		super.preInit();
@@ -31,22 +31,13 @@ public class WMClientProxy extends WMCommonProxy{
 	
 	@Override
 	public void init() {
-		WMKeys.addKey(mc.gameSettings.keyBindAttack, false, new KeyClicking(true));
-		WMKeys.addKey(mc.gameSettings.keyBindUseItem, false, new KeyClicking(false));
-		WMKeys.addKey(new KeyBinding("reload", Keyboard.KEY_R), false, new KeyReload());
-		if(WeaponMod.DEBUG) {
-			Debug_KeyMoving key = new Debug_KeyMoving();
-			key.addProcess(new Debug_ProcessorModel());
-			key.addProcess(new Debug_ProcessorWeapon());
-			WMKeys.addKey(new KeyBinding("up", Keyboard.KEY_UP), true, key);
-			WMKeys.addKey(new KeyBinding("down", Keyboard.KEY_DOWN), true, key);
-			WMKeys.addKey(new KeyBinding("left", Keyboard.KEY_LEFT), true, key);
-			WMKeys.addKey(new KeyBinding("right", Keyboard.KEY_RIGHT), true, key);
-			WMKeys.addKey(new KeyBinding("forward", Keyboard.KEY_NUMPAD8), true, key);
-			WMKeys.addKey(new KeyBinding("back", Keyboard.KEY_NUMPAD2), true, key);
-		}
 		
-		TickRegistry.registerTickHandler(new WMKeys(), Side.CLIENT);
+		LIKeyProcess.addKey(mc.gameSettings.keyBindAttack, false, new KeyClicking(true));
+		LIKeyProcess.addKey(mc.gameSettings.keyBindUseItem, false, new KeyClicking(false));
+		LIKeyProcess.addKey(new KeyBinding("reload", Keyboard.KEY_R), false, new KeyReload());
+		if(WeaponMod.DEBUG) {
+			KeyMoving.addProcess(new Debug_ProcessorWeapon());
+		}
 		TickRegistry.registerTickHandler(cth, Side.CLIENT);
 		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderBullet(0.5, 0.015, 1.0F, 1.0F, 1.0F).setIgnoreLight(true));
 		

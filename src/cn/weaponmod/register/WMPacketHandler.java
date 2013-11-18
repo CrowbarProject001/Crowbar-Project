@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
+import cn.liutils.api.register.IChannelProcess;
 import cn.weaponmod.proxy.WMGeneralProps;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
@@ -34,6 +35,13 @@ public class WMPacketHandler implements IPacketHandler {
 
 	private static HashMap<Byte, IChannelProcess> channels = new HashMap();
 
+	protected final String server, client;
+	
+	public WMPacketHandler() {
+		server = WMGeneralProps.NET_CHANNEL_SERVER;
+		client = WMGeneralProps.NET_CHANNEL_CLIENT;
+	}
+	
 	@Override
 	public void onPacketData(INetworkManager manager,
 			Packet250CustomPayload packet, Player player) {
@@ -48,7 +56,7 @@ public class WMPacketHandler implements IPacketHandler {
 			e.printStackTrace();
 		}
 		IChannelProcess p = channels.get(i);
-		if (packet.channel.equals(WMGeneralProps.NET_CHANNEL_CLIENT) || packet.channel.equals(WMGeneralProps.NET_CHANNEL_SERVER)) {
+		if (packet.channel.equals(client) || packet.channel.equals(server)) {
 			if (p != null)
 				p.onPacketData(inputStream, player);
 		}
@@ -102,4 +110,5 @@ public class WMPacketHandler implements IPacketHandler {
 		}
 		return bos;
 	}
+
 }

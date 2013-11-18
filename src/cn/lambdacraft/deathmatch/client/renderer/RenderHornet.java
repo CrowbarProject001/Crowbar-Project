@@ -1,15 +1,15 @@
 package cn.lambdacraft.deathmatch.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cn.lambdacraft.core.client.RenderUtils;
-
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import cn.liutils.api.client.util.RenderUtils;
 
 public class RenderHornet extends Render {
 

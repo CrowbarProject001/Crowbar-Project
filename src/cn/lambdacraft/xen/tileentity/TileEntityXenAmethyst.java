@@ -14,8 +14,8 @@
  */
 package cn.lambdacraft.xen.tileentity;
 
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.mob.util.MobHelper;
+import cn.liutils.api.util.GenericUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;

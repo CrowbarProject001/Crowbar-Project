@@ -21,21 +21,21 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.gui.CBCGuiButton;
-import cn.lambdacraft.core.client.gui.CBCGuiContainer;
-import cn.lambdacraft.core.client.gui.CBCGuiPart;
-import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.block.TileMedkitFiller;
 import cn.lambdacraft.deathmatch.network.NetMedFillerClient;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
+import cn.liutils.api.client.gui.LIGuiButton;
+import cn.liutils.api.client.gui.LIGuiContainer;
+import cn.liutils.api.client.gui.LIGuiPart;
+import cn.liutils.api.client.gui.IGuiTip;
 
 
 /**
  * @author WeAthFolD
  * 
  */
-public class GuiMedFiller extends CBCGuiContainer {
+public class GuiMedFiller extends LIGuiContainer {
 
 	TileMedkitFiller te;
 
@@ -83,7 +83,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart energy = new CBCGuiPart("energy", 112, 22, 7, 51), behavior = new CBCGuiButton(
+		LIGuiPart energy = new LIGuiPart("energy", 112, 22, 7, 51), behavior = new LIGuiButton(
 				"behavior", 171, 15, 23, 10).setDownCoords(223, 57)
 				.setTextureCoords(200, 57);
 		this.addElement(energy);
@@ -108,7 +108,7 @@ public class GuiMedFiller extends CBCGuiContainer {
 	 * .CBCGuiButton)
 	 */
 	@Override
-	public void onButtonClicked(CBCGuiButton button) {
+	public void onButtonClicked(LIGuiButton button) {
 		if (button.name == "behavior") {
 			NetMedFillerClient.sendPacket(te);
 		}

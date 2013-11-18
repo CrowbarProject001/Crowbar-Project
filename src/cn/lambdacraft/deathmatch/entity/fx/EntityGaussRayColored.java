@@ -15,7 +15,7 @@
 package cn.lambdacraft.deathmatch.entity.fx;
 
 import net.minecraft.world.World;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.util.Motion3D;
 
 /**
  * 用来标记高斯光束用色彩渲染的空类。
@@ -25,7 +25,7 @@ import cn.weaponmod.util.MotionXYZ;
  */
 public class EntityGaussRayColored extends EntityGaussRay {
 
-	public EntityGaussRayColored(MotionXYZ begin, World par1World) {
+	public EntityGaussRayColored(Motion3D begin, World par1World) {
 		super(begin, par1World);
 	}
 

@@ -7,9 +7,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.misc.CBCNetHandler;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.util.BlockPos;
 import cn.lambdacraft.mob.block.tile.TileSentryRay;
 import cn.lambdacraft.mob.entity.EntityAlienSlave;
 import cn.lambdacraft.mob.entity.EntityBarnacle;
@@ -22,6 +21,7 @@ import cn.lambdacraft.mob.entity.EntitySnark;
 import cn.lambdacraft.mob.network.NetSentrySync;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.liutils.api.util.BlockPos;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -58,12 +58,12 @@ public class ModuleMob {
 	@EventHandler()
 	public void init(FMLInitializationEvent Init) {
 		CBCMobItems.init(CBCMod.config);
-		CBCMobBlocks.init();
+		CBCMobBlocks.init(CBCMod.config);
 
 		EntityRegistry.addSpawn(EntityHeadcrab.class, 7, 0, 50, EnumCreatureType.monster, GENERIC_GEN);
 		EntityRegistry.addSpawn(EntityHoundeye.class, 10, 0, 70, EnumCreatureType.monster, GENERIC_GEN);
 		EntityRegistry.addSpawn(EntityAlienSlave.class, 1, 0, 70, EnumCreatureType.monster, GENERIC_GEN);
-		EntityRegistry.addSpawn(EntityBarnacle.class, 5, 0, 65, EnumCreatureType.monster, BARNACLE_GEN);
+		//EntityRegistry.addSpawn(EntityBarnacle.class, 5, 0, 65, EnumCreatureType.monster, BARNACLE_GEN);
 
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_SENTRYSYNCER, new NetSentrySync());
 		EntityRegistry.registerModEntity(EntitySnark.class, "snark",

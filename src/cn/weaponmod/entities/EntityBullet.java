@@ -22,9 +22,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import cn.liutils.api.util.GenericUtils;
+import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.weapon.WeaponGeneral;
-import cn.weaponmod.util.GenericUtils;
-import cn.weaponmod.util.MotionXYZ;
 
 /**
  * @author WeAthFolD
@@ -32,7 +32,7 @@ import cn.weaponmod.util.MotionXYZ;
  */
 public class EntityBullet extends EntityThrowable {
 
-	protected MotionXYZ motion;
+	protected Motion3D motion;
 	protected int damage;
 	public boolean renderFromLeft = false;
 	
@@ -44,7 +44,7 @@ public class EntityBullet extends EntityThrowable {
 			this.setDead();
 		WeaponGeneral item = (WeaponGeneral) itemStack.getItem();
 		double f1 = par1World.isRemote ? 0.06 : 0.3;
-		motion = new MotionXYZ(this).setMotionOffset(f1 * item.getOffset(left));
+		motion = new Motion3D(this).setMotionOffset(f1 * item.getOffset(left));
 		this.motionX = motion.motionX;
 		this.motionY = motion.motionY;
 		this.motionZ = motion.motionZ;
@@ -64,7 +64,7 @@ public class EntityBullet extends EntityThrowable {
         this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * 0.4F;
         this.motionY = -MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * 0.4F;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
-		this.motion = new MotionXYZ(this);
+		this.motion = new Motion3D(this);
 		this.damage = dmg;
 	}
 	
@@ -75,7 +75,7 @@ public class EntityBullet extends EntityThrowable {
 		motionZ = target.posZ - ent.posZ;	
 		this.setThrowableHeading(motionX, motionY, motionZ, func_70182_d(), 1.0F);
 		damage = dmg;
-		motion = new MotionXYZ(this);
+		motion = new Motion3D(this);
 	}
 
 	@Override

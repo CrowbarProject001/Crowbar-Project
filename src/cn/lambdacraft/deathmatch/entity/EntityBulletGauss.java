@@ -18,10 +18,10 @@ import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.item.weapon.InformationEnergy;
 import cn.lambdacraft.deathmatch.item.weapon.Weapon_Gauss;
 import cn.lambdacraft.deathmatch.util.GaussBulletManager;
+import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.weapon.WeaponGeneral;
 import cn.weaponmod.entities.EntityBullet;
-import cn.weaponmod.util.MotionXYZ;
 
 /**
  * 高斯枪蓄力射击的判断实体。
@@ -47,11 +47,11 @@ public class EntityBulletGauss extends EntityBullet {
 	public EntityBulletGauss(World par1World, EntityPlayer entityPlayer,
 			ItemStack par3itemStack) {
 		super(par1World, entityPlayer, par3itemStack, true);
-		motion = new MotionXYZ(entityPlayer);
+		motion = new Motion3D(entityPlayer, true);
 		itemStack = par3itemStack;
 		item = (Weapon_Gauss) itemStack.getItem();
 		inf = item.getInformation(itemStack, worldObj);
-		worldObj.spawnEntityInWorld(new EntityGaussRay(new MotionXYZ(this), worldObj));
+		worldObj.spawnEntityInWorld(new EntityGaussRay(new Motion3D(this, true), worldObj));
 		if (par1World.isRemote)
 			this.setDead();
 	}

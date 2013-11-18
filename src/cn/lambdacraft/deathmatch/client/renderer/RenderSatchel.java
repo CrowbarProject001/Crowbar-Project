@@ -1,16 +1,15 @@
 package cn.lambdacraft.deathmatch.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-
-import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.entity.EntitySatchel;
-import cn.weaponmod.client.render.RenderUtils;
-
-
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
+
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.deathmatch.entity.EntitySatchel;
+import cn.liutils.api.client.util.RenderUtils;
 
 public class RenderSatchel extends RenderEntity {
 	Tessellator t = Tessellator.instance;

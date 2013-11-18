@@ -21,8 +21,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.entity.fx.EntityTrailFX;
 import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.liutils.api.entity.EntityTrailFX;
 import cn.weaponmod.api.WeaponHelper;
 
 /**

@@ -1,12 +1,5 @@
 package cn.lambdacraft.deathmatch.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-
-import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
-
-import cpw.mods.fml.client.FMLClientHandler;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,7 +7,13 @@ import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-import static cn.lambdacraft.core.client.RenderUtils.newV3;
+
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
+import cn.liutils.api.client.util.RenderUtils;
+import cpw.mods.fml.client.FMLClientHandler;
 
 /**
  * Gauss ray rendering class.
@@ -30,6 +29,10 @@ public class RenderGaussRay extends RenderEntity {
 
 	public RenderGaussRay(boolean hasColor) {
 		this.renderColor = hasColor;
+	}
+	
+	private Vec3 newV3(double x, double y, double z){
+		return RenderUtils.newV3(x, y, z);
 	}
 
 	@Override
@@ -62,8 +65,8 @@ public class RenderGaussRay extends RenderEntity {
 		else {
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 		}
-		GL11.glRotatef(90.0F - gauss.rotationYaw, 0.0F, -1.0F, 0.0F); // 左右旋转
-		GL11.glRotatef(gauss.rotationPitch, 0.0F, 0.0F, 1.0F); // 上下旋转
+		GL11.glRotatef(90.0F + gauss.rotationYaw, 0.0F, -1.0F, 0.0F); // 左右旋转
+		GL11.glRotatef(gauss.rotationPitch, 0.0F, 0.0F, -1.0F); // 上下旋转
 		GL11.glTranslatef(0, 0.4F, 0);
 		GL11.glRotatef(7.5F, -1.0F, 0.0F, 0.0F);
 		GL11.glTranslatef(0, -0.4F, 0);

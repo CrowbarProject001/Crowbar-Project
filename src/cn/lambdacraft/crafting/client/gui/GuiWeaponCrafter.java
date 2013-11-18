@@ -20,16 +20,16 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.gui.CBCGuiButton;
-import cn.lambdacraft.core.client.gui.CBCGuiContainer;
-import cn.lambdacraft.core.client.gui.CBCGuiPart;
-import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.crafting.block.BlockWeaponCrafter.CrafterIconType;
 import cn.lambdacraft.crafting.block.container.ContainerWeaponCrafter;
 import cn.lambdacraft.crafting.block.tile.TileWeaponCrafter;
 import cn.lambdacraft.crafting.network.NetCrafterClient;
 import cn.lambdacraft.crafting.recipe.RecipeWeapons;
+import cn.liutils.api.client.gui.LIGuiButton;
+import cn.liutils.api.client.gui.LIGuiContainer;
+import cn.liutils.api.client.gui.LIGuiPart;
+import cn.liutils.api.client.gui.IGuiTip;
 
 
 /**
@@ -37,7 +37,7 @@ import cn.lambdacraft.crafting.recipe.RecipeWeapons;
  * 
  * @author WeAthFolD
  */
-public class GuiWeaponCrafter extends CBCGuiContainer {
+public class GuiWeaponCrafter extends LIGuiContainer {
 
 	public TileWeaponCrafter te;
 	public InventoryPlayer inv;
@@ -100,16 +100,16 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart up = new CBCGuiButton("up", 111, 19, 7, 6)
+		LIGuiPart up = new LIGuiButton("up", 111, 19, 7, 6)
 				.setDownCoords(220, 13).setInvaildCoords(220, 6)
-				.setTextureCoords(208, 13), down = new CBCGuiButton("down",
+				.setTextureCoords(208, 13), down = new LIGuiButton("down",
 				111, 74, 7, 6).setDownCoords(220, 43).setInvaildCoords(208, 6)
-				.setTextureCoords(208, 43), left = new CBCGuiButton("left", 5,
+				.setTextureCoords(208, 43), left = new LIGuiButton("left", 5,
 				2, 5, 6).setDownCoords(220, 53).setInvaildCoords(245, 53)
-				.setTextureCoords(210, 53), right = new CBCGuiButton("right",
+				.setTextureCoords(210, 53), right = new LIGuiButton("right",
 				190, 2, 5, 6).setDownCoords(220, 63).setInvaildCoords(245, 63)
-				.setTextureCoords(210, 63), heat = new CBCGuiPart("heat", 175,
-				15, 6, 63), behavior = new CBCGuiPart("behavior", 160, 16, 8,
+				.setTextureCoords(210, 63), heat = new LIGuiPart("heat", 175,
+				15, 6, 63), behavior = new LIGuiPart("behavior", 160, 16, 8,
 				18);
 		addElements(up, down, left, right, heat, behavior);
 		this.setElementTip("heat", new TipHeat());
@@ -177,7 +177,7 @@ public class GuiWeaponCrafter extends CBCGuiContainer {
 	}
 
 	@Override
-	public void onButtonClicked(CBCGuiButton button) {
+	public void onButtonClicked(LIGuiButton button) {
 		if (button.name == "up" || button.name == "down") {
 			boolean isDown = button.name == "down" ? true : false;
 			te.addScrollFactor(isDown);

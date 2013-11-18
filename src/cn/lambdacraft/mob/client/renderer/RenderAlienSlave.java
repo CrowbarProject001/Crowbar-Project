@@ -16,17 +16,18 @@ package cn.lambdacraft.mob.client.renderer;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.mob.client.model.ModelVortigaunt;
-import cn.lambdacraft.mob.entity.EntityAlienSlave;
-import cn.lambdacraft.mob.util.CBCRenderMob;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
+
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.mob.client.model.ModelVortigaunt;
+import cn.lambdacraft.mob.entity.EntityAlienSlave;
+import cn.lambdacraft.mob.util.CBCRenderMob;
+import cn.liutils.api.client.util.RenderUtils;
 
 /**
  * @author WeAthFolD

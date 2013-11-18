@@ -1,7 +1,7 @@
 package cn.lambdacraft.intergration.ic2;
 
+import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.crafting.register.CBCBlocks;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
@@ -17,15 +17,18 @@ import cn.lambdacraft.intergration.ic2.tile.TileArmorChargerIC2;
 import cn.lambdacraft.intergration.ic2.tile.TileElCrafterIC2;
 import cn.lambdacraft.intergration.ic2.tile.TileHealthChargerIC2;
 import cn.lambdacraft.intergration.ic2.tile.TileMedkitFillerIC2;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 import net.minecraft.src.ModLoader;
 
 public class IC2Registration {
 
 	public static void registerBlocks() {
-		CBCBlocks.elCrafter = new BlockElCrafterIC2(GeneralRegistry.getBlockId("elCrafter", 0));
-		DMBlocks.armorCharger = new BlockArmorChargerIC2(GeneralRegistry.getBlockId("armorCharger", 0));
-		DMBlocks.healthCharger = new BlockHealthChargerIC2(GeneralRegistry.getBlockId("healthCharger", 0));
-		DMBlocks.medkitFiller = new BlockMedkitFillerIC2(GeneralRegistry.getBlockId("medkitFiller", 0));
+		Config conf = CBCMod.config;
+		CBCBlocks.elCrafter = new BlockElCrafterIC2(ConfigHandler.getBlockId(conf, "elCrafter", 0));
+		DMBlocks.armorCharger = new BlockArmorChargerIC2(ConfigHandler.getBlockId(conf, "armorCharger", 0));
+		DMBlocks.healthCharger = new BlockHealthChargerIC2(ConfigHandler.getBlockId(conf, "healthCharger", 0));
+		DMBlocks.medkitFiller = new BlockMedkitFillerIC2(ConfigHandler.getBlockId(conf, "medkitFiller", 0));
 		
 		ModLoader.registerBlock(CBCBlocks.elCrafter);
 		ModLoader.registerBlock(DMBlocks.armorCharger);
@@ -38,14 +41,12 @@ public class IC2Registration {
 	}
 	
 	public static void registerItems() {
-		DMItems.armorHEVHelmet = new ArmorHEVIC2(GeneralRegistry.getItemId("hevHelmet",
-				GeneralProps.CAT_EQUIPMENT), 0);
-		DMItems.armorHEVChestplate = new ArmorHEVIC2(GeneralRegistry.getItemId(
-				"hevChestplate", 3), 1);
-		DMItems.armorHEVLeggings = new ArmorHEVIC2(GeneralRegistry.getItemId(
-				"hevLeggings", 3), 2);
-		DMItems.armorHEVBoot = new ArmorHEVIC2(GeneralRegistry.getItemId("hevBoot", 3), 3);
-		DMItems.weapon_crowbar_el = new Weapon_Crowbar_ElectricalIC2(GeneralRegistry.getItemId("weapon_crowbar_el", 1));
-		CBCItems.battery = new ItemBatteryIC2(GeneralRegistry.getItemId("battery", 3));
+		Config conf = CBCMod.config;
+		DMItems.armorHEVHelmet = new ArmorHEVIC2(ConfigHandler.getItemId(conf, "hevHelmet", GeneralProps.CAT_EQUIPMENT), 0);
+		DMItems.armorHEVChestplate = new ArmorHEVIC2(ConfigHandler.getItemId(conf, "hevChestplate", 3), 1);
+		DMItems.armorHEVLeggings = new ArmorHEVIC2(ConfigHandler.getItemId(conf, "hevLeggings", 3), 2);
+		DMItems.armorHEVBoot = new ArmorHEVIC2(ConfigHandler.getItemId(conf, "hevBoot", 3), 3);
+		DMItems.weapon_crowbar_el = new Weapon_Crowbar_ElectricalIC2(ConfigHandler.getItemId(conf, "weapon_crowbar_el", 1));
+		CBCItems.battery = new ItemBatteryIC2(ConfigHandler.getItemId(conf, "battery", 3));
 	}
 }

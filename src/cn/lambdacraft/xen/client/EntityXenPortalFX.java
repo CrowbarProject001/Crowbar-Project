@@ -3,7 +3,6 @@
  */
 package cn.lambdacraft.xen.client;
 
-import appeng.api.config.FuzzyMode;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.particle.EntityPortalFX;
@@ -40,7 +39,8 @@ public class EntityXenPortalFX extends EntityPortalFX {
         isGreen = rand.nextBoolean();
 	}
 	
-    public void onUpdate()
+    @Override
+	public void onUpdate()
     {
     	this.particleAlpha = (ticksExisted < 10 ? ticksExisted / 10F : 1F) * 0.5F;;
     	if(this.ticksExisted >= this.particleMaxAge - 10) {

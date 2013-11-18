@@ -16,9 +16,10 @@ package cn.lambdacraft.mob.register;
 
 import net.minecraft.src.ModLoader;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.mob.block.BlockSentryRay;
 import cn.lambdacraft.mob.block.tile.TileSentryRay;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 
 /**
  * @author WeAthFolD
@@ -28,8 +29,8 @@ public class CBCMobBlocks {
 
 	public static BlockSentryRay sentryRay;
 	
-	public static void init() {
-		sentryRay = new BlockSentryRay(GeneralRegistry.getBlockId("sentryRay", GeneralProps.CAT_MISC));
+	public static void init(Config conf) {
+		sentryRay = new BlockSentryRay(ConfigHandler.getBlockId(conf, "sentryRay", GeneralProps.CAT_MISC));
 		
 		ModLoader.registerBlock(sentryRay);
 		ModLoader.registerTileEntity(TileSentryRay.class, "tile_entity_sentry_ray");

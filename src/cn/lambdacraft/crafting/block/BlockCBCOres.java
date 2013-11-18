@@ -17,7 +17,7 @@ package cn.lambdacraft.crafting.block;
 import java.util.Random;
 
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.register.CBCAchievements;
+import cn.lambdacraft.core.misc.CBCAchievements;
 
 import net.minecraft.block.BlockOre;
 import net.minecraft.client.renderer.texture.IconRegister;

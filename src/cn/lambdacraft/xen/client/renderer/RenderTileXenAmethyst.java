@@ -21,11 +21,11 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.lambdacraft.core.client.renderer.RenderTileEntityModel;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.xen.client.model.ModelXenAmethyst;
 import cn.lambdacraft.xen.tileentity.TileEntityXenAmethyst;
+import cn.liutils.api.client.render.RenderTileEntityModel;
+import cn.liutils.api.client.util.RenderUtils;
 
 /**
  * @author WeAthFolD

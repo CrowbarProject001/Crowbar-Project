@@ -12,7 +12,6 @@ import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.entity.EntityBulletEgon;
 import cn.lambdacraft.deathmatch.entity.fx.EntityEgonRay;
 import cn.weaponmod.api.WeaponHelper;
-import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.events.ItemHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -62,7 +61,7 @@ public class Weapon_Egon extends WeaponGeneralEnergy_LC implements ISpecialCross
 	@Override
 	public void onItemUsingTick(World world, EntityPlayer player, ItemStack stack, boolean type, int tickLeft)
     {
-    	InformationEnergy inf = (InformationEnergy) loadInformation(stack, player);
+    	InformationEnergy inf = loadInformation(stack, player);
     	int dTick = inf.getDeltaTick(type);
     	super.onItemUsingTick(world, player, stack, type, tickLeft);
     	
@@ -81,7 +80,7 @@ public class Weapon_Egon extends WeaponGeneralEnergy_LC implements ISpecialCross
 	@Override
 	public void onItemClick(World world, EntityPlayer player, ItemStack stack, boolean left) {
 		super.onItemClick(world, player, stack, left);
-		InformationEnergy inf = (InformationEnergy) loadInformation(stack, player);
+		InformationEnergy inf = loadInformation(stack, player);
 		if (ItemHelper.getUsingTickLeft(player, left) > 0 && canShoot(player, stack, left)) {
 			if (world.isRemote)
 				world.spawnEntityInWorld(new EntityEgonRay(world,

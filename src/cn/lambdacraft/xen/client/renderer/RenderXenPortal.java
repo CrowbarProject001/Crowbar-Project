@@ -2,10 +2,6 @@ package cn.lambdacraft.xen.client.renderer;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.lambdacraft.core.proxy.ClientProps;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,6 +9,11 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.liutils.api.client.util.RenderUtils;
 
 public class RenderXenPortal extends TileEntitySpecialRenderer {
 

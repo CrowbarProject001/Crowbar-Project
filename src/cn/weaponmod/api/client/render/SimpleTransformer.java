@@ -3,10 +3,11 @@
  */
 package cn.weaponmod.api.client.render;
 
+import net.minecraft.util.Vec3;
+
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.RenderUtils;
-import net.minecraft.util.Vec3;
+import cn.liutils.api.client.util.RenderUtils;
 
 /**
  * @author WeAthFolD

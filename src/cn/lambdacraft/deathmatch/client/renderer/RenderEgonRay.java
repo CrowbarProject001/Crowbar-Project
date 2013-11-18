@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.entity.fx.EntityEgonRay;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.util.Motion3D;
 
 /**
  * Egon ray rendering class.
@@ -37,9 +37,9 @@ public class RenderEgonRay extends RenderEntity {
 		EntityEgonRay egon = (EntityEgonRay) par1Entity;
 		if (!egon.draw)
 			return;
-		MotionXYZ motion = new MotionXYZ(egon);
+		Motion3D motion = new Motion3D(egon);
 		MovingObjectPosition trace = egon.worldObj.clip(motion.asVec3(egon.worldObj), 
-				motion.updateMotion(100.0F).asVec3(egon.worldObj));
+				motion.move(100.0F).asVec3(egon.worldObj));
 		Vec3 end = (trace == null) ? motion.asVec3(egon.worldObj)
 				: trace.hitVec;
 		tessellator = Tessellator.instance;

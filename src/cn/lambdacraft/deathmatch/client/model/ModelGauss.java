@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import cn.weaponmod.api.client.IItemModel;
+import cn.liutils.api.client.model.IItemModel;
 
 /**
  * Tau Cannon

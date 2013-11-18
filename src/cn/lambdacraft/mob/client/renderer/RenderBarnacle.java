@@ -14,12 +14,6 @@
  */
 package cn.lambdacraft.mob.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.mob.client.model.ModelBarnacle;
-import cn.lambdacraft.mob.entity.EntityBarnacle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.Tessellator;
@@ -27,6 +21,13 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+
+import org.lwjgl.opengl.GL11;
+
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.mob.client.model.ModelBarnacle;
+import cn.lambdacraft.mob.entity.EntityBarnacle;
+import cn.liutils.api.client.util.RenderUtils;
 
 /**
  * 藤壶怪渲染。

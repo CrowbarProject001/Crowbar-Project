@@ -18,8 +18,8 @@ import java.util.List;
 
 import cn.lambdacraft.api.entity.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.liutils.api.util.GenericUtils;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;

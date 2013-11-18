@@ -8,13 +8,13 @@ import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.lambdacraft.core.client.renderer.RendererSidedCube;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.block.BlockTripmine;
 import cn.lambdacraft.deathmatch.block.TileTripmine;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.client.render.RendererSidedCube;
+import cn.liutils.api.client.util.RenderUtils;
+import cn.liutils.api.util.Motion3D;
 
 public class RenderTileTripmine extends RendererSidedCube {
 
@@ -55,7 +55,7 @@ public class RenderTileTripmine extends RendererSidedCube {
 		// Tripmine ray drawing
 		float h = 0.025F;
 		double du = tileEntity.getRayDistance();
-		MotionXYZ end = new MotionXYZ(tileEntity.endX, tileEntity.endY,
+		Motion3D end = new Motion3D(tileEntity.endX, tileEntity.endY,
 				tileEntity.endZ, 0, 0, 0);
 		minY = y + 0.5 - h;
 		maxY = y + 0.5 + h;

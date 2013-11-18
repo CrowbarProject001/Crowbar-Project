@@ -22,7 +22,7 @@ import cn.lambdacraft.crafting.client.RenderWire;
 import cn.lambdacraft.crafting.entity.EntitySpray;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.client.model.ModelBattery;
-import cn.weaponmod.api.client.render.RenderModelItem;
+import cn.liutils.api.client.render.RenderModelItem;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 

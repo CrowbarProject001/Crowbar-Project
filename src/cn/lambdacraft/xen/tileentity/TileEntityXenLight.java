@@ -16,8 +16,8 @@ package cn.lambdacraft.xen.tileentity;
 
 import java.util.List;
 
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.xen.register.XENBlocks;
+import cn.liutils.api.util.GenericUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 

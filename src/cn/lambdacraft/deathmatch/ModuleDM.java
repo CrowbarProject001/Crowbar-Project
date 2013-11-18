@@ -2,9 +2,8 @@ package cn.lambdacraft.deathmatch;
 
 import net.minecraftforge.common.MinecraftForge;
 import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.misc.CBCNetHandler;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.CBCGuiHandler;
-import cn.lambdacraft.core.register.CBCNetHandler;
 import cn.lambdacraft.deathmatch.block.container.DMGuiElements;
 import cn.lambdacraft.deathmatch.entity.EntityARGrenade;
 import cn.lambdacraft.deathmatch.entity.EntityBattery;
@@ -51,9 +50,9 @@ public class ModuleDM {
 		MinecraftForge.EVENT_BUS.register(new DMEventHandler());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CHARGER_CL, new NetChargerClient());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_MEDFILLER_CL, new NetMedFillerClient());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new DMGuiElements.ElementArmorCharger());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_HEALTH, new DMGuiElements.ElementHealthCharger());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_MEDFILLER, new DMGuiElements.ElementMedFiller());
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_CHARGER, new DMGuiElements.ElementArmorCharger());
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_HEALTH, new DMGuiElements.ElementHealthCharger());
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_MEDFILLER, new DMGuiElements.ElementMedFiller());
 		proxy.preInit();
 	}
 

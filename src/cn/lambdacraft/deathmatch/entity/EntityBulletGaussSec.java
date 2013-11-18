@@ -23,9 +23,9 @@ import net.minecraftforge.common.ForgeDirection;
 import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRayColored;
 import cn.lambdacraft.deathmatch.entity.fx.GaussParticleFX;
+import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.entities.EntityBullet;
-import cn.weaponmod.util.MotionXYZ;
 
 /**
  * 非蓄力射击的高斯枪射击判断实体。
@@ -46,18 +46,18 @@ public class EntityBulletGaussSec extends EntityBullet {
 
 	public EntityBulletGaussSec(EnumGaussRayType typeOfRay, World worldObj,
 			EntityLivingBase entityLivingBase, ItemStack itemStack,
-			MovingObjectPosition result, MotionXYZ motion, int dmg) {
+			MovingObjectPosition result, Motion3D motion, int dmg) {
 
 		super(worldObj, entityLivingBase, itemStack, true);
-		MotionXYZ real = null;
+		Motion3D real = null;
 
 		if (typeOfRay == EnumGaussRayType.NORMAL) {
 			damage = dmg;
 			worldObj.spawnEntityInWorld(new EntityGaussRayColored(
-					new MotionXYZ(this), worldObj));
+					new Motion3D(this, true), worldObj));
 			return;
 		} else {
-			real = new MotionXYZ(result.hitVec, motion.motionX, motion.motionY,
+			real = new Motion3D(result.hitVec, motion.motionX, motion.motionY,
 					motion.motionZ);
 			ForgeDirection[] v = ForgeDirection.values();
 			ForgeDirection d = v[result.sideHit];
@@ -71,7 +71,7 @@ public class EntityBulletGaussSec extends EntityBullet {
 		if (typeOfRay == EnumGaussRayType.PENETRATION) {
 			double du = 0.0;
 			du = getMiniumUpdate(result, real);
-			real.updateMotion(du);
+			real.move(du);
 		} else if (typeOfRay == EnumGaussRayType.REFLECTION) {
 
 			switch (result.sideHit) {
@@ -96,13 +96,12 @@ public class EntityBulletGaussSec extends EntityBullet {
 		motionX = real.motionX;
 		motionY = real.motionY;
 		motionZ = real.motionZ;
-		real.updateMotion(0.001);
+		real.move(0.001);
 		setPosition(real.posX, real.posY, real.posZ);
 		this.setThrowableHeading(motionX, motionY, motionZ,
 				this.func_70182_d(), 1.0F);
 		if (!worldObj.isRemote) {
-			worldObj.spawnEntityInWorld(new EntityGaussRay(new MotionXYZ(this),
-					worldObj));
+			worldObj.spawnEntityInWorld(new EntityGaussRay(new Motion3D(this, true), worldObj));
 		}
 	}
 
@@ -115,7 +114,7 @@ public class EntityBulletGaussSec extends EntityBullet {
 	 * 
 	 * @return du = updateMotionRadius
 	 */
-	private double getMiniumUpdate(MovingObjectPosition result, MotionXYZ real) {
+	private double getMiniumUpdate(MovingObjectPosition result, Motion3D real) {
 
 		double du = 0.0;
 		double dx = -result.hitVec.xCoord + result.blockX, dy = -result.hitVec.yCoord

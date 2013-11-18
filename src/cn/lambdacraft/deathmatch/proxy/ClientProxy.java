@@ -17,13 +17,7 @@ package cn.lambdacraft.deathmatch.proxy;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
-import cn.lambdacraft.core.client.renderer.RenderCrossedProjectile;
-import cn.lambdacraft.core.client.renderer.RenderEmpty;
-import cn.lambdacraft.core.client.renderer.RenderIcon;
-import cn.lambdacraft.core.client.renderer.RenderModel;
-import cn.lambdacraft.core.client.renderer.RenderModelProjectile;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.lambdacraft.deathmatch.block.TileArmorCharger;
 import cn.lambdacraft.deathmatch.block.TileHealthCharger;
@@ -43,13 +37,13 @@ import cn.lambdacraft.deathmatch.client.renderer.RenderEgonRay;
 import cn.lambdacraft.deathmatch.client.renderer.RenderGauss;
 import cn.lambdacraft.deathmatch.client.renderer.RenderGaussRay;
 import cn.lambdacraft.deathmatch.client.renderer.RenderGlow;
+import cn.lambdacraft.deathmatch.client.renderer.RenderHelperEgon;
 import cn.lambdacraft.deathmatch.client.renderer.RenderHornet;
 import cn.lambdacraft.deathmatch.client.renderer.RenderItemElCrowbar;
 import cn.lambdacraft.deathmatch.client.renderer.RenderSatchel;
 import cn.lambdacraft.deathmatch.client.renderer.RenderTileCharger;
 import cn.lambdacraft.deathmatch.client.renderer.RenderTileHeCharger;
 import cn.lambdacraft.deathmatch.client.renderer.RenderTileTripmine;
-import cn.lambdacraft.deathmatch.client.renderer.RenderTrail;
 import cn.lambdacraft.deathmatch.entity.EntityARGrenade;
 import cn.lambdacraft.deathmatch.entity.EntityBattery;
 import cn.lambdacraft.deathmatch.entity.EntityBulletGauss;
@@ -65,15 +59,20 @@ import cn.lambdacraft.deathmatch.entity.fx.EntityCrossbowStill;
 import cn.lambdacraft.deathmatch.entity.fx.EntityEgonRay;
 import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRayColored;
-import cn.lambdacraft.deathmatch.entity.fx.EntityTrailFX;
 import cn.lambdacraft.deathmatch.entity.fx.GaussParticleFX;
 import cn.lambdacraft.deathmatch.flashlight.ClientTickHandler;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.lambdacraft.xen.client.EntityXenPortalFX;
+import cn.liutils.api.client.LIClientRegistry;
+import cn.liutils.api.client.render.RenderCrossedProjectile;
+import cn.liutils.api.client.render.RenderEmpty;
+import cn.liutils.api.client.render.RenderIcon;
+import cn.liutils.api.client.render.RenderModel;
+import cn.liutils.api.client.render.RenderModelItem;
+import cn.liutils.api.client.render.RenderModelProjectile;
+import cn.liutils.core.client.register.LISoundRegistry;
 import cn.weaponmod.api.client.render.RenderBulletWeapon;
 import cn.weaponmod.api.client.render.RenderModelBulletWeapon;
-import cn.weaponmod.api.client.render.RenderModelItem;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -118,12 +117,12 @@ public class ClientProxy extends Proxy {
 	@Override
 	public void preInit() {
 		for (String s : SOUND_WEAPONS)
-			CBCSoundEvents.addSoundPath("weapons/" + s);
+			LISoundRegistry.addSoundPath("weapons/" + s);
 		for (String s : SND_ENTITIES)
-			CBCSoundEvents.addSoundPath("entities/" + s);
+			LISoundRegistry.addSoundPath("entities/" + s);
 		for (String s : SND_HEV)
-			CBCSoundEvents.addSoundPath("hev/" + s);
-		CBCSoundEvents.addSoundWithVariety("weapons/electro", 3);
+			LISoundRegistry.addSoundPath("hev/" + s);
+		LISoundRegistry.addSoundWithVariety("weapons/electro", 3);
 		MinecraftForge.EVENT_BUS.register(new DMClientEventHandler());
 	}
 	
@@ -142,7 +141,6 @@ public class ClientProxy extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityRPGDot.class,new RenderIcon(ClientProps.RED_DOT_PATH).setBlend(0.8F).setEnableDepth(false));
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGauss.class, new RenderEmpty());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBulletGaussSec.class, new RenderEmpty());
-		RenderingRegistry.registerEntityRenderingHandler(EntityTrailFX.class, new RenderTrail());
 		RenderingRegistry.registerEntityRenderingHandler(EntityHornet.class, new RenderHornet());
 		RenderingRegistry.registerEntityRenderingHandler(EntityBattery.class,new RenderModel(new ModelBattery(), ClientProps.BATTERY_PATH,0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityMedkit.class,new RenderModel(new ModelMedkit(), ClientProps.MEDKIT_ENT_PATH,1.0F));
@@ -170,6 +168,7 @@ public class ClientProxy extends Proxy {
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F, ClientProps.MUZZLEFLASH));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crowbar_el.itemID, new RenderItemElCrowbar());
 		MinecraftForgeClient.registerItemRenderer(CBCItems.ammo_uranium.itemID, uranium_render);
+		LIClientRegistry.addPlayerRenderingHelper(new RenderHelperEgon());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTripmine.class,new RenderTileTripmine(DMBlocks.blockTripmine));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileArmorCharger.class,new RenderTileCharger(DMBlocks.armorCharger));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileHealthCharger.class,new RenderTileHeCharger(DMBlocks.healthCharger));

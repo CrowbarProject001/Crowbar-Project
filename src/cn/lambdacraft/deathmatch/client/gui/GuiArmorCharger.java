@@ -16,14 +16,14 @@ package cn.lambdacraft.deathmatch.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.gui.CBCGuiButton;
-import cn.lambdacraft.core.client.gui.CBCGuiContainer;
-import cn.lambdacraft.core.client.gui.CBCGuiPart;
-import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.block.TileArmorCharger;
 import cn.lambdacraft.deathmatch.network.NetChargerClient;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
+import cn.liutils.api.client.gui.LIGuiButton;
+import cn.liutils.api.client.gui.LIGuiContainer;
+import cn.liutils.api.client.gui.LIGuiPart;
+import cn.liutils.api.client.gui.IGuiTip;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumChatFormatting;
@@ -34,7 +34,7 @@ import net.minecraft.util.StatCollector;
  * @author Administrator
  * 
  */
-public class GuiArmorCharger extends CBCGuiContainer {
+public class GuiArmorCharger extends LIGuiContainer {
 
 	TileArmorCharger te;
 
@@ -81,8 +81,8 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart behavior = new CBCGuiPart("behavior", 80, 28, 64, 10)
-				.setDraw(false), redstone = new CBCGuiButton("redstone", 153,
+		LIGuiPart behavior = new LIGuiPart("behavior", 80, 28, 64, 10)
+				.setDraw(false), redstone = new LIGuiButton("redstone", 153,
 				5, 19, 10).setDownCoords(180, 13).setTextureCoords(153, 5);
 		this.addElement(behavior);
 		this.addElement(redstone);
@@ -106,7 +106,7 @@ public class GuiArmorCharger extends CBCGuiContainer {
 	 * .CBCGuiButton)
 	 */
 	@Override
-	public void onButtonClicked(CBCGuiButton button) {
+	public void onButtonClicked(LIGuiButton button) {
 		if (button.name == "redstone") {
 			te.nextBehavior();
 			NetChargerClient.sendChargerPacket(te);

@@ -23,8 +23,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cn.lambdacraft.deathmatch.item.weapon.Weapon_RPG;
+import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
-import cn.weaponmod.util.MotionXYZ;
 
 /**
  * RPG制导红点。
@@ -73,8 +73,8 @@ public class EntityRPGDot extends EntityThrowable {
 	}
 
 	private void updateDotPosition() {
-		MotionXYZ begin = new MotionXYZ(shooter);
-		MotionXYZ end = new MotionXYZ(begin).updateMotion(DOT_MAX_RANGE);
+		Motion3D begin = new Motion3D(shooter, true);
+		Motion3D end = new Motion3D(begin).move(DOT_MAX_RANGE);
 		MovingObjectPosition result = WeaponHelper.rayTraceBlocksAndEntities(null, worldObj, begin.asVec3(worldObj), end.asVec3(worldObj), this, getThrower());
 		if (result != null) {
 			posX = result.hitVec.xCoord;
@@ -83,7 +83,7 @@ public class EntityRPGDot extends EntityThrowable {
 			if(result.typeOfHit == EnumMovingObjectType.ENTITY) {
 				double distance = result.entityHit.getDistance(begin.posX, begin.posY, begin.posZ);
 				distance -= Math.sqrt(result.entityHit.width * result.entityHit.width * result.entityHit.height) * 0.25;
-				end = begin.updateMotion(distance);
+				end = begin.move(distance);
 				posX = end.posX;
 				posY = end.posY;
 				posZ = end.posZ;

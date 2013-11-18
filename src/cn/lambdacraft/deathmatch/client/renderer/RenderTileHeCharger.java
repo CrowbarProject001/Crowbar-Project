@@ -14,8 +14,8 @@
  */
 package cn.lambdacraft.deathmatch.client.renderer;
 
-import cn.lambdacraft.core.client.renderer.RendererSidedCube;
 import cn.lambdacraft.core.proxy.ClientProps;
+import cn.liutils.api.client.render.RendererSidedCube;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 

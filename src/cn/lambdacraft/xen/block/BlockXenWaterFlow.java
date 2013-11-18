@@ -21,7 +21,7 @@ public class BlockXenWaterFlow extends BlockFlowing {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister) {
         theIcon = new Icon[] {
-                iconRegister.registerIcon("lambdacraft:xen_water_still"),
-                iconRegister.registerIcon("lambdacraft:xen_water_flow") };
+                iconRegister.registerIcon("lambdacraft:xenwater_still"),
+                iconRegister.registerIcon("lambdacraft:xenwater_flow") };
     }
 }

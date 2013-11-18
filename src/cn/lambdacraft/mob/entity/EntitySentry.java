@@ -31,8 +31,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import cn.lambdacraft.api.entity.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.liutils.api.util.GenericUtils;
 import cn.weaponmod.api.WeaponHelper;
 
 /**

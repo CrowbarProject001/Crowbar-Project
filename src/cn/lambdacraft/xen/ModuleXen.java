@@ -17,9 +17,6 @@ package cn.lambdacraft.xen;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraftforge.common.DimensionManager;
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.misc.Config;
-import cn.lambdacraft.core.register.Configurable;
-import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.mob.entity.EntityAlienSlave;
 import cn.lambdacraft.mob.entity.EntityBarnacle;
 import cn.lambdacraft.mob.entity.EntityHeadcrab;
@@ -27,6 +24,9 @@ import cn.lambdacraft.mob.entity.EntityHoundeye;
 import cn.lambdacraft.xen.register.XENBlocks;
 import cn.lambdacraft.xen.world.WorldProviderXen;
 import cn.lambdacraft.xen.world.biome.MainBiomes;
+import cn.liutils.api.register.Configurable;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -51,7 +51,6 @@ public class ModuleXen {
 	@Configurable(key = "xenDimensionID", defValue = "5")
 	public static int dimensionId;
 	
-	public Config conf;
 	
 	@SidedProxy(clientSide = "cn.lambdacraft.xen.proxy.ClientProxy", serverSide = "cn.lambdacraft.xen.proxy.Proxy")
 	public static cn.lambdacraft.xen.proxy.Proxy proxy;
@@ -66,7 +65,7 @@ public class ModuleXen {
 	@EventHandler()
 	public void Init(FMLInitializationEvent Init) {
 		loadProps(CBCMod.config);
-		XENBlocks.init(conf);
+		XENBlocks.init(CBCMod.config);
 		proxy.init();
 		DimensionManager.registerProviderType(dimensionId, WorldProviderXen.class, true);
 		DimensionManager.registerDimension(dimensionId, dimensionId);
@@ -86,6 +85,6 @@ public class ModuleXen {
 	}
 	
 	private static void loadProps(Config config) {
-		GeneralRegistry.loadConfigurableClass(CBCMod.config, ModuleXen.class);
+		ConfigHandler.loadConfigurableClass(CBCMod.config, ModuleXen.class);
 	}
 }

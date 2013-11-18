@@ -19,10 +19,10 @@ import java.util.List;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -33,9 +33,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.mob.register.CBCMobItems;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.util.EntityUtils;
+import cn.liutils.api.util.GenericUtils;
+import cn.liutils.api.util.Motion3D;
 
 /**
  * 喜闻乐见的藤壶怪哟，因为基本不需要用到生物的特性所以 直接继承的Entity类
@@ -105,12 +106,13 @@ public class EntityBarnacle extends CBCEntityMob {
 		
 		this.updateTentacle();
 		this.updatePullingEntity();
+		
 		if(pullingEntity == null) {
 			//Calculate tracking range
 			if(--tickBreaking <= 0) {
-				MotionXYZ begin = new MotionXYZ(posX, posY, posZ, 0.0, -1.0, 0.0);
-				Vec3 vec1 = begin.asVec3(worldObj), vec2 = begin.updateMotion(30.0).asVec3(worldObj);
-				MovingObjectPosition trace = worldObj.rayTraceBlocks_do_do(vec1, vec2, true, false);
+				Motion3D begin = new Motion3D(posX, posY, posZ, 0.0, -1.0, 0.0);
+				Vec3 vec1 = begin.asVec3(worldObj), vec2 = begin.move(30.0).asVec3(worldObj);
+				MovingObjectPosition trace = worldObj.clip(vec1, vec2);
 				double distance = trace != null ? (posY - trace.hitVec.yCoord) : 30;
 				if(tentacleLength < distance)
 					tentacleLength += 0.05;
@@ -130,42 +132,45 @@ public class EntityBarnacle extends CBCEntityMob {
 						this.playSound("lambdacraft:mobs.bcl_tongue", 0.5F, 1.0F);
 					}
 				}
-			} else
-			if(ticksExisted % 45 == 0) {
+			} else if(ticksExisted % 45 == 0) {
 				this.playSound(GenericUtils.getRandomSound("lambdacraft:mobs.bcl_chew", 3), 0.5F, 1.0F);
 			}
 		} else {
-			//Move pulling entity
-			pullingEntity.moveEntity(0.0, -pullingEntity.motionY, 0.0);
-			pullingEntity.motionY = 0.07;
-			pullingEntity.setPosition(posX, posY - tentacleLength, posZ);
-			pullingEntity.motionX = pullingEntity.motionZ = 0.0;
-			if(tentacleLength >= 0.8) {
-				tentacleLength -= 0.05;
-			} else {
-				if(++tickBeforeLastAttack >= 20) {
-					tickBeforeLastAttack = 0;
-					if(!(pullingEntity instanceof EntityLivingBase)) {
-						stopPullingEntity();
-					} else {
-						pullingEntity.attackEntityFrom(DamageSource.causeMobDamage(this), 15);
-						this.playSound("lambdacraft:mobs.bcl_bite", 0.5F, 1.0F);
-						if(++timesEaten > 5) {
-							pullingEntity.fallDistance = 0.0F;
+			if(pullingEntity.isDead || EntityUtils.getDistanceSqFlat(this, pullingEntity) >= 25)
+				stopPullingEntity();
+			else {
+				pullingEntity.moveEntity(0.0, -pullingEntity.motionY, 0.0);
+				pullingEntity.motionY = 0.07;
+				pullingEntity.setPosition(posX, posY - tentacleLength, posZ);
+				pullingEntity.motionX = pullingEntity.motionZ = 0.0;
+				if(tentacleLength >= 0.8) {
+					tentacleLength -= 0.05;
+				} else { //Move pulling entity
+					if(++tickBeforeLastAttack >= 20) {
+						tickBeforeLastAttack = 0;
+						if(!(pullingEntity instanceof EntityLivingBase)) {
 							stopPullingEntity();
+						} else { 
+							//EntityLivingBase ent = (EntityLivingBase) pullingEntity;
+							pullingEntity.attackEntityFrom(DamageSource.causeMobDamage(this), 10);
+							//if(ent.getHealth() <= 0)
+							//	stopPullingEntity();
+							this.playSound("lambdacraft:mobs.bcl_bite", 0.5F, 1.0F);
+							if(++timesEaten > 5) {
+								pullingEntity.fallDistance = 0.0F;
+								stopPullingEntity();
+							}
 						}
 					}
 				}
 			}
-			if(pullingEntity != null && pullingEntity.isDead)
-				stopPullingEntity();
 		}
 		
 		//Check if barnacle could still exist
 		if(worldObj.getBlockId(MathHelper.floor_double(posX), (int)posY + 1, MathHelper.floor_double(posZ)) == 0) {
 			//TryAttach
 			if(ticksExisted < 10) {
-				MotionXYZ mo = new MotionXYZ(this);
+				Motion3D mo = new Motion3D(this);
 				MovingObjectPosition result = worldObj.clip(mo.asVec3(worldObj), mo.asVec3(worldObj).addVector(0.0, 40.0, 0.0));
 				if(result != null && worldObj.isBlockSolidOnSide(result.blockX, result.blockY, result.blockZ, ForgeDirection.DOWN)) {
 					if(worldObj.isBlockNormalCube(result.blockX, result.blockY, result.blockZ)) {
@@ -203,6 +208,7 @@ public class EntityBarnacle extends CBCEntityMob {
 			dataWatcher.updateObject(14, Byte.valueOf((byte)tickBreaking));
 			if(this.pullingEntity != null)
 				dataWatcher.updateObject(13, Integer.valueOf(pullingEntity.entityId));
+			else dataWatcher.updateObject(13, Integer.valueOf(0));
 		}
 	}
 	
@@ -230,6 +236,7 @@ public class EntityBarnacle extends CBCEntityMob {
 	}
 	
 	protected void stopPullingEntity() {
+		pullingEntityMap.remove(pullingEntity);
 		pullingEntity = null;
 		dataWatcher.updateObject(12, Byte.valueOf((byte) 0));
 	}

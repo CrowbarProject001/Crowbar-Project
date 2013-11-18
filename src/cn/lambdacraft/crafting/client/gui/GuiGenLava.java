@@ -18,21 +18,21 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.gui.CBCGuiButton;
-import cn.lambdacraft.core.client.gui.CBCGuiContainer;
-import cn.lambdacraft.core.client.gui.CBCGuiPart;
-import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.crafting.block.container.ContainerGeneratorLava;
 import cn.lambdacraft.crafting.block.tile.TileGeneratorLava;
 import cn.lambdacraft.crafting.register.CBCBlocks;
+import cn.liutils.api.client.gui.LIGuiButton;
+import cn.liutils.api.client.gui.LIGuiContainer;
+import cn.liutils.api.client.gui.LIGuiPart;
+import cn.liutils.api.client.gui.IGuiTip;
 
 
 /**
  * @author WeAthFolD
  * 
  */
-public class GuiGenLava extends CBCGuiContainer {
+public class GuiGenLava extends LIGuiContainer {
 
 	TileGeneratorLava te;
 
@@ -61,7 +61,7 @@ public class GuiGenLava extends CBCGuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart energy = new CBCGuiPart("energy", 91, 18, 6, 47);
+		LIGuiPart energy = new LIGuiPart("energy", 91, 18, 6, 47);
 		this.addElement(energy);
 		this.setElementTip("energy", new TipEnergy());
 	}
@@ -94,6 +94,6 @@ public class GuiGenLava extends CBCGuiContainer {
 	}
 
 	@Override
-	public void onButtonClicked(CBCGuiButton button) {
+	public void onButtonClicked(LIGuiButton button) {
 	}
 }

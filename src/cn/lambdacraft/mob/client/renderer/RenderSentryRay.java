@@ -14,16 +14,17 @@
  */
 package cn.lambdacraft.mob.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.lambdacraft.core.client.renderer.RendererSidedCube;
+
+import org.lwjgl.opengl.GL11;
+
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.block.tile.TileSentryRay;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
+import cn.liutils.api.client.render.RendererSidedCube;
+import cn.liutils.api.client.util.RenderUtils;
 
 
 /**

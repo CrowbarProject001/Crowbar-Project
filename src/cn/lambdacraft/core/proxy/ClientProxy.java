@@ -14,18 +14,20 @@
  */
 package cn.lambdacraft.core.proxy;
 
-import org.lwjgl.input.Keyboard;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
-import api.player.client.ClientPlayerAPI;
+import org.lwjgl.input.Keyboard;
 
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.client.key.KeyUse;
-import cn.lambdacraft.core.register.CBCKeyProcess;
-import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.deathmatch.client.renderer.RenderEmptyBlock;
+import cn.liutils.core.client.register.LIKeyProcess;
+import cn.liutils.core.client.register.LISoundRegistry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -40,23 +42,89 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class ClientProxy extends Proxy {
 
-	CBCSoundEvents events = new CBCSoundEvents();
+	LISoundRegistry events = new LISoundRegistry();
+	
+	private final String PATH_TRACKS[] = { "hla", "hlb", "hlc" };
 	
 	@Override
 	public void init() {
 		super.init();
 		events.onSound(new SoundLoadEvent(Minecraft.getMinecraft().sndManager));
-		ClientPlayerAPI.register("CBCPlayer", CBCPlayer.class);
+		CBCPlayer cbcPlayer = new CBCPlayer();
+		TickRegistry.registerTickHandler(cbcPlayer, Side.CLIENT);
 		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
-		TickRegistry.registerTickHandler(new CBCKeyProcess(), Side.CLIENT);
 		ClientProps.loadProps(CBCMod.config);
 	}
 	
 	@Override
 	public void preInit() {
 		MinecraftForge.EVENT_BUS.register(events);
-		CBCKeyProcess.addKey(new KeyBinding("key.cbcuse", Keyboard.KEY_F), true, new KeyUse());
+		LIKeyProcess.addKey("key.cbcuse", Keyboard.KEY_F, true, new KeyUse());
+		
+		String path = getBasePath();
+		
+		File file = new File(this.getClass().getResource("/assets/lambdacraft/records/hla.ogg").getFile());
+		
+		for(String s : PATH_TRACKS)
+			copyFile(new File(getClass().getResource("/assets/lambdacraft/records/" + s + ".ogg").getFile()), path + "/assets/records/" + s + ".ogg");
+		
+		file = new File(this.getClass().getResource("/assets/lambdacraft/spray/").getFile());
+		File files[] = file.listFiles();
+		for(File f : files) {
+			if(f.isFile() && f.getPath().endsWith(".bmp"))
+				copyFile(f, path + "/assets/lambdacraft/sprays/" + f.getName());
+		}
+		
+		file = new File(this.getClass().getResource("/assets/lambdacraft/crosshairs/").getFile());
+		files = file.listFiles();
+		for(File f : files) {
+			if(f.isFile() && f.getPath().endsWith(".png"))
+				copyFile(f, path + "/assets/lambdacraft/crosshairs/" + f.getName());
+		}
+		
 	}
+	
+	public static String getBasePath() {
+		Minecraft mc = Minecraft.getMinecraft();
+		String path = mc.mcDataDir.getAbsolutePath();
+		path = path.substring(0, path.length() - 2);
+		return path;
+	}
+	
+	/** 
+     * 复制单个文件 
+     * @param oldPath String 原文件路径 如：c:/fqf.txt 
+     * @param newPath String 复制后路径 如：f:/fqf.txt 
+     * @return boolean 
+     */ 
+   public static File copyFile(File oldfile, String newPath) { 
+	   File file = new File(newPath);
+       try { 
+           int bytesum = 0; 
+           int byteread = 0; 
+           if(file.canRead())
+        	   return file;
+           if (oldfile.exists()) { //文件存在时 
+        	   if(!file.canWrite())
+        		   file.getParentFile().mkdirs();
+               InputStream inStream = new FileInputStream(oldfile); //读入原文件 
+               FileOutputStream fs = new FileOutputStream(newPath); 
+               byte[] buffer = new byte[1444]; 
+               int length; 
+               while ( (byteread = inStream.read(buffer)) != -1) { 
+                   bytesum += byteread; //字节数 文件大小 
+                   fs.write(buffer, 0, byteread); 
+               } 
+               inStream.close(); 
+               fs.close();
+           } 
+       } 
+       catch (Exception e) { 
+           System.err.println("复制单个文件操作出错"); 
+           e.printStackTrace(); 
+       } 
+       return file;
+   } 
 
 	@Override
 	public void profilerStartSection(String section) {

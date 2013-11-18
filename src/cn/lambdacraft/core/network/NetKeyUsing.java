@@ -23,11 +23,11 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.client.key.UsingUtils;
+import cn.lambdacraft.core.misc.CBCNetHandler;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.register.IChannelProcess;
-import cn.lambdacraft.core.util.BlockPos;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.register.IChannelProcess;
+import cn.liutils.api.util.BlockPos;
+import cn.liutils.api.util.Motion3D;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 
@@ -66,8 +66,7 @@ public class NetKeyUsing implements IChannelProcess {
 			ex.printStackTrace();
 		}
 		if (isUsing) {
-			MotionXYZ begin = new MotionXYZ(thePlayer), end = new MotionXYZ(
-					thePlayer).updateMotion(8.0);
+			Motion3D begin = new Motion3D(thePlayer, true), end = new Motion3D(begin).move(8.0);
 			MovingObjectPosition mop = world.clip(
 					begin.asVec3(world), end.asVec3(world));
 			if (mop == null || mop.sideHit == -1)

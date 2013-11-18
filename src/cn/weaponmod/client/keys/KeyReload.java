@@ -3,9 +3,9 @@ package cn.weaponmod.client.keys;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import cn.liutils.api.client.register.IKeyProcess;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
-import cn.weaponmod.events.IKeyProcess;
 import cn.weaponmod.network.NetDeathmatch;
 
 public class KeyReload implements IKeyProcess {

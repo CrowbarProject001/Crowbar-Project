@@ -1,6 +1,5 @@
 package cn.lambdacraft.deathmatch.block.container;
 
-import cn.lambdacraft.core.register.IGuiElement;
 import cn.lambdacraft.deathmatch.block.TileArmorCharger;
 import cn.lambdacraft.deathmatch.block.TileHealthCharger;
 import cn.lambdacraft.deathmatch.block.TileMedkitFiller;
@@ -8,6 +7,7 @@ import cn.lambdacraft.deathmatch.block.container.ContainerArmorCharger;
 import cn.lambdacraft.deathmatch.client.gui.GuiArmorCharger;
 import cn.lambdacraft.deathmatch.client.gui.GuiHealthCharger;
 import cn.lambdacraft.deathmatch.client.gui.GuiMedFiller;
+import cn.liutils.api.register.IGuiElement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 

@@ -23,8 +23,9 @@ import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
+import cn.liutils.api.client.model.IItemModel;
+import cn.liutils.api.client.render.RenderModelItem;
 import cn.weaponmod.WeaponMod;
-import cn.weaponmod.api.client.IItemModel;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 import cn.weaponmod.events.ItemHelper;

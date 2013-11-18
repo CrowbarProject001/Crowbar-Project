@@ -1,34 +1,43 @@
 package cn.lambdacraft.core;
 
-import api.player.client.*;
+import java.util.EnumSet;
+
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import cn.lambdacraft.core.item.ElectricArmor;
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.deathmatch.item.ArmorHEV;
 import cn.lambdacraft.deathmatch.item.ArmorHEV.EnumAttachment;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.xen.ModuleXen;
-public class CBCPlayer extends ClientPlayerBase {
+import cn.liutils.api.util.GenericUtils;
+
+public class CBCPlayer implements ITickHandler {
 
 	public static final float LJ_VEL_RADIUS = 1.5F, BHOP_VEL_SCALE = 0.003F, SPEED_REDUCE_SCALE = 0.0005F;
 	private float lastTickRotationYaw;
 	private GameSettings gameSettings;
 	private Minecraft mc = Minecraft.getMinecraft();
+	private EntityPlayer player = mc.thePlayer;
 	private int fallingTick;
 	private int tickSinceLastSound = 0;
 	private float lastHealth = 0;
+	private boolean lastAirBorne = false;
 	public static boolean drawArmorTip = false;
 	public static boolean armorStat[] = new boolean[4];
 	
 	ArmorHEV hevHead = DMItems.armorHEVHelmet, hevChest = DMItems.armorHEVChestplate,
 			hevBoots = DMItems.armorHEVBoot, hevLeggings = DMItems.armorHEVLeggings;
 	
-	public CBCPlayer(ClientPlayerAPI var1) {
-		super(var1);
+	public CBCPlayer() {
 		gameSettings = Minecraft.getMinecraft().gameSettings;
 	}
 	
@@ -49,7 +58,6 @@ public class CBCPlayer extends ClientPlayerBase {
 	public static EnumStatus playerStat = EnumStatus.NONE;
 
 	//---------------通用支持部分------------------
-	@Override
 	public void beforeOnUpdate() {
 		
 		boolean preOnHEV = armorStat[2] &&  armorStat[3];
@@ -85,14 +93,13 @@ public class CBCPlayer extends ClientPlayerBase {
 			playerStat = EnumStatus.NONE;
 		}
 		
+		if(player.worldObj.provider.dimensionId == ModuleXen.dimensionId) {
+			if(!player.onGround && !player.capabilities.isFlying && !(player.isOnLadder() || player.isInWater())) {
+				player.motionY += 0.036;
+			}
+		}
 	}
 	
-	@Override
-	public void afterOnLivingUpdate() {
-		lastTickRotationYaw = player.rotationYaw;
-	}
-	
-	@Override
 	public void afterOnUpdate() {
 		++tickSinceLastSound;
 		if((armorStat[2] &&  armorStat[3])) {
@@ -103,6 +110,7 @@ public class CBCPlayer extends ClientPlayerBase {
 				}
 			}
 		}
+		lastTickRotationYaw = player.rotationYaw;
 		lastHealth = player.getHealth();
 	}
 	
@@ -111,7 +119,6 @@ public class CBCPlayer extends ClientPlayerBase {
 	/**
 	 * 自建跳跃，长跳包支持。
 	 */
-	@Override
 	public void jump() {
 		
 		ItemStack slotChestplate = player.inventory.armorInventory[2];
@@ -131,31 +138,22 @@ public class CBCPlayer extends ClientPlayerBase {
 										* (float) Math.PI) * LJ_VEL_RADIUS;
 					}
 			}
-			
 		}
-		
-		player.localJump();
-		
 	}
 	
 	//--------------------Bhop-------------------
 	/**
 	 * Update函数，连跳支持，Xen支持。
 	 */
-	@Override
+	@SideOnly(Side.CLIENT)
 	public void onLivingUpdate() {
-		if(player.worldObj.provider.dimensionId == ModuleXen.dimensionId) {
-			if(!player.onGround && !player.capabilities.isFlying && !(player.isOnLadder() || player.isInWater())) {
-				player.motionY += 0.036;
-			}
-		}
 		
 		if(!useBhop()) {
-			player.localOnLivingUpdate();
 			return;
 		}
 		
 		//calculate and strafe!
+		EntityPlayerSP player = (EntityPlayerSP) this.player;
 		double velToAdd = player.movementInput.moveStrafe * (1.0 - Math.abs(player.movementInput.moveForward));
 		float changedYaw = player.rotationYaw - lastTickRotationYaw;
 		if(Math.abs(changedYaw) > 10) {
@@ -167,7 +165,6 @@ public class CBCPlayer extends ClientPlayerBase {
 		} else ++fallingTick;
 		
 		if(velToAdd == 0.0 || velToAdd == -0.0) {
-			player.localOnLivingUpdate();
 			return;
 		}
 		//加速
@@ -190,10 +187,9 @@ public class CBCPlayer extends ClientPlayerBase {
 		motionYaw = GenericUtils.wrapYawAngle(motionYaw);
 		player.motionX = MathHelper.sin(motionYaw * (float) Math.PI / 180.0F) * vel;
 		player.motionZ = MathHelper.cos(motionYaw / 180.0F * (float) Math.PI) * vel;
-		//调用原本的Update
-		player.localOnLivingUpdate();
 	}
 	
+	/*
 	@Override
     public void moveEntityWithHeading(float var1, float var2)
     {
@@ -205,6 +201,7 @@ public class CBCPlayer extends ClientPlayerBase {
     		player.motionZ = preMotionZ * speedReduction;
     	}
     }
+	*/
 	
 	//-----------------------效用函数----------------------------
 	
@@ -221,6 +218,38 @@ public class CBCPlayer extends ClientPlayerBase {
 		par3 /= f2;
 		par5 /= f2;
 		return (float) (Math.atan2(par1, par5) * 180.0D / Math.PI);
+	}
+	
+	
+
+	@Override
+	public void tickStart(EnumSet<TickType> type, Object... tickData) {
+		if(player == null) player = (EntityPlayer) tickData[0];
+		if(player != null) {
+			beforeOnUpdate();
+			if(player.worldObj.isRemote)
+				onLivingUpdate();
+			if(!lastAirBorne && !player.onGround) {
+				jump();
+			}
+			lastAirBorne = !player.onGround;
+		}
+	}
+
+	@Override
+	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+		if(player != null)
+			afterOnUpdate();
+	}
+
+	@Override
+	public EnumSet<TickType> ticks() {
+		return EnumSet.of(TickType.PLAYER);
+	}
+
+	@Override
+	public String getLabel() {
+		return "LambdaCraft Player Handler";
 	}
 	
 	//----------------Sounds-----------------

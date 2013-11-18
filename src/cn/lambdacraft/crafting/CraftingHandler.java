@@ -1,6 +1,6 @@
 package cn.lambdacraft.crafting;
 
-import cn.lambdacraft.core.register.CBCAchievements;
+import cn.lambdacraft.core.misc.CBCAchievements;
 import cn.lambdacraft.crafting.register.CBCItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

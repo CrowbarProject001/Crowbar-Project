@@ -15,8 +15,8 @@
 package cn.lambdacraft.core.client.key;
 
 import cn.lambdacraft.core.network.NetKeyUsing;
-import cn.lambdacraft.core.register.IKeyProcess;
 import cn.lambdacraft.deathmatch.proxy.ClientProxy;
+import cn.liutils.api.client.register.IKeyProcess;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,7 +37,7 @@ public class KeyUse implements IKeyProcess {
 	 * @see cn.lambdacraft.core.register.IKeyProcess#onKeyDown()
 	 */
 	@Override
-	public void onKeyDown(boolean isEnd) {
+	public void onKeyDown(int keyCode, boolean isEnd) {
 		if(isEnd)
 			return;
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
@@ -53,7 +53,7 @@ public class KeyUse implements IKeyProcess {
 	 * @see cn.lambdacraft.core.register.IKeyProcess#onKeyUp()
 	 */
 	@Override
-	public void onKeyUp(boolean isEnd) {
+	public void onKeyUp(int keyCode, boolean isEnd) {
 		if(isEnd)
 			return;
 		EntityPlayer player = Minecraft.getMinecraft().thePlayer;

@@ -2,9 +2,7 @@ package cn.lambdacraft.deathmatch.register;
 
 import net.minecraft.item.Item;
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.deathmatch.item.ArmorHEV;
 import cn.lambdacraft.deathmatch.item.ItemAttachment;
 import cn.lambdacraft.deathmatch.item.ItemMedkit;
@@ -22,6 +20,8 @@ import cn.lambdacraft.deathmatch.item.weapon.Weapon_Hornet;
 import cn.lambdacraft.deathmatch.item.weapon.Weapon_RPG;
 import cn.lambdacraft.deathmatch.item.weapon.Weapon_Satchel;
 import cn.lambdacraft.deathmatch.item.weapon.Weapon_Shotgun;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 
 public class DMItems {
 
@@ -47,46 +47,46 @@ public class DMItems {
 
 	public static void init(Config conf) {
 
-		weapon_crowbar = new Weapon_Crowbar(GeneralRegistry.getItemId(
+		weapon_crowbar = new Weapon_Crowbar(ConfigHandler.getItemId(conf, 
 				"weapon_crowbar", 1));
 		
-		weapon_shotgun = new Weapon_Shotgun(GeneralRegistry.getItemId("weapon_shotgun", 1));
-		weapon_hgrenade = new Weapon_Hgrenade(GeneralRegistry.getItemId(
+		weapon_shotgun = new Weapon_Shotgun(ConfigHandler.getItemId(conf, "weapon_shotgun", 1));
+		weapon_hgrenade = new Weapon_Hgrenade(ConfigHandler.getItemId(conf, 
 				"weapon_hgrenade", 1));
-		weapon_9mmhandgun = new Weapon_9mmhandgun(GeneralRegistry.getItemId(
+		weapon_9mmhandgun = new Weapon_9mmhandgun(ConfigHandler.getItemId(conf, 
 				"weapon_nmmhandgun", 1));
-		weapon_9mmAR = new Weapon_9mmAR(GeneralRegistry.getItemId(
+		weapon_9mmAR = new Weapon_9mmAR(ConfigHandler.getItemId(conf, 
 				"weapon_nmmAR", 1));
-		weapon_357 = new Weapon_357(GeneralRegistry.getItemId("weapon_357", 1));
-		weapon_RPG = new Weapon_RPG(GeneralRegistry.getItemId("weapon_RPG", 1));
-		weapon_crossbow = new Weapon_Crossbow(GeneralRegistry.getItemId(
+		weapon_357 = new Weapon_357(ConfigHandler.getItemId(conf, "weapon_357", 1));
+		weapon_RPG = new Weapon_RPG(ConfigHandler.getItemId(conf, "weapon_RPG", 1));
+		weapon_crossbow = new Weapon_Crossbow(ConfigHandler.getItemId(conf, 
 				"weapon_crossbow", 1));
-		weapon_satchel = new Weapon_Satchel(GeneralRegistry.getItemId(
+		weapon_satchel = new Weapon_Satchel(ConfigHandler.getItemId(conf, 
 				"weapon_satchel", 1));
 
-		weapon_gauss = new Weapon_Gauss(GeneralRegistry.getItemId(
+		weapon_gauss = new Weapon_Gauss(ConfigHandler.getItemId(conf, 
 				"weapon_gauss", 1));
-		weapon_egon = new Weapon_Egon(GeneralRegistry.getItemId("weapon_egon",
+		weapon_egon = new Weapon_Egon(ConfigHandler.getItemId(conf, "weapon_egon",
 				1));
-		weapon_hornet = new Weapon_Hornet(GeneralRegistry.getItemId(
+		weapon_hornet = new Weapon_Hornet(ConfigHandler.getItemId(conf, 
 				"weapon_hornet", 1));
-		physCalibur = new ItemPhysicalCalibur(GeneralRegistry.getItemId("physCalibur", 1));
+		physCalibur = new ItemPhysicalCalibur(ConfigHandler.getItemId(conf, "physCalibur", 1));
 		
 		if(!CBCMod.ic2Installed) {
-			armorHEVHelmet = new ArmorHEV(GeneralRegistry.getItemId("hevHelmet",
+			armorHEVHelmet = new ArmorHEV(ConfigHandler.getItemId(conf, "hevHelmet",
 				GeneralProps.CAT_EQUIPMENT), 0);
-			armorHEVChestplate = new ArmorHEV(GeneralRegistry.getItemId(
+			armorHEVChestplate = new ArmorHEV(ConfigHandler.getItemId(conf, 
 				"hevChestplate", 3), 1);
-			armorHEVLeggings = new ArmorHEV(GeneralRegistry.getItemId(
+			armorHEVLeggings = new ArmorHEV(ConfigHandler.getItemId(conf, 
 				"hevLeggings", 3), 2);
-			armorHEVBoot = new ArmorHEV(GeneralRegistry.getItemId("hevBoot", 3), 3);
-			weapon_crowbar_el = new Weapon_Crowbar_Electrical(GeneralRegistry.getItemId("weapon_crowbar_el", 1));
+			armorHEVBoot = new ArmorHEV(ConfigHandler.getItemId(conf, "hevBoot", 3), 3);
+			weapon_crowbar_el = new Weapon_Crowbar_Electrical(ConfigHandler.getItemId(conf, "weapon_crowbar_el", 1));
 			
 		}
 		
-		attach = new ItemAttachment(GeneralRegistry.getItemId("attaches",
+		attach = new ItemAttachment(ConfigHandler.getItemId(conf, "attaches",
 				3));
-		medkit = new ItemMedkit(GeneralRegistry.getItemId("medkit", 3));
+		medkit = new ItemMedkit(ConfigHandler.getItemId(conf, "medkit", 3));
 
 	}
 }

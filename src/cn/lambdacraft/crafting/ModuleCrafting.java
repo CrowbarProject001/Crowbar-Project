@@ -15,12 +15,10 @@
 package cn.lambdacraft.crafting;
 
 import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.misc.CBCAchievements;
+import cn.lambdacraft.core.misc.CBCNetHandler;
 import cn.lambdacraft.core.proxy.GeneralProps;
 import cn.lambdacraft.core.proxy.Proxy;
-import cn.lambdacraft.core.register.CBCAchievements;
-import cn.lambdacraft.core.register.CBCGuiHandler;
-import cn.lambdacraft.core.register.CBCNetHandler;
-import cn.lambdacraft.core.register.CBCSoundEvents;
 import cn.lambdacraft.crafting.block.container.CRGuiElements;
 import cn.lambdacraft.crafting.command.CommandSpray;
 import cn.lambdacraft.crafting.command.CommandXHairColor;
@@ -36,6 +34,7 @@ import cn.lambdacraft.crafting.world.CBCWorldGen;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.liutils.core.client.register.LISoundRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
@@ -69,7 +68,7 @@ public class ModuleCrafting {
 		GameRegistry.registerWorldGenerator(new CBCWorldGen());
 		if (Proxy.isRendering()) {
 			for (String s : SND_ENTITIES) {
-				CBCSoundEvents.addSoundPath("entities/" + s);
+				LISoundRegistry.addSoundPath("entities/" + s);
 			}
 		}
 		
@@ -81,17 +80,17 @@ public class ModuleCrafting {
 		CBCItems.init(CBCMod.config);
 		
 		CBCAchievements.init(CBCMod.config);
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_CRAFTER,
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_CRAFTER,
 				new CRGuiElements.ElementCrafter());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_GENFIRE,
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_GENFIRE,
 				new CRGuiElements.ElementGenFire());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_GENLAVA,
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_GENLAVA,
 				new CRGuiElements.ElementGenLava());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_GENSOLAR,
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_GENSOLAR,
 				new CRGuiElements.ElementGenSolar());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_BATBOX,
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_BATBOX,
 				new CRGuiElements.ElementBatbox());
-		CBCGuiHandler.addGuiElement(GeneralProps.GUI_ID_EL_CRAFTER,
+		CBCMod.guiHandler.addGuiElement(GeneralProps.GUI_ID_EL_CRAFTER,
 				new CRGuiElements.ElementElCrafter());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER_CL,
 				new NetCrafterClient());

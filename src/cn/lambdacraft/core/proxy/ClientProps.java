@@ -14,6 +14,8 @@
  */
 package cn.lambdacraft.core.proxy;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,9 +30,9 @@ import net.minecraftforge.common.Property;
 import com.google.common.base.Charsets;
 
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.misc.Config;
-import cn.lambdacraft.core.register.Configurable;
-import cn.lambdacraft.core.register.GeneralRegistry;
+import cn.liutils.api.register.Configurable;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.SideOnly;
 import cpw.mods.fml.relauncher.Side;
@@ -148,6 +150,7 @@ public class ClientProps {
 			NMMAR_MDL_PATH = "lambdacraft:textures/entities/9mmar.png",
 			URANIUM_MDL_PATH = "lambdacraft:textures/entities/uranium.png",
 			EGON_HEAD_PATH = "lambdacraft:textures/entities/egon_head.png",
+			EGON_BACKPACK = "lambdacraft:textures/entities/egon_backpack.png",
 			XENPORTAL_PARTICLE_PATH[] = { "lambdacraft:textures/entities/xin0.png", "lambdacraft:textures/entities/xin1.png" },
 			EGON_BEAM_PATH[] = {"lambdacraft:textures/entities/plasma0.png", 
 		"lambdacraft:textures/entities/plasma1.png", 
@@ -173,10 +176,10 @@ public class ClientProps {
 					"lambdacraft:textures/entities/ltn1.png",
 					"lambdacraft:textures/entities/ltn2.png" };
 
-	public static final String xhair_path = "lambdacraft:crosshairs/",
+	public static final String xhair_path = "lambdacraft/crosshairs/",
 			DEFAULT_XHAIR_PATH = xhair_path + "xhair1.png";
 	
-	public static final String spry_path = "lambdacraft:spray/";
+	public static final String spry_path = "lambdacraft/sprays/";
 
 	public static String PORTAL_PATH[] = new String[10];
 	static {
@@ -201,34 +204,25 @@ public class ClientProps {
 	}
 
 	public static void loadProps(Config config) {
-		GeneralRegistry.loadConfigurableClass(CBCMod.config, ClientProps.class);
+		ConfigHandler.loadConfigurableClass(CBCMod.config, ClientProps.class);
 		
 		crosshairProps = new Properties();
 		final String absPath = "/assets/lambdacraft/";
 		URL src = Minecraft.class.getResource(absPath + "crosshairs/crosshairs.properties");
-		InputStream langStream = null;
 		
 		sprayProps = new Properties();
 		URL src2 = Minecraft.class.getResource(absPath + "spray/sprays.properties");
-		InputStream langStream2 = null;
+		
+		File crFile = ClientProxy.copyFile(new File(src.getPath()), ClientProxy.getBasePath() + "/assets/lambdacraft/crosshairs/crosshairs.properties");
+		File sprFile = ClientProxy.copyFile(new File(src2.getPath()), ClientProxy.getBasePath() + "/assets/lambdacraft/sprays/sprays.properties");
 
 		try {
-			langStream = src.openStream();
-			langStream2 = src2.openStream();
-			crosshairProps.load(new InputStreamReader(langStream, Charsets.UTF_8));
-			sprayProps.load(new InputStreamReader(langStream2, Charsets.UTF_8));
+			crosshairProps.load(new InputStreamReader(new FileInputStream(crFile), Charsets.UTF_8));
+			sprayProps.load(new InputStreamReader(new FileInputStream(sprFile), Charsets.UTF_8));
 		} catch (IOException e) {
 			CBCMod.log.log(Level.SEVERE,"Unable to load crossfire/spray props from file %s", src);
 		} catch (NullPointerException e) {
 			CBCMod.log.log(Level.SEVERE, "Unable to find crossfire/spray props file.");
-		} finally {
-			try {
-				if (langStream != null) {
-					langStream.close();
-				}
-			} catch (IOException ex) {
-				// HUSH
-			}
 		}
 	}
 

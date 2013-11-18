@@ -35,10 +35,9 @@ import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.core.CBCPlayer;
 import cn.lambdacraft.core.CBCPlayer.EnumStatus;
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.lambdacraft.core.item.CBCGenericItem;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.item.ArmorHEV;
+import cn.liutils.api.client.util.RenderUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

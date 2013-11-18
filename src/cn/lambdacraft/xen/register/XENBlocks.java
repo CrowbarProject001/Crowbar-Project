@@ -14,11 +14,9 @@
  */
 package cn.lambdacraft.xen.register;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;
-import cn.lambdacraft.core.misc.Config;
-import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.xen.block.BlockBlackPillar;
 import cn.lambdacraft.xen.block.BlockSlimeFlow;
 import cn.lambdacraft.xen.block.BlockSlimeStill;
@@ -36,6 +34,8 @@ import cn.lambdacraft.xen.block.BlockXenWaterStill;
 import cn.lambdacraft.xen.tileentity.TileEntityXenAmethyst;
 import cn.lambdacraft.xen.tileentity.TileEntityXenLight;
 import cn.lambdacraft.xen.tileentity.TileEntityXenPortal;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 
 /**
  * 由于特殊原因，Xen方块暂时注册255以下的ID，不让GeneralRegistry自动分配。
@@ -62,25 +62,25 @@ public class XENBlocks {
 	public static BlockXenSand sand;
 	
 	public static void init(Config conf) {
-		portal = new BlockXenPortal(GeneralRegistry.getBlockId("xenportal", 0));
-		desertedDirt = new BlockXenDesertedDirt(GeneralRegistry.getFixedBlockId("xenDesertedDirt", 215, 255));
-		crystal = new BlockXenCrystal(GeneralRegistry.getFixedBlockId("xenCrystal", 216, 255));
-		stone = new BlockXenStone(GeneralRegistry.getFixedBlockId("xenStone", 217, 255));
-		dirt = new BlockXenDirt(GeneralRegistry.getFixedBlockId("xenDirt", 218, 255));
-		grass = new BlockXenGrass(GeneralRegistry.getFixedBlockId("xenGrass", 219, 255));
-		pillar = new BlockBlackPillar(GeneralRegistry.getFixedBlockId("xenPillar", 220, 255));
-		slimeFlow = new BlockSlimeFlow(GeneralRegistry.getFixedBlockId("xenSlimeFlow", 221, 255));
+		portal = new BlockXenPortal(ConfigHandler.getBlockId(conf, "xenportal", 2));
+		desertedDirt = new BlockXenDesertedDirt(ConfigHandler.getFixedBlockId(conf, "xenDesertedDirt", 215, 255));
+		crystal = new BlockXenCrystal(ConfigHandler.getFixedBlockId(conf, "xenCrystal", 216, 255));
+		stone = new BlockXenStone(ConfigHandler.getFixedBlockId(conf, "xenStone", 217, 255));
+		dirt = new BlockXenDirt(ConfigHandler.getFixedBlockId(conf, "xenDirt", 218, 255));
+		grass = new BlockXenGrass(ConfigHandler.getFixedBlockId(conf, "xenGrass", 219, 255));
+		pillar = new BlockBlackPillar(ConfigHandler.getFixedBlockId(conf, "xenPillar", 220, 255));
+		slimeFlow = new BlockSlimeFlow(ConfigHandler.getFixedBlockId(conf, "xenSlimeFlow", 221, 255));
 		slimeStill = new BlockSlimeStill(slimeFlow.blockID + 1);
-		waterFlow = new BlockXenWaterFlow(GeneralRegistry.getFixedBlockId("xenWater", 223, 255));
+		waterFlow = new BlockXenWaterFlow(ConfigHandler.getFixedBlockId(conf, "xenWater", 223, 255));
 		waterStill = new BlockXenWaterStill(waterFlow.blockID + 1);
-		light_on = new BlockXenLight(GeneralRegistry.getFixedBlockId("xenLight_on", 225, 255), true);
-		light_off = new BlockXenLight(GeneralRegistry.getFixedBlockId("xenLight_off", 226, 255), false);
-		amethyst = new BlockXenAmethyst(GeneralRegistry.getFixedBlockId("xenAmythest", 227, 255));
-		sand = new BlockXenSand(GeneralRegistry.getFixedBlockId("xenSand", 228, 255));
+		light_on = new BlockXenLight(ConfigHandler.getFixedBlockId(conf, "xenLight_on", 225, 255), true);
+		light_off = new BlockXenLight(ConfigHandler.getFixedBlockId(conf, "xenLight_off", 226, 255), false);
+		amethyst = new BlockXenAmethyst(ConfigHandler.getFixedBlockId(conf, "xenAmythest", 227, 255));
+		sand = new BlockXenSand(ConfigHandler.getFixedBlockId(conf, "xenSand", 228, 255));
 		
-		ModLoader.registerTileEntity(TileEntityXenPortal.class, "tile_entity_xen_portal");
-		ModLoader.registerTileEntity(TileEntityXenLight.class, "tile_entity_xen_light");
-		ModLoader.registerTileEntity(TileEntityXenAmethyst.class, "tile_entity_xen_amethyst");
+		GameRegistry.registerTileEntity(TileEntityXenPortal.class, "tile_entity_xen_portal");
+		GameRegistry.registerTileEntity(TileEntityXenLight.class, "tile_entity_xen_light");
+		GameRegistry.registerTileEntity(TileEntityXenAmethyst.class, "tile_entity_xen_amethyst");
 		
 		MinecraftForge.setBlockHarvestLevel(XENBlocks.crystal, "pickaxe", 1);
 		
@@ -93,7 +93,7 @@ public class XENBlocks {
 	
 	public static void registerBlocks(Block... blocks) {
 		for (Block block : blocks) {
-			ModLoader.registerBlock(block);
+			GameRegistry.registerBlock(block);
 		}
 	}
 }

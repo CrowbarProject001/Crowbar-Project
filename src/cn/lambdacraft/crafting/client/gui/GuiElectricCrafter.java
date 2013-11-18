@@ -16,15 +16,15 @@ package cn.lambdacraft.crafting.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.gui.CBCGuiButton;
-import cn.lambdacraft.core.client.gui.CBCGuiContainer;
-import cn.lambdacraft.core.client.gui.CBCGuiPart;
-import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.crafting.block.container.ContainerElCrafter;
 import cn.lambdacraft.crafting.block.tile.TileElCrafter;
 import cn.lambdacraft.crafting.network.NetCrafterClient;
 import cn.lambdacraft.crafting.recipe.RecipeWeapons;
+import cn.liutils.api.client.gui.LIGuiButton;
+import cn.liutils.api.client.gui.LIGuiContainer;
+import cn.liutils.api.client.gui.LIGuiPart;
+import cn.liutils.api.client.gui.IGuiTip;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -34,7 +34,7 @@ import net.minecraft.util.StatCollector;
  * @author WeAthFolD
  * 
  */
-public class GuiElectricCrafter extends CBCGuiContainer {
+public class GuiElectricCrafter extends LIGuiContainer {
 
 	public TileElCrafter tileEntity;
 
@@ -106,11 +106,11 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart up = new CBCGuiButton("up", 85, 16, 4, 3), down = new CBCGuiButton(
-				"down", 85, 61, 4, 3), left = new CBCGuiButton("left", 6, 6, 3,
-				4), right = new CBCGuiButton("right", 158, 6, 3, 4), heat = new CBCGuiPart(
-				"heat", 138, 17, 6, 46), energy = new CBCGuiPart("energy", 116,
-				17, 6, 46), behavior = new CBCGuiPart("behavior", 124, 16, 6, 8);
+		LIGuiPart up = new LIGuiButton("up", 85, 16, 4, 3), down = new LIGuiButton(
+				"down", 85, 61, 4, 3), left = new LIGuiButton("left", 6, 6, 3,
+				4), right = new LIGuiButton("right", 158, 6, 3, 4), heat = new LIGuiPart(
+				"heat", 138, 17, 6, 46), energy = new LIGuiPart("energy", 116,
+				17, 6, 46), behavior = new LIGuiPart("behavior", 124, 16, 6, 8);
 		addElements(up, down, left, right, heat, energy, behavior);
 		this.setElementTip("heat", new TipHeat());
 		this.setElementTip("energy", new TipEnergy());
@@ -156,7 +156,7 @@ public class GuiElectricCrafter extends CBCGuiContainer {
 	}
 
 	@Override
-	public void onButtonClicked(CBCGuiButton button) {
+	public void onButtonClicked(LIGuiButton button) {
 		if (button.name == "up" || button.name == "down") {
 			boolean isDown = button.name == "down" ? true : false;
 			NetCrafterClient.sendCrafterPacket(tileEntity, 0, isDown);

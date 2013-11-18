@@ -25,9 +25,9 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import cn.liutils.api.client.util.RenderUtils;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
-import cn.weaponmod.client.render.RenderUtils;
 import cn.weaponmod.events.ItemHelper;
 
 /**

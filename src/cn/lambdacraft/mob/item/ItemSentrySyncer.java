@@ -20,9 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.item.CBCGenericItem;
-import cn.lambdacraft.core.util.BlockPos;
 import cn.lambdacraft.mob.ModuleMob;
 import cn.lambdacraft.mob.register.CBCMobBlocks;
+import cn.liutils.api.util.BlockPos;
 
 /**
  * @author WeAthFolD

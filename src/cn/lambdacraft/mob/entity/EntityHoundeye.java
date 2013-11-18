@@ -16,8 +16,8 @@ package cn.lambdacraft.mob.entity;
 
 import cn.lambdacraft.api.entity.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.liutils.api.util.GenericUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;

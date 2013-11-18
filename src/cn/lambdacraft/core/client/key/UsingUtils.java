@@ -15,7 +15,7 @@
 package cn.lambdacraft.core.client.key;
 
 import cn.lambdacraft.api.tile.IUseable;
-import cn.lambdacraft.core.util.BlockPos;
+import cn.liutils.api.util.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;

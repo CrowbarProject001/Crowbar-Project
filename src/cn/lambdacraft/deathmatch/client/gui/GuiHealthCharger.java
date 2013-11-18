@@ -21,19 +21,19 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.gui.CBCGuiButton;
-import cn.lambdacraft.core.client.gui.CBCGuiContainer;
-import cn.lambdacraft.core.client.gui.CBCGuiPart;
-import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.block.TileHealthCharger;
+import cn.liutils.api.client.gui.LIGuiButton;
+import cn.liutils.api.client.gui.LIGuiContainer;
+import cn.liutils.api.client.gui.LIGuiPart;
+import cn.liutils.api.client.gui.IGuiTip;
 
 
 /**
  * @author WeAthFolD
  * 
  */
-public class GuiHealthCharger extends CBCGuiContainer {
+public class GuiHealthCharger extends LIGuiContainer {
 
 	TileHealthCharger te;
 
@@ -93,8 +93,8 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart behavior = new CBCGuiPart("behavior", 154, 8, 5, 48), main = new CBCGuiPart(
-				"main", 20, 8, 14, 46), side = new CBCGuiPart("side", 42, 8,
+		LIGuiPart behavior = new LIGuiPart("behavior", 154, 8, 5, 48), main = new LIGuiPart(
+				"main", 20, 8, 14, 46), side = new LIGuiPart("side", 42, 8,
 				14, 46);
 		this.addElement(behavior);
 		this.addElement(main);
@@ -120,7 +120,7 @@ public class GuiHealthCharger extends CBCGuiContainer {
 	 * .CBCGuiButton)
 	 */
 	@Override
-	public void onButtonClicked(CBCGuiButton button) {
+	public void onButtonClicked(LIGuiButton button) {
 	}
 
 	@Override

@@ -14,17 +14,18 @@
  */
 package cn.lambdacraft.xen.client.model;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
-import cn.lambdacraft.api.client.ITileEntityModel;
-import cn.lambdacraft.core.client.RenderUtils;
+
+import org.lwjgl.opengl.GL11;
+
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.xen.tileentity.TileEntityXenLight;
+import cn.liutils.api.client.model.ITileEntityModel;
+import cn.liutils.api.client.util.RenderUtils;
 
 /**
  * @author WeAthFolD

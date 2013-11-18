@@ -54,7 +54,7 @@ public class HLSpray extends CBCGenericItem {
 		if (entity.onValidSurface()) {
 			if (!world.isRemote) {
 				world.spawnEntityInWorld(entity); // 生成entity
-				world.playSoundAtEntity(player, "cbc.entities.sprayer", 0.7f, 1);
+				world.playSoundAtEntity(player, "lambdacraft:entities.sprayer", 0.7f, 1);
 			}
 			item_stack.damageItem(1, player);
 		}

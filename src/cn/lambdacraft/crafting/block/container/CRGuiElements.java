@@ -14,7 +14,6 @@
  */
 package cn.lambdacraft.crafting.block.container;
 
-import cn.lambdacraft.core.register.IGuiElement;
 import cn.lambdacraft.crafting.block.tile.TileBatBox;
 import cn.lambdacraft.crafting.block.tile.TileElCrafter;
 import cn.lambdacraft.crafting.block.tile.TileGeneratorFire;
@@ -27,6 +26,7 @@ import cn.lambdacraft.crafting.client.gui.GuiGenFire;
 import cn.lambdacraft.crafting.client.gui.GuiGenLava;
 import cn.lambdacraft.crafting.client.gui.GuiGenSolar;
 import cn.lambdacraft.crafting.client.gui.GuiWeaponCrafter;
+import cn.liutils.api.register.IGuiElement;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 

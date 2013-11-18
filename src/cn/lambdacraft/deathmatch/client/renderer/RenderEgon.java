@@ -1,18 +1,9 @@
 package cn.lambdacraft.deathmatch.client.renderer;
 
-import cn.lambdacraft.core.client.RenderUtils;
+import net.minecraft.client.renderer.Tessellator;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.model.ModelEgonHead;
-import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.weaponmod.api.client.IItemModel;
-import cn.weaponmod.api.client.render.RenderModelItem;
-
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.client.IItemRenderer;
+import cn.liutils.api.client.render.RenderModelItem;
 
 /**
  * Weapon Egon Renderer Class.

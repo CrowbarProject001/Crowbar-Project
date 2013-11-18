@@ -14,11 +14,11 @@
  */
 package cn.lambdacraft.deathmatch.client.renderer;
 
-import cn.lambdacraft.core.client.RenderUtils;
-import cn.weaponmod.api.feature.IModdable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+import cn.liutils.api.client.util.RenderUtils;
+import cn.weaponmod.api.feature.IModdable;
 
 /**
  * @author WeAthFolD
@@ -63,14 +63,14 @@ public class RenderItemElCrowbar implements IItemRenderer {
 	private void renderInventory(ItemStack item) {
 		RenderUtils.renderItemInventory(item);
 		if(((IModdable)item.getItem()).getMode(item) == 0 && item.getItemDamage() < item.getMaxDamage() - 1)
-			RenderUtils.renderShadow_Inventory();
+			RenderUtils.renderEnchantGlint_Inv();
 		
 	}
 	
 	private void renderEquipped(EntityLivingBase ent, ItemStack item) {
 		RenderUtils.renderItemIn2d(ent, item, 0.0625);
 		if(((IModdable)item.getItem()).getMode(item) == 0 && item.getItemDamage() < item.getMaxDamage() - 1)
-			RenderUtils.renderShadow_Held();
+			RenderUtils.renderEnchantGlint_Equip();
 	}
 
 }

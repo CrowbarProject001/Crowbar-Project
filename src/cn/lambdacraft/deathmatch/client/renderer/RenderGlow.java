@@ -16,9 +16,9 @@ package cn.lambdacraft.deathmatch.client.renderer;
 
 import net.minecraft.entity.Entity;
 
-import cn.lambdacraft.core.client.renderer.RenderIcon;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.entity.fx.GaussParticleFX;
+import cn.liutils.api.client.render.RenderIcon;
 
 
 /**

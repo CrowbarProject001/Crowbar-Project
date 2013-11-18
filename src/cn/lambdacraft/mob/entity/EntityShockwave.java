@@ -16,7 +16,7 @@ package cn.lambdacraft.mob.entity;
 
 import java.util.List;
 
-import cn.lambdacraft.core.util.GenericUtils;
+import cn.liutils.api.util.GenericUtils;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

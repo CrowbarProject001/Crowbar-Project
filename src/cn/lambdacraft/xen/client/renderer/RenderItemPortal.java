@@ -14,14 +14,15 @@
  */
 package cn.lambdacraft.xen.client.renderer;
 
-import org.lwjgl.opengl.GL11;
-
-import cn.lambdacraft.core.client.RenderUtils;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
+import org.lwjgl.opengl.GL11;
+
+import cn.liutils.api.client.util.RenderUtils;
 
 /**
  * @author WeAthFolD

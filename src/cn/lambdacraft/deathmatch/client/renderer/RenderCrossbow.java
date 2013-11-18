@@ -1,29 +1,12 @@
 package cn.lambdacraft.deathmatch.client.renderer;
 
-import static cn.lambdacraft.core.client.RenderUtils.addVertex;
-import static cn.lambdacraft.core.client.RenderUtils.newV3;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.client.IItemRenderer;
-
-import org.lwjgl.opengl.GL11;
-
-import cn.lambdacraft.core.client.RenderUtils;
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.proxy.ClientProxy;
 import cn.lambdacraft.deathmatch.client.model.ModelCrossbow;
-import cn.lambdacraft.deathmatch.item.weapon.Weapon_Crossbow;
-import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.liutils.api.client.render.RenderModelItem;
 import cn.weaponmod.api.WMInformation;
-import cn.weaponmod.api.client.IItemModel;
-import cn.weaponmod.api.client.render.RenderModelItem;
 import cn.weaponmod.api.information.InformationBullet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -5,20 +5,11 @@ package cn.weaponmod.client;
 
 import java.util.EnumSet;
 
-import cn.weaponmod.WeaponMod;
-import cn.weaponmod.api.weapon.IZoomable;
-import cn.weaponmod.client.command.Command_SetMode;
-import cn.weaponmod.client.keys.Debug_KeyMoving;
-import cn.weaponmod.client.keys.Debug_MovingProcessor;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-
+import cn.weaponmod.api.weapon.IZoomable;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.relauncher.Side;
@@ -82,27 +73,11 @@ public class WMClientTickHandler implements ITickHandler {
 				lastIsZooming = false;
 			}
 		}
-		
-		if(WeaponMod.DEBUG) {
-			if(player != null)
-				doDebug(player);
-		}
 	}
 	
 	private void setZooming(boolean b) {
 		lastIsZooming = isZooming;
 		isZooming = b;
-	}
-	
-	private void doDebug(EntityPlayer player) {
-		ItemStack item = player.getCurrentEquippedItem();
-		if(item != null) {
-			IItemRenderer render = MinecraftForgeClient.getItemRenderer(item, ItemRenderType.EQUIPPED_FIRST_PERSON);
-			if(render != null) {
-				Debug_MovingProcessor proc = Debug_KeyMoving.getProcessor(render);
-				Command_SetMode.setActiveProcessor(player, proc);
-			} else Command_SetMode.setActiveProcessor(player, null);
-		} else Command_SetMode.setActiveProcessor(player, null);
 	}
 	
 	/* (non-Javadoc)

@@ -22,8 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.proxy.ClientProps;
+import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
-import cn.weaponmod.util.MotionXYZ;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -66,7 +66,7 @@ public class BlockTripmine extends BlockContainer {
 	}
 
 	public void updateRayRange(World par1World, int par2, int par3, int par4) {
-		MotionXYZ begin = new MotionXYZ(par2, par3, par4, 0, 0, 0);
+		Motion3D begin = new Motion3D(par2, par3, par4, 0, 0, 0);
 		int meta = par1World.getBlockMetadata(par2, par3, par4);
 		TileTripmine tileEntity = (TileTripmine) par1World.getBlockTileEntity(
 				par2, par3, par4);
@@ -80,7 +80,7 @@ public class BlockTripmine extends BlockContainer {
 			begin.motionZ = 1.0;
 		else
 			begin.motionZ = -1.0;
-		MotionXYZ end = new MotionXYZ(begin).updateMotion(20.0);
+		Motion3D end = new Motion3D(begin).move(20.0);
 		Vec3 vec1 = begin.asVec3(par1World).addVector(0.0, 0.5, 0.0), vec2 = end
 				.asVec3(par1World).addVector(0.0, 0.5, 0.0);
 		MovingObjectPosition result = par1World.clip(vec1, vec2);

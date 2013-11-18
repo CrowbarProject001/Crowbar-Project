@@ -3,8 +3,6 @@
  */
 package cn.lambdacraft.deathmatch.item.weapon;
 
-import java.lang.reflect.Constructor;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,8 +18,6 @@ import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.crafting.register.CBCItems;
 import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
-import cn.weaponmod.api.information.InformationBullet;
-import cn.weaponmod.api.information.InformationWeapon;
 import cn.weaponmod.api.weapon.WeaponGeneral;
 import cn.weaponmod.entities.EntityBullet;
 import cn.weaponmod.events.ItemHelper;
@@ -96,8 +92,9 @@ public class WeaponGeneralEnergy_LC extends WeaponGeneral implements IHudTipProv
 	// --------------------Utilities---------------------------
 
 	public boolean canShoot(EntityPlayer player, ItemStack is, boolean side) {
-		return (is.getMaxDamage() - is.getItemDamage() - 1 > 0)
-				|| player.capabilities.isCreativeMode;
+		if(is.getMaxDamage() != 0)
+		return (is.getMaxDamage() - is.getItemDamage() - 1 > 0) || player.capabilities.isCreativeMode;
+		else return WeaponHelper.hasAmmo(this, player) || player.capabilities.isCreativeMode;
 	}
 
 	/**

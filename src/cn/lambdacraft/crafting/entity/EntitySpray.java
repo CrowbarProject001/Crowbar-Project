@@ -17,7 +17,7 @@ package cn.lambdacraft.crafting.entity;
 import java.util.List;
 
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.util.Color4I;
+import cn.liutils.api.util.Color4I;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;

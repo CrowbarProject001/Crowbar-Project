@@ -15,9 +15,9 @@
 package cn.lambdacraft.core.proxy;
 
 import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.misc.Config;
-import cn.lambdacraft.core.register.Configurable;
-import cn.lambdacraft.core.register.GeneralRegistry;
+import cn.liutils.api.register.Configurable;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 
 /**
  * Mod的一些固定信息。
@@ -76,7 +76,7 @@ public class GeneralProps {
 	public static final int CAT_GENERIC = 0;
 
 	public static void loadProps(Config config) {
-		GeneralRegistry
+		ConfigHandler
 				.loadConfigurableClass(CBCMod.config, GeneralProps.class);
 	}
 

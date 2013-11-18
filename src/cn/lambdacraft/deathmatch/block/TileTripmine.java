@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import cn.lambdacraft.core.util.GenericUtils;
 import cn.lambdacraft.deathmatch.register.DMBlocks;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.util.GenericUtils;
+import cn.liutils.api.util.Motion3D;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,9 +30,9 @@ public class TileTripmine extends TileEntity {
 		if(++ticksExisted < 20 || worldObj.isRemote)
 			return;
 		BlockTripmine blockType = (BlockTripmine) DMBlocks.blockTripmine;
-		MotionXYZ begin = new MotionXYZ(xCoord, yCoord, zCoord, 0, 0, 0);
+		Motion3D begin = new Motion3D(xCoord, yCoord, zCoord, 0, 0, 0);
 		int meta = this.blockMetadata;
-		MotionXYZ end = new MotionXYZ(endX, endY, endZ, 0, 0, 0);
+		Motion3D end = new Motion3D(endX, endY, endZ, 0, 0, 0);
 		double minX, minY, minZ, maxX, maxY, maxZ;
 		if (meta == 0)
 			return;

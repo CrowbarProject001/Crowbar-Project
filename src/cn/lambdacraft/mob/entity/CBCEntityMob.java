@@ -48,8 +48,4 @@ public abstract class CBCEntityMob extends EntityMob {
 	abstract protected double getAttackDamage();
 
 	public abstract ResourceLocation getTexture();
-
-	public void setHealth(float health) {
-		this.setAbsorptionAmount(health);
-	}
 }

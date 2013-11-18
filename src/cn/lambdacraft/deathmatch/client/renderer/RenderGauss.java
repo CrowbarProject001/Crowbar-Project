@@ -20,8 +20,8 @@ import net.minecraft.item.ItemStack;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.client.model.ModelGauss;
 import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.weaponmod.api.client.IItemModel;
-import cn.weaponmod.api.client.render.RenderModelItem;
+import cn.liutils.api.client.model.IItemModel;
+import cn.liutils.api.client.render.RenderModelItem;
 
 /**
  * 果然父类是很重要的

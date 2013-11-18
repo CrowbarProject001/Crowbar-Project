@@ -7,11 +7,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import cn.lambdacraft.core.util.BlockPos;
 import cn.lambdacraft.deathmatch.entity.EntityBulletGauss;
 import cn.lambdacraft.deathmatch.entity.EntityBulletGaussSec;
 import cn.lambdacraft.deathmatch.entity.EntityBulletGaussSec.EnumGaussRayType;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.util.BlockPos;
+import cn.liutils.api.util.Motion3D;
 
 public class GaussBulletManager {
 
@@ -29,12 +29,12 @@ public class GaussBulletManager {
 	 */
 	public static void Shoot2(EnumGaussRayType typeOfRay, World worldObj,
 			EntityLivingBase entityLivingBase, ItemStack itemStack,
-			MovingObjectPosition result, MotionXYZ motion, int damage) {
+			MovingObjectPosition result, Motion3D motion, int damage) {
 		worldObj.spawnEntityInWorld(new EntityBulletGaussSec(typeOfRay, worldObj, entityLivingBase, itemStack, result, motion, damage));
 	}
 
 	public static Boolean doBlockCollision(EntityPlayer player,
-			MotionXYZ par1Motion, AxisAlignedBB par3BBox, World par4World,
+			Motion3D par1Motion, AxisAlignedBB par3BBox, World par4World,
 			int par5Damage) {
 
 		BlockPos block;

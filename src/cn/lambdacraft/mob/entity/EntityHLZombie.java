@@ -15,7 +15,7 @@
 package cn.lambdacraft.mob.entity;
 
 import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.core.util.GenericUtils;
+import cn.liutils.api.util.GenericUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -87,7 +87,8 @@ public class EntityHLZombie extends CBCEntityMob {
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
 	}
 	
-    protected void applyEntityAttributes()
+    @Override
+	protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(40.0D);

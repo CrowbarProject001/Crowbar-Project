@@ -16,14 +16,14 @@ package cn.lambdacraft.crafting.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
-import cn.lambdacraft.core.client.gui.CBCGuiButton;
-import cn.lambdacraft.core.client.gui.CBCGuiContainer;
-import cn.lambdacraft.core.client.gui.CBCGuiPart;
-import cn.lambdacraft.core.client.gui.IGuiTip;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.crafting.block.container.ContainerGenerator;
 import cn.lambdacraft.crafting.block.tile.TileGeneratorFire;
 import cn.lambdacraft.crafting.register.CBCBlocks;
+import cn.liutils.api.client.gui.LIGuiButton;
+import cn.liutils.api.client.gui.LIGuiContainer;
+import cn.liutils.api.client.gui.LIGuiPart;
+import cn.liutils.api.client.gui.IGuiTip;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
@@ -32,7 +32,7 @@ import net.minecraft.util.EnumChatFormatting;
  * @author WeAthFolD
  * 
  */
-public class GuiGenFire extends CBCGuiContainer {
+public class GuiGenFire extends LIGuiContainer {
 
 	TileGeneratorFire te;
 
@@ -60,7 +60,7 @@ public class GuiGenFire extends CBCGuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
-		CBCGuiPart energy = new CBCGuiPart("energy", 75, 15, 14, 50);
+		LIGuiPart energy = new LIGuiPart("energy", 75, 15, 14, 50);
 		this.addElement(energy);
 		this.setElementTip("energy", new TipEnergy());
 	}
@@ -98,7 +98,7 @@ public class GuiGenFire extends CBCGuiContainer {
 	}
 
 	@Override
-	public void onButtonClicked(CBCGuiButton button) {
+	public void onButtonClicked(LIGuiButton button) {
 	}
 
 }

@@ -5,6 +5,7 @@ package cn.lambdacraft.deathmatch.item.weapon;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -112,15 +113,11 @@ public class Weapon_Satchel extends CBCGenericItem implements IHudTipProvider, I
 		return mode == 0 ? "mode.satchel1" : "mode.satchel2";
 	}
 	
-	// Commented by rikka0_0 for 1.6.2
-    /**
-     * Called when a player right clicks an entity with an item.
-     */
-   // @Override
-	//public boolean itemInteractionForEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving)
-    //{
-    //    return true;
-    //}
+    @Override
+	public boolean onBlockStartBreak(ItemStack itemstack, int i, int j, int k, EntityPlayer player)
+    {
+    	return true;
+    }
     
     @Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
@@ -137,7 +134,7 @@ public class Weapon_Satchel extends CBCGenericItem implements IHudTipProvider, I
 			@Override
 			public Icon getRenderingIcon(ItemStack itemStack,
 					EntityPlayer player) {
-				return Weapon_Satchel.this.itemIcon;
+				return Weapon_Satchel.this.getIconFromDamage(itemStack.getItemDamage());
 			}
 
 			@Override
@@ -147,7 +144,7 @@ public class Weapon_Satchel extends CBCGenericItem implements IHudTipProvider, I
 
 			@Override
 			public int getTextureSheet(ItemStack itemStack) {
-				return 5;
+				return itemStack.getItemSpriteNumber();
 			}
 			
 		};

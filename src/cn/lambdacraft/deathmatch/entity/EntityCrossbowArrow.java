@@ -22,8 +22,8 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import cn.lambdacraft.deathmatch.entity.fx.EntityCrossbowStill;
+import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
-import cn.weaponmod.util.MotionXYZ;
 
 /**
  * 十字弩的爆炸弩箭实体。
@@ -74,7 +74,7 @@ public class EntityCrossbowArrow extends EntityThrowable {
 					} else { 
 						this.setDead();
 						worldObj.spawnEntityInWorld(
-							new EntityCrossbowStill(worldObj, new MotionXYZ(var1.hitVec.xCoord, var1.hitVec.yCoord, var1.hitVec.zCoord, motionX, motionY, motionZ),
+							new EntityCrossbowStill(worldObj, new Motion3D(var1.hitVec.xCoord, var1.hitVec.yCoord, var1.hitVec.zCoord, motionX, motionY, motionZ),
 									this.rotationYaw, this.rotationPitch));
 					}
 				}

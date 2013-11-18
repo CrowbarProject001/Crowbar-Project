@@ -164,7 +164,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 		par2World.playSoundAtEntity(player, this.getSoundShoot(left), 0.5F, 1.0F);
 		information.setLastTick_Shoot(left);
 		information.setMuzzleTick(left);
-		WMClientProxy.cth.setUplift();
+		if(par2World.isRemote)
+			WMClientProxy.cth.setUplift();
 	}
 
 	public void onBulletWpnJam(ItemStack par1ItemStack, World par2World,

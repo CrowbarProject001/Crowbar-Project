@@ -18,8 +18,6 @@ import java.util.logging.Logger;
 
 import net.minecraft.command.CommandHandler;
 import net.minecraftforge.common.MinecraftForge;
-import cn.weaponmod.client.command.Command_GetRenderInf;
-import cn.weaponmod.client.command.Command_SetMode;
 import cn.weaponmod.events.ItemHelper;
 import cn.weaponmod.events.WMEventListener;
 import cn.weaponmod.network.NetDeathmatch;
@@ -46,12 +44,12 @@ import cpw.mods.fml.relauncher.Side;
  * @author WeAthFolD
  */
 @Mod(modid = "LCWeaponAssist", name = "LambdaCraft Weapon API", version = WeaponMod.VERSION)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false, 
-clientPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CHANNEL_CLIENT }, packetHandler = WMPacketHandler.class), 
+@NetworkMod(clientSideRequired = true, serverSideRequired = false,
+clientPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CHANNEL_CLIENT }, packetHandler = WMPacketHandler.class),
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CHANNEL_SERVER }, packetHandler = WMPacketHandler.class))
 public class WeaponMod {
 
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "1.2.0";
 	
 	public static final String DEPENDENCY = "required-after:Weaponry@" + VERSION;
 	
@@ -64,6 +62,7 @@ public class WeaponMod {
 	public static WMCommonProxy proxy;
 	
 	public static final boolean DEBUG = false; //请在编译时设置为false
+
 	
 	/**
 	 * 预加载（设置、世界生成、注册Event）
@@ -118,8 +117,6 @@ public class WeaponMod {
 	public void serverStarting(FMLServerStartingEvent event) {
 		CommandHandler cm = (CommandHandler) event.getServer().getCommandManager();
 		if(DEBUG) {
-			cm.registerCommand(new Command_SetMode());
-			cm.registerCommand(new Command_GetRenderInf());
 		}
 	}
 

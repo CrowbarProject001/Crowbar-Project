@@ -7,9 +7,7 @@ import java.util.Iterator;
 import cn.lambdacraft.api.energy.item.ICustomEnItem;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.core.item.CBCGenericItem;
-import cn.lambdacraft.core.misc.Config;
 import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.core.register.GeneralRegistry;
 import cn.lambdacraft.crafting.item.*;
 import cn.lambdacraft.crafting.item.ItemMaterial.EnumMaterial;
 import cn.lambdacraft.deathmatch.item.ArmorHEV;
@@ -20,6 +18,8 @@ import cn.lambdacraft.deathmatch.register.DMBlocks;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import cn.lambdacraft.xen.register.XENBlocks;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.command.WrongUsageException;
@@ -73,45 +73,45 @@ public class CBCItems {
 	 */
 	public static void init(Config conf) {
 
-		ammo_uranium = new Ammo_uranium(GeneralRegistry.getItemId(
+		ammo_uranium = new Ammo_uranium(ConfigHandler.getItemId(conf, 
 				"itemAmmo_uranium", 0));
-		ammo_9mm = new Ammo_9mm(GeneralRegistry.getItemId("itemAmmo_9mm", 0));
-		ammo_9mm2 = new Ammo_9mm2(GeneralRegistry.getItemId("itemAmmo_9mm2", 0));
-		ammo_357 = new Ammo_357(GeneralRegistry.getItemId("itemAmmo_357", 0));
-		ammo_bow = new Ammo_bow(GeneralRegistry.getItemId("itemAmmo_bow", 0));
-		ammo_rpg = new Ammo_rpg(GeneralRegistry.getItemId("itemAmmo_RPG", 0));
-		ammo_argrenade = new Ammo_argrenade(GeneralRegistry.getItemId("itemAmmo_ARGrenade", 0));
-		ammo_shotgun = new Ammo_shotgun(GeneralRegistry.getItemId("itemBullet_Shotgun", 0));
+		ammo_9mm = new Ammo_9mm(ConfigHandler.getItemId(conf, "itemAmmo_9mm", 0));
+		ammo_9mm2 = new Ammo_9mm2(ConfigHandler.getItemId(conf, "itemAmmo_9mm2", 0));
+		ammo_357 = new Ammo_357(ConfigHandler.getItemId(conf, "itemAmmo_357", 0));
+		ammo_bow = new Ammo_bow(ConfigHandler.getItemId(conf, "itemAmmo_bow", 0));
+		ammo_rpg = new Ammo_rpg(ConfigHandler.getItemId(conf, "itemAmmo_RPG", 0));
+		ammo_argrenade = new Ammo_argrenade(ConfigHandler.getItemId(conf, "itemAmmo_ARGrenade", 0));
+		ammo_shotgun = new Ammo_shotgun(ConfigHandler.getItemId(conf, "itemBullet_Shotgun", 0));
 		
-		bullet_9mm = new Bullet_9mm(GeneralRegistry.getItemId("itemBullet_9mm",
+		bullet_9mm = new Bullet_9mm(ConfigHandler.getItemId(conf, "itemBullet_9mm",
 				0));
-		bullet_steelbow = new Bullet_steelbow(GeneralRegistry.getItemId(
+		bullet_steelbow = new Bullet_steelbow(ConfigHandler.getItemId(conf, 
 				"steelbow", 0));
 
-		materials = new ItemMaterial(GeneralRegistry.getItemId("mat_a", 0));
+		materials = new ItemMaterial(ConfigHandler.getItemId(conf, "mat_a", 0));
 
-		ironBar = new SteelBar(GeneralRegistry.getItemId("ironBar", 0));
-		lambdaChip = new CBCGenericItem(GeneralRegistry.getItemId("lambdachip", 0)).setIAndU("lambdachip");
+		ironBar = new SteelBar(ConfigHandler.getItemId(conf, "ironBar", 0));
+		lambdaChip = new CBCGenericItem(ConfigHandler.getItemId(conf, "lambdachip", 0)).setIAndU("lambdachip");
 		
-		ingotUranium = new IngotUranium(GeneralRegistry.getItemId("ingotUranium", 0));
-		ingotSteel = new CBCGenericItem(GeneralRegistry.getItemId("itemRefinedIronIngot", 0)).setIAndU("steel");
+		ingotUranium = new IngotUranium(ConfigHandler.getItemId(conf, "ingotUranium", 0));
+		ingotSteel = new CBCGenericItem(ConfigHandler.getItemId(conf, "itemRefinedIronIngot", 0)).setIAndU("steel");
 
-		halfLife01 = new LCRecord(GeneralRegistry.getItemId("halfLife01", GeneralProps.CAT_MISC), "hla", 0);
-		halfLife02 = new LCRecord(GeneralRegistry.getItemId("halfLife02", GeneralProps.CAT_MISC), "hlb", 1);
-		halfLife03 = new LCRecord(GeneralRegistry.getItemId("halfLife03", GeneralProps.CAT_MISC), "hlc", 2);
+		halfLife01 = new LCRecord(ConfigHandler.getItemId(conf, "halfLife01", GeneralProps.CAT_MISC), "hla", 0);
+		halfLife02 = new LCRecord(ConfigHandler.getItemId(conf, "halfLife02", GeneralProps.CAT_MISC), "hlb", 1);
+		halfLife03 = new LCRecord(ConfigHandler.getItemId(conf, "halfLife03", GeneralProps.CAT_MISC), "hlc", 2);
 		
-		spray1 = new ItemSpray(GeneralRegistry.getItemId("spray1", GeneralProps.CAT_MISC), 0);
-		spray2 = new ItemSpray(GeneralRegistry.getItemId("spray2", GeneralProps.CAT_MISC), 1);
+		spray1 = new ItemSpray(ConfigHandler.getItemId(conf, "spray1", GeneralProps.CAT_MISC), 0);
+		spray2 = new ItemSpray(ConfigHandler.getItemId(conf, "spray2", GeneralProps.CAT_MISC), 1);
 		
-		spray = new HLSpray(GeneralRegistry.getItemId("spray", GeneralProps.CAT_MISC));
+		spray = new HLSpray(ConfigHandler.getItemId(conf, "spray", GeneralProps.CAT_MISC));
 
-		tin = new CBCGenericItem(GeneralRegistry.getItemId("tin", GeneralProps.CAT_MISC)).setIAndU("tin");
-		copper = new CBCGenericItem(GeneralRegistry.getItemId("copper", GeneralProps.CAT_MISC)).setIAndU("copper");
-		chip = new CBCGenericItem(GeneralRegistry.getItemId("chip", GeneralProps.CAT_MISC)).setIAndU("chip");
-		xenCrystal = new CBCGenericItem(GeneralRegistry.getItemId("xencrystal", GeneralProps.CAT_MISC)).setIAndU("xencrystal");
+		tin = new CBCGenericItem(ConfigHandler.getItemId(conf, "tin", GeneralProps.CAT_MISC)).setIAndU("tin");
+		copper = new CBCGenericItem(ConfigHandler.getItemId(conf, "copper", GeneralProps.CAT_MISC)).setIAndU("copper");
+		chip = new CBCGenericItem(ConfigHandler.getItemId(conf, "chip", GeneralProps.CAT_MISC)).setIAndU("chip");
+		xenCrystal = new CBCGenericItem(ConfigHandler.getItemId(conf, "xencrystal", GeneralProps.CAT_MISC)).setIAndU("xencrystal");
 		
 		if(!CBCMod.ic2Installed) {
-			battery = new ItemBattery(GeneralRegistry.getItemId("battery", 3));
+			battery = new ItemBattery(ConfigHandler.getItemId(conf, "battery", 3));
 		}
 	}
 

@@ -14,6 +14,7 @@
  */
 package cn.lambdacraft.deathmatch.entity;
 
+import cn.liutils.api.entity.EntityProjectile;
 import cn.weaponmod.api.WeaponHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;

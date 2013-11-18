@@ -17,7 +17,7 @@ package cn.lambdacraft.deathmatch.entity.fx;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cn.weaponmod.util.MotionXYZ;
+import cn.liutils.api.util.Motion3D;
 
 /**
  * @author WeAthFolD
@@ -28,9 +28,9 @@ public class EntityCrossbowStill extends Entity {
 	/**
 	 * @param par1World
 	 */
-	public EntityCrossbowStill(World world, MotionXYZ motion, float yaw, float pitch) {
+	public EntityCrossbowStill(World world, Motion3D motion, float yaw, float pitch) {
 		super(world);
-		MotionXYZ.setMotionToEntity(motion, this);
+		Motion3D.setMotionToEntity(motion, this);
 		this.setRotation(yaw, pitch);
 		this.onGround = false;
 	}
