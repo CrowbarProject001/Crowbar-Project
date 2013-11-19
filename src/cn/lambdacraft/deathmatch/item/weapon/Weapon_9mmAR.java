@@ -54,6 +54,15 @@ public class Weapon_9mmAR extends Weapon_9mmAR_Raw {
 	}
 	
 	@Override
+	public boolean onConsumeAmmo(ItemStack stack, World world, EntityPlayer player, InformationBullet inf, boolean left) {
+		if(!left) {
+			WeaponHelper.consumeInventoryItem(player.inventory.mainInventory, CBCItems.ammo_argrenade.itemID, 1);
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public IHudTip[] getHudTip(ItemStack itemStack, EntityPlayer player) {
 		IHudTip[] tips = new IHudTip[2];

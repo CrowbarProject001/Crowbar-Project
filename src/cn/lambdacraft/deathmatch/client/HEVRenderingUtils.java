@@ -34,7 +34,6 @@ import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.core.CBCPlayer;
-import cn.lambdacraft.core.CBCPlayer.EnumStatus;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.item.ArmorHEV;
 import cn.liutils.api.client.util.RenderUtils;
@@ -50,6 +49,8 @@ public class HEVRenderingUtils {
 
 	private static HashMap<IHudTipProvider, IHudTip[]> tipPool = new HashMap();
 	
+	private static final int TEX_WIDTH = 640, TEX_HEIGHT = 128;
+	
 	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution, float partialTickTime) {
 		int k = resolution.getScaledWidth();
         int l = resolution.getScaledHeight();
@@ -62,42 +63,37 @@ public class HEVRenderingUtils {
         engine.bindTexture(new ResourceLocation(ClientProps.HEV_HUD_PATH));
         
         //Health Section
-        int xOffset = -90, yOffset = -45;
-        if(ClientProps.HUD_drawInLeftCorner) {
-        	xOffset = -k / 2 + 16;
-        	yOffset = -20;
-        	drawTexturedModalRect(k / 2 - 74, l - 50, 0, 64, 75, 21, 112, 32);
-        }
+        int xOffset, yOffset;
+        xOffset = -k / 2 + 16;
+    	yOffset = -30;
+    	
         GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.6F);
-        drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 0, 16, 16, 16);
+        drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 64, 64, 24, 24, 64, 64);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
         int h = (int) (player.getHealth() * 16 / 20);
-        drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 16 - h, 0, 32 - h, 16, h);
+        drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 24 - (int)(h * 1.5), 192, 128 - 4 * h, 24, (int) (1.5 * h), 64, 4 * h);
         if(player.getHealth() <= 5)
         	GL11.glColor4f(0.9F, 0.1F, 0.1F, 0.6F);
         drawNumberAt((byte) (player.getHealth() * 5), k / 2 + xOffset + 18, l + yOffset);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
         
         //Armor Section
-        xOffset += 48;
+        xOffset += 70;
         GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.6F);
-        drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 16, 16, 16, 16);
+        drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 0, 64, 24, 24, 64, 64);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
         h = player.getTotalArmorValue() * 16 / 20;
         if(h > 16)
         	h = 16;
-        drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 16 - h, 16, 32 - h, 16, h);
+        drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 24 - (int)(h * 1.5), 128, 128 - 4 * h, 24, (int)(h * 1.5), 64, 4 * h);
         
-        drawNumberAt(player.getTotalArmorValue() * 5, k / 2 + xOffset + 18, l + yOffset);
+        drawNumberAt(player.getTotalArmorValue() * 5, k / 2 + xOffset + 12, l + yOffset);
         
         //Other section
-        
         drawArmorTip(player, engine, k, l);
         if(CBCPlayer.drawArmorTip)
         	drawWeaponTip(player, engine, k, l);
-        drawStatusHud(player, engine, k, l, partialTickTime);
-        
-        
+ 
         engine.bindTexture(engine.getResourceLocation(1)); 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.7F);
@@ -143,18 +139,9 @@ public class HEVRenderingUtils {
         engine.bindTexture(Gui.icons);
 	}
 	
-	private static void drawStatusHud(EntityPlayer player, TextureManager engine, int k, int l, float tickTime) {
-		int x = 3, y = l / 2 - 100;
-		EnumStatus stat = CBCPlayer.playerStat;
-		float alpha = MathHelper.sin(tickTime * 0.3F) + 0.6F;
-		GL11.glColor4f(1.0F, 0.5F, 0.0F, alpha);
-		drawTexturedModalRect(x, y, stat.u, stat.v, 32, 32);
-	}
-	
 	private static void drawArmorTip(EntityPlayer player,TextureManager renderEngine, int k, int l) {
-		boolean b = !ClientProps.HUD_drawInLeftCorner;
-		int tx = b ? 5 : k - 26, tx2 = b ? 21 : k - 10;
-		for(int i = 0, xOffset = b ? 10 : -10 ; i < 4; i ++) {
+		int tx = k - 26, tx2 = k - 10;
+		for(int i = 0, xOffset = -10 ; i < 4; i ++) {
 			ItemStack is = player.inventory.armorInventory[i];
 			ArmorHEV hev;
 			if(is != null && is.getItem() instanceof ArmorHEV) {
@@ -171,8 +158,11 @@ public class HEVRenderingUtils {
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
 				drawTexturedModelRectFromIcon(tx + xOffset, height, hev.getIcon(is, 0), 16, 16);
 				renderEngine.bindTexture(new ResourceLocation(ClientProps.HEV_HUD_PATH));
-				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
-				drawTexturedModalRect(tx2 + xOffset, height + 16 - heightToDraw, 32, 32 - heightToDraw, 16, heightToDraw);
+				
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+				drawTexturedModalRect(tx2 + xOffset, height + 16 - heightToDraw, 286, 64, 8, 16, 34, 64); //overlay
+				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.75F);
+				drawTexturedModalRect(tx2 + xOffset, height + 16 - heightToDraw, 350, 128 - 4 * heightToDraw, 8, heightToDraw, 34, heightToDraw * 4); //actual
 			}
 		}
 	}
@@ -192,9 +182,8 @@ public class HEVRenderingUtils {
 	}
 	
 	private static void drawTips(IHudTip[] tips, TextureManager engine, ItemStack itemStack, EntityPlayer player, int k, int l) {
-		int startHeight = l - 18 - 18 * tips.length;
-		if(ClientProps.HUD_drawInLeftCorner)
-			startHeight += 13;
+		int startHeight = l - 24 - 24 * tips.length;
+		startHeight += 13;
 		for(int i = 0; i < tips.length; i ++) {
 			String s = tips[i].getTip(itemStack, player);
 			int width = k - 32 - getStringLength(s);
@@ -206,7 +195,7 @@ public class HEVRenderingUtils {
 				else if(sheetIndex != 5)
 					engine.bindTexture(engine.getResourceLocation(1)); 
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.7F);
-				drawTexturedModelRectFromIcon(k - 30, startHeight, icon, 16, 16);
+				drawTexturedModelRectFromIcon(k - 30, startHeight, icon, 20, 20);
 				GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
 				//Bind the texture by Rikka0_0
 				RenderUtils.loadTexture(ClientProps.HEV_HUD_PATH);
@@ -220,8 +209,8 @@ public class HEVRenderingUtils {
 		int count = 0;
 		for(char c : s.toCharArray()) {
 			if(Character.isDigit(c))
-				count += 9;
-			else count += 5;
+				count += 12;
+			else count += 7;
 		}
 		return count;
 	}
@@ -240,23 +229,25 @@ public class HEVRenderingUtils {
 				int number = Integer.valueOf(String.valueOf(c));
 				drawSingleNumberAt(number, x + lastLength, y);
 			} else {
-				drawTexturedModalRect(x + lastLength, y, 48, 16, 5, 16);
+				drawTexturedModalRect(x + lastLength - 5, y, 608, 64, 12, 24, 32, 64);
 			}
-			lastLength += b? 9 : 5; 
+			lastLength += b? 12 : 7; 
 		}
 	}
 	
 	private static void drawSingleNumberAt(int number, int x, int y) {
-		drawTexturedModalRect(x, y, 16 * number, 0, 16, 16);
+		drawTexturedModalRect(x, y, 64 * number + 32, 0, 24, 24, 64, 64);
 	}
+	
+	private static final float SCALE_X = 1.0F / TEX_WIDTH, SCALE_Y = 1.0F / TEX_HEIGHT;
 	
     /**
      * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
      */
     public static void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
     {
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
+        float f = SCALE_X;
+        float f1 = SCALE_Y;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(par1 + 0, par2 + par6, -90, (par3 + 0) * f, (par4 + par6) * f1);
@@ -271,8 +262,8 @@ public class HEVRenderingUtils {
      */
     public static void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6, int par7, int par8)
     {
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
+    	float f = SCALE_X;
+        float f1 = SCALE_Y;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(par1 + 0, par2 + par6, -90, (par3 + 0) * f, (par4 + par8) * f1);

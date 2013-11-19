@@ -40,22 +40,7 @@ public class CBCPlayer implements ITickHandler {
 	public CBCPlayer() {
 		gameSettings = Minecraft.getMinecraft().gameSettings;
 	}
-	
-	//---------------玩家状态显示部分---------------
-	public static enum EnumStatus {
-		FIRE(128), OXYGEN(96), RADIATION(192), BADEFF(160), ELECTROLYZE(224), NONE(0, 128);
-		public int u, v;
-		private EnumStatus(int texX, int texY) {
-			u = texX;
-			v = texY;
-		}
-		private EnumStatus(int texX) {
-			u = texX;
-			v = 96;
-		}
-	}
-	
-	public static EnumStatus playerStat = EnumStatus.NONE;
+
 
 	//---------------通用支持部分------------------
 	public void beforeOnUpdate() {
@@ -83,14 +68,6 @@ public class CBCPlayer implements ITickHandler {
 			if(player.inventory.armorInventory[2] != null && player.inventory.armorInventory[3] != null) {
 				mc.sndManager.playSoundFX("lambdacraft:hev.hev_shutdown", 0.5F, 1.0F);
 			}
-		}
-		
-		if(player.isBurning()) {
-			playerStat = EnumStatus.FIRE;
-		} else if(player.getAir() <= 0) {
-			playerStat = EnumStatus.OXYGEN;
-		} else {
-			playerStat = EnumStatus.NONE;
 		}
 		
 		if(player.worldObj.provider.dimensionId == ModuleXen.dimensionId) {

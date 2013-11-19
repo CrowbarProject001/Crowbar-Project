@@ -44,9 +44,6 @@ import cpw.mods.fml.relauncher.Side;
  */
 @SideOnly(Side.CLIENT)
 public class ClientProps {
-
-	@Configurable(category = "graphics", key = "HUD_drawInLeftCorner", comment = "Draws the HEV hud in the left corner, like the Half-Life does.", defValue = "true")
-	public static boolean HUD_drawInLeftCorner = true;
 	
 	@Configurable(category = "graphics", key = "alwaysCustomCrosshair", comment = "Always draw custom crosshair regardless of player wearing HEV or not.", defValue = "false")
 	public static boolean alwaysCustomCrossHair = false;

@@ -159,13 +159,18 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 		if(entity != null)
 			par2World.spawnEntityInWorld(entity);
 		if (!player.capabilities.isCreativeMode)
-			this.damageWeapon(par1ItemStack, 1);
+			if(!onConsumeAmmo(par1ItemStack, par2World, player, information, left))
+				this.damageWeapon(par1ItemStack, 1);
 		//System.out.println("OnShoot in " + par2World.isRemote);
 		par2World.playSoundAtEntity(player, this.getSoundShoot(left), 0.5F, 1.0F);
 		information.setLastTick_Shoot(left);
 		information.setMuzzleTick(left);
 		if(par2World.isRemote)
 			WMClientProxy.cth.setUplift();
+	}
+	
+	public boolean onConsumeAmmo(ItemStack stack, World world, EntityPlayer player, InformationBullet inf, boolean left) {
+		return false;
 	}
 
 	public void onBulletWpnJam(ItemStack par1ItemStack, World par2World,
