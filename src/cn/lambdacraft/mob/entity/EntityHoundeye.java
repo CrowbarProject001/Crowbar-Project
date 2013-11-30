@@ -214,7 +214,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(ClientProps.HOUNDEYE_PATH);
+		return ClientProps.HOUNDEYE_PATH;
 	}
 
 }

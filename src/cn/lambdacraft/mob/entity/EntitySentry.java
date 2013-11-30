@@ -363,7 +363,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(ClientProps.TURRET_PATH);
+		return ClientProps.TURRET_PATH;
 	}
 
 }

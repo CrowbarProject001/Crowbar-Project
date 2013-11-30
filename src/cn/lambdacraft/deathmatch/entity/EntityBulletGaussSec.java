@@ -23,9 +23,9 @@ import net.minecraftforge.common.ForgeDirection;
 import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRayColored;
 import cn.lambdacraft.deathmatch.entity.fx.GaussParticleFX;
+import cn.liutils.api.entity.EntityBullet;
 import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
-import cn.weaponmod.entities.EntityBullet;
 
 /**
  * 非蓄力射击的高斯枪射击判断实体。
@@ -48,7 +48,7 @@ public class EntityBulletGaussSec extends EntityBullet {
 			EntityLivingBase entityLivingBase, ItemStack itemStack,
 			MovingObjectPosition result, Motion3D motion, int dmg) {
 
-		super(worldObj, entityLivingBase, itemStack, true);
+		super(worldObj, entityLivingBase, dmg);
 		Motion3D real = null;
 
 		if (typeOfRay == EnumGaussRayType.NORMAL) {

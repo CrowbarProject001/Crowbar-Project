@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
@@ -135,7 +136,7 @@ public class RenderTileTripmine extends RendererSidedCube {
 	}
 
 	@Override
-	public String getTexture(TileEntity te, int side, int metadata) {
+	public ResourceLocation getTexture(TileEntity te, int side, int metadata) {
 		if (side == 0 || side == 1)
 			return ClientProps.TRIPMINE_TOP_PATH;
 		if (side == metadata)

@@ -91,7 +91,7 @@ public class GuiBatBox extends LIGuiContainer {
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glPushMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(new ResourceLocation(ClientProps.GUI_BATBOX_PATH));
+		mc.renderEngine.bindTexture(ClientProps.GUI_BATBOX_PATH);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		int x = (width - xSize) / 2;

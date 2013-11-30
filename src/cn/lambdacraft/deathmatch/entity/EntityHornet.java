@@ -50,7 +50,7 @@ public class EntityHornet extends EntityThrowable {
 		if (worldObj.isRemote)
 			worldObj.spawnEntityInWorld(new EntityTrailFX(worldObj, this)
 					.setSampleFreq(1).setTrailWidth(0.1F)
-					.setTextures(ClientProps.HORNET_TRAIL_PATH, "")
+					.setTextures(ClientProps.HORNET_TRAIL_PATH, null)
 					.setDecayTime(20).setHasLight(false));
 	}
 

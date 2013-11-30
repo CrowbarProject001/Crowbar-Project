@@ -106,14 +106,14 @@ public class RenderItemPortal implements IItemRenderer {
 	private void renderEntity(ItemStack item, RenderBlocks render, EntityItem ent) {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
-		RenderUtils.renderItemIn2d(null, item, 0.0625F);
+		RenderUtils.renderItemIn2d(item, 0.0625F);
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 	
 	private void renderEquipped(ItemStack is, RenderBlocks render, EntityLivingBase entity) {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
-		RenderUtils.renderItemIn2d(entity, is, 0.0625F);
+		RenderUtils.renderItemIn2d(is, 0.0625F);
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 	

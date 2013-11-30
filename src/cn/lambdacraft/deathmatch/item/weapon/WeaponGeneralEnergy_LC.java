@@ -3,9 +3,6 @@
  */
 package cn.lambdacraft.deathmatch.item.weapon;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,11 +13,13 @@ import net.minecraft.world.World;
 import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.api.hud.IHudTipProvider;
 import cn.lambdacraft.crafting.register.CBCItems;
+import cn.liutils.api.entity.EntityBullet;
 import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.weapon.WeaponGeneral;
-import cn.weaponmod.entities.EntityBullet;
 import cn.weaponmod.events.ItemHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author Administrator
@@ -70,7 +69,7 @@ public class WeaponGeneralEnergy_LC extends WeaponGeneral implements IHudTipProv
 			EntityPlayer player, InformationEnergy information, boolean left) {
 		
 		Entity e = null;
-		e = new EntityBullet(par2World, player, par1ItemStack, left);
+		e = new EntityBullet(par2World, player, getWeaponDamage(left));
 		par2World.spawnEntityInWorld(e);
 		if (!(player.capabilities.isCreativeMode))
 			this.setItemDamageForStack(par1ItemStack, this.getItemDamageFromStack(par1ItemStack) + 1);

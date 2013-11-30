@@ -261,7 +261,7 @@ public class EntityHLZombie extends CBCEntityMob {
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(ClientProps.ZOMBIE_MOB_PATH);
+		return ClientProps.ZOMBIE_MOB_PATH;
 	}	
     
 }

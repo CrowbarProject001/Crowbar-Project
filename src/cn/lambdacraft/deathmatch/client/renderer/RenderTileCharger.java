@@ -19,6 +19,7 @@ import cn.lambdacraft.deathmatch.block.TileArmorCharger;
 import cn.liutils.api.client.render.RendererSidedCube;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author Administrator
@@ -44,7 +45,7 @@ public class RenderTileCharger extends RendererSidedCube {
 	}
 
 	@Override
-	public String getTexture(TileEntity te, int side, int metadata) {
+	public ResourceLocation getTexture(TileEntity te, int side, int metadata) {
 		if (side == 0 || side == 1)
 			return ClientProps.HEVCHARGER_TD;
 		if (side == metadata) {

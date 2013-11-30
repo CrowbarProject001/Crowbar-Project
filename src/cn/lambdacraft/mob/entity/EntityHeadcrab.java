@@ -349,6 +349,6 @@ public class EntityHeadcrab extends CBCEntityMob implements
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(ClientProps.HEADCRAB_MOB_PATH);
+		return ClientProps.HEADCRAB_MOB_PATH;
 	}
 }

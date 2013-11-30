@@ -16,6 +16,7 @@ package cn.lambdacraft.mob.client.renderer;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
@@ -38,7 +39,7 @@ public class RenderSentryRay extends RendererSidedCube {
 	}
 
 	@Override
-	public String getTexture(TileEntity te, int side, int metadata) {
+	public ResourceLocation getTexture(TileEntity te, int side, int metadata) {
 		if(side == metadata)
 			return ClientProps.SS_MAIN_PATH[((TileSentryRay)te).isActivated ? 0 : 1];
 		if(side == 0 || side == 1)

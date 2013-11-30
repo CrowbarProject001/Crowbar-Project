@@ -54,14 +54,13 @@ public class RenderGaussRay extends RenderEntity {
 				-WIDTH, 0), v8 = newV3(d, WIDTH, 0);
 
 		// Translations and rotations
-		// Translations and rotations
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glTranslatef((float) par2, (float) par4, (float) par6);
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		if (renderColor)
-			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.GAUSS_BEAM_PATH));
+			Minecraft.getMinecraft().renderEngine.bindTexture(ClientProps.GAUSS_BEAM_PATH);
 		else {
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 		}
@@ -70,6 +69,7 @@ public class RenderGaussRay extends RenderEntity {
 		GL11.glTranslatef(0, 0.4F, 0);
 		GL11.glRotatef(7.5F, -1.0F, 0.0F, 0.0F);
 		GL11.glTranslatef(0, -0.4F, 0);
+		
 		// drawing>)
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		tessellator.startDrawingQuads();

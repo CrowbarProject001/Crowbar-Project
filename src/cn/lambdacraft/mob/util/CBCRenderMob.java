@@ -26,8 +26,8 @@ public class CBCRenderMob extends RenderLiving {
 		return e.getTexture();
 	}
 	
-	protected void loadTexture(String str) {
-		renderEngine.bindTexture(new ResourceLocation(str));
+	protected void loadTexture(ResourceLocation str) {
+		renderEngine.bindTexture(str);
 	}
 
 

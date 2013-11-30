@@ -28,9 +28,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.liutils.api.entity.EntityBullet;
 import cn.liutils.api.util.BlockPos;
 import cn.liutils.api.util.GenericUtils;
-import cn.weaponmod.entities.EntityBullet;
 
 /**
  * @author WeAthFolD
@@ -249,7 +249,7 @@ public class EntityAlienSlave extends CBCEntityMob {
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(ClientProps.VORTIGAUNT_PATH);
+		return ClientProps.VORTIGAUNT_PATH;
 	}
 
 

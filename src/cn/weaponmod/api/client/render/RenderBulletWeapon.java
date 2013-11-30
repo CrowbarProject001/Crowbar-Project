@@ -117,7 +117,7 @@ public class RenderBulletWeapon implements IItemRenderer {
 		InformationBullet inf = (InformationBullet) weaponType
 				.getInformation(item, entity.worldObj);
 		if (inf == null) {
-			RenderUtils.renderItemIn2d(entity, item, width);
+			RenderUtils.renderItemIn2d(item, width);
 			return;
 		}
 		if (entity instanceof EntityPlayer) {
@@ -151,7 +151,7 @@ public class RenderBulletWeapon implements IItemRenderer {
 				GL11.glRotatef(upliftRatio * rotation * 90F, 0.0F, 1.0F, 0.0F);
 			}
 		}
-		RenderUtils.renderItemIn2d(entity, item, width);
+		RenderUtils.renderItemIn2d(item, width);
 		GL11.glPopMatrix();
 	}
 

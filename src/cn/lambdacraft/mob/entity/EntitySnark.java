@@ -283,7 +283,7 @@ public class EntitySnark extends CBCEntityMob implements IEntityLink<EntityPlaye
 
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation(ClientProps.SQUEAK_MOB_PATH);
+		return ClientProps.SQUEAK_MOB_PATH;
 	}
 
 }

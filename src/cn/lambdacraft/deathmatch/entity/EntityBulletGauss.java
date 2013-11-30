@@ -17,11 +17,10 @@ import cn.lambdacraft.deathmatch.entity.EntityBulletGaussSec.EnumGaussRayType;
 import cn.lambdacraft.deathmatch.entity.fx.EntityGaussRay;
 import cn.lambdacraft.deathmatch.item.weapon.InformationEnergy;
 import cn.lambdacraft.deathmatch.item.weapon.Weapon_Gauss;
-import cn.lambdacraft.deathmatch.util.GaussBulletManager;
+import cn.liutils.api.entity.EntityBullet;
 import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.weapon.WeaponGeneral;
-import cn.weaponmod.entities.EntityBullet;
 
 /**
  * 高斯枪蓄力射击的判断实体。
@@ -44,11 +43,10 @@ public class EntityBulletGauss extends EntityBullet {
 		super(world);
 	}
 
-	public EntityBulletGauss(World par1World, EntityPlayer entityPlayer,
-			ItemStack par3itemStack) {
-		super(par1World, entityPlayer, par3itemStack, true);
+	public EntityBulletGauss(World par1World, EntityPlayer entityPlayer, ItemStack stack, int damage) {
+		super(par1World, entityPlayer, damage);
 		motion = new Motion3D(entityPlayer, true);
-		itemStack = par3itemStack;
+		itemStack = stack;
 		item = (Weapon_Gauss) itemStack.getItem();
 		inf = item.getInformation(itemStack, worldObj);
 		worldObj.spawnEntityInWorld(new EntityGaussRay(new Motion3D(this, true), worldObj));
@@ -108,8 +106,8 @@ public class EntityBulletGauss extends EntityBullet {
 
 		if (blockFront >= 3) // Too thick,cannot penetrate
 			return;
-		GaussBulletManager.Shoot2(EnumGaussRayType.PENETRATION, worldObj,
-				getThrower(), itemStack, result, motion, damage);
+		worldObj.spawnEntityInWorld(new EntityBulletGaussSec(EnumGaussRayType.PENETRATION, worldObj,
+				getThrower(), itemStack, result, motion, damage));
 
 		double radius = Math.round(0.3 * damage); // Max: 5.28
 		damage = (int) Math.round(damage * (1.0 - 0.33 * blockFront)); // Decay
@@ -163,8 +161,8 @@ public class EntityBulletGauss extends EntityBullet {
 		if (-sin45 < sin && sin < sin45) {
 			damage = (int) Math.round(Math.sqrt(1 - sin * sin)
 					* getChargeDamage());
-			GaussBulletManager.Shoot2(EnumGaussRayType.REFLECTION, worldObj,
-					getThrower(), itemStack, result, motion, damage);
+			worldObj.spawnEntityInWorld(new EntityBulletGaussSec(EnumGaussRayType.REFLECTION, worldObj,
+					getThrower(), itemStack, result, motion, damage));
 		}
 		return getChargeDamage() - damage;
 

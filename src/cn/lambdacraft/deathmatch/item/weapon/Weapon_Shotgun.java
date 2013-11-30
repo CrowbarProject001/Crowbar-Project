@@ -7,11 +7,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;
+import cn.liutils.api.entity.EntityBullet;
 import cn.liutils.api.util.GenericUtils;
 import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.information.InformationBullet;
-import cn.weaponmod.entities.EntityBullet;
 import cn.weaponmod.proxy.WMClientProxy;
 
 public class Weapon_Shotgun extends WeaponGeneralBullet_LC {
@@ -70,7 +70,7 @@ public class Weapon_Shotgun extends WeaponGeneralBullet_LC {
 			EntityPlayer par3Entity, InformationBullet information, boolean left) {
 		int count = left ? 8 : 16;
 		for (int i = 0; i < count; i++) {
-			par2World.spawnEntityInWorld(new EntityBullet(par2World, par3Entity, par1ItemStack, left));
+			par2World.spawnEntityInWorld(new EntityBullet(par2World, par3Entity, getWeaponDamage(left)));
 		}
 		if (!par2World.isRemote) {
 			par2World.playSoundAtEntity(par3Entity, getSoundShoot(left), 0.5F, 1.0F);

@@ -18,6 +18,7 @@ import cn.lambdacraft.core.proxy.ClientProps;
 import cn.liutils.api.client.render.RendererSidedCube;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author WeAthFolD
@@ -43,7 +44,7 @@ public class RenderTileHeCharger extends RendererSidedCube {
 	}
 
 	@Override
-	public String getTexture(TileEntity te, int side, int metadata) {
+	public ResourceLocation getTexture(TileEntity te, int side, int metadata) {
 		if (side == 0 || side == 1)
 			return ClientProps.HECHARGER_TD_PATH;
 		if (side == metadata)

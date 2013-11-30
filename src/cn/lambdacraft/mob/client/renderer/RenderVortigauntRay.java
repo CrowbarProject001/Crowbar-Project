@@ -70,7 +70,7 @@ public class RenderVortigauntRay extends Render {
 		GL11.glTranslatef((float) d0, (float) d1, (float) d2);
 		// GL11.glRotatef(angle, 1.0F, 0, 0);
 		int rand = RenderUtils.rand.nextInt(3);
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.VORTIGAUNT_RAY_PATH[rand]));
+		Minecraft.getMinecraft().renderEngine.bindTexture(ClientProps.VORTIGAUNT_RAY_PATH[rand]);
 
 		
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);

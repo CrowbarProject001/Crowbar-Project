@@ -9,11 +9,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import cn.liutils.api.entity.EntityBullet;
 import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.information.InformationWeapon;
-import cn.weaponmod.entities.EntityBullet;
 import cn.weaponmod.events.ItemHelper;
 import cn.weaponmod.proxy.WMClientProxy;
 import cpw.mods.fml.relauncher.Side;
@@ -92,7 +92,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 	 */
 	protected Entity getBulletEntity(ItemStack is, World world,
 			EntityPlayer player, boolean left) {
-		return new EntityBullet(world, player, is, left);
+		return new EntityBullet(world, player, this.getWeaponDamage(left));
 	}
 	
 	//------------------Utilities---------------------

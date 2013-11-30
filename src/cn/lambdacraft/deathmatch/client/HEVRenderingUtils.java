@@ -60,7 +60,7 @@ public class HEVRenderingUtils {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
-        engine.bindTexture(new ResourceLocation(ClientProps.HEV_HUD_PATH));
+        engine.bindTexture(ClientProps.HEV_HUD_PATH);
         
         //Health Section
         int xOffset, yOffset;
@@ -157,7 +157,7 @@ public class HEVRenderingUtils {
 				xOffset = (int) (xOffset * 0.7);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
 				drawTexturedModelRectFromIcon(tx + xOffset, height, hev.getIcon(is, 0), 16, 16);
-				renderEngine.bindTexture(new ResourceLocation(ClientProps.HEV_HUD_PATH));
+				renderEngine.bindTexture(ClientProps.HEV_HUD_PATH);
 				
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
 				drawTexturedModalRect(tx2 + xOffset, height + 16 - heightToDraw, 286, 64, 8, 16, 34, 64); //overlay

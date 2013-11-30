@@ -20,6 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
@@ -46,7 +47,7 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 	 * @param mdl
 	 * @param texture
 	 */
-	public RenderModelBulletWeapon(IItemModel mdl, WeaponGeneralBullet type, String texture, String ...muzzleflashPath) {
+	public RenderModelBulletWeapon(IItemModel mdl, WeaponGeneralBullet type, ResourceLocation texture, String ...muzzleflashPath) {
 		super(mdl, texture);
 		weaponType = type;
 		if(muzzleflashPath.length != 0)

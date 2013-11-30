@@ -51,7 +51,7 @@ public class RenderBarnacle extends Render {
 		EntityBarnacle barnacle = (EntityBarnacle) entity;
 		Tessellator t = Tessellator.instance;
 		GL11.glPushMatrix();
-		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.BARNACLE_PATH));
+		Minecraft.getMinecraft().renderEngine.bindTexture(ClientProps.BARNACLE_PATH);
 		GL11.glTranslatef((float) par2, (float) par4 + 2 * entity.height,
 				(float) par6);
 		GL11.glScalef(-1.0F, -1.0F, 1.0F);
@@ -77,7 +77,7 @@ public class RenderBarnacle extends Render {
 					 v6 = RenderUtils.newV3(-WIDTH, h2, WIDTH),
 					 v7 = RenderUtils.newV3(WIDTH, h2, WIDTH),
 					 v8 = RenderUtils.newV3(WIDTH, h2, -WIDTH);
-			Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(ClientProps.BARNACLE_TENTACLE_PATH));
+			Minecraft.getMinecraft().renderEngine.bindTexture(ClientProps.BARNACLE_TENTACLE_PATH);
 			
 			t.startDrawingQuads();
 			RenderUtils.addVertex(v1, 0.0, 0.0);

@@ -97,7 +97,7 @@ public class Weapon_Egon extends WeaponGeneralEnergy_LC implements ISpecialCross
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer player, InformationEnergy information, boolean left) {
 		if(!par2World.isRemote)
-			par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, player, par1ItemStack));
+			par2World.spawnEntityInWorld(new EntityBulletEgon(par2World, player));
 		return;
 	}
 

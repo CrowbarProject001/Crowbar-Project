@@ -10,8 +10,9 @@ import net.minecraft.world.World;
 import cn.lambdacraft.api.hud.ISpecialCrosshair;
 import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.crafting.register.CBCItems;
+import cn.lambdacraft.deathmatch.entity.EntityBulletGauss;
+import cn.lambdacraft.deathmatch.entity.EntityBulletGaussSec;
 import cn.lambdacraft.deathmatch.entity.EntityBulletGaussSec.EnumGaussRayType;
-import cn.lambdacraft.deathmatch.util.GaussBulletManager;
 import cn.liutils.api.util.GenericUtils;
 import cn.liutils.api.util.Motion3D;
 import cn.weaponmod.api.WeaponHelper;
@@ -167,7 +168,7 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 		if (!par2World.isRemote) {
 			par2World.playSoundAtEntity(player, SND_SHOOT_PATH, 0.5F,
 					1.0F);
-			GaussBulletManager.Shoot(par1ItemStack, player, par2World);
+			par2World.spawnEntityInWorld(new EntityBulletGauss(par2World, player, par1ItemStack, damage));
 		}
 
 	}
@@ -176,8 +177,8 @@ public class Weapon_Gauss extends WeaponGeneralEnergy_LC implements ISpecialCros
 	public void onEnergyWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer player, InformationEnergy information, boolean side) {
 		if(!par2World.isRemote)
-		GaussBulletManager.Shoot2(EnumGaussRayType.NORMAL, par2World, player,
-				par1ItemStack, null, null, getWeaponDamage(side));
+			par2World.spawnEntityInWorld(new EntityBulletGaussSec(EnumGaussRayType.NORMAL, par2World, player,
+				par1ItemStack, null, null, getWeaponDamage(side)));
 		par2World.playSoundAtEntity(player, getSoundShoot(side), 0.5F, 1.0F);
 		WeaponHelper.consumeAmmo(player, this, 2);
 		information.setLastTick(side);

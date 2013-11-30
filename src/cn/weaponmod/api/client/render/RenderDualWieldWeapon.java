@@ -17,6 +17,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 import cn.liutils.api.client.model.IItemModel;
@@ -35,7 +37,7 @@ public class RenderDualWieldWeapon extends RenderModelBulletWeapon {
 	 * @param muzzleflashPath
 	 */
 	public RenderDualWieldWeapon(IItemModel mdl, WeaponGeneralBullet type,
-			String texture, String... muzzleflashPath) {
+			ResourceLocation texture, String... muzzleflashPath) {
 		super(mdl, type, texture, muzzleflashPath);
 	}
 	

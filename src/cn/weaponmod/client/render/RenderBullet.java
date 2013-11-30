@@ -23,8 +23,8 @@ import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
 import cn.liutils.api.client.util.RenderUtils;
+import cn.liutils.api.entity.EntityBullet;
 import cn.liutils.api.util.Motion3D;
-import cn.weaponmod.entities.EntityBullet;
 
 /**
  * @author WeAthFolD

@@ -28,9 +28,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import cn.liutils.api.entity.EntityBullet;
 import cn.liutils.api.util.LIExplosion;
 import cn.weaponmod.api.weapon.WeaponGeneral;
-import cn.weaponmod.entities.EntityBullet;
 import cn.weaponmod.network.NetExplosion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -178,9 +178,8 @@ public class WeaponHelper {
 	private static final double BB_SIZE = 0.5D;
 	private static final int ENTITY_TRACE_RANGE = 128;
 
-	public static void Shoot(ItemStack itemStack, EntityLivingBase par3Entity,
-			World worldObj, boolean left) {
-		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, par3Entity, itemStack, left));
+	public static void Shoot(EntityLivingBase par3Entity, World worldObj, int damage) {
+		worldObj.spawnEntityInWorld(new EntityBullet(worldObj, par3Entity, damage));
 	}
 	
 	public static void Shoot(int damage, EntityLivingBase entityPlayer,

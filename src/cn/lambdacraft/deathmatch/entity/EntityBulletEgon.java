@@ -16,8 +16,6 @@ package cn.lambdacraft.deathmatch.entity;
 
 import java.util.List;
 
-import cn.liutils.api.util.GenericUtils;
-import cn.weaponmod.entities.EntityBullet;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +24,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.liutils.api.entity.EntityBullet;
+import cn.liutils.api.util.GenericUtils;
 
 /**
  * 随机破坏方块+范围攻击
@@ -33,9 +34,8 @@ import net.minecraft.world.World;
  */
 public class EntityBulletEgon extends EntityBullet {
 
-	public EntityBulletEgon(World par1World, EntityLivingBase par2EntityLiving,
-			ItemStack par3itemStack) {
-		super(par1World, par2EntityLiving, par3itemStack, true);
+	public EntityBulletEgon(World par1World, EntityLivingBase par2EntityLiving) {
+		super(par1World, par2EntityLiving, DMItems.weapon_egon.getWeaponDamage(true));
 	}
 
 	public EntityBulletEgon(World world) {

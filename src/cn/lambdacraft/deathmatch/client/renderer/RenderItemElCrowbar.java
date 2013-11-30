@@ -68,7 +68,7 @@ public class RenderItemElCrowbar implements IItemRenderer {
 	}
 	
 	private void renderEquipped(EntityLivingBase ent, ItemStack item) {
-		RenderUtils.renderItemIn2d(ent, item, 0.0625);
+		RenderUtils.renderItemIn2d(item, 0.0625);
 		if(((IModdable)item.getItem()).getMode(item) == 0 && item.getItemDamage() < item.getMaxDamage() - 1)
 			RenderUtils.renderEnchantGlint_Equip();
 	}

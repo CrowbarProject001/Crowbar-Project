@@ -123,7 +123,7 @@ public class ArmorHEV extends ElectricArmor {
 		GL11.glColor4f(1.0F,1.0F,1.0F,1.0F);
 		GL11.glDisable(3008);
 		GL11.glDisable(2929);
-		eg.bindTexture(new ResourceLocation(ClientProps.HEV_MASK_PATH));
+		eg.bindTexture(ClientProps.HEV_MASK_PATH);
 		t.startDrawingQuads();
 		t.setColorRGBA(255, 255, 255, 50);
 		t.addVertexWithUV(0.0D, j, -90D, 0.0D, 1.0D);

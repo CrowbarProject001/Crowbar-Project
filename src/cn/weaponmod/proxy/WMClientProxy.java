@@ -6,6 +6,7 @@ import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
 
 import cn.liutils.api.debug.KeyMoving;
+import cn.liutils.api.entity.EntityBullet;
 import cn.liutils.core.client.register.LIKeyProcess;
 import cn.weaponmod.WeaponMod;
 import cn.weaponmod.client.WMClientTickHandler;
@@ -13,7 +14,6 @@ import cn.weaponmod.client.keys.Debug_ProcessorWeapon;
 import cn.weaponmod.client.keys.KeyClicking;
 import cn.weaponmod.client.keys.KeyReload;
 import cn.weaponmod.client.render.RenderBullet;
-import cn.weaponmod.entities.EntityBullet;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
