@@ -17,7 +17,6 @@ package cn.lambdacraft.core.proxy;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Properties;
@@ -214,14 +213,19 @@ public class ClientProps {
 		sprayProps = new Properties();
 		URL src2 = Minecraft.class.getResource(absPath + "spray/sprays.properties");
 		
-		File crFile = ClientProxy.copyFile(new File(src.getPath()), ClientProxy.getBasePath() + "/assets/lambdacraft/crosshairs/crosshairs.properties");
-		File sprFile = ClientProxy.copyFile(new File(src2.getPath()), ClientProxy.getBasePath() + "/assets/lambdacraft/sprays/sprays.properties");
-
+		File crFile = null, sprFile = null;
+		try {
+			crFile = ClientProxy.copyFile(src.openStream(), ClientProxy.getBasePath() + "/assets/lambdacraft/crosshairs/crosshairs.properties");
+			sprFile = ClientProxy.copyFile(src2.openStream(), ClientProxy.getBasePath() + "/assets/lambdacraft/sprays/sprays.properties");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
 		try {
 			crosshairProps.load(new InputStreamReader(new FileInputStream(crFile), Charsets.UTF_8));
 			sprayProps.load(new InputStreamReader(new FileInputStream(sprFile), Charsets.UTF_8));
 		} catch (IOException e) {
-			CBCMod.log.log(Level.SEVERE,"Unable to load crossfire/spray props from file %s", src);
+			CBCMod.log.log(Level.SEVERE,"Unable to load crossfire/spray props from fileH %s", src);
 		} catch (NullPointerException e) {
 			CBCMod.log.log(Level.SEVERE, "Unable to find crossfire/spray props file.");
 		}

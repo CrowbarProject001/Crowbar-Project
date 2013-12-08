@@ -25,6 +25,8 @@ public class CBCPlayer implements ITickHandler {
 	public static final float LJ_VEL_RADIUS = 1.5F, BHOP_VEL_SCALE = 0.003F, SPEED_REDUCE_SCALE = 0.0005F;
 	private float lastTickRotationYaw;
 	private GameSettings gameSettings;
+	
+	@SideOnly(Side.CLIENT)
 	private Minecraft mc = Minecraft.getMinecraft();
 	private EntityPlayer player = mc.thePlayer;
 	private int fallingTick;

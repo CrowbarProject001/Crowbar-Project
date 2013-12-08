@@ -25,9 +25,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.api.hud.IHudTip;
@@ -182,8 +179,7 @@ public class HEVRenderingUtils {
 	}
 	
 	private static void drawTips(IHudTip[] tips, TextureManager engine, ItemStack itemStack, EntityPlayer player, int k, int l) {
-		int startHeight = l - 24 - 24 * tips.length;
-		startHeight += 13;
+		int startHeight = l - 5 - 24 * tips.length;
 		for(int i = 0; i < tips.length; i ++) {
 			String s = tips[i].getTip(itemStack, player);
 			int width = k - 32 - getStringLength(s);

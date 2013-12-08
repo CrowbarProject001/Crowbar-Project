@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cn.lambdacraft.core.CBCMod;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 
@@ -34,7 +33,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class Proxy {
 
 	public static Set<String> languages = new HashSet();
-
+	
 	static {
 		languages.add("zh_CN");
 		languages.add("en_US");

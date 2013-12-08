@@ -146,7 +146,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 			if (worldObj.isRemote) {
 				int id = dataWatcher.getWatchableObjectInt(20);
 				Entity e = worldObj.getEntityByID(id);
-				if (e != null && e instanceof EntityLivingBase)
+				if (e == null || e instanceof EntityLivingBase) //一个逻辑判断解决一大个bug（笑
 					attacher = (EntityLivingBase) e;
 			} else {
 				dataWatcher.updateObject(20, Integer.valueOf(0));

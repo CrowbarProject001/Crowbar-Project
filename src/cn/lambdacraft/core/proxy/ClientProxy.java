@@ -16,8 +16,10 @@ package cn.lambdacraft.core.proxy;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URL;
 
 import org.lwjgl.input.Keyboard;
 
@@ -44,16 +46,45 @@ public class ClientProxy extends Proxy {
 
 	LISoundRegistry events = new LISoundRegistry();
 	
-	private final String PATH_TRACKS[] = { "hla", "hlb", "hlc" };
+	private final String PATH_TRACKS[] = { "hla", "hlb", "hlc" } ;
+	
+	private final int MAX_CROSSHAIR_FILES = 16, MAX_SPRAY_FILES = 14;
 	
 	@Override
 	public void init() {
 		super.init();
 		events.onSound(new SoundLoadEvent(Minecraft.getMinecraft().sndManager));
+		
 		CBCPlayer cbcPlayer = new CBCPlayer();
 		TickRegistry.registerTickHandler(cbcPlayer, Side.CLIENT);
 		RenderingRegistry.registerBlockHandler(new RenderEmptyBlock());
 		ClientProps.loadProps(CBCMod.config);
+		
+		File file;
+		URL url;
+		final String absPath = "/assets/lambdacraft/";
+		String path = getBasePath();
+		try {
+			for(String s : PATH_TRACKS) {
+				url = Minecraft.class.getResource(absPath + "records/" + s + ".ogg");
+				if(url != null)
+					copyFile(url.openStream(), path + "/assets/records/" + s + ".ogg");
+			}
+			
+			for(int i = 0; i < MAX_CROSSHAIR_FILES; i++) {
+				url = Minecraft.class.getResource(absPath + "crosshairs/xhair" + i + ".png");
+				if(url != null)
+					copyFile(url.openStream(), path + "/assets/lambdacraft/crosshairs/xhair" + i + ".png");
+			}
+			
+			for(int i = 0; i < MAX_SPRAY_FILES; i++) {
+				url = Minecraft.class.getResource(absPath + "spray/" + i + ".bmp");
+				if(url != null)
+					copyFile(url.openStream(), path + "/assets/lambdacraft/sprays/" + i + ".bmp");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -61,34 +92,35 @@ public class ClientProxy extends Proxy {
 		MinecraftForge.EVENT_BUS.register(events);
 		LIKeyProcess.addKey("key.cbcuse", Keyboard.KEY_F, true, new KeyUse());
 		
-		String path = getBasePath();
-		
-		File file = new File(this.getClass().getResource("/assets/lambdacraft/records/hla.ogg").getFile());
-		
-		for(String s : PATH_TRACKS)
-			copyFile(new File(getClass().getResource("/assets/lambdacraft/records/" + s + ".ogg").getFile()), path + "/assets/records/" + s + ".ogg");
-		
-		file = new File(this.getClass().getResource("/assets/lambdacraft/spray/").getFile());
-		File files[] = file.listFiles();
-		for(File f : files) {
-			if(f.isFile() && f.getPath().endsWith(".bmp"))
-				copyFile(f, path + "/assets/lambdacraft/sprays/" + f.getName());
-		}
-		
-		file = new File(this.getClass().getResource("/assets/lambdacraft/crosshairs/").getFile());
-		files = file.listFiles();
-		for(File f : files) {
-			if(f.isFile() && f.getPath().endsWith(".png"))
-				copyFile(f, path + "/assets/lambdacraft/crosshairs/" + f.getName());
-		}
-		
 	}
 	
 	public static String getBasePath() {
 		Minecraft mc = Minecraft.getMinecraft();
 		String path = mc.mcDataDir.getAbsolutePath();
-		path = path.substring(0, path.length() - 2);
+		//path = path.substring(0, path.length() - 2);
 		return path;
+	}
+	
+	public static String process(URL url) {
+		String s = url.getPath();
+		int del = s.indexOf('!');
+		int ind = s.indexOf("file:/") + 5;
+		//if(del == -1)
+			//return s;
+		System.out.println("ATTEMPT 1 del : " + del + " , ind = " + ind);
+		System.out.println("ss : " + s.substring(ind + 1));
+		return ind == 0 ? s : s.substring(ind + 1);
+		//return s.substring(0, del -1) + s.substring(del + 1);
+	}
+	
+
+	public static File copyFile(File file, String newPath) { 
+		 try {
+			return copyFile(new FileInputStream(file), newPath);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/** 
@@ -97,17 +129,19 @@ public class ClientProxy extends Proxy {
      * @param newPath String 复制后路径 如：f:/fqf.txt 
      * @return boolean 
      */ 
-   public static File copyFile(File oldfile, String newPath) { 
+   public static File copyFile(InputStream inStream, String newPath) { 
 	   File file = new File(newPath);
+	   CBCMod.log.fine("Attempting copying to " + newPath);
        try { 
            int bytesum = 0; 
            int byteread = 0; 
-           if(file.canRead())
+           if(file.canRead()) {
+        	   CBCMod.log.fine("Dest file already exists : " + newPath);
         	   return file;
-           if (oldfile.exists()) { //文件存在时 
+           }
+           if (inStream.available() != 0) { //文件存在时 
         	   if(!file.canWrite())
         		   file.getParentFile().mkdirs();
-               InputStream inStream = new FileInputStream(oldfile); //读入原文件 
                FileOutputStream fs = new FileOutputStream(newPath); 
                byte[] buffer = new byte[1444]; 
                int length; 
@@ -117,10 +151,13 @@ public class ClientProxy extends Proxy {
                } 
                inStream.close(); 
                fs.close();
-           } 
+               CBCMod.log.fine("Successfully copied to " + newPath);
+           } else {
+        	   CBCMod.log.severe("Didn't find source file.");
+           }
        } 
        catch (Exception e) { 
-           System.err.println("复制单个文件操作出错"); 
+    	   CBCMod.log.severe("Exceptions occured while copying a single file to " + newPath); 
            e.printStackTrace(); 
        } 
        return file;

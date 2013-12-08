@@ -26,7 +26,6 @@ import cn.liutils.api.client.gui.IGuiTip;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 /**

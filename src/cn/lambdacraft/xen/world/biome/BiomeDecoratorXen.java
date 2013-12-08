@@ -2,6 +2,7 @@ package cn.lambdacraft.xen.world.biome;
 
 import java.util.Random;
 
+import cn.lambdacraft.core.CBCMod;
 import cn.lambdacraft.xen.register.XENBlocks;
 import cn.lambdacraft.xen.world.gen.feature.WorldGenAmethyst;
 import cn.lambdacraft.xen.world.gen.feature.WorldGenLights;
@@ -18,7 +19,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
  * @author F
  *
  */
-public class BiomeDecoratorXen extends BiomeDecorator{
+public class BiomeDecoratorXen extends BiomeDecorator {
 
 	/** The world the BiomeDecorator is currently decorating */
     public World currentWorld;
@@ -58,7 +59,8 @@ public class BiomeDecoratorXen extends BiomeDecorator{
     {
         if (this.currentWorld != null)
         {
-            throw new RuntimeException("Already decorating!!");
+           // throw new RuntimeException("Already decorating!!");
+        	CBCMod.log.severe("XenDecorator Already Decorating!");
         }
         else
         {

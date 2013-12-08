@@ -16,7 +16,6 @@ package cn.lambdacraft.deathmatch.client.gui;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;

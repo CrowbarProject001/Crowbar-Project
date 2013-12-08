@@ -123,7 +123,30 @@ public abstract class WeaponGeneral extends Item implements ISpecialUseable {
     	return doesAbortAnim(stack, player);
     }
     
+    
+    
     @Override
+	public void onItemClick(World world, EntityPlayer player, ItemStack stack,
+			boolean left) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onItemUsingTick(World world, EntityPlayer player,
+			ItemStack stack, boolean type, int tickLeft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player,
+			World world, int x, int y, int z, int side, float hitX, float hitY,
+			float hitZ) {
+		return true;
+	}
+
+	@Override
 	public boolean onBlockStartBreak(ItemStack itemstack, int i, int j, int k, EntityPlayer player)
     {
     	return doesAbortAnim(itemstack, player);
