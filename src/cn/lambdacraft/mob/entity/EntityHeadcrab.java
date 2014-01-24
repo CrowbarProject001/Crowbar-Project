@@ -77,11 +77,10 @@ public class EntityHeadcrab extends CBCEntityMob implements
 
 	@Override
 	public boolean attackEntityAsMob(Entity par1Entity) {
-		int i = (int) Math.ceil(this.getAttackDamage());
+		double i = this.getAttackDamage();
 		if (this.onGround || this.hurtResistantTime > 0)
 			return false;
-		boolean flag = par1Entity.attackEntityFrom(
-				DamageSource.causeMobDamage(this), i);
+		boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), (float)i);
 		this.motionX = 0.0;
 		this.motionZ = 0.0;
 		// Attaching on
@@ -89,16 +88,15 @@ public class EntityHeadcrab extends CBCEntityMob implements
 			EntityPlayer player = (EntityPlayer) par1Entity;
 			ItemStack armorStack = player.inventory.armorInventory[3];
 			if (armorStack == null) {
-				attacher = player;
-				player.addPotionEffect(new PotionEffect(Potion.blindness
-						.getId(), 200));
-				player.addPotionEffect(new PotionEffect(Potion.confusion
-						.getId(), 200));
-				this.setPositionAndRotation(attacher.posX,
-						attacher.posY + 0.05, attacher.posZ,
+				if(player.getHealth() <= 10.0F) {
+					attacher = player;
+					player.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 200));
+					player.addPotionEffect(new PotionEffect(Potion.confusion.getId(), 200));
+					this.setPositionAndRotation(attacher.posX, attacher.posY + 0.05, attacher.posZ,
 						attacher.rotationYaw, attacher.rotationPitch);
+				}
 			} else {
-				armorStack.damageItem(20, this);
+				armorStack.damageItem(5, this);
 			}
 		} else if (par1Entity instanceof EntityVillager) {
 			attacher = (EntityLivingBase) par1Entity;
@@ -123,8 +121,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 						+ attacher.height + 0.05, attacher.posZ,
 						attacher.rotationYaw, attacher.rotationPitch);
 			if (++tickSinceBite >= 15) {
-				dataWatcher
-						.updateObject(20, Integer.valueOf(attacher.entityId));
+				dataWatcher.updateObject(20, Integer.valueOf(attacher.entityId));
 				tickSinceBite = 0;
 				float health = attacher.getHealth() - 1;
 				if (!(attacher instanceof EntityPlayer && ((EntityPlayer) attacher).capabilities.isCreativeMode)) {

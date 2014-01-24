@@ -42,7 +42,6 @@ import cpw.mods.fml.relauncher.Side;
  * 
  * @author WeAthFolD
  */
-@SideOnly(Side.CLIENT)
 public class ClientProps {
 	
 	@Configurable(category = "graphics", key = "alwaysCustomCrosshair", comment = "Always draw custom crosshair regardless of player wearing HEV or not.", defValue = "false")

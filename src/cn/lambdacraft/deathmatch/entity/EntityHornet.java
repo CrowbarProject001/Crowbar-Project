@@ -17,6 +17,7 @@ package cn.lambdacraft.deathmatch.entity;
 import java.util.List;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +31,7 @@ import net.minecraft.world.World;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.liutils.api.entity.EntityTrailFX;
+import cn.liutils.api.util.GenericUtils;
 import cn.liutils.api.util.selector.EntitySelectorLiving;
 import cn.weaponmod.api.WeaponHelper;
 
@@ -42,7 +44,7 @@ import cn.weaponmod.api.WeaponHelper;
 public class EntityHornet extends EntityThrowable {
 
 	private boolean searchForPlayer = false;
-	private EntityLiving currentTarget;
+	private EntityLivingBase currentTarget;
 	public static final double RAD = 8.0, TURNING_SPEED = 0.5;
 
 	public EntityHornet(World par1World) {
@@ -103,7 +105,7 @@ public class EntityHornet extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if (this.ticksExisted > 120)
+		if (worldObj.isRemote && this.ticksExisted > 120)
 			this.setDead();
 		if (!this.searchForPlayer)
 			return;
@@ -164,12 +166,11 @@ public class EntityHornet extends EntityThrowable {
 	private void searchTarget() {
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - RAD,
 				posY - RAD, posZ - RAD, posX + RAD, posY + RAD, posZ + RAD);
-		List<EntityLiving> list = worldObj
-				.getEntitiesWithinAABBExcludingEntity(getThrower(), box,
-						new EntitySelectorLiving());
+		List<EntityLivingBase> list = worldObj
+				.getEntitiesWithinAABBExcludingEntity(getThrower(), box, GenericUtils.selectorLiving);
 		float distance = 10000.0F;
-		EntityLiving target = null;
-		for (EntityLiving e : list) {
+		EntityLivingBase target = null;
+		for (EntityLivingBase e : list) {
 			float d = e.getDistanceToEntity(this);
 			if (d < distance) {
 				distance = d;
