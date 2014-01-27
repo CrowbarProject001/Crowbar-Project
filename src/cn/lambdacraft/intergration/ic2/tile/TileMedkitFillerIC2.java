@@ -17,6 +17,7 @@ package cn.lambdacraft.intergration.ic2.tile;
 import cn.lambdacraft.deathmatch.block.TileMedkitFiller;
 import ic2.api.Direction;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -43,12 +44,12 @@ public class TileMedkitFillerIC2 extends TileMedkitFiller implements ic2.api.ene
 	
 	// IC2 Compatibility
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) {
+	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
 		return true;
 	}
 
 	@Override
-	public int injectEnergy(Direction directionFrom, int amount) {
+	public double injectEnergyUnits(ForgeDirection directionFrom, double amount) {
 		this.currentEnergy += amount;
 		int var3 = 0;
 		if (this.currentEnergy > this.maxEnergy) {
@@ -56,5 +57,11 @@ public class TileMedkitFillerIC2 extends TileMedkitFiller implements ic2.api.ene
 			this.currentEnergy = this.maxEnergy;
 		}
 		return var3;	
+	}
+
+	@Override
+	public double demandedEnergyUnits() {
+		// TODO Auto-generated method stub
+		return this.demandsEnergy();
 	}
 }

@@ -149,7 +149,7 @@ public abstract class WeaponGeneral extends Item implements ISpecialUseable {
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemstack, int i, int j, int k, EntityPlayer player)
     {
-    	return doesAbortAnim(itemstack, player);
+    	return true;
     }
 	
 }

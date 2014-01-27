@@ -17,6 +17,7 @@ package cn.lambdacraft.intergration.ic2.tile;
 import cn.lambdacraft.crafting.block.tile.TileElCrafter;
 import ic2.api.Direction;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -35,7 +36,7 @@ public class TileElCrafterIC2 extends TileElCrafter implements ic2.api.energy.ti
 	
 	// IC2 Compatibility
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, Direction direction) {
+	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
 		return true;
 	}
 	
@@ -45,7 +46,7 @@ public class TileElCrafterIC2 extends TileElCrafter implements ic2.api.energy.ti
 	}
 
 	@Override
-	public int injectEnergy(Direction directionFrom, int amount) {
+	public double injectEnergyUnits(ForgeDirection directionFrom, double amount) {
 		this.currentEnergy += amount;
 		int var3 = 0;
 		if (this.currentEnergy > TileElCrafter.MAX_STORAGE) {
@@ -53,5 +54,11 @@ public class TileElCrafterIC2 extends TileElCrafter implements ic2.api.energy.ti
 			this.currentEnergy = TileElCrafter.MAX_STORAGE;
 		}
 		return var3;	
+	}
+
+
+	@Override
+	public double demandedEnergyUnits() {
+		return super.demandsEnergy();
 	}
 }

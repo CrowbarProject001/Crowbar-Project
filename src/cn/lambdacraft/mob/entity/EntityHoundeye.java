@@ -14,20 +14,23 @@
  */
 package cn.lambdacraft.mob.entity;
 
-import cn.lambdacraft.api.entity.IEntityLink;
-import cn.lambdacraft.core.proxy.ClientProps;
-import cn.lambdacraft.mob.register.CBCMobItems;
-import cn.liutils.api.util.GenericUtils;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import cn.lambdacraft.api.entity.IEntityLink;
+import cn.lambdacraft.core.proxy.ClientProps;
+import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.liutils.api.util.GenericUtils;
 
 /**
  * TODO:坑完了
@@ -42,6 +45,15 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	public boolean isCharging = false;
 	public int chargeTick = 0;
 	protected int lastShockTick = 0;
+	
+	private static IEntitySelector selector = new IEntitySelector() {
+
+		@Override
+		public boolean isEntityApplicable(Entity entity) {
+			return entity instanceof EntityPlayer || entity instanceof EntityVillager || entity instanceof EntityHeadcrab;
+		}
+		
+	};
 	
 	/**
 	 * @param par1World
@@ -58,7 +70,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	@Override
     protected Entity findPlayerToAttack()
     {
-		Entity e = super.findPlayerToAttack();
+		Entity e = GenericUtils.getNearestEntityTo(this, GenericUtils.getEntitiesAround_CheckSight(this, 15.0, selector));
 		if(e != null && e.getEntityName().equals(throwerName))
 			return null;
 		return e;
@@ -209,7 +221,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	@Override
 	protected double getAttackDamage() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override

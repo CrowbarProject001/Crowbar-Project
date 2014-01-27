@@ -72,6 +72,7 @@ public class CBCPlayer implements ITickHandler {
 			}
 		}
 		
+		System.out.println("Processing onTick");
 		if(player.worldObj.provider.dimensionId == ModuleXen.dimensionId) {
 			if(!player.onGround && !player.capabilities.isFlying && !(player.isOnLadder() || player.isInWater())) {
 				player.motionY += 0.036;
@@ -203,7 +204,7 @@ public class CBCPlayer implements ITickHandler {
 
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-		if(player == null) player = (EntityPlayer) tickData[0];
+		player = (EntityPlayer) tickData[0];
 		if(player != null) {
 			beforeOnUpdate();
 			if(player.worldObj.isRemote)
