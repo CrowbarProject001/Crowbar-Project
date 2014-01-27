@@ -5,6 +5,7 @@ package cn.lambdacraft.deathmatch.client.renderer;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -34,7 +35,8 @@ public class RenderHelperEgon implements PlayerRenderHelper {
 	@Override
 	public boolean isActivated(EntityPlayer player, World world) {
 		ItemStack is = player.getCurrentEquippedItem();
-		return is != null && is.itemID == DMItems.weapon_egon.itemID;
+		Minecraft mc = Minecraft.getMinecraft();
+		return mc.gameSettings.thirdPersonView != 0 && is != null && is.itemID == DMItems.weapon_egon.itemID;
 	}
 
 	/* (non-Javadoc)

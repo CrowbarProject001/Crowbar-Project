@@ -72,7 +72,6 @@ public class CBCPlayer implements ITickHandler {
 			}
 		}
 		
-		System.out.println("Processing onTick");
 		if(player.worldObj.provider.dimensionId == ModuleXen.dimensionId) {
 			if(!player.onGround && !player.capabilities.isFlying && !(player.isOnLadder() || player.isInWater())) {
 				player.motionY += 0.036;

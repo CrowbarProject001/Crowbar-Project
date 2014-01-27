@@ -209,11 +209,6 @@ public class TileSentryRay extends TileEntity {
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		AxisAlignedBB bb = INFINITE_EXTENT_AABB;
-		if(linkedBlock == null)
-		bb = AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord,
-				xCoord + 1, yCoord + 1, zCoord + 1);
-		else
-			bb = WeaponHelper.getBoundingBox(xCoord, yCoord, zCoord, linkedBlock.xCoord + 1, linkedBlock.yCoord + 1, linkedBlock.zCoord + 1);
 		return bb;
 	}
 

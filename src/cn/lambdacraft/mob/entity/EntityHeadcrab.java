@@ -101,8 +101,8 @@ public class EntityHeadcrab extends CBCEntityMob implements
 		} else if (par1Entity instanceof EntityVillager) {
 			attacher = (EntityLivingBase) par1Entity;
 			this.setPositionAndRotation(attacher.posX, attacher.posY
-					+ attacher.height + 0.05, attacher.posZ,
-					attacher.rotationYaw, attacher.rotationPitch);
+				+ attacher.height + 0.05, attacher.posZ,
+				attacher.rotationYaw, attacher.rotationPitch);
 		}
 		return flag;
 	}
@@ -128,11 +128,15 @@ public class EntityHeadcrab extends CBCEntityMob implements
 					attacher.setHealth(health);
 
 					if (health <= 0 && !worldObj.isRemote) {
-						attacher = null;
-						MobHelper.spawnCreature(worldObj, EntityHLZombie.class,
+						NBTTagCompound nbt = attacher.getEntityData();
+						if(!nbt.getBoolean("spawnedZombie")) {
+							nbt.setBoolean("spawnedZombie", true);
+							attacher = null;
+							MobHelper.spawnCreature(worldObj, EntityHLZombie.class,
 								this, false);
-						dataWatcher.updateObject(20, Integer.valueOf(0));
-						this.setDead();
+							dataWatcher.updateObject(20, Integer.valueOf(0));
+							this.setDead();
+						}
 					}
 				}
 			}

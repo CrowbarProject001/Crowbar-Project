@@ -51,7 +51,7 @@ public class EntityRocket extends EntityThrowable {
 				.setTrailWidth(0.4F)
 				.setTextures(ClientProps.RPG_TRAIL_PATH[0],
 						ClientProps.RPG_TRAIL_PATH[1]).setDoesRenderEnd(true)
-				.setDecayTime(60));
+				.setDecayTime(20));
 	}
 
 	@Override

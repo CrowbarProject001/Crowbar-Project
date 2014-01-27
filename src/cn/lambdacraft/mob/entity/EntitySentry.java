@@ -208,15 +208,14 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 		par3 *= par7;
 		par5 *= par7;
 		
-		double dx = par1 - motionX, dy = par3 - motionY, dz = par5 - motionZ;
+		double dx = par1, dy = par3, dz = par5;
 		float f3 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
 
 		float lastRotationYaw = rotationYawHead;
 		this.prevRotationYawHead = this.rotationYawHead = (float) (Math.atan2(par1,
 				par5) * 180.0D / Math.PI);
-		float dyaw = rotationYawHead - lastRotationYaw;
-		if(dyaw > 180.0F || dyaw < -180.0F)
-			dyaw = -dyaw;
+		float dyaw = GenericUtils.wrapYawAngle(rotationYawHead - lastRotationYaw);
+		
 		if(Math.abs(dyaw) > 20.0F) {
 			dyaw = dyaw > 0 ? 20.0F : -20.0F;
 			this.rotationYawHead = GenericUtils.wrapYawAngle(lastRotationYaw + dyaw);
@@ -242,7 +241,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 			} else { 
 				rotationSet = false;
 				this.playSound("lambdacraft:mobs.tu_fire", 0.5F, 1.0F);
-				WeaponHelper.Shoot(3, this, worldObj);
+				WeaponHelper.Shoot_rev(3, this, worldObj);
 			}
 			if(currentTarget.getDistanceSqToEntity(this) > 400) {
 				this.currentTarget = null;
