@@ -112,7 +112,7 @@ public class RenderSpray extends Render {
 
 		float start_x; // x的起点(宽度的一半)
 		float start_y; // Ditto.
-		float half_thickness = 0.0625F;
+		float half_thickness = 0.00001F;
 		
 		if (isHLSpray) {
 			start_x = -0.5F; // 半格

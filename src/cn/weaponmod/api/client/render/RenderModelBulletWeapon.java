@@ -26,7 +26,6 @@ import org.lwjgl.opengl.GL11;
 
 import cn.liutils.api.client.model.IItemModel;
 import cn.liutils.api.client.render.RenderModelItem;
-import cn.weaponmod.WeaponMod;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
 import cn.weaponmod.events.ItemHelper;
@@ -103,8 +102,6 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 		
 		GL11.glRotatef(2.5F * MathHelper.sin(inf.getDeltaTick(left) * (float)Math.PI * 0.025F), 0.0F, 0.0F, 1.0F);
 		super.renderEquipped(item, render, entity, type);
-		if(WeaponMod.DEBUG)
-			mt = 1;
 		if(mt > 0) {
 			mt = 3 - mt;
 			RenderBulletWeapon.renderMuzzleflashIn2d(t, muzzleflash[mt < muzzleflash.length ? mt : muzzleflash.length - 1], tx, ty, tz);

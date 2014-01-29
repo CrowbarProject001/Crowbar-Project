@@ -14,14 +14,11 @@
  */
 package cn.lambdacraft.mob.entity;
 
-import java.util.List;
-
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
@@ -63,7 +60,11 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 					return false;
 			} else if(entity instanceof EntitySentry)
 				return attackPlayer && !((EntitySentry)entity).placerName.equals(placerName);
-			return GenericUtils.selectorLiving.isEntityApplicable(entity);
+			else if(GenericUtils.selectorLiving.isEntityApplicable(entity)) {
+				if(entity instanceof EntityMob)
+					return true;
+			}
+			return false;
 		}
 		
 	};
@@ -150,19 +151,8 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 	protected void searchForTarget() {
 		if(worldObj.isRemote)
 			return;
-		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(posX - 10, posY - 6, posZ - 10, posX + 10, posY + 6, posZ + 10);
-		List<EntityLiving> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, box, this.selector);
-		double lastDistance = 10000.0;
-		EntityLiving targetEntity = null;
-		for(EntityLiving e : list) {
-			if(!e.isEntityInvulnerable() && this.canEntityBeSeen(e)) {
-				double distance = e.getDistanceSqToEntity(this);
-				if(distance > lastDistance)
-					continue;
-				lastDistance = distance;
-				targetEntity = e;
-			}
-		}
+		Entity targetEntity = GenericUtils.getNearestEntityTo(this, GenericUtils.getEntitiesAround_CheckSight(this, 15.0F, selector));
+		
 		if(targetEntity != null) {
 			if(this.rand.nextFloat() < 0.2)
 				this.playSound("lambdacraft:mobs.tu_spinup", 0.5F, 1.0F);
@@ -177,18 +167,20 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 	}
 	
     @Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
+	public boolean attackEntityFrom(DamageSource src, float par2)
     {
-    	boolean b = super.attackEntityFrom(par1DamageSource, par2);
+    	if(src == DamageSource.drown || src == DamageSource.fall || src == DamageSource.onFire)
+    		return false;
+    	boolean b = super.attackEntityFrom(src, par2);
     	if(b) {
     		isActivated = true;
-    		Entity e = par1DamageSource.getEntity();
+    		Entity e = src.getEntity();
     		if(e != null && e.getEntityName() == this.placerName) {
     			dropItemWithOffset(CBCMobItems.turret.itemID, 1, 0.5F);
     			setDead();
     		} else
-    		if(par1DamageSource.getEntity() != null && selector.isEntityApplicable(par1DamageSource.getEntity()))
-    			currentTarget = par1DamageSource.getEntity();
+    		if(src.getEntity() != null && selector.isEntityApplicable(src.getEntity()))
+    			currentTarget = src.getEntity();
     	}
     	return b;
     }

@@ -69,14 +69,14 @@ public class XENBlocks {
 		dirt = new BlockXenDirt(ConfigHandler.getFixedBlockId(conf, "xenDirt", 218, 255));
 		grass = new BlockXenGrass(ConfigHandler.getFixedBlockId(conf, "xenGrass", 219, 255));
 		pillar = new BlockBlackPillar(ConfigHandler.getFixedBlockId(conf, "xenPillar", 220, 255));
-		slimeFlow = new BlockSlimeFlow(ConfigHandler.getFixedBlockId(conf, "xenSlimeFlow", 221, 255));
+		slimeFlow = new BlockSlimeFlow(ConfigHandler.getFixedBlockId(conf, "xenSlimeFlow", 205, 255));
 		slimeStill = new BlockSlimeStill(slimeFlow.blockID + 1);
-		waterFlow = new BlockXenWaterFlow(ConfigHandler.getFixedBlockId(conf, "xenWater", 223, 255));
+		waterFlow = new BlockXenWaterFlow(ConfigHandler.getFixedBlockId(conf, "xenWater", 207, 255));
 		waterStill = new BlockXenWaterStill(waterFlow.blockID + 1);
-		light_on = new BlockXenLight(ConfigHandler.getFixedBlockId(conf, "xenLight_on", 225, 255), true);
-		light_off = new BlockXenLight(ConfigHandler.getFixedBlockId(conf, "xenLight_off", 226, 255), false);
-		amethyst = new BlockXenAmethyst(ConfigHandler.getFixedBlockId(conf, "xenAmythest", 227, 255));
-		sand = new BlockXenSand(ConfigHandler.getFixedBlockId(conf, "xenSand", 228, 255));
+		light_on = new BlockXenLight(ConfigHandler.getFixedBlockId(conf, "xenLight_on", 209, 255), true);
+		light_off = new BlockXenLight(ConfigHandler.getFixedBlockId(conf, "xenLight_off", 210, 255), false);
+		amethyst = new BlockXenAmethyst(ConfigHandler.getFixedBlockId(conf, "xenAmythest", 211, 255));
+		sand = new BlockXenSand(ConfigHandler.getFixedBlockId(conf, "xenSand", 212, 255));
 		
 		GameRegistry.registerTileEntity(TileEntityXenPortal.class, "tile_entity_xen_portal");
 		GameRegistry.registerTileEntity(TileEntityXenLight.class, "tile_entity_xen_light");

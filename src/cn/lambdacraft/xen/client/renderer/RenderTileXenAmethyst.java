@@ -47,16 +47,16 @@ public class RenderTileXenAmethyst extends RenderTileEntityModel {
 			double d2, float f) {
 		TileEntityXenAmethyst amethyst = (TileEntityXenAmethyst) tileentity;
 		GL11.glPushMatrix();
-		if(amethyst.ticksSinceLastAtack < 10 && amethyst.lastAttackVec != null) {
-			renderElectro(amethyst, amethyst.lastAttackVec, Tessellator.instance, d0, d1, d2);
+		if(amethyst.ticksSinceLastAtack < 10) {
+			renderElectro(amethyst, Tessellator.instance, d0, d1, d2);
 		}
 		super.renderTileEntityAt(tileentity, d0, d1, d2, f);
 		GL11.glPopMatrix();
 	}
 	
-    private void renderElectro(TileEntityXenAmethyst ent, Vec3 vec3, Tessellator t, double x, double y, double z) {
-    	double dx = vec3.xCoord, dy = vec3.yCoord, dz = vec3.zCoord ;
-    	double tx = 0.0, ty = 1.2, tz = 0.0;
+    private void renderElectro(TileEntityXenAmethyst ent, Tessellator t, double x, double y, double z) {
+    	double dx = ent.lastxCoord, dy = ent.lastyCoord, dz = ent.lastzCoord ;
+    	double tx = 0.0, ty = 0.4, tz = 0.0;
     	GL11.glPushMatrix();
     	GL11.glDisable(GL11.GL_CULL_FACE);
     	GL11.glDisable(GL11.GL_LIGHTING);

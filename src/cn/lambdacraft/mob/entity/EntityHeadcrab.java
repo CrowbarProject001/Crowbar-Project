@@ -46,7 +46,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 		IEntityLink<EntityPlayer> {
 
 	public static final float MOVE_SPEED = 0.5F;
-	public static final float MAX_HEALTH = 10.0F;
+	public static final float MAX_HEALTH = 4.0F;
 	public static final float ATTACK_DAMAGE = 6F;
 	public int lastJumpTick = 0, tickSinceBite = 0;
 	public EntityLivingBase attacher;

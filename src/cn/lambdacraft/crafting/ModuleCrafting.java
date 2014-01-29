@@ -94,7 +94,7 @@ public class ModuleCrafting {
 				new CRGuiElements.ElementElCrafter());
 		CBCNetHandler.addChannel(GeneralProps.NET_ID_CRAFTER_CL,
 				new NetCrafterClient());
-		EntityRegistry.registerModEntity(EntitySpray.class, "entityart", GeneralProps.ENT_ID_ART, CBCMod.instance, 64, 10, false);
+		EntityRegistry.registerModEntity(EntitySpray.class, "lc_spray", GeneralProps.ENT_ID_ART, CBCMod.instance, 64, 1000, false);
 		proxy.init();
 	}
 

@@ -87,10 +87,6 @@ public class EntitySpray extends Entity {
     @Override
 	public void onUpdate()
     {
-    	double preX = posX, preY = posY, preZ = posZ;
-    	posX = preX;
-    	posY = preY;
-    	posZ = preZ;
     	if(worldObj.isRemote) {
     		this.hanging_direction = this.dataWatcher.getWatchableObjectInt(18);
 			this.block_pos_x = this.dataWatcher.getWatchableObjectInt(19);

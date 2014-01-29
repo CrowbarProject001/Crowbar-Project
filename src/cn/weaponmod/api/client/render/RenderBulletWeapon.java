@@ -14,6 +14,7 @@
 package cn.weaponmod.api.client.render;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
@@ -176,12 +177,13 @@ public class RenderBulletWeapon implements IItemRenderer {
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 
-		GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderUtils.loadTexture(texture);
 
 		GL11.glRotatef(45, 0.0F, 0.0F, 1.0F);
 		GL11.glTranslated(tx, ty + 0.1F, tz + 0.1F);
-
+		
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
 		t.startDrawingQuads();
 		t.setColorRGBA_F(0.8F, .8F, .8F, 1.0F);
 		t.setBrightness(15728880);

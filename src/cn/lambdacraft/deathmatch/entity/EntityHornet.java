@@ -16,6 +16,7 @@ package cn.lambdacraft.deathmatch.entity;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragonPart;
@@ -32,7 +33,6 @@ import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.deathmatch.register.DMItems;
 import cn.liutils.api.entity.EntityTrailFX;
 import cn.liutils.api.util.GenericUtils;
-import cn.liutils.api.util.selector.EntitySelectorLiving;
 import cn.weaponmod.api.WeaponHelper;
 
 /**
@@ -123,28 +123,31 @@ public class EntityHornet extends EntityThrowable {
 		if (this.ticksExisted > 200)
 			this.setDead();
 		if (m.typeOfHit == EnumMovingObjectType.TILE) {
-			switch (m.sideHit) {
-			case 0:
-				this.motionY = -0.05F;
-				break;
-			case 1:
-				this.motionY = 0.05F;
-				break;
-			case 2:
-				this.motionZ = -0.05F;
-				break;
-			case 3:
-				this.motionZ = 0.05F;
-				break;
-			case 4:
-				this.motionX = -0.05F;
-				break;
-			case 5:
-				this.motionX = 0.05F;
-				break;
+			int bID = worldObj.getBlockId(m.blockX, m.blockY, m.blockZ);
+			if(Block.blocksList[bID].getCollisionBoundingBoxFromPool(worldObj, m.blockX, m.blockY, m.blockZ) != null) {
+				switch (m.sideHit) {
+				case 0:
+					this.motionY = -0.05F;
+					break;
+				case 1:
+					this.motionY = 0.05F;
+					break;
+				case 2:
+					this.motionZ = -0.05F;
+					break;
+				case 3:
+					this.motionZ = 0.05F;
+					break;
+				case 4:
+					this.motionX = -0.05F;
+					break;
+				case 5:
+					this.motionX = 0.05F;
+					break;
 			}
 			this.setThrowableHeading(motionX, motionY, motionZ,
 					this.func_70182_d(), 0.0F);
+			}
 			if (searchForPlayer)
 				searchTarget();
 		} else {

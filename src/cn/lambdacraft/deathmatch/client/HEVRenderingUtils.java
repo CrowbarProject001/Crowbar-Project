@@ -49,42 +49,52 @@ public class HEVRenderingUtils {
 	private static final int TEX_WIDTH = 640, TEX_HEIGHT = 128;
 	
 	public static void drawPlayerHud(EntityPlayer player, ScaledResolution resolution, float partialTickTime) {
+		
 		int k = resolution.getScaledWidth();
         int l = resolution.getScaledHeight();
         int i2 = k / 2 - 91;
         int k2 = l - 32 + 3;
-        TextureManager engine = Minecraft.getMinecraft().renderEngine;
+        Minecraft mc = Minecraft.getMinecraft();
+        TextureManager engine = mc.renderEngine;
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
         engine.bindTexture(ClientProps.HEV_HUD_PATH);
         
+        GL11.glPushMatrix();
+        
+        double scale = 0.00026 * mc.displayWidth + 0.3;
+        
+        float xOffset, yOffset;
+        xOffset = 10;
+    	yOffset = l - 20;
+    	GL11.glTranslatef(xOffset, yOffset, 0.0F);
+    	
+        GL11.glScaled(scale, scale, 1.0);
         //Health Section
-        int xOffset, yOffset;
-        xOffset = -k / 2 + 16;
-    	yOffset = -30;
     	
         GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.6F);
-        drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 64, 64, 24, 24, 64, 64);
+        drawTexturedModalRect(0 , 0 , 64, 64, 24, 24, 64, 64);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
         int h = (int) (player.getHealth() * 16 / 20);
-        drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 24 - (int)(h * 1.5), 192, 128 - 4 * h, 24, (int) (1.5 * h), 64, 4 * h);
+        drawTexturedModalRect(0 , 24 - (int)(h * 1.5), 192, 128 - 4 * h, 24, (int) (1.5 * h), 64, 4 * h);
         if(player.getHealth() <= 5)
         	GL11.glColor4f(0.9F, 0.1F, 0.1F, 0.6F);
-        drawNumberAt((byte) (player.getHealth() * 5), k / 2 + xOffset + 18, l + yOffset);
+        drawNumberAt((byte) (player.getHealth() * 5), 18, 0);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.9F);
         
         //Armor Section
-        xOffset += 70;
         GL11.glColor4f(0.7F, 0.7F, 0.7F, 0.6F);
-        drawTexturedModalRect(k / 2 + xOffset, l + yOffset, 0, 64, 24, 24, 64, 64);
+        drawTexturedModalRect(70 , 0 , 0, 64, 24, 24, 64, 64);
         GL11.glColor4f(1.0F, 0.5F, 0.0F, 0.6F);
         h = player.getTotalArmorValue() * 16 / 20;
         if(h > 16)
         	h = 16;
-        drawTexturedModalRect(k / 2 + xOffset, l + yOffset + 24 - (int)(h * 1.5), 128, 128 - 4 * h, 24, (int)(h * 1.5), 64, 4 * h);
+        drawTexturedModalRect(70, 24 - (int)(h * 1.5), 128, 128 - 4 * h, 24, (int)(h * 1.5), 64, 4 * h);
         
-        drawNumberAt(player.getTotalArmorValue() * 5, k / 2 + xOffset + 12, l + yOffset);
+        drawNumberAt(player.getTotalArmorValue() * 5, 70 + 12, 0 );
+        
+        GL11.glPopMatrix();
         
         //Other section
         drawArmorTip(player, engine, k, l);
@@ -151,7 +161,7 @@ public class HEVRenderingUtils {
 				} else {
 					renderEngine.bindTexture(renderEngine.getResourceLocation(1)); 
 				}
-				xOffset = (int) (xOffset * 0.7);
+				//xOffset = (int) (xOffset * 0.7);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
 				drawTexturedModelRectFromIcon(tx + xOffset, height, hev.getIcon(is, 0), 16, 16);
 				renderEngine.bindTexture(ClientProps.HEV_HUD_PATH);

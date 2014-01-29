@@ -34,8 +34,6 @@ import cn.liutils.api.register.Configurable;
 import cn.liutils.core.register.Config;
 import cn.liutils.core.register.ConfigHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.SideOnly;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * 客户端的一些信息。（贴图和渲染器)
@@ -190,6 +188,10 @@ public class ClientProps {
 	private static String mf = "lambdacraft:textures/muz/muz";
 	public static final String MUZZLEFLASH[] = {
 		mf + "1.png", mf + "2.png", mf + "3.png"
+	}, MUZZLEFLASH2[] = {
+		mf + "4.png", mf + "5.png", mf + "6.png"
+	}, MUZZLEFLASH3[] = {
+			mf + "1.png", mf + "3.png", mf + "7.png"
 	};
 	/**
 	 * 获取随机的一个火光贴图。
@@ -198,6 +200,7 @@ public class ClientProps {
 	 */
 	public static String getRandomMuzzleFlash() {
 		int random = (int) (RNG.nextFloat() * 7F) + 1;
+		random = 1;
 		String path = "lambdacraft:textures/muz/muz" + random + ".png";
 		return path;
 	}

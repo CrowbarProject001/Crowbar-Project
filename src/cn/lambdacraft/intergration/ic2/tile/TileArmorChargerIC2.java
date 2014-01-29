@@ -14,12 +14,10 @@
  */
 package cn.lambdacraft.intergration.ic2.tile;
 
-import ic2.api.Direction;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import cn.lambdacraft.deathmatch.block.TileArmorCharger;
-import cn.lambdacraft.deathmatch.block.TileArmorCharger.EnumBehavior;
 
 /**
  * @author WeAthFolD

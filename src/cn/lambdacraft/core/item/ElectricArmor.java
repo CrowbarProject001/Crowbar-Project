@@ -17,6 +17,7 @@ package cn.lambdacraft.core.item;
 import java.util.List;
 
 import cn.lambdacraft.api.energy.item.ICustomEnItem;
+import cn.lambdacraft.core.CBCMod;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -162,7 +163,7 @@ public abstract class ElectricArmor extends CBCGenericArmor implements
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		if (this.canShowChargeToolTip(par1ItemStack))
+		if (!CBCMod.ic2Installed && this.canShowChargeToolTip(par1ItemStack))
 			par3List.add(StatCollector.translateToLocal("gui.curenergy.name")
 					+ " : " + getItemCharge(par1ItemStack) + "/"
 					+ getMaxDamage(par1ItemStack) + " EU");

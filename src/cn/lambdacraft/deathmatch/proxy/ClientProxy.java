@@ -148,7 +148,7 @@ public class ClientProxy extends Proxy {
 		RenderModelBulletWeapon handgun_render = new RenderModelBulletWeapon(new ModelHandgun(), DMItems.weapon_9mmhandgun, ClientProps.HANDGUN_MDL_PATH, 
 				ClientProps.MUZZLEFLASH);
 		RenderModelBulletWeapon pyt_render = new RenderModelBulletWeapon(new Model357(), DMItems.weapon_357, ClientProps.PYTHON_MDL_PATH, ClientProps.MUZZLEFLASH);
-		RenderModelBulletWeapon ar_render = new RenderModelBulletWeapon(new ModelAR(), DMItems.weapon_9mmAR, ClientProps.NMMAR_MDL_PATH, ClientProps.MUZZLEFLASH);
+		RenderModelBulletWeapon ar_render = new RenderModelBulletWeapon(new ModelAR(), DMItems.weapon_9mmAR, ClientProps.NMMAR_MDL_PATH, ClientProps.MUZZLEFLASH2);
 		RenderModelItem uranium_render = new RenderModelItem(new ModelUranium(), ClientProps.URANIUM_MDL_PATH);
 		pyt_render.setMuzzleflashOffset(0.484F, -0.07F, 0.0F).setRotation(0F, 180F, 0F).setOffset(0.002F, 0.402F, -0.314F).setRotation(0F, 181.13414F, 0F).setEquipOffset(1.06F, -0.278F, 0.016F)
 			.setInventorySpin(false).setScale(1.212F).setInvOffset(-2.45F, 3.04F).setInvScale(0.912F).setInvRotation(-35.796F, -94.770F, -3.452F); //爱死debugger了
@@ -163,7 +163,7 @@ public class ClientProxy extends Proxy {
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_gauss.itemID,new RenderGauss());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmhandgun.itemID, handgun_render);
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID, pyt_render);
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun,0.08F, ClientProps.MUZZLEFLASH));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun,0.08F, ClientProps.MUZZLEFLASH3));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID, ar_render);
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F, ClientProps.MUZZLEFLASH));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crowbar_el.itemID, new RenderItemElCrowbar());

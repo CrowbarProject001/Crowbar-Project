@@ -22,7 +22,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
 
 /**
  * @author WeAthFolD
@@ -31,7 +30,7 @@ import net.minecraft.util.Vec3;
 public class TileEntityXenAmethyst extends TileEntity {
 
 	public int ticksSinceLastAtack;
-	public Vec3 lastAttackVec;
+	public double lastxCoord, lastyCoord, lastzCoord;
 	
 	/**
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
@@ -39,13 +38,14 @@ public class TileEntityXenAmethyst extends TileEntity {
      */
     @Override
 	public void updateEntity() {
-    	if(++ticksSinceLastAtack > 20) {
-    		lastAttackVec = null;
-    		ticksSinceLastAtack = 0;
+    	if(++ticksSinceLastAtack > 40) {
     		Entity e = MobHelper.getNearestTargetWithinAABB(worldObj, xCoord + 0.5, yCoord - 3.0, zCoord + 0.5, 5.0F, GenericUtils.selectorLiving);
     		if(e != null) {
+    			ticksSinceLastAtack = 0;
     			e.attackEntityFrom(DamageSource.generic, 2);
-    			lastAttackVec = worldObj.getWorldVec3Pool().getVecFromPool(e.posX - xCoord - 0.5, e.posY + e.height - yCoord - 0.5, e.posZ - zCoord - 0.5);
+    				lastxCoord = e.posX - xCoord - 0.5;
+    				lastyCoord = e.posY + e.height - yCoord - 0.5;
+    				lastzCoord = e.posZ - zCoord - 0.5;
     		}
     	}
     }
@@ -54,9 +54,7 @@ public class TileEntityXenAmethyst extends TileEntity {
 	@SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(xCoord - 4.5, yCoord - 4.5, zCoord - 4.5,
-        		xCoord + 5.5, yCoord + 5.5, zCoord + 5.5);
-        return bb;
+        return TileEntity.INFINITE_EXTENT_AABB;
     }
 
 

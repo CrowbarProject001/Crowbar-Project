@@ -24,4 +24,6 @@ public class BlockSlimeFlow extends BlockFlowing {
                 iconRegister.registerIcon("lambdacraft:slime_still"),
                 iconRegister.registerIcon("lambdacraft:slime_flow") };
     }
+	
+	
 }

@@ -15,7 +15,6 @@
 package cn.lambdacraft.intergration.ic2.tile;
 
 import cn.lambdacraft.crafting.block.tile.TileElCrafter;
-import ic2.api.Direction;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;

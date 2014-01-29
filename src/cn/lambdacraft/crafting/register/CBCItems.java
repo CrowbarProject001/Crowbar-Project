@@ -27,7 +27,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.src.ModLoader;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
@@ -223,6 +222,7 @@ public class CBCItems {
 		GameRegistry.addShapelessRecipe(new ItemStack(halfLife01), lambdaChip, Item.diamond);
 		GameRegistry.addShapelessRecipe(new ItemStack(halfLife02), lambdaChip, Item.emerald);
 		GameRegistry.addShapelessRecipe(new ItemStack(halfLife03), lambdaChip, Item.eyeOfEnder);
+		GameRegistry.addShapelessRecipe(new ItemStack(XENBlocks.crystal), iSlightStoneDust, iSdiamond);
 		GameRegistry.addShapelessRecipe(new ItemStack(DMItems.weapon_crowbar_el), lambdaChip, new ItemStack(DMItems.weapon_crowbar));
 		GameRegistry.addShapelessRecipe(iSstorageL, CBCBlocks.storageS, lambdaChip);
 		GameRegistry.addRecipe(new RecipeHEVAttach());
@@ -230,14 +230,14 @@ public class CBCItems {
 		//Materials
 		IRecipe recipes[] = {
 				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.ARMOR), iSmaterials_1_0, "blockRefinedIron", iSdiamond, iSlambdaChip),
-				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.AMMUNITION), iSmaterials_1_0, "ingotCopper", iSredstone, iSgunpowder),
-				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.ACCESSORIES), iSmaterials_1_0, "ingotCopper", iSredstone, iScoal),
-				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.EXPLOSIVE), iSmaterials_1_0, "ingotRefinedIron", iStnt, iSgunpowder),
-				new ShapelessOreRecipe(materials.newStack(1, EnumMaterial.HEAVY), iSmaterials_1_0, "blockRefinedIron", iSblockLapis, iSblazePowder),
-				new ShapelessOreRecipe(materials.newStack(1, EnumMaterial.LIGHT), iSmaterials_1_0, "ingotRefinedIron", "ingotCopper", iSlightStoneDust),
-				new ShapelessOreRecipe(materials.newStack(1, EnumMaterial.PISTOL), iSmaterials_1_0, "ingotRefinedIron", "ingotCopper", "ingotRefinedIron"),
-				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.BIO), iSmaterials_1_0, srotten, sendereye, CBCMobItems.dna),
-				new ShapelessOreRecipe(materials.newStack(1, EnumMaterial.TECH), iSmaterials_1_0, iSdiamond, iSlambdaChip, iSlightStoneDust),
+				new ShapelessOreRecipe(materials.newStack(4, EnumMaterial.AMMUNITION), iSmaterials_1_0, "ingotCopper", iSredstone, iSgunpowder),
+				new ShapelessOreRecipe(materials.newStack(4, EnumMaterial.ACCESSORIES), iSmaterials_1_0, "ingotCopper", iSredstone, iScoal),
+				new ShapelessOreRecipe(materials.newStack(4, EnumMaterial.EXPLOSIVE), iSmaterials_1_0, "ingotRefinedIron", iStnt, iSgunpowder),
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.HEAVY), iSmaterials_1_0, "blockRefinedIron", iSblockLapis, iSblazePowder),
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.LIGHT), iSmaterials_1_0, "ingotRefinedIron", "ingotCopper", iSlightStoneDust),
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.PISTOL), iSmaterials_1_0, "ingotRefinedIron", "ingotCopper", "ingotRefinedIron"),
+				new ShapelessOreRecipe(materials.newStack(3, EnumMaterial.BIO), iSmaterials_1_0, srotten, sendereye, CBCMobItems.dna),
+				new ShapelessOreRecipe(materials.newStack(2, EnumMaterial.TECH), iSmaterials_1_0, iSdiamond, iSlambdaChip, iSlightStoneDust),
 				new RecipeRepair(spray1, iSredstone),
 				new RecipeRepair(spray2, iSredstone),
 				new RecipeRepair(spray, iSlightStoneDust)
@@ -248,14 +248,11 @@ public class CBCItems {
 		
 
 		//Smelting
-		ModLoader.addSmelting(Item.ingotIron.itemID, new ItemStack(
-				ingotSteel.itemID, 1, 0));
-		ModLoader.addSmelting(CBCBlocks.uraniumOre.blockID, new ItemStack(
-				ingotUranium), 5);
-		ModLoader.addSmelting(CBCBlocks.oreCopper.blockID,
-				new ItemStack(copper), 2);
-		ModLoader.addSmelting(CBCBlocks.oreTin.blockID, new ItemStack(tin), 2);
-		ModLoader.addSmelting(XENBlocks.crystal.blockID, new ItemStack(xenCrystal), 3);
+		GameRegistry.addSmelting(Item.ingotIron.itemID, new ItemStack(ingotSteel.itemID, 1, 0), 3.0F);
+		GameRegistry.addSmelting(CBCBlocks.uraniumOre.blockID, new ItemStack(ingotUranium), 5);
+		GameRegistry.addSmelting(CBCBlocks.oreCopper.blockID, new ItemStack(copper), 2);
+		GameRegistry.addSmelting(CBCBlocks.oreTin.blockID, new ItemStack(tin), 2);
+		GameRegistry.addSmelting(XENBlocks.crystal.blockID, new ItemStack(xenCrystal), 3);
 		
 		//ChestGen
 		WeightedRandomChestContent gens_dungeon[] = {

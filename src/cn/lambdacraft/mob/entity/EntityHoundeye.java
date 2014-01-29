@@ -67,6 +67,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 		super.entityInit();
 		dataWatcher.addObject(20, Byte.valueOf((byte) 0));
 	}
+	
 	@Override
     protected Entity findPlayerToAttack()
     {
@@ -221,7 +222,7 @@ public class EntityHoundeye extends CBCEntityMob implements IEntityLink<EntityLi
 	@Override
 	protected double getAttackDamage() {
 		// TODO Auto-generated method stub
-		return 1;
+		return 0;
 	}
 
 	@Override

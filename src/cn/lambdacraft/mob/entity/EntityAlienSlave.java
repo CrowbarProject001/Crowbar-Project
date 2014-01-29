@@ -18,8 +18,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -48,6 +51,15 @@ public class EntityAlienSlave extends CBCEntityMob {
 	boolean lastTickFleeing = false;
 	
 	public HashSet<Vec3> electrolyze_left = new HashSet(), electrolyze_right = new HashSet();
+	
+	private static IEntitySelector selector = new IEntitySelector() {
+
+		@Override
+		public boolean isEntityApplicable(Entity entity) {
+			return entity instanceof EntityPlayer || entity instanceof EntityVillager || entity instanceof EntityHeadcrab;
+		}
+		
+	};
 	
 	/**
 	 * @param par1World

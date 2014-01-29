@@ -51,7 +51,7 @@ public class CBCWorldGen implements IWorldGenerator {
 	}
 
 	private void generateSurface(World world, Random random, int i, int j) {
-		for (int k = 0; k < 10; k++) {
+		for (int k = 0; k < 5; k++) {
 			int uraniumOreXCoord = i + random.nextInt(16);
 			int uraniumOreYCoord = random.nextInt(35);
 			int uraniumOreZCoord = j + random.nextInt(16);
@@ -59,14 +59,14 @@ public class CBCWorldGen implements IWorldGenerator {
 					world, random, uraniumOreXCoord, uraniumOreYCoord,
 					uraniumOreZCoord);
 		}
-		for (int k = 0; k < 15; k++) {
+		for (int k = 0; k < 36; k++) {
 			int tinOreXCoord = i + random.nextInt(16);
 			int tinOreYCoord = random.nextInt(48);
 			int tinOreZCoord = j + random.nextInt(16);
 			(new WorldGenMinable(CBCBlocks.oreTin.blockID, 3)).generate(world,
 					random, tinOreXCoord, tinOreYCoord, tinOreZCoord);
 		}
-		for (int k = 0; k < 15; k++) {
+		for (int k = 0; k < 36; k++) {
 			int copperOreXCoord = i + random.nextInt(16);
 			int copperOreYCoord = random.nextInt(48);
 			int copperOreZCoord = j + random.nextInt(16);
