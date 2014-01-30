@@ -149,6 +149,8 @@ public abstract class WeaponGeneral extends Item implements ISpecialUseable {
 	@Override
 	public boolean onBlockStartBreak(ItemStack itemstack, int i, int j, int k, EntityPlayer player)
     {
+		if(player.capabilities.isCreativeMode)
+			return false;
     	return true;
     }
 	

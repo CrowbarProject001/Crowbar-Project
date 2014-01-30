@@ -56,7 +56,7 @@ public class EntityAlienSlave extends CBCEntityMob {
 
 		@Override
 		public boolean isEntityApplicable(Entity entity) {
-			return entity instanceof EntityPlayer || entity instanceof EntityVillager || entity instanceof EntityHeadcrab;
+			return entity instanceof EntityPlayer || entity instanceof EntityVillager;
 		}
 		
 	};
