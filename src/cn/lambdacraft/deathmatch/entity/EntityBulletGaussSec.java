@@ -152,9 +152,6 @@ public class EntityBulletGaussSec extends EntityBullet {
 	@Override
 	public void doEntityCollision(MovingObjectPosition result) {
 
-		if (result.entityHit == null)
-			return;
-
 		double var0 = damage / 20;
 		double dx = motion.motionX * var0, dy = motion.motionY * var0, dz = motion.motionZ
 				* var0;

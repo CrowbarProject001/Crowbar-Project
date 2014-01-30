@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -82,9 +83,6 @@ public class EntityBulletGauss extends EntityBullet {
 
 	@Override
 	public void doEntityCollision(MovingObjectPosition result) {
-		if (result.entityHit == null)
-			return;
-
 		doChargeAttack(result, inf, item);
 	}
 
@@ -182,13 +180,10 @@ public class EntityBulletGauss extends EntityBullet {
 		double var0 = damage / 20;
 		double dx = motion.motionX * var0, dy = motion.motionY * var0, dz = motion.motionZ
 				* var0;
-		if (result.entityHit == null)
-			return;
-		if (!(result.entityHit instanceof EntityLiving
+		if (!(result.entityHit instanceof EntityLivingBase
 				|| result.entityHit instanceof EntityDragonPart || result.entityHit instanceof EntityEnderCrystal))
 			return;
-		WeaponHelper.doEntityAttack(result.entityHit,
-				DamageSource.causeMobDamage(getThrower()), damage, dx, dy, dz);
+		WeaponHelper.doEntityAttack(result.entityHit, DamageSource.causeMobDamage(getThrower()), damage, dx, dy, dz);
 
 	}
 

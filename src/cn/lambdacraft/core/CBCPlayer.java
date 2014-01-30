@@ -203,7 +203,7 @@ public class CBCPlayer implements ITickHandler {
 
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-		player = (EntityPlayer) tickData[0];
+		player = Minecraft.getMinecraft().thePlayer;
 		if(player != null) {
 			beforeOnUpdate();
 			if(player.worldObj.isRemote)
