@@ -59,7 +59,7 @@ public class ContainerMedFiller extends Container {
 		super.detectAndSendChanges();
 		for (int i = 0; i < this.crafters.size(); ++i) {
 			ICrafting icrafting = (ICrafting) this.crafters.get(i);
-			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy);
+			icrafting.sendProgressBarUpdate(this, 0, te.currentEnergy / 2);
 			for (int j = 0; j < 3; j++) {
 				icrafting.sendProgressBarUpdate(this, j + 1, te.progresses[j]);
 			}
@@ -70,7 +70,7 @@ public class ContainerMedFiller extends Container {
 	@Override
 	public void updateProgressBar(int par1, int par2) {
 		if (par1 == 0) {
-			te.currentEnergy = par2;
+			te.currentEnergy = par2 * 2;
 		} else if (par1 < 4) {
 			te.progresses[par1 - 1] = par2;
 		} else {

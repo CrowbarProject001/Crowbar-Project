@@ -40,6 +40,8 @@ public class EntityARGrenade extends EntityThrowable {
 	 */
 	@Override
 	protected void onImpact(MovingObjectPosition par1) {
+		if(par1.entityHit != null && par1.entityHit == this.getThrower())
+			return;
 		explode();
 	}
 
