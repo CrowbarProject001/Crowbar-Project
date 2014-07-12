@@ -13,4 +13,5 @@ import net.minecraft.world.World;
  */
 public interface IZoomable {
 	boolean isItemZooming(ItemStack stack, World world, EntityPlayer player);
+	boolean doesSlowdown(ItemStack stack, World world, EntityPlayer player);
 }

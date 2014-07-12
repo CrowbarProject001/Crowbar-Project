@@ -15,6 +15,7 @@ package cn.weaponmod.api.client.render;
 
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +29,7 @@ import cn.liutils.api.client.model.IItemModel;
 import cn.liutils.api.client.render.RenderModelItem;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
-import cn.weaponmod.events.ItemHelper;
+import cn.weaponmod.events.ItemControlHandler;
 
 /**
  * @author WeAthFolD
@@ -39,8 +40,8 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 	public String[] muzzleflash = {""};
 	public float tx = 0F, ty = 0F, tz = 0F;
 	protected WeaponGeneralBullet weaponType;
+	public float upliftRatio = 1.0F, recoilRatio = 0.02F;
 	protected static Random RNG = new Random();
-	
 	
 	/**
 	 * @param mdl
@@ -54,6 +55,24 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 		this.setInvRotation(0F, 0F, 37.5F);
 	}
 	
+	/**
+	 * Reload animation style.
+	 * 0: Normal reload. rotating left.
+	 * 1: Another style. rotating downwards and slightly right.
+	 */
+	public int reloadAnimStyle = 0;
+	
+	public RenderModelBulletWeapon setReloadStyle(int style) {
+		reloadAnimStyle = style;
+		return this;
+	}
+	
+	public RenderModelBulletWeapon setUpliftRatio(float uplift, float recoil) {
+		this.upliftRatio = uplift;
+		this.recoilRatio = recoil;
+		return this;
+	}
+	
 	public RenderModelBulletWeapon setMuzzleflashOffset(float x, float y, float z) {
 		tx = x;
 		ty = y;
@@ -61,12 +80,13 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 		return this;
 	}
 	
+	
 	@Override
 	public void renderEquipped(ItemStack item, RenderBlocks render,
 			EntityLivingBase entity, ItemRenderType type) {
 		boolean left = true;
 		if(entity instanceof EntityPlayer)
-			left = ItemHelper.getUsingTickLeft((EntityPlayer) entity, false) == 0 ? true : ItemHelper.getUsingSide((EntityPlayer) entity);
+			left = ItemControlHandler.getUsingTickLeft((EntityPlayer) entity, false) == 0 ? true : ItemControlHandler.getUsingSide((EntityPlayer) entity);
 		doRenderEquipped(item, render, entity, left, type);
 	}
 	
@@ -76,6 +96,7 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 		if(a instanceof RenderModelBulletWeapon) {
 			RenderModelBulletWeapon b = (RenderModelBulletWeapon) a;
 			setMuzzleflashOffset(b.tx, b.ty, b.tz);
+			setEquipOffset(a.equipOffset.xCoord, a.equipOffset.yCoord, a.equipOffset.zCoord);
 			muzzleflash = ((RenderModelBulletWeapon) a).muzzleflash;
 		}
 		return this;
@@ -100,7 +121,20 @@ public class RenderModelBulletWeapon extends RenderModelItem {
 			}
 		}
 		
+		boolean firstPerson = (entity == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) 
+				&& Minecraft.getMinecraft().currentScreen == null;
 		GL11.glRotatef(2.5F * MathHelper.sin(inf.getDeltaTick(left) * (float)Math.PI * 0.025F), 0.0F, 0.0F, 1.0F);
+		if(firstPerson && inf.isReloading) {
+			float rotation = weaponType.getRotationForReload(item);
+			if(reloadAnimStyle == 0)
+				GL11.glRotatef(upliftRatio * rotation * 60F, 0.0F, 1.0F, 0.0F);
+			else if(reloadAnimStyle == 1) {
+				GL11.glRotatef(upliftRatio * rotation * 17F, 0.0F, 0.0F, -1.0F);
+				GL11.glRotatef(upliftRatio * rotation * 30F, 0.0F, -1.0F, 0.0F);
+				GL11.glRotatef(upliftRatio * rotation * 14F, 1.0F, 0.0F, 0.0F);
+			}
+		}
+		
 		super.renderEquipped(item, render, entity, type);
 		if(mt > 0) {
 			mt = 3 - mt;

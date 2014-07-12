@@ -14,6 +14,7 @@
 package cn.weaponmod.api.information;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author WeAthFolD
@@ -26,6 +27,7 @@ public class InformationWeapon {
 	public boolean lastShooting_left, lastShooting_right;
 	public boolean isRecovering;
 	public float originPitch;
+	public NBTTagCompound infData = new NBTTagCompound();
 
 	public InformationWeapon(ItemStack i) {
 		isRecovering = false;
@@ -60,6 +62,7 @@ public class InformationWeapon {
 	public void resetState() {
 		ticksExisted = lastTick_left = lastTick_right = recoverTick = 0;
 		isRecovering = false;
+		infData = new NBTTagCompound();
 	}
 
 }

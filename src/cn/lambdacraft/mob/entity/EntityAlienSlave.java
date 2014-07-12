@@ -23,6 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -31,15 +32,16 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.register.CBCMobItems;
-import cn.liutils.api.entity.EntityBullet;
+import cn.liutils.api.entity.LIEntityMob;
 import cn.liutils.api.util.BlockPos;
 import cn.liutils.api.util.GenericUtils;
+import cn.weaponmod.api.WeaponHelper;
 
 /**
  * @author WeAthFolD
  *
  */
-public class EntityAlienSlave extends CBCEntityMob {
+public class EntityAlienSlave extends LIEntityMob {
 	public final static float MAX_HEALTH = 10.0f;
 	public final static float MOVE_SPEED = 0.65f;
 	public final static float ATTACK_DAMAGE = 5f;
@@ -96,7 +98,7 @@ public class EntityAlienSlave extends CBCEntityMob {
 		} else {
 			dataWatcher.updateObject(20, isCharging? (byte)1 : (byte)0);
 			dataWatcher.updateObject(21, (short)chargeTick);
-			dataWatcher.updateObject(22, entityToAttack == null ? 0 : entityToAttack.entityId);
+			dataWatcher.updateObject(22, entityToAttack == null ? 0 : entityToAttack.getEntityId());
 			
 			//Path movement
 			if(this.entityToAttack != null ) {
@@ -125,8 +127,10 @@ public class EntityAlienSlave extends CBCEntityMob {
 		if(isCharging && this.entityToAttack != null) {
 			if(++chargeTick >= 30) {
 				isCharging = false;
-				Entity ray = worldObj.isRemote ? new EntityVortigauntRay(worldObj, this, entityToAttack) : new EntityBullet(worldObj, this, entityToAttack, 6);
-				worldObj.spawnEntityInWorld(ray);
+				if(worldObj.isRemote)
+					worldObj.spawnEntityInWorld(new EntityVortigauntRay(worldObj, this, entityToAttack));
+				boolean b = (WeaponHelper.traceBetweenEntities(this, entityToAttack) == null);
+				if(b) entityToAttack.attackEntityFrom(DamageSource.causeMobDamage(this), 6);
 				this.playSound("lambdacraft:mobs.zapa", 0.5F, 1.0F);
 				this.playSound(GenericUtils.getRandomSound("lambdacraft:weapons.electro", 3), 0.5F, 1.0F);
 				lastAttackTick = ticksExisted;
@@ -193,14 +197,14 @@ public class EntityAlienSlave extends CBCEntityMob {
 	}
 	
     @Override
-	public EntityItem dropItemWithOffset(int par1, int par2, float par3)
+	public EntityItem func_145778_a(Item par1, int par2, float par3)
     {
         return this.entityDropItem(new ItemStack(par1, par2, 4), par3);
     }
     
     @Override
-    public int getDropItemId() {
-    	return CBCMobItems.dna.itemID;
+    public Item getDropItem() {
+    	return CBCMobItems.dna;
     }
 	
 	@Override

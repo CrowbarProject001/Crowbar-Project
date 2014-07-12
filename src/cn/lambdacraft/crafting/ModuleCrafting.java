@@ -68,7 +68,7 @@ public class ModuleCrafting {
 		GameRegistry.registerWorldGenerator(new CBCWorldGen());
 		if (Proxy.isRendering()) {
 			for (String s : SND_ENTITIES) {
-				LISoundRegistry.addSoundPath("entities/" + s);
+				LISoundRegistry.addSoundPath("lambdacraft", "entities/" + s);
 			}
 		}
 		

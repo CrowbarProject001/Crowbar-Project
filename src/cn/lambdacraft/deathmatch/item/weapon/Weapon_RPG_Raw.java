@@ -21,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cn.lambdacraft.api.hud.IHudTip;
 import cn.lambdacraft.core.CBCMod;
@@ -30,6 +31,7 @@ import cn.lambdacraft.deathmatch.util.InformationRPG;
 import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.information.InformationBullet;
+import cn.weaponmod.events.ItemHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -49,6 +51,7 @@ public class Weapon_RPG_Raw extends WeaponGeneralBullet_LC {
 
 		setJamTime(20);
 		setLiftProps(20, 2);
+		this.reloadTime = 45;
 	}
 	@Override
 	public void onUpdate(ItemStack par1ItemStack, World par2World,
@@ -61,18 +64,29 @@ public class Weapon_RPG_Raw extends WeaponGeneralBullet_LC {
 	@Override
 	public void onBulletWpnShoot(ItemStack par1ItemStack, World par2World,
 			EntityPlayer par3Entity, InformationBullet information, boolean left) {
+		
 		information.setLastTick(left);
-		par3Entity.setItemInUse(par1ItemStack,
-				this.getMaxItemUseDuration(par1ItemStack));
-		if (par2World.isRemote)
-			return;
 		if (this.canShoot(par3Entity, par1ItemStack, left)) {
-			par2World.playSoundAtEntity(par3Entity, getSoundShoot(left), 0.5F,
-					1.0F);
-			par2World.spawnEntityInWorld(new EntityRocket(par2World,
-					par3Entity, par1ItemStack));
-			WeaponHelper.consumeAmmo(par3Entity, this, 1);
+			if(!par2World.isRemote) {
+				par2World.playSoundAtEntity(par3Entity, getSoundShoot(left), 0.5F,
+						1.0F);
+				par2World.spawnEntityInWorld(new EntityRocket(par2World,
+						par3Entity, par1ItemStack));
+				WeaponHelper.consumeAmmo(par3Entity, this, 1);
+			}
+			ItemHelper.stopUsingItem(par3Entity, true);
+			ItemHelper.stopUsingItem(par3Entity, false);
+			information.isReloading = true;
+			information.setLastTick(false);
+			information.setLastTick(true);
 		}
+	}
+	
+	@Override
+	public void onBulletWpnReload(ItemStack stack, World world, EntityPlayer entity, InformationBullet inf) {
+		//DO NOTHING
+		inf.isReloading = false;
+		inf.setLastTick(false);
 	}
 
 	@Override
@@ -169,6 +183,27 @@ public class Weapon_RPG_Raw extends WeaponGeneralBullet_LC {
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	/**
+	 * 获取上弹时武器的旋转角度（0.0F~1.0F)
+	 * @param itemStack
+	 * @return
+	 */
+	public float getRotationForReload(ItemStack itemStack) {
+		InformationBullet inf = (InformationBullet) WMInformation.getInformation(itemStack, true);
+		int dt = inf.getDeltaTick(false);
+		float changeTime = reloadTime / 5F;
+		float rotation = 1.0F;
+		if (dt < changeTime/2F) {
+			rotation = MathHelper.sin((dt / changeTime) * 2F * (float) Math.PI * 0.5F);
+		} else if (dt > reloadTime - changeTime) {
+			rotation = MathHelper.sin((reloadTime - dt) / changeTime
+					* (float) Math.PI * 0.5F);
+		}
+		return rotation;
 	}
 
 }

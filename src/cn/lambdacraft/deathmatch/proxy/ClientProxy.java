@@ -117,12 +117,12 @@ public class ClientProxy extends Proxy {
 	@Override
 	public void preInit() {
 		for (String s : SOUND_WEAPONS)
-			LISoundRegistry.addSoundPath("weapons/" + s);
+			LISoundRegistry.addSoundPath("lambdacraft", "weapons/" + s);
 		for (String s : SND_ENTITIES)
-			LISoundRegistry.addSoundPath("entities/" + s);
+			LISoundRegistry.addSoundPath("lambdacraft", "entities/" + s);
 		for (String s : SND_HEV)
-			LISoundRegistry.addSoundPath("hev/" + s);
-		LISoundRegistry.addSoundWithVariety("weapons/electro", 3);
+			LISoundRegistry.addSoundPath("lambdacraft", "hev/" + s);
+		LISoundRegistry.addSoundWithVariety("lambdacraft", "weapons/electro", 3);
 		MinecraftForge.EVENT_BUS.register(new DMClientEventHandler());
 	}
 	
@@ -157,7 +157,7 @@ public class ClientProxy extends Proxy {
 		ar_render.setMuzzleflashOffset(0.498F, -0.11F, -0.052F).setOffset(0.0F, 0.242F, -0.588F).setEquipOffset(0.852F, -0.118F, -0.01F)
 			.setScale(1.352F).setRotation(0F, -177.768F, 0F).setInventorySpin(false).setInvOffset(-0.408F, 2.75F).setInvScale(0.908F).setInvRotation(-42.78F, -65.428F, -11F);
 		uranium_render.setInventorySpin(false).setOffset(0F, -0.14F, 0F).setEquipRotation(-130.276F, -42.034F, -101.67F).setEquipOffset(0.562F, 0.118F, -0.248F).setRotation(0F, 0F, 0F)
-		.setInvRotation(0F, -45F, -26F).setInvOffset(0.01F, 2.318F).setScale(1.05F).setEntityItemRotation(0F, 0F, 0F).setInvScale(1.424F);
+			.setInvRotation(0F, -45F, -26F).setInvOffset(0.01F, 2.318F).setScale(1.05F).setEntityItemRotation(0F, 0F, 0F).setInvScale(1.424F);
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crossbow.itemID, new RenderCrossbow());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_egon.itemID,new RenderEgon());
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_gauss.itemID,new RenderGauss());
@@ -165,7 +165,7 @@ public class ClientProxy extends Proxy {
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_357.itemID, pyt_render);
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_shotgun.itemID,new RenderBulletWeapon((WeaponGeneralBullet) DMItems.weapon_shotgun,0.08F, ClientProps.MUZZLEFLASH3));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_9mmAR.itemID, ar_render);
-		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F, ClientProps.MUZZLEFLASH));
+		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_RPG.itemID, new RenderBulletWeapon(DMItems.weapon_RPG, 0.15F, ClientProps.MUZZLEFLASH).setReloadStyle(1));
 		MinecraftForgeClient.registerItemRenderer(DMItems.weapon_crowbar_el.itemID, new RenderItemElCrowbar());
 		MinecraftForgeClient.registerItemRenderer(CBCItems.ammo_uranium.itemID, uranium_render);
 		LIClientRegistry.addPlayerRenderingHelper(new RenderHelperEgon());

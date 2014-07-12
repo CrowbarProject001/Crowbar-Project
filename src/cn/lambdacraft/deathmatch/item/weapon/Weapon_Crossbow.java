@@ -37,6 +37,8 @@ public class Weapon_Crossbow extends WeaponGeneralBullet_LC implements
 		setMaxStackSize(1);
 		setMaxDamage(6);
 		setNoRepair();
+		
+		this.reloadTime = 55;
 		iconName = "weapon_crossbow";
 
 		setLiftProps(10, .75F);
@@ -178,5 +180,11 @@ public class Weapon_Crossbow extends WeaponGeneralBullet_LC implements
 	@Override
 	public int getCrosshairID(ItemStack is) {
 		return getMode(is) == 1 ? 15 : 0;
+	}
+
+	@Override
+	public boolean doesSlowdown(ItemStack stack, World world,
+			EntityPlayer player) {
+		return false;
 	}
 }

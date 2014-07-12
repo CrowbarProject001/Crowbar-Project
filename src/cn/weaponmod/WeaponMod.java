@@ -14,18 +14,16 @@
 package cn.weaponmod;
 
 
-import java.util.logging.Logger;
-
 import net.minecraft.command.CommandHandler;
 import net.minecraftforge.common.MinecraftForge;
-import cn.weaponmod.events.ItemHelper;
+
+import org.apache.logging.log4j.Logger;
+
 import cn.weaponmod.events.WMEventListener;
-import cn.weaponmod.network.NetDeathmatch;
-import cn.weaponmod.network.NetExplosion;
-import cn.weaponmod.network.NetKeyClicking;
+import cn.weaponmod.network.MessageClicking;
+import cn.weaponmod.network.MessageDM;
 import cn.weaponmod.proxy.WMCommonProxy;
 import cn.weaponmod.proxy.WMGeneralProps;
-import cn.weaponmod.register.WMPacketHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -34,36 +32,34 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
-import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 
 /**
  * 自定义武器mod的主注册类。
  * @author WeAthFolD
  */
-@Mod(modid = "LCWeaponAssist", name = "LambdaCraft Weapon API", version = WeaponMod.VERSION)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false,
-clientPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CHANNEL_CLIENT }, packetHandler = WMPacketHandler.class),
-serverPacketHandlerSpec = @SidedPacketHandler(channels = { WMGeneralProps.NET_CHANNEL_SERVER }, packetHandler = WMPacketHandler.class))
+@Mod(modid = "Weaponry", name = "MyWeaponry API", version = WeaponMod.VERSION)
 public class WeaponMod {
 
-	public static final String VERSION = "1.2.1";
+	public static final String VERSION = "1.3.0";
 	
 	public static final String DEPENDENCY = "required-after:Weaponry@" + VERSION;
 	
 	/**
 	 * 日志
 	 */
-	public static Logger log = Logger.getLogger("Weaponry");
+	public static Logger log = FMLLog.getLogger();
 	
 	@SidedProxy(serverSide = "cn.weaponmod.proxy.WMCommonProxy", clientSide = "cn.weaponmod.proxy.WMClientProxy")
 	public static WMCommonProxy proxy;
 	
-	public static final boolean DEBUG = false; //请在编译时设置为false
-
+	public static final boolean DEBUG = true; //请在编译时设置为false
 	
+	public static SimpleNetworkWrapper netHandler = NetworkRegistry.INSTANCE.newSimpleChannel(WMGeneralProps.NET_CHANNEL);
+	private static int nextId = 0;
+
 	/**
 	 * 预加载（设置、世界生成、注册Event）
 	 * @param event
@@ -71,19 +67,14 @@ public class WeaponMod {
 	@EventHandler()
 	public void preInit(FMLPreInitializationEvent event) {
 
-		log.setParent(FMLLog.getLogger());
 		log.info("Starting MyWeaponary " + VERSION);
 		log.info("Copyright (c) Lambda Innovation, 2013");
 		log.info("http://www.lambdacraft.cn");
 		
-		WMPacketHandler.addChannel(WMGeneralProps.NET_ID_CLICKING, new NetKeyClicking());
-		WMPacketHandler.addChannel(WMGeneralProps.NET_ID_DM, new NetDeathmatch());
-		WMPacketHandler.addChannel(WMGeneralProps.NET_ID_EXPLOSION, new NetExplosion());
-		
+		//TODO: Network Registration
 		MinecraftForge.EVENT_BUS.register(new WMEventListener());
-		
-		TickRegistry.registerTickHandler(new ItemHelper(), Side.CLIENT);
-		TickRegistry.registerTickHandler(new ItemHelper(), Side.SERVER);
+		netHandler.registerMessage(MessageDM.Handler.class, MessageDM.class, nextId++, Side.SERVER);
+		netHandler.registerMessage(MessageClicking.Handler.class, MessageClicking.class, nextId++, Side.SERVER);
 		
 		proxy.preInit();
 	}

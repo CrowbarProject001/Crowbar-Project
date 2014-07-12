@@ -16,6 +16,9 @@ package cn.lambdacraft.mob.entity;
 
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import cn.liutils.api.util.GenericUtils;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -26,6 +29,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 /**
@@ -36,6 +40,10 @@ public class EntityShockwave extends Entity {
 
 	public static final float DAMAGE_SCALE = 15.0F;
 	protected boolean attacked = false;
+	
+	@SideOnly(Side.CLIENT)
+	private boolean firstUpdate = false;
+	
 	protected EntityHoundeye houndeye;
 	
 	public static IEntitySelector selector = new IEntitySelector() {
@@ -64,6 +72,18 @@ public class EntityShockwave extends Entity {
 	
 	@Override
 	public void onUpdate() {
+		if(worldObj.isRemote) {
+			if(firstUpdate) {
+				int blockX = (int) Math.round(posX);
+				int blockY = (int) Math.round(posY);
+				int blockZ = (int) Math.round(posZ);
+				worldObj.setLightValue(EnumSkyBlock.Sky, blockX, blockY, blockZ, 15);
+				worldObj.updateLightByType(EnumSkyBlock.Block, blockX, blockY + 1, blockZ);
+				worldObj.updateLightByType(EnumSkyBlock.Block, blockX - 1, blockY, blockZ);
+				worldObj.updateLightByType(EnumSkyBlock.Block, blockX, blockY, blockZ - 1);
+			}
+		}
+		
 		if(++ticksExisted >= 5 && !attacked) {
 			this.attemptEntityAttack();
 			attacked = true;

@@ -14,19 +14,21 @@
  */
 package cn.lambdacraft.mob.client.renderer;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+
 import org.lwjgl.opengl.GL11;
+
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.client.model.ModelTurret;
 import cn.lambdacraft.mob.entity.EntitySentry;
-import cn.lambdacraft.mob.util.CBCRenderMob;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import cn.liutils.api.client.render.LIRenderMob;
 
 /**
  * @author WeAthFolD
  *
  */
-public class RenderTurret extends CBCRenderMob {
+public class RenderTurret extends LIRenderMob {
 
 	private static ModelTurret model = new ModelTurret();
 	

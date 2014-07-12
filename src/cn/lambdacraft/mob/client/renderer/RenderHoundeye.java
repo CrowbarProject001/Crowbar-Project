@@ -16,18 +16,19 @@ package cn.lambdacraft.mob.client.renderer;
 
 import java.util.Random;
 
+import net.minecraft.entity.EntityLiving;
+
 import org.lwjgl.opengl.GL11;
 
 import cn.lambdacraft.mob.client.model.ModelHoundeye;
 import cn.lambdacraft.mob.entity.EntityHoundeye;
-import cn.lambdacraft.mob.util.CBCRenderMob;
-import net.minecraft.entity.EntityLiving;
+import cn.liutils.api.client.render.LIRenderMob;
 
 /**
  * @author WeAthFolD
  *
  */
-public class RenderHoundeye extends CBCRenderMob {
+public class RenderHoundeye extends LIRenderMob {
 
 	protected static ModelHoundeye model = new ModelHoundeye();
 	protected Random rand = new Random();
@@ -41,7 +42,7 @@ public class RenderHoundeye extends CBCRenderMob {
 	}
 	
     @Override
-	public void doRenderLiving(EntityLiving ent, double par2, double par4, double par6, float par8, float par9)
+	public void doRender(EntityLiving ent, double par2, double par4, double par6, float par8, float par9)
     {
     	GL11.glPushMatrix();
     	float yOffset = ent.prevLimbSwingAmount + (ent.limbSwingAmount - ent.prevLimbSwingAmount) * par9;
@@ -55,7 +56,7 @@ public class RenderHoundeye extends CBCRenderMob {
     		yOffset = 1.0F;
     	yOffset *= 0.2F;
     	GL11.glTranslatef(xOffset, yOffset, zOffset);
-    	super.doRenderLiving(ent, par2, par4, par6, par8, par9);
+    	super.doRender(ent, par2, par4, par6, par8, par9);
     	GL11.glPopMatrix();
     }
 

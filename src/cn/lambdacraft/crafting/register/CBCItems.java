@@ -4,23 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-import cn.lambdacraft.api.energy.item.ICustomEnItem;
-import cn.lambdacraft.core.CBCMod;
-import cn.lambdacraft.core.item.CBCGenericItem;
-import cn.lambdacraft.core.proxy.GeneralProps;
-import cn.lambdacraft.crafting.item.*;
-import cn.lambdacraft.crafting.item.ItemMaterial.EnumMaterial;
-import cn.lambdacraft.deathmatch.item.ArmorHEV;
-import cn.lambdacraft.deathmatch.item.ItemAttachment;
-import cn.lambdacraft.deathmatch.item.ItemBattery;
-import cn.lambdacraft.deathmatch.item.ammos.*;
-import cn.lambdacraft.deathmatch.register.DMBlocks;
-import cn.lambdacraft.deathmatch.register.DMItems;
-import cn.lambdacraft.mob.register.CBCMobItems;
-import cn.lambdacraft.xen.register.XENBlocks;
-import cn.liutils.core.register.Config;
-import cn.liutils.core.register.ConfigHandler;
-
 import net.minecraft.block.Block;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.inventory.InventoryCrafting;
@@ -33,6 +16,38 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import cn.lambdacraft.api.energy.item.ICustomEnItem;
+import cn.lambdacraft.core.CBCMod;
+import cn.lambdacraft.core.item.CBCGenericItem;
+import cn.lambdacraft.core.proxy.GeneralProps;
+import cn.lambdacraft.crafting.item.Bullet_9mm;
+import cn.lambdacraft.crafting.item.Bullet_steelbow;
+import cn.lambdacraft.crafting.item.HLSpray;
+import cn.lambdacraft.crafting.item.IngotUranium;
+import cn.lambdacraft.crafting.item.ItemBullet;
+import cn.lambdacraft.crafting.item.ItemMaterial;
+import cn.lambdacraft.crafting.item.ItemMaterial.EnumMaterial;
+import cn.lambdacraft.crafting.item.ItemSpray;
+import cn.lambdacraft.crafting.item.LCRecord;
+import cn.lambdacraft.crafting.item.SteelBar;
+import cn.lambdacraft.deathmatch.item.ArmorHEV;
+import cn.lambdacraft.deathmatch.item.ItemAttachment;
+import cn.lambdacraft.deathmatch.item.ItemBattery;
+import cn.lambdacraft.deathmatch.item.ammos.Ammo_357;
+import cn.lambdacraft.deathmatch.item.ammos.Ammo_9mm;
+import cn.lambdacraft.deathmatch.item.ammos.Ammo_9mm2;
+import cn.lambdacraft.deathmatch.item.ammos.Ammo_argrenade;
+import cn.lambdacraft.deathmatch.item.ammos.Ammo_bow;
+import cn.lambdacraft.deathmatch.item.ammos.Ammo_rpg;
+import cn.lambdacraft.deathmatch.item.ammos.Ammo_shotgun;
+import cn.lambdacraft.deathmatch.item.ammos.Ammo_uranium;
+import cn.lambdacraft.deathmatch.item.ammos.ItemAmmo;
+import cn.lambdacraft.deathmatch.register.DMBlocks;
+import cn.lambdacraft.deathmatch.register.DMItems;
+import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.lambdacraft.terrain.register.XenBlocks;
+import cn.liutils.core.register.Config;
+import cn.liutils.core.register.ConfigHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -120,6 +135,9 @@ public class CBCItems {
 		// Recipes
 
 		OreDictionary.registerOre("oreUranium", CBCBlocks.uraniumOre);
+		OreDictionary.registerOre("oreTin", CBCBlocks.oreTin);
+		OreDictionary.registerOre("oreCopper", CBCBlocks.oreCopper);
+		
 		OreDictionary.registerOre("ingotUranium", CBCItems.ingotUranium);
 		OreDictionary.registerOre("ingotRefinedIron", CBCItems.ingotSteel);
 		OreDictionary.registerOre("blockRefinedIron", CBCBlocks.blockRefined);
@@ -199,7 +217,7 @@ public class CBCItems {
 				new ItemStack(DMBlocks.armorCharger),
 				new ItemStack(CBCBlocks.blockRefined),
 				new ItemStack(CBCItems.ironBar, 5),
-				new ItemStack(XENBlocks.portal),
+				new ItemStack(XenBlocks.xenPortal),
 				new ItemStack(CBCMobItems.sentrySyncer, 2),
 				new ItemStack(spray1),
 				new ItemStack(spray2),
@@ -222,7 +240,7 @@ public class CBCItems {
 		GameRegistry.addShapelessRecipe(new ItemStack(halfLife01), lambdaChip, Item.diamond);
 		GameRegistry.addShapelessRecipe(new ItemStack(halfLife02), lambdaChip, Item.emerald);
 		GameRegistry.addShapelessRecipe(new ItemStack(halfLife03), lambdaChip, Item.eyeOfEnder);
-		GameRegistry.addShapelessRecipe(new ItemStack(XENBlocks.crystal), iSlightStoneDust, iSdiamond);
+		GameRegistry.addShapelessRecipe(new ItemStack(XenBlocks.crystal), iSlightStoneDust, iSdiamond);
 		GameRegistry.addShapelessRecipe(new ItemStack(DMItems.weapon_crowbar_el), lambdaChip, new ItemStack(DMItems.weapon_crowbar));
 		GameRegistry.addShapelessRecipe(iSstorageL, CBCBlocks.storageS, lambdaChip);
 		GameRegistry.addRecipe(new RecipeHEVAttach());
@@ -252,7 +270,7 @@ public class CBCItems {
 		GameRegistry.addSmelting(CBCBlocks.uraniumOre.blockID, new ItemStack(ingotUranium), 5);
 		GameRegistry.addSmelting(CBCBlocks.oreCopper.blockID, new ItemStack(copper), 2);
 		GameRegistry.addSmelting(CBCBlocks.oreTin.blockID, new ItemStack(tin), 2);
-		GameRegistry.addSmelting(XENBlocks.crystal.blockID, new ItemStack(xenCrystal), 3);
+		GameRegistry.addSmelting(XenBlocks.crystal.blockID, new ItemStack(xenCrystal), 3);
 		
 		//ChestGen
 		WeightedRandomChestContent gens_dungeon[] = {

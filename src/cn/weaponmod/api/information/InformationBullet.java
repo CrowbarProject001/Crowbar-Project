@@ -48,6 +48,11 @@ public class InformationBullet extends InformationWeapon {
 		--muzzle_left;
 		--muzzle_right;
 	}
+	
+	@Override
+	public void resetState() {
+		super.resetState();
+	}
 
 
 }

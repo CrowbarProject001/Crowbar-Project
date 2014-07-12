@@ -3,9 +3,9 @@
  */
 package cn.lambdacraft.core.util;
 
-import cn.lambdacraft.xen.client.EntityXenPortalFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import cn.lambdacraft.terrain.client.EntityXenPortalFX;
 
 /**
  * @author Administrator

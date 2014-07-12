@@ -65,40 +65,40 @@ public class ClientTickHandler implements ITickHandler {
 			MovingObjectPosition result = player.rayTrace(36.0D, 1.0F);
 			if (flag && CBCPlayer.armorStat[3] && result != null)
 			{
-				int var9 = result.blockX;
-				int var10 = result.blockY;
-				int var11 = result.blockZ;
+				int blockX = result.blockX;
+				int blockY = result.blockY;
+				int blockZ = result.blockZ;
 				var5 = result.sideHit;
 
 				if (var5 == 0) {
-					--var10;
+					--blockY;
 				} else if (var5 == 1) {
-					++var10;
+					++blockY;
 				} else {
 					if (var5 == 2) {
-						--var11;
+						--blockZ;
 					}
 
 					if (var5 == 3) {
-						++var11;
+						++blockZ;
 					}
 
 					if (var5 == 4) {
-						--var9;
+						--blockX;
 					}
 
 					if (var5 == 5) {
-						++var9;
+						++blockX;
 					}
 				}
 
-				LightValue.addData(var9, var10, var11);
-				Minecraft.getMinecraft().theWorld.setLightValue(EnumSkyBlock.Block, var9, var10, var11, 15);
-				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10 + 1, var11);
+				LightValue.addData(blockX, blockY, blockZ);
+				Minecraft.getMinecraft().theWorld.setLightValue(EnumSkyBlock.Block, blockX, blockY, blockZ, 15);
+				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, blockX, blockY + 1, blockZ);
 				//Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10 - 1, var11);
-				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9 - 1, var10, var11);
+				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, blockX - 1, blockY, blockZ);
 				//Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9 + 1, var10, var11);
-				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10, var11 - 1);
+				Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, blockX, blockY, blockZ - 1);
 				//Minecraft.getMinecraft().theWorld.updateLightByType(EnumSkyBlock.Block, var9, var10, var11 + 1);
 			}
 		}

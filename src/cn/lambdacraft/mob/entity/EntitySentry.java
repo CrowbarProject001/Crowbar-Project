@@ -16,10 +16,10 @@ package cn.lambdacraft.mob.entity;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -29,8 +29,9 @@ import net.minecraft.world.World;
 import cn.lambdacraft.api.entity.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.register.CBCMobItems;
+import cn.liutils.api.entity.EntityBullet;
+import cn.liutils.api.entity.LIEntityMob;
 import cn.liutils.api.util.GenericUtils;
-import cn.weaponmod.api.WeaponHelper;
 
 /**
  * 你问我为什么要继承EntityLiving？这货本来可是大光圈基地的产物啊，233
@@ -39,7 +40,7 @@ import cn.weaponmod.api.WeaponHelper;
  * 卧槽原来是光圈的？
  *
  */
-public class EntitySentry extends CBCEntityMob implements IEntityLink {
+public class EntitySentry extends LIEntityMob implements IEntityLink {
 
 	public Entity currentTarget;
 	public String placerName = "";
@@ -56,12 +57,12 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 		public boolean isEntityApplicable(Entity entity) {
 			if(entity instanceof EntityPlayer) {
 				EntityPlayer ep = (EntityPlayer) entity;
-				if(!attackPlayer || ep.username.equals(placerName))
+				if(!attackPlayer || ep.getCommandSenderName().equals(placerName))
 					return false;
 			} else if(entity instanceof EntitySentry)
-				return attackPlayer && !((EntitySentry)entity).placerName.equals(placerName);
+				return false;
 			else if(GenericUtils.selectorLiving.isEntityApplicable(entity)) {
-				if(entity instanceof EntityMob)
+				if(entity instanceof IMob)
 					return true;
 			}
 			return false;
@@ -86,7 +87,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 	public EntitySentry(World par1World, EntityPlayer placer, double x, double y, double z, float yaw) {
 		super(par1World);
 		this.setPosition(x, y, z);
-		placerName = placer.username;
+		placerName = placer.getCommandSenderName();
 		this.rotationYaw = yaw;
 		this.rotationYawSearch = yaw;
 	}
@@ -143,7 +144,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 			this.isActivated = dataWatcher.getWatchableObjectByte(16) > 0;
 		} else {
 			if(currentTarget != null)
-				dataWatcher.updateObject(15, currentTarget.entityId);
+				dataWatcher.updateObject(15, currentTarget.getEntityId());
 			dataWatcher.updateObject(16, Byte.valueOf((byte) (isActivated? 0x1 : 0x0)));
 		}
 	}
@@ -175,8 +176,8 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
     	if(b) {
     		isActivated = true;
     		Entity e = src.getEntity();
-    		if(e != null && e.getEntityName() == this.placerName) {
-    			dropItemWithOffset(CBCMobItems.turret.itemID, 1, 0.5F);
+    		if(e != null && e.getCommandSenderName() == this.placerName) {
+    			func_145778_a(CBCMobItems.turret, 1, 0.5F);
     			setDead();
     		} else
     		if(src.getEntity() != null && selector.isEntityApplicable(src.getEntity()))
@@ -233,7 +234,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 			} else { 
 				rotationSet = false;
 				this.playSound("lambdacraft:mobs.tu_fire", 0.5F, 1.0F);
-				WeaponHelper.Shoot_rev(3, this, worldObj);
+				worldObj.spawnEntityInWorld(new EntityBullet(worldObj, this, currentTarget, 5).setEntitySelector(selector));
 			}
 			if(currentTarget.getDistanceSqToEntity(this) > 400) {
 				this.currentTarget = null;
@@ -279,21 +280,21 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 	public boolean interact(EntityPlayer player)
     {
 		if(!worldObj.isRemote) {
-			if(!player.username.equals(placerName)) {
-				player.sendChatToPlayer(new ChatMessageComponent().addText(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.deny.name")));
+			if(!player.getCommandSenderName().equals(placerName)) {
+				player.addChatMessage(new ChatComponentTranslation(EnumChatFormatting.RED + StatCollector.translateToLocal("sentry.deny.name")));
 				return false;
 			}
 			if(player.isSneaking()) {
 				attackPlayer = !attackPlayer;
 				StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
-				b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ").append(EnumChatFormatting.RED).append(this.entityId).append("\n");
+				b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.id.name")).append(" : ").append(EnumChatFormatting.RED).append(this.getEntityId()).append("\n");
 				b.append(EnumChatFormatting.WHITE).append(StatCollector.translateToLocal("sentry.attackstat.name")).append(" : ").append(EnumChatFormatting.RED).append(StatCollector.translateToLocal("sentry.attacktype" + (attackPlayer ? 1 : 0) + ".name")).append("\n");
-				player.sendChatToPlayer(new ChatMessageComponent().addText(b.toString()));
+				player.addChatMessage(new ChatComponentTranslation(b.toString()));
 			} else {
 				this.isActivated = !isActivated;
 				StringBuilder b = new StringBuilder(StatCollector.translateToLocal("sentry.head.name")).append("\n");
 				b.append((isActivated ? EnumChatFormatting.GREEN : EnumChatFormatting.RED)).append(StatCollector.translateToLocal("sentry.status" + (isActivated ? 1 : 0) + ".name"));
-				player.sendChatToPlayer(new ChatMessageComponent().addText(b.toString()));
+				player.addChatMessage(new ChatComponentTranslation(b.toString()));
 				String s = isActivated ? "lambdacraft:mobs.tu_deploy" : "lambdacraft:mobs.tu_spindown";
 				this.playSound(s, 0.5F, 1.0F);
 			}
@@ -308,7 +309,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 	public void writeEntityToNBT(NBTTagCompound nbt) {
 		super.writeEntityToNBT(nbt);
 		if(currentTarget != null)
-			nbt.setInteger("targetId", currentTarget.entityId);
+			nbt.setInteger("targetId", currentTarget.getEntityId());
 		nbt.setBoolean("isActivated", isActivated);
 		nbt.setInteger("activationTime", activationCounter);
 		nbt.setFloat("searchYaw", rotationYawSearch);
@@ -329,7 +330,7 @@ public class EntitySentry extends CBCEntityMob implements IEntityLink {
 	@Override
 	public void setLinkedEntity(Entity entity) {
 		if(!(entity instanceof EntityPlayer))return;
-		this.placerName = ((EntityPlayer)entity).username;
+		this.placerName = ((EntityPlayer)entity).getCommandSenderName();
 	}
 
 	@Override

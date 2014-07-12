@@ -20,6 +20,7 @@ import cn.lambdacraft.api.entity.IEntityLink;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.register.CBCMobItems;
 import cn.lambdacraft.mob.util.MobHelper;
+import cn.liutils.api.entity.LIEntityMob;
 import cn.liutils.api.util.GenericUtils;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -28,6 +29,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
@@ -42,7 +44,7 @@ import net.minecraft.world.World;
  * @author WeAthFolD
  * 
  */
-public class EntityHeadcrab extends CBCEntityMob implements
+public class EntityHeadcrab extends LIEntityMob implements
 		IEntityLink<EntityPlayer> {
 
 	public static final float MOVE_SPEED = 0.5F;
@@ -121,7 +123,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 						+ attacher.height + 0.05, attacher.posZ,
 						attacher.rotationYaw, attacher.rotationPitch);
 			if (++tickSinceBite >= 15) {
-				dataWatcher.updateObject(20, Integer.valueOf(attacher.entityId));
+				dataWatcher.updateObject(20, Integer.valueOf(attacher.getEntityId()));
 				tickSinceBite = 0;
 				float health = attacher.getHealth() - 1;
 				if (!(attacher instanceof EntityPlayer && ((EntityPlayer) attacher).capabilities.isCreativeMode)) {
@@ -203,7 +205,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 		EntityLivingBase entity = null;
 		double distance = 10000.0F;
 		for (EntityLivingBase s : list) {
-			if (s.getEntityName().equals(throwerName))
+			if (s.getCommandSenderName().equals(throwerName))
 				continue;
 			double dx = s.posX - posX, dy = s.posY - posY, dz = s.posZ - posZ;
 			double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
@@ -266,13 +268,13 @@ public class EntityHeadcrab extends CBCEntityMob implements
 	}
 
 	@Override
-	public EntityItem dropItemWithOffset(int par1, int par2, float par3) {
+	public EntityItem func_145778_a(Item par1, int par2, float par3) {
 		return this.entityDropItem(new ItemStack(par1, par2, 0), par3);
 	}
 
 	@Override
-	public int getDropItemId() {
-		return CBCMobItems.dna.itemID;
+	public Item getDropItem() {
+		return CBCMobItems.dna;
 	}
 
 	/**
@@ -307,7 +309,7 @@ public class EntityHeadcrab extends CBCEntityMob implements
 
 	@Override
 	public void setLinkedEntity(EntityPlayer entity) {
-		throwerName = entity.username;
+		throwerName = entity.getCommandSenderName();
 	}
 
 	@Override

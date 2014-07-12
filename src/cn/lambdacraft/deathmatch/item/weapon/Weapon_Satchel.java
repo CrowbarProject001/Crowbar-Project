@@ -69,12 +69,10 @@ public class Weapon_Satchel extends CBCGenericItem implements IHudTipProvider, I
 	@Override
 	public void onItemClick(World world, EntityPlayer player, ItemStack stack,
 			boolean left) {
-		System.out.println(left ? "Left" : "Right" + "Click called in " + world.isRemote);
 		if(!world.isRemote && left) {
 			int mode = getMode(stack);
 			NBTTagCompound nbt = player.getEntityData();
 			int count = nbt.getInteger("satchelCount");
-			System.out.println("LeftClick called");
 			// Max 6 satchel
 			
 			if (mode == 0) { // Setting mode
@@ -84,7 +82,6 @@ public class Weapon_Satchel extends CBCGenericItem implements IHudTipProvider, I
 				nbt.setBoolean("doesExplode", false);
 				EntitySatchel ent = new EntitySatchel(world, player);
 				world.spawnEntityInWorld(ent);
-				System.out.println("Spawned entity");
 				nbt.setInteger("satchelCount", ++count);
 				if (!player.capabilities.isCreativeMode)
 					--stack.stackSize;

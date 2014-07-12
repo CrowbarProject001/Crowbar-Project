@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
@@ -14,7 +15,7 @@ import cn.weaponmod.api.WMInformation;
 import cn.weaponmod.api.WeaponHelper;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.information.InformationWeapon;
-import cn.weaponmod.events.ItemHelper;
+import cn.weaponmod.events.ItemControlHandler;
 import cn.weaponmod.proxy.WMClientProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,8 +30,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 	public int jamTime; //卡弹声音播放时间间隔
 	public boolean isAutomatic = true; //是否自动武器（影响射击方式）
 
-	public WeaponGeneralBullet(int par1, int par2ammoID) {
-		super(par1, par2ammoID);
+	public WeaponGeneralBullet(Item ammo) {
+		super(ammo);
 		setMaxStackSize(1);
 		upLiftRadius = 5.5F;
 		recoverRadius = 0.6F;
@@ -189,8 +190,8 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 			if (WeaponHelper.hasAmmo(this, player))
 				player.worldObj.playSoundAtEntity(player, getSoundReload(),
 						0.5F, 1.0F);
-			ItemHelper.stopUsingItem(player, true);
-			ItemHelper.stopUsingItem(player, false);
+			ItemControlHandler.stopUsingItem(player, true);
+			ItemControlHandler.stopUsingItem(player, false);
 			inf.isReloading = true;
 			inf.setLastTick(false);
 			inf.setLastTick(true);
@@ -225,11 +226,17 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 		InformationBullet information = (InformationBullet) loadInformation(stack, player);
 		Boolean canUse = canShoot(player, stack, left);
 		if (canUse) {
+			if(this.doesAbortReloadingWhenClick() && information.isReloading) {
+				information.setLastTick(false);
+				information.isReloading = false;
+				player.playSound(this.getSoundJam(false), 0.5F, 1.0F);
+			}
+				
 			if (this.doesShoot(information, player, stack, left)) 
 				this.onBulletWpnShoot(stack, world, player, information, left);
-			information.isReloading = false;
+			//information.isReloading = false;
 			if (isAutomatic)
-				ItemHelper.setItemInUse(player, stack, 500, left);
+				ItemControlHandler.setItemInUse(player, stack, 500, left);
 		} else 
 			onSetReload(stack, player); //要自动上弹么？
 		return;
@@ -311,6 +318,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 	@Override
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		if(this.getMaxDamage() > 0)
 		par3List.add(StatCollector.translateToLocal("ammocap.name")
 				+ ": "
 				+ (par1ItemStack.getMaxDamage()
@@ -320,7 +328,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 	
 	@SideOnly(Side.CLIENT)
 	/**
-	 * 如其名字，获取上弹时武器的旋转角度（0.0F~1.0F)
+	 * 获取上弹时武器的旋转角度（0.0F~1.0F)
 	 * @param itemStack
 	 * @return
 	 */
@@ -338,4 +346,7 @@ public abstract class WeaponGeneralBullet extends WeaponGeneral implements IRelo
 		return rotation;
 	}
 	
+	public boolean doesAbortReloadingWhenClick() {
+		return false;
+	}
 }

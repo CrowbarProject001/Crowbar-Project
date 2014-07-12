@@ -26,14 +26,14 @@ import org.lwjgl.opengl.GL11;
 import cn.lambdacraft.core.proxy.ClientProps;
 import cn.lambdacraft.mob.client.model.ModelVortigaunt;
 import cn.lambdacraft.mob.entity.EntityAlienSlave;
-import cn.lambdacraft.mob.util.CBCRenderMob;
+import cn.liutils.api.client.render.LIRenderMob;
 import cn.liutils.api.client.util.RenderUtils;
 
 /**
  * @author WeAthFolD
  *
  */
-public class RenderAlienSlave extends CBCRenderMob {
+public class RenderAlienSlave extends LIRenderMob {
 
 	private static final float WIDTH = 0.25F;
 	protected static final Random rand = new Random();

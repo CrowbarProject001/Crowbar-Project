@@ -26,10 +26,11 @@ public class TileTripmine extends TileEntity {
 
 	@Override
 	public void updateEntity() {
-		System.out.println(ticksExisted);
+		BlockTripmine blockType = (BlockTripmine) DMBlocks.blockTripmine;
+		if (ticksExisted % 5 == 0)
+			blockType.updateRayRange(worldObj, xCoord, yCoord, zCoord);
 		if(++ticksExisted < 20 || worldObj.isRemote)
 			return;
-		BlockTripmine blockType = (BlockTripmine) DMBlocks.blockTripmine;
 		Motion3D begin = new Motion3D(xCoord, yCoord, zCoord, 0, 0, 0);
 		int meta = this.blockMetadata;
 		Motion3D end = new Motion3D(endX, endY, endZ, 0, 0, 0);
@@ -75,8 +76,6 @@ public class TileTripmine extends TileEntity {
 		if (list != null && list.size() == 1) {
 			blockType.breakBlock(worldObj, xCoord, yCoord, zCoord, meta, 0);
 		}
-		else if (ticksExisted % 5 == 0)
-			blockType.updateRayRange(worldObj, xCoord, yCoord, zCoord);
 	}
 
 	public double getRayDistance() {

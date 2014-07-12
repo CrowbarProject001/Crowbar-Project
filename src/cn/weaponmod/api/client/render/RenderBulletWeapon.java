@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL11;
 import cn.liutils.api.client.util.RenderUtils;
 import cn.weaponmod.api.information.InformationBullet;
 import cn.weaponmod.api.weapon.WeaponGeneralBullet;
-import cn.weaponmod.events.ItemHelper;
+import cn.weaponmod.events.ItemControlHandler;
 
 /**
  * @author WeAthFolD
@@ -43,6 +43,13 @@ public class RenderBulletWeapon implements IItemRenderer {
 	private WeaponGeneralBullet weaponType;
 	public String[] muzzleflash = { "" };
 	public float recoilRatio = 0.02F, upliftRatio = 1.0F;
+	
+	/**
+	 * Reload animation style.
+	 * 0: Normal reload. rotating left.
+	 * 1: Another style. rotating downwards and slightly right.
+	 */
+	public int reloadAnimStyle = 0;
 	
 	public RenderBulletWeapon(WeaponGeneralBullet weapon, float w, String[] tex) {
 		weaponType = weapon;
@@ -61,6 +68,11 @@ public class RenderBulletWeapon implements IItemRenderer {
 		tx = x;
 		ty = y;
 		tz = z;
+	}
+	
+	public RenderBulletWeapon setReloadStyle(int style) {
+		reloadAnimStyle = style;
+		return this;
 	}
 
 	@Override
@@ -121,9 +133,10 @@ public class RenderBulletWeapon implements IItemRenderer {
 			RenderUtils.renderItemIn2d(item, width);
 			return;
 		}
+		
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entity;
-			boolean left = ItemHelper.getUsingTickLeft(player, false) == 0 ? true : ItemHelper.getUsingSide(player);
+			boolean left = ItemControlHandler.getUsingTickLeft(player, false) == 0 ? true : ItemControlHandler.getUsingSide(player);
 			boolean firstPerson = (entity == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) 
 					&& Minecraft.getMinecraft().currentScreen == null;
 			int mt = inf == null ? -1 : (left ? inf.muzzle_left : inf.muzzle_right);
@@ -149,7 +162,13 @@ public class RenderBulletWeapon implements IItemRenderer {
 			
 			if(firstPerson && inf.isReloading) {
 				float rotation = weaponType.getRotationForReload(item);
-				GL11.glRotatef(upliftRatio * rotation * 90F, 0.0F, 1.0F, 0.0F);
+				if(reloadAnimStyle == 0)
+					GL11.glRotatef(upliftRatio * rotation * 75F, 0.0F, 1.0F, 0.0F);
+				else if(reloadAnimStyle == 1) {
+					GL11.glRotatef(upliftRatio * rotation * 17F, 0.0F, 0.0F, -1.0F);
+					GL11.glRotatef(upliftRatio * rotation * 30F, 0.0F, -1.0F, 0.0F);
+					GL11.glRotatef(upliftRatio * rotation * 14F, 1.0F, 0.0F, 0.0F);
+				}
 			}
 		}
 		RenderUtils.renderItemIn2d(item, width);

@@ -23,16 +23,15 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.logging.Level;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.Property;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
+import cn.lambdacraft.core.CBCMod;
+import cn.liutils.api.register.Configurable;
+import cn.liutils.core.register.ConfigHandler;
 
 import com.google.common.base.Charsets;
 
-import cn.lambdacraft.core.CBCMod;
-import cn.liutils.api.register.Configurable;
-import cn.liutils.core.register.Config;
-import cn.liutils.core.register.ConfigHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 /**
@@ -173,10 +172,8 @@ public class ClientProps {
 	
 	public static final String SKYBOX_PATH = "lambdacraft:textures/sky/xen%s.png";
 
-	public static final String xhair_path = "lambdacraft/crosshairs/",
-			DEFAULT_XHAIR_PATH = xhair_path + "xhair1.png";
-	
-	public static final String spry_path = "lambdacraft/sprays/", HLSPRAY_DIC_PATH = "lambdacraft:spray/";
+	public static final String xhair_path = "lambdacraft:crosshairs/", DEFAULT_XHAIR_PATH = xhair_path + "xhair1.png";
+	public static final String spry_path = "lambdacraft:spray/";
 
 	public static String PORTAL_PATH[] = new String[10];
 	static {
@@ -205,23 +202,20 @@ public class ClientProps {
 		return path;
 	}
 
-	public static void loadProps(Config config) {
+	public static void loadProps(Configuration config) {
 		ConfigHandler.loadConfigurableClass(CBCMod.config, ClientProps.class);
 		
 		crosshairProps = new Properties();
 		final String absPath = "/assets/lambdacraft/";
-		URL src = Minecraft.class.getResource(absPath + "crosshairs/crosshairs.properties");
+		URL src = ClientProps.class.getResource("/assets/lambdacraft/crosshairs/crosshairs.properties");
 		
 		sprayProps = new Properties();
-		URL src2 = Minecraft.class.getResource(absPath + "spray/sprays.properties");
+		URL src2 = ClientProps.class.getResource("/assets/lambdacraft/spray/sprays.properties");
 		
 		File crFile = null, sprFile = null;
-		try {
-			crFile = ClientProxy.copyFile(src.openStream(), ClientProxy.getBasePath() + "/assets/lambdacraft/crosshairs/crosshairs.properties");
-			sprFile = ClientProxy.copyFile(src2.openStream(), ClientProxy.getBasePath() + "/assets/lambdacraft/sprays/sprays.properties");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		crFile = new File(src.getFile());
+		sprFile = new File(src2.getFile());
+		
 		
 		try {
 			crosshairProps.load(new InputStreamReader(new FileInputStream(crFile), Charsets.UTF_8));
@@ -231,6 +225,7 @@ public class ClientProps {
 		} catch (NullPointerException e) {
 			CBCMod.log.log(Level.SEVERE, "Unable to find crossfire/spray props file.");
 		}
+		
 	}
 
 	public static String getCrosshairPath(String wpnName) {
@@ -248,17 +243,17 @@ public class ClientProps {
 		try {
 			String s = sprayProps.getProperty(String.valueOf(id));
 			if (s == null)
-				return null;
+				return "";
 			return spry_path + s;
 		} catch (NullPointerException e) {
 		}
-		return null;
+		return "";
 	}
 	
 	public static void setSprayId(int id) {
 		Property prop;
 		try {
-			prop = CBCMod.config.getProperty("graphics", "Spray_ID", "0");
+			prop = CBCMod.config.get("graphics", "Spray_ID", "0");
 			prop.set(id);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -278,16 +273,16 @@ public class ClientProps {
 		sprayA = a;
 		Property prop;
 		try {
-			prop = CBCMod.config.getProperty("graphics", "Spray_R", "255");
+			prop = CBCMod.config.get("graphics", "Spray_R", "255");
 			prop.set(r);
 			
-			prop = CBCMod.config.getProperty("graphics", "Spray_G", "255");
+			prop = CBCMod.config.get("graphics", "Spray_G", "255");
 			prop.set(g);
 			
-			prop = CBCMod.config.getProperty("graphics", "Spray_B", "255");
+			prop = CBCMod.config.get("graphics", "Spray_B", "255");
 			prop.set(b);
 			
-			prop = CBCMod.config.getProperty("graphics", "Spray_A", "255");
+			prop = CBCMod.config.get("graphics", "Spray_A", "255");
 			prop.set(a);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -303,13 +298,13 @@ public class ClientProps {
 		xHairB = b;
 		Property prop;
 		try {
-			prop = CBCMod.config.getProperty("graphics", "CrossHair_R", "255");
+			prop = CBCMod.config.get("graphics", "CrossHair_R", "255");
 			prop.set(r);
 			
-			prop = CBCMod.config.getProperty("graphics", "CrossHair_G", "255");
+			prop = CBCMod.config.get("graphics", "CrossHair_G", "255");
 			prop.set(g);
 			
-			prop = CBCMod.config.getProperty("graphics", "CrossHair_B", "255");
+			prop = CBCMod.config.get("graphics", "CrossHair_B", "255");
 			prop.set(b);
 		} catch(Exception e) {
 			e.printStackTrace();

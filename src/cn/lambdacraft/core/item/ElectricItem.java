@@ -18,11 +18,11 @@ import java.util.List;
 
 import cn.lambdacraft.api.energy.item.ICustomEnItem;
 import cn.lambdacraft.core.CBCMod;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -38,8 +38,8 @@ public abstract class ElectricItem extends CBCGenericItem implements
 
 	protected int tier = 1, transferLimit = 100, maxCharge;
 
-	public ElectricItem(int id) {
-		super(id);
+	public ElectricItem() {
+		super();
 		setMaxStackSize(1);
 		setCreativeTab(CBCMod.cct);
 	}
@@ -101,13 +101,13 @@ public abstract class ElectricItem extends CBCGenericItem implements
 	}
 
 	@Override
-	public int getChargedItemId(ItemStack itemStack) {
-		return this.itemID;
+	public Item getChargedItem(ItemStack itemStack) {
+		return this;
 	}
 
 	@Override
-	public int getEmptyItemId(ItemStack itemStack) {
-		return this.itemID;
+	public Item getEmptyItem(ItemStack itemStack) {
+		return this;
 	}
 
 	@Override
@@ -138,20 +138,16 @@ public abstract class ElectricItem extends CBCGenericItem implements
 	public int charge(ItemStack itemStack, int amount, int tier,
 			boolean ignoreTransferLimit, boolean simulate) {
 
-		int en = this.maxCharge - getItemCharge(itemStack) - 1;
+		int chg = getItemCharge(itemStack), lim = getTransferLimit(itemStack);
+		int en = this.maxCharge - chg - 1;
 		if (en == 0)
 			return 0;
 		if (!ignoreTransferLimit)
-			amount = this.getTransferLimit(itemStack);
-		if (en > amount) {
-			if (!simulate)
-				setItemCharge(itemStack, getItemCharge(itemStack) + amount);
-			return amount;
-		} else {
-			if (!simulate)
-				setItemCharge(itemStack, getItemCharge(itemStack) + en);
-			return en;
-		}
+			amount = lim > amount ? amount : lim;
+		en = en > amount ? amount : en;
+		if (!simulate)
+			setItemCharge(itemStack, chg + en);
+		return en;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -167,7 +163,7 @@ public abstract class ElectricItem extends CBCGenericItem implements
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs,
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs,
 			List par3List) {
 		par3List.add(new ItemStack(par1, 1, 0));
 		ItemStack chargedItem = new ItemStack(par1, 1, 0);
